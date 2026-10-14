@@ -4,7 +4,7 @@ using FruitMachineLab.Adders;
 namespace FruitMachineLab.Diagnostics;
 public partial class MainWindow : Window
 {
-    public MainWindow() { InitializeComponent(); RootPath.Text=Directory.GetCurrentDirectory(); }
+    public MainWindow() { InitializeComponent(); RootPath.Text=RepositoryLocation.Find(Directory.GetCurrentDirectory(),AppContext.BaseDirectory); }
     private async void Replay(object sender,RoutedEventArgs args)
     {
         var button=(System.Windows.Controls.Button)sender;

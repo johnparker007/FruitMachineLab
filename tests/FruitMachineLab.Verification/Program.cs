@@ -1,7 +1,8 @@
 using FruitMachineLab.Runtime;
 using FruitMachineLab.Adders;
 
-var root = args.Length > 0 ? Path.GetFullPath(args[0]) : Directory.GetCurrentDirectory();
+try {
+var root = args.Length > 0 ? Path.GetFullPath(args[0]) : RepositoryLocation.Find(Directory.GetCurrentDirectory(),AppContext.BaseDirectory);
 var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { action(); Console.WriteLine("PASS " + name); passed++; }
@@ -238,3 +239,8 @@ Check("Recorded dispatch tokens agree with recovered listings", () => {
     Console.WriteLine($"  {checkedSites} recorded dispatches checked");
 });
 Console.WriteLine($"{passed} verification groups passed. Bounded replay only; complete feature timing/animation remains untranslated.");
+return 0;
+} catch (Exception error) {
+    Console.Error.WriteLine("FAIL verification: " + error);
+    return 1;
+}

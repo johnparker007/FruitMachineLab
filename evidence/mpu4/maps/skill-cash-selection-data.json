@@ -1,0 +1,24 @@
+{
+  "rom_sha1": "402d1518bb78fdc489b06c2aabc771e5ce151847",
+  "classification": "static ROM data; trace-backed execution coverage is qualified in the selection/scheduler report",
+  "sound_stream": {
+    "address": "8EE4",
+    "hex": "D8C685CDD72CD200C300C3060CC30CCE02C981C4D1CF0AC801D301C4C3060CC30CCE02C981C4D1CF0AC8FFD3FFC4C4D1C0"
+  },
+  "lamp_table": {
+    "address": "726F",
+    "hex": "6C645C544C444D457D756D654E467E766E66"
+  },
+  "cleanup_table": {
+    "address": "7323",
+    "hex": "1818797A2041422849"
+  },
+  "word_parameters": [
+    "9BAE -> 9AFD; 9BB0=7275, 9BB2=726F",
+    "9B9C -> 9AFD; 9B9E=727B, 9BA0=7275",
+    "9BA2 -> 9AFD; 9BA4=7281, 9BA6=727B",
+    "C623=9BAE, C625=9B9C, C627=9BA2",
+    "9B8E=732C, 9B90=7323",
+    "8474=008F, 8476=0090"
+  ]
+}

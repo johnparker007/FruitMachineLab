@@ -100,6 +100,43 @@ Check("Feature allocation and loop prefix match MAME S/F4/F6 and RAM", () => {
 Check("Selection decisions derive from captured platform inputs", () => {
     var result=SkillCashSelectionVerification.Verify(evidence);Equal(1202,result.Decisions);Equal(3,result.AcceptedChoices);
 });
+Check("ROM choice stream and native wait schedule match MAME", () => {
+    var result=SkillCashSoundVerification.Verify(evidence);
+    Equal(3,result.Queues);Equal(1202,result.Reads);
+    Console.WriteLine($"  {result.Commands} sound commands, {result.Waits} waits, {result.Writes} choice writes checked");
+});
+Check("Native delay scaling preserves floor, minimum tick and rate flag", () => {
+    Equal((ushort)3,Mpu4ChoiceStreamScheduler.ScaleDelay(2,25,16,0x80));
+    Equal((ushort)1,Mpu4ChoiceStreamScheduler.ScaleDelay(1,15,16,0x80));
+    Equal((ushort)2,Mpu4ChoiceStreamScheduler.ScaleDelay(2,255,16,0));
+    Equal((ushort)1,Mpu4ChoiceStreamScheduler.ScaleDelay(255,255,0,0x80));
+});
+Check("Choice stream counter wrap, byte wrap and disabled native gate", () => {
+    var m=new Machine();m.Memory[0x4E]=16;
+    byte[] stream=[0xD8,0xCE,1,0xD3,0xFF,0xC0];stream.CopyTo(m.Memory,0x8000);
+    var scheduler=new Mpu4ChoiceStreamScheduler(m,65535);
+    Equal(true,scheduler.Queue(0x8000));scheduler.AdvanceTicks(1);Equal((ushort)0,scheduler.Clock);Equal((byte)0,scheduler.Choice);
+    scheduler.AdvanceTicks(1);Equal((byte)255,scheduler.Choice);Equal(false,scheduler.Active);
+    m.Memory[0x719B]=0x80;Equal(false,scheduler.Queue(0x8000));Equal(false,scheduler.Reset());Equal((byte)255,scheduler.Choice);
+    m.Memory[0x719B]=0;Equal(true,scheduler.Reset());Equal((byte)0,scheduler.Choice);Equal((ushort)1,scheduler.Clock);
+});
+Check("Complete recovered C699 selection loops match MAME state digests", () => {
+    var diagnosticDirectory=Environment.GetEnvironmentVariable("FML_LOOP_DIAGNOSTICS");
+    var writers=new Dictionary<int,StreamWriter>();
+    try {
+        var result=SkillCashLoopVerification.Verify(evidence,diagnosticDirectory is null ? null : (stage,ordinal,signature)=> {
+            if(!writers.TryGetValue(stage,out var writer)) {writer=new(Path.Combine(diagnosticDirectory,$"stage-{stage}.csv"));writers.Add(stage,writer);}
+            writer.WriteLine(string.Join(',',signature.Select(v=>v.ToString("X4"))));
+        });
+        Equal("3,2,1",string.Join(',',result.Choices));
+        Console.WriteLine($"  {result.Instructions} VM dispatches, {result.LampRequests} decoded lamp requests checked");
+    } finally { foreach(var writer in writers.Values)writer.Dispose(); }
+});
+Check("Dynamic lamp helper dispatch and stack effects match MAME", () => {
+    var result=SkillCashLampVerification.Verify(evidence);
+    Console.WriteLine($"  {result.Calls} lamp helper calls, {result.Instructions} VM instructions checked; hardware output remains unverified");
+    if(result.Calls<3 || result.Requests!=result.Calls*6)throw new Exception("Incomplete lamp helper coverage");
+});
 Check("Native signed double quotient preserves zero and wrap behaviour", () => {
     Equal(unchecked((uint)-3),Mpu4Arithmetic.SignedDoubleQuotient(unchecked((uint)-7),2));
     Equal(unchecked((uint)-3),Mpu4Arithmetic.SignedDoubleQuotient(7,unchecked((uint)-2)));
@@ -168,11 +205,27 @@ Check("Changed accepted-choice latch is rejected", () => {
         Directory.CreateDirectory(Path.Combine(temporary,"skill-cash"));Directory.CreateDirectory(Path.Combine(temporary,"VM-SCRIPTS"));
         foreach(var source in Directory.GetFiles(Path.Combine(evidence,"VM-SCRIPTS"),"*.txt"))File.Copy(source,Path.Combine(temporary,"VM-SCRIPTS",Path.GetFileName(source)));
         File.Copy(Path.Combine(evidence,"skill-cash","compensation-calls.json"),Path.Combine(temporary,"skill-cash","compensation-calls.json"));
+        File.Copy(Path.Combine(evidence,"skill-cash","sound-events.json"),Path.Combine(temporary,"skill-cash","sound-events.json"));
         File.WriteAllText(Path.Combine(temporary,"skill-cash","selection-decisions.json"),System.Text.Json.JsonSerializer.Serialize(capture));
         try { SkillCashSelectionVerification.Verify(temporary); }
         catch(InvalidDataException) { return; }
         throw new Exception("Changed physical latch input was accepted");
     } finally { if(Directory.Exists(temporary))Directory.Delete(temporary,true); }
+});
+Check("Changed intra-word IRQ phase is rejected by complete-loop replay", () => {
+    var capture=System.Text.Json.JsonSerializer.Deserialize<SelectionLoopCapture>(File.ReadAllText(Path.Combine(evidence,"skill-cash","selection-loops.json")),
+        new System.Text.Json.JsonSerializerOptions{PropertyNameCaseInsensitive=true})!;
+    capture.Calls[1].BeforeReads[0][1]=0;
+    var temporary=Path.Combine(Path.GetTempPath(),"FruitMachineLab-"+Guid.NewGuid());
+    try {
+        Directory.CreateDirectory(Path.Combine(temporary,"skill-cash"));Directory.CreateDirectory(Path.Combine(temporary,"VM-SCRIPTS"));
+        foreach(var source in Directory.GetFiles(Path.Combine(evidence,"VM-SCRIPTS"),"*.txt"))File.Copy(source,Path.Combine(temporary,"VM-SCRIPTS",Path.GetFileName(source)));
+        foreach(var name in new[]{"compensation-calls.json","sound-events.json"})File.Copy(Path.Combine(evidence,"skill-cash",name),Path.Combine(temporary,"skill-cash",name));
+        File.WriteAllText(Path.Combine(temporary,"skill-cash","selection-loops.json"),System.Text.Json.JsonSerializer.Serialize(capture));
+        try {SkillCashLoopVerification.Verify(temporary);}
+        catch(InvalidDataException){return;}
+        throw new Exception("Changed timer-read phase was accepted");
+    } finally {if(Directory.Exists(temporary))Directory.Delete(temporary,true);}
 });
 Check("Recorded dispatch tokens agree with recovered listings", () => {
     var known = Directory.GetFiles(Path.Combine(evidence,"VM-SCRIPTS"),"*.txt")

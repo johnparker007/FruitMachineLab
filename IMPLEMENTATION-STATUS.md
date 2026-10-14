@@ -25,7 +25,7 @@ table-read address is 75BE. The recovered ROM table now supplies 10, checked aga
 that recorded read; normalization leaves 10; pending BA is
 stored as big-endian 000A. Intermediate stack observations independently check
 previous levels and computed addresses. Selection decisions, accepted choices and
-the award-table read are C# predictions; their choice-byte, latch and IRQ timing
+the award-table read are C# predictions; their latch and IRQ timing
 inputs remain captured platform observations. The input-condition branch in 9F6A
 is not captured by this debugger range; both condition outcomes are evaluated and
 must yield the same result. For award 10 both yield 10. An input-dependent outcome
@@ -33,8 +33,10 @@ fails with an explicit request for additional evidence.
 
 ## Remaining before the first complete executable milestone
 
-The full selection loop C699, enabled option override C646, interrupts/timer scheduler,
-lamp/sound streams, NVRAM refresh 6E06 and award animation AF93 remain untranslated.
+Complete C699 calls now match 65,298 dispatches, with calculated sound-stream choice
+bytes and decoded logical lamp requests. Captured IRQ/latch/scheduler timing remains
+an external replay input. Full C721 orchestration, enabled option override C646,
+hardware lamp/audio effects, NVRAM refresh 6E06 and award animation AF93 remain.
 Native RNG and percentage arithmetic now execute and match three focused MAME calls.
 C66A/C617/A110/A0E1 now execute from recorded RAM/peripheral/IRQ inputs, with all 240
 nested dispatches checked. C676 no longer injects a chance-helper result. Physical
@@ -49,8 +51,8 @@ The focused replay has now been captured, and state.csv, feature-state.csv,
 input-levels.csv and final RAM match the original campaign exactly. The expanded
 report is [SKILL-CASH-RUNTIME-PASS.md](docs/recovery/SKILL-CASH-RUNTIME-PASS.md).
 See [the compensation/control pass](docs/recovery/SKILL-CASH-COMPENSATION-PASS.md).
-Next: recover the sound/scheduler generation of choice byte 004F and lamp/native
-bridges, then replace the remaining selection platform snapshots with controlled timing.
+See [the selection/scheduler pass](docs/recovery/SKILL-CASH-SELECTION-SCHEDULER-PASS.md).
+Next: recover full-feature orchestration and remaining native side effects.
 
 ## Provenance
 

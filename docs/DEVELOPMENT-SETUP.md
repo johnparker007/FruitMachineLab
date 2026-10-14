@@ -61,3 +61,9 @@ corrupted-fixture rejection and recorded dispatch tokens.
 Skill Cash is currently a bounded mechanics replay, not complete standalone feature
 execution. Selection/timing/random gates, NVRAM and win animation remain untranslated.
 No installation, system configuration, commit, push or cloud setup was performed.
+
+## Selection/scheduler follow-up
+
+Both solutions build with the existing SDK. Verification now has 29 groups,
+including complete C699 replay. See recovery/SKILL-CASH-SELECTION-SCHEDULER-PASS.md
+for current boundaries; the initial-batch paragraph above is historical.

@@ -1,0 +1,22 @@
+param(
+ [Parameter(Mandatory=$true)][string]$MameExecutable,
+ [Parameter(Mandatory=$true)][string]$RomDirectory,
+ [Parameter(Mandatory=$true)][string]$RunDirectory
+)
+$ErrorActionPreference='Stop'
+$run=[System.IO.Path]::GetFullPath($RunDirectory)
+if(Test-Path -LiteralPath $run){throw 'Use a fresh output directory'}
+New-Item -ItemType Directory -Path $run | Out-Null
+foreach($name in @('cfg','nvram','inp','snap','comments','state','diff')){New-Item -ItemType Directory (Join-Path $run $name) | Out-Null}
+@('dasm sound-native.txt,5c18,495,1','dasm lamp-native.txt,497f,126,1',
+ 'dasm vm-bridges.txt,776f,8c,1','quit') | Set-Content "$run/debugger.cmd"
+$arguments=@('m4addr','-noreadconfig','-rompath',$RomDirectory,'-cfg_directory',"$run/cfg",'-nvram_directory',"$run/nvram",
+ '-input_directory',"$run/inp",'-snapshot_directory',"$run/snap",'-comment_directory',"$run/comments",'-state_directory',"$run/state",'-diff_directory',"$run/diff",
+ '-debug','-debugger','windows','-debugscript',"$run/debugger.cmd",'-debuglog','-video','none','-sound','none','-window','-skip_gameinfo','-nothrottle','-seconds_to_run','2')
+$arguments | ConvertTo-Json | Set-Content "$run/arguments.json"
+Push-Location $run
+try { & $MameExecutable @arguments *> console.txt; if($LASTEXITCODE -ne 0){throw "MAME failed: $LASTEXITCODE"} }
+finally { Pop-Location }
+foreach($name in @('sound-native.txt','lamp-native.txt','vm-bridges.txt')){if(!(Test-Path "$run/$name")){throw "Missing disassembly: $name"}}
+Get-ChildItem $run -File | Get-FileHash | Select-Object Path,Hash | ConvertTo-Json | Set-Content "$run/hashes.json"
+Write-Output $run

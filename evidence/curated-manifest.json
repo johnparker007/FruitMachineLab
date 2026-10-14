@@ -110,6 +110,11 @@
     "sha256": "3118815996390BCE5027780CCED718D3E04EFCF0B70C4563BF79A4575EC905E3"
   },
   {
+    "path": "docs/recovery/SKILL-CASH-SELECTION-SCHEDULER-PASS.md",
+    "bytes": 4195,
+    "sha256": "3F3A81E0E9B910348E9CF7B4369B959E0B970AB46683DD1434F74706DDECC4A9"
+  },
+  {
     "path": "docs/recovery/SPECIAL-FEATURE-RECOVERY.txt",
     "bytes": 4243,
     "sha256": "DAE384645EA4E1886145F25103378F9BBFE49C10958DE236EA9CF69D52BAE066"
@@ -160,6 +165,11 @@
     "sha256": "247D615E7EF37827AAA1B334D2B6D1F1227B974B5D291ACCE1EB44C437B1B609"
   },
   {
+    "path": "evidence/mpu4/maps/skill-cash-selection-data.json",
+    "bytes": 789,
+    "sha256": "5FFE705ED73746500268A3C4983963BB126F4229F8FA253D7E25CA7424DFA2A9"
+  },
+  {
     "path": "evidence/mpu4/maps/vm-batch-pass-arithmetic-helper-validation.json",
     "bytes": 5002,
     "sha256": "DBE157CD4438EB3A1665F631AAB6CC2745EA5E0D146853E864E3DD099981C31C"
@@ -190,9 +200,64 @@
     "sha256": "FC83DEEC806E0833A850A9EAA43417D0EE8E24BA1D84D33307A38E17DE09A7C7"
   },
   {
+    "path": "evidence/mpu4/native/498b.json",
+    "bytes": 513,
+    "sha256": "BDD1263A8A095AF2FC4D8D40DA82F95583C49AC92FC68158CFEF6B520DD692C1"
+  },
+  {
+    "path": "evidence/mpu4/native/49c5.json",
+    "bytes": 2379,
+    "sha256": "7D3A030E3E9A7BDEAB7FFD76BBCFF4AD9FDFA91D7E06BF705E202D290B8D60C0"
+  },
+  {
+    "path": "evidence/mpu4/native/4a83.json",
+    "bytes": 991,
+    "sha256": "F2E3DDD5A089F33BCCC6E1EE10F139C756AF6451932D5D27215641569AB07035"
+  },
+  {
+    "path": "evidence/mpu4/native/4a8c.json",
+    "bytes": 760,
+    "sha256": "18B7154219544001068B63DB69883A4CA82AF7090A59AD7307C26E4696763140"
+  },
+  {
+    "path": "evidence/mpu4/native/4a90.json",
+    "bytes": 762,
+    "sha256": "DBF07882AEDEB47C4BDCCF59D3780B96C97FF20B6A8A8DC6D8023E4F4782ED63"
+  },
+  {
     "path": "evidence/mpu4/native/59bb.json",
     "bytes": 1112,
     "sha256": "ADB939C0FEDFA87DF518592A02DDB1E038697AF86BDFFA7694E32EA7120062EE"
+  },
+  {
+    "path": "evidence/mpu4/native/5b77.json",
+    "bytes": 1169,
+    "sha256": "B5100FCEE921D471C4FFEF565B18D0523537822AF954179D09F3A262A8B3576D"
+  },
+  {
+    "path": "evidence/mpu4/native/5b8f.json",
+    "bytes": 2229,
+    "sha256": "53778BF742428D828F2AD96F83A782174BEBA4A646045C92836DD392FA55F444"
+  },
+  {
+    "path": "evidence/mpu4/native/5c18.json",
+    "bytes": 2484,
+    "sha256": "3176F6E5E1AE555305ABA63C8CD438EECEEF133A17C4D54CCD9EA89A8DE9329B"
+  },
+  {
+    "path": "evidence/mpu4/native/5c51.json",
+    "bytes": 1409,
+    "sha256": "379D9613C9A4996971B760BB7F1C314177DC31620F490DB3AA29EFC62E67EED5"
+  },
+  {
+    "path": "evidence/mpu4/native/5cd0.json",
+    "bytes": 2082,
+    "sha256": "E3119F369E9D294B2CD8C2C022A2A19BB3F26F741C25FA1C3A9EC099A7B92CE5"
+  },
+  {
+    "path": "evidence/mpu4/native/60c8.json",
+    "bytes": 855,
+    "sha256": "5D240EDBF58E8B01DDFD212F0CFF05F459C9968160C92E46EF0EE8B0214F01AB"
   },
   {
     "path": "evidence/mpu4/native/7576.json",
@@ -200,9 +265,19 @@
     "sha256": "24A7EF36AC83F3A62DFC57785A8B0AA397C9BEDA851F54D18717CC45F23819BA"
   },
   {
+    "path": "evidence/mpu4/native/7580.json",
+    "bytes": 788,
+    "sha256": "9BD8E5ABE8B9FD3FD49482B7FDB70F1970344D2D3A60028098EF239063B54608"
+  },
+  {
     "path": "evidence/mpu4/native/7661.json",
     "bytes": 753,
     "sha256": "04EE08D4D07F48D81B8DB6507776E8A07058AD9635DA0BCB992BF0965D40D5D6"
+  },
+  {
+    "path": "evidence/mpu4/native/7673.json",
+    "bytes": 928,
+    "sha256": "0A038944BBCCC271B69C637172C25994B3B96CF61112474C752F5E9089D46A2B"
   },
   {
     "path": "evidence/mpu4/native/7681.json",
@@ -223,6 +298,21 @@
     "path": "evidence/mpu4/native/76ab.json",
     "bytes": 3758,
     "sha256": "E203B25A366C8D5578549038EAC024525D16DA9228C5402A119F75C73C9CCC48"
+  },
+  {
+    "path": "evidence/mpu4/native/7791.json",
+    "bytes": 1771,
+    "sha256": "37768AAD3A143A12093C85884B4F4EDAD505AB273A54AA8A9CB8B6880F2812EB"
+  },
+  {
+    "path": "evidence/mpu4/native/77a8.json",
+    "bytes": 1886,
+    "sha256": "8B6F3B762B6FA8C624B84FE7E4F8BB968C0635D678435D1D11C5FAC35AA002AD"
+  },
+  {
+    "path": "evidence/mpu4/native/77e0.json",
+    "bytes": 1452,
+    "sha256": "FAD914A6033A95B06E7EFE5861606F08ED3F8DEB4680A0CACC70AD3F3C824B76"
   },
   {
     "path": "evidence/mpu4/native/77f8.json",
@@ -285,6 +375,11 @@
     "sha256": "E874438E1E369EAF5257C71A6C38E36AAF52ECA9A2CCAE763DBFBEAF500E40EB"
   },
   {
+    "path": "evidence/mpu4/native/79d8.json",
+    "bytes": 855,
+    "sha256": "B0015DA6917B841F7B942276459E20A96C00189CD385776F39E82B7FA993B857"
+  },
+  {
     "path": "evidence/mpu4/native/79de.json",
     "bytes": 1169,
     "sha256": "11DBF89F307C96E356595F271D3F3B3C05B3D754D5EAA0F96666D0FBCB1A121E"
@@ -318,6 +413,21 @@
     "path": "evidence/mpu4/native/7ade.json",
     "bytes": 1102,
     "sha256": "EA991E551333E7B65DF68667956A5354BC57D1F2EC3928DA4A428108A21E1774"
+  },
+  {
+    "path": "evidence/mpu4/native/7af6.json",
+    "bytes": 727,
+    "sha256": "5B3199061F142731116BAE8798D60D7C576E1E3BFC72442B5C26859747B6B493"
+  },
+  {
+    "path": "evidence/mpu4/native/7afe.json",
+    "bytes": 888,
+    "sha256": "EF760878FED778173C8F523D90751D1348740EDB35C14C1AF59FF39B51B8F423"
+  },
+  {
+    "path": "evidence/mpu4/native/7b06.json",
+    "bytes": 926,
+    "sha256": "229E587C392447449551EFCEB8C64835781D361923E5ABAAD9B46CA0472AA86D"
   },
   {
     "path": "evidence/mpu4/native/7b3f.json",
@@ -368,6 +478,21 @@
     "path": "evidence/mpu4/native/7c7a.json",
     "bytes": 1284,
     "sha256": "08CB4AA447EC0C31E7C360235650C21A22174E61F589BA3AA4A17B44908D7503"
+  },
+  {
+    "path": "evidence/mpu4/native/9afa.json",
+    "bytes": 589,
+    "sha256": "D047051A1F23358F1D15A38A0948D3A209F2610C27F6FCF421D69E579429DBAB"
+  },
+  {
+    "path": "evidence/mpu4/native/sound-native-provenance.json",
+    "bytes": 1949,
+    "sha256": "2090C3F8660CF2AEDE458B6862FCF5BEFB72F4EC0291A901C2946391733B84C6"
+  },
+  {
+    "path": "evidence/mpu4/native/sound-native.txt",
+    "bytes": 16893,
+    "sha256": "232E98F4E17E99F6634B69D59FECD67879D5FCAE1789256F4750B7AD4C01AA07"
   },
   {
     "path": "evidence/mpu4/skill-cash/actions.csv",
@@ -440,9 +565,34 @@
     "sha256": "23099F8888AF8DB353253E0DF97638320DC59CA9A47371723A380E0C4EE85C94"
   },
   {
+    "path": "evidence/mpu4/skill-cash/lamp-calls.json",
+    "bytes": 252936,
+    "sha256": "908B1F040C73B7D8256E4ABE34418D84B4767ACFB2B230D56C40772E95A0E673"
+  },
+  {
     "path": "evidence/mpu4/skill-cash/selection-decisions.json",
     "bytes": 668277,
     "sha256": "2455BA87566867ED95B47B960020643267CFFB64CE632285821EA1C2EE651C20"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/selection-loops.json",
+    "bytes": 95378,
+    "sha256": "D165DD46443AF0691CA2278E1656922B3E3D2BA9DC8AA25E6F272753F553BCA7"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/sound-debugger.cmd",
+    "bytes": 1399,
+    "sha256": "E663959EB595ECB1C29B83033D2403ED12B8A344F8472B5CD1AFC10E75A8E1FE"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/sound-events.json",
+    "bytes": 2210882,
+    "sha256": "E65617148FAC6C34D0CA0B92765412ED503FDB2BCDAE258430E798661A7CF781"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/sound-verification.json",
+    "bytes": 1342,
+    "sha256": "945DB411A310E0E2636CCDB4714FC928D9C03C1DC45AD5BF8D7E15FFA4B004C8"
   },
   {
     "path": "evidence/mpu4/VM-SCRIPTS/7D3A.txt",

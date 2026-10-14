@@ -2,7 +2,7 @@
  <DockPanel Margin="20">
   <StackPanel DockPanel.Dock="Top">
    <TextBlock FontSize="24" Text="Adders &amp; Ladders: Skill Cash" />
-   <TextBlock Margin="0,10" TextWrapping="Wrap" Text="Bounded MAME replay with recovered compensation, RNG, selection decisions and VM control stacks. Choice/timing/peripheral data is recorded; full scheduler, NVRAM and win animation remain incomplete." />
+   <TextBlock Margin="0,10" TextWrapping="Wrap" Text="Complete C699 selection-loop replay with calculated ROM choice-stream timing, compensation, RNG and VM stacks. Platform IRQ/latch timing is recorded; full-feature execution, hardware lamp mapping, audio, NVRAM and win animation remain incomplete." />
    <TextBlock Text="Repository folder" /><TextBox x:Name="RootPath" Margin="0,5" />
    <Button Content="Verify recorded Skill Cash mechanics" Click="Replay" HorizontalAlignment="Left" Padding="12,7" Margin="0,5" />
    <TextBlock x:Name="Status" Margin="0,10" TextWrapping="Wrap" />

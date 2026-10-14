@@ -34,7 +34,9 @@ public sealed class ScriptExecutor(Machine machine)
 {
     public Func<ushort, bool>? InputCondition { get; init; }
     public Action<Instruction, Machine>? BeforeInstruction { get; init; }
+    public Action<Instruction,Machine>? OperationBoundary { get; init; }
     public Func<ushort, RecoveredScript>? ResolveScript { get; init; }
+    public Func<ushort,Instruction>? ResolveWord { get; init; }
     public Func<ushort>? LoopIndex { get; init; }
     // Explicit handlers for recovered words or declared verification boundaries.
     // An unhandled word never becomes an implicit no-op.
@@ -62,6 +64,7 @@ public sealed class ScriptExecutor(Machine machine)
             if (--remaining < 0) throw new InvalidOperationException("VM instruction budget exhausted");
             var i = items[pc++];
             BeforeInstruction?.Invoke(i,machine);
+            OperationBoundary?.Invoke(i,machine);
             ushort Value() => i.Value ?? throw new InvalidDataException($"Missing operand at {i.Site:X4}");
             void Binary(Func<ushort, ushort, ushort> op) { var b = machine.Pop(); var a = machine.Pop(); machine.Data.Push(op(a,b)); }
             VmControlStack Control()=>machine.Control ?? throw new NotSupportedException("Physical VM control-stack context required");
@@ -86,6 +89,7 @@ public sealed class ScriptExecutor(Machine machine)
                 case "vm_store_byte": { var address = machine.Pop(); machine.Memory[address] = (byte)machine.Pop(); break; }
                 case "vm_store_word": { var address = machine.Pop(); machine.WriteWord(address, machine.Pop()); break; }
                 case "vm_clear_byte_memory": machine.Memory[machine.Pop()] = 0; break;
+                case "vm_clear_word_memory_bits": {var mask=machine.Pop();var address=machine.Pop();machine.WriteWord(address,(ushort)(machine.ReadWord(address)&~mask));break;}
                 case "vm_fetch_unsigned_byte": machine.Data.Push(machine.Memory[machine.Pop()]); break;
                 case "vm_fetch_word": machine.Data.Push(machine.ReadWord(machine.Pop())); break;
                 case "vm_fetch_byte_and_following_word": {
@@ -97,6 +101,22 @@ public sealed class ScriptExecutor(Machine machine)
                 case "vm_duplicate_cell": { var v = machine.Pop(); machine.Data.Push(v); machine.Data.Push(v); break; }
                 case "vm_drop_cell": machine.Pop(); break;
                 case "vm_swap_two_cells": { var b=machine.Pop(); var a=machine.Pop(); machine.Data.Push(b); machine.Data.Push(a); break; }
+                case "vm_move_cell_to_return_stack": Control().Push(machine.Pop());break;
+                case "vm_copy_return_stack_cell": machine.Data.Push(machine.ReadWord(Control().Pointer));break;
+                case "vm_move_cell_from_return_stack": machine.Data.Push(Control().Pop());break;
+                case "vm_add_second_cell_to_top": {var top=machine.Pop();machine.Data.Push(Cell.Add(top,machine.Data.Peek()));break;}
+                case "vm_shift_left_one": machine.Data.Push(unchecked((ushort)(machine.Pop()<<1)));break;
+                case "vm_execute_token_from_stack": {
+                    var token=machine.Pop();
+                    var word=(ResolveWord ?? throw new NotSupportedException("Dynamic word resolver required"))(token);
+                    if(word.Body is not { } entry || ResolveScript is null)throw new NotSupportedException($"Untranslated EXECUTE word {token:X4}");
+                    ushort? next=machine.Control is not null ? Continuation() : null;
+                    if(next is { } at)Control().EnterCall(at);
+                    if(word.PushAddress is { } address)machine.Data.Push(address);
+                    Execute(ResolveScript(entry).Instructions,true);
+                    if(next is { } expected && Control().ResumeCursor!=expected)throw new NotSupportedException("Nonlocal dynamic VM continuation");
+                    break;
+                }
                 case "vm_copy_second_cell": { var b=machine.Pop(); var a=machine.Pop(); machine.Data.Push(a); machine.Data.Push(b); machine.Data.Push(a); break; }
                 case "vm_rotate_three_cells": {
                     var c=machine.Pop(); var b=machine.Pop(); var a=machine.Pop(); machine.Data.Push(b); machine.Data.Push(c); machine.Data.Push(a); break;

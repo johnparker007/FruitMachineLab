@@ -17,17 +17,21 @@ public static class SkillCashSelectionVerification
         var capture=JsonSerializer.Deserialize<SelectionCapture>(File.ReadAllText(Path.Combine(evidenceDirectory,"skill-cash","selection-decisions.json")),
             new JsonSerializerOptions{PropertyNameCaseInsensitive=true}) ?? throw new InvalidDataException("Missing selection capture");
         var compensation=SkillCashCompensationVerification.Load(evidenceDirectory);
+        var sound=SkillCashSoundVerification.Verify(evidenceDirectory);
         RecoveredScript Resolve(ushort address)=>new(Path.Combine(evidenceDirectory,"VM-SCRIPTS",address.ToString("X4")+".txt"));
         var accepted=new List<ushort>();
+        int acceptedReads=0;
         foreach(var decision in capture.Iterations)
         {
+            byte computedChoice=sound.ReadChoices[acceptedReads++];
             var e=decision.Entry;
             var m=new Machine { LocalFrame=e["f4"] };SkillCashData.Load(m);
             m.Control=new VmControlStack(m,e["s"]){LoopFrame=e["f6"]};
             m.WriteWord(e["s"],0xC757);m.WriteWord(e["f6"],(ushort)(e["frame"]>>8));
             m.WriteWord(e["f4"],e["frame"]);m.WriteWord(0x324,e["seed"]);m.WriteWord(0x719B,decision.Abort);
             m.WriteWord(0x90,decision.Latch);m.WriteWord(0x2D,decision.Timer);
-            m.Data.Push(e["second"]);m.Data.Push(e["top"]);
+            if(computedChoice!=e["top"])throw new InvalidDataException("Choice stream differs from selection input cell");
+            m.Data.Push(e["second"]);m.Data.Push(computedChoice);
             var executor=new ScriptExecutor(m) {
                 ResolveScript=Resolve,
                 WordHandler=(instruction,state)=> {

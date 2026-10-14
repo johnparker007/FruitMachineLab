@@ -7,6 +7,32 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("NVRAM service gate and unprotected checksum delta", () => {
+    var m=new Machine();m.Memory[0x323]=0x80;m.Memory[0x322]=0x73;m.Memory[0x2C]=0x42;
+    for(int address=0x2F0;address<0x322;address++)m.Memory[address]=(byte)address;
+    var original=(byte[])m.Memory.Clone();Equal(false,Mpu4Nvram.Refresh(m));Equal(true,original.SequenceEqual(m.Memory));
+    m.Memory[0x323]=0;int reads=0;
+    Equal(true,Mpu4Nvram.Refresh(m,address=> {
+        Equal((byte)0x42,m.Memory[0x2C]);reads++;
+        if(address==0x2FA)m.Memory[0x322]=unchecked((byte)(m.Memory[0x322]+7));
+    }));
+    Equal(15,reads);byte sum=0;
+    for(int address=0x2F0;address<0x309;address++) {Equal(unchecked((byte)~m.Memory[address]),m.Memory[address+0x19]);sum=unchecked((byte)(sum-m.Memory[address]));}
+    Equal(unchecked((byte)(sum-0x32+7)),m.Memory[0x322]);Equal((byte)0x42,m.Memory[0x2C]);
+});
+Check("Native NVRAM refresh and award-transfer accounting match MAME", () => {
+    var result=SkillCashAwardVerification.Verify(evidence);
+    Equal(13,result.Refreshes);Equal(10,result.Transfers);Equal((ushort)10,result.CurrentWin);
+    Console.WriteLine($"  {result.Refreshes} refreshes, {result.Transfers} award transfers, {result.Instructions} accounting dispatches checked");
+});
+Check("Static two-unit award transfer preserves odd pending underflow", () => {
+    var m=new Machine();m.WriteWord(0xBA,1);m.WriteWord(0x2FA,65535);
+    m.WriteWord(0x851E,0xFF36);m.WriteWord(0x8522,0xFF3A);
+    m.Memory[0xFF36]=0;m.Memory[0xFF3A]=0xFF;
+    RecoveredScript Resolve(ushort address)=>new(Path.Combine(evidence,"VM-SCRIPTS",address.ToString("X4")+".txt"));
+    new ScriptExecutor(m){ResolveScript=Resolve}.RunRange(Resolve(0xAF93),0xAF9D,0xAFC4);
+    Equal(ushort.MaxValue,m.ReadWord(0xBA));Equal((ushort)1,m.ReadWord(0x2FA));Equal((ushort)1,m.Pop());
+});
 Check("16-bit cells, signed min, Forth flags", () => {
     Equal((ushort)0,Cell.Add(65535,1)); Equal((ushort)65535,Cell.Subtract(0,1));
     Equal((ushort)65534,Cell.Multiply(65535,2)); Equal((ushort)65535,Cell.Min(65535,6));

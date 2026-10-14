@@ -2,7 +2,8 @@ param(
     [Parameter(Mandatory=$true)][string]$MameExecutable,
     [Parameter(Mandatory=$true)][string]$RomDirectory,
     [Parameter(Mandatory=$true)][string]$RunDirectory,
-    [switch]$NativeSound
+    [switch]$NativeSound,
+    [switch]$NativeNvram
 )
 $ErrorActionPreference='Stop'
 $root=Split-Path $PSScriptRoot -Parent
@@ -25,6 +26,18 @@ if($NativeSound) {
   'wpset 0x4f,1,w,temp0==1,{printf "WC pc=%04X cursor=%04X task=%04X clock=%04X old=%02X value=%02X\n",pc,u,y,w@0x45,b@0x4f,wpdata;go}',
   'bpset 0x5b77,temp0==1,{printf "SR clock=%04X choice=%02X rate=%02X\n",w@0x45,b@0x4f,b@0x4e;go}'
  )
+}
+if($NativeNvram) {
+ $stateFormat=''
+ $stateValues=''
+ foreach($address in 0x2F0..0x308) {$stateFormat+=' source'+$address.ToString('X4')+'=%02X';$stateValues+=',b@0x'+$address.ToString('X4')}
+ foreach($address in 0x309..0x321) {$stateFormat+=' copy'+$address.ToString('X4')+'=%02X';$stateValues+=',b@0x'+$address.ToString('X4')}
+ $nvFormat=' mode=%02X guard=%02X checksum=%02X u=%04X s=%04X pending=%04X win=%04X'+$stateFormat+'\n'
+ $nvValues='b@0x323,b@0x2c,b@0x322,u,s,w@0xba,w@0x2fa'+$stateValues
+ $extra+=@(('bpset 0x6e06,temp0==1,{printf "NI'+$nvFormat+'",'+$nvValues+';go}'),
+ ('bpset 0x6e68,temp0==1,{printf "NO'+$nvFormat+'",'+$nvValues+';go}'))
+}
+if($extra.Count -gt 0) {
  # Debugger setup invokes paused frame callbacks. Ignore precisely the added
  # setup callbacks in this copied observer, preserving the original physical times.
  $lua=[System.IO.File]::ReadAllText("$run/input.lua")
@@ -51,7 +64,7 @@ $arguments=@('m4addr','-noreadconfig','-rompath',$RomDirectory,
  '-window','-skip_gameinfo','-nothrottle','-seconds_to_run','2402','-autoboot_delay','0','-autoboot_script',"$run/input.lua")
 $arguments | ConvertTo-Json | Set-Content "$run/arguments.json"
 @{mame_sha256=(Get-FileHash -LiteralPath $MameExecutable).Hash;replay_sha256=(Get-FileHash "$run/replay-actions.csv").Hash;
- native_sound_capture=[bool]$NativeSound;paused_setup_callbacks_skipped=$extra.Count;
+ native_sound_capture=[bool]$NativeSound;native_nvram_capture=[bool]$NativeNvram;paused_setup_callbacks_skipped=$extra.Count;
  initial_state='Fresh isolated default configuration and absent NVRAM; physical-input fixture only; no RAM/ROM injection.'} |
  ConvertTo-Json | Set-Content "$run/provenance.json"
 $previousReplay=$env:MPU4_REPLAY

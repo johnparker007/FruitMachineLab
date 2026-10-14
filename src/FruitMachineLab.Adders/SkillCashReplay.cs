@@ -80,6 +80,9 @@ public static class SkillCashReplay
         events.Add(new(0x4A8C,"Decoded lamp requests",(ushort)loops.LampRequests,"Native request IDs/patterns decoded; hardware characteriser and frame-RAM effects remain unverified"));
         var sound=SkillCashSoundVerification.Verify(evidenceDirectory);
         events.Add(new(0x5D3B,"Sound-stream commands verified",(ushort)sound.Commands,"ROM 8EE4 choice/timing subset matches native opcode, delay, and choice-write observations; audio synthesis is not implemented"));
+        var award=SkillCashAwardVerification.Verify(evidenceDirectory);
+        events.Add(new(0x6E06,"NVRAM refreshes verified",(ushort)award.Refreshes,"Complement bytes and checksum match 13 recorded native calls; interleaved checksum-delta behaviour has synthetic coverage"));
+        events.Add(new(0xAFBE,"Current win verified",award.CurrentWin,"Ten recovered accounting slices transfer pending 10 into current win; display, sound and animation timing remain outside this execution"));
         return new(machine.Memory[frameAddresses[0]],machine.ReadWord(0x00BA),events);
     }
 }

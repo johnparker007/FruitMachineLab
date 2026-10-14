@@ -1,0 +1,12 @@
+{
+  "rom_sha1": "402d1518bb78fdc489b06c2aabc771e5ce151847",
+  "classification": "Static ROM bytes supporting AF93 indirect predicates; alternative-byte tests are synthetic",
+  "words": {
+    "851E": "FF36",
+    "8522": "FF3A"
+  },
+  "bytes": {
+    "FF36": 255,
+    "FF3A": 255
+  }
+}

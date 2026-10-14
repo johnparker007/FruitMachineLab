@@ -21,7 +21,7 @@ It deliberately needs no NuGet test framework installation. Run from repository 
 or pass the absolute repository path to verification. The Windows viewer accepts that
 path separately. No SDK pin or machine configuration is changed.
 
-Latest local verification: both solutions build without warnings or errors; 29
+Latest local verification: both solutions build without warnings or errors; 32
 verification groups pass. Complete C699 selection calls match 65,298 recorded VM
 dispatches and produce choices 3, 2 and 1. A native sound timing/choice subset
 predicts all 1,202 choice reads; decoded lamp requests remain separate from hardware frames.
@@ -35,3 +35,5 @@ The subsequent [compensation/control recovery report](docs/recovery/SKILL-CASH-C
 records removal of the observed chance-helper boundary and the current remaining work.
 The [selection/scheduler report](docs/recovery/SKILL-CASH-SELECTION-SCHEDULER-PASS.md)
 records complete selection-loop coverage and the captured timing boundaries.
+The [award/NVRAM report](docs/recovery/SKILL-CASH-AWARD-NVRAM-PASS.md) records
+13 native refreshes and ten calculated transfers to current win 10.

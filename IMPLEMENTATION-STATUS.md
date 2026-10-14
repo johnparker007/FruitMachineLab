@@ -36,7 +36,10 @@ fails with an explicit request for additional evidence.
 Complete C699 calls now match 65,298 dispatches, with calculated sound-stream choice
 bytes and decoded logical lamp requests. Captured IRQ/latch/scheduler timing remains
 an external replay input. Full C721 orchestration, enabled option override C646,
-hardware lamp/audio effects, NVRAM refresh 6E06 and award animation AF93 remain.
+hardware lamp/audio effects and full award animation AF93 remain. Native NVRAM
+refresh 6E06 matches 13 recorded calls; ten AF93 accounting slices calculate current
+win 10, matching 280 dispatches. Display/sound/wait orchestration remains outside
+those slices. See [the award/NVRAM pass](docs/recovery/SKILL-CASH-AWARD-NVRAM-PASS.md).
 Native RNG and percentage arithmetic now execute and match three focused MAME calls.
 C66A/C617/A110/A0E1 now execute from recorded RAM/peripheral/IRQ inputs, with all 240
 nested dispatches checked. C676 no longer injects a chance-helper result. Physical
@@ -44,7 +47,8 @@ local/loop/nested-return frames match the 29-instruction feature prefix and nest
 Selection blocks calculate all 1,202 decisions and accepted choices from platform inputs.
 Nonzero compensation and full-feature frame cleanup have static tests only.
 The current replay does not run C721 end to end and does not validate final bank,
-current-win, physical payout or UI animation. Unsupported interpreter operations throw.
+physical payout or UI animation. Current-win accounting has bounded verification,
+not full-feature execution. Unsupported interpreter operations throw.
 No synthetic selection/timer semantics are presented as ROM behaviour.
 
 The focused replay has now been captured, and state.csv, feature-state.csv,

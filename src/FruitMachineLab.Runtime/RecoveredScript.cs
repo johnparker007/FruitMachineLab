@@ -82,12 +82,15 @@ public sealed class ScriptExecutor(Machine machine)
                 case "vm_push_local_frame_address": machine.Data.Push(Cell.Add(machine.LocalFrame, Value())); break;
                 case "vm_push_zero": machine.Data.Push(0); break;
                 case "vm_push_two": machine.Data.Push(2); break;
+                case "vm_push_one": machine.Data.Push(1); break;
+                case "vm_push_true_minus_one": machine.Data.Push(ushort.MaxValue); break;
                 case "vm_push_loop_index": machine.Data.Push(machine.Control?.LoopIndex ?? (LoopIndex ?? throw new NotSupportedException("Loop context required"))()); break;
                 case "vm_allocate_local_frame": Control().AllocateLocalFrame(machine.Pop());break;
                 case "vm_enter_loop_frame": { var start=machine.Pop();var limit=machine.Pop();Control().EnterLoop(start,limit,Continuation());break; }
                 case "vm_loop_increment_one": if(Control().IncrementLoop() is { } target)Jump(target);break;
                 case "vm_store_byte": { var address = machine.Pop(); machine.Memory[address] = (byte)machine.Pop(); break; }
                 case "vm_store_word": { var address = machine.Pop(); machine.WriteWord(address, machine.Pop()); break; }
+                case "vm_add_to_word_memory": { var address=machine.Pop();machine.WriteWord(address,Cell.Add(machine.ReadWord(address),machine.Pop()));break; }
                 case "vm_clear_byte_memory": machine.Memory[machine.Pop()] = 0; break;
                 case "vm_clear_word_memory_bits": {var mask=machine.Pop();var address=machine.Pop();machine.WriteWord(address,(ushort)(machine.ReadWord(address)&~mask));break;}
                 case "vm_fetch_unsigned_byte": machine.Data.Push(machine.Memory[machine.Pop()]); break;
@@ -142,6 +145,9 @@ public sealed class ScriptExecutor(Machine machine)
                     machine.Data.Push((ushort)quotient);machine.Data.Push((ushort)(quotient>>16));break;
                 }
                 case "vm_increment_word": machine.Data.Push(Cell.Add(machine.Pop(),1));break;
+                case "vm_decrement_word": machine.Data.Push(Cell.Subtract(machine.Pop(),1));break;
+                case "vm_negate_cell": machine.Data.Push(Cell.Subtract(0,machine.Pop()));break;
+                case "vm_test_zero": machine.Data.Push(Cell.Flag(machine.Pop()==0));break;
                 case "vm_arithmetic_shift_right_one": machine.Data.Push(unchecked((ushort)((short)machine.Pop()>>1)));break;
                 case "vm_subtract_top_from_second": Binary(Cell.Subtract); break;
                 case "vm_min_signed": Binary(Cell.Min); break;
@@ -158,6 +164,7 @@ public sealed class ScriptExecutor(Machine machine)
                     var mask=machine.Pop(); var address=machine.Pop(); machine.Data.Push(Cell.Flag((machine.ReadWord(address)&mask)!=0)); break;
                 }
                 case "call_advance_random_seed": Mpu4Random.AdvanceSeed(machine); break;
+                case "call_nvram_refresh_complement_checksum_if_game": Mpu4Nvram.Refresh(machine);break;
                 case "vm_test_input_condition": machine.Data.Push(Cell.Flag((InputCondition ?? throw new NotSupportedException("Input condition provider required"))(Value()))); break;
                 case "vm_branch_forward8_if_zero":
                 case "vm_branch_backward8_if_zero":
@@ -167,6 +174,8 @@ public sealed class ScriptExecutor(Machine machine)
                         if (pc < 0) throw new InvalidDataException("Branch target absent from listing");
                     }
                     break;
+                case "vm_branch_unsigned_forward8":
+                case "vm_branch_backward8": Jump(i.Branch ?? throw new InvalidDataException("Missing branch target"));break;
                 case "vm_return_to_caller_stream": machine.Control?.Return();return;
                 case "vm_return_if_nonzero": if(machine.Pop()!=0) { machine.Control?.Return();return; }break;
                 default:

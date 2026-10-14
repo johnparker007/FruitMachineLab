@@ -20,28 +20,33 @@
 
 The recorded helper returns are 3, 2 and 1. The reconstructed stage calculation uses
 timer values 25, 20 and 15 and signed minimum to reduce level 6 to 1. The recorded
-table-read address is 75BE and value is 10; normalization leaves 10; pending BA is
+table-read address is 75BE. The recovered ROM table now supplies 10, checked against
+that recorded read; normalization leaves 10; pending BA is
 stored as big-endian 000A. Intermediate stack observations independently check
 previous levels and computed addresses. The trace-derived selections and table value
-are external observations, not C# predictions. The input-condition branch in 9F6A
+are external observations, not C# predictions. The award-table read is now a C#
+prediction from curated ROM data. The input-condition branch in 9F6A
 is not captured by this debugger range; both condition outcomes are evaluated and
 must yield the same result. For award 10 both yield 10. An input-dependent outcome
 fails with an explicit request for additional evidence.
 
 ## Remaining before the first complete executable milestone
 
-The selection loop C699, option/random gates C646/C676, chance lookup C617,
+The selection loop C699, enabled option override C646, chance lookup C617,
 frame/loop stack allocation and return semantics, interrupts/timer scheduler,
 lamp/sound streams, NVRAM refresh 6E06 and award animation AF93 remain untranslated.
+Native RNG and percentage arithmetic now execute and match three focused MAME calls.
+C676 terminal gating matches 1,202 calls with an explicit observed chance boundary;
+its compensation/chance dependency C66A is not yet independently implemented.
 The current replay does not run C721 end to end and does not validate final bank,
 current-win, physical payout or UI animation. Unsupported interpreter operations throw.
 No synthetic selection/timer semantics are presented as ROM behaviour.
 
-Next: capture a focused Skill Cash replay with complete dispatch, U/S/F4/F6,
-local-frame bytes, condition results, RNG state and pending/current-win writes. Use
-the existing approved MAME tooling with isolated run directories after reviewing
-its launch procedure. Recover helpers from assembly and validate each boundary
-before replacing observed helper returns with executing implementations.
+The focused replay has now been captured, and state.csv, feature-state.csv,
+input-levels.csv and final RAM match the original campaign exactly. The expanded
+report is [SKILL-CASH-RUNTIME-PASS.md](docs/recovery/SKILL-CASH-RUNTIME-PASS.md).
+Next: recover the compensation calculation and frame/selection scheduling before
+replacing more observed boundaries with independently executing helpers.
 
 ## Provenance
 

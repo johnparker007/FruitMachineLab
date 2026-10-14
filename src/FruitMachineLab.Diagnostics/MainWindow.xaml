@@ -2,7 +2,7 @@
  <DockPanel Margin="20">
   <StackPanel DockPanel.Dock="Top">
    <TextBlock FontSize="24" Text="Adders &amp; Ladders: Skill Cash" />
-   <TextBlock Margin="0,10" TextWrapping="Wrap" Text="Bounded MAME replay. Selection results and award-table data come from the recorded path. Timing, random gates, NVRAM and win animation are not yet implemented." />
+   <TextBlock Margin="0,10" TextWrapping="Wrap" Text="Bounded MAME replay with recovered ROM award data, RNG and percentage helpers, and selection-gate verification. Selection timing, compensation, NVRAM and win animation remain incomplete." />
    <TextBlock Text="Repository folder" /><TextBox x:Name="RootPath" Margin="0,5" />
    <Button Content="Verify recorded Skill Cash mechanics" Click="Replay" HorizontalAlignment="Left" Padding="12,7" Margin="0,5" />
    <TextBlock x:Name="Status" Margin="0,10" TextWrapping="Wrap" />

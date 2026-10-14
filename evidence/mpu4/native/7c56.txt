@@ -1,0 +1,26 @@
+Static manual decoding of unchanged a6ls.p1 bytes 7C56..7C77, 14 October 2026.
+ROM SHA1: 402d1518bb78fdc489b06c2aabc771e5ce151847.
+Not original source. Full path validation is recorded separately.
+
+7C56 LDX 4,U
+7C58 LDA #$10
+7C5A STA 4,U
+7C5C LDD 2,U
+7C5E STX 2,U
+7C60 ASL 3,U
+7C62 ROL 2,U
+7C64 ASLB
+7C65 ROLA
+7C66 BCS $7C6D
+7C68 CMPD ,U
+7C6B BCS $7C71
+7C6D SUBD ,U
+7C6F INC 3,U
+7C71 DEC 4,U
+7C73 BNE $7C60
+7C75 STD 4,U
+7C77 RTS
+
+Input cells from U: divisor, numerator high, numerator low.
+Output cells from U: divisor, quotient, remainder.
+7C00 removes divisor, leaving quotient on top and remainder second.

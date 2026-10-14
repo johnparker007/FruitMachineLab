@@ -8,7 +8,7 @@ public record Dispatch(ushort Site, ushort Token, ushort Stack, ushort Top, usho
 public record SkillCashResult(byte Level, ushort PendingAward, IReadOnlyList<DiagnosticEvent> Events);
 
 // A bounded replay of the recovered feature mechanics, not a free-running game.
-// Selection results and the ROM table read are supplied by MAME observations.
+// Selection results are supplied by MAME observations; award data is recovered ROM data.
 public static class SkillCashReplay
 {
     public static IReadOnlyList<Dispatch> ReadTrace(string path) => File.ReadLines(path).Select(line =>
@@ -25,6 +25,7 @@ public static class SkillCashReplay
         var frameAddresses=trace.Where(x=>x.Site==0xC759).Select(x=>x.Top).Distinct().ToArray();
         if(frameAddresses.Length!=1) throw new InvalidDataException("Local-frame address changed within feature");
         var machine = new Machine { LocalFrame = Cell.Subtract(frameAddresses[0],1) };
+        SkillCashData.Load(machine);
         var events = new List<DiagnosticEvent>();
         string Listing(string name) => Path.Combine(evidenceDirectory,"VM-SCRIPTS",name + ".txt");
         new ScriptExecutor(machine).Run(new RecoveredScript(Listing("C637")));
@@ -45,8 +46,10 @@ public static class SkillCashReplay
         }
         var lookup = trace.Single(x => x.Site == 0xC706);
         new ScriptExecutor(machine).RunRange(new RecoveredScript(Listing("C6FC")),0xC6FE,0xC704);
-        if (lookup.Top != machine.Pop()) throw new InvalidDataException("Award-table address mismatch");
-        var amount = trace.Single(x => x.Site == 0xC708).Top;
+        if (lookup.Top != machine.Data.Peek()) throw new InvalidDataException("Award-table address mismatch");
+        new ScriptExecutor(machine).RunRange(new RecoveredScript(Listing("C6FC")),0xC706,0xC706);
+        var amount=machine.Pop();
+        if(amount!=trace.Single(x => x.Site == 0xC708).Top) throw new InvalidDataException("ROM table amount differs from recorded read");
         // This debugger excludes 9F6A: preserve the unknown condition by evaluating both
         // possibilities. A replay needing that missing evidence fails instead of guessing.
         ushort Normalize(bool condition) {
@@ -63,7 +66,11 @@ public static class SkillCashReplay
             if(instruction.Token!=reference.Token || state.Data.Peek()!=reference.Top)
                 throw new InvalidDataException($"Pending store stack mismatch at {instruction.Site:X4}");
         }}.RunRange(new RecoveredScript(Listing("C6FC")),0xC70A,0xC70E);
-        events.Add(new(0xC70E,"Pending award",machine.ReadWord(0x00BA),"Translated big-endian word store; table amount supplied by trace"));
+        events.Add(new(0xC70E,"Pending award",machine.ReadWord(0x00BA),"Recovered ROM-table lookup and big-endian word store, compared with MAME"));
+        var helpers=SkillCashHelperVerification.Verify(evidenceDirectory);
+        events.Add(new(0x99D8,"RNG calls verified",(ushort)helpers.RandomCalls,"Native seed update and recovered random-word script compared with focused MAME capture"));
+        events.Add(new(0x9A00,"Percentage calls verified",(ushort)helpers.PercentageCalls,"Native division and strict unsigned comparison compared with MAME"));
+        events.Add(new(0xC676,"Selection gates verified",(ushort)helpers.GateCalls,"Recovered terminal-choice gating; three compensation/chance helper returns remain observed boundaries"));
         return new(machine.Memory[frameAddresses[0]],machine.ReadWord(0x00BA),events);
     }
 }

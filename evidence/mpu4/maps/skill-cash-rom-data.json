@@ -1,0 +1,11 @@
+{
+  "rom_sha1": "402d1518bb78fdc489b06c2aabc771e5ce151847",
+  "classification": "Static deduction: bytes read from unchanged local ROM; path-specific reads validated separately",
+  "tables": {
+    "75BD": {"name":"Skill Cash level-to-award", "bytes":[0,10,16,20,22,47,60]},
+    "C60C": {"name":"Compensation-indexed chance", "bytes":[0,10,20,40,60,70,80,90,99]},
+    "84E2": {"name":"Option mask and address", "words":[512,29087]},
+    "84DC": {"name":"Abort mask and address", "words":[32768,29083]},
+    "8468": {"name":"Start latch mask and address", "words":[128,144]}
+  }
+}

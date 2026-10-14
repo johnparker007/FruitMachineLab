@@ -96,3 +96,10 @@ Fifty-seven verification groups pass. Actual timer latch writes and IRQ entry no
 have an independent capture, checked against the shared callback timeline. See
 recovery/SKILL-CASH-TIMER-DEADLINE-PASS.md for the bounded countdown calculation and
 unresolved CPU acceptance latency. Build/run commands and dependencies are unchanged.
+
+## Visual playback follow-up
+
+The diagnostics app now opens on a playback tab. Load & play Skill Cash verifies
+and plays the 12.209-second recorded path at 1×, with lamps, alpha and transport
+controls. 61 headless groups and an opt-in WPF smoke/render check pass. See
+recovery/SKILL-CASH-PLAYBACK-PASS.md for renderer boundaries and smoke instructions.

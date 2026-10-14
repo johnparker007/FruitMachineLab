@@ -1,13 +1,41 @@
-<Window x:Class="FruitMachineLab.Diagnostics.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="FruitMachineLab — Skill Cash diagnostics" Width="1000" Height="650">
+<Window x:Class="FruitMachineLab.Diagnostics.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="FruitMachineLab — Skill Cash diagnostics" Width="1100" Height="850" MinWidth="800" MinHeight="650">
  <DockPanel Margin="20">
   <StackPanel DockPanel.Dock="Top">
    <TextBlock FontSize="24" Text="Adders &amp; Ladders: Skill Cash" />
-   <TextBlock Margin="0,10" TextWrapping="Wrap" Text="Continuous C721 feature replay with recorded IRQ/latch timing and input ports. Selection, accounting, NVRAM, alpha software state, lamp frame memory, IRQ scan latches and sound timing are verified against MAME. Electrical timing and audio synthesis remain incomplete." />
+   <TextBlock Margin="0,10" TextWrapping="Wrap" Text="Watch the recovered Skill Cash feature on its verified recorded path. Playback uses captured machine timing and inputs; audio and interactive play remain under development." />
    <TextBlock Text="Repository folder" /><TextBox x:Name="RootPath" Margin="0,5" />
-   <Button Content="Verify continuous Skill Cash replay" Click="Replay" HorizontalAlignment="Left" Padding="12,7" Margin="0,5" />
+   <Button x:Name="LoadReplay" Content="Load &amp; play Skill Cash" Click="Replay" HorizontalAlignment="Left" Padding="12,7" Margin="0,5" />
    <TextBlock x:Name="Status" Margin="0,10" TextWrapping="Wrap" />
   </StackPanel>
-  <TabControl>
+  <TabControl x:Name="Views">
+   <TabItem Header="Skill Cash playback">
+    <DockPanel Margin="12">
+     <StackPanel DockPanel.Dock="Top">
+      <StackPanel Orientation="Horizontal">
+       <Button x:Name="PlayButton" Content="Play" Click="PlayPlayback" IsEnabled="False" Padding="16,6" />
+       <Button x:Name="PauseButton" Content="Pause" Click="PausePlayback" IsEnabled="False" Padding="16,6" Margin="8,0" />
+       <Button x:Name="RestartButton" Content="Restart" Click="RestartPlayback" IsEnabled="False" Padding="16,6" />
+       <TextBlock Text="Speed" VerticalAlignment="Center" Margin="18,0,8,0" />
+       <ComboBox x:Name="PlaybackSpeed" SelectedIndex="2" SelectionChanged="SpeedChanged" Width="85">
+        <ComboBoxItem Content="0.25×" Tag="0.25" /><ComboBoxItem Content="0.5×" Tag="0.5" /><ComboBoxItem Content="1×" Tag="1" /><ComboBoxItem Content="2×" Tag="2" /><ComboBoxItem Content="4×" Tag="4" />
+       </ComboBox>
+       <TextBlock x:Name="PlaybackTime" Text="Load the feature to begin" VerticalAlignment="Center" Margin="18,0,0,0" />
+      </StackPanel>
+      <Slider x:Name="PlaybackPosition" Minimum="0" Maximum="1" ValueChanged="SeekPlayback" IsEnabled="False" Margin="0,12" IsMoveToPointEnabled="True" />
+     </StackPanel>
+     <ScrollViewer VerticalScrollBarVisibility="Auto">
+      <StackPanel>
+      <TextBlock x:Name="LiveAlpha" Text="                " FontFamily="Consolas" FontSize="32" Background="#14221A" Foreground="#BCF6C9" Padding="12" />
+      <TextBlock x:Name="LiveAccounting" Margin="0,8" Text="Recorded input path • no player input required" />
+      <TextBlock Text="Skill Cash award strip — diagnostic arrangement" FontWeight="SemiBold" />
+      <UniformGrid x:Name="FeatureLamps" Columns="8" Margin="0,8" />
+      <TextBlock Margin="0,0,0,8" TextWrapping="Wrap" Text="Lamps show verified scan/callback output through 20 ms of display persistence. Captions come from the recovered MAME mapping; numbered tiles below are a diagnostic layout, not cabinet artwork. ? means the caption is unresolved." />
+       <TextBlock Text="All 128 mapped lamps (MAME number / ROM command)" FontWeight="SemiBold" Margin="0,4" />
+       <UniformGrid x:Name="AllLamps" Columns="8" />
+      </StackPanel>
+     </ScrollViewer>
+    </DockPanel>
+   </TabItem>
    <TabItem Header="Verification">
     <DataGrid x:Name="Events" IsReadOnly="True" AutoGenerateColumns="True" />
    </TabItem>

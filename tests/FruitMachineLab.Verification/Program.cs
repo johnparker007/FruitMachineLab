@@ -7,6 +7,35 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Verified playback exposes timed lamps, alpha and mapped captions", () => {
+    var replay=SkillCashPlayback.Load(evidence);Equal(12207,replay.Output.LampFrameCount);Equal(45,replay.Output.AlphaFrameCount);Equal(128,replay.Lamps.Count);
+    Equal("SKILL CASH",replay.Lamps[83].Caption);Equal((byte)0x6F,replay.Lamps[47].LogicalId);
+    var end=replay.Output.Sample(replay.Output.DurationCycles);Equal((ushort)10,end.CurrentWin);Equal((ushort)0,end.Pending);
+    Equal(true,replay.Output.DurationSeconds>10);Equal(true,replay.Output.DurationSeconds<30);
+    Equal(true,Enumerable.Range(1,100).Select(n=>replay.Output.Sample(replay.Output.DurationCycles*(ulong)n/100).LampDuty[47]).Any(x=>x>0));
+    Console.WriteLine($"  {replay.Output.DurationSeconds:0.000} s at 1×, {replay.Output.LampFrameCount} lamp latch frames, {replay.Output.AlphaFrameCount} alpha states");
+});
+Check("Lamp persistence integrates multiplexing and callback masking without seek history", () => {
+    var replay=new OutputPlayback(100,new[]{new LampLatchFrame(0,0,1,2),new LampLatchFrame(10,1,1,0),new LampLatchFrame(20,1,0,0)},new[]{new AlphaPlaybackFrame(0,"initial",0,0),new AlphaPlaybackFrame(20,"award",0,10)});
+    var sample=replay.Sample(30,30);Equal(1.0/3,sample.LampDuty[0]);Equal(1.0/3,sample.LampDuty[65]);Equal(1.0/3,sample.LampDuty[8]);Equal("award",sample.Alpha);
+    Equal(0.0,replay.Sample(60,30).LampDuty.Sum());Equal("initial",replay.Sample(10).Alpha);
+    Equal(sample.LampDuty[8],replay.Sample(30,30).LampDuty[8]);
+});
+Check("Playback transport pauses, changes speed, clamps end and restarts", () => {
+    var transport=new PlaybackTransport(10);transport.Play();transport.Advance(TimeSpan.FromSeconds(2));Equal(2.0,transport.PositionSeconds);
+    transport.Pause();transport.Advance(TimeSpan.FromSeconds(3));Equal(2.0,transport.PositionSeconds);
+    transport.Speed=2;transport.Play();transport.Advance(TimeSpan.FromSeconds(3));Equal(8.0,transport.PositionSeconds);
+    transport.Advance(TimeSpan.FromSeconds(2));Equal(10.0,transport.PositionSeconds);Equal(false,transport.IsPlaying);
+    transport.Play();Equal(0.0,transport.PositionSeconds);transport.Seek(5);Equal(5.0,transport.PositionSeconds);
+});
+Check("Playback rejects missing initial outputs, reversed timestamps and invalid speed", () => {
+    int rejected=0;
+    foreach(var frames in new[]{new[]{new LampLatchFrame(1,0,0,0)},new[]{new LampLatchFrame(0,0,0,0),new LampLatchFrame(5,0,0,0),new LampLatchFrame(4,0,0,0)},new[]{new LampLatchFrame(0,8,0,0)}}) {
+        try{_ = new OutputPlayback(10,frames,new[]{new AlphaPlaybackFrame(0,"",0,0)});}catch(InvalidDataException){rejected++;}
+    }
+    var transport=new PlaybackTransport(10);try{transport.Speed=double.NaN;}catch(ArgumentOutOfRangeException){rejected++;}
+    Equal(4,rejected);
+});
 Check("Timer-3 reference deadline separates initial output phase and IRQ expiry", () => {
     var low=Mpu4Timer3Deadline.Calculate(100,40,false);Equal(108UL,low.FirstEdge);Equal(428UL,low.Interrupt);
     var high=Mpu4Timer3Deadline.Calculate(100,40,true);Equal(420UL,high.FirstEdge);Equal(420UL,high.Interrupt);

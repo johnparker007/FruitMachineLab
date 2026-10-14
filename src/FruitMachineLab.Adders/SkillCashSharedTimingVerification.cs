@@ -11,7 +11,7 @@ public record SharedTimingCapture([property:JsonPropertyName("initial_cycle")] u
     [property:JsonPropertyName("initial_timer_outstanding")] bool InitialTimerOutstanding,ulong[][] Events,
     [property:JsonPropertyName("expected_vm_sha256")] string ExpectedVmSha256);
 public record SharedOutputFrame(int Sequence,ulong CycleOffset,string Kind,byte Phase,ushort Column,string Ports);
-public record SharedTimingVerification(int Instructions,int LampWrites,int Scans,int Arms,int Callbacks,IReadOnlyList<SharedOutputFrame> Outputs);
+public record SharedTimingVerification(int Instructions,int LampWrites,int Scans,int Arms,int Callbacks,IReadOnlyList<SharedOutputFrame> Outputs,FeatureReplayResult Feature);
 
 public static class SkillCashSharedTimingVerification
 {
@@ -88,6 +88,6 @@ public static class SkillCashSharedTimingVerification
         if(timeline.Remaining!=0 || callbackOpen || requests.Count!=0 || active is not null || arms.Count!=0 || result.Instructions!=capture.VmCycleDeltas.Length || writes!=4*result.LampRequests ||
             Convert.ToHexString(vmHash.GetHashAndReset())!=capture.ExpectedVmSha256)
             throw new InvalidDataException("Incomplete shared timing replay");
-        return new(result.Instructions,writes,scans,armCount,callbacks,outputs);
+        return new(result.Instructions,writes,scans,armCount,callbacks,outputs,result);
     }
 }

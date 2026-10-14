@@ -100,6 +100,12 @@ deadlines, general scheduling and electrical effects are still unresolved.
 
 ## Provenance
 
+The [visual playback slice](docs/recovery/SKILL-CASH-PLAYBACK-PASS.md) presents the
+verified headless output in diagnostics at recorded real-time speed, with mapped
+lamps, alpha shadow, pause/restart/seek and speed controls. The path lasts 12.209 s.
+61 verification groups and the WPF playback/render smoke check pass. Persistence
+and native-boundary alpha/lamp presentation are qualified in the report.
+
 The [timer deadline investigation](docs/recovery/SKILL-CASH-TIMER-DEADLINE-PASS.md)
 adds 6,103 effective latch writes and independent IRQ/callback timestamps. A bounded
 source-backed countdown is consistent with the trace; CPU acceptance latency and

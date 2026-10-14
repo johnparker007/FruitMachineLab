@@ -22,7 +22,13 @@ It deliberately needs no NuGet test framework installation. Run from repository 
 or pass the absolute repository path to verification. The Windows viewer accepts that
 path separately. No SDK pin or machine configuration is changed.
 
-Latest local verification: both solutions build without warnings or errors; 53
+The diagnostics app now has a **Skill Cash playback** tab. Click **Load & play
+Skill Cash** to watch the recovered feature with labelled lamps and alpha output.
+The recorded path lasts 12.209 seconds at 1×; pause, restart, seek and speed controls
+are available. The layout is diagnostic; interactive play and audio remain future
+work. See [playback evidence and boundaries](docs/recovery/SKILL-CASH-PLAYBACK-PASS.md).
+
+Latest local verification: both solutions build without warnings or errors; 61
 verification groups pass. Continuous C721 execution matches 98,704 VM dispatches,
 selects 3, 2 and 1, and finishes with pending 0/current win 10. All 7,298 lamp frame
 updates and the complete sound timing protocol match recorded native observations.
@@ -31,7 +37,8 @@ IRQ adapter matches 6,103 scan and pulse-width calls. The viewer includes alpha
 and scan timelines. Electrical timing remains outside these models.
 The shared captured-cycle replay now connects 29,192 predicted lamp writes to
 6,103 IRQ scans and timer callbacks on one memory image.
-The initial WPF viewer was tested by John; its expanded output has build verification.
+The playback controls and full real-time run have an automated WPF smoke check;
+rendered layouts were inspected at normal and minimum window sizes.
 
 A focused MAME capture matches the original campaign's sampled state, feature state,
 input levels and final RAM byte-for-byte. See the

@@ -89,3 +89,10 @@ Fifty-three headless verification groups pass. The IRQ view now includes timer
 callback masking after scans, driven by captured CPU-cycle offsets. See
 recovery/SKILL-CASH-SHARED-TIMING-PASS.md for the shared-memory proof and remaining
 elapsed timer/CPU scheduling work. Existing build/run commands remain unchanged.
+
+## Timer deadline follow-up
+
+Fifty-seven verification groups pass. Actual timer latch writes and IRQ entry now
+have an independent capture, checked against the shared callback timeline. See
+recovery/SKILL-CASH-TIMER-DEADLINE-PASS.md for the bounded countdown calculation and
+unresolved CPU acceptance latency. Build/run commands and dependencies are unchanged.

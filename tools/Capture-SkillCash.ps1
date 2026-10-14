@@ -9,7 +9,8 @@ param(
     [switch]$NativeLampFrames,
     [switch]$NativeAlpha,
     [switch]$NativeScan,
-    [switch]$SharedTiming
+    [switch]$SharedTiming,
+    [switch]$TimerDeadlines
 )
 $ErrorActionPreference='Stop'
 $root=Split-Path $PSScriptRoot -Parent
@@ -88,6 +89,13 @@ if($SharedTiming) {
  'bpset 0x4916,temp0==1,{printf "MD cycle=%016X column=%04X ports=%02X%02X%02X\n",totalcycles,w@0x28,b@0xa00,b@0xa02,b@0xb00;go}'
  )
 }
+if($TimerDeadlines) {
+ $extra+=@(
+ 'wpset 0x907,1,w,temp0==1,{printf "TL cycle=%016X pc=%04X value=%02X timer=%04X control=%02X\n",totalcycles,pc,wpdata,y,b@0x40;go}',
+ 'bpset 0xfe70,temp0==1,{printf "TI cycle=%016X cc=%02X\n",totalcycles,cc;go}',
+ 'bpset 0x48fd,temp0==1,{printf "TC cycle=%016X column=%04X\n",totalcycles,w@0x28;go}'
+ )
+}
 if($extra.Count -gt 0) {
  # Debugger setup invokes paused frame callbacks. Ignore precisely the added
  # setup callbacks in this copied observer, preserving the original physical times.
@@ -117,6 +125,7 @@ $arguments=@('m4addr','-noreadconfig','-rompath',$RomDirectory,
 $arguments | ConvertTo-Json | Set-Content "$run/arguments.json"
 @{mame_sha256=(Get-FileHash -LiteralPath $MameExecutable).Hash;replay_sha256=(Get-FileHash "$run/replay-actions.csv").Hash;
  native_sound_capture=[bool]$NativeSound;native_nvram_capture=[bool]$NativeNvram;full_feature_capture=[bool]$FullFeature;native_input_capture=[bool]$NativeInput;native_lamp_frames=[bool]$NativeLampFrames;native_alpha_capture=[bool]$NativeAlpha;native_scan_capture=[bool]$NativeScan;shared_timing=[bool]$SharedTiming;paused_setup_callbacks_skipped=$extra.Count;
+ timer_deadlines=[bool]$TimerDeadlines;
  initial_state='Fresh isolated default configuration and absent NVRAM; physical-input fixture only; no RAM/ROM injection.'} |
  ConvertTo-Json | Set-Content "$run/provenance.json"
 $previousReplay=$env:MPU4_REPLAY

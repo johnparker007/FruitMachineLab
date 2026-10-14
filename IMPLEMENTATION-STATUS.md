@@ -100,6 +100,12 @@ deadlines, general scheduling and electrical effects are still unresolved.
 
 ## Provenance
 
+The [timer deadline investigation](docs/recovery/SKILL-CASH-TIMER-DEADLINE-PASS.md)
+adds 6,103 effective latch writes and independent IRQ/callback timestamps. A bounded
+source-backed countdown is consistent with the trace; CPU acceptance latency and
+exact expiry observation remain unresolved. All callback cycles/columns match the
+shared capture. Fifty-seven verification groups pass.
+
 Original workspace is preserved at
 `C:\Users\John\Documents\Codex\2026-10-13\help-me-set-up-a-local\outputs\mpu4`.
 The baseline ROM SHA1 is 402d1518bb78fdc489b06c2aabc771e5ce151847; no ROM binaries,

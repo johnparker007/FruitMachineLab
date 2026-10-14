@@ -18,6 +18,7 @@ public partial class MainWindow : Window
                 SkillCashSoundVerification.VerifyFeature(evidence);
                 SkillCashLampFrameVerification.Verify(evidence);
                 SkillCashOutputScanVerification.Verify(evidence);
+                SkillCashTimerDeadlineVerification.Verify(evidence);
                 var shared=SkillCashSharedTimingVerification.Verify(evidence);
                 return (Feature:SkillCashFeatureReplay.Run(evidence),Shared:shared);
             });

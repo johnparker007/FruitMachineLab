@@ -7,10 +7,35 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Timer-3 reference deadline separates initial output phase and IRQ expiry", () => {
+    var low=Mpu4Timer3Deadline.Calculate(100,40,false);Equal(108UL,low.FirstEdge);Equal(428UL,low.Interrupt);
+    var high=Mpu4Timer3Deadline.Calculate(100,40,true);Equal(420UL,high.FirstEdge);Equal(420UL,high.Interrupt);
+    Equal(108UL,Mpu4Timer3Deadline.Calculate(100,0,false).Interrupt);
+    Equal(524388UL,Mpu4Timer3Deadline.Calculate(100,65535,false).Interrupt);
+});
+Check("Timer-3 deadline refuses unsupported controls and timestamp overflow", () => {
+    bool unsupported=false,overflow=false;
+    try {Mpu4Timer3Deadline.Calculate(0,40,false,0x62);}catch(NotSupportedException){unsupported=true;}
+    try {Mpu4Timer3Deadline.Calculate(ulong.MaxValue,40,false);}catch(OverflowException){overflow=true;}
+    Equal(true,unsupported);Equal(true,overflow);
+});
 Check("Shared VM, lamp writes, IRQ scans and timer callbacks match MAME", () => {
     var result=SkillCashSharedTimingVerification.Verify(evidence);
     Equal(98704,result.Instructions);Equal(29192,result.LampWrites);Equal(6103,result.Scans);
     Console.WriteLine($"  {result.LampWrites} lamp writes, {result.Scans} scans, {result.Arms} arms and {result.Callbacks} callbacks on one timeline");
+});
+Check("Actual timer latch writes are consistent with the reference countdown", () => {
+    var result=SkillCashTimerDeadlineVerification.Verify(evidence);Equal(6103,result.Arms);
+    Equal(18UL,result.MinimumIrqLatency);Equal(25UL,result.MaximumIrqLatency);
+    Equal(128UL,result.MinimumCallbackService);Equal(128UL,result.MaximumCallbackService);
+    Console.WriteLine($"  {result.Arms} actual latch writes; calculated expiry to IRQ latency {result.MinimumIrqLatency}–{result.MaximumIrqLatency} cycles");
+});
+Check("Early timer IRQ and reversed latch timestamps are rejected", () => {
+    int rejected=0;
+    foreach(var rows in new[]{new ulong[][]{new ulong[]{100,40,327,128,0}},new ulong[][]{new ulong[]{100,40,350,128,0},new ulong[]{99,40,350,128,0}}}) {
+        try {SkillCashTimerDeadlineVerification.Verify(new TimerDeadlineCapture(0,rows));}catch(InvalidDataException){rejected++;}
+    }
+    Equal(2,rejected);
 });
 Check("Captured cycle timeline preserves source order and rejects time reversal", () => {
     var clock=new CapturedCycleTimeline(100,new ulong[][]{new[]{2UL,0UL},new[]{0UL,1UL},new[]{3UL,2UL}});

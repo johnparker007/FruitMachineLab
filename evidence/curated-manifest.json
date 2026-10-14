@@ -135,6 +135,11 @@
     "sha256": "05BC6983BC57CF2F76EB28D668442666CD3E46489FDA5383576C0CCD7AD2D81B"
   },
   {
+    "path": "docs/recovery/SKILL-CASH-TIMER-DEADLINE-PASS.md",
+    "bytes": 3522,
+    "sha256": "EFA8DF76D652A661E6CC973AD201F32E1065EFD511908E5D887D0A80BC246805"
+  },
+  {
     "path": "docs/recovery/SPECIAL-FEATURE-RECOVERY.txt",
     "bytes": 4243,
     "sha256": "DAE384645EA4E1886145F25103378F9BBFE49C10958DE236EA9CF69D52BAE066"
@@ -923,6 +928,21 @@
     "path": "evidence/mpu4/skill-cash/sound-verification.json",
     "bytes": 1342,
     "sha256": "945DB411A310E0E2636CCDB4714FC928D9C03C1DC45AD5BF8D7E15FFA4B004C8"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/timer-deadlines-debugger.cmd",
+    "bytes": 858,
+    "sha256": "91943902D5AE610FFAA90C9B48A604A25259B5DC7A37FBDF173587C279DFF998"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/timer-deadlines-verification.json",
+    "bytes": 605,
+    "sha256": "7C9B54F66A90F56564FBD7E30CD07B3D1960EEDE26BD26FC291E23596B6C2506"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/timer-deadlines.json",
+    "bytes": 158937,
+    "sha256": "C5B7007A5594D198CF6F13186384D3756F420C1116E0B9B2B04DC028674048ED"
   },
   {
     "path": "evidence/mpu4/VM-SCRIPTS/7D3A.txt",

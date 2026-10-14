@@ -14,7 +14,8 @@ public sealed class Machine
 {
     public byte[] Memory { get; } = new byte[65536];
     public Stack<ushort> Data { get; } = new();
-    public ushort LocalFrame { get; set; }
+    public ushort LocalFrame { get=>ReadWord(0xF4);set=>WriteWord(0xF4,value); }
+    public VmControlStack? Control { get; set; }
     public ushort ReadWord(ushort address) => (ushort)((Memory[address] << 8) | Memory[Cell.Add(address, 1)]);
     public void WriteWord(ushort address, ushort value)
     {

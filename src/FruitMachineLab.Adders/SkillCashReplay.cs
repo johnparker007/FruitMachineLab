@@ -8,7 +8,7 @@ public record Dispatch(ushort Site, ushort Token, ushort Stack, ushort Top, usho
 public record SkillCashResult(byte Level, ushort PendingAward, IReadOnlyList<DiagnosticEvent> Events);
 
 // A bounded replay of the recovered feature mechanics, not a free-running game.
-// Selection results are supplied by MAME observations; award data is recovered ROM data.
+// Selection decisions execute from recorded platform inputs; award data is recovered ROM data.
 public static class SkillCashReplay
 {
     public static IReadOnlyList<Dispatch> ReadTrace(string path) => File.ReadLines(path).Select(line =>
@@ -19,6 +19,7 @@ public static class SkillCashReplay
     public static SkillCashResult Run(string evidenceDirectory)
     {
         var trace = ReadTrace(Path.Combine(evidenceDirectory,"skill-cash","dispatch.txt"));
+        var decisions=SkillCashSelectionVerification.Verify(evidenceDirectory);
         var selected = trace.Where(x => x.Site == 0xC757).ToArray();
         var timers = trace.Where(x => x.Site == 0xC755).ToArray();
         if (selected.Length != 3 || timers.Length != 3) throw new InvalidDataException("Expected one three-stage Skill Cash interval");
@@ -35,14 +36,14 @@ public static class SkillCashReplay
             var timer = Cell.Subtract(25, Cell.Multiply(stage,5));
             if (timers[stage].Top != timer) throw new InvalidDataException($"Timer mismatch at stage {stage}");
             // C757..C75F: frame address, fetch, signed min, frame address, store.
-            machine.Data.Push(selected[stage].Top);
+            machine.Data.Push(decisions.Choices[stage]);
             var stageIndex=stage;
             new ScriptExecutor(machine) { BeforeInstruction=(instruction,state)=> {
                 var reference=trace.Where(x=>x.Site==instruction.Site).ElementAt(stageIndex);
                 if(instruction.Token!=reference.Token || state.Data.Count==0 || state.Data.Peek()!=reference.Top)
                     throw new InvalidDataException($"Stack mismatch at {instruction.Site:X4}, stage {stageIndex}");
             }}.RunRange(new RecoveredScript(Listing("C721")),0xC757,0xC75F);
-            events.Add(new(0xC75F,"Selected level",machine.Memory[frameAddresses[0]],"Executed recovered stage instructions; selection result is recorded external input"));
+            events.Add(new(0xC75F,"Selected level",machine.Memory[frameAddresses[0]],"Executed recovered selection decisions and stage reduction; platform timing/input data remains recorded"));
         }
         var lookup = trace.Single(x => x.Site == 0xC706);
         new ScriptExecutor(machine).RunRange(new RecoveredScript(Listing("C6FC")),0xC6FE,0xC704);
@@ -70,7 +71,10 @@ public static class SkillCashReplay
         var helpers=SkillCashHelperVerification.Verify(evidenceDirectory);
         events.Add(new(0x99D8,"RNG calls verified",(ushort)helpers.RandomCalls,"Native seed update and recovered random-word script compared with focused MAME capture"));
         events.Add(new(0x9A00,"Percentage calls verified",(ushort)helpers.PercentageCalls,"Native division and strict unsigned comparison compared with MAME"));
-        events.Add(new(0xC676,"Selection gates verified",(ushort)helpers.GateCalls,"Recovered terminal-choice gating; three compensation/chance helper returns remain observed boundaries"));
+        events.Add(new(0xC676,"Selection gates verified",(ushort)helpers.GateCalls,"Recovered gates, compensation calculation and nested S/F4/F6 frames compared with MAME"));
+        events.Add(new(0xC66A,"Compensation calls verified",(ushort)SkillCashCompensationVerification.Verify(evidenceDirectory),"Calculated ratio, clipped index and chance from captured RAM, input conditions and IRQ counter; no chance helper return injected"));
+        events.Add(new(0xC721,"Control prefix instructions verified",(ushort)SkillCashControlVerification.Verify(evidenceDirectory),"Physical local/loop allocation, return-stack pointers and uninitialized local bytes compared with MAME"));
+        events.Add(new(0xC6B3,"Selection decisions verified",(ushort)decisions.Decisions,"Calculated from recorded choice byte, panel latch, IRQ timer and abort flag; accepted 3, 2, 1"));
         return new(machine.Memory[frameAddresses[0]],machine.ReadWord(0x00BA),events);
     }
 }

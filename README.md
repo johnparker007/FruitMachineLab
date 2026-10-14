@@ -21,12 +21,14 @@ It deliberately needs no NuGet test framework installation. Run from repository 
 or pass the absolute repository path to verification. The Windows viewer accepts that
 path separately. No SDK pin or machine configuration is changed.
 
-Latest local verification: both solutions build without warnings or errors; sixteen
-verification groups pass, including native RNG/percentage arithmetic, 1,202 recorded
-selection-gate calls, corrupted-fixture rejection and 26,660 dispatch comparisons.
+Latest local verification: both solutions build without warnings or errors; 23
+verification groups pass, including the compensation chain, physical control stacks,
+1,202 calculated selection decisions, corrupted-fixture rejection and 26,660 dispatch comparisons.
 The initial WPF viewer was tested by John; its expanded output has build verification.
 
 A focused MAME capture matches the original campaign's sampled state, feature state,
 input levels and final RAM byte-for-byte. See the
 [runtime recovery report](docs/recovery/SKILL-CASH-RUNTIME-PASS.md) for path coverage,
 static deductions, explicit observed boundaries and reproducible capture commands.
+The subsequent [compensation/control recovery report](docs/recovery/SKILL-CASH-COMPENSATION-PASS.md)
+records removal of the observed chance-helper boundary and the current remaining work.

@@ -18,26 +18,29 @@
 
 ## What the replay proves
 
-The recorded helper returns are 3, 2 and 1. The reconstructed stage calculation uses
+The recovered selection decisions produce accepted choices 3, 2 and 1 from recorded
+platform inputs, matching the recorded helper returns. The stage calculation uses
 timer values 25, 20 and 15 and signed minimum to reduce level 6 to 1. The recorded
 table-read address is 75BE. The recovered ROM table now supplies 10, checked against
 that recorded read; normalization leaves 10; pending BA is
 stored as big-endian 000A. Intermediate stack observations independently check
-previous levels and computed addresses. The trace-derived selections and table value
-are external observations, not C# predictions. The award-table read is now a C#
-prediction from curated ROM data. The input-condition branch in 9F6A
+previous levels and computed addresses. Selection decisions, accepted choices and
+the award-table read are C# predictions; their choice-byte, latch and IRQ timing
+inputs remain captured platform observations. The input-condition branch in 9F6A
 is not captured by this debugger range; both condition outcomes are evaluated and
 must yield the same result. For award 10 both yield 10. An input-dependent outcome
 fails with an explicit request for additional evidence.
 
 ## Remaining before the first complete executable milestone
 
-The selection loop C699, enabled option override C646, chance lookup C617,
-frame/loop stack allocation and return semantics, interrupts/timer scheduler,
+The full selection loop C699, enabled option override C646, interrupts/timer scheduler,
 lamp/sound streams, NVRAM refresh 6E06 and award animation AF93 remain untranslated.
 Native RNG and percentage arithmetic now execute and match three focused MAME calls.
-C676 terminal gating matches 1,202 calls with an explicit observed chance boundary;
-its compensation/chance dependency C66A is not yet independently implemented.
+C66A/C617/A110/A0E1 now execute from recorded RAM/peripheral/IRQ inputs, with all 240
+nested dispatches checked. C676 no longer injects a chance-helper result. Physical
+local/loop/nested-return frames match the 29-instruction feature prefix and nested calls.
+Selection blocks calculate all 1,202 decisions and accepted choices from platform inputs.
+Nonzero compensation and full-feature frame cleanup have static tests only.
 The current replay does not run C721 end to end and does not validate final bank,
 current-win, physical payout or UI animation. Unsupported interpreter operations throw.
 No synthetic selection/timer semantics are presented as ROM behaviour.
@@ -45,8 +48,9 @@ No synthetic selection/timer semantics are presented as ROM behaviour.
 The focused replay has now been captured, and state.csv, feature-state.csv,
 input-levels.csv and final RAM match the original campaign exactly. The expanded
 report is [SKILL-CASH-RUNTIME-PASS.md](docs/recovery/SKILL-CASH-RUNTIME-PASS.md).
-Next: recover the compensation calculation and frame/selection scheduling before
-replacing more observed boundaries with independently executing helpers.
+See [the compensation/control pass](docs/recovery/SKILL-CASH-COMPENSATION-PASS.md).
+Next: recover the sound/scheduler generation of choice byte 004F and lamp/native
+bridges, then replace the remaining selection platform snapshots with controlled timing.
 
 ## Provenance
 

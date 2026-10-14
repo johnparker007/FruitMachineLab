@@ -3,7 +3,7 @@ using FruitMachineLab.Runtime;
 namespace FruitMachineLab.Adders;
 
 public record HelperSnapshot(ushort Site,ushort Token,ushort Top,ushort Second,ushort Third,ushort Fourth,
-    ushort Seed,ushort Irq,ushort Frame,ushort Option,ushort U);
+    ushort Seed,ushort Irq,ushort Frame,ushort Option,ushort U,ushort S,ushort F4,ushort F6);
 public record HelperCall(string Kind,HelperSnapshot Entry,HelperSnapshot Exit,ushort? Chance);
 public record HelperVerification(int RandomCalls,int PercentageCalls,int OptionCalls,int GateCalls);
 
@@ -14,18 +14,28 @@ public static class SkillCashHelperVerification
         var calls=JsonSerializer.Deserialize<HelperCall[]>(File.ReadAllText(Path.Combine(evidenceDirectory,"skill-cash","helper-calls.json")),
             new JsonSerializerOptions{PropertyNameCaseInsensitive=true}) ?? throw new InvalidDataException("Missing helper calls");
         RecoveredScript Resolve(ushort address)=>new(Path.Combine(evidenceDirectory,"VM-SCRIPTS",address.ToString("X4")+".txt"));
+        var compensation=SkillCashCompensationVerification.Load(evidenceDirectory);
         int random=0,percentage=0,option=0,gate=0;
         foreach(var call in calls)
         {
             var m=new Machine(); SkillCashData.Load(m);
+            m.LocalFrame=call.Entry.F4;m.Control=new VmControlStack(m,call.Entry.S){LoopFrame=call.Entry.F6};
+            m.WriteWord(call.Entry.F6,(ushort)(call.Entry.Frame>>8));m.WriteWord(call.Entry.S,0xBEEF);
             m.WriteWord(0x324,call.Entry.Seed);m.Memory[0x33]=(byte)call.Entry.Irq;m.WriteWord(0x719F,call.Entry.Option);
             m.Data.Push(call.Entry.Second);m.Data.Push(call.Entry.Top);
             var executor=new ScriptExecutor(m) {
                 ResolveScript=Resolve,LoopIndex=()=>(ushort)(call.Entry.Frame>>8),
-                ObservedWord=(instruction,state)=> {
+                WordHandler=(instruction,state)=> {
                     if(instruction.Token!=0xC668) return false;
-                    state.Data.Push(call.Chance ?? throw new InvalidDataException("Missing observed compensation/chance helper result"));
+                    var interval=compensation.Single(c=>(c.Steps[0]["frame"]>>8)==(call.Entry.Frame>>8));
+                    state.Control!.EnterCall(0xC68C);
+                    SkillCashCompensationVerification.Execute(evidenceDirectory,interval,state);
+                    if(state.Control.ResumeCursor!=0xC68C)throw new InvalidDataException("Chance call return differs from C68C");
                     return true;
+                },
+                BeforeInstruction=(instruction,state)=> {
+                    if(instruction.Site==call.Exit.Site && state.Control!.Pointer!=call.Exit.S)
+                        throw new InvalidDataException("Helper return-stack pointer differs from MAME");
                 }
             };
             int before=m.Data.Count;
@@ -49,7 +59,9 @@ public static class SkillCashHelperVerification
             if(m.Data.Count!=before+expectedDelta) throw new InvalidDataException("Helper stack effect differs from recovery");
             if(call.Exit.U!=unchecked((ushort)(call.Entry.U-2*expectedDelta)))
                 throw new InvalidDataException("Recorded U register differs from translated stack effect");
-            if(call.Kind=="random" && m.ReadWord(0x324)!=call.Exit.Seed) throw new InvalidDataException("Seed update differs from MAME");
+            if(call.Kind is "random" or "gate" && m.ReadWord(0x324)!=call.Exit.Seed) throw new InvalidDataException("Seed update differs from MAME");
+            if(m.Control.Pointer!=Cell.Add(call.Exit.S,2) || m.LocalFrame!=call.Exit.F4 || m.Control.LoopFrame!=call.Exit.F6)
+                throw new InvalidDataException("Helper control-stack/frame result differs from MAME");
         }
         if(random!=3 || percentage!=3 || option!=3 || gate!=1202) throw new InvalidDataException("Unexpected focused fixture coverage");
         return new(random,percentage,option,gate);

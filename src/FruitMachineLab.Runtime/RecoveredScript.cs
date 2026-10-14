@@ -36,8 +36,9 @@ public sealed class ScriptExecutor(Machine machine)
     public Action<Instruction, Machine>? BeforeInstruction { get; init; }
     public Func<ushort, RecoveredScript>? ResolveScript { get; init; }
     public Func<ushort>? LoopIndex { get; init; }
-    // Explicit observed boundaries for incomplete recovery; never an implicit no-op.
-    public Func<Instruction, Machine, bool>? ObservedWord { get; init; }
+    // Explicit handlers for recovered words or declared verification boundaries.
+    // An unhandled word never becomes an implicit no-op.
+    public Func<Instruction, Machine, bool>? WordHandler { get; init; }
     private int remaining;
     public void Run(RecoveredScript script, int budget = 1000)
     {
@@ -50,9 +51,10 @@ public sealed class ScriptExecutor(Machine machine)
         if(items.Length==0 || items[0].Site!=first || items[^1].Site!=last)
             throw new InvalidDataException("Requested script range boundaries are absent");
         remaining=1000;
-        Execute(items,false);
+        var following=script.Instructions.SkipWhile(i=>i.Site!=last).Skip(1).FirstOrDefault()?.Site;
+        Execute(items,false,following);
     }
-    private void Execute(IReadOnlyList<Instruction> items, bool requireReturn)
+    private void Execute(IReadOnlyList<Instruction> items, bool requireReturn,ushort? boundaryContinuation=null)
     {
         var pc = 0;
         while (pc < items.Count)
@@ -62,6 +64,12 @@ public sealed class ScriptExecutor(Machine machine)
             BeforeInstruction?.Invoke(i,machine);
             ushort Value() => i.Value ?? throw new InvalidDataException($"Missing operand at {i.Site:X4}");
             void Binary(Func<ushort, ushort, ushort> op) { var b = machine.Pop(); var a = machine.Pop(); machine.Data.Push(op(a,b)); }
+            VmControlStack Control()=>machine.Control ?? throw new NotSupportedException("Physical VM control-stack context required");
+            ushort Continuation()=>pc<items.Count ? items[pc].Site : boundaryContinuation ?? throw new InvalidDataException("Call/loop continuation missing from script range");
+            void Jump(ushort site) {
+                pc=items.ToList().FindIndex(x=>x.Site==site);
+                if(pc<0)throw new InvalidDataException("Control-stack target absent from script");
+            }
             switch (i.Operation)
             {
                 case "vm_push_inline_byte_literal":
@@ -71,12 +79,18 @@ public sealed class ScriptExecutor(Machine machine)
                 case "vm_push_local_frame_address": machine.Data.Push(Cell.Add(machine.LocalFrame, Value())); break;
                 case "vm_push_zero": machine.Data.Push(0); break;
                 case "vm_push_two": machine.Data.Push(2); break;
-                case "vm_push_loop_index": machine.Data.Push((LoopIndex ?? throw new NotSupportedException("Loop context required"))()); break;
+                case "vm_push_loop_index": machine.Data.Push(machine.Control?.LoopIndex ?? (LoopIndex ?? throw new NotSupportedException("Loop context required"))()); break;
+                case "vm_allocate_local_frame": Control().AllocateLocalFrame(machine.Pop());break;
+                case "vm_enter_loop_frame": { var start=machine.Pop();var limit=machine.Pop();Control().EnterLoop(start,limit,Continuation());break; }
+                case "vm_loop_increment_one": if(Control().IncrementLoop() is { } target)Jump(target);break;
                 case "vm_store_byte": { var address = machine.Pop(); machine.Memory[address] = (byte)machine.Pop(); break; }
                 case "vm_store_word": { var address = machine.Pop(); machine.WriteWord(address, machine.Pop()); break; }
                 case "vm_clear_byte_memory": machine.Memory[machine.Pop()] = 0; break;
                 case "vm_fetch_unsigned_byte": machine.Data.Push(machine.Memory[machine.Pop()]); break;
                 case "vm_fetch_word": machine.Data.Push(machine.ReadWord(machine.Pop())); break;
+                case "vm_fetch_byte_and_following_word": {
+                    var address=machine.Pop();machine.Data.Push(machine.ReadWord(Cell.Add(address,1)));machine.Data.Push(machine.Memory[address]);break;
+                }
                 case "vm_fetch_two_words": {
                     var address=machine.Pop(); machine.Data.Push(machine.ReadWord(Cell.Add(address,2))); machine.Data.Push(machine.ReadWord(address)); break;
                 }
@@ -97,8 +111,21 @@ public sealed class ScriptExecutor(Machine machine)
                     machine.Data.Push(result.Remainder); machine.Data.Push(result.Quotient); break;
                 }
                 case "vm_add_words": Binary(Cell.Add); break;
+                case "vm_add_double_cells": {
+                    var bHigh=machine.Pop();var bLow=machine.Pop();var aHigh=machine.Pop();var aLow=machine.Pop();
+                    uint sum=unchecked((((uint)aHigh<<16)|aLow)+(((uint)bHigh<<16)|bLow));
+                    machine.Data.Push((ushort)sum);machine.Data.Push((ushort)(sum>>16));break;
+                }
+                case "call_vm_signed_double_divide_drop_remainder": {
+                    var dHigh=machine.Pop();var dLow=machine.Pop();var nHigh=machine.Pop();var nLow=machine.Pop();
+                    uint quotient=Mpu4Arithmetic.SignedDoubleQuotient(((uint)nHigh<<16)|nLow,((uint)dHigh<<16)|dLow);
+                    machine.Data.Push((ushort)quotient);machine.Data.Push((ushort)(quotient>>16));break;
+                }
+                case "vm_increment_word": machine.Data.Push(Cell.Add(machine.Pop(),1));break;
+                case "vm_arithmetic_shift_right_one": machine.Data.Push(unchecked((ushort)((short)machine.Pop()>>1)));break;
                 case "vm_subtract_top_from_second": Binary(Cell.Subtract); break;
                 case "vm_min_signed": Binary(Cell.Min); break;
+                case "vm_max_signed": Binary((a,b)=>(short)a>(short)b ? a : b);break;
                 case "vm_compare_equal": Binary((a,b) => Cell.Flag(a == b)); break;
                 case "vm_compare_top_lt_second_signed": Binary((a,b)=>Cell.Flag((short)b<(short)a)); break;
                 case "vm_compare_top_gt_second_unsigned": Binary((a,b)=>Cell.Flag(b>a)); break;
@@ -120,14 +147,18 @@ public sealed class ScriptExecutor(Machine machine)
                         if (pc < 0) throw new InvalidDataException("Branch target absent from listing");
                     }
                     break;
-                case "vm_return_to_caller_stream": return;
-                case "vm_return_if_nonzero": if(machine.Pop()!=0) return; break;
+                case "vm_return_to_caller_stream": machine.Control?.Return();return;
+                case "vm_return_if_nonzero": if(machine.Pop()!=0) { machine.Control?.Return();return; }break;
                 default:
-                    if(ObservedWord?.Invoke(i,machine)==true) break;
+                    if(WordHandler?.Invoke(i,machine)==true) break;
                     if(i.Body is { } body && ResolveScript is not null)
                     {
+                        ushort? next=machine.Control is not null ? Continuation() : null;
+                        if(next is { } cursor)machine.Control!.EnterCall(cursor);
                         if(i.PushAddress is { } address) machine.Data.Push(address);
                         Execute(ResolveScript(body).Instructions,true);
+                        if(next is { } expected && machine.Control!.ResumeCursor!=expected)
+                            throw new NotSupportedException("Nonlocal VM continuation requires separate recovery");
                     }
                     else throw new NotSupportedException($"Untranslated helper {i.Operation} at {i.Site:X4}, token {i.Token:X4}");
                     break;

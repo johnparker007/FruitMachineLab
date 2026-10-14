@@ -91,12 +91,49 @@ Check("Focused MAME helper replay", () => {
     var result=SkillCashHelperVerification.Verify(evidence);
     Equal(3,result.RandomCalls);Equal(3,result.PercentageCalls);Equal(3,result.OptionCalls);Equal(1202,result.GateCalls);
 });
+Check("Recovered compensation/chance chain, including nested control stacks", () => {
+    Equal(3,SkillCashCompensationVerification.Verify(evidence));
+});
+Check("Feature allocation and loop prefix match MAME S/F4/F6 and RAM", () => {
+    Equal(29,SkillCashControlVerification.Verify(evidence));
+});
+Check("Selection decisions derive from captured platform inputs", () => {
+    var result=SkillCashSelectionVerification.Verify(evidence);Equal(1202,result.Decisions);Equal(3,result.AcceptedChoices);
+});
+Check("Native signed double quotient preserves zero and wrap behaviour", () => {
+    Equal(unchecked((uint)-3),Mpu4Arithmetic.SignedDoubleQuotient(unchecked((uint)-7),2));
+    Equal(unchecked((uint)-3),Mpu4Arithmetic.SignedDoubleQuotient(7,unchecked((uint)-2)));
+    Equal(3u,Mpu4Arithmetic.SignedDoubleQuotient(unchecked((uint)-7),unchecked((uint)-2)));
+    Equal(0x80000000u,Mpu4Arithmetic.SignedDoubleQuotient(0x80000000u,0xFFFFFFFFu));
+    Equal(0u,Mpu4Arithmetic.SignedDoubleQuotient(123,0));
+});
+Check("Static nonzero compensation records select the recovered chance table", () => {
+    foreach(var pair in new[]{(Amount:0u,Divisor:0u,Chance:(ushort)0),(Amount:250u,Divisor:10u,Chance:(ushort)10),
+        (Amount:300u,Divisor:10u,Chance:(ushort)80),(Amount:320u,Divisor:10u,Chance:(ushort)99),(Amount:65536u,Divisor:1u,Chance:(ushort)0)}) {
+        var m=new Machine();SkillCashData.Load(m);
+        void Write24(ushort address,uint value){m.Memory[address]=(byte)(value>>16);m.WriteWord(Cell.Add(address,1),(ushort)value);}
+        Write24(0x4A9,pair.Amount);Write24(0x4A6,pair.Divisor);
+        RecoveredScript Resolve(ushort address)=>new(Path.Combine(evidence,"VM-SCRIPTS",address.ToString("X4")+".txt"));
+        new ScriptExecutor(m){ResolveScript=Resolve}.Run(Resolve(0xC617));
+        Equal(pair.Chance,m.Pop());Equal(0,m.Data.Count);
+    }
+});
+Check("Local frame cleanup and early nested loop returns preserve prior frames", () => {
+    var m=new Machine { LocalFrame=0x900 };var control=new VmControlStack(m,0x800);m.Control=control;
+    control.EnterCall(0xCAFE);control.AllocateLocalFrame(2);
+    Equal((ushort)0x7F6,control.Pointer);Equal((ushort)0x7FA,m.LocalFrame);
+    control.EnterCall(0xD00D);Equal((ushort)0xD00D,control.Return());
+    control.EnterLoop(0,3,0xC743);ushort outer=control.LoopFrame;
+    control.EnterLoop(5,6,0xABCD);Equal((ushort?)null,control.IncrementLoop());Equal(outer,control.LoopFrame);
+    Equal((ushort?)0xC743,control.IncrementLoop());Equal((ushort)1,control.LoopIndex);
+    Equal((ushort)0xCAFE,control.Return());Equal((ushort)0x800,control.Pointer);Equal((ushort)0x900,m.LocalFrame);Equal((ushort)0,control.LoopFrame);
+});
 Check("Static terminal cancellation branches retain Forth truth and choice", () => {
     RecoveredScript Resolve(ushort address)=>new(Path.Combine(evidence,"VM-SCRIPTS",address.ToString("X4")+".txt"));
     foreach(ushort stage in new ushort[]{0,1,2}) foreach(ushort choice in new ushort[]{1,6}) foreach(bool chance in new[]{false,true}) {
         var m=new Machine();m.Data.Push(choice);m.Data.Push(65535);
         new ScriptExecutor(m){ResolveScript=Resolve,LoopIndex=()=>stage,
-            ObservedWord=(instruction,state)=>{if(instruction.Token!=0xC668)return false;state.Data.Push(Cell.Flag(chance));return true;}}
+            WordHandler=(instruction,state)=>{if(instruction.Token!=0xC668)return false;state.Data.Push(Cell.Flag(chance));return true;}}
             .Run(Resolve(0xC676));
         Equal(Cell.Flag(!(stage==2 && choice==6 && chance)),m.Pop());Equal(choice,m.Pop());Equal(0,m.Data.Count);
     }
@@ -106,8 +143,10 @@ Check("Corrupted replay input is rejected", () => {
     try {
         Directory.CreateDirectory(Path.Combine(temporary,"skill-cash"));
         Directory.CreateDirectory(Path.Combine(temporary,"VM-SCRIPTS"));
-        foreach(var name in new[]{"C637","C721","C6FC","9F6A"})
-            File.Copy(Path.Combine(evidence,"VM-SCRIPTS",name+".txt"),Path.Combine(temporary,"VM-SCRIPTS",name+".txt"));
+        foreach(var file in Directory.GetFiles(Path.Combine(evidence,"VM-SCRIPTS"),"*.txt"))
+            File.Copy(file,Path.Combine(temporary,"VM-SCRIPTS",Path.GetFileName(file)));
+        foreach(var file in Directory.GetFiles(Path.Combine(evidence,"skill-cash"),"*.json"))
+            File.Copy(file,Path.Combine(temporary,"skill-cash",Path.GetFileName(file)));
         var log=File.ReadAllText(Path.Combine(evidence,"skill-cash","dispatch.txt"));
         log=log.Replace("y=C755 token=C697 u=0670 top=0019","y=C755 token=C697 u=0670 top=0018");
         File.WriteAllText(Path.Combine(temporary,"skill-cash","dispatch.txt"),log);
@@ -115,6 +154,25 @@ Check("Corrupted replay input is rejected", () => {
         catch(InvalidDataException) { return; }
         throw new Exception("Corrupted timer observation was accepted");
     } finally { if(Directory.Exists(temporary)) Directory.Delete(temporary,true); }
+});
+Check("Changed accepted-choice latch is rejected", () => {
+    var file=Path.Combine(evidence,"skill-cash","selection-decisions.json");
+    var capture=System.Text.Json.JsonSerializer.Deserialize<SelectionCapture>(File.ReadAllText(file),
+        new System.Text.Json.JsonSerializerOptions{PropertyNameCaseInsensitive=true})!;
+    var at=Array.FindIndex(capture.Iterations,d=>d.Next==0xC6C8);
+    var changed=capture.Iterations[at] with {Latch=(ushort)(capture.Iterations[at].Latch&~0x80)};
+    // Preserve the expected trace output while changing just its platform input.
+    capture.Iterations[at]=changed;
+    var temporary=Path.Combine(Path.GetTempPath(),"FruitMachineLab-"+Guid.NewGuid());
+    try {
+        Directory.CreateDirectory(Path.Combine(temporary,"skill-cash"));Directory.CreateDirectory(Path.Combine(temporary,"VM-SCRIPTS"));
+        foreach(var source in Directory.GetFiles(Path.Combine(evidence,"VM-SCRIPTS"),"*.txt"))File.Copy(source,Path.Combine(temporary,"VM-SCRIPTS",Path.GetFileName(source)));
+        File.Copy(Path.Combine(evidence,"skill-cash","compensation-calls.json"),Path.Combine(temporary,"skill-cash","compensation-calls.json"));
+        File.WriteAllText(Path.Combine(temporary,"skill-cash","selection-decisions.json"),System.Text.Json.JsonSerializer.Serialize(capture));
+        try { SkillCashSelectionVerification.Verify(temporary); }
+        catch(InvalidDataException) { return; }
+        throw new Exception("Changed physical latch input was accepted");
+    } finally { if(Directory.Exists(temporary))Directory.Delete(temporary,true); }
 });
 Check("Recorded dispatch tokens agree with recovered listings", () => {
     var known = Directory.GetFiles(Path.Combine(evidence,"VM-SCRIPTS"),"*.txt")

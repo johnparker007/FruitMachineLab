@@ -1,0 +1,50 @@
+{
+  "source_directory": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-alpha-native-564cec6006024512b3ff939ea13d8277",
+  "classification": "MAME static disassembly split around numeric divisor data; inline source bytes are separately curated",
+  "mame_sha256": "0FCE5A88DF4F9D9B1FBF1405812C00848036E615993780978D967DA34204CB7A",
+  "arguments": [
+    "m4addr",
+    "-noreadconfig",
+    "-rompath",
+    "E:\\Arcade\\MAME0266\\roms",
+    "-cfg_directory",
+    "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-alpha-native-564cec6006024512b3ff939ea13d8277/cfg",
+    "-nvram_directory",
+    "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-alpha-native-564cec6006024512b3ff939ea13d8277/nvram",
+    "-input_directory",
+    "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-alpha-native-564cec6006024512b3ff939ea13d8277/inp",
+    "-snapshot_directory",
+    "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-alpha-native-564cec6006024512b3ff939ea13d8277/snap",
+    "-comment_directory",
+    "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-alpha-native-564cec6006024512b3ff939ea13d8277/comments",
+    "-state_directory",
+    "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-alpha-native-564cec6006024512b3ff939ea13d8277/state",
+    "-diff_directory",
+    "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-alpha-native-564cec6006024512b3ff939ea13d8277/diff",
+    "-debug",
+    "-debugger",
+    "windows",
+    "-debugscript",
+    "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-alpha-native-564cec6006024512b3ff939ea13d8277/debugger.cmd",
+    "-debuglog",
+    "-video",
+    "none",
+    "-sound",
+    "none",
+    "-window",
+    "-skip_gameinfo",
+    "-nothrottle",
+    "-seconds_to_run",
+    "2"
+  ],
+  "exports": [
+    {
+      "name": "alpha-native-a.txt",
+      "sha256": "8D05B20B302DF431447F1A8B16C7C8C9CABEF82716993B88F101538F4819D6CF"
+    },
+    {
+      "name": "alpha-native-b.txt",
+      "sha256": "FD74EF30D3715364FB35E9668AA302720CEBCA7E2BAE30F8CD1E826F3622D8BE"
+    }
+  ]
+}

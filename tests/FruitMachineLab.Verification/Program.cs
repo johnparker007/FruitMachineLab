@@ -7,6 +7,71 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Native alpha software state and serial bytes match MAME", () => {
+    var result=SkillCashAlphaVerification.Verify(evidence);Equal(44,result.Calls);
+    Console.WriteLine($"  {result.Calls} alpha calls and {result.Bytes} serial bytes checked");
+});
+Check("Alpha punctuation attaches to prior cell and preserves cursor wrap", () => {
+    var m=new Machine();var serial=new List<byte>();var alpha=new Mpu4Alpha(m,serial.Add);
+    alpha.Reset();Equal(19,serial.Count);alpha.SelectCursor(15);alpha.Put(0x41);Equal((byte)0,m.Memory[0x54]);
+    alpha.Put(0x2E);Equal((byte)0x81,m.Memory[0x67]);Equal((byte)0,m.Memory[0x54]);
+    alpha.Put(0x2C);Equal((byte)0xC1,m.Memory[0x67]);Equal((byte)0,m.Memory[0x54]);
+    Equal("               A,",alpha.Snapshot().Text);
+});
+Check("Alpha numeric leading fill, decimal placement and digit mirror", () => {
+    var m=new Machine();SkillCashData.LoadAlpha(m);var alpha=new Mpu4Alpha(m);
+    alpha.Reset();m.WriteWord(0x327,326);m.Memory[0xC5]=1;m.Memory[0xC4]=3;
+    alpha.Execute(0xA814);Equal(" 32.60"+new string(' ',11),alpha.Snapshot().Text);
+    Equal((byte)0x7D,m.Memory[0x1A]);Equal((byte)0x5B,m.Memory[0x1B]);Equal((byte)255,m.Memory[0xC4]);
+    m.Memory[0xC5]=0;m.WriteWord(0x327,0);alpha.Execute(0xA814);Equal("  0.00"+new string(' ',11),alpha.Snapshot().Text);
+});
+Check("IRQ lamp/digit scan matches MAME transitions and port latches", () => {
+    var result=SkillCashOutputScanVerification.Verify(evidence);
+    Console.WriteLine($"  {result.Scans} output scans and {result.PulseCalls} pulse-width calls checked");
+});
+Check("Output scan suppression, alternating counters and inhibition", () => {
+    var m=new Machine();SkillCashData.LoadScan(m);var scan=new Mpu4OutputScan(m);
+    m.Memory[0x8D]=1;m.Memory[0xA00]=0x55;scan.Advance();Equal((byte)0x55,m.Memory[0xA00]);Equal((ushort)0,m.ReadWord(0x28));
+    m.Memory[0x8D]=0;m.Memory[0xB01]=0xB4;m.WriteWord(0x28,7);m.Memory[0x27]=2;m.Memory[0x26]=1;m.Memory[0x24]=1;m.Memory[0x25]=3;
+    m.Memory[0x130]=0xA5;m.Memory[0x138]=0x5A;m.Memory[0x1A]=0x3F;m.Memory[0x22]=1;
+    scan.Advance();Equal((byte)3,m.Memory[0x23]);Equal((byte)2,m.Memory[0x26]);Equal((byte)3,m.Memory[0x24]);
+    Equal((byte)0xA5,m.Memory[0xA00]);Equal((byte)0x5A,m.Memory[0xA02]);Equal((byte)0xBF,m.Memory[0xB00]);
+    Equal((byte)0xB4,m.Memory[0xB01]);
+    m.Memory[0x2BE]=8;m.WriteWord(0x28,7);m.Memory[8]=4;scan.Advance();
+    Equal((byte)0,m.Memory[0xA00]);Equal((byte)0,m.Memory[0xA02]);Equal((byte)0x80,m.Memory[0xB00]);
+});
+Check("Changed scan lamp input is rejected against the native output digest", () => {
+    var capture=System.Text.Json.JsonSerializer.Deserialize<ScanCapture>(File.ReadAllText(Path.Combine(evidence,"skill-cash","output-scan.json")),
+        new System.Text.Json.JsonSerializerOptions{PropertyNameCaseInsensitive=true})!;
+    var bytes=Convert.FromHexString(capture.Initial["frames"]);bytes[17]^=1;capture.Initial["frames"]=Convert.ToHexString(bytes);
+    var temporary=Path.Combine(Path.GetTempPath(),"FruitMachineLab-"+Guid.NewGuid());
+    try {
+        Directory.CreateDirectory(Path.Combine(temporary,"skill-cash"));
+        File.WriteAllText(Path.Combine(temporary,"skill-cash","output-scan.json"),System.Text.Json.JsonSerializer.Serialize(capture));
+        try {SkillCashOutputScanVerification.Verify(temporary);}catch(InvalidDataException){return;}
+        throw new Exception("Changed scan lamp frame accepted");
+    } finally {if(Directory.Exists(temporary))Directory.Delete(temporary,true);}
+});
+Check("Lamp pulse-width helper retains signed step and boundary reversal", () => {
+    var m=new Machine();var arms=new List<Timer3Arm>();
+    Mpu4LampPulseSweep.Advance(m,arms.Add);Equal(0,arms.Count);
+    m.Memory[0xB3]=0xFF;m.Memory[0xE8]=1;m.Memory[0xE9]=8;m.Memory[0xEA]=2;m.WriteWord(0x32D,300);m.Memory[0x3F]=0xFF;
+    Mpu4LampPulseSweep.Advance(m,arms.Add);Equal((ushort)298,m.ReadWord(0x32D));Equal((byte)0xFE,m.Memory[0xEA]);Equal((byte)8,m.Memory[0xE8]);
+    Equal((ushort)0x48FD,m.ReadWord(0x3D));Equal((byte)0xFE,m.Memory[0x3F]);Equal((byte)0x63,m.Memory[0x40]);
+    m.Memory[0xE8]=1;m.WriteWord(0x32D,30);Mpu4LampPulseSweep.Advance(m,arms.Add);Equal((ushort)32,m.ReadWord(0x32D));Equal((byte)2,m.Memory[0xEA]);
+    m.Memory[0xE8]=1;m.WriteWord(0x32D,ushort.MaxValue);Mpu4LampPulseSweep.Advance(m,arms.Add);Equal((ushort)65533,m.ReadWord(0x32D));
+    Equal(3,arms.Count);
+});
+Check("Changed alpha serial byte is rejected", () => {
+    var capture=SkillCashAlphaVerification.Load(evidence);capture.Calls[0].Serial[0][0]^=1;
+    var temporary=Path.Combine(Path.GetTempPath(),"FruitMachineLab-"+Guid.NewGuid());
+    try {
+        Directory.CreateDirectory(Path.Combine(temporary,"skill-cash"));
+        File.WriteAllText(Path.Combine(temporary,"skill-cash","alpha-calls.json"),System.Text.Json.JsonSerializer.Serialize(capture));
+        try {SkillCashAlphaVerification.Verify(temporary);}catch(InvalidDataException){return;}
+        throw new Exception("Changed alpha serial byte accepted");
+    } finally {if(Directory.Exists(temporary))Directory.Delete(temporary,true);}
+});
 Check("NVRAM service gate and unprotected checksum delta", () => {
     var m=new Machine();m.Memory[0x323]=0x80;m.Memory[0x322]=0x73;m.Memory[0x2C]=0x42;
     for(int address=0x2F0;address<0x322;address++)m.Memory[address]=(byte)address;
@@ -175,7 +240,7 @@ Check("Changed characteriser response rejects lamp frame replay", () => {
     try {
         Directory.CreateDirectory(Path.Combine(temporary,"skill-cash"));Directory.CreateDirectory(Path.Combine(temporary,"VM-SCRIPTS"));
         foreach(var source in Directory.GetFiles(Path.Combine(evidence,"VM-SCRIPTS"),"*.txt"))File.Copy(source,Path.Combine(temporary,"VM-SCRIPTS",Path.GetFileName(source)));
-        foreach(var name in new[]{"feature-replay.json","feature-sound.json","compensation-calls.json"})File.Copy(Path.Combine(evidence,"skill-cash",name),Path.Combine(temporary,"skill-cash",name));
+        foreach(var name in new[]{"feature-replay.json","feature-sound.json","compensation-calls.json","alpha-calls.json"})File.Copy(Path.Combine(evidence,"skill-cash",name),Path.Combine(temporary,"skill-cash",name));
         File.WriteAllText(Path.Combine(temporary,"skill-cash","lamp-frames.json"),System.Text.Json.JsonSerializer.Serialize(capture));
         try {SkillCashLampFrameVerification.Verify(temporary);}catch(InvalidDataException){return;}
         throw new Exception("Changed characteriser mapping was accepted");
@@ -190,7 +255,7 @@ Check("Changed physical input ports reject the continuous feature replay", () =>
     try {
         Directory.CreateDirectory(Path.Combine(temporary,"skill-cash"));Directory.CreateDirectory(Path.Combine(temporary,"VM-SCRIPTS"));
         foreach(var source in Directory.GetFiles(Path.Combine(evidence,"VM-SCRIPTS"),"*.txt"))File.Copy(source,Path.Combine(temporary,"VM-SCRIPTS",Path.GetFileName(source)));
-        foreach(var name in new[]{"feature-sound.json","compensation-calls.json"})File.Copy(Path.Combine(evidence,"skill-cash",name),Path.Combine(temporary,"skill-cash",name));
+        foreach(var name in new[]{"feature-sound.json","compensation-calls.json","alpha-calls.json"})File.Copy(Path.Combine(evidence,"skill-cash",name),Path.Combine(temporary,"skill-cash",name));
         File.WriteAllText(Path.Combine(temporary,"skill-cash","feature-replay.json"),System.Text.Json.JsonSerializer.Serialize(capture));
         try {SkillCashFeatureReplay.Run(temporary);}catch(InvalidDataException){return;}
         throw new Exception("Changed port bytes were accepted");
@@ -328,7 +393,7 @@ Check("Recorded dispatch tokens agree with recovered listings", () => {
     if(checkedSites<100) throw new Exception("Insufficient dispatch comparisons");
     Console.WriteLine($"  {checkedSites} recorded dispatches checked");
 });
-Console.WriteLine($"{passed} verification groups passed. Continuous feature replay verified; physical scan, alpha hardware, audio synthesis and general timing remain incomplete.");
+Console.WriteLine($"{passed} verification groups passed. Feature, alpha software and IRQ latch replay verified; electrical timing, audio synthesis and general scheduling remain incomplete.");
 return 0;
 } catch (Exception error) {
     Console.Error.WriteLine("FAIL verification: " + error);

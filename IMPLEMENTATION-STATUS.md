@@ -85,6 +85,13 @@ Final payout, enabled ROM-option branch C646, alternate awards and wider campaig
 remain unverified. Unsupported operations fail explicitly; no synthetic fault or
 alternate-input test is presented as an observed MAME path.
 
+The subsequent [alpha/output pass](docs/recovery/SKILL-CASH-ALPHA-OUTPUT-PASS.md)
+replaces the alpha software boundary: 44 calls/740 bytes match and run continuously
+with the feature. An independent IRQ adapter matches 6,103 output scans and
+pulse-width helper calls. PIA/VFD electrical timing and elapsed PTM callbacks
+remain open; native scan input RAM is recorded rather than supplied by a general
+platform schedule. Earlier boundary statements above are historical.
+
 ## Provenance
 
 Original workspace is preserved at

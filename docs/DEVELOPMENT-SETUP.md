@@ -75,3 +75,10 @@ timing and lamp frame memory checks. Thirty-nine headless verification groups pa
 no manual GUI check is required between runtime batches. Physical peripheral effects
 and interactive platform timing remain open. See
 recovery/SKILL-CASH-CONTINUOUS-FEATURE-PASS.md for exact evidence boundaries.
+
+## Alpha/output follow-up
+
+The viewer now includes alpha shadow and IRQ latch timelines. Forty-seven headless
+verification groups pass with the existing SDK. See
+recovery/SKILL-CASH-ALPHA-OUTPUT-PASS.md for the distinction between verified software
+effects and unresolved electrical/platform timing. No new dependencies were added.

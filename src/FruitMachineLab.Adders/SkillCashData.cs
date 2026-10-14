@@ -44,4 +44,18 @@ public static class SkillCashData
         machine.WriteWord(0x851E,0xFF36);machine.WriteWord(0x8522,0xFF3A);machine.Memory[0xFF36]=0xFF;machine.Memory[0xFF3A]=0xFF;
         machine.WriteWord(0x84D6,1);machine.WriteWord(0x84D8,0xA0);
     }
+    public static void LoadAlpha(Machine machine)
+    {
+        Convert.FromHexString("70052020202020207602F020207A").CopyTo(machine.Memory,0xA7B6);
+        Convert.FromHexString("70052020202020207602F02E357A").CopyTo(machine.Memory,0xA7C9);
+        Convert.FromHexString("7000792003270401307A").CopyTo(machine.Memory,0xA814);
+        Convert.FromHexString("70002020202020207A").CopyTo(machine.Memory,0xAF78);
+        Convert.FromHexString("0001FFFFFFFFFFFF001B001A001C001D").CopyTo(machine.Memory,0x193B);
+        Convert.FromHexString("3F065B4F666D7D077F6F").CopyTo(machine.Memory,0x6C3C);
+    }
+    public static void LoadScan(Machine machine)
+    {
+        Convert.FromHexString("343C343C343C343C34343C3C34343C3C343434343C3C3C3C").CopyTo(machine.Memory,0x28E6);
+        Convert.FromHexString("01020408").CopyTo(machine.Memory,0x29BB);
+    }
 }

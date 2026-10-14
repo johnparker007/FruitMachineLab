@@ -11,11 +11,12 @@ public record FeatureCapture(Dictionary<string,ushort> Initial,int Instructions,
     [property:JsonPropertyName("signature_fields")] string[] SignatureFields,
     int[][] Inputs,[property:JsonPropertyName("before_reads")] int[][] BeforeReads,int[][] Conditions,int[][] Anchors,NvramCall[] Native);
 public record AlphaRequest(ushort Site,string Program);
+public record AlphaFrame(int Ordinal,ushort Site,ushort Clock,ushort Tick,ushort Pending,ushort CurrentWin,AlphaState State);
 public record FeatureReplayResult(int Instructions,int LampRequests,int AlphaRequests,int Queues,int Refreshes,
     ushort Pending,ushort CurrentWin,ushort Display,ushort ReturnCursor,IReadOnlyList<ushort> Choices,
-    byte Level,IReadOnlyList<DiagnosticEvent> Events);
+    byte Level,IReadOnlyList<DiagnosticEvent> Events,IReadOnlyList<AlphaFrame> AlphaFrames);
 
-// Continuous C721 execution with captured platform timing and explicit alpha boundaries.
+// Continuous C721 execution with captured platform timing and recovered alpha software effects.
 public static class SkillCashFeatureReplay
 {
     public static FeatureReplayResult Run(string evidenceDirectory,Action<AlphaRequest>? alphaOutput=null,
@@ -25,7 +26,8 @@ public static class SkillCashFeatureReplay
         var capture=JsonSerializer.Deserialize<FeatureCapture>(File.ReadAllText(Path.Combine(evidenceDirectory,"skill-cash","feature-replay.json")),options)!;
         var sound=JsonSerializer.Deserialize<NativeSoundObservation[]>(File.ReadAllText(Path.Combine(evidenceDirectory,"skill-cash","feature-sound.json")),options)!;
         var enqueues=sound.Where(x=>x.Kind=="QE").ToArray();var resets=sound.Where(x=>x.Kind=="WC" && x.Fields["pc"]==0x5B80).ToArray();
-        var first=capture.Initial;var m=new Machine();SkillCashData.LoadFeature(m);
+        var first=capture.Initial;var m=new Machine();SkillCashData.LoadFeature(m);SkillCashData.LoadAlpha(m);
+        var alphaCapture=SkillCashAlphaVerification.Load(evidenceDirectory);SkillCashAlphaVerification.Seed(m,alphaCapture.Calls[0].Before);
         var initialNative=capture.Native[0].Before;
         for(ushort address=0x2F0;address<0x322;address++)m.Memory[address]=(byte)initialNative[(address<0x309 ? "source" : "copy")+address.ToString("X4")];
         m.LocalFrame=first["f4"];m.WriteWord(m.LocalFrame,first["frame"]);
@@ -50,6 +52,7 @@ public static class SkillCashFeatureReplay
         }
         int ordinal=0,input=0,anchor=0,phase=0,condition=0,queue=0,reset=0,refresh=0,lamps=0,alphas=0;
         var events=new List<DiagnosticEvent>();byte level=0;
+        var alphaFrames=new List<AlphaFrame>();var alphaSerial=new List<byte>();var alpha=new Mpu4Alpha(m,alphaSerial.Add);
         var choices=new List<ushort>();var scheduler=new Mpu4ChoiceStreamScheduler(m,first["clock"]);ushort clock=first["clock"];
         void Advance(ushort target) {
             ushort delta=unchecked((ushort)(target-scheduler.Clock));if(delta>32767)throw new InvalidDataException("Feature clock moved backwards");
@@ -99,7 +102,21 @@ public static class SkillCashFeatureReplay
                 }
                 if(instruction.Native==0x3D0E || instruction.Operation=="vm_execute_alpha_stream") {
                     string program=instruction.Native==0x3D0E ? "reset-and-clear" : instruction.InlineStream ?? throw new InvalidDataException("Missing alpha request");
-                    alphas++;alphaOutput?.Invoke(new(instruction.Site,program));return true;
+                    if(alphas>=alphaCapture.Calls.Length)throw new InvalidDataException("Extra alpha request");
+                    var call=alphaCapture.Calls[alphas++];SkillCashAlphaVerification.Compare(alpha.Snapshot(),call.Before);
+                    if(state.ReadWord(0xBA)!=call.Before.Pending || state.ReadWord(0x2FA)!=call.Before.Win || state.ReadWord(0x327)!=call.Before.Display || state.ReadWord(0x2F0)!=call.Before.Credit)
+                        throw new InvalidDataException("Continuous alpha input memory differs");
+                    alphaSerial.Clear();
+                    if(instruction.Native==0x3D0E){if(call.Kind!="AR")throw new InvalidDataException("Alpha reset kind mismatch");alpha.Reset();}
+                    else {
+                        ushort stream=Cell.Add(instruction.Site,2);
+                        if(call.Kind!="AE" || stream!=call.Before.Stream)throw new InvalidDataException("Alpha stream mismatch");alpha.Execute(stream);
+                    }
+                    var snapshot=alpha.Snapshot();SkillCashAlphaVerification.Compare(snapshot,call.After);
+                    if(call.Kind=="AE" && snapshot.Stream!=call.After.Next || !alphaSerial.SequenceEqual(call.Serial.Select(p=>checked((byte)p[0]))))
+                        throw new InvalidDataException("Continuous alpha continuation/serial bytes differ");
+                    alphaFrames.Add(new(ordinal-1,instruction.Site,call.After.Clock,call.After.Tick,state.ReadWord(0xBA),state.ReadWord(0x2FA),snapshot));
+                    alphaOutput?.Invoke(new(instruction.Site,program));return true;
                 }
                 return false;
             },
@@ -129,14 +146,14 @@ public static class SkillCashFeatureReplay
             }
         };
         executor.Run(Resolve(0xC721),capture.Instructions+1);string digest=Convert.ToHexString(hash.GetHashAndReset());
-        if(ordinal!=capture.Instructions || input!=capture.Inputs.Length || phase!=capture.BeforeReads.Length || condition!=capture.Conditions.Length || anchor!=capture.Anchors.Length || queue!=enqueues.Length || reset!=resets.Length || digest!=capture.ExpectedSha256)
+        if(ordinal!=capture.Instructions || input!=capture.Inputs.Length || phase!=capture.BeforeReads.Length || condition!=capture.Conditions.Length || anchor!=capture.Anchors.Length || queue!=enqueues.Length || reset!=resets.Length || alphas!=alphaCapture.Calls.Length || digest!=capture.ExpectedSha256)
             throw new InvalidDataException($"Feature incomplete or digest differs: {ordinal}/{capture.Instructions}, {digest}/{capture.ExpectedSha256}");
         if(m.LocalFrame!=first["f4"] || m.Control.Pointer!=Cell.Add(first["s"],2) || m.Control.LoopFrame!=first["f6"] || m.Control.ResumeCursor!=0xBEEF)throw new InvalidDataException("Feature caller frame not restored");
         events.Add(new(0xC767,"Final pending award",m.ReadWord(0xBA),"Terminal clear in AF93; caller frame restored"));
         events.Add(new(0xC767,"Final current win",m.ReadWord(0x2FA),"Award transfer and even rounding; ROM units"));
         events.Add(new(0xC767,"Continuous VM dispatches",ordinal,"Canonical state digest matches the recorded MAME path"));
-        events.Add(new(0x49C5,"Decoded lamp requests",lamps,"Logical IDs/patterns; physical lamp-frame mapping remains a peripheral boundary"));
-        events.Add(new(0x773C,"Alpha requests",alphas,"Explicit command programs; hardware display effects remain a peripheral boundary"));
-        return new(ordinal,lamps,alphas,queue,refresh,m.ReadWord(0xBA),m.ReadWord(0x2FA),m.ReadWord(0x327),m.Control.ResumeCursor,choices,level,events);
+        events.Add(new(0x49C5,"Decoded lamp requests",lamps,"Logical IDs/patterns feed a separately verified frame-memory adapter; electrical output timing remains outside this replay"));
+        events.Add(new(0x773C,"Alpha calls verified",alphas,"Software shadow, numeric formatting, cursor and serial byte sequences match MAME; PIA edges remain outside this model"));
+        return new(ordinal,lamps,alphas,queue,refresh,m.ReadWord(0xBA),m.ReadWord(0x2FA),m.ReadWord(0x327),m.Control.ResumeCursor,choices,level,events,alphaFrames);
     }
 }

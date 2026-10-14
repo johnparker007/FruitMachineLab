@@ -22,10 +22,13 @@ It deliberately needs no NuGet test framework installation. Run from repository 
 or pass the absolute repository path to verification. The Windows viewer accepts that
 path separately. No SDK pin or machine configuration is changed.
 
-Latest local verification: both solutions build without warnings or errors; 39
+Latest local verification: both solutions build without warnings or errors; 47
 verification groups pass. Continuous C721 execution matches 98,704 VM dispatches,
 selects 3, 2 and 1, and finishes with pending 0/current win 10. All 7,298 lamp frame
 updates and the complete sound timing protocol match recorded native observations.
+Alpha software effects match 44 native calls/740 serial bytes; an independent
+IRQ adapter matches 6,103 scan and pulse-width calls. The viewer includes alpha
+and scan timelines. Electrical timing remains outside these models.
 The initial WPF viewer was tested by John; its expanded output has build verification.
 
 A focused MAME capture matches the original campaign's sampled state, feature state,
@@ -41,3 +44,5 @@ The [award/NVRAM report](docs/recovery/SKILL-CASH-AWARD-NVRAM-PASS.md) records
 The [continuous feature report](docs/recovery/SKILL-CASH-CONTINUOUS-FEATURE-PASS.md)
 records the connected execution, recovered input conditions, concurrent sound
 streams, lamp frame memory and remaining peripheral boundaries.
+The [alpha/output report](docs/recovery/SKILL-CASH-ALPHA-OUTPUT-PASS.md) records
+display-software recovery, IRQ latch verification and the remaining timer/device work.

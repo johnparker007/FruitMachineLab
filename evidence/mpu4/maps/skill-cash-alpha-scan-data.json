@@ -1,0 +1,46 @@
+{
+  "rom_sha1": "402d1518bb78fdc489b06c2aabc771e5ce151847",
+  "classification": "Static alpha inline streams, glyph/mirror bytes and IRQ selector tables; numeric and peripheral subset qualification in recovery report",
+  "ranges": [
+    {
+      "address": "A7B6",
+      "bytes": 14,
+      "hex": "70052020202020207602F020207A"
+    },
+    {
+      "address": "A7C9",
+      "bytes": 14,
+      "hex": "70052020202020207602F02E357A"
+    },
+    {
+      "address": "A814",
+      "bytes": 10,
+      "hex": "7000792003270401307A"
+    },
+    {
+      "address": "AF78",
+      "bytes": 9,
+      "hex": "70002020202020207A"
+    },
+    {
+      "address": "193B",
+      "bytes": 16,
+      "hex": "0001FFFFFFFFFFFF001B001A001C001D"
+    },
+    {
+      "address": "6C3C",
+      "bytes": 10,
+      "hex": "3F065B4F666D7D077F6F"
+    },
+    {
+      "address": "28E6",
+      "bytes": 24,
+      "hex": "343C343C343C343C34343C3C34343C3C343434343C3C3C3C"
+    },
+    {
+      "address": "29BB",
+      "bytes": 4,
+      "hex": "01020408"
+    }
+  ]
+}

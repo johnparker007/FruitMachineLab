@@ -20,7 +20,8 @@ public record FeatureReplayResult(int Instructions,int LampRequests,int AlphaReq
 public static class SkillCashFeatureReplay
 {
     public static FeatureReplayResult Run(string evidenceDirectory,Action<AlphaRequest>? alphaOutput=null,
-        Action<LampRequest>? lampOutput=null,Action<int,IReadOnlyList<ushort>>? observe=null)
+        Action<LampRequest>? lampOutput=null,Action<int,IReadOnlyList<ushort>>? observe=null,
+        Action<int,Instruction,Machine>? platformStep=null)
     {
         var options=new JsonSerializerOptions{PropertyNameCaseInsensitive=true};
         var capture=JsonSerializer.Deserialize<FeatureCapture>(File.ReadAllText(Path.Combine(evidenceDirectory,"skill-cash","feature-replay.json")),options)!;
@@ -128,6 +129,7 @@ public static class SkillCashFeatureReplay
                     state.WriteWord(0x2D,Cell.Add(state.ReadWord(0x2D),(ushort)point[2]));state.WriteWord(0x90,(ushort)((state.ReadWord(0x90)|point[3])&~point[4]));clock=(ushort)point[5];
                 }
                 Advance(clock);if(instruction.Site==0xC757)choices.Add(state.Data.Peek());if(instruction.Native==0x6E06)refresh++;
+                platformStep?.Invoke(ordinal,instruction,state);
                 if(instruction.Site==0xC761) {
                     level=state.Memory[Cell.Add(state.LocalFrame,1)];
                     events.Add(new(instruction.Site,"Selected level",level,$"Stage {choices.Count}; scheduler clock {scheduler.Clock:X4}; calculated from the continuous recovered selection loop"));

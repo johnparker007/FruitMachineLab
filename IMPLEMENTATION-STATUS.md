@@ -92,6 +92,12 @@ pulse-width helper calls. PIA/VFD electrical timing and elapsed PTM callbacks
 remain open; native scan input RAM is recorded rather than supplied by a general
 platform schedule. Earlier boundary statements above are historical.
 
+The [shared timing pass](docs/recovery/SKILL-CASH-SHARED-TIMING-PASS.md) now connects
+VM-produced requests, 29,192 calculated frame writes, 6,103 IRQ scans and timer
+callbacks on one memory image. Frame changes between scans are no longer injected.
+CPU-cycle timestamps and game IRQ/latch timing remain captured; hardware timer
+deadlines, general scheduling and electrical effects are still unresolved.
+
 ## Provenance
 
 Original workspace is preserved at

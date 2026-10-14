@@ -1,0 +1,63 @@
+707E: 34 01       PSHS   CC
+7080: 1A 50       ORCC   #$50
+7082: 8E 0A 14    LDX    #$0A14
+7085: BF 09 02    STX    $0902
+7088: 35 81       PULS   CC,PC
+708A: 34 01       PSHS   CC
+708C: 1A 50       ORCC   #$50
+708E: 8E 0D 70    LDX    #$0D70
+7091: BF 09 02    STX    $0902
+7094: 35 81       PULS   CC,PC
+7096: 86 00       LDA    #$00
+7098: 97 3F       STA    <$3F
+709A: B7 09 01    STA    $0901
+709D: C6 00       LDB    #$00
+709F: F7 09 00    STB    $0900
+70A2: D7 40       STB    <$40
+70A4: 8A 01       ORA    #$01
+70A6: B7 09 01    STA    $0901
+70A9: C6 00       LDB    #$00
+70AB: CA 01       ORB    #$01
+70AD: F7 09 00    STB    $0900
+70B0: 39          RTS
+70B1: 8D 16       BSR    $70C9
+70B3: 34 05       PSHS   B,CC
+70B5: 1A 50       ORCC   #$50
+70B7: D6 3F       LDB    <$3F
+70B9: C4 FE       ANDB   #$FE
+70BB: F7 09 01    STB    $0901
+70BE: D7 3F       STB    <$3F
+70C0: C6 00       LDB    #$00
+70C2: F7 09 00    STB    $0900
+70C5: D7 40       STB    <$40
+70C7: 35 85       PULS   CC,B,PC
+70C9: 34 05       PSHS   B,CC
+70CB: 1A 50       ORCC   #$50
+70CD: C6 00       LDB    #$00
+70CF: F7 09 01    STB    $0901
+70D2: D7 3F       STB    <$3F
+70D4: 35 85       PULS   CC,B,PC
+70D6: 34 05       PSHS   B,CC
+70D8: 1A 50       ORCC   #$50
+70DA: F6 09 01    LDB    $0901
+70DD: F6 09 04    LDB    $0904
+70E0: 9F 3B       STX    <$3B
+70E2: C6 62       LDB    #$62
+70E4: F7 09 01    STB    $0901
+70E7: D7 3F       STB    <$3F
+70E9: 10 BF 09 04 STY    $0904
+70ED: 35 85       PULS   CC,B,PC
+70EF: 34 05       PSHS   B,CC
+70F1: 1A 50       ORCC   #$50
+70F3: F6 09 01    LDB    $0901
+70F6: F6 09 06    LDB    $0906
+70F9: 9F 3D       STX    <$3D
+70FB: D6 3F       LDB    <$3F
+70FD: C4 FE       ANDB   #$FE
+70FF: F7 09 01    STB    $0901
+7102: D7 3F       STB    <$3F
+7104: C6 63       LDB    #$63
+7106: F7 09 00    STB    $0900
+7109: D7 40       STB    <$40
+710B: 10 BF 09 06 STY    $0906
+710F: 35 85       PULS   CC,B,PC

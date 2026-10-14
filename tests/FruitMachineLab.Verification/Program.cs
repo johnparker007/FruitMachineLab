@@ -7,6 +7,49 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Shared VM, lamp writes, IRQ scans and timer callbacks match MAME", () => {
+    var result=SkillCashSharedTimingVerification.Verify(evidence);
+    Equal(98704,result.Instructions);Equal(29192,result.LampWrites);Equal(6103,result.Scans);
+    Console.WriteLine($"  {result.LampWrites} lamp writes, {result.Scans} scans, {result.Arms} arms and {result.Callbacks} callbacks on one timeline");
+});
+Check("Captured cycle timeline preserves source order and rejects time reversal", () => {
+    var clock=new CapturedCycleTimeline(100,new ulong[][]{new[]{2UL,0UL},new[]{0UL,1UL},new[]{3UL,2UL}});
+    var events=new List<int>();clock.AdvanceTo(102,item=>{Equal(102UL,clock.Now);events.Add(item.Sequence);});
+    Equal("0,1",string.Join(',',events));Equal(1,clock.Remaining);
+    try {clock.AdvanceTo(101,_=>{});}catch(InvalidDataException){clock.AdvanceTo(105,item=>events.Add(item.Sequence));Equal(0,clock.Remaining);return;}
+    throw new Exception("Clock reversal accepted");
+});
+Check("Timer callback masks current scan outputs without changing frame memory", () => {
+    var m=new Machine();m.WriteWord(0x28,7);m.Memory[0x147]=0x0F;m.Memory[0x14F]=0xF0;m.Memory[0xB2]=1;
+    m.Memory[0xA00]=0xF7;m.Memory[0xA02]=0x3F;m.Memory[0xB00]=0xFF;m.Memory[0x107]=0x5A;
+    Mpu4LampInhibit.Apply(m);Equal((byte)7,m.Memory[0xA00]);Equal((byte)0x30,m.Memory[0xA02]);Equal((byte)0,m.Memory[0xB00]);Equal((byte)0x5A,m.Memory[0x107]);
+});
+Check("Captured timeline rejects incomplete event payloads", () => {
+    var clock=new CapturedCycleTimeline(0,new ulong[][]{new[]{1UL}});
+    try {clock.AdvanceTo(1,_=>{});}catch(InvalidDataException){return;}
+    throw new Exception("Malformed cycle event accepted");
+});
+Check("Timer-3 dispatch disables the timer and preserves the native address gate", () => {
+    var m=new Machine();m.Memory[0x3F]=0xFF;m.Memory[0x40]=0x63;m.WriteWord(0x3D,0x13FF);
+    Equal(false,Mpu4TimerCallbacks.DispatchTimer3(m,(_,_)=>throw new Exception("Suppressed callback invoked")));
+    Equal((byte)0xFE,m.Memory[0x3F]);Equal((byte)0,m.Memory[0x40]);
+    m.WriteWord(0x3D,0x48FD);int calls=0;
+    Equal(true,Mpu4TimerCallbacks.DispatchTimer3(m,(address,state)=>{Equal((ushort)0x48FD,address);Equal((byte)0,state.Memory[0x40]);calls++;}));Equal(1,calls);
+});
+Check("Changed timed callback output rejects shared-memory replay", () => {
+    var capture=System.Text.Json.JsonSerializer.Deserialize<SharedTimingCapture>(File.ReadAllText(Path.Combine(evidence,"skill-cash","shared-timing.json")),
+        new System.Text.Json.JsonSerializerOptions{PropertyNameCaseInsensitive=true})!;
+    capture.Events.First(row=>row[1]==7)[3]^=1;
+    var temporary=Path.Combine(Path.GetTempPath(),"FruitMachineLab-"+Guid.NewGuid());
+    try {
+        Directory.CreateDirectory(Path.Combine(temporary,"skill-cash"));Directory.CreateDirectory(Path.Combine(temporary,"VM-SCRIPTS"));
+        foreach(var source in Directory.GetFiles(Path.Combine(evidence,"VM-SCRIPTS"),"*.txt"))File.Copy(source,Path.Combine(temporary,"VM-SCRIPTS",Path.GetFileName(source)));
+        foreach(var name in new[]{"feature-replay.json","feature-sound.json","compensation-calls.json","alpha-calls.json","lamp-frames.json"})File.Copy(Path.Combine(evidence,"skill-cash",name),Path.Combine(temporary,"skill-cash",name));
+        File.WriteAllText(Path.Combine(temporary,"skill-cash","shared-timing.json"),System.Text.Json.JsonSerializer.Serialize(capture));
+        try {SkillCashSharedTimingVerification.Verify(temporary);}catch(InvalidDataException){return;}
+        throw new Exception("Changed timed callback output accepted");
+    } finally {if(Directory.Exists(temporary))Directory.Delete(temporary,true);}
+});
 Check("Native alpha software state and serial bytes match MAME", () => {
     var result=SkillCashAlphaVerification.Verify(evidence);Equal(44,result.Calls);
     Console.WriteLine($"  {result.Calls} alpha calls and {result.Bytes} serial bytes checked");

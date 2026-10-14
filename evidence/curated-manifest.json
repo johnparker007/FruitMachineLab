@@ -130,6 +130,11 @@
     "sha256": "3F3A81E0E9B910348E9CF7B4369B959E0B970AB46683DD1434F74706DDECC4A9"
   },
   {
+    "path": "docs/recovery/SKILL-CASH-SHARED-TIMING-PASS.md",
+    "bytes": 5400,
+    "sha256": "05BC6983BC57CF2F76EB28D668442666CD3E46489FDA5383576C0CCD7AD2D81B"
+  },
+  {
     "path": "docs/recovery/SPECIAL-FEATURE-RECOVERY.txt",
     "bytes": 4243,
     "sha256": "DAE384645EA4E1886145F25103378F9BBFE49C10958DE236EA9CF69D52BAE066"
@@ -430,6 +435,11 @@
     "sha256": "FC7FF689FBB431A5E53877D7E4EB51281A166660C1DA9D19468CB7EFD365A20C"
   },
   {
+    "path": "evidence/mpu4/native/70b3.json",
+    "bytes": 1353,
+    "sha256": "AD93D937F4DB26A9590C3C434E48A1D2A85A89E7EBD0AF0974E4B502A7E9F917"
+  },
+  {
     "path": "evidence/mpu4/native/70ef.json",
     "bytes": 1538,
     "sha256": "703B0EB30D7E5556926C00707BDD76F80A0238730824A66E1128C4F244B695FD"
@@ -695,6 +705,11 @@
     "sha256": "6FA641AA2D9DB5A1853D2B369CD6B30DA456C8433E8BD28B9FDC44F3911BC018"
   },
   {
+    "path": "evidence/mpu4/native/fe70.json",
+    "bytes": 5172,
+    "sha256": "7CB84898967D93505AF7A8F71B9AE9F94B14BE53A8194BDED9EABBB533976DFD"
+  },
+  {
     "path": "evidence/mpu4/native/sound-native-provenance.json",
     "bytes": 1949,
     "sha256": "2090C3F8660CF2AEDE458B6862FCF5BEFB72F4EC0291A901C2946391733B84C6"
@@ -703,6 +718,16 @@
     "path": "evidence/mpu4/native/sound-native.txt",
     "bytes": 16893,
     "sha256": "232E98F4E17E99F6634B69D59FECD67879D5FCAE1789256F4750B7AD4C01AA07"
+  },
+  {
+    "path": "evidence/mpu4/native/timer-native-provenance.json",
+    "bytes": 1865,
+    "sha256": "77DB339F8BACDBBC8AE53E958EF479A08AC36F6B19FD677D595997B0E505B7ED"
+  },
+  {
+    "path": "evidence/mpu4/native/timer-native.txt",
+    "bytes": 1978,
+    "sha256": "B758D299E4E7F082F88CFA7DA75CDCECCE20C28999B9DD5D559EBF62CC1D19A1"
   },
   {
     "path": "evidence/mpu4/skill-cash/actions.csv",
@@ -868,6 +893,21 @@
     "path": "evidence/mpu4/skill-cash/selection-loops.json",
     "bytes": 95378,
     "sha256": "D165DD46443AF0691CA2278E1656922B3E3D2BA9DC8AA25E6F272753F553BCA7"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/shared-timing-debugger.cmd",
+    "bytes": 2106,
+    "sha256": "206B5605D522BF1AAC5582C21FD2683750A016E1D72A291A4818E195F1081D4F"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/shared-timing-verification.json",
+    "bytes": 1452,
+    "sha256": "20F1BD53E97CD3A27A7FCA88AE171ADE770532406AF25971919AECA27D2E953D"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/shared-timing.json",
+    "bytes": 1526757,
+    "sha256": "2B210D8E68FCDE3114F682F6A2B4D2EB4F9E8E7E7BC1876864CABBE8BD599CA5"
   },
   {
     "path": "evidence/mpu4/skill-cash/sound-debugger.cmd",

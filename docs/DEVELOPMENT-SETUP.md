@@ -82,3 +82,10 @@ The viewer now includes alpha shadow and IRQ latch timelines. Forty-seven headle
 verification groups pass with the existing SDK. See
 recovery/SKILL-CASH-ALPHA-OUTPUT-PASS.md for the distinction between verified software
 effects and unresolved electrical/platform timing. No new dependencies were added.
+
+## Shared timing follow-up
+
+Fifty-three headless verification groups pass. The IRQ view now includes timer
+callback masking after scans, driven by captured CPU-cycle offsets. See
+recovery/SKILL-CASH-SHARED-TIMING-PASS.md for the shared-memory proof and remaining
+elapsed timer/CPU scheduling work. Existing build/run commands remain unchanged.

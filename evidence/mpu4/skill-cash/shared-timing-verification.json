@@ -1,0 +1,36 @@
+{
+  "run_directory": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-shared-frames-4942c10231be4f95b6c4738502ebb436",
+  "raw_debug_sha256": "9C44964C8F552E15D88909E6F56F345E161BFBB8E6AAB67B296D0B7B73A87D6D",
+  "comparisons": {
+    "state.csv": {
+      "equal": true,
+      "sha256": "47FF02056BD69CABCC67C9E84A98075CA89CD70967AD123E8D8C176E5D0B491E"
+    },
+    "feature-state.csv": {
+      "equal": true,
+      "sha256": "158665742D9BCD43AE16C1BD4C29002D5A24F81C410400D1F709325D121650A1"
+    },
+    "input-levels.csv": {
+      "equal": true,
+      "sha256": "089632A675A4FE8FC1A58BF194C33C680C6003B253D89AEE339DC0C94CA64314"
+    },
+    "ram-final.bin": {
+      "equal": true,
+      "sha256": "4F1B688CD2BC46B69F7DE80838DCD0E00214CAD1C24EE05A4CF85220F452B994"
+    }
+  },
+  "provenance": {
+    "shared_timing": true,
+    "native_lamp_frames": false,
+    "replay_sha256": "4A051DA15264842697879EFF396B34A789F5D80623F9A2E749C244E6A80E721D",
+    "paused_setup_callbacks_skipped": 8,
+    "initial_state": "Fresh isolated default configuration and absent NVRAM; physical-input fixture only; no RAM/ROM injection.",
+    "full_feature_capture": true,
+    "native_scan_capture": false,
+    "native_sound_capture": false,
+    "native_nvram_capture": false,
+    "native_alpha_capture": false,
+    "native_input_capture": false,
+    "mame_sha256": "0FCE5A88DF4F9D9B1FBF1405812C00848036E615993780978D967DA34204CB7A"
+  }
+}

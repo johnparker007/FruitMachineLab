@@ -22,7 +22,7 @@
    </TabItem>
    <TabItem Header="IRQ output scan">
     <DockPanel Margin="12">
-     <TextBlock DockPanel.Dock="Top" Margin="0,0,0,10" TextWrapping="Wrap" Text="Recorded native IRQ slices with calculated animation counters, scan columns and port latches. Between-call RAM is captured. Timer callbacks are armed; elapsed PTM timing and visible brightness are not simulated." />
+     <TextBlock DockPanel.Dock="Top" Margin="0,0,0,10" TextWrapping="Wrap" Text="VM-generated lamp writes, IRQ scans and timer callbacks share one memory model. The rows show calculated latches at captured CPU-cycle offsets. Timer deadlines, electrical edges and visible brightness are not simulated." />
      <DataGrid x:Name="ScanTimeline" IsReadOnly="True" AutoGenerateColumns="True" />
     </DockPanel>
    </TabItem>

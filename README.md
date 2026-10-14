@@ -3,9 +3,10 @@
 Experimental recovery of Barcrest MPU4 Adders & Ladders, m4addr A6L 0.1 set 1.
 Recovered code and names are reconstructions, not original source.
 
-The initial C# solution separates the headless VM subset, game-specific Skill Cash
-replay, and WPF diagnostic viewer. It currently verifies **bounded feature mechanics**,
-not complete standalone Skill Cash gameplay. See [implementation status](IMPLEMENTATION-STATUS.md).
+The C# solution separates the headless VM/runtime, game-specific Skill Cash replay,
+and WPF diagnostic viewer. It now verifies **continuous C721 feature execution**
+against recorded MAME timing and inputs. Standalone interactive gameplay and full
+peripheral emulation remain incomplete. See [implementation status](IMPLEMENTATION-STATUS.md).
 
 Using installed .NET SDK 9.0.313 and net8.0 targeting packs:
 
@@ -21,10 +22,10 @@ It deliberately needs no NuGet test framework installation. Run from repository 
 or pass the absolute repository path to verification. The Windows viewer accepts that
 path separately. No SDK pin or machine configuration is changed.
 
-Latest local verification: both solutions build without warnings or errors; 32
-verification groups pass. Complete C699 selection calls match 65,298 recorded VM
-dispatches and produce choices 3, 2 and 1. A native sound timing/choice subset
-predicts all 1,202 choice reads; decoded lamp requests remain separate from hardware frames.
+Latest local verification: both solutions build without warnings or errors; 39
+verification groups pass. Continuous C721 execution matches 98,704 VM dispatches,
+selects 3, 2 and 1, and finishes with pending 0/current win 10. All 7,298 lamp frame
+updates and the complete sound timing protocol match recorded native observations.
 The initial WPF viewer was tested by John; its expanded output has build verification.
 
 A focused MAME capture matches the original campaign's sampled state, feature state,
@@ -37,3 +38,6 @@ The [selection/scheduler report](docs/recovery/SKILL-CASH-SELECTION-SCHEDULER-PA
 records complete selection-loop coverage and the captured timing boundaries.
 The [award/NVRAM report](docs/recovery/SKILL-CASH-AWARD-NVRAM-PASS.md) records
 13 native refreshes and ten calculated transfers to current win 10.
+The [continuous feature report](docs/recovery/SKILL-CASH-CONTINUOUS-FEATURE-PASS.md)
+records the connected execution, recovered input conditions, concurrent sound
+streams, lamp frame memory and remaining peripheral boundaries.

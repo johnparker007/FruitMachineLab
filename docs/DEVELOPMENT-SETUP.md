@@ -67,3 +67,11 @@ No installation, system configuration, commit, push or cloud setup was performed
 Both solutions build with the existing SDK. Verification now has 29 groups,
 including complete C699 replay. See recovery/SKILL-CASH-SELECTION-SCHEDULER-PASS.md
 for current boundaries; the initial-batch paragraph above is historical.
+
+## Continuous feature follow-up
+
+The current WPF viewer runs continuous C721 verification, including native sound
+timing and lamp frame memory checks. Thirty-nine headless verification groups pass;
+no manual GUI check is required between runtime batches. Physical peripheral effects
+and interactive platform timing remain open. See
+recovery/SKILL-CASH-CONTINUOUS-FEATURE-PASS.md for exact evidence boundaries.

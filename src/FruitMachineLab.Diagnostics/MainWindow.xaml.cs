@@ -11,9 +11,14 @@ public partial class MainWindow : Window
         button.IsEnabled=false;Status.Text="Verifying recovered scripts and recorded state…";
         string repository=RootPath.Text;
         try {
-            var result=await Task.Run(()=>SkillCashReplay.Run(Path.Combine(repository,"evidence","mpu4")));
+            var result=await Task.Run(()=> {
+                string evidence=Path.Combine(repository,"evidence","mpu4");
+                SkillCashSoundVerification.VerifyFeature(evidence);
+                SkillCashLampFrameVerification.Verify(evidence);
+                return SkillCashFeatureReplay.Run(evidence);
+            });
             Events.ItemsSource=result.Events;
-            Status.Text=$"Verified level {result.Level}, pending award {result.PendingAward} ROM units. Complete feature execution is still pending.";
+            Status.Text=$"Verified continuous feature replay: level {result.Level}, final pending {result.Pending}, current win {result.CurrentWin} ROM units; {result.Instructions:N0} VM dispatches. Lamp frame buffers and sound timing match MAME. Physical display, lamp scanning and audio synthesis remain incomplete.";
         } catch(Exception error) { Events.ItemsSource=null; Status.Text=error.Message; }
         finally {button.IsEnabled=true;}
     }

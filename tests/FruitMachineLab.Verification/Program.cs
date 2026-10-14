@@ -20,6 +20,28 @@ Check("NVRAM service gate and unprotected checksum delta", () => {
     for(int address=0x2F0;address<0x309;address++) {Equal(unchecked((byte)~m.Memory[address]),m.Memory[address+0x19]);sum=unchecked((byte)(sum-m.Memory[address]));}
     Equal(unchecked((byte)(sum-0x32+7)),m.Memory[0x322]);Equal((byte)0x42,m.Memory[0x2C]);
 });
+Check("Native input conditions preserve none, partial, full and selector wrap", () => {
+    var m=new Machine();SkillCashData.LoadFeature(m);
+    // Synthetic mask rows isolate 67EC's condition-code paths.
+    m.Memory[0x71AA]=3;m.Memory[0x71AB]=4;m.Memory[0x71AC]=0;m.Memory[0x71AD]=0;
+    Equal((ushort)0,Mpu4InputConditions.Evaluate(m,0));
+    m.Memory[0]=1;Equal((ushort)1,Mpu4InputConditions.Evaluate(m,0));
+    m.Memory[0]=3;m.Memory[1]=4;Equal(ushort.MaxValue,Mpu4InputConditions.Evaluate(m,0));
+    Equal(ushort.MaxValue,Mpu4InputConditions.Evaluate(m,64));
+    m.Memory[0x7226]=8;m.Memory[0x7227]=16;Equal((ushort)0,Mpu4InputConditions.Evaluate(m,0x80));
+    m.Memory[7]=16;Equal(ushort.MaxValue,Mpu4InputConditions.Evaluate(m,0x80));
+});
+Check("Sound forks run in the same tick and yield after equal deadlines", () => {
+    var m=new Machine();m.Memory[0x4E]=16;
+    new byte[]{0xC2,0x91,0x00,0xCE,1,0xD2,1,0xC0}.CopyTo(m.Memory,0x9000);
+    new byte[]{0xD2,2,0xCE,1,0xD3,3,0xC0}.CopyTo(m.Memory,0x9100);
+    var writes=new List<byte>();var scheduler=new Mpu4ChoiceStreamScheduler(m,0,e=>{if(e.Kind=="choice")writes.Add(e.Value);});
+    Equal(true,scheduler.Queue(0x9000));scheduler.AdvanceTicks(1);Equal((byte)2,scheduler.Choice);Equal(2,scheduler.ActiveTasks);
+    scheduler.AdvanceTicks(1);Equal(false,scheduler.Active);Equal("2,1,4",string.Join(',',writes));
+    new byte[]{0xC1,0x92,0x00,0xD3,2,0xC0}.CopyTo(m.Memory,0x9000);
+    new byte[]{0xD2,1,0xC0}.CopyTo(m.Memory,0x9200);
+    scheduler.Queue(0x9000);scheduler.AdvanceTicks(1);Equal((byte)3,scheduler.Choice);Equal(false,scheduler.Active);
+});
 Check("Native NVRAM refresh and award-transfer accounting match MAME", () => {
     var result=SkillCashAwardVerification.Verify(evidence);
     Equal(13,result.Refreshes);Equal(10,result.Transfers);Equal((ushort)10,result.CurrentWin);
@@ -131,6 +153,48 @@ Check("ROM choice stream and native wait schedule match MAME", () => {
     var result=SkillCashSoundVerification.Verify(evidence);
     Equal(3,result.Queues);Equal(1202,result.Reads);
     Console.WriteLine($"  {result.Commands} sound commands, {result.Waits} waits, {result.Writes} choice writes checked");
+});
+Check("Complete feature sound protocol, forks and returns match MAME", () => {
+    var result=SkillCashSoundVerification.VerifyFeature(evidence);
+    Equal(25,result.Queues);
+    Console.WriteLine($"  {result.Commands} sound commands and {result.Waits} waits checked across all feature streams");
+});
+Check("Continuous C721 replay matches MAME and restores caller frame", () => {
+    var result=SkillCashFeatureReplay.Run(evidence);
+    Equal((ushort)0,result.Pending);Equal((ushort)10,result.CurrentWin);Equal("3,2,1",string.Join(',',result.Choices));
+    Console.WriteLine($"  {result.Instructions} continuous dispatches, {result.LampRequests} lamp requests and {result.AlphaRequests} alpha requests checked");
+});
+Check("Full feature lamp frame buffers match native MAME returns", () => {
+    Equal(7298,SkillCashLampFrameVerification.Verify(evidence));
+});
+Check("Changed characteriser response rejects lamp frame replay", () => {
+    var capture=System.Text.Json.JsonSerializer.Deserialize<LampFrameCapture>(File.ReadAllText(Path.Combine(evidence,"skill-cash","lamp-frames.json")),
+        new System.Text.Json.JsonSerializerOptions{PropertyNameCaseInsensitive=true})!;
+    capture.Responses[4]^=8;
+    var temporary=Path.Combine(Path.GetTempPath(),"FruitMachineLab-"+Guid.NewGuid());
+    try {
+        Directory.CreateDirectory(Path.Combine(temporary,"skill-cash"));Directory.CreateDirectory(Path.Combine(temporary,"VM-SCRIPTS"));
+        foreach(var source in Directory.GetFiles(Path.Combine(evidence,"VM-SCRIPTS"),"*.txt"))File.Copy(source,Path.Combine(temporary,"VM-SCRIPTS",Path.GetFileName(source)));
+        foreach(var name in new[]{"feature-replay.json","feature-sound.json","compensation-calls.json"})File.Copy(Path.Combine(evidence,"skill-cash",name),Path.Combine(temporary,"skill-cash",name));
+        File.WriteAllText(Path.Combine(temporary,"skill-cash","lamp-frames.json"),System.Text.Json.JsonSerializer.Serialize(capture));
+        try {SkillCashLampFrameVerification.Verify(temporary);}catch(InvalidDataException){return;}
+        throw new Exception("Changed characteriser mapping was accepted");
+    } finally {if(Directory.Exists(temporary))Directory.Delete(temporary,true);}
+});
+Check("Changed physical input ports reject the continuous feature replay", () => {
+    var capture=System.Text.Json.JsonSerializer.Deserialize<FeatureCapture>(File.ReadAllText(Path.Combine(evidence,"skill-cash","feature-replay.json")),
+        new System.Text.Json.JsonSerializerOptions{PropertyNameCaseInsensitive=true})!;
+    var point=capture.Conditions.First(p=>p[1]==30 && p[2]!=0);
+    for(int index=3;index<7;index++)point[index]=0;
+    var temporary=Path.Combine(Path.GetTempPath(),"FruitMachineLab-"+Guid.NewGuid());
+    try {
+        Directory.CreateDirectory(Path.Combine(temporary,"skill-cash"));Directory.CreateDirectory(Path.Combine(temporary,"VM-SCRIPTS"));
+        foreach(var source in Directory.GetFiles(Path.Combine(evidence,"VM-SCRIPTS"),"*.txt"))File.Copy(source,Path.Combine(temporary,"VM-SCRIPTS",Path.GetFileName(source)));
+        foreach(var name in new[]{"feature-sound.json","compensation-calls.json"})File.Copy(Path.Combine(evidence,"skill-cash",name),Path.Combine(temporary,"skill-cash",name));
+        File.WriteAllText(Path.Combine(temporary,"skill-cash","feature-replay.json"),System.Text.Json.JsonSerializer.Serialize(capture));
+        try {SkillCashFeatureReplay.Run(temporary);}catch(InvalidDataException){return;}
+        throw new Exception("Changed port bytes were accepted");
+    } finally {if(Directory.Exists(temporary))Directory.Delete(temporary,true);}
 });
 Check("Native delay scaling preserves floor, minimum tick and rate flag", () => {
     Equal((ushort)3,Mpu4ChoiceStreamScheduler.ScaleDelay(2,25,16,0x80));
@@ -264,7 +328,7 @@ Check("Recorded dispatch tokens agree with recovered listings", () => {
     if(checkedSites<100) throw new Exception("Insufficient dispatch comparisons");
     Console.WriteLine($"  {checkedSites} recorded dispatches checked");
 });
-Console.WriteLine($"{passed} verification groups passed. Bounded replay only; complete feature timing/animation remains untranslated.");
+Console.WriteLine($"{passed} verification groups passed. Continuous feature replay verified; physical scan, alpha hardware, audio synthesis and general timing remain incomplete.");
 return 0;
 } catch (Exception error) {
     Console.Error.WriteLine("FAIL verification: " + error);

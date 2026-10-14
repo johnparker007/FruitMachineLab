@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 namespace FruitMachineLab.Runtime;
 
 public record Instruction(ushort Site, ushort Token, string Operation, ushort? Value, ushort? Branch,
-    ushort? Body = null, ushort? PushAddress = null, ushort? Native = null);
+    ushort? Body = null, ushort? PushAddress = null, ushort? Native = null,string? InlineStream=null);
 
 public sealed class RecoveredScript
 {
@@ -22,7 +22,8 @@ public sealed class RecoveredScript
                 return f.Success ? ushort.Parse(f.Groups[1].Value, NumberStyles.HexNumber) : null;
             }
             items.Add(new(Parse(match.Groups[1].Value), Parse(match.Groups[2].Value), match.Groups[3].Value,
-                Field("inline_value") ?? Field("value"), Field("branch"),Field("body"),Field("push_address"),Field("native")));
+                Field("inline_value") ?? Field("value"), Field("branch"),Field("body"),Field("push_address"),Field("native"),
+                Regex.Match(match.Groups[4].Value,@"inline_stream=\[(.*)\]") is {Success:true} stream ? stream.Groups[1].Value : null));
         }
         Instructions = items;
     }
@@ -33,6 +34,7 @@ public sealed class RecoveredScript
 public sealed class ScriptExecutor(Machine machine)
 {
     public Func<ushort, bool>? InputCondition { get; init; }
+    public Func<ushort,ushort>? InputConditionCell { get; init; }
     public Action<Instruction, Machine>? BeforeInstruction { get; init; }
     public Action<Instruction,Machine>? OperationBoundary { get; init; }
     public Func<ushort, RecoveredScript>? ResolveScript { get; init; }
@@ -103,6 +105,7 @@ public sealed class ScriptExecutor(Machine machine)
                 }
                 case "vm_duplicate_cell": { var v = machine.Pop(); machine.Data.Push(v); machine.Data.Push(v); break; }
                 case "vm_drop_cell": machine.Pop(); break;
+                case "vm_drop_two_cells": machine.Pop();machine.Pop();break;
                 case "vm_swap_two_cells": { var b=machine.Pop(); var a=machine.Pop(); machine.Data.Push(b); machine.Data.Push(a); break; }
                 case "vm_move_cell_to_return_stack": Control().Push(machine.Pop());break;
                 case "vm_copy_return_stack_cell": machine.Data.Push(machine.ReadWord(Control().Pointer));break;
@@ -155,6 +158,7 @@ public sealed class ScriptExecutor(Machine machine)
                 case "vm_compare_equal": Binary((a,b) => Cell.Flag(a == b)); break;
                 case "vm_compare_top_lt_second_signed": Binary((a,b)=>Cell.Flag((short)b<(short)a)); break;
                 case "vm_compare_top_gt_second_unsigned": Binary((a,b)=>Cell.Flag(b>a)); break;
+                case "vm_compare_top_lt_second_unsigned": Binary((a,b)=>Cell.Flag(b<a));break;
                 case "vm_test_greater_than_zero": machine.Data.Push(Cell.Flag((short)machine.Pop()>0)); break;
                 case "vm_bitwise_and": Binary((a,b)=>(ushort)(a&b)); break;
                 case "vm_bitwise_or": Binary((a,b)=>(ushort)(a|b)); break;
@@ -165,7 +169,8 @@ public sealed class ScriptExecutor(Machine machine)
                 }
                 case "call_advance_random_seed": Mpu4Random.AdvanceSeed(machine); break;
                 case "call_nvram_refresh_complement_checksum_if_game": Mpu4Nvram.Refresh(machine);break;
-                case "vm_test_input_condition": machine.Data.Push(Cell.Flag((InputCondition ?? throw new NotSupportedException("Input condition provider required"))(Value()))); break;
+                case "vm_test_input_condition": machine.Data.Push(InputConditionCell is { } provider ? provider(Value()) :
+                    Cell.Flag((InputCondition ?? throw new NotSupportedException("Input condition provider required"))(Value()))); break;
                 case "vm_branch_forward8_if_zero":
                 case "vm_branch_backward8_if_zero":
                     if (machine.Pop() == 0)

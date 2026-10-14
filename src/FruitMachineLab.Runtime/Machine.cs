@@ -25,4 +25,4 @@ public sealed class Machine
     public ushort Pop() => Data.Count > 0 ? Data.Pop() : throw new InvalidOperationException("VM data stack underflow");
 }
 
-public record DiagnosticEvent(ushort Site, string Kind, ushort Value, string Evidence);
+public record DiagnosticEvent(ushort Site, string Kind, int Value, string Evidence);

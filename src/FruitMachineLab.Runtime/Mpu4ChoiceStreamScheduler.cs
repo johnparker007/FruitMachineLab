@@ -4,19 +4,34 @@ public record ChoiceStreamEvent(string Kind,ushort Clock,ushort Cursor,byte Valu
     byte Choice,byte Rate,byte Tempo,byte Gate,byte Flags,byte Pitch,byte Transpose,ushort Due=0);
 
 /// <summary>
-/// Recovered single-task sound-stream timing and choice effects. YM2413 synthesis,
-/// register-cache/channel effects and concurrent tasks remain outside this subset.
+/// Recovered sound-stream timing and choice effects. YM2413 synthesis and
+/// register-cache/channel effects remain outside this subset.
 /// </summary>
 public sealed class Mpu4ChoiceStreamScheduler(Machine machine,ushort clock,Action<ChoiceStreamEvent>? observer=null)
 {
-    private sealed record Loop(byte Count,ushort Cursor);
-    private readonly Stack<Loop> loops=new();
-    private ushort cursor,due;
-    private byte tempo=16,gate,flags,pitch,transpose;
-    private byte remainingDuration;
-    private ushort resume;
+    private sealed record Frame(byte? Count,ushort Cursor);
+    private sealed class TaskState
+    {
+        public readonly Stack<Frame> Frames=new();
+        public ushort Cursor,Due,Resume;
+        public byte Tempo=16,Gate,Flags,Pitch,Transpose,RemainingDuration;
+        public int StackBytes;
+    }
+    private readonly List<TaskState> tasks=new();
+    private TaskState task=new();
+    private Stack<Frame> loops=>task.Frames;
+    private ushort cursor {get=>task.Cursor;set=>task.Cursor=value;}
+    private ushort due {get=>task.Due;set=>task.Due=value;}
+    private ushort resume {get=>task.Resume;set=>task.Resume=value;}
+    private byte tempo {get=>task.Tempo;set=>task.Tempo=value;}
+    private byte gate {get=>task.Gate;set=>task.Gate=value;}
+    private byte flags {get=>task.Flags;set=>task.Flags=value;}
+    private byte pitch {get=>task.Pitch;set=>task.Pitch=value;}
+    private byte transpose {get=>task.Transpose;set=>task.Transpose=value;}
+    private byte remainingDuration {get=>task.RemainingDuration;set=>task.RemainingDuration=value;}
     public ushort Clock { get; private set; }=clock;
-    public bool Active { get; private set; }
+    public bool Active=>tasks.Count!=0;
+    public int ActiveTasks=>tasks.Count;
     public byte Choice=>machine.Memory[0x4F];
     private byte Fetch() { byte value=machine.Memory[cursor];cursor=Cell.Add(cursor,1);return value; }
     private void Emit(string kind,ushort at,byte value=0,ushort callback=0,ushort nextDue=0)=>
@@ -25,9 +40,10 @@ public sealed class Mpu4ChoiceStreamScheduler(Machine machine,ushort clock,Actio
     public bool Queue(ushort stream)
     {
         if((machine.Memory[0x719B]&0x80)!=0)return false; // native 60C8 early return
-        if(Active)throw new NotSupportedException("Concurrent sound tasks require further scheduler recovery");
-        cursor=stream;tempo=16;gate=0;flags=0;pitch=0;transpose=0;loops.Clear();resume=0;
-        due=Cell.Add(Clock,1);Active=true;return true;
+        // Native caller inserts at the active-list head, then sets due=clock+1.
+        // Multi-task CPU entry preemption and exhausted allocator are not modeled.
+        task=new(){Cursor=stream,Due=Cell.Add(Clock,1)};
+        tasks.Insert(0,task);return true;
     }
     public static ushort ScaleDelay(byte duration,byte globalRate,byte localTempo,byte taskFlags)
     {
@@ -39,16 +55,27 @@ public sealed class Mpu4ChoiceStreamScheduler(Machine machine,ushort clock,Actio
     {
         due=Cell.Add(Clock,ScaleDelay(duration,machine.Memory[0x4E],tempo,flags));resume=callback;
         Emit("wait",cursor,duration,callback,due);
+        ushort delay=unchecked((ushort)(due-Clock));
+        int index=0;
+        while(index<tasks.Count && unchecked((ushort)(tasks[index].Due-Clock))<=delay)index++;
+        tasks.Insert(index,task); // native BLS places a yielded task after equal deadlines
     }
     public void AdvanceTicks(int ticks)
     {
         if(ticks<0)throw new ArgumentOutOfRangeException(nameof(ticks));
-        for(int n=0;n<ticks;n++) { Clock=Cell.Add(Clock,1);if(Active && Clock==due)RunDueTask(); }
+        for(int n=0;n<ticks;n++) {
+            Clock=Cell.Add(Clock,1);
+            int budget=10000;
+            while(tasks.Count!=0 && tasks[0].Due==Clock) {
+                if(--budget==0)throw new InvalidOperationException("Too many sound tasks without advancing time");
+                task=tasks[0];tasks.RemoveAt(0);RunDueTask();
+            }
+        }
     }
     public bool Reset()
     {
         if((machine.Memory[0x719B]&0x80)!=0)return false;
-        Active=false;loops.Clear();resume=0;WriteChoice(0,0x5B7E);
+        tasks.Clear();loops.Clear();resume=0;WriteChoice(0,0x5B7E);
         machine.Memory[0x4D]=0;machine.Memory[0x4E]=16;machine.Memory[0x50]=16;
         return true;
     }
@@ -84,25 +111,39 @@ public sealed class Mpu4ChoiceStreamScheduler(Machine machine,ushort clock,Actio
             switch(command)
             {
                 case 0xC0:
-                    if(loops.Count!=0)throw new NotSupportedException("Sound return with loop/call state needs further recovery");
-                    Active=false;return;
+                    if(loops.Count==0)return;
+                    var call=loops.Pop();
+                    if(call.Count is not null)throw new NotSupportedException("Sound return over loop bytes needs explicit evidence");
+                    task.StackBytes-=2;cursor=call.Cursor;break;
+                case 0xC1:
+                    if(task.StackBytes>14)throw new InvalidOperationException("Native sound call stack capacity exceeded");
+                    ushort target=(ushort)((Fetch()<<8)|Fetch());
+                    loops.Push(new(null,cursor));task.StackBytes+=2;cursor=target;break;
+                case 0xC2:
+                    ushort child=(ushort)((Fetch()<<8)|Fetch());
+                    tasks.Insert(0,new(){Cursor=child,Due=Clock,Tempo=tempo,Gate=gate,Flags=flags,Pitch=pitch,Transpose=transpose});break;
                 case 0xC3:
-                    if(loops.Count>=5)throw new InvalidOperationException("Native sound loop stack capacity exceeded");
-                    var count=Fetch();loops.Push(new(count,cursor));break;
+                    if(task.StackBytes>13)throw new InvalidOperationException("Native sound loop stack capacity exceeded");
+                    var count=Fetch();loops.Push(new(count,cursor));task.StackBytes+=3;break;
                 case 0xC4:
                     if(loops.Count==0)throw new InvalidOperationException("Native sound loop stack underflow");
-                    var frame=loops.Pop();byte left=frame.Count==0 ? (byte)0 : unchecked((byte)(frame.Count-1));
+                    var frame=loops.Pop();if(frame.Count is not { } loopCount)throw new NotSupportedException("Sound loop over call bytes needs explicit evidence");
+                    byte left=loopCount==0 ? (byte)0 : unchecked((byte)(loopCount-1));
                     if(frame.Count==0 || left!=0) { loops.Push(frame with {Count=left});cursor=frame.Cursor; }
+                    else task.StackBytes-=3;
                     break;
+                case 0xC5: Fetch();break; // instrument register operand; audio effects remain separate
                 case 0xC6: Fetch();Fetch();break; // instrument-bank operand, YM effects outside timing subset
                 case 0xC7: pitch=Fetch();break;
                 case 0xC8: var offset=Fetch();pitch=offset==0 ? (byte)0 : unchecked((byte)(pitch+offset));break;
                 case 0xC9: Fetch();break; // detune operand, register effects outside timing subset
+                case 0xCA: Fetch();break; // volume operand; no timing/choice mutation
                 case 0xCC: tempo=Fetch();break;
                 case 0xCD: var multiplier=Fetch();tempo=multiplier==0 ? (byte)16 : unchecked((byte)(tempo*multiplier/16));break;
                 case 0xCE: Wait(Fetch(),0x5E29);return;
                 case 0xCF: BeginDuration(machine.Memory[cursor]);return;
                 case 0xD1: break; // channel release: no timing/choice mutation
+                case 0xD0: break; // sustain flag: channel/register effects only
                 case 0xD2: WriteChoice(Fetch(),0x60A6);break;
                 case 0xD3: WriteChoice(unchecked((byte)(Choice+Fetch())),0x60A6);break;
                 case 0xD7: gate=Fetch();break;

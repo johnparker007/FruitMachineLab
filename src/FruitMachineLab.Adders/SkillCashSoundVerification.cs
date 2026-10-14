@@ -8,10 +8,14 @@ public record SoundVerification(int Queues,int Commands,int Waits,int Writes,int
 public static class SkillCashSoundVerification
 {
     public static SoundVerification Verify(string evidenceDirectory)
+        =>Verify(evidenceDirectory,false);
+    public static SoundVerification VerifyFeature(string evidenceDirectory)
+        =>Verify(evidenceDirectory,true);
+    private static SoundVerification Verify(string evidenceDirectory,bool feature)
     {
-        var records=JsonSerializer.Deserialize<NativeSoundObservation[]>(File.ReadAllText(Path.Combine(evidenceDirectory,"skill-cash","sound-events.json")),
+        var records=JsonSerializer.Deserialize<NativeSoundObservation[]>(File.ReadAllText(Path.Combine(evidenceDirectory,"skill-cash",feature ? "feature-sound.json" : "sound-events.json")),
             new JsonSerializerOptions{PropertyNameCaseInsensitive=true}) ?? throw new InvalidDataException("Missing sound events");
-        var machine=new Machine();SkillCashData.Load(machine);
+        var machine=new Machine();SkillCashData.LoadFeature(machine);
         var pending=new Queue<ChoiceStreamEvent>();
         Mpu4ChoiceStreamScheduler? scheduler=null;
         int queues=0,commands=0,waits=0,writes=0;
@@ -25,7 +29,7 @@ public static class SkillCashSoundVerification
             {
                 case "SQ":
                     if(pending.Count!=0 || f["free"]==0)throw new InvalidDataException("Unsupported queued task state");
-                    byte rate=(byte)(25-5*queues);
+                    byte rate=feature ? (byte)f["rate"] : (byte)(25-5*queues);
                     if(rate!=f["rate"])throw new InvalidDataException("Queue rate differs from recovered stage timing");
                     machine.Memory[0x4E]=rate;machine.WriteWord(0x719B,f["abort"]);
                     queues++;break;
@@ -61,7 +65,7 @@ public static class SkillCashSoundVerification
                     break;
             }
         }
-        if(pending.Count!=0 || queues!=3 || choices.Count!=1202)throw new InvalidDataException("Incomplete sound verification");
+        if(pending.Count!=0 || queues!=(feature ? 25 : 3) || choices.Count!=(feature ? 0 : 1202))throw new InvalidDataException("Incomplete sound verification");
         return new(queues,commands,waits,writes,choices.Count,choices);
     }
 }

@@ -1,6 +1,6 @@
 # Implementation and evidence boundaries
 
-## Completed in this batch
+## Initial import and runtime baseline (historical)
 
 - Imported all top-level recovery reports and the current 528 decoded VM body listings.
 - Imported selected board/lamp semantic maps, branch prerequisites, arithmetic checks
@@ -16,7 +16,26 @@
   C757..C75F stage reduction and C70E pending-word store.
 - WPF consumes the same diagnostic events produced by the headless replay.
 
-## What the replay proves
+## Current continuous replay
+
+The diagnostic app executes the complete recovered C721 VM feature in one run,
+matching 98,704 MAME dispatches from entry through C767. It selects 3, 2 and 1,
+commits pending award 10, transfers ten units to current win, clears pending to
+zero, and restores the caller frame. All thirteen NVRAM refreshes match their
+native source/complement/checksum observations.
+
+Native input conditions are calculated from recorded port bytes and recovered
+mask tables, including partial match 0001. Choice bytes and queue rates are
+calculated; captured IRQ/latch/scheduler timing still drives the platform adapter.
+All 7,298 lamp requests reproduce native frame memory. The complete sound protocol
+matches 25 queues, concurrent forks, 6,037 commands and 1,930 waits.
+
+See [the continuous feature pass](docs/recovery/SKILL-CASH-CONTINUOUS-FEATURE-PASS.md)
+for canonical digest fields, provenance, static caller-sentinel checks and remaining
+boundaries. The earlier bounded mechanics replay and independent helper checks
+remain as focused verification; the paragraphs below describe those narrower checks.
+
+## Earlier bounded mechanics proof
 
 The recovered selection decisions produce accepted choices 3, 2 and 1 from recorded
 platform inputs, matching the recorded helper returns. The stage calculation uses
@@ -31,7 +50,7 @@ is not captured by this debugger range; both condition outcomes are evaluated an
 must yield the same result. For award 10 both yield 10. An input-dependent outcome
 fails with an explicit request for additional evidence.
 
-## Remaining before the first complete executable milestone
+## Earlier isolated coverage (historical)
 
 Complete C699 calls now match 65,298 dispatches, with calculated sound-stream choice
 bytes and decoded logical lamp requests. Captured IRQ/latch/scheduler timing remains
@@ -46,7 +65,7 @@ nested dispatches checked. C676 no longer injects a chance-helper result. Physic
 local/loop/nested-return frames match the 29-instruction feature prefix and nested calls.
 Selection blocks calculate all 1,202 decisions and accepted choices from platform inputs.
 Nonzero compensation and full-feature frame cleanup have static tests only.
-The current replay does not run C721 end to end and does not validate final bank,
+That earlier replay did not run C721 end to end or validate final bank,
 physical payout or UI animation. Current-win accounting has bounded verification,
 not full-feature execution. Unsupported interpreter operations throw.
 No synthetic selection/timer semantics are presented as ROM behaviour.
@@ -56,7 +75,15 @@ input-levels.csv and final RAM match the original campaign exactly. The expanded
 report is [SKILL-CASH-RUNTIME-PASS.md](docs/recovery/SKILL-CASH-RUNTIME-PASS.md).
 See [the compensation/control pass](docs/recovery/SKILL-CASH-COMPENSATION-PASS.md).
 See [the selection/scheduler pass](docs/recovery/SKILL-CASH-SELECTION-SCHEDULER-PASS.md).
-Next: recover full-feature orchestration and remaining native side effects.
+## Remaining before standalone gameplay
+
+Continuous C721 orchestration and lamp frame memory are now verified on the selected
+path. Alpha reset/stream requests are explicit peripheral boundaries; physical
+display memory, audio synthesis and lamp IRQ scanning remain unresolved. Platform
+timing is still a recorded per-dispatch adapter rather than a general CPU schedule.
+Final payout, enabled ROM-option branch C646, alternate awards and wider campaigns
+remain unverified. Unsupported operations fail explicitly; no synthetic fault or
+alternate-input test is presented as an observed MAME path.
 
 ## Provenance
 

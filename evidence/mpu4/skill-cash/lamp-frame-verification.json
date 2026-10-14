@@ -1,0 +1,33 @@
+{
+  "run_directory": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-lamp-frames-2496f533369d43809956dc45e1694fc8",
+  "raw_debug_sha256": "E7F8E83DE44EE70B187167E08EF3247AFE91F65162CB3B2D515A0130D804C668",
+  "comparisons": {
+    "state.csv": {
+      "equal": true,
+      "sha256": "47FF02056BD69CABCC67C9E84A98075CA89CD70967AD123E8D8C176E5D0B491E"
+    },
+    "feature-state.csv": {
+      "equal": true,
+      "sha256": "158665742D9BCD43AE16C1BD4C29002D5A24F81C410400D1F709325D121650A1"
+    },
+    "input-levels.csv": {
+      "equal": true,
+      "sha256": "089632A675A4FE8FC1A58BF194C33C680C6003B253D89AEE339DC0C94CA64314"
+    },
+    "ram-final.bin": {
+      "equal": true,
+      "sha256": "4F1B688CD2BC46B69F7DE80838DCD0E00214CAD1C24EE05A4CF85220F452B994"
+    }
+  },
+  "provenance": {
+    "initial_state": "Fresh isolated default configuration and absent NVRAM; physical-input fixture only; no RAM/ROM injection.",
+    "full_feature_capture": true,
+    "paused_setup_callbacks_skipped": 2,
+    "native_sound_capture": false,
+    "replay_sha256": "4A051DA15264842697879EFF396B34A789F5D80623F9A2E749C244E6A80E721D",
+    "native_nvram_capture": false,
+    "native_input_capture": false,
+    "native_lamp_frames": true,
+    "mame_sha256": "0FCE5A88DF4F9D9B1FBF1405812C00848036E615993780978D967DA34204CB7A"
+  }
+}

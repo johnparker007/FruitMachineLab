@@ -1,0 +1,10 @@
+Purpose: compute_scaled_parameter_from_counter_and_credit_profile
+Confidence: reviewed token mechanics; see lifecycle-pass/script-name-evidence.json
+Groups: credits
+Callers: B51D, B7F5, CBD1, EF6B, F0B0, E9E4, CA41, F20D
+
+Threaded script at A5A5; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* A5A5  831F  call_compute_scaled_parameter_from_counter_and_credit_profile  native=0x169B
+* A5A7  792F  vm_return_to_caller_stream  

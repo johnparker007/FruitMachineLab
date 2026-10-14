@@ -1,0 +1,26 @@
+Purpose: pick_a_win_flash_reel_lamps_until_third_request_nonzero
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: arithmetic, boolean/bit operations, control flow, memory operations, reels/symbol tests, stack/cell helpers
+Callers: C506
+
+Threaded script at C4B4; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C4B4  8248  vm_push_word_body_byte  value=0x0080
+* C4B6  9D3E  apply_lamp_range_record_9b7c  body=0x9D40
+* C4B8  78B5  vm_push_zero  
+* C4BA  7963  vm_push_inline_byte_literal  inline_value=0x0005
+* C4BD  99EC  random_scaled_range_selection  body=0x99EE
+* C4BF  824E  vm_push_word_body_byte  value=0x008F
+* C4C1  9D44  apply_three_reel_and_auxiliary_indexed_lamp_pattern  body=0x9D46
+* C4C3  78B5  vm_push_zero  
+* C4C5  99AD  wait_irq_ticks_or_abort_flag  body=0x99AF
+* C4C7  8248  vm_push_word_body_byte  value=0x0080
+* C4C9  9D4E  clear_selected_reel_lamp_record_and_auxiliary_range  body=0x9D50
+* C4CB  82E7  vm_push_word_body_word  value=0x0169
+* C4CD  7963  vm_push_inline_byte_literal  inline_value=0x0004
+* C4D0  787E  vm_add_words  
+* C4D2  786B  vm_fetch_unsigned_byte  
+* C4D4  7A46  vm_test_zero  
+* C4D6  79A6  vm_branch_backward8_if_zero  branch=0xC4B4
+* C4D9  792F  vm_return_to_caller_stream  

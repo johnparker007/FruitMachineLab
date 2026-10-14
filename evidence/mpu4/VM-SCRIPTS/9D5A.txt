@@ -1,0 +1,22 @@
+Purpose: update_ic8_output_bit10_from_pattern
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, control flow, memory operations, stack/cell helpers
+Callers: FAFC, FAC9, F7F5
+
+Threaded script at 9D5A; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9D5A  9C52  vm_push_word_body_word  value=0x0F02
+* 9D5C  786B  vm_fetch_unsigned_byte  
+* 9D5E  7B7D  vm_swap_two_cells  
+* 9D60  824E  vm_push_word_body_byte  value=0x008F
+* 9D62  7A6F  vm_compare_equal  
+* 9D64  7982  vm_branch_forward8_if_zero  branch=0x9D6F
+* 9D67  7963  vm_push_inline_byte_literal  inline_value=0x0010
+* 9D6A  7AA3  vm_bitwise_or  
+* 9D6C  7979  vm_branch_unsigned_forward8  branch=0x9D74
+  9D6F  7963  vm_push_inline_byte_literal  inline_value=0x00EF
+  9D72  7A97  vm_bitwise_and  
+* 9D74  9C52  vm_push_word_body_word  value=0x0F02
+* 9D76  7861  vm_store_byte  
+* 9D78  792F  vm_return_to_caller_stream  

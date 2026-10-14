@@ -1,0 +1,16 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: lamps
+Callers: FD56
+
+Threaded script at F4C1; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  F4C1  F4AD  script_f4ad  body=0xF4AF
+  F4C3  7B49  vm_duplicate_if_nonzero  
+  F4C5  7574  vm_return_if_nonzero  
+  F4C7  9A4E  store_irq_timer_c568  body=0x9A50
+  F4C9  835A  vm_push_word_body_byte  value=0x0049
+  F4CB  8060  call_lamp_set_frame_pattern_5  native=0x498B
+  F4CD  F478  script_f478  body=0xF47A
+  F4CF  792F  vm_return_to_caller_stream  

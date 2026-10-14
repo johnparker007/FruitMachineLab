@@ -1,0 +1,14 @@
+Purpose: select_combined_bank_limit_99_or_500_from_ff4a
+Confidence: reviewed token mechanics; see payout-pass/script-name-evidence.json
+Groups: award/balance operations, byte tests, control flow
+Callers: AEF9
+
+Threaded script at AEE6; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* AEE6  8530  test_byte_zero_at_ff4a  body=0x8427, push_address=0x8532
+* AEE8  7982  vm_branch_forward8_if_zero  branch=0xAEF1
+  AEEB  7963  vm_push_inline_byte_literal  inline_value=0x0063
+  AEEE  7979  vm_branch_unsigned_forward8  branch=0xAEF5
+* AEF1  795B  vm_push_inline_word_literal  inline_value=0x01F4
+* AEF5  792F  vm_return_to_caller_stream  

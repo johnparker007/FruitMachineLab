@@ -1,0 +1,38 @@
+TARGETED FEATURE-CHOICE EXPERIMENTS — 14 October 2026
+
+Five fixtures, each run twice from fresh isolated configuration and absent NVRAM. Take, Hi-then-roll, Lo-then-take and no-further-input ran110s; Nudgepot extension ran180s. All five pairs matched byte-for-byte in state.csv, feature-state.csv, input-levels.csv, full VM dispatch debug.log and final RAM. The first4079 frame samples in Take versus Hi-then-roll are identical before the first changed input. Fixtures use physical inputs only; no ROM/RAM patches or save states.
+
+FINDINGS
+1. Take Feature: the shared sequence reaches TAKE60P / OR ROLL DICE at selection C9=3. Collect/Take input at frame4140 commits bank2FC=6 after the existing pending/current-award animation. This is an internal bank transfer, not a physical payout test.
+2. No further input: the waiting choice eventually follows a take/commit path with the same final bank6. Timing and traces are recorded; this does not imply every feature or timeout uses that outcome.
+3. Hi/Lo negative control: real input levels confirm pulses, but C9 stays3 in this normal-play offer. Gate994F is mask0400 at719F OR the nonzero mode test9947. DC34 requires that gate AND pressed Hi/Lo. The statically recovered selection increment/decrement/wrap is therefore gated, not an ordinary normal-play Hi/Lo selector. No patches were used to force eligibility.
+4. Roll again: the fourth reel result becomes8; the board advances C9 to11, announces BACK3, then observed C9 transitions11->10->9->8. CCC4 is the three-step backward handler, with lamp/sound changes each iteration. The next offer is TAKE NUDGEPOT.
+5. Take Nudgepot: Collect at frame6480 gives BE=4. Recorded Hold/Nudge inputs consume4->3->2->1->0. I CAN DO BETTER restores a four-nudge plan, followed by automatic moves and a pending award20. Award animation transfers BA20 into current2FA20, then commits bank2FC20 at129.133s. This verified path depends on the starting reel/PRNG state; no general guaranteed-win claim follows.
+
+SCRIPT INDEX REPAIR
+The old decoder collected computed EXECUTE target headers and decoded observed body bytes, but failed to seed every target as a separate script root. These bodies could be executed yet missing from INDEX.txt. It now seeds verified colon/shared bodies from observed EXECUTE targets before traversing their control flow. The bounded E211 ten-entry token table is also seeded, using E227's indexed dispatch and E0C3's explicit index0..9 display association. This recovers additional static paths without claiming they executed.
+Script bodies440->469; at least one site observed336->355; reviewed names145->164 (+19). Remaining unresolved305: this number increased because29 additional bodies are now indexed. Eight new names are dispatch/display associations whose complete gameplay semantics remain unresolved; other new names describe reviewed mechanics. Static-only handlers are explicitly marked.
+Observed token locations4854->5096 (+242); observed conditional branch edges437->462 (+25). Only consecutive ordinary FC transitions matching decoded two-successor branches count; computed calls, native routines and return/frame transfers are outside that measurement.
+Saved Ghidra has8137 typed token sites and1041 typed word headers, zero missing typed items,439 native functions. Ordinary interpreter validation checks5,250,032 continuations with zero token/continuation mismatches. This does not validate original hardware behaviour or complete game rules.
+
+SPECIAL FEATURE TABLE
+ 0  tableE211  wordD001  bodyD003  Snake Bite; partly observed
+ 1  tableE213  wordCB5E  bodyCB60  Adders & Ladders; static only
+ 2  tableE215  wordCCC2  bodyCCC4  Back 3; partly observed
+ 3  tableE217  wordD001  bodyD003  Snake Bite; partly observed
+ 4  tableE219  wordCF79  bodyCF7B  Roll Even; partly observed
+ 5  tableE21B  wordCCEF  bodyCCF1  Advance; static only
+ 6  tableE21D  wordCE2F  bodyCE31  Up N Over; static only
+ 7  tableE21F  wordD001  bodyD003  Snake Bite; partly observed
+ 8  tableE221  wordCD27  bodyCD29  Boost; static only
+ 9  tableE223  wordCC8D  bodyCC8F  Rattler; static only
+
+The repeated Snake Bite entries share the same body. A table-associated name is not evidence every branch or outcome has been recovered. The table itself is typed in Ghidra with references to word headers; each separately recovered script has a listing and index entry.
+
+REPRODUCE
+Use scripts/Run-DeepTrace.ps1 with feature-choice.lua and feature-choice.cmd, Seconds110, a fresh RunName, and process-local MPU4_REPLAY pointing to evidence/feature-pass/{take,hiroll,lotake,timeout}-actions.csv. For nudgepot-actions.csv use feature-nudgepot.cmd and Seconds180. The runner copies the fixture to replay-actions.csv and records controller-settings.json. Input policy is bypassed for these controlled fixtures.
+Each run records exact frame windows, per-frame effective port levels and feature state, copied controller/debugger script, launch arguments, resolved settings, state/VM traces, final RAM and SHA256 manifest. Diagnostic host/device-detection warnings are retained in console.txt. No installs or general configuration changes occurred.
+Evidence: feature-pass/coverage.json, replay-verification.json, special-feature-table.json, summary.json and full VM event caches. Raw runs: runs/feature-*-a and feature-*-b. Program backup: work/project-before-feature-pass. The earlier reports are historical snapshots.
+
+NEXT INVESTIGATIONS
+Use known board eligibility gates and alternative starting reel outcomes to reach Adders & Ladders, Advance, Up N Over, Boost and Rattler, which currently have static table associations. Focused service/test-mode experiments can examine the gated Hi/Lo selector separately. Further award/payout work needs its own fixtures; no physical payout or ROM-bug diagnosis is claimed here.

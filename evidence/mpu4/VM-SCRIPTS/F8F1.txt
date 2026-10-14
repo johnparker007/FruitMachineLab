@@ -1,0 +1,13 @@
+Purpose: attract_run_forward_and_reverse_grid_sweeps
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: composition of script calls
+Callers: FA34
+
+Threaded script at F8F1; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* F8F1  F879  attract_clear_lamp_grid_one_row_at_a_time  body=0xF87B
+* F8F3  F89C  attract_light_grid_columns_forward  body=0xF89E
+* F8F5  F8B4  attract_clear_lamp_grid_rows_reverse  body=0xF8B6
+* F8F7  F8D5  attract_light_grid_columns_reverse  body=0xF8D7
+* F8F9  792F  vm_return_to_caller_stream  

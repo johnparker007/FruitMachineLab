@@ -1,0 +1,23 @@
+Purpose: round_current_award_even_and_flash_balance_display_seven_times
+Confidence: reviewed token mechanics/channel association; see prerequisite-pass/script-name-evidence.json
+Groups: award/balance operations, display, sound/scheduler, stack/cell helpers
+Callers: AF93
+
+Threaded script at AF67; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* AF67  8130  call_reset_sound_and_scheduler  native=0x5B77
+* AF69  AF4C  round_current_award_up_to_even  body=0xAF4E
+* AF6B  A8F7  refresh_credit_and_bank_display_unless_suppressed  body=0xA8F9
+* AF6D  8714  queue_sound_stream_8716  body=0x856B, push_address=0x8716
+* AF6F  7963  vm_push_inline_byte_literal  inline_value=0x0007
+* AF72  78B5  vm_push_zero  
+* AF74  79DC  vm_enter_loop_frame  
+* AF76  773C  vm_execute_alpha_stream  inline_stream=[cmd70(00); '      '; cmd7A()]
+* AF81  7963  vm_push_inline_byte_literal  inline_value=0x0014
+* AF84  99AD  wait_irq_ticks_or_abort_flag  body=0x99AF
+* AF86  A8F7  refresh_credit_and_bank_display_unless_suppressed  body=0xA8F9
+* AF88  7963  vm_push_inline_byte_literal  inline_value=0x0014
+* AF8B  99AD  wait_irq_ticks_or_abort_flag  body=0x99AF
+* AF8D  7A00  vm_loop_increment_one  
+* AF8F  792F  vm_return_to_caller_stream  

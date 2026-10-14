@@ -1,0 +1,26 @@
+Purpose: load_next_compensation_word_and_wrap_index_sixteen
+Confidence: reviewed token mechanics
+Groups: arithmetic, control flow, indexed memory, memory operations, stack/cell helpers
+Callers: A526, A553
+
+Threaded script at A4FF; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* A4FF  7EBC  vm_push_word_body_word  value=0x0333
+* A501  786B  vm_fetch_unsigned_byte  
+* A503  A49F  read_indexed_word_table_at_a4a1  body=0x997A, push_address=0xA4A1
+* A505  A4DF  compute_compensation_countdown_from_target_and_divisor  body=0xA4E1
+* A507  7EC0  vm_push_word_body_word  value=0x0334
+* A509  7874  vm_store_word  
+* A50B  7EBC  vm_push_word_body_word  value=0x0333
+* A50D  786B  vm_fetch_unsigned_byte  
+* A50F  78C9  vm_increment_word  
+* A511  7B51  vm_duplicate_cell  
+* A513  A4C1  vm_push_word_body_byte  value=0x0010
+* A515  7D42  compare_top_le_second_signed  body=0x7D44
+* A517  7982  vm_branch_forward8_if_zero  branch=0xA51E
+  A51A  A4C1  vm_push_word_body_byte  value=0x0010
+  A51C  78A0  vm_subtract_top_from_second  
+* A51E  7EBC  vm_push_word_body_word  value=0x0333
+* A520  7861  vm_store_byte  
+* A522  792F  vm_return_to_caller_stream  

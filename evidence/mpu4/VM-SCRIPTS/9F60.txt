@@ -1,0 +1,12 @@
+Purpose: test_two_orange1_input_conditions
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, input conditions
+Callers: D003, B51D, F30F, CD29, B7F5, B0CF, CBD1, CA41
+
+Threaded script at 9F60; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9F60  83A2  vm_test_input_condition  value=0x0004
+* 9F62  83A5  vm_test_input_condition  value=0x0003
+* 9F64  7A97  vm_bitwise_and  
+* 9F66  792F  vm_return_to_caller_stream  

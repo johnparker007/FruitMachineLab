@@ -1,0 +1,24 @@
+Purpose: flash_cash_amount_display_from_doubled_result
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: display, memory operations, sound/scheduler, stack/cell helpers
+Callers: BD2A
+
+Threaded script at BCF3; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* BCF3  78DE  vm_push_two  
+* BCF5  7DC4  multiply_words_keep_low_cell  body=0x7DC6
+* BCF7  8306  vm_push_word_body_word  value=0x0327
+* BCF9  7874  vm_store_word  
+* BCFB  946D  queue_sound_stream_946f  body=0x856B, push_address=0x946F
+* BCFD  7963  vm_push_inline_byte_literal  inline_value=0x0009
+* BD00  78B5  vm_push_zero  
+* BD02  79DC  vm_enter_loop_frame  
+* BD04  773C  vm_execute_alpha_stream  inline_stream=[cmd70(0a); '     '; cmd7A()]
+* BD0E  7963  vm_push_inline_byte_literal  inline_value=0x0032
+* BD11  99AD  wait_irq_ticks_or_abort_flag  body=0x99AF
+* BD13  773C  vm_execute_alpha_stream  inline_stream=[cmd70(0a); cmd79(2003270401); '0'; cmd7A()]
+* BD1F  7963  vm_push_inline_byte_literal  inline_value=0x0032
+* BD22  99AD  wait_irq_ticks_or_abort_flag  body=0x99AF
+* BD24  7A00  vm_loop_increment_one  
+* BD26  792F  vm_return_to_caller_stream  

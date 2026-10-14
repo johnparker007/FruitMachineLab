@@ -1,0 +1,10 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: primitive sequence
+Callers: 99A1
+
+Threaded script at DA16; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* DA16  78B3  vm_push_true_minus_one  
+* DA18  792F  vm_return_to_caller_stream  

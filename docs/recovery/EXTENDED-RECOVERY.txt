@@ -1,0 +1,35 @@
+Extended MPU4 recovery — 14 October 2026
+
+This sustained pass combined native recovery, threaded-script decoding, long physical-input campaigns, isolated DIP experiments and repeated-run checks. Saved Ghidra annotations and supporting listings are complementary: the scripts are not ordinary 6809 functions, and decompiled pseudocode is not original source.
+
+Saved project
+477 native functions have display names; 18 retain explicit hypothesis names. A display name does not establish a complete semantic understanding: older init_step/address-based names and shared tails remain.36 functions were newly defined in three native structural passes; 24 previously missing VM-target/extra entrypoints and 14 service/helper entries were reviewed, with overlapping entries retained as aliases. Inline input, alpha, lamp and digit payloads were skipped rather than decoded as instructions.
+526 threaded bodies indexed; 210 purpose names; 316 broader purposes unresolved; 411 bodies have at least some observed execution. Observation does not establish coverage of every branch.
+9295 typed VM token sites and 1153 headers independently verified with zero missing definitions.178 parameterized words named. Four opaque static sites remain, behind disabled retail diagnostic guards; raw words and uncertainty are retained.
+
+Recovered behavior and data
+- Super Hold choices now use all three hold buttons and Start. Long campaigns continued beyond the formerly stalled feature and reached Adders & Ladders, Back3, Advance, Boost, Rattler, Roll Even and Up N Over.
+- Wider cash-feature tracing and bounded dispatch-table recovery added Loot Shoot, Nice Dice, Cash Climber, Money Trap, Pick A Win, Skill Cash, Cash Attack, Super Stepper and Cash Jackpot Restart associations. A static display/dispatch association is not a verified complete feature path.
+- BOARD-MAP.txt and evidence/extended-pass/board-map.json list all 48 board square display/type/link records. The data and three feature-dispatch token tables are typed/referenced in Ghidra.
+- Weighted random selection 9A1C recovered: a 0..99 draw is reduced by successive byte weights until underflow. 17 traced selections checked independently, zero mismatches. Reviewed tables sum 100.
+- VM PICK consumes a 16-bit index and replaces it with the indexed remaining stack cell.98 observations verified. Rotate right 724 observations and rotate left 52 observations verified, all with zero mismatches. The double-to-cell reduction helper 7813 is static recovery only.
+- Target percentage selection reads key/DIP fields, defaults to 80, and converts P to 10 * P internally.70 and 98 cases reproduced the derived offsets. This is the configured target, not measured long-run payout.
+- The100P locked alarm is a held physical coin-switch alarm. Native code at 4581/4586 shows counter 0018 passing0x50, negating 0x51 to 0xAF and raisingSWI withB = 0x9F. A 2 s pulse reproduced it; 50 ms did not; isolated coin-alarm inhibit suppressed it. No ROM or emulator defect is asserted.
+- Attract on/off branches exercised under isolated settings. Existing MAME configuration/NVRAM remain preserved.
+- Service/test menu and nested helpers recovered statically, including switch/lamp feedback, manual reel steps, sound, meter/output pulses, serial-link test and fourth-reel diagnostics. Physical service inputs are logged correctly, but the tested sequences have not yet entered the menu; runtime verification remains open. A 600s physical-input experiment held Test for 540s but never reached the menu-entry check; this is a caller/scheduling reachability issue still under investigation. Test 7 is a serial-link test, not a DIP test.
+
+Reproducibility
+13 discovery/replay pairs match exactly in state.csv, feature-state.csv, debug.log, ram-final.bin and input-levels.csv. Five DIP pairs additionally match dip-levels.csv and dip-settings.txt. The two longest pairs each cover 1800 virtual seconds; other runs use dedicated short fixtures and wider selective VM logging.
+Fixtures, copied controllers/debugger commands, resolved configuration, launch arguments, absent initial NVRAM and hashes are under runs/extended-*. Sparse traces contribute observed sites only; they are excluded from consecutive-dispatch/branch validation. The accumulated full-dispatch validator checked6022535 continuations with zero mismatches and zero observed token mismatches.
+
+Remaining work and practical limits
+316 scripts still lack a broader purpose name. Many compose already understood stack, state, lamp and award helpers; naming them convincingly needs branch-specific game evidence. Cash feature paths and compensator state remain only partly verified. Physical payout/serial peripherals cannot be established from these MAME runs alone. Disabled diagnostic hooks should not be treated as live retail behavior.
+Ghidra still reports decompiler warnings around some interrupt/indirect paths and inline-control code. Default prototypes omit register inputs and condition-code outputs; use assembly and trace evidence for decisions. Every newly recovered entry was checked for instruction length and payload boundaries; this is not a claim that every ROM byte is correctly decompiled.
+
+Evidence
+extended-pass/native-entry-recovery-plan.json: entry CFGs, instruction boundaries, shared joins and inline payloads.
+extended-pass/saved-functions/: saved assembly and pseudocode export.
+extended-pass/replay-verification.json: exact per-file comparisons.
+extended-pass/stack-effects-validation.json, weighted-selection-validation.json, weighted-tables.json.
+extended-pass/dip-results.json, held-coin-verification.json and runs/extended-coin-native-a.
+VM-SCRIPTS/INDEX.txt and per-body listings: purpose, confidence, grouping, callers and observed markers.

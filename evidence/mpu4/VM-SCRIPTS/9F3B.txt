@@ -1,0 +1,11 @@
+Purpose: test_negative_three_byte_counter_07cc
+Confidence: reviewed token mechanics
+Groups: composition of script calls
+Callers: AB33, ADF8, A588
+
+Threaded script at 9F3B; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9F3B  817D  vm_push_word_body_word  value=0x07CC
+* 9F3D  9F10  script_9f10  body=0x9F12
+* 9F3F  792F  vm_return_to_caller_stream  

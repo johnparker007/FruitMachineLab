@@ -1,0 +1,28 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: control flow, mask/address records, memory operations, stack/cell helpers
+Callers: FDBA
+
+Threaded script at FD8D; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* FD8D  8492  push_pair_1000_00a0  body=0x8417, push_address=0x8494
+* FD8F  767F  vm_test_word_memory_mask  
+* FD91  7B7D  vm_swap_two_cells  
+* FD93  8492  push_pair_1000_00a0  body=0x8417, push_address=0x8494
+* FD95  767F  vm_test_word_memory_mask  
+* FD97  798C  vm_branch_forward8_if_zero  branch=0xFDA1
+  FD9A  FD54  script_fd54  body=0xFD56
+  FD9C  AFF2  dispatch_current_or_pending_award  body=0xAFF4
+  FD9E  79A4  vm_branch_backward8  branch=0xFD93
+* FDA1  7B3D  vm_drop_cell  
+* FDA3  8492  push_pair_1000_00a0  body=0x8417, push_address=0x8494
+* FDA5  7671  vm_clear_word_memory_bits  
+* FDA7  AFF2  dispatch_current_or_pending_award  body=0xAFF4
+* FDA9  81C2  vm_push_word_body_byte  value=0x00B6
+* FDAB  765F  vm_clear_byte_memory  
+* FDAD  7982  vm_branch_forward8_if_zero  branch=0xFDB6
+  FDB0  EE7A  script_ee7a  body=0xEE7C
+  FDB2  843B  push_pair_0001_0085  body=0x8417, push_address=0x843D
+  FDB4  7665  vm_or_word_memory  
+* FDB6  792F  vm_return_to_caller_stream  

@@ -1,0 +1,27 @@
+Purpose: attract_gate_and_dispatch
+Confidence: reviewed gameplay context
+Groups: boolean/bit operations, control flow, memory operations
+Callers: FC07
+
+Threaded script at FBA2; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* FBA2  9A40  test_irq_timer_positive_or_abort_flag  body=0x9A42
+* FBA4  A7E3  sum_five_bank_related_words  body=0xA7E5
+* FBA6  7A46  vm_test_zero  
+* FBA8  7A97  vm_bitwise_and  
+* FBAA  AB19  test_credit_available  body=0xAB1B
+* FBAC  7ABB  vm_bitwise_not  
+* FBAE  7A97  vm_bitwise_and  
+* FBB0  A90D  return_zero_after_reading_credit_fraction_byte  body=0xA90F
+* FBB2  7A46  vm_test_zero  
+* FBB4  7A97  vm_bitwise_and  
+* FBB6  7982  vm_branch_forward8_if_zero  branch=0xFBC7
+* FBB9  82F5  vm_push_word_body_byte  value=0x002F
+* FBBB  790D  vm_fetch_word  
+* FBBD  FA7D  run_attract_sequence  body=0xFA7F
+* FBBF  A875  compatibility_empty_script_return  body=0xA877
+* FBC1  8478  clear_latched_panel_mask_008f  body=0x847A
+* FBC3  82F5  vm_push_word_body_byte  value=0x002F
+* FBC5  7874  vm_store_word  
+* FBC7  792F  vm_return_to_caller_stream  

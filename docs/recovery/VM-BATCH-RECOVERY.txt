@@ -1,0 +1,56 @@
+VM batch recovery - 14 October 2026
+
+Saved, reviewed progress
+
+This batch added 126 purpose labels to the threaded scripts. There are now 528 indexed bodies, 336 purpose labels and 192 bodies whose broader purposes remain unresolved. 466 bodies have some execution evidence. A visited entry or body is not complete branch coverage, and a mechanical name is not an original source identifier.
+
+The saved Ghidra project has 482 named native functions, including 16 explicit hypothesis names. Five native helpers were newly defined; two older hypothesis names were replaced after the door/startup path was recovered. Native display names include initialization placeholders and mechanical descriptions: they do not mean every function is fully understood.
+
+9327 typed VM token sites and 1155 word headers were verified with zero missing definitions. All 126 reviewed script labels were read back from the saved project. There are 185 parameterized word names, two typed five-callback records, five one-byte callback selector fields and seven frame/record data types under /MPU4/VMFrames. Instruction boundaries after inline condition/digit data were checked independently.
+
+What became readable
+
+- Core arithmetic and stack helpers: signed cell divmod, quotient, remainder and indexed cell rotation. Independent existing-trace checks covered 265 divmod calls, 16 quotient calls, 239 remainder calls and 20 indexed rotations, with zero mismatch. Division by zero, overflow and unobserved index ranges are not validated.
+- Award and display helpers: 47-to-30 award normalization (25 runtime checks), two-digit segment display, result/accounting categories, pending-award normalization and animation.
+- Attract operation: full lamp/digit choreography, bitmap rendering, forward/reverse grid sweeps, auxiliary/reel lamps and the nonlocal interruption path that restores saved stacks and loop context.
+- Cash features: initialization, prompts, chance gates, reel/selection loops, award-table lookups, display arithmetic, commits and cleanup. See CASH-FEATURE-FLOWS.txt and its evidence JSON.
+- A shared selection engine: AD65 allocates a 16-byte local frame and dispatches five callbacks through AC81. DABB supplies special-feature callbacks; C7D8 supplies Cash Attack callbacks. This exposed two previously unindexed colon bodies at C797 and C7B5. The engine initializes a pool, shuffles 20 pairs, cycles visual choices and can reselect a result under feature/amount constraints. Static callback bounds are five two-byte token slots; the selector parameters are one byte, not pointer fields.
+
+Behavior verified
+
+All nine named cash-feature entrypoints ran across the five new discovery campaigns. This establishes actual reachability for Loot Shoot, Nice Dice, Cash Climber, Money Trap, Pick A Win, Skill Cash, Cash Attack, Super Stepper and Cash Jackpot Restart. Different branches remain partly understood.
+
+Money Trap: displayed leading digits 8+8+8+6 produced 30 at C3A9, then pending award BA became 30 at C46D. Cash Climber: selected step index 0 read award-table C039 value 6, and BA was 6 at C126. These three focused checks matched the independently computed results.
+
+Super Stepper: four accepted weighted increments and four step-code-to-award mappings were independently checked. The delta table is C8C4, returned step-code table C8D4 and award/type table A12E. All eight checks matched. This verifies the captured path, not every retry, exit or probability branch.
+
+Service reachability: the earlier experiments remained in native door/startup gate 1726 before normal background menu handling. The first long Test request leaves that gate; a separate later Test request enters the service menu at 2E5F. Exchange executes a test; Start advances the menu. Tests 1-5 were reached: input feedback, manual reel stepping, lamps, sound and segment display. Test callbacks 6-9 and complete peripheral behavior remain unverified. The successful physical-input fixture was replayed exactly.
+
+A pointer correction: native 7694 and 76AB use F4 for local frames; F6 is the loop-frame pointer. The older label vm_saved_loop_context at F4 was misleading. The first focused Super Stepper instrument incorrectly read F6; those progress/limit observations were excluded, the trace was corrected to F4, and the corrected path was independently checked and repeated. No ROM/emulator defect is inferred from that instrumentation mistake.
+
+Experiments and reproducibility
+
+Five new discovery campaigns cover 220 virtual minutes in total: four 2400-second runs and one 3600-second targeted Super Stepper run. They use physical input overrides and fresh isolated configuration/NVRAM. One campaign uses the already approved isolated 98% target DIP setting; sampled final DIL1 was F0 and DIL2 was 00. This is a configured target, not a measured payout rate. Existing MAME settings and original ROM files were preserved.
+
+Eight new replay pairs matched exactly, including the corrected focused Super Stepper trace. Exact per-file comparisons are in evidence/vm-batch-pass/replay-verification.json. They compare state.csv, feature-state.csv, debug.log, ram-final.bin and input-levels.csv; the DIP pair also compares dip-settings.txt. Focused runs have their own instrumentation, so matching within a fixture is distinguished from comparing different debugger setups. Launch arguments, controller settings, copied Lua/debugger files, physical input fixtures, initial-state notes and hashes remain in each run directory. Save states are not used.
+
+Sparse observation caches preserve distinct (cursor, token, top-cell) observations. They contribute coverage and EXECUTE targets, but are excluded from consecutive-dispatch validation. The accumulated full-trace validator still reports 6022535 checked continuations, zero continuation mismatches and zero token mismatches. New total distinct observed dispatch sites: 7615.
+
+Remaining work
+
+192 broader script purposes remain unresolved. The next valuable areas are compensation/award eligibility, complete choice-to-award-to-restart paths, branch-specific random/input gates and the remaining service/peripheral diagnostics. There is still useful work possible; this report does not claim the ROM is fully understood or that automatic exploration can prove every path.
+
+Ghidra pseudocode continues to have limits around register arguments, condition flags, indirect transfers and software interrupts. Repaired native startup functions now have the correct instruction/payload boundaries, but some other decompiler warnings remain. Assembly, typed VM listings and traces are the evidence; pseudocode is not original source.
+
+Evidence and navigation
+
+VM-SCRIPTS/INDEX.txt: purpose, confidence, callers and observed-site counts.
+CASH-FEATURE-FLOWS.txt: named feature/helper chains and verified versus static behavior.
+SERVICE-AND-ATTRACT-RECOVERY.txt: startup/menu sequencing and attract control.
+FUNCTION-INDEX.txt: current saved native names.
+evidence/vm-batch-pass/script-name-evidence.json: every new name and its supporting context.
+evidence/vm-batch-pass/selection-callback-records.json: bounded callback layout.
+evidence/vm-batch-pass/arithmetic-helper-validation.json and indexed-roll-validation.json.
+evidence/vm-batch-pass/cash-mechanics-validation.json and stepper-mechanics-validation.json.
+evidence/vm-batch-pass/saved-name-verification.json, saved-structure-verification.json and saved-project-verification.json.
+evidence/vm-batch-pass/saved-functions/: independent saved assembly/pseudocode export.

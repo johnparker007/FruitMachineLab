@@ -1,0 +1,16 @@
+Purpose: append_byte_to_local_selection_pool
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: arithmetic, memory operations
+Callers: C797, D9C8
+
+Threaded script at ACAE; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* ACAE  AC78  vm_push_local_frame_address  value=0x0003
+* ACB0  AC75  vm_push_local_frame_address  value=0x0002
+* ACB2  786B  vm_fetch_unsigned_byte  
+* ACB4  787E  vm_add_words  
+* ACB6  7861  vm_store_byte  
+* ACB8  AC75  vm_push_local_frame_address  value=0x0002
+* ACBA  7653  vm_increment_byte_memory  
+* ACBC  792F  vm_return_to_caller_stream  

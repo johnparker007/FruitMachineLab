@@ -1,0 +1,55 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, memory operations, reel records, reels, stack/cell helpers
+Callers: A45C
+
+Threaded script at A3D0; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  A3D0  7963  vm_push_inline_byte_literal  inline_value=0x0004
+  A3D3  78B5  vm_push_zero  
+  A3D5  79DC  vm_enter_loop_frame  
+  A3D7  7A1C  vm_push_loop_index  
+  A3D9  78B5  vm_push_zero  
+  A3DB  9DC1  address_record_0169_explicit_index  body=0x9D97, push_address=0x9DC3
+  A3DD  7861  vm_store_byte  
+  A3DF  7963  vm_push_inline_byte_literal  inline_value=0x0004
+  A3E2  78B5  vm_push_zero  
+  A3E4  79DC  vm_enter_loop_frame  
+  A3E6  7A1C  vm_push_loop_index  
+  A3E8  78C0  vm_push_one  
+  A3EA  9DC1  address_record_0169_explicit_index  body=0x9D97, push_address=0x9DC3
+  A3EC  7861  vm_store_byte  
+  A3EE  7963  vm_push_inline_byte_literal  inline_value=0x0004
+  A3F1  78B5  vm_push_zero  
+  A3F3  79DC  vm_enter_loop_frame  
+  A3F5  7A1C  vm_push_loop_index  
+  A3F7  78DE  vm_push_two  
+  A3F9  9DC1  address_record_0169_explicit_index  body=0x9D97, push_address=0x9DC3
+  A3FB  7861  vm_store_byte  
+  A3FD  8114  call_reels_translate_positions_to_symbol_records  native=0x2C12
+  A3FF  9FBA  reels_test_exactly_two_symbol_flag2  body=0x9FBC
+  A401  8016  call_push_nonzero_symbol_result_or_fallback_to_vm_stack  native=0x1AF1
+  A403  7A46  vm_test_zero  
+  A405  7A97  vm_bitwise_and  
+  A407  7982  vm_branch_forward8_if_zero  branch=0xA42C
+  A40A  A3A6  sum_three_reel_record_bytes  body=0xA3A8
+  A40C  7B51  vm_duplicate_cell  
+  A40E  A3A3  vm_push_local_frame_address  value=0x0003
+  A410  786B  vm_fetch_unsigned_byte  
+  A412  7A65  vm_compare_top_gt_second_signed  
+  A414  7982  vm_branch_forward8_if_zero  branch=0xA42A
+  A417  7B51  vm_duplicate_cell  
+  A419  A3A3  vm_push_local_frame_address  value=0x0003
+  A41B  7861  vm_store_byte  
+  A41D  A3B8  copy_three_reel_record_bytes_to_local_frame  body=0xA3BA
+  A41F  8245  vm_push_word_body_byte  value=0x00BE
+  A421  786B  vm_fetch_unsigned_byte  
+  A423  7D4A  compare_top_ge_second_signed  body=0x7D4C
+  A425  7574  vm_return_if_nonzero  
+  A427  7979  vm_branch_unsigned_forward8  branch=0xA42C
+  A42A  7B3D  vm_drop_cell  
+  A42C  7A00  vm_loop_increment_one  
+  A42E  7A00  vm_loop_increment_one  
+  A430  7A00  vm_loop_increment_one  
+  A432  792F  vm_return_to_caller_stream  

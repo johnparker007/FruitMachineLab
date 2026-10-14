@@ -1,0 +1,44 @@
+Purpose: special_feature_adders_and_ladders
+Confidence: reviewed dispatch/display association; complete gameplay unresolved
+Groups: boolean/bit operations, control flow, indexed memory, lamps, mask tests, mask/address records, sound/scheduler, stack/cell helpers
+Callers: E227
+
+Threaded script at CB60; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* CB60  CA3F  select_board_destination_with_direction_gates  body=0xCA41
+* CB62  8466  push_pair_0080_0090  body=0x8444, push_address=0x8468
+* CB64  7671  vm_clear_word_memory_bits  
+* CB66  9A4E  store_irq_timer_c568  body=0x9A50
+* CB68  835A  vm_push_word_body_byte  value=0x0049
+* CB6A  8060  call_lamp_set_frame_pattern_5  native=0x498B
+* CB6C  CA26  select_random_board_index_with_nonzero_link  body=0xCA28
+* CB6E  7B51  vm_duplicate_cell  
+* CB70  9F56  apply_pattern_8f_to_indexed_lamp_record  body=0x9F58
+* CB72  8130  call_reset_sound_and_scheduler  native=0x5B77
+* CB74  8703  queue_sound_stream_8705  body=0x856B, push_address=0x8705
+* CB76  7963  vm_push_inline_byte_literal  inline_value=0x001E
+* CB79  99AD  wait_irq_ticks_or_abort_flag  body=0x99AF
+* CB7B  8248  vm_push_word_body_byte  value=0x0080
+* CB7D  9B82  apply_indexed_lamp_id_from_728f  body=0x9B18, push_address=0x9B84
+* CB7F  8466  push_pair_0080_0090  body=0x8444, push_address=0x8468
+* CB81  767F  vm_test_word_memory_mask  
+* CB83  9A40  test_irq_timer_positive_or_abort_flag  body=0x9A42
+* CB85  7AA3  vm_bitwise_or  
+* CB87  84E0  test_mask_0200_at_719f  body=0x841E, push_address=0x84E2
+* CB89  7AA3  vm_bitwise_or  
+* CB8B  79A6  vm_branch_backward8_if_zero  branch=0xCB6C
+* CB8E  9CA3  apply_lamp_range_constant_0080_record_9b8c_9ca5  body=0x9CA5
+* CB90  7B51  vm_duplicate_cell  
+* CB92  8212  vm_push_word_body_byte  value=0x0085
+* CB94  9B82  apply_indexed_lamp_id_from_728f  body=0x9B18, push_address=0x9B84
+* CB96  8130  call_reset_sound_and_scheduler  native=0x5B77
+* CB98  7B51  vm_duplicate_cell  
+* CB9A  7B51  vm_duplicate_cell  
+* CB9C  A15E  read_indexed_byte_table_at_a160  body=0x9971, push_address=0xA160
+* CB9E  7A65  vm_compare_top_gt_second_signed  
+* CBA0  7982  vm_branch_forward8_if_zero  branch=0xCBA7
+* CBA3  896B  queue_sound_stream_896d  body=0x856B, push_address=0x896D
+* CBA5  80F8  call_scheduler_wait_until_active_list_empty  native=0x5CCB
+* CBA7  CB1B  set_feature_destination_with_minus_one_reset  body=0xCB1D
+* CBA9  792F  vm_return_to_caller_stream  

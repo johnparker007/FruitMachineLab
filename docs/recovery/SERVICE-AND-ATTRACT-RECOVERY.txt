@@ -1,0 +1,18 @@
+UPDATE: late tests7/8/9 and common Refill meter/triac output test are now physically traced and replayed. See PAYOUT-AND-SERVICE-RECOVERY.txt and evidence/payout-pass/service-evidence.json. Earlier reachability limits below are historical.
+
+Service and attract recovery â€”14 October2026
+
+The earlier service experiments remained inside the door/startup gate at 1726, which precedes the threaded main-loop service check. Repairing missed inline digit text exposed that control flow.
+
+Verified physical sequence: door from about 35s; first Test request scheduled at controller frames 2700..4500 (about 45..75s); second Test request at frames 6000..6600 (about 100..110s). Trace records startup Test check at 1771, release path 1785, operating exit 1792 with credits cleared, then normal service-menu entry 2E5F. Service-tests-a/b repeats this sequence with Exchange to execute and Start to advance; entries 2F68,307E,30F6,31F5,321F show tests 1..5. Menu selection changes during the sound/display tests mean later button pulses are not a verified traversal of tests 6..9.
+
+1726: door/startup display, Refill/Test handling and timer-dependent credits.
+17AE: percentage-key prompt conditional on normal mode and ROM options.
+1858: target percentage rendered on digit segments.
+18CA: startup lamp updates driven by timer.
+
+The attract sequence FA7F saves lamps and allocates a five-byte local frame. F576 waits for ticks but can restore saved U, S and loop-frame pointer F6, lamps and displays on credit or service requests. This is a nonlocal VM exit. FA34 composes the reconstructed bitmap scrolling, forward/reverse grid sweeps, auxiliary/reel lamps and segment animations.
+
+Five context-specific local-frame data types are provided in Ghidra under /MPU4/VMFrames. They document relative fields, not fixed stack addresses.
+
+Local-frame pointer correction: native 7694 and 76AB use word F4; word F6 is the distinct loop-frame pointer. Older descriptions treatingF6 as the local base were misleading. The current Ghidra labels/comments and corrected focused traces use F4.

@@ -1,0 +1,23 @@
+Purpose: choose_cash_attack_index_against_cumulative_amount_limit
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: arithmetic, control flow, indexed memory, memory operations, stack/cell helpers
+Callers: AC81
+
+Threaded script at C7B5; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C7B5  7963  vm_push_inline_byte_literal  inline_value=0x0063
+* C7B8  7B3D  vm_drop_cell  
+* C7BA  78B5  vm_push_zero  
+* C7BC  7963  vm_push_inline_byte_literal  inline_value=0x000B
+* C7BF  99EC  random_scaled_range_selection  body=0x99EE
+* C7C1  7B51  vm_duplicate_cell  
+* C7C3  C7A6  read_indexed_byte_table_at_c7a8  body=0x9971, push_address=0xC7A8
+* C7C5  7ED1  vm_push_word_body_byte  value=0x00EC
+* C7C7  786B  vm_fetch_unsigned_byte  
+* C7C9  787E  vm_add_words  
+* C7CB  7ECE  vm_push_word_body_byte  value=0x00ED
+* C7CD  786B  vm_fetch_unsigned_byte  
+* C7CF  7D4A  compare_top_ge_second_signed  body=0x7D4C
+* C7D1  79A6  vm_branch_backward8_if_zero  branch=0xC7B8
+* C7D4  792F  vm_return_to_caller_stream  

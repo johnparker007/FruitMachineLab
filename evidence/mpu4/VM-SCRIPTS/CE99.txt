@@ -1,0 +1,34 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, memory operations, reels, stack/cell helpers
+Callers: CED7
+
+Threaded script at CE99; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* CE99  CE7F  script_ce7f  body=0xCE81
+* CE9B  7982  vm_branch_forward8_if_zero  branch=0xCEB8
+* CE9E  78BE  vm_push_zero  
+* CEA0  BE4A  fetch_fourth_reel_sector_value_from_763b  body=0xBE4C
+* CEA2  7D38  test_low_bit_nonzero  body=0x7D3A
+* CEA4  7ABB  vm_bitwise_not  
+* CEA6  7982  vm_branch_forward8_if_zero  branch=0xCEB2
+* CEA9  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* CEAC  7F70  call_timing_update_reel_word_modulo_eight  native=0x2D34
+* CEAE  78B3  vm_push_true_minus_one  
+* CEB0  7AA3  vm_bitwise_or  
+* CEB2  79A6  vm_branch_backward8_if_zero  branch=0xCE9E
+* CEB5  7979  vm_branch_unsigned_forward8  branch=0xCECD
+* CEB8  78BE  vm_push_zero  
+* CEBA  BE4A  fetch_fourth_reel_sector_value_from_763b  body=0xBE4C
+* CEBC  7D38  test_low_bit_nonzero  body=0x7D3A
+* CEBE  7982  vm_branch_forward8_if_zero  branch=0xCECA
+* CEC1  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* CEC4  7F70  call_timing_update_reel_word_modulo_eight  native=0x2D34
+* CEC6  78B3  vm_push_true_minus_one  
+* CEC8  7AA3  vm_bitwise_or  
+* CECA  79A6  vm_branch_backward8_if_zero  branch=0xCEB8
+* CECD  78B5  vm_push_zero  
+* CECF  8194  vm_push_word_body_byte  value=0x00C2
+* CED1  7874  vm_store_word  
+* CED3  792F  vm_return_to_caller_stream  

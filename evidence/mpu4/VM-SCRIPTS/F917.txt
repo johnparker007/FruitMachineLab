@@ -1,0 +1,29 @@
+Purpose: attract_flash_three_auxiliary_lamps_then_alternate_patterns
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: control flow, lamps, stack/cell helpers
+Callers: FA34
+
+Threaded script at F917; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* F917  7963  vm_push_inline_byte_literal  inline_value=0x0004
+* F91A  78B5  vm_push_zero  
+* F91C  79DC  vm_enter_loop_frame  
+* F91E  824E  vm_push_word_body_byte  value=0x008F
+* F920  F8FB  attract_sweep_three_auxiliary_lamps_with_pattern  body=0xF8FD
+* F922  8248  vm_push_word_body_byte  value=0x0080
+* F924  F8FB  attract_sweep_three_auxiliary_lamps_with_pattern  body=0xF8FD
+* F926  7A00  vm_loop_increment_one  
+* F928  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* F92B  78B5  vm_push_zero  
+* F92D  79DC  vm_enter_loop_frame  
+* F92F  7A1C  vm_push_loop_index  
+* F931  7B51  vm_duplicate_cell  
+* F933  7D38  test_low_bit_nonzero  body=0x7D3A
+* F935  7982  vm_branch_forward8_if_zero  branch=0xF93D
+* F938  820C  vm_push_word_body_byte  value=0x0083
+* F93A  7979  vm_branch_unsigned_forward8  branch=0xF93F
+* F93D  820F  vm_push_word_body_byte  value=0x008C
+* F93F  9BF4  apply_indexed_lamp_id_from_7249  body=0x9B18, push_address=0x9BF6
+* F941  7A00  vm_loop_increment_one  
+* F943  792F  vm_return_to_caller_stream  

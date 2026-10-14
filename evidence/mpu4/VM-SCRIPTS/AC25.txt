@@ -1,0 +1,14 @@
+Purpose: begin_paid_play_and_update_compensation_gates
+Confidence: reviewed token mechanics; see lifecycle-pass/script-name-evidence.json
+Groups: composition of script calls
+Callers: FC34, FD56
+
+Threaded script at AC25; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* AC25  AB62  consume_credit_and_record_stake  body=0xAB64
+* AC27  AC01  gate_state_bit0004_from_signed_counter_07cf  body=0xAC03
+* AC29  A586  update_compensation_gate_from_signed_counter  body=0xA588
+* AC2B  9F26  conditionally_decrement_u24_counter_07d2_by_500  body=0x9F28
+* AC2D  A8F7  refresh_credit_and_bank_display_unless_suppressed  body=0xA8F9
+* AC2F  792F  vm_return_to_caller_stream  

@@ -1,0 +1,35 @@
+Purpose: attract_run_complete_lamp_and_digit_choreography
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: lamps, stack/cell helpers
+Callers: FA7F
+
+Threaded script at FA34; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* FA34  F7F3  attract_initialize_lamp_ranges  body=0xF7F5
+* FA36  78B3  vm_push_true_minus_one  
+* FA38  F6C1  attract_set_symmetric_reel_group_lamp_patterns  body=0xF6C3
+* FA3A  F817  attract_hold_lamp_range_pattern_8c_for_800_ticks  body=0xF819
+* FA3C  820F  vm_push_word_body_byte  value=0x008C
+* FA3E  9B86  apply_lamp_range_728f_72bf  body=0x9ADB, push_address=0x9B88
+* FA40  F85E  attract_flash_ten_lamp_strip_then_alternate_patterns  body=0xF860
+* FA42  F8EF  attract_run_forward_and_reverse_grid_sweeps  body=0xF8F1
+* FA44  F718  attract_cycle_digit_segments_then_show_random_number  body=0xF71A
+* FA46  78BE  vm_push_zero  
+* FA48  F6C1  attract_set_symmetric_reel_group_lamp_patterns  body=0xF6C3
+* FA4A  F879  attract_clear_lamp_grid_one_row_at_a_time  body=0xF87B
+* FA4C  8248  vm_push_word_body_byte  value=0x0080
+* FA4E  9BC8  apply_lamp_range_724c_7256  body=0x9ADB, push_address=0x9BCA
+* FA50  F69E  attract_scroll_repeated_lamp_bitmap_frames  body=0xF6A0
+* FA52  F89C  attract_light_grid_columns_forward  body=0xF89E
+* FA54  F718  attract_cycle_digit_segments_then_show_random_number  body=0xF71A
+* FA56  78B3  vm_push_true_minus_one  
+* FA58  F6C1  attract_set_symmetric_reel_group_lamp_patterns  body=0xF6C3
+* FA5A  F915  attract_flash_three_auxiliary_lamps_then_alternate_patterns  body=0xF917
+* FA5C  F9A3  attract_combine_reel_group_sweep_sequences  body=0xF9A5
+* FA5E  78B5  vm_push_zero  
+* FA60  A8AB  display_two_decimal_digits_or_blank_zero  body=0xA8AD
+* FA62  FA0F  attract_flash_mirrored_grid_and_finish_column_sweep  body=0xFA11
+* FA64  F89C  attract_light_grid_columns_forward  body=0xF89E
+* FA66  F718  attract_cycle_digit_segments_then_show_random_number  body=0xF71A
+* FA68  792F  vm_return_to_caller_stream  

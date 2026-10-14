@@ -1,0 +1,155 @@
+Native routine grouping (address operands are not a complete alias analysis).
+Mechanical names follow assembly; gameplay interpretation needs callers/traces.
+
+14EB FUN_14eb: accounting/NVRAM; native callers=0; VM words=80B8
+15D6 accounting_restore_three_byte_counter_defaults: ; native callers=1; VM words=
+15F7 alpha_print_accounting_counter_caption: alpha/display; native callers=1; VM words=
+160F alpha_print_three_character_table_entry: alpha/display; native callers=0; VM words=
+169B FUN_169b: ; native callers=0; VM words=831F
+1793 FUN_1793: input tests; native callers=0; VM words=
+195E digits_execute_stream_preserving_registers: ; native callers=1; VM words=
+1AA3 FUN_1aa3: ; native callers=0; VM words=80C4
+1AC3 reels_lookup_matching_symbol_result: reels; native callers=2; VM words=
+1B63 reels_test_common_symbol_flag_1: reels; native callers=2; VM words=
+1B7B reels_test_common_symbol_flag_2: reels; native callers=2; VM words=
+1B93 vm_signed_double_divide_drop_remainder: ; native callers=0; VM words=7F8D
+1BA7 vm_signed_double_divide_native: ; native callers=1; VM words=
+1C00 vm_unsigned_double_divide_native: ; native callers=1; VM words=
+2086 initialize_input_callback_and_lamp_masks: lamps; native callers=1; VM words=
+2218 FUN_2218: ; native callers=7; VM words=
+25BA alpha_format_three_byte_value_from_record: alpha/display; native callers=1; VM words=
+2610 FUN_2610: input tests; native callers=0; VM words=
+2622 FUN_2622: ; native callers=1; VM words=
+2654 FUN_2654: ; native callers=1; VM words=
+266B FUN_266b: ; native callers=1; VM words=
+2680 FUN_2680: alpha/display; native callers=0; VM words=
+26CF FUN_26cf: ; native callers=1; VM words=
+2756 digits_clear_segment_buffers: ; native callers=2; VM words=
+2A7F FUN_2a7f: reels; native callers=2; VM words=
+2C12 reels_translate_positions_to_symbol_records: reels; native callers=1; VM words=8114
+2C6C FUN_2c6c: ; native callers=1; VM words=
+2C70 FUN_2c70: ; native callers=1; VM words=
+2C8F lamps_apply_pattern_to_next_id: lamps; native callers=2; VM words=
+2CA1 lamps_clear_next_id: lamps; native callers=1; VM words=
+2CA7 lamps_select_three_id_reel_group: ; native callers=2; VM words=
+2CC2 lamps_select_and_update_reel_group: ; native callers=1; VM words=8026
+2CC4 lamps_update_selected_reel_group: lamps; native callers=1; VM words=
+2D34 timing_update_reel_word_modulo_eight: ; native callers=0; VM words=
+2DC5 FUN_2dc5: lamps; native callers=0; VM words=
+2E32 reduce_word_modulo_eight: ; native callers=1; VM words=
+2EFC digits_display_local_value_and_reset_timer: ; native callers=0; VM words=
+30CB FUN_30cb: input tests; native callers=2; VM words=
+30F6 FUN_30f6: accounting/NVRAM, input tests; native callers=0; VM words=
+311F lamps_advance_synchronized_test_cursor: lamps; native callers=1; VM words=
+314C lamps_extract_mux_column_from_id: ; native callers=2; VM words=
+3154 FUN_3154: sound/scheduler, accounting/NVRAM, input tests; native callers=1; VM words=
+3184 FUN_3184: lamps, sound/scheduler; native callers=1; VM words=
+31D3 lamps_initialize_full_test_pattern: lamps; native callers=2; VM words=
+31E6 FUN_31e6: input tests; native callers=1; VM words=
+31F2 inputs_wait_for_stable_mux_samples: input tests; native callers=0; VM words=
+321F FUN_321f: input tests; native callers=0; VM words=
+3241 alpha_advance_test_character: alpha/display; native callers=1; VM words=
+32AE FUN_32ae: ; native callers=1; VM words=
+3B91 FUN_3b91: ; native callers=2; VM words=
+3BCD wait_for_five_hundred_irq_ticks: ; native callers=1; VM words=
+3BE0 FUN_3be0: alpha/display, serial; native callers=1; VM words=
+3C19 FUN_3c19: alpha/display, serial; native callers=1; VM words=
+3C3F FUN_3c3f: alpha/display, serial; native callers=1; VM words=
+3D09 alpha_raise_invalid_command_error: alpha/display; native callers=0; VM words=
+3D5F alpha_cmd_set_control_byte: alpha/display; native callers=0; VM words=
+3D67 alpha_cmd_call_random_stream: alpha/display; native callers=0; VM words=
+3D76 alpha_select_random_counted_pointer: alpha/display; native callers=1; VM words=
+3D89 alpha_cmd_call_stream: alpha/display; native callers=0; VM words=
+3D9D alpha_cmd_set_delay_and_return: alpha/display; native callers=0; VM words=
+3DA7 alpha_cmd_print_plural_suffix: alpha/display; native callers=0; VM words=
+3DB6 alpha_cmd_jump_stream: alpha/display; native callers=0; VM words=
+3DBE alpha_cmd_delay: alpha/display; native callers=0; VM words=
+3DC6 alpha_cmd_print_hex_byte_at_address: alpha/display; native callers=0; VM words=
+3DDD alpha_cmd_print_hex_bytes: alpha/display; native callers=0; VM words=
+3DEC alpha_cmd_begin_counted_loop: alpha/display; native callers=0; VM words=
+3E09 alpha_cmd_jump_native: alpha/display; native callers=0; VM words=
+3E0E alpha_cmd_print_character_at_address: alpha/display; native callers=0; VM words=
+3E18 alpha_cmd_end_counted_loop: alpha/display; native callers=0; VM words=
+3E4C alpha_hex_high_nibble_to_ascii: alpha/display; native callers=2; VM words=
+3E50 alpha_hex_low_nibble_to_ascii: alpha/display; native callers=2; VM words=
+3E59 alpha_cmd_native_condition_then_branch: alpha/display; native callers=0; VM words=
+3E65 alpha_cmd_format_unsigned_byte: alpha/display; native callers=0; VM words=
+3E6D alpha_cmd_format_unsigned_three_byte_value: alpha/display; native callers=0; VM words=
+3F33 digits_mirror_alpha_character: alpha/display; native callers=1; VM words=
+3F9E alpha_check_stream_stack_capacity: alpha/display; native callers=2; VM words=
+403D alpha_emit_control_command: alpha/display; native callers=1; VM words=
+4048 alpha_emit_default_control_command: alpha/display; native callers=0; VM words=
+40B5 alpha_render_shadow_buffer_and_extra_character: alpha/display; native callers=1; VM words=
+44FE coins_initialize_debounce_counters: ; native callers=1; VM words=
+4801 FUN_4801: ; native callers=1; VM words=
+482F FUN_482f: lamps, input tests; native callers=1; VM words=80CC
+48B9 FUN_48b9: ; native callers=1; VM words=
+48CF serial_enqueue_message_2f: serial; native callers=1; VM words=
+48DA FUN_48da: ; native callers=1; VM words=
+492B lamp_set_inhibit_bit_for_logical_id: ; native callers=0; VM words=
+496A lamps_enable_all_inhibit_mask_bits: ; native callers=1; VM words=7FBD
+497F lamp_set_frame_pattern_F: lamps; native callers=3; VM words=806C
+4A6F lamp_stream_cmd_restart_animation_frames: ; native callers=0; VM words=
+4BC5 FUN_4bc5: alpha/display, lamps, sound/scheduler; native callers=1; VM words=
+4CBE FUN_4cbe: accounting/NVRAM; native callers=3; VM words=
+4CF8 FUN_4cf8: accounting/NVRAM, input tests; native callers=2; VM words=
+4D8F FUN_4d8f: ; native callers=5; VM words=
+4D9B FUN_4d9b: ; native callers=1; VM words=7F63
+4DAC FUN_4dac: ; native callers=1; VM words=
+4DBE FUN_4dbe: ; native callers=2; VM words=
+4E43 FUN_4e43: ; native callers=1; VM words=
+4E63 FUN_4e63: input tests; native callers=1; VM words=
+4E87 FUN_4e87: input tests; native callers=1; VM words=
+4EAB FUN_4eab: serial; native callers=1; VM words=80FC
+4F18 FUN_4f18: ; native callers=2; VM words=
+4F6B FUN_4f6b: serial; native callers=0; VM words=
+4F86 FUN_4f86: alpha/display; native callers=1; VM words=
+4FF2 serial_text_emit_newline: ; native callers=5; VM words=
+5005 serial_text_emit_space: ; native callers=5; VM words=
+5009 serial_text_emit_short_separator: ; native callers=2; VM words=
+500D serial_text_emit_long_separator: ; native callers=2; VM words=
+5019 serial_text_emit_hex_byte: ; native callers=2; VM words=
+5096 lamps_set_indicator_group_all_frames: lamps; native callers=1; VM words=
+50A6 lamps_clear_indicator_group: lamps; native callers=1; VM words=
+53AE FUN_53ae: ; native callers=1; VM words=
+5429 FUN_5429: serial, accounting/NVRAM; native callers=1; VM words=80EC
+55AF FUN_55af: serial, accounting/NVRAM; native callers=0; VM words=
+55C4 FUN_55c4: serial, accounting/NVRAM; native callers=0; VM words=
+55E9 FUN_55e9: serial; native callers=2; VM words=
+563B config_value_to_decimal_three_digits: ; native callers=1; VM words=
+5798 binary_byte_to_packed_bcd: ; native callers=2; VM words=
+57A9 accounting_add_unsigned_byte_to_u24: ; native callers=2; VM words=
+57DB accounting_increment_u24_if_normal_mode: accounting/NVRAM; native callers=0; VM words=8323
+57F7 accounting_add_byte_if_normal_mode: accounting/NVRAM; native callers=11; VM words=
+59A4 meter_queue_add_byte_and_refresh_checksum: accounting/NVRAM; native callers=4; VM words=
+59D9 FUN_59d9: sound/scheduler; native callers=2; VM words=
+59FF FUN_59ff: sound/scheduler; native callers=2; VM words=
+5A14 FUN_5a14: ; native callers=3; VM words=80A4
+5C7A scheduler_cancel_task_by_stream: sound/scheduler; native callers=1; VM words=
+5C97 scheduler_test_task_by_stream_push_flag: sound/scheduler; native callers=0; VM words=
+5CB5 scheduler_find_task_by_stream: ; native callers=2; VM words=
+5CCB scheduler_wait_until_active_list_empty: ; native callers=2; VM words=80F8
+5E2C sound_release_task_channels: sound/scheduler; native callers=1; VM words=
+60BF ym2413_read_shadow_register: ; native callers=0; VM words=
+61AF reels_start_motion_and_wait: ; native callers=2; VM words=
+61F6 reels_start_motion_without_sound_setup: reels; native callers=3; VM words=811C
+6287 reels_build_motion_profile_pointers: reels, input tests; native callers=1; VM words=
+6342 reels_store_scaled_motion_parameter: ; native callers=1; VM words=
+6350 reels_compute_profile_timing_word: ; native callers=2; VM words=
+6368 FUN_6368: reels; native callers=1; VM words=
+637C FUN_637c: reels; native callers=1; VM words=
+6616 reels_wait_for_motion_complete: ; native callers=3; VM words=
+68E0 nvram_add_byte_and_refresh_checksum: ; native callers=1; VM words=
+6AC1 FUN_6ac1: ; native callers=0; VM words=
+6BDF serial_select_text_output_mode: serial; native callers=1; VM words=
+6BEA serial_select_diagnostic_output_mode: serial; native callers=1; VM words=
+6C25 format_lookup_low_nibble_and_store: ; native callers=2; VM words=
+6E6A nvram_refresh_record_complement_and_checksum: ; native callers=1; VM words=
+6F57 nvram_refresh_accounting_complements: ; native callers=3; VM words=7FF6
+6FB8 vm_release_counted_byte_frame_native: ; native callers=4; VM words=
+7111 ptm_set_timer3_period_or_disable: ; native callers=3; VM words=
+7130 ptm_timer3_short_pulse_and_wait: ; native callers=1; VM words=
+7159 delay_repeat_calibrated_busy_loop: ; native callers=14; VM words=
+7164 delay_calibrated_busy_loop: ; native callers=1; VM words=
+7C00 FUN_7c00: ; native callers=0; VM words=
+FE63 raise_software_error_swi3: ; native callers=0; VM words=8070

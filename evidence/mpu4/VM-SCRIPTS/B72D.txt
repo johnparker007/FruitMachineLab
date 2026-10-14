@@ -1,0 +1,41 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, lamps, mask/address records, memory operations, reels
+Callers: FC34, B91D
+
+Threaded script at B72D; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B72D  7963  vm_push_inline_byte_literal  inline_value=0x0009
+* B730  76A9  vm_allocate_local_frame  
+* B732  B29A  vm_push_local_frame_address  value=0x0003
+* B734  765F  vm_clear_byte_memory  
+* B736  B5EB  script_b5eb  body=0xB5ED
+* B738  7982  vm_branch_forward8_if_zero  branch=0xB76A
+* B73B  9CA3  apply_lamp_range_constant_0080_record_9b8c_9ca5  body=0x9CA5
+* B73D  B624  prepare_nudge_selection_records  body=0xB626
+* B73F  8435  push_pair_0038_0085  body=0x8417, push_address=0x8437
+* B741  7671  vm_clear_word_memory_bits  
+* B743  B2A6  script_b2a6  body=0xB2A8
+* B745  B2E6  refresh_nudge_count_lamps  body=0xB2E8
+* B747  B4C3  run_nudge_sequence  body=0xB4C5
+* B749  8248  vm_push_word_body_byte  value=0x0080
+* B74B  9BFE  apply_lamp_range_7249_724c  body=0x9ADB, push_address=0x9C00
+* B74D  B710  script_b710  body=0xB712
+* B74F  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* B751  80C4  call_reels_push_matching_symbol_result  native=0x1AA3
+* B753  7A53  vm_test_nonzero  
+* B755  9FA0  reels_test_all_three_symbol_flag2  body=0x9FA2
+* B757  7AA3  vm_bitwise_or  
+* B759  7982  vm_branch_forward8_if_zero  branch=0xB760
+* B75C  7E79  vm_push_word_body_byte  value=0x0002
+* B75E  9F41  store_result_byte_b9_if_zero  body=0x9F43
+* B760  7FF2  vm_push_word_body_word  value=0x02C6
+* B762  765F  vm_clear_byte_memory  
+* B764  7EED  vm_push_word_body_byte  value=0x00BF
+* B766  765F  vm_clear_byte_memory  
+* B768  9984  wait_for_all_panel_buttons_released  body=0x9986
+* B76A  8245  vm_push_word_body_byte  value=0x00BE
+* B76C  765F  vm_clear_byte_memory  
+* B76E  B2E6  refresh_nudge_count_lamps  body=0xB2E8
+* B770  792F  vm_return_to_caller_stream  

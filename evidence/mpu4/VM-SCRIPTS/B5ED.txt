@@ -1,0 +1,34 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, memory operations, stack/cell helpers
+Callers: B72D
+
+Threaded script at B5ED; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B5ED  82DD  vm_push_word_body_byte  value=0x00BD
+* B5EF  786B  vm_fetch_unsigned_byte  
+* B5F1  7E82  vm_push_word_body_byte  value=0x0015
+* B5F3  7A6F  vm_compare_equal  
+* B5F5  7B49  vm_duplicate_if_nonzero  
+* B5F7  7982  vm_branch_forward8_if_zero  branch=0xB605
+* B5FA  7EED  vm_push_word_body_byte  value=0x00BF
+* B5FC  786B  vm_fetch_unsigned_byte  
+* B5FE  8245  vm_push_word_body_byte  value=0x00BE
+* B600  7861  vm_store_byte  
+* B602  7979  vm_branch_unsigned_forward8  branch=0xB622
+* B605  B5D5  script_b5d5  body=0xB5D7
+* B607  7B51  vm_duplicate_cell  
+* B609  9F91  mask_flagged_best_reel_result_by_signed_threshold_nine  body=0x9F93
+* B60B  7B49  vm_duplicate_if_nonzero  
+* B60D  7A46  vm_test_zero  
+* B60F  7982  vm_branch_forward8_if_zero  branch=0xB614
+* B612  8016  call_push_nonzero_symbol_result_or_fallback_to_vm_stack  native=0x1AF1
+* B614  B51B  script_b51b  body=0xB51D
+* B616  7A97  vm_bitwise_and  
+* B618  8245  vm_push_word_body_byte  value=0x00BE
+* B61A  7861  vm_store_byte  
+* B61C  8245  vm_push_word_body_byte  value=0x00BE
+* B61E  786B  vm_fetch_unsigned_byte  
+* B620  7A53  vm_test_nonzero  
+* B622  792F  vm_return_to_caller_stream  

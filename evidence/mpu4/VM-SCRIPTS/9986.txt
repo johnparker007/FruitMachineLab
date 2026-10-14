@@ -1,0 +1,12 @@
+Purpose: wait_for_all_panel_buttons_released
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, control flow, input conditions
+Callers: CED7, BEE5, AD65, C721, B72D, D587, D1F5, DC34
+
+Threaded script at 9986; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9986  8411  vm_test_input_condition  value=0x001E
+* 9988  7A46  vm_test_zero  
+* 998A  79A6  vm_branch_backward8_if_zero  branch=0x9986
+* 998D  792F  vm_return_to_caller_stream  

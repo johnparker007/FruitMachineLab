@@ -1,0 +1,15 @@
+Purpose: wait_for_credit_then_clear_collect_lamp_and_refresh_display
+Confidence: reviewed token mechanics; see payout-pass/script-name-evidence.json
+Groups: control flow, lamps
+Callers: FD56
+
+Threaded script at FC23; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  FC23  FC05  service_background_credit_and_refill_before_play  body=0xFC07
+  FC25  AB19  test_credit_available  body=0xAB1B
+  FC27  79A6  vm_branch_backward8_if_zero  branch=0xFC23
+  FC2A  8345  vm_push_word_body_byte  value=0x0018
+  FC2C  8068  call_lamp_set_frame_pattern_0  native=0x4982
+  FC2E  A8F7  refresh_credit_and_bank_display_unless_suppressed  body=0xA8F9
+  FC30  792F  vm_return_to_caller_stream  

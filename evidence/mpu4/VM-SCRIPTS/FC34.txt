@@ -1,0 +1,44 @@
+Purpose: paid_play_sequence
+Confidence: reviewed gameplay context
+Groups: control flow, credits, mask/address records, memory operations, reels, sound/scheduler
+Callers: FCBD
+
+Threaded script at FC34; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* FC34  FAFA  clear_feature_lamps_flags_and_nudgepot_for_idle_or_play  body=0xFAFC
+* FC36  848C  push_pair_2000_00a0  body=0x8417, push_address=0x848E
+* FC38  7671  vm_clear_word_memory_bits  
+* FC3A  AC23  begin_paid_play_and_update_compensation_gates  body=0xAC25
+* FC3C  A7D9  refresh_credit_display_unless_suppressed  body=0xA7DB
+* FC3E  8190  vm_push_word_body_word  value=0x02F0
+* FC40  786B  vm_fetch_unsigned_byte  
+* FC42  824B  vm_push_word_body_byte  value=0x00C1
+* FC44  7861  vm_store_byte  
+* FC46  856F  test_zero_read_word_0047_8571  body=0x8571
+* FC48  7982  vm_branch_forward8_if_zero  branch=0xFC4F
+* FC4B  8130  call_reset_sound_and_scheduler  native=0x5B77
+* FC4D  80A4  call_sound_play_fixed_timed_tone_91  native=0x5A14
+* FC4F  F382  spin_and_evaluate_reels  body=0xF384
+* FC51  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* FC53  849E  push_pair_0400_00a0  body=0x8417, push_address=0x84A0
+* FC55  7671  vm_clear_word_memory_bits  
+* FC57  9CA3  apply_lamp_range_constant_0080_record_9b8c_9ca5  body=0x9CA5
+* FC59  82D6  vm_push_word_body_word  value=0x02FA
+* FC5B  790D  vm_fetch_word  
+* FC5D  7982  vm_branch_forward8_if_zero  branch=0xFC64
+  FC60  84AA  push_pair_0100_00a0  body=0x8417, push_address=0x84AC
+  FC62  7671  vm_clear_word_memory_bits  
+* FC64  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* FC66  EE60  script_ee60  body=0xEE62
+* FC68  AFF2  dispatch_current_or_pending_award  body=0xAFF4
+* FC6A  84A4  push_pair_0200_00a0  body=0x8417, push_address=0x84A6
+* FC6C  767F  vm_test_word_memory_mask  
+* FC6E  7574  vm_return_if_nonzero  
+* FC70  B72B  script_b72b  body=0xB72D
+* FC72  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* FC74  EE60  script_ee60  body=0xEE62
+* FC76  AFF2  dispatch_current_or_pending_award  body=0xAFF4
+* FC78  84AA  push_pair_0100_00a0  body=0x8417, push_address=0x84AC
+* FC7A  7671  vm_clear_word_memory_bits  
+* FC7C  792F  vm_return_to_caller_stream  

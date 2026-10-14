@@ -1,0 +1,14 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: display, memory operations
+Callers: D003
+
+Threaded script at CFE2; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* CFE2  CFD5  vm_push_local_frame_address  value=0x0000
+* CFE4  786B  vm_fetch_unsigned_byte  
+* CFE6  8306  vm_push_word_body_word  value=0x0327
+* CFE8  7861  vm_store_byte  
+* CFEA  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); cmd76(0327); '  FREE GAME'; cmd69(0327); cmd7A()]
+* CFFF  792F  vm_return_to_caller_stream  

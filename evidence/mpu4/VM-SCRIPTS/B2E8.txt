@@ -1,0 +1,21 @@
+Purpose: refresh_nudge_count_lamps
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, control flow, lamps, memory operations, nudges
+Callers: B72D, B31F, B712, B306
+
+Threaded script at B2E8; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B2E8  82DD  vm_push_word_body_byte  value=0x00BD
+* B2EA  786B  vm_fetch_unsigned_byte  
+* B2EC  7E82  vm_push_word_body_byte  value=0x0015
+* B2EE  7A6F  vm_compare_equal  
+* B2F0  7982  vm_branch_forward8_if_zero  branch=0xB2FA
+* B2F3  A8ED  display_nudgepot_byte_as_two_decimal_digits  body=0xA8EF
+* B2F5  A879  set_display_mode_bytes_02be_02bf_unless_suppressed  body=0xA87B
+* B2F7  7979  vm_branch_unsigned_forward8  branch=0xB302
+* B2FA  8245  vm_push_word_body_byte  value=0x00BE
+* B2FC  786B  vm_fetch_unsigned_byte  
+* B2FE  820C  vm_push_word_body_byte  value=0x0083
+* B300  9BF8  apply_clipped_lamp_range_7249_724c  body=0x9AFD, push_address=0x9BFA
+* B302  792F  vm_return_to_caller_stream  

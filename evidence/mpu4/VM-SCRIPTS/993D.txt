@@ -1,0 +1,12 @@
+Purpose: test_normal_mode_byte_zero
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, memory operations
+Callers: 9947
+
+Threaded script at 993D; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 993D  81AC  vm_push_word_body_word  value=0x0323
+* 993F  786B  vm_fetch_unsigned_byte  
+* 9941  7A46  vm_test_zero  
+* 9943  792F  vm_return_to_caller_stream  

@@ -1,0 +1,46 @@
+Purpose: attract_set_symmetric_reel_group_lamp_patterns
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: control flow, lamps, reels, reels/symbol tests, stack/cell helpers
+Callers: FA34
+
+Threaded script at F6C3; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* F6C3  7982  vm_branch_forward8_if_zero  branch=0xF705
+* F6C6  78B5  vm_push_zero  
+* F6C8  820C  vm_push_word_body_byte  value=0x0083
+* F6CA  9C04  apply_indexed_lamp_id_from_732c  body=0x9B18, push_address=0x9C06
+* F6CC  78C0  vm_push_one  
+* F6CE  8212  vm_push_word_body_byte  value=0x0085
+* F6D0  9C04  apply_indexed_lamp_id_from_732c  body=0x9B18, push_address=0x9C06
+* F6D2  78DE  vm_push_two  
+* F6D4  820F  vm_push_word_body_byte  value=0x008C
+* F6D6  9C04  apply_indexed_lamp_id_from_732c  body=0x9B18, push_address=0x9C06
+* F6D8  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* F6DB  820F  vm_push_word_body_byte  value=0x008C
+* F6DD  9C04  apply_indexed_lamp_id_from_732c  body=0x9B18, push_address=0x9C06
+* F6DF  7963  vm_push_inline_byte_literal  inline_value=0x0004
+* F6E2  8212  vm_push_word_body_byte  value=0x0085
+* F6E4  9C04  apply_indexed_lamp_id_from_732c  body=0x9B18, push_address=0x9C06
+* F6E6  7963  vm_push_inline_byte_literal  inline_value=0x0005
+* F6E9  820C  vm_push_word_body_byte  value=0x0083
+* F6EB  9C04  apply_indexed_lamp_id_from_732c  body=0x9B18, push_address=0x9C06
+* F6ED  7963  vm_push_inline_byte_literal  inline_value=0x0006
+* F6F0  820C  vm_push_word_body_byte  value=0x0083
+* F6F2  9C04  apply_indexed_lamp_id_from_732c  body=0x9B18, push_address=0x9C06
+* F6F4  7963  vm_push_inline_byte_literal  inline_value=0x0007
+* F6F7  8212  vm_push_word_body_byte  value=0x0085
+* F6F9  9C04  apply_indexed_lamp_id_from_732c  body=0x9B18, push_address=0x9C06
+* F6FB  7963  vm_push_inline_byte_literal  inline_value=0x0008
+* F6FE  820F  vm_push_word_body_byte  value=0x008C
+* F700  9C04  apply_indexed_lamp_id_from_732c  body=0x9B18, push_address=0x9C06
+* F702  7979  vm_branch_unsigned_forward8  branch=0xF712
+* F705  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* F708  78B5  vm_push_zero  
+* F70A  79DC  vm_enter_loop_frame  
+* F70C  7A1C  vm_push_loop_index  
+* F70E  8032  call_show_reel_group_lamp_candidate  native=0x2C94
+* F710  7A00  vm_loop_increment_one  
+* F712  78C0  vm_push_one  
+* F714  F574  wait_attract_ticks_or_restore_game_state_on_credit_or_service  body=0xF576
+* F716  792F  vm_return_to_caller_stream  

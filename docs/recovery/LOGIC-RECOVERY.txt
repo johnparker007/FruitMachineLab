@@ -1,0 +1,67 @@
+MPU4 m4addr: native purposes, VM recovery and behavior verification
+13 October 2026
+
+Saved Ghidra project: project/MPU4.gpr, program a6ls.p1.
+Current functions: 438; named: 387; explicit hyp_ names: 24.
+Before this pass:396 functions,244 names. The pass renamed96 existing native routines, recovered additional dispatch/native entries, and added script names. Some names describe mechanical engine behavior or entry addresses, rather than a complete game rule.
+
+WHAT IS IN GHIDRA
+967 typed VM word headers;7,298 typed token sites;430 reachable script entry listings.
+RecoveredVmToken enum under Data Type Manager /MPU4 provides readable token names. The token sites have comments and data references to their word headers, handlers, native callees and branch targets. The native purpose pass added display commands, reel symbol translation/result helpers, accounting/NVRAM updates, lamp-mask operations, serial formatting, scheduler cancellation/search, and delay/timing names. NATIVE-PURPOSES.txt and evidence/logic-pass/native-purpose-plan.json group routines by direct callers, VM word callers, memory operands and hardware operands. Operand grouping is not a complete alias or data-flow analysis.
+
+Useful Ghidra navigation addresses (pressG):
+ 6750 initialize_machine_and_game (native initialization)
+ 171D lamps_execute_initial_clear_stream (corrected former overly broad hypothesis)
+ 1726 mode/service initialization entry (hypothesis remains explicit)
+ 5CB5 scheduler_find_task_by_stream
+ 2BEB reels_wait_and_refresh_symbol_records
+ 2C12 reels_translate_positions_to_symbol_records
+ 1AC3 reels_lookup_matching_symbol_result
+ 4672 credits_add_half_units_and_refresh_nvram
+ 02F0 game_credit_count;02F1 fractional credit state;0304 credit shadow
+ 03FE separate stake accounting counter, not the credit count
+ FDF0 initial/main VM stream
+ FCF0 initial game-script state
+ FBCB background machine update script
+ FBA2 attract gate;FA7F attract sequence
+ FCBD outer input/poll loop;FC34 paid play sequence
+ AB64 consume credit and record stake;ABA2 actual credit-decrement token
+ FB45 process credit changes and update display
+ A7AB credit display script
+ F384 spin/evaluate path;F2B5 native reel-spin bridge and symbol refresh
+
+READABLE SCRIPT LISTINGS
+VM-SCRIPTS contains430 address-named .txt files. INDEX.txt lists named entry points. Each line gives ROM location,token word,operation,operand and branch/call destination; inline alpha/lamp command streams are decoded. A leading* means the dispatch site was observed in MAME. Other reachable branches are static deductions; this marker does not claim every possible operand/state was tested. Literal and branch payload bytes are separated from tokens, including odd-aligned word addresses.
+
+The VM uses Y as cursor,U as data stack,and S for returns/loop/local frames. F8 enters a nested definition;FC dispatches a word through its code-pointer header. This pass also recovered shared-body entries whose three-byte native JSR796E is followed by tokens. The trampoline pushes the calling word's body address and swaps the native return PC with the outer VM cursor. Only that prefix is6809 code. Native inline display/input/lamp calls had64 continuation boundaries refined, so Ghidra skips their embedded arguments. The extra lamp pattern-F stub at497F was corrected as a tail-return stub.
+
+Decoder validation across the recorded baseline/discovery/corrected play traces:
+ 1,821 distinct observed dispatch locations, with zero token-word mismatches.
+ 607,883 checked ordinary next-token transitions, with zero mismatches.
+ Native calls,returns,dynamic execution and loop/local-frame transfers require separate context and are excluded from the ordinary continuation count. Handler mechanics are derived from saved6809 assembly; this is not validation of every game outcome or full symbolic stack interpretation.
+ Four static sites remain unresolved:ADBA,AC46,AC5F,9AD0. Their payloads/tokens are left unresolved; none appeared in the recorded execution. No claim of complete ROM coverage is made.
+
+BEHAVIOR VERIFICATION
+logic-play-v2-a and logic-play-v2-b each start with isolated default settings and absent NVRAM. They use unchanged MAME0.281 and ROM,with emulated physical input fields rather than CPU RAM writes.
+ Input plan: AUX2 mask80 from35.0..35.1s; Start BLACK2 mask80 from37.0..37.2s; Hold1 BLACK2 mask02 from45.0..45.2s; Start from47.0..47.2s. AUX2:80 is the driver's Coin4 input; the experiment establishes five credits, not an independently verified currency denomination.
+ Both runs match byte-for-byte in state.csv (601 rows),full VM dispatch debug.log,and final2KB RAM image. Their first350 state rows,through34.95s,also match the no-input baseline. That covers initialization and the pre-coin idle/attract period. Existing deep-init-return-a/b provide the earlier instruction-level init/update replay.
+ First sampled credit transitions:0 at0.05s;5 at35.15s;4 at37.15s;3 at47.15s. Start is first sampled at37.05/47.05s; Hold1 at45.05s. The observation cadence is100ms,not exact CPU event timing.
+ logic-game-path-v2 adds credit write watchpoints and native reel-start/completion breakpoints. The two play starts enter common setup61D6 withA=00,Y=F2BB,credits4 and3. Both reach motion-complete64F0. First spin final reel position bytes168,16A,16C,16E:30,0C,4E,20. Second:06,1E,42,48. Execution returns to the credit/input loop afterward.
+ Credit writes are localized to the coin accumulation tail46B5 and VM decrement handler765B,invoked by ABA2. The shadow0304 is updated by VM tokensFB7A andAB7E. Hold1 acquisition is verified; this press occurs between spins,so it does not establish a hold/nudge/feature outcome.
+
+GAME LOGIC RECOVERED FROM THESE PATHS
+AB64 conditionally decrements the credit shadow when E0 is set and shadow equals credits, then decrements02F0 and refreshes NVRAM complement/checksum state. It records stake accounting through AB33; the observed normal path increments03FE twice per consumed credit. A7AB prints02F0 through alpha command76,and its fractional branch appends .5. FC34 calls F384; the latter reaches F2B5,which resets sound/scheduler,prepares lamps,starts native reel motion,waits and refreshes symbol records.
+FBA2 gates entry to the attract path using no-credit/bank/mode conditions and a timer. FA7F enters the lamp/display attract sequence. The no-input trace validates the observed branch and repeating outputs; alternative DIP/service/bank branches remain static deductions.
+
+REPRODUCTION
+Run scripts/Run-DeepTrace.ps1 with a fresh RunName,CommandsFile scripts/observe-logic.cmd,Seconds65,and InputScript scripts/observe-logic.lua. Set process-local MPU4_SCENARIO=play for the coin/Start/Hold1 sequence,or baseline for no inputs. trace-game-path.cmd provides the focused watchpoints. Use exactly the pinned executable/ROM and fresh isolated run directories. No save states are used; RAM dumps are observations,not emulator save states.
+Each run preserves arguments,resolved configuration,input plan/script,debugger commands,console output,and SHA256 file manifest. replay-verification.json records equality and hashes. Earlier logic-play-discovery/logic-play-a/b diagnose a harness bug with repeated input-field writes; they are not the corrected replay evidence. That harness error was fixed and is not attributed to the ROM or emulator.
+
+LIMITS AND EVIDENCE
+Names are recovered descriptions,not original identifiers. There are still51 neutral native function names and24 explicit hypotheses. Script decoding is a reachable token/control-flow listing,not structured original-source recovery. Standard6809 decompilation still has limitations at indirect/native-inline/custom-stack boundaries; saved assembly and VM listings are the reference where pseudocode warns or disagrees. No ROM bug or emulator defect is claimed by these experiments. Payout correctness and unvisited feature outcomes remain unverified.
+Source input labels and defaults were checked against the pinned MAME source in evidence/logic-pass/mpu4mod4yam.cpp and mpu4.cpp:
+https://github.com/mamedev/mame/blob/mame0281/src/mame/barcrest/mpu4mod4yam.cpp
+https://github.com/mamedev/mame/blob/mame0281/src/mame/barcrest/mpu4.cpp
+Lua API background:https://docs.mamedev.org/luascript/ref-core.html (current docs; actual scripts tested on0.281).
+Baseline ROM/executable hashes remain in the existing manifest and per-run files. No installation or general configuration changes were made in this pass. The project was saved offline; backup before this pass is work/project-before-logic-pass.
+Local tooling does not imply local AI inference; analysis supplied to this chat is processed by its model.

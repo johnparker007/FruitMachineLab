@@ -1,0 +1,19 @@
+Purpose: update_compensation_gate_from_signed_counter
+Confidence: reviewed token mechanics
+Groups: control flow, memory operations, stack/cell helpers
+Callers: AC25
+
+Threaded script at A588; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* A588  9945  test_normal_mode_byte_nonzero  body=0x9947
+* A58A  7574  vm_return_if_nonzero  
+* A58C  A551  advance_compensation_table_and_decrement_active_counter  body=0xA553
+* A58E  9F39  test_negative_three_byte_counter_07cc  body=0x9F3B
+* A590  79B9  vm_branch_absolute16_if_zero  branch=0xA59A
+  A594  9ED4  vm_push_word_body_byte  value=0x0001
+  A596  79B0  vm_branch_absolute16  branch=0xA59C
+* A59A  78BE  vm_push_zero  
+* A59C  7EB4  vm_push_word_body_word  value=0x0330
+* A59E  7861  vm_store_byte  
+* A5A0  792F  vm_return_to_caller_stream  

@@ -1,0 +1,15 @@
+Purpose: dispatch_token_from_local_callback_record_by_byte_offset
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: arithmetic, memory operations, table/dynamic dispatch
+Callers: ACC0, AD65
+
+Threaded script at AC81; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* AC81  786B  vm_fetch_unsigned_byte  
+* AC83  AC72  vm_push_local_frame_address  value=0x0000
+* AC85  790D  vm_fetch_word  
+* AC87  787E  vm_add_words  
+* AC89  790D  vm_fetch_word  
+* AC8B  79D6  vm_execute_token_from_stack  
+* AC8D  792F  vm_return_to_caller_stream  

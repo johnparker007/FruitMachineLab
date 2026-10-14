@@ -1,0 +1,15 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: memory operations, reels
+Callers: F072
+
+Threaded script at F042; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* F042  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* F044  EFF7  script_eff7  body=0xEFF9
+* F046  A0AB  prepare_reel_request_triplet_by_result_threshold_scan  body=0xA0AD
+* F048  7E76  vm_push_word_body_byte  value=0x0004
+* F04A  8164  vm_push_word_body_byte  value=0x00B9
+* F04C  7861  vm_store_byte  
+* F04E  792F  vm_return_to_caller_stream  

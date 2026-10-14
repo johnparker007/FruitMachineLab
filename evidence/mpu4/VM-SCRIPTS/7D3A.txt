@@ -1,0 +1,12 @@
+Purpose: test_low_bit_nonzero
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, stack/cell helpers
+Callers: CE99, F917, A9A0, F841, AF2B
+
+Threaded script at 7D3A; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 7D3A  78C0  vm_push_one  
+* 7D3C  7A97  vm_bitwise_and  
+* 7D3E  7A53  vm_test_nonzero  
+* 7D40  792F  vm_return_to_caller_stream  

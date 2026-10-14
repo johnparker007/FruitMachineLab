@@ -1,0 +1,14 @@
+Purpose: test_irq_timer_positive_or_abort_flag
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, mask tests, memory operations
+Callers: DD38, CED7, BC70, ACC0, C0AC, C416, BEE5, F576
+
+Threaded script at 9A42; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9A42  82F2  vm_push_word_body_byte  value=0x002D
+* 9A44  790D  vm_fetch_word  
+* 9A46  7A31  vm_test_greater_than_zero  
+* 9A48  84DA  test_mask_8000_at_719b  body=0x841E, push_address=0x84DC
+* 9A4A  7AA3  vm_bitwise_or  
+* 9A4C  792F  vm_return_to_caller_stream  

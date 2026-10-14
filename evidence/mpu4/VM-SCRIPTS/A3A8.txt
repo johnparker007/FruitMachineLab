@@ -1,0 +1,16 @@
+Purpose: sum_three_reel_record_bytes
+Confidence: reviewed token mechanics
+Groups: arithmetic, memory operations, reel records, reels/symbol tests, stack/cell helpers
+Callers: A3D0
+
+Threaded script at A3A8; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  A3A8  78B5  vm_push_zero  
+  A3AA  9D7A  push_three_reel_loop_bounds  body=0x9D7C
+  A3AC  79DC  vm_enter_loop_frame  
+  A3AE  9DAD  address_record_0169_loop_index  body=0x9D86, push_address=0x9DAF
+  A3B0  786B  vm_fetch_unsigned_byte  
+  A3B2  787E  vm_add_words  
+  A3B4  7A00  vm_loop_increment_one  
+  A3B6  792F  vm_return_to_caller_stream  

@@ -1,0 +1,20 @@
+Purpose: move_indexed_stack_cell_to_top
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: arithmetic, stack/cell helpers
+Callers: AD42
+
+Threaded script at 7E18; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 7E18  7B51  vm_duplicate_cell  
+* 7E1A  7AF4  vm_move_cell_to_return_stack  
+* 7E1C  7B61  vm_pick_cell_by_unsigned_word_index  
+* 7E1E  7B2B  vm_push_data_stack_pointer  
+* 7E20  7B51  vm_duplicate_cell  
+* 7E22  78E7  vm_add_two  
+* 7E24  7B04  vm_move_cell_from_return_stack  
+* 7E26  78C9  vm_increment_word  
+* 7E28  78FD  vm_shift_left_one  
+* 7E2A  7B89  vm_move_bytes_overlap_safe  
+* 7E2C  7B3D  vm_drop_cell  
+* 7E2E  792F  vm_return_to_caller_stream  

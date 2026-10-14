@@ -1,0 +1,91 @@
+Cash-feature flow recovery â€”14 October2026
+Entries and helper names are reconstructed; this is not original source. Static branch descriptions and observed sites must be distinguished.
+
+Loot Shoot (BD99): 22/22 entry-body sites observed.
+Reads working byteE7, displays its doubled amount, records result categories, temporarily services repeated two-unit balances through native4B39, then restores the prior02FE balance. This is the emulated path; physical coin delivery is not independently established.
+Reviewed helper chain:
+  BD2A animate_cash_result_character_then_flash_amount (24/24 sites observed)
+  BCF3 flash_cash_amount_display_from_doubled_result (16/16 sites observed)
+  BD61 loot_shoot_account_and_service_repeated_two_unit_payouts (26/26 sites observed)
+  AE3A account_award_by_result_categories_and_selected_counter (71/80 sites observed)
+
+Nice Dice (BF3E): 11/13 entry-body sites observed.
+ROM option4000 selects a random award route instead of the physical fourth-reel selection route. Normal path saves fourth-reel parameters, starts motion, waits for Start/timer/option0200, resolves an eligible sector and stores twice the final reel symbol in pendingBA. The alternative random route remains a separate branch.
+Reviewed helper chain:
+  BE3B nice_dice_select_compensated_limit_plus_three (7/7 sites observed)
+  BE4C fetch_fourth_reel_sector_value_from_763b (10/10 sites observed)
+  BE64 nice_dice_start_fourth_reel_with_random_wait (18/18 sites observed)
+  BE91 nice_dice_wait_eligible_sector_then_stop_fourth_reel (18/18 sites observed)
+  BEE5 nice_dice_prompt_start_and_resolve_fourth_reel_stop (40/40 sites observed)
+  BEB9 nice_dice_convert_final_reel_symbol_into_pending_award (12/12 sites observed)
+  BED3 nice_dice_generate_random_pending_award_from_limit (0/8 sites observed)
+
+Cash Climber (C10B): 14/14 entry-body sites observed.
+One-byte frame stores shots remaining. Initialises timer/flags, loops through a15-step progression, resets the shot budget to3 per step, waits for Start or timing/option gates, and tests progression eligibility. Final selected step indexesC039 into pendingBA and updates NVRAM integrity. Focused trace: index0 ->6 units, confirmed atC126.
+Reviewed helper chain:
+  BFCE cash_climber_initialize_timer_and_shot_state (17/17 sites observed)
+  C005 cash_climber_refresh_progress_lamp_strip (24/24 sites observed)
+  C06F cash_climber_display_shot_count_or_previous_step_amount (20/20 sites observed)
+  BF8F cash_climber_test_progress_or_display_unlucky (23/23 sites observed)
+  C0AC cash_climber_run_three_shot_start_input_loop (43/44 sites observed)
+  C049 cash_climber_store_selected_step_award_and_cleanup (18/18 sites observed)
+
+Money Trap (C416): 41/41 entry-body sites observed.
+Twenty-byte local frame holds stream offset and a compacted display stream. Streams characters until button/timer/option conditions align with an offset divisible by4, freezes/copies four displayed terms, adds their leading digits, presents plus/equals animations and commits pendingBA. Focused trace: displayed8,8,8,6 ->30, then pendingBA=30 atC46D. Other sums and gate branches remain partly unverified.
+Reviewed helper chain:
+  C2AC money_trap_select_compensated_digit_stream_base (11/11 sites observed)
+  C2C5 money_trap_render_next_stream_character_and_wrap_120 (15/18 sites observed)
+  C3F7 money_trap_seed_offset_and_render_sixteen_display_steps (13/13 sites observed)
+  C2FD money_trap_copy_and_compact_four_display_terms (37/37 sites observed)
+  C2EC money_trap_play_sound_and_display_local_terms (7/7 sites observed)
+  C37A money_trap_sum_four_display_digits (22/22 sites observed)
+  C353 money_trap_display_amount_and_equals_sign (5/5 sites observed)
+  C3BA money_trap_sum_animate_and_commit_pending_award (22/22 sites observed)
+
+Pick A Win (C593): 52/52 entry-body sites observed.
+Chooses a random or weighted selection seed. Selection index may wrap modulo40 unless state mask0020 is set. Builds a table-selected reel request, spins it with lamp feedback, waits for the third request to become nonzero and tests the resulting symbols. Option0200 and orange-input branches alter the path; not all outcomes verified.
+Reviewed helper chain:
+  C56D pick_a_win_choose_random_or_weighted_selection_seed (10/16 sites observed)
+  C4EB pick_a_win_increment_selection_index_with_optional_modulo_forty (12/12 sites observed)
+  C4DD pick_a_win_clamp_value_to_thirty_when_orange1_active (3/6 sites observed)
+  C506 pick_a_win_prepare_spin_and_present_selected_result (42/42 sites observed)
+  C4B4 pick_a_win_flash_reel_lamps_until_third_request_nonzero (18/18 sites observed)
+  C55C pick_a_win_test_matching_result_threshold_with_option_0200 (7/7 sites observed)
+
+Skill Cash (C721): 34/34 entry-body sites observed.
+Two-byte frame starts with stage0 and level6. Three stages use successive timing values25,20,15; selected values reduce the level. Panel latch0080 at0090 and timer state exit the selection loop, with additional option/random overrides. Final level indexes75BD;47 is normalized to30 before award animation.
+Reviewed helper chain:
+  C637 skill_cash_initialize_selection_and_six_step_level (6/6 sites observed)
+  C617 skill_cash_lookup_compensated_chance_table (5/5 sites observed)
+  C646 skill_cash_apply_option_controlled_random_override (4/15 sites observed)
+  C66A skill_cash_test_orange1_or_compensated_chance (5/5 sites observed)
+  C676 skill_cash_cancel_terminal_choice_under_random_gate (13/15 sites observed)
+  C62B skill_cash_dispatch_selected_index_lamp_pattern (5/5 sites observed)
+  C699 skill_cash_wait_selection_latch_or_timer_with_lamp_feedback (26/26 sites observed)
+  C6D0 skill_cash_animate_selected_level_lamps (21/21 sites observed)
+  C6FC skill_cash_commit_threshold_award_and_animate_win (16/17 sites observed)
+
+Cash Attack (C81C): 28/28 entry-body sites observed.
+Initial working byteED=30 and a compensation-derived random gate precede the ATTACK selection flow. The chosen index addressesC7A8, its amount is displayed, stored in pendingBA, integrity-refreshed and animated into current win; working byteEC accumulates the result. Dynamic selection helperAD65 still deserves deeper branch-specific interpretation.
+Reviewed helper chain:
+  C779 cash_attack_lookup_compensated_chance_table (5/5 sites observed)
+  C785 cash_attack_test_compensated_chance (3/3 sites observed)
+  C78D cash_attack_store_thirty_in_working_byte_ed (4/4 sites observed)
+  C7E4 cash_attack_announce_select_and_commit_table_award (18/18 sites observed)
+  AD65 run_selection_engine_from_five_callback_record (35/35 sites observed)
+
+Super Stepper (C98E): 34/37 entry-body sites observed.
+Two-byte frame holds cumulative progress and a working limit30 or60. Bounded weighted increments use tablesC8B4/C8C4/C8D4. Step animation readsA12E into pendingBA, commits the award and clears the lamp trail. Continuation/final chances use separate compensation-indexed tables. Entry and award path were observed in stepper10-a/b. Four accepted increments and four pending-award mappings passed focused checks. Other retry/exit branches remain partly unverified.
+Reviewed helper chain:
+  C878 super_stepper_lookup_compensated_continue_chance (5/5 sites observed)
+  C884 super_stepper_lookup_compensated_final_chance_clipped_fifty (7/7 sites observed)
+  C895 super_stepper_select_working_limit_thirty_or_sixty (13/13 sites observed)
+  C8E4 super_stepper_select_weighted_step_with_remaining_limit (18/18 sites observed)
+  C90C super_stepper_animate_step_commit_award_and_clear_trail (53/53 sites observed)
+
+Cash Jackpot Restart (C9F4): 25/25 entry-body sites observed.
+Top-level dispatch/display association and some execution are established. It composes the existing jackpot/selection and lamp helpers. Its broader restart semantics and all exits remain unresolved; the name is not a complete behavioral recovery.
+Reviewed helper chain:
+  BB49 purpose unresolved (16/16 sites observed)
+  B946 apply_reel_grid_lamp_pattern_at_row_times_six_plus_column (7/7 sites observed)
+

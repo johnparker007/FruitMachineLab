@@ -1,0 +1,11 @@
+Purpose: apply_lamp_range_constant_0080_record_9b8c
+Confidence: exact helper pattern
+Groups: lamps
+Callers: CED7, E5CF, C416, CB60, CE31, FAFC, E656, E796
+
+Threaded script at 9CA5; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9CA5  8248  vm_push_word_body_byte  value=0x0080
+* 9CA7  9B8C  apply_lamp_range_7323_732c  body=0x9ADB, push_address=0x9B8E
+* 9CA9  792F  vm_return_to_caller_stream  

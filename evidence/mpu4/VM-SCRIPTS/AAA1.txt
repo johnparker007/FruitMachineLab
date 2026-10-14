@@ -1,0 +1,32 @@
+Purpose: handle_collect_input_and_automatic_balance_service_gates
+Confidence: reviewed token mechanics; see lifecycle-pass/script-name-evidence.json
+Groups: award/balance operations, boolean/bit operations, control flow, input conditions, lamps, mask tests, memory operations, sound/scheduler
+Callers: AFF4, AAF2
+
+Threaded script at AAA1; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* AAA1  A7E3  sum_five_bank_related_words  body=0xA7E5
+* AAA3  A90D  return_zero_after_reading_credit_fraction_byte  body=0xA90F
+* AAA5  7AA3  vm_bitwise_or  
+* AAA7  7982  vm_branch_forward8_if_zero  branch=0xAAD3
+* AAAA  A7E3  sum_five_bank_related_words  body=0xA7E5
+* AAAC  A919  refresh_collect_lamp_and_prompt_sound  body=0xA91B
+* AAAE  82F2  vm_push_word_body_byte  value=0x002D
+* AAB0  790D  vm_fetch_word  
+* AAB2  795B  vm_push_inline_word_literal  inline_value=0x6400
+* AAB6  7A79  vm_compare_top_lt_second_signed  
+* AAB8  84E6  test_mask_1000_at_719f  body=0x841E, push_address=0x84E8
+* AABA  7AA3  vm_bitwise_or  
+* AABC  A7E3  sum_five_bank_related_words  body=0xA7E5
+* AABE  83F3  vm_test_input_condition  value=0x0082
+* AAC0  7A97  vm_bitwise_and  
+* AAC2  7AA3  vm_bitwise_or  
+* AAC4  8393  vm_test_input_condition  value=0x001C
+* AAC6  7AA3  vm_bitwise_or  
+* AAC8  7982  vm_branch_forward8_if_zero  branch=0xAAD3
+* AACB  8345  vm_push_word_body_byte  value=0x0018
+* AACD  806C  call_lamp_set_frame_pattern_F  native=0x497F
+* AACF  8130  call_reset_sound_and_scheduler  native=0x5B77
+* AAD1  AA29  service_balances_through_prioritized_collection_routes  body=0xAA2B
+* AAD3  792F  vm_return_to_caller_stream  

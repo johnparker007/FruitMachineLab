@@ -1,0 +1,41 @@
+Purpose: test_reel_symbol_flags_and_selection_mask
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, control flow, memory operations, reel records, reels, reels/symbol tests, stack/cell helpers
+Callers: F20D
+
+Threaded script at F1C3; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* F1C3  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* F1C5  78B3  vm_push_true_minus_one  
+* F1C7  9D7A  push_three_reel_loop_bounds  body=0x9D7C
+* F1C9  79DC  vm_enter_loop_frame  
+* F1CB  9DA9  address_record_0161_loop_index  body=0x9D86, push_address=0x9DAB
+* F1CD  786B  vm_fetch_unsigned_byte  
+* F1CF  8036  vm_push_word_body_byte  value=0x0002
+* F1D1  7A97  vm_bitwise_and  
+* F1D3  7982  vm_branch_forward8_if_zero  branch=0xF1DC
+* F1D6  9E38  push_current_reel_selection_mask_and_address  body=0x9E3A
+* F1D8  767F  vm_test_word_memory_mask  
+* F1DA  7A97  vm_bitwise_and  
+* F1DC  7A00  vm_loop_increment_one  
+* F1DE  9FBA  reels_test_exactly_two_symbol_flag2  body=0x9FBC
+* F1E0  7A97  vm_bitwise_and  
+* F1E2  7982  vm_branch_forward8_if_zero  branch=0xF205
+  F1E5  7B3D  vm_drop_cell  
+  F1E7  7F8A  vm_push_word_body_byte  value=0x00A9
+  F1E9  7653  vm_increment_byte_memory  
+  F1EB  A719  scaled_parameter_profile_at_a71b_counter_07c9  body=0xA5A5, push_address=0xA71B
+  F1ED  7963  vm_push_inline_byte_literal  inline_value=0x0064
+  F1F0  7F8A  vm_push_word_body_byte  value=0x00A9
+  F1F2  786B  vm_fetch_unsigned_byte  
+  F1F4  7963  vm_push_inline_byte_literal  inline_value=0x0003
+  F1F7  7A6F  vm_compare_equal  
+  F1F9  7A97  vm_bitwise_and  
+  F1FB  7AE7  vm_max_signed  
+  F1FD  7963  vm_push_inline_byte_literal  inline_value=0x0064
+  F200  7ADC  vm_min_signed  
+  F202  7979  vm_branch_unsigned_forward8  branch=0xF209
+* F205  7F8A  vm_push_word_body_byte  value=0x00A9
+* F207  765F  vm_clear_byte_memory  
+* F209  792F  vm_return_to_caller_stream  

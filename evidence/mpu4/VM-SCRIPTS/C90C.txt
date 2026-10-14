@@ -1,0 +1,61 @@
+Purpose: super_stepper_animate_step_commit_award_and_clear_trail
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: accounting/NVRAM, arithmetic, award/balance operations, display, indexed memory, lamps, memory operations, sound/scheduler, stack/cell helpers
+Callers: C98E
+
+Threaded script at C90C; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C90C  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); '*** STEPPING ***'; cmd7A()]
+* C920  A30E  vm_push_word_body_address  value=0xA310
+* C922  831B  call_alpha_execute_stream_at_x  native=0x3CC0
+* C924  8248  vm_push_word_body_byte  value=0x0080
+* C926  9B86  apply_lamp_range_728f_72bf  body=0x9ADB, push_address=0x9B88
+* C928  7B51  vm_duplicate_cell  
+* C92A  78B5  vm_push_zero  
+* C92C  79DC  vm_enter_loop_frame  
+* C92E  809C  call_resume_alpha_stream_when_delay_expired  native=0x3CF7
+* C930  7963  vm_push_inline_byte_literal  inline_value=0x002A
+* C933  8212  vm_push_word_body_byte  value=0x0085
+* C935  9B82  apply_indexed_lamp_id_from_728f  body=0x9B18, push_address=0x9B84
+* C937  7A1C  vm_push_loop_index  
+* C939  9F56  apply_pattern_8f_to_indexed_lamp_record  body=0x9F58
+* C93B  8130  call_reset_sound_and_scheduler  native=0x5B77
+* C93D  7A1C  vm_push_loop_index  
+* C93F  78DE  vm_push_two  
+* C941  7DEE  signed_cell_quotient  body=0x7DF0
+* C943  8579  write_byte_004d_857b  body=0x857B
+* C945  86F6  queue_sound_stream_86f8  body=0x856B, push_address=0x86F8
+* C947  7A1C  vm_push_loop_index  
+* C949  7963  vm_push_inline_byte_literal  inline_value=0x0028
+* C94C  787E  vm_add_words  
+* C94E  99AD  wait_irq_ticks_or_abort_flag  body=0x99AF
+* C950  7A00  vm_loop_increment_one  
+* C952  80A0  call_alpha_reset_and_clear_display  native=0x3D0E
+* C954  8130  call_reset_sound_and_scheduler  native=0x5B77
+* C956  896B  queue_sound_stream_896d  body=0x856B, push_address=0x896D
+* C958  7B51  vm_duplicate_cell  
+* C95A  8212  vm_push_word_body_byte  value=0x0085
+* C95C  9B82  apply_indexed_lamp_id_from_728f  body=0x9B18, push_address=0x9B84
+* C95E  80F8  call_scheduler_wait_until_active_list_empty  native=0x5CCB
+* C960  7B51  vm_duplicate_cell  
+* C962  A12C  read_indexed_byte_table_at_a12e  body=0x9971, push_address=0xA12E
+* C964  8318  vm_push_word_body_byte  value=0x00BA
+* C966  7874  vm_store_word  
+* C968  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* C96A  AF91  animate_pending_award_into_current_win  body=0xAF93
+* C96C  78B5  vm_push_zero  
+* C96E  7B7D  vm_swap_two_cells  
+* C970  78C9  vm_increment_word  
+* C972  79DC  vm_enter_loop_frame  
+* C974  7963  vm_push_inline_byte_literal  inline_value=0x002A
+* C977  8212  vm_push_word_body_byte  value=0x0085
+* C979  9B82  apply_indexed_lamp_id_from_728f  body=0x9B18, push_address=0x9B84
+* C97B  7A1C  vm_push_loop_index  
+* C97D  8248  vm_push_word_body_byte  value=0x0080
+* C97F  9B82  apply_indexed_lamp_id_from_728f  body=0x9B18, push_address=0x9B84
+* C981  7963  vm_push_inline_byte_literal  inline_value=0x000A
+* C984  99AD  wait_irq_ticks_or_abort_flag  body=0x99AF
+* C986  78AA  vm_push_true_minus_one  
+* C988  79EB  vm_loop_add_variable_step  
+* C98A  792F  vm_return_to_caller_stream  

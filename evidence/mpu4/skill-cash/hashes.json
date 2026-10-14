@@ -1,0 +1,74 @@
+[
+  {
+    "Path": "C:\\Users\\John\\Documents\\Codex\\2026-10-13\\help-me-set-up-a-local\\outputs\\mpu4\\runs\\vm-batch-policy7-a\\actions.csv",
+    "Hash": "4A051DA15264842697879EFF396B34A789F5D80623F9A2E749C244E6A80E721D"
+  },
+  {
+    "Path": "C:\\Users\\John\\Documents\\Codex\\2026-10-13\\help-me-set-up-a-local\\outputs\\mpu4\\runs\\vm-batch-policy7-a\\arguments.json",
+    "Hash": "15B242D01A3BDF3D2FD0BD42B0D9E8E42DBC13A022C7EF25E0F2EF32C81EA6AD"
+  },
+  {
+    "Path": "C:\\Users\\John\\Documents\\Codex\\2026-10-13\\help-me-set-up-a-local\\outputs\\mpu4\\runs\\vm-batch-policy7-a\\console.txt",
+    "Hash": "FC79B821C454072DF79C40E5E30A62E95A832E1939D17B8155E70B7BD0101D65"
+  },
+  {
+    "Path": "C:\\Users\\John\\Documents\\Codex\\2026-10-13\\help-me-set-up-a-local\\outputs\\mpu4\\runs\\vm-batch-policy7-a\\controller-settings.json",
+    "Hash": "E0259522C18E7E5BC2225EFDD98CACA930F485200A0EDA1D93EA610662784CE9"
+  },
+  {
+    "Path": "C:\\Users\\John\\Documents\\Codex\\2026-10-13\\help-me-set-up-a-local\\outputs\\mpu4\\runs\\vm-batch-policy7-a\\debug.log",
+    "Hash": "A89D78B2D4F8DFB749B7FF6241F99057843FF1FA6DDCFDFBA3D4D99836CD3DE5"
+  },
+  {
+    "Path": "C:\\Users\\John\\Documents\\Codex\\2026-10-13\\help-me-set-up-a-local\\outputs\\mpu4\\runs\\vm-batch-policy7-a\\debugger.cmd",
+    "Hash": "7CBF0817329F28A027AF20D8753F81F4FA857FAABC0BBD044CB6213CA12DABA6"
+  },
+  {
+    "Path": "C:\\Users\\John\\Documents\\Codex\\2026-10-13\\help-me-set-up-a-local\\outputs\\mpu4\\runs\\vm-batch-policy7-a\\exit-code.txt",
+    "Hash": "13BF7B3039C63BF5A50491FA3CFD8EB4E699D1BA1436315AEF9CBE5711530354"
+  },
+  {
+    "Path": "C:\\Users\\John\\Documents\\Codex\\2026-10-13\\help-me-set-up-a-local\\outputs\\mpu4\\runs\\vm-batch-policy7-a\\feature-state.csv",
+    "Hash": "158665742D9BCD43AE16C1BD4C29002D5A24F81C410400D1F709325D121650A1"
+  },
+  {
+    "Path": "C:\\Users\\John\\Documents\\Codex\\2026-10-13\\help-me-set-up-a-local\\outputs\\mpu4\\runs\\vm-batch-policy7-a\\initial-state.txt",
+    "Hash": "48B4302E710F8C36E0B464A973563B54D826300F69F0CD5367A8E1869EB76FC6"
+  },
+  {
+    "Path": "C:\\Users\\John\\Documents\\Codex\\2026-10-13\\help-me-set-up-a-local\\outputs\\mpu4\\runs\\vm-batch-policy7-a\\input-fields.txt",
+    "Hash": "B9ED8668BA01D9D33017BD2259E2058C481387DAB071B11C819F12DF57DB1A08"
+  },
+  {
+    "Path": "C:\\Users\\John\\Documents\\Codex\\2026-10-13\\help-me-set-up-a-local\\outputs\\mpu4\\runs\\vm-batch-policy7-a\\input-levels.csv",
+    "Hash": "089632A675A4FE8FC1A58BF194C33C680C6003B253D89AEE339DC0C94CA64314"
+  },
+  {
+    "Path": "C:\\Users\\John\\Documents\\Codex\\2026-10-13\\help-me-set-up-a-local\\outputs\\mpu4\\runs\\vm-batch-policy7-a\\input.lua",
+    "Hash": "23099F8888AF8DB353253E0DF97638320DC59CA9A47371723A380E0C4EE85C94"
+  },
+  {
+    "Path": "C:\\Users\\John\\Documents\\Codex\\2026-10-13\\help-me-set-up-a-local\\outputs\\mpu4\\runs\\vm-batch-policy7-a\\ram-final.bin",
+    "Hash": "4F1B688CD2BC46B69F7DE80838DCD0E00214CAD1C24EE05A4CF85220F452B994"
+  },
+  {
+    "Path": "C:\\Users\\John\\Documents\\Codex\\2026-10-13\\help-me-set-up-a-local\\outputs\\mpu4\\runs\\vm-batch-policy7-a\\resolved-config.ini",
+    "Hash": "EFAD17ACC57C0CC84EDA61AD16DBBBECBB36FCAA2DD98AF1EE6593A6372DF8D1"
+  },
+  {
+    "Path": "C:\\Users\\John\\Documents\\Codex\\2026-10-13\\help-me-set-up-a-local\\outputs\\mpu4\\runs\\vm-batch-policy7-a\\state.csv",
+    "Hash": "47FF02056BD69CABCC67C9E84A98075CA89CD70967AD123E8D8C176E5D0B491E"
+  },
+  {
+    "Path": "C:\\Users\\John\\Documents\\Codex\\2026-10-13\\help-me-set-up-a-local\\outputs\\mpu4\\runs\\vm-batch-policy7-a\\cfg\\default.cfg",
+    "Hash": "6CC696773F5FE8D102847322DC66B467A7B6021468E9B5A078BAA906C81841E9"
+  },
+  {
+    "Path": "C:\\Users\\John\\Documents\\Codex\\2026-10-13\\help-me-set-up-a-local\\outputs\\mpu4\\runs\\vm-batch-policy7-a\\cfg\\m4addr.cfg",
+    "Hash": "B69D250ED8A18AB3269C29ECF05FA649F19618013E7C0DE83B55FADCD7BFE855"
+  },
+  {
+    "Path": "C:\\Users\\John\\Documents\\Codex\\2026-10-13\\help-me-set-up-a-local\\outputs\\mpu4\\runs\\vm-batch-policy7-a\\nvram\\m4addr\\nvram",
+    "Hash": "4F1B688CD2BC46B69F7DE80838DCD0E00214CAD1C24EE05A4CF85220F452B994"
+  }
+]

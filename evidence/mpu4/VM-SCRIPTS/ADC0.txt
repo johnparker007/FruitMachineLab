@@ -1,0 +1,14 @@
+Purpose: test_award_above_thirty_for_token_balance_route
+Confidence: reviewed token mechanics/channel association; see prerequisite-pass/script-name-evidence.json
+Groups: award/balance operations, boolean/bit operations, byte tests
+Callers: AF2B
+
+Threaded script at ADC0; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* ADC0  7F0D  vm_push_word_body_byte  value=0x001E
+* ADC2  7A79  vm_compare_top_lt_second_signed  
+* ADC4  8510  test_byte_zero_at_ff34  body=0x8427, push_address=0x8512
+* ADC6  7ABB  vm_bitwise_not  
+* ADC8  7A97  vm_bitwise_and  
+* ADCA  792F  vm_return_to_caller_stream  

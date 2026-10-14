@@ -1,0 +1,33 @@
+Purpose: transfer_and_service_both_award_balance_pairs
+Confidence: reviewed token mechanics; see payout-pass/script-name-evidence.json
+Groups: accounting/NVRAM, award/balance operations, lamps, memory operations, stack/cell helpers
+Callers: AA2B
+
+Threaded script at A942; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  A942  8345  vm_push_word_body_byte  value=0x0018
+  A944  806C  call_lamp_set_frame_pattern_F  native=0x497F
+  A946  82D2  vm_push_word_body_word  value=0x0302
+  A948  790D  vm_fetch_word  
+  A94A  7B51  vm_duplicate_cell  
+  A94C  7CCD  vm_negate_cell  
+  A94E  82D2  vm_push_word_body_word  value=0x0302
+  A950  7888  vm_add_to_word_memory  
+  A952  8226  vm_push_word_body_word  value=0x0300
+  A954  7888  vm_add_to_word_memory  
+  A956  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+  A958  80F4  call_service_token_payout_records_until_pending_balance_empty  native=0x4B8C
+  A95A  82CE  vm_push_word_body_word  value=0x02FC
+  A95C  790D  vm_fetch_word  
+  A95E  7B51  vm_duplicate_cell  
+  A960  7CCD  vm_negate_cell  
+  A962  82CE  vm_push_word_body_word  value=0x02FC
+  A964  7888  vm_add_to_word_memory  
+  A966  8222  vm_push_word_body_word  value=0x02FE
+  A968  7888  vm_add_to_word_memory  
+  A96A  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+  A96C  80E4  call_select_and_service_payout_records_by_coin_handling_setting  native=0x4B39
+  A96E  8345  vm_push_word_body_byte  value=0x0018
+  A970  8068  call_lamp_set_frame_pattern_0  native=0x4982
+  A972  792F  vm_return_to_caller_stream  

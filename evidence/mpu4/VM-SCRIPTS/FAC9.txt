@@ -1,0 +1,30 @@
+Purpose: initialize_vm_cycle_timers_serial_and_status_lamps
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: boolean/bit operations, control flow, lamps, mask/address records, memory operations, reels, serial
+Callers: FDF0
+
+Threaded script at FAC9; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* FAC9  795B  vm_push_inline_word_literal  inline_value=0x9E58
+* FACD  82F5  vm_push_word_body_byte  value=0x002F
+* FACF  7874  vm_store_word  
+* FAD1  795B  vm_push_inline_word_literal  inline_value=0xEC78
+* FAD5  82F2  vm_push_word_body_byte  value=0x002D
+* FAD7  7874  vm_store_word  
+* FAD9  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* FADB  A8F7  refresh_credit_and_bank_display_unless_suppressed  body=0xA8F9
+* FADD  7B33  vm_push_saved_entry_x  
+* FADF  7B25  vm_set_data_stack_pointer  
+* FAE1  80EC  call_poll_serial_transfer_until_completion_or_timeout  native=0x5429
+* FAE3  848C  push_pair_2000_00a0  body=0x8417, push_address=0x848E
+* FAE5  767F  vm_test_word_memory_mask  
+* FAE7  7ABB  vm_bitwise_not  
+* FAE9  7982  vm_branch_forward8_if_zero  branch=0xFAF0
+* FAEC  8435  push_pair_0038_0085  body=0x8417, push_address=0x8437
+* FAEE  7671  vm_clear_word_memory_bits  
+* FAF0  824E  vm_push_word_body_byte  value=0x008F
+* FAF2  9D58  update_ic8_output_bit10_from_pattern  body=0x9D5A
+* FAF4  824E  vm_push_word_body_byte  value=0x008F
+* FAF6  9C1E  apply_lamp_range_7256_7257  body=0x9ADB, push_address=0x9C20
+* FAF8  792F  vm_return_to_caller_stream  

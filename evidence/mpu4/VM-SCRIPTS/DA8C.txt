@@ -1,0 +1,28 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: control flow, indexed memory, stack/cell helpers, table/dynamic dispatch
+Callers: AC81
+
+Threaded script at DA8C; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* DA8C  A609  scaled_parameter_profile_at_a60b_counter_07d5  body=0xA5A5, push_address=0xA60B
+* DA8E  9A11  random_percentage_test  body=0x9A13
+* DA90  7982  vm_branch_forward8_if_zero  branch=0xDAAA
+* DA93  78B5  vm_push_zero  
+* DA95  7B3D  vm_drop_cell  
+* DA97  78B5  vm_push_zero  
+* DA99  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* DA9C  99EC  random_scaled_range_selection  body=0x99EE
+* DA9E  DA85  read_indexed_byte_table_at_da87  body=0x9971, push_address=0xDA87
+* DAA0  7B51  vm_duplicate_cell  
+* DAA2  DA6F  dispatch_indexed_token_table_da71  body=0x99A1, push_address=0xDA71
+* DAA4  79A6  vm_branch_backward8_if_zero  branch=0xDA95
+* DAA7  7979  vm_branch_unsigned_forward8  branch=0xDAB7
+* DAAA  78B5  vm_push_zero  
+* DAAC  7B3D  vm_drop_cell  
+* DAAE  D9D7  weighted_index_table_at_d9d9  body=0x9A1C, push_address=0xD9D9
+* DAB0  7B51  vm_duplicate_cell  
+* DAB2  DA6F  dispatch_indexed_token_table_da71  body=0x99A1, push_address=0xDA71
+* DAB4  79A6  vm_branch_backward8_if_zero  branch=0xDAAC
+* DAB7  792F  vm_return_to_caller_stream  

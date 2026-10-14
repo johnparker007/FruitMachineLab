@@ -1,0 +1,29 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: arithmetic, control flow, memory operations, stack/cell helpers
+Callers: B906
+
+Threaded script at B8D7; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B8D7  7963  vm_push_inline_byte_literal  inline_value=0x0010
+* B8DA  78C0  vm_push_one  
+* B8DC  79DC  vm_enter_loop_frame  
+* B8DE  7B51  vm_duplicate_cell  
+* B8E0  7A1C  vm_push_loop_index  
+* B8E2  7EEA  vm_push_word_body_byte  value=0x00CA
+* B8E4  787E  vm_add_words  
+* B8E6  786B  vm_fetch_unsigned_byte  
+* B8E8  7D4A  compare_top_ge_second_signed  body=0x7D4C
+* B8EA  7982  vm_branch_forward8_if_zero  branch=0xB8FB
+* B8ED  7B3D  vm_drop_cell  
+* B8EF  7A1C  vm_push_loop_index  
+* B8F1  78C0  vm_push_one  
+* B8F3  78A0  vm_subtract_top_from_second  
+* B8F5  78C0  vm_push_one  
+* B8F7  7AE7  vm_max_signed  
+* B8F9  7935  vm_unwind_loop_frames_to_return  
+* B8FB  7A00  vm_loop_increment_one  
+  B8FD  7B3D  vm_drop_cell  
+  B8FF  7963  vm_push_inline_byte_literal  inline_value=0x0010
+  B902  792F  vm_return_to_caller_stream  

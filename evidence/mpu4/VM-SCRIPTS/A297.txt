@@ -1,0 +1,17 @@
+Purpose: count_selected_reel_mask_bits
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: arithmetic, reels/symbol tests, stack/cell helpers
+Callers: F30F, A2AB, F20D, F2C8, F072, F248
+
+Threaded script at A297; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* A297  78B5  vm_push_zero  
+* A299  9D7A  push_three_reel_loop_bounds  body=0x9D7C
+* A29B  79DC  vm_enter_loop_frame  
+* A29D  9E38  push_current_reel_selection_mask_and_address  body=0x9E3A
+* A29F  767F  vm_test_word_memory_mask  
+* A2A1  7CCD  vm_negate_cell  
+* A2A3  787E  vm_add_words  
+* A2A5  7A00  vm_loop_increment_one  
+* A2A7  792F  vm_return_to_caller_stream  

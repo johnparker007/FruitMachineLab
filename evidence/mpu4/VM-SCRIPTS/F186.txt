@@ -1,0 +1,17 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: reels, stack/cell helpers
+Callers: F19B
+
+Threaded script at F186; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* F186  7963  vm_push_inline_byte_literal  inline_value=0x0005
+* F189  78B5  vm_push_zero  
+* F18B  79DC  vm_enter_loop_frame  
+* F18D  8134  call_prepare_unheld_reel_requests_with_random_multiple_of_four  native=0x2BBC
+* F18F  8114  call_reels_translate_positions_to_symbol_records  native=0x2C12
+* F191  9FBA  reels_test_exactly_two_symbol_flag2  body=0x9FBC
+* F193  7574  vm_return_if_nonzero  
+* F195  7A00  vm_loop_increment_one  
+* F197  792F  vm_return_to_caller_stream  

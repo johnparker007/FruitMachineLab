@@ -1,0 +1,29 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, indexed memory, stack/cell helpers
+Callers: E5CF
+
+Threaded script at E5A2; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* E5A2  E580  script_e580  body=0xE582
+* E5A4  78B5  vm_push_zero  
+* E5A6  7B3D  vm_drop_cell  
+* E5A8  7D52  duplicate_two_cells  body=0x7D54
+* E5AA  99EC  random_scaled_range_selection  body=0x99EE
+* E5AC  7B51  vm_duplicate_cell  
+* E5AE  A12C  read_indexed_byte_table_at_a12e  body=0x9971, push_address=0xA12E
+* E5B0  7B51  vm_duplicate_cell  
+* E5B2  78C0  vm_push_one  
+* E5B4  7A6F  vm_compare_equal  
+* E5B6  E592  script_e592  body=0xE594
+* E5B8  7A97  vm_bitwise_and  
+* E5BA  7B7D  vm_swap_two_cells  
+* E5BC  78DE  vm_push_two  
+* E5BE  7A6F  vm_compare_equal  
+* E5C0  7AA3  vm_bitwise_or  
+* E5C2  79A6  vm_branch_backward8_if_zero  branch=0xE5A6
+* E5C5  7B6D  vm_rotate_three_cells  
+* E5C7  7B6D  vm_rotate_three_cells  
+* E5C9  7B43  vm_drop_two_cells  
+* E5CB  792F  vm_return_to_caller_stream  

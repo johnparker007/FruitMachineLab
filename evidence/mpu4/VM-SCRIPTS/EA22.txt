@@ -1,0 +1,45 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, memory operations, reel records, reels, stack/cell helpers
+Callers: EAF3
+
+Threaded script at EA22; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* EA22  E4AB  test_orange1_conditions_and_local_mode_four  body=0xE4AD
+* EA24  7982  vm_branch_forward8_if_zero  branch=0xEA2B
+  EA27  78BE  vm_push_zero  
+  EA29  7935  vm_unwind_loop_frames_to_return  
+* EA2B  E46E  vm_push_local_frame_address  value=0x0004
+* EA2D  786B  vm_fetch_unsigned_byte  
+* EA2F  78B5  vm_push_zero  
+* EA31  7A6F  vm_compare_equal  
+* EA33  E46B  vm_push_local_frame_address  value=0x0003
+* EA35  786B  vm_fetch_unsigned_byte  
+* EA37  78B5  vm_push_zero  
+* EA39  7A6F  vm_compare_equal  
+* EA3B  7A97  vm_bitwise_and  
+* EA3D  7982  vm_branch_forward8_if_zero  branch=0xEA6F
+* EA40  E91A  script_e91a  body=0xE91C
+* EA42  E8A7  script_e8a7  body=0xE8A9
+* EA44  7B51  vm_duplicate_cell  
+* EA46  7982  vm_branch_forward8_if_zero  branch=0xEA6A
+* EA49  9CA3  apply_lamp_range_constant_0080_record_9b8c_9ca5  body=0x9CA5
+* EA4B  7B7D  vm_swap_two_cells  
+* EA4D  7B51  vm_duplicate_cell  
+* EA4F  E8B9  script_e8b9  body=0xE8BB
+* EA51  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* EA53  7FAD  vm_push_word_body_word  value=0x0166
+* EA55  786B  vm_fetch_unsigned_byte  
+* EA57  E465  vm_push_local_frame_address  value=0x0001
+* EA59  7861  vm_store_byte  
+* EA5B  E9E2  script_e9e2  body=0xE9E4
+* EA5D  7982  vm_branch_forward8_if_zero  branch=0xEA65
+  EA60  E6CB  script_e6cb  body=0xE6CD
+  EA62  7979  vm_branch_unsigned_forward8  branch=0xEA67
+* EA65  E654  script_e654  body=0xE656
+* EA67  7979  vm_branch_unsigned_forward8  branch=0xEA6C
+* EA6A  7B3D  vm_drop_cell  
+* EA6C  7979  vm_branch_unsigned_forward8  branch=0xEA71
+* EA6F  78BE  vm_push_zero  
+* EA71  792F  vm_return_to_caller_stream  

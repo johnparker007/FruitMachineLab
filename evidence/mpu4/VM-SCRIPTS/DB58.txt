@@ -1,0 +1,60 @@
+Purpose: animate_snake_and_reduce_nudgepot_then_set_destination
+Confidence: reviewed token mechanics
+Groups: arithmetic, indexed memory, lamps, mask/address records, memory operations, nudges, sound/scheduler, stack/cell helpers, table/dynamic dispatch
+Callers: DBC4
+
+Threaded script at DB58; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* DB58  8130  call_reset_sound_and_scheduler  native=0x5B77
+* DB5A  9741  queue_sound_stream_9743  body=0x856B, push_address=0x9743
+* DB5C  80F8  call_scheduler_wait_until_active_list_empty  native=0x5CCB
+* DB5E  8130  call_reset_sound_and_scheduler  native=0x5B77
+* DB60  8248  vm_push_word_body_byte  value=0x0080
+* DB62  9B86  apply_lamp_range_728f_72bf  body=0x9ADB, push_address=0x9B88
+* DB64  7F14  vm_push_word_body_byte  value=0x00C9
+* DB66  786B  vm_fetch_unsigned_byte  
+* DB68  7B51  vm_duplicate_cell  
+* DB6A  A1FC  map_ladder_or_snake_position_to_path_index  body=0xA1FE
+* DB6C  7B51  vm_duplicate_cell  
+* DB6E  A1AE  read_indexed_word_table_at_a1b0  body=0x997A, push_address=0xA1B0
+* DB70  7B59  vm_copy_second_cell  
+* DB72  A1B8  read_indexed_word_table_at_a1ba  body=0x997A, push_address=0xA1BA
+* DB74  95C7  queue_sound_stream_95c9  body=0x856B, push_address=0x95C9
+* DB76  7B7D  vm_swap_two_cells  
+* DB78  78A0  vm_subtract_top_from_second  
+* DB7A  78B5  vm_push_zero  
+* DB7C  79DC  vm_enter_loop_frame  
+* DB7E  7EED  vm_push_word_body_byte  value=0x00BF
+* DB80  786B  vm_fetch_unsigned_byte  
+* DB82  78C0  vm_push_one  
+* DB84  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* DB87  99EC  random_scaled_range_selection  body=0x99EE
+* DB89  78A0  vm_subtract_top_from_second  
+* DB8B  78C0  vm_push_one  
+* DB8D  7AE7  vm_max_signed  
+* DB8F  7EED  vm_push_word_body_byte  value=0x00BF
+* DB91  7861  vm_store_byte  
+* DB93  A8ED  display_nudgepot_byte_as_two_decimal_digits  body=0xA8EF
+* DB95  7A1C  vm_push_loop_index  
+* DB97  824E  vm_push_word_body_byte  value=0x008F
+* DB99  78DE  vm_push_two  
+* DB9B  7B61  vm_pick_cell_by_unsigned_word_index  
+* DB9D  A1C2  dispatch_indexed_token_table_a1c4  body=0x99A1, push_address=0xA1C4
+* DB9F  7963  vm_push_inline_byte_literal  inline_value=0x0064
+* DBA2  99AD  wait_irq_ticks_or_abort_flag  body=0x99AF
+* DBA4  7A1C  vm_push_loop_index  
+* DBA6  8248  vm_push_word_body_byte  value=0x0080
+* DBA8  78DE  vm_push_two  
+* DBAA  7B61  vm_pick_cell_by_unsigned_word_index  
+* DBAC  A1C2  dispatch_indexed_token_table_a1c4  body=0x99A1, push_address=0xA1C4
+* DBAE  7A00  vm_loop_increment_one  
+* DBB0  7B3D  vm_drop_cell  
+* DBB2  A15E  read_indexed_byte_table_at_a160  body=0x9971, push_address=0xA160
+* DBB4  7B51  vm_duplicate_cell  
+* DBB6  9F56  apply_pattern_8f_to_indexed_lamp_record  body=0x9F58
+* DBB8  7F14  vm_push_word_body_byte  value=0x00C9
+* DBBA  7861  vm_store_byte  
+* DBBC  84C2  push_pair_0010_00a0  body=0x8417, push_address=0x84C4
+* DBBE  7665  vm_or_word_memory  
+* DBC0  792F  vm_return_to_caller_stream  

@@ -1,0 +1,35 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, byte tests, control flow, input conditions, lamps, mask tests, mask/address records, memory operations
+Callers: D30F, D3CF
+
+Threaded script at D1F5; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* D1F5  8480  push_pair_8000_00a0  body=0x8417, push_address=0x8482
+* D1F7  767F  vm_test_word_memory_mask  
+* D1F9  7ABB  vm_bitwise_not  
+* D1FB  7982  vm_branch_forward8_if_zero  branch=0xD22D
+* D1FE  83FC  vm_test_input_condition  value=0x0012
+* D200  8486  push_pair_4000_00a0  body=0x8417, push_address=0x8488
+* D202  767F  vm_test_word_memory_mask  
+* D204  7A97  vm_bitwise_and  
+* D206  7982  vm_branch_forward8_if_zero  branch=0xD20F
+  D209  820C  vm_push_word_body_byte  value=0x0083
+  D20B  9BD8  apply_lamp_range_7325_7328  body=0x9ADB, push_address=0x9BDA
+  D20D  9984  wait_for_all_panel_buttons_released  body=0x9986
+* D20F  8478  clear_latched_panel_mask_008f  body=0x847A
+* D211  D1CB  script_d1cb  body=0xD1CD
+* D213  8140  vm_push_word_body_word  value=0x0326
+* D215  7861  vm_store_byte  
+* D217  8504  test_mask_8000_at_719e  body=0x841E, push_address=0x8506
+* D219  8514  test_byte_zero_at_ff42  body=0x8427, push_address=0x8516
+* D21B  7AA3  vm_bitwise_or  
+* D21D  7982  vm_branch_forward8_if_zero  branch=0xD224
+  D220  D0D9  script_d0d9  body=0xD0DB
+  D222  D0FB  script_d0fb  body=0xD0FD
+* D224  84AA  push_pair_0100_00a0  body=0x8417, push_address=0x84AC
+* D226  767F  vm_test_word_memory_mask  
+* D228  7982  vm_branch_forward8_if_zero  branch=0xD22D
+* D22B  D1E1  script_d1e1  body=0xD1E3
+* D22D  792F  vm_return_to_caller_stream  

@@ -1,0 +1,11 @@
+Purpose: push_three_reel_loop_bounds
+Confidence: reviewed token mechanics
+Groups: reels/symbol tests, stack/cell helpers
+Callers: A2AB, B666, C506, D2BE, B7C2, B352, B626, F1C3
+
+Threaded script at 9D7C; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9D7C  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* 9D7F  78B5  vm_push_zero  
+* 9D81  792F  vm_return_to_caller_stream  

@@ -1,0 +1,33 @@
+Purpose: special_feature_rattler
+Confidence: reviewed dispatch/display association; complete gameplay unresolved
+Groups: boolean/bit operations, control flow, lamps, memory operations, sound/scheduler, stack/cell helpers
+Callers: E227
+
+Threaded script at CC8F; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* CC8F  CC3E  cycle_rattler_candidates_until_start_or_timeout  body=0xCC40
+* CC91  7B51  vm_duplicate_cell  
+* CC93  8212  vm_push_word_body_byte  value=0x0085
+* CC95  9B82  apply_indexed_lamp_id_from_728f  body=0x9B18, push_address=0x9B84
+* CC97  8130  call_reset_sound_and_scheduler  native=0x5B77
+* CC99  8833  queue_sound_stream_8835  body=0x856B, push_address=0x8835
+* CC9B  80F8  call_scheduler_wait_until_active_list_empty  native=0x5CCB
+* CC9D  7B51  vm_duplicate_cell  
+* CC9F  9F56  apply_pattern_8f_to_indexed_lamp_record  body=0x9F58
+* CCA1  7F14  vm_push_word_body_byte  value=0x00C9
+* CCA3  786B  vm_fetch_unsigned_byte  
+* CCA5  8248  vm_push_word_body_byte  value=0x0080
+* CCA7  9B82  apply_indexed_lamp_id_from_728f  body=0x9B18, push_address=0x9B84
+* CCA9  7B51  vm_duplicate_cell  
+* CCAB  7F14  vm_push_word_body_byte  value=0x00C9
+* CCAD  786B  vm_fetch_unsigned_byte  
+* CCAF  7A79  vm_compare_top_lt_second_signed  
+* CCB1  7982  vm_branch_forward8_if_zero  branch=0xCCBC
+* CCB4  78B5  vm_push_zero  
+* CCB6  7EED  vm_push_word_body_byte  value=0x00BF
+* CCB8  7861  vm_store_byte  
+* CCBA  B904  script_b904  body=0xB906
+* CCBC  CB1B  set_feature_destination_with_minus_one_reset  body=0xCB1D
+* CCBE  A8ED  display_nudgepot_byte_as_two_decimal_digits  body=0xA8EF
+* CCC0  792F  vm_return_to_caller_stream  

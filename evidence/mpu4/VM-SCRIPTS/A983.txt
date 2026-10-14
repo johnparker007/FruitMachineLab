@@ -1,0 +1,21 @@
+Purpose: transfer_bank_remainder_to_02fe
+Confidence: reviewed token mechanics
+Groups: accounting/NVRAM, award/balance operations, memory operations, stack/cell helpers
+Callers: AA2B
+
+Threaded script at A983; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* A983  82CE  vm_push_word_body_word  value=0x02FC
+* A985  790D  vm_fetch_word  
+* A987  7963  vm_push_inline_byte_literal  inline_value=0x000A
+* A98A  7DF8  signed_cell_remainder  body=0x7DFA
+* A98C  7B51  vm_duplicate_cell  
+* A98E  7CCD  vm_negate_cell  
+* A990  82CE  vm_push_word_body_word  value=0x02FC
+* A992  7888  vm_add_to_word_memory  
+* A994  8222  vm_push_word_body_word  value=0x02FE
+* A996  7888  vm_add_to_word_memory  
+* A998  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* A99A  80E4  call_select_and_service_payout_records_by_coin_handling_setting  native=0x4B39
+* A99C  792F  vm_return_to_caller_stream  

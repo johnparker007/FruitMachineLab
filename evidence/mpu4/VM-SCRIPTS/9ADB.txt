@@ -1,0 +1,12 @@
+Purpose: apply_lamp_range_from_word_body
+Confidence: reviewed token mechanics
+Groups: lamps, stack/cell helpers
+Callers: DAC7, DD38, CED7, E5CF, C90C, C593, DB58, BEE5
+
+Threaded script at 9ADB; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9ADB  7915  vm_fetch_two_words  
+* 9ADD  7B6D  vm_rotate_three_cells  
+* 9ADF  832B  call_lamp_frame_range_helper_with_synthetic_return  native=0x4A8C
+* 9AE1  792F  vm_return_to_caller_stream  

@@ -1,0 +1,23 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: arithmetic, boolean/bit operations, control flow, indexed memory, memory operations, stack/cell helpers
+Callers: F428
+
+Threaded script at F405; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  F405  7D52  duplicate_two_cells  body=0x7D54
+  F407  F3B3  vm_push_local_frame_address  value=0x0000
+  F409  786B  vm_fetch_unsigned_byte  
+  F40B  787E  vm_add_words  
+  F40D  7963  vm_push_inline_byte_literal  inline_value=0x0009
+  F410  7DF8  signed_cell_remainder  body=0x7DFA
+  F412  F3BC  read_indexed_byte_table_at_f3be  body=0x9971, push_address=0xF3BE
+  F414  7A53  vm_test_nonzero  
+  F416  7A5B  vm_compare_not_equal  
+  F418  798C  vm_branch_forward8_if_zero  branch=0xF420
+  F41B  78C9  vm_increment_word  
+  F41D  79A4  vm_branch_backward8  branch=0xF405
+  F420  7B7D  vm_swap_two_cells  
+  F422  7B3D  vm_drop_cell  
+  F424  792F  vm_return_to_caller_stream  

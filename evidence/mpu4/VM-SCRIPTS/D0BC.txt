@@ -1,0 +1,10 @@
+Purpose: call_lamps_select_and_update_reel_group
+Confidence: exact helper pattern
+Groups: lamps, reels, reels/symbol tests
+Callers: D257, D231
+
+Threaded script at D0BC; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* D0BC  8026  call_lamps_select_and_update_reel_group  native=0x2CC2
+* D0BE  792F  vm_return_to_caller_stream  

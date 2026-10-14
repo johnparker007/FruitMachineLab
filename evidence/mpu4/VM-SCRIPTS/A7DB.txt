@@ -1,0 +1,12 @@
+Purpose: refresh_credit_display_unless_suppressed
+Confidence: reviewed gameplay context
+Groups: mask tests
+Callers: FB45, F576, FC34, A8F9
+
+Threaded script at A7DB; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* A7DB  84E0  test_mask_0200_at_719f  body=0x841E, push_address=0x84E2
+* A7DD  7574  vm_return_if_nonzero  
+* A7DF  A7A9  refresh_credit_display  body=0xA7AB
+* A7E1  792F  vm_return_to_caller_stream  

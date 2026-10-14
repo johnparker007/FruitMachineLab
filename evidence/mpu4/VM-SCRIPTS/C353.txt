@@ -1,0 +1,13 @@
+Purpose: money_trap_display_amount_and_equals_sign
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: display, memory operations
+Callers: C3BA
+
+Threaded script at C353; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C353  8306  vm_push_word_body_word  value=0x0327
+* C355  7874  vm_store_word  
+* C357  773C  vm_execute_alpha_stream  inline_stream=[cmd70(0b); cmd79(2003270401); '0'; cmd7A()]
+* C363  773C  vm_execute_alpha_stream  inline_stream=[cmd70(0b); '='; cmd7A()]
+* C369  792F  vm_return_to_caller_stream  

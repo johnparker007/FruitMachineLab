@@ -1,0 +1,39 @@
+Purpose: repeat_special_feature_while_selected_type_three
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, control flow, indexed memory, lamps, mask/address records, memory operations, stack/cell helpers
+Callers: E43D
+
+Threaded script at E2FC; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* E2FC  7B51  vm_duplicate_cell  
+* E2FE  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* E301  7A6F  vm_compare_equal  
+* E303  7982  vm_branch_forward8_if_zero  branch=0xE336
+* E306  7B3D  vm_drop_cell  
+* E308  84C2  push_pair_0010_00a0  body=0x8417, push_address=0x84C4
+* E30A  7671  vm_clear_word_memory_bits  
+* E30C  8248  vm_push_word_body_byte  value=0x0080
+* E30E  9BC8  apply_lamp_range_724c_7256  body=0x9ADB, push_address=0x9BCA
+* E310  E225  announce_and_dispatch_special_feature  body=0xE227
+* E312  7F14  vm_push_word_body_byte  value=0x00C9
+* E314  786B  vm_fetch_unsigned_byte  
+* E316  A12C  read_indexed_byte_table_at_a12e  body=0x9971, push_address=0xA12E
+* E318  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* E31B  7A5B  vm_compare_not_equal  
+* E31D  79A6  vm_branch_backward8_if_zero  branch=0xE30C
+* E320  7F14  vm_push_word_body_byte  value=0x00C9
+* E322  786B  vm_fetch_unsigned_byte  
+* E324  7A46  vm_test_zero  
+* E326  84C2  push_pair_0010_00a0  body=0x8417, push_address=0x84C4
+* E328  767F  vm_test_word_memory_mask  
+* E32A  7AA3  vm_bitwise_or  
+* E32C  84C2  push_pair_0010_00a0  body=0x8417, push_address=0x84C4
+* E32E  9A62  conditionally_set_or_clear_memory_mask  body=0x9A64
+* E330  7F14  vm_push_word_body_byte  value=0x00C9
+* E332  786B  vm_fetch_unsigned_byte  
+* E334  A12C  read_indexed_byte_table_at_a12e  body=0x9971, push_address=0xA12E
+* E336  8248  vm_push_word_body_byte  value=0x0080
+* E338  9BC8  apply_lamp_range_724c_7256  body=0x9ADB, push_address=0x9BCA
+* E33A  E2E3  dispatch_taken_board_result_by_clipped_type  body=0xE2E5
+* E33C  792F  vm_return_to_caller_stream  

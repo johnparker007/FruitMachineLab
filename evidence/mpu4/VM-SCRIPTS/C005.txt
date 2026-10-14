@@ -1,0 +1,32 @@
+Purpose: cash_climber_refresh_progress_lamp_strip
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: arithmetic, control flow, lamps, stack/cell helpers
+Callers: C0AC
+
+Threaded script at C005; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C005  7B51  vm_duplicate_cell  
+* C007  78C9  vm_increment_word  
+* C009  78B5  vm_push_zero  
+* C00B  79DC  vm_enter_loop_frame  
+* C00D  7A1C  vm_push_loop_index  
+* C00F  8248  vm_push_word_body_byte  value=0x0080
+* C011  9B92  apply_indexed_lamp_id_from_72ef  body=0x9B18, push_address=0x9B94
+* C013  7A00  vm_loop_increment_one  
+* C015  7B51  vm_duplicate_cell  
+* C017  78C0  vm_push_one  
+* C019  9C4E  word_9c4e_shared_9b29  body=0x9B29, push_address=0x9C50
+* C01B  7B51  vm_duplicate_cell  
+* C01D  8212  vm_push_word_body_byte  value=0x0085
+* C01F  9B92  apply_indexed_lamp_id_from_72ef  body=0x9B18, push_address=0x9B94
+* C021  78D3  vm_decrement_word  
+* C023  7B51  vm_duplicate_cell  
+* C025  78B5  vm_push_zero  
+* C027  7D42  compare_top_le_second_signed  body=0x7D44
+* C029  7982  vm_branch_forward8_if_zero  branch=0xC033
+* C02C  824E  vm_push_word_body_byte  value=0x008F
+* C02E  9B92  apply_indexed_lamp_id_from_72ef  body=0x9B18, push_address=0x9B94
+* C030  7979  vm_branch_unsigned_forward8  branch=0xC035
+* C033  7B3D  vm_drop_cell  
+* C035  792F  vm_return_to_caller_stream  

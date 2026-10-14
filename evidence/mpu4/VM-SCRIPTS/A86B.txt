@@ -1,0 +1,13 @@
+Purpose: display_sum_of_bank_related_balances
+Confidence: reviewed token mechanics
+Groups: award/balance operations, mask tests
+Callers: A8F9
+
+Threaded script at A86B; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* A86B  84E0  test_mask_0200_at_719f  body=0x841E, push_address=0x84E2
+* A86D  7574  vm_return_if_nonzero  
+* A86F  A7E3  sum_five_bank_related_words  body=0xA7E5
+* A871  A803  format_and_display_word_0327  body=0xA805
+* A873  792F  vm_return_to_caller_stream  

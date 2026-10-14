@@ -1,0 +1,30 @@
+Observed game path (recovered control flow, not original source)
+
+reset7CCF -> native init6750 -> rootFDF0 -> initial scriptFCF0
+ -> repeating main stream: FAC9 -> FDBA
+ -> poll/update loopFCBD:
+      FC07 -> FBCB background updates + credit-change processingFB45
+      no-credit attract gateFBA2 -> attract sequenceFA7F
+      credit/input processingFC99
+ -> accepted play -> FC34 -> F384
+      credit consumptionAB64 (ABA2 decrements02F0)
+      F2B5 -> native61D5/common61D6 ->2BEB waits and refreshes symbols
+      native64F0 completes all reel motion
+ -> post-spin evaluation/update -> poll loop/credit displayA7AB
+
+The arrows summarize nested and sequential calls; they are not a substitute for the exact branch listings. Not every state takes every arrow. See the corresponding VM-SCRIPTS files and focused MAME log.
+
+Observed credit logic:
+  coin input AUX2:80 ->02F0 becomes5
+  accepted Start -> VM tokenABA2 ->02F0 decrements to4
+  next accepted Start ->same token ->02F0 decrements to3
+  AB33 increments separate03FE accounting; it is not the credit count.
+
+Credit shadow handling in AB64:
+  if E0!=0 and0304==02F0:
+      decrement0304; refresh NVRAM integrity state
+      clamp out-of-range shadow to0
+  decrement02F0; refresh NVRAM integrity state
+  record stake accounting using an input-dependent iteration count
+
+The two corrected60s runs match every sampled row,full VM dispatch log and final RAM. Hold1 was sampled between spins; no hold/nudge outcome is claimed.

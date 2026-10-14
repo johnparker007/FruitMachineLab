@@ -1,0 +1,46 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, input conditions, memory operations, reel records, reels, sound/scheduler, stack/cell helpers, table/dynamic dispatch
+Callers: FC99
+
+Threaded script at F509; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* F509  994D  test_mode_or_rom_option_0400  body=0x994F
+* F50B  7982  vm_branch_forward8_if_zero  branch=0xF558
+  F50E  83AB  vm_test_input_condition  value=0x0015
+  F510  83C0  vm_test_input_condition  value=0x0014
+  F512  7A97  vm_bitwise_and  
+  F514  7982  vm_branch_forward8_if_zero  branch=0xF51B
+  F517  F4D1  script_f4d1  body=0xF4D3
+  F519  9984  wait_for_all_panel_buttons_released  body=0x9986
+  F51B  83AB  vm_test_input_condition  value=0x0015
+  F51D  83C0  vm_test_input_condition  value=0x0014
+  F51F  7AA3  vm_bitwise_or  
+  F521  F4F4  script_f4f4  body=0xF4F6
+  F523  7A97  vm_bitwise_and  
+  F525  7B51  vm_duplicate_cell  
+  F527  7982  vm_branch_forward8_if_zero  branch=0xF553
+  F52A  7963  vm_push_inline_byte_literal  inline_value=0x0003
+  F52D  78B5  vm_push_zero  
+  F52F  79DC  vm_enter_loop_frame  
+  F531  F4EC  dispatch_loop_token_table_f4ee  body=0x9992, push_address=0xF4EE
+  F533  83C0  vm_test_input_condition  value=0x0014
+  F535  7982  vm_branch_forward8_if_zero  branch=0xF53A
+  F538  7CCD  vm_negate_cell  
+  F53A  9DAD  address_record_0169_loop_index  body=0x9D86, push_address=0x9DAF
+  F53C  7861  vm_store_byte  
+  F53E  7A00  vm_loop_increment_one  
+  F540  7963  vm_push_inline_byte_literal  inline_value=0x0006
+  F543  9DCD  fill_three_reel_record_bytes  body=0x9DCF
+  F545  8118  call_reels_start_motion_async  native=0x61D5
+  F547  795B  vm_push_inline_word_literal  inline_value=0x0100
+  F54B  99AD  wait_irq_ticks_or_abort_flag  body=0x99AF
+  F54D  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+  F54F  8130  call_reset_sound_and_scheduler  native=0x5B77
+  F551  F4D1  script_f4d1  body=0xF4D3
+  F553  7A46  vm_test_zero  
+  F555  79A6  vm_branch_backward8_if_zero  branch=0xF51B
+* F558  78B5  vm_push_zero  
+* F55A  9DCD  fill_three_reel_record_bytes  body=0x9DCF
+* F55C  792F  vm_return_to_caller_stream  

@@ -1,0 +1,28 @@
+Purpose: dispatch_ladder_or_snake_from_board_link
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, control flow, indexed memory, memory operations, stack/cell helpers
+Callers: DE75
+
+Threaded script at DBC4; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* DBC4  7F14  vm_push_word_body_byte  value=0x00C9
+* DBC6  786B  vm_fetch_unsigned_byte  
+* DBC8  A15E  read_indexed_byte_table_at_a160  body=0x9971, push_address=0xA160
+* DBCA  7B51  vm_duplicate_cell  
+* DBCC  7982  vm_branch_forward8_if_zero  branch=0xDBED
+* DBCF  7B3D  vm_drop_cell  
+* DBD1  7F14  vm_push_word_body_byte  value=0x00C9
+* DBD3  786B  vm_fetch_unsigned_byte  
+* DBD5  7B51  vm_duplicate_cell  
+* DBD7  A15E  read_indexed_byte_table_at_a160  body=0x9971, push_address=0xA160
+* DBD9  7B7D  vm_swap_two_cells  
+* DBDB  7A79  vm_compare_top_lt_second_signed  
+* DBDD  7B51  vm_duplicate_cell  
+* DBDF  7ABB  vm_bitwise_not  
+* DBE1  7B7D  vm_swap_two_cells  
+* DBE3  7982  vm_branch_forward8_if_zero  branch=0xDBEB
+* DBE6  DAC5  animate_ladder_and_adjust_nudgepot_then_set_destination  body=0xDAC7
+* DBE8  7979  vm_branch_unsigned_forward8  branch=0xDBED
+* DBEB  DB56  animate_snake_and_reduce_nudgepot_then_set_destination  body=0xDB58
+* DBED  792F  vm_return_to_caller_stream  

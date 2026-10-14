@@ -1,0 +1,13 @@
+Purpose: super_stepper_lookup_compensated_continue_chance
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: indexed memory
+Callers: C98E
+
+Threaded script at C878; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C878  C857  vm_push_word_body_byte  value=0x0026
+* C87A  7E8E  vm_push_word_body_byte  value=0x0014
+* C87C  A10E  clip_compensation_index_difference_plus_four_to_zero_eight  body=0xA110
+* C87E  C860  read_indexed_byte_table_at_c862  body=0x9971, push_address=0xC862
+* C880  792F  vm_return_to_caller_stream  

@@ -1,0 +1,24 @@
+Purpose: wait_for_credit_and_start_conditions_then_run_paid_play
+Confidence: reviewed token mechanics; see payout-pass/script-name-evidence.json
+Groups: control flow, mask/address records, memory operations, stack/cell helpers
+Callers: FDBA
+
+Threaded script at FCBD; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* FCBD  FC05  service_background_credit_and_refill_before_play  body=0xFC07
+* FCBF  8478  clear_latched_panel_mask_008f  body=0x847A
+* FCC1  FAC4  vm_push_local_frame_address  value=0x0001
+* FCC3  765F  vm_clear_byte_memory  
+* FCC5  FC05  service_background_credit_and_refill_before_play  body=0xFC07
+* FCC7  78B5  vm_push_zero  
+* FCC9  AB19  test_credit_available  body=0xAB1B
+* FCCB  7982  vm_branch_forward8_if_zero  branch=0xFCD3
+* FCCE  FC97  aggregate_preplay_input_feature_and_latched_start_conditions  body=0xFC99
+* FCD0  7979  vm_branch_unsigned_forward8  branch=0xFCD5
+* FCD3  8478  clear_latched_panel_mask_008f  body=0x847A
+* FCD5  79A6  vm_branch_backward8_if_zero  branch=0xFCC5
+* FCD8  8466  push_pair_0080_0090  body=0x8444, push_address=0x8468
+* FCDA  7671  vm_clear_word_memory_bits  
+* FCDC  FC32  paid_play_sequence  body=0xFC34
+* FCDE  792F  vm_return_to_caller_stream  

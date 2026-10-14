@@ -1,0 +1,31 @@
+Purpose: dispatch_feature_choice_unless_special_or_final_position
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, control flow, mask/address records, memory operations, sound/scheduler, stack/cell helpers
+Callers: DE75
+
+Threaded script at DDAF; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* DDAF  A1CC  test_selected_feature_table_type_three  body=0xA1CE
+* DDB1  7F14  vm_push_word_body_byte  value=0x00C9
+* DDB3  786B  vm_fetch_unsigned_byte  
+* DDB5  7963  vm_push_inline_byte_literal  inline_value=0x002F
+* DDB8  7A6F  vm_compare_equal  
+* DDBA  7AA3  vm_bitwise_or  
+* DDBC  7982  vm_branch_forward8_if_zero  branch=0xDDC8
+* DDBF  78B5  vm_push_zero  
+* DDC1  84C2  push_pair_0010_00a0  body=0x8417, push_address=0x84C4
+* DDC3  7665  vm_or_word_memory  
+* DDC5  7979  vm_branch_unsigned_forward8  branch=0xDDDF
+* DDC8  8130  call_reset_sound_and_scheduler  native=0x5B77
+* DDCA  7F14  vm_push_word_body_byte  value=0x00C9
+* DDCC  786B  vm_fetch_unsigned_byte  
+* DDCE  78DE  vm_push_two  
+* DDD0  7DEE  signed_cell_quotient  body=0x7DF0
+* DDD2  8579  write_byte_004d_857b  body=0x857B
+* DDD4  7963  vm_push_inline_byte_literal  inline_value=0x000C
+* DDD7  8581  write_byte_004e_8583  body=0x8583
+* DDD9  96E8  queue_sound_stream_96ea  body=0x856B, push_address=0x96EA
+* DDDB  DD36  wait_feature_selection_then_roll_or_take  body=0xDD38
+* DDDD  8130  call_reset_sound_and_scheduler  native=0x5B77
+* DDDF  792F  vm_return_to_caller_stream  

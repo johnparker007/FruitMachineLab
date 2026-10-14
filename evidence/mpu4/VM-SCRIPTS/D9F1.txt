@@ -1,0 +1,25 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: arithmetic, boolean/bit operations, indexed memory, memory operations, stack/cell helpers
+Callers: 99A1
+
+Threaded script at D9F1; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* D9F1  9F5E  test_two_orange1_input_conditions  body=0x9F60
+* D9F3  7ABB  vm_bitwise_not  
+* D9F5  7F14  vm_push_word_body_byte  value=0x00C9
+* D9F7  786B  vm_fetch_unsigned_byte  
+* D9F9  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* D9FC  78A0  vm_subtract_top_from_second  
+* D9FE  7B51  vm_duplicate_cell  
+* DA00  A12C  read_indexed_byte_table_at_a12e  body=0x9971, push_address=0xA12E
+* DA02  7F0D  vm_push_word_body_byte  value=0x001E
+* DA04  7D4A  compare_top_ge_second_signed  body=0x7D4C
+* DA06  7B7D  vm_swap_two_cells  
+* DA08  7B51  vm_duplicate_cell  
+* DA0A  A15E  read_indexed_byte_table_at_a160  body=0x9971, push_address=0xA160
+* DA0C  7A79  vm_compare_top_lt_second_signed  
+* DA0E  7A97  vm_bitwise_and  
+* DA10  7AA3  vm_bitwise_or  
+* DA12  792F  vm_return_to_caller_stream  

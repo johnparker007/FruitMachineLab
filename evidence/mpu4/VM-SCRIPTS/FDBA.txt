@@ -1,0 +1,33 @@
+Purpose: dispatch_idle_play_and_feature_paths
+Confidence: reviewed gameplay context
+Groups: boolean/bit operations, control flow, credits, lamps, mask/address records, memory operations
+Callers: FDF0
+
+Threaded script at FDBA; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* FDBA  848C  push_pair_2000_00a0  body=0x8417, push_address=0x848E
+* FDBC  767F  vm_test_word_memory_mask  
+* FDBE  7ABB  vm_bitwise_not  
+* FDC0  7982  vm_branch_forward8_if_zero  branch=0xFDC5
+* FDC3  EF69  script_ef69  body=0xEF6B
+* FDC5  8486  push_pair_4000_00a0  body=0x8417, push_address=0x8488
+* FDC7  767F  vm_test_word_memory_mask  
+* FDC9  8190  vm_push_word_body_word  value=0x02F0
+* FDCB  786B  vm_fetch_unsigned_byte  
+* FDCD  7A53  vm_test_nonzero  
+* FDCF  7A97  vm_bitwise_and  
+* FDD1  7982  vm_branch_forward8_if_zero  branch=0xFDD8
+* FDD4  820C  vm_push_word_body_byte  value=0x0083
+* FDD6  9BD8  apply_lamp_range_7325_7328  body=0x9ADB, push_address=0x9BDA
+* FDD8  FCBB  wait_for_credit_and_start_conditions_then_run_paid_play  body=0xFCBD
+* FDDA  84A4  push_pair_0200_00a0  body=0x8417, push_address=0x84A6
+* FDDC  7671  vm_clear_word_memory_bits  
+* FDDE  8164  vm_push_word_body_byte  value=0x00B9
+* FDE0  786B  vm_fetch_unsigned_byte  
+* FDE2  AFF2  dispatch_current_or_pending_award  body=0xAFF4
+* FDE4  7EED  vm_push_word_body_byte  value=0x00BF
+* FDE6  765F  vm_clear_byte_memory  
+* FDE8  FD8B  script_fd8b  body=0xFD8D
+* FDEA  A283  refresh_current_board_square_lamp_if_nonzero  body=0xA285
+* FDEC  792F  vm_return_to_caller_stream  

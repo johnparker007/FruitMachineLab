@@ -1,0 +1,37 @@
+UPDATE: later prerequisite pass reached the residual cash/direct token routes andToken2 channel. Current counts and qualified synthetic fault findings are in PREREQUISITE-AND-FAULT-RECOVERY.txt. Limits/counts below are historical.
+
+MPU4 payout and late-service recovery -14 October2026
+
+CURRENT INVENTORY:485 named native functions (16 explicit hypotheses);528 decoded VM bodies,373 purpose-labelled,155 broader purposes unresolved;476 partly observed bodies. This pass adds13 newly resolved VM purposes, refines the existingA9A0 bank-transfer name, recovers3 native function entries, refines32FE, and defines four17-byte payout records plus four two-byte output queues.
+
+COLLECT REACHABILITY
+The previous collection controller stalled with bank4 and credits7. AB1B routes nonzero credits throughAAD7 and bypassesAAA1 on that path; zero credit reachesAAF2 and collection handling. Condition82 permits another collection entry elsewhere. The new physical controller spends remaining credits before Collect and only inserts another coin when credit and balances are empty.
+The first revision still put Collect ahead of active nudges; a longer percentage98 run stalled with one nudge. The corrected controller finishes feature choices first and requiresBE=0 before ready-state collection. This is a controller limitation, not a classified ROM/emulator bug.
+
+VERIFIED COLLECTION ROUTES
+AA6B ->A983: move bank2FC remainder modulo10 into2FE, then service payout.
+AA79 ->A9A0: transfer10 if bank/10 is odd,20 if even, from2FC into2FE, then service payout. VM true isFFFF;2+FFFF=1. This transfers a chunk, not the entire bank in one call.
+AA51 ->AA04: transfer ten units from0302 in five iterations of subtract2, set0300=2, service native4B8C.
+AA43 ->A9D5: transfer the even part of0302 remainder modulo10 to0300 in two-unit iterations, servicing payout each time.
+30 captured bank remainder/chunk transfers matched predicted balances.160 focused native before/after debits matched denomination subtraction with zero mismatches. The corrected1800s fixture made32 router calls and125 native debits:31 through4ACA,10 through4ADB,84 through4AEC. Aggregate330 ROM units debited in that fixture; this is not a measured long-term payout percentage.
+
+NATIVE OUTPUT CHAIN
+Y points to a17-byte PayoutRecord.4CBE subtracts byte3 from word at pointer5, refreshes accounting and meter state, increments output queue at pointer1, then tail-jumps6858. Newly defined4C25 services the record while balance covers its denomination;4C91 adjusts the queue tail counter from its input condition.
+6858 scans036B/036D/036F/0371, decrements pending output count, handles optional tail count, then writes corresponding201A mask to PIA IC8 port0F02, waits, clears it and waits again. Full output fixture verified23 queue consumptions and23 paired on/off writes, corresponding to20 two-unit4AEC debits and3 ten-unit4ADB debits. All23 on/off pairs changed exactly the expected mask bits, with no mismatches. MAME source maps the port bits to triac outputs. These facts establish ROM commands and emulated writes; physical coin delivery is not independently verified.
+17-byte records:4ACA debit2,queue036B,balance2FE;4ADB debit10,queue036D,balance2FE;4AEC debit2,queue036F,balance0300;4AFD debit2,queue0371,balance0300. The fourth record remains unobserved. Record fields: condition byte,queue pointer,debit byte,tail threshold byte,balance pointer,optional accounting pointer,accounting pointer,total accounting pointer,meter pointer,additional pointer. Last pointer's full role remains unresolved; avoid treating the queue as a delivered-coin counter.
+
+LATE SERVICE PATHS
+Physical door/Test/Start/Exchange sequences reached menu7 serial test3376,menu8 sound stream33F2,and menu9 fourth-reel test33FB. Serial receive-busy cleared with response03A7=06 and timer002D=0014; ROM success path displayedPASS. This verifies the emulated success path, not an external physical serial link.
+The corrected output-test fixture returns from fourth-reel test at344E with position017E=0000 and restored mode0176=00. Sound output was disabled during experiments, so audible quality was not assessed.
+32FE is a common service-loop output test gated by Refill (inline condition0F), not an exclusive menu6 dispatcher. A Refill key press triggered four meter masks01/02/04/08 and two triac channel writes. Refill is a toggle input in MAME: releasing the override does not turn it off; the corrected fixture uses a second press. Two output-test returns preserved saved address2E81, with rawBLACK1 C0 then80. The333B meter-feedback failure branch was not taken; its behavior remains unverified.
+
+REPLAY / INSTRUMENTATION
+Nine experiment pairs match state.csv,feature-state.csv,debug.log,ram-final.bin,input-levels.csv exactly. The percentage98 pair also matches dip-settings.txt. Seven gameplay pairs include six600s fixtures and one1800s fixture; two600s service pairs cover late tests and corrected Refill toggling. Fresh isolated configuration/NVRAM; no save states or RAM/ROM patches. Original machine settings preserved; percentage98 uses the previously approved isolated DIP setting.
+Changing debugger instrumentation caused an old action recording to diverge (payout-focus6-a). It is retained as negative reproducibility evidence and excluded from verification claims. Generate a fixture with the intended debugger command set, and replay with that exact set. Old prolonged Collect/Refill controller runs are discovery/failure evidence, not successful corrected fixtures.
+
+CURRENT NORMAL-INPUT COVERAGE LIMIT
+Four meaningful collection routes are now reached. Repeating the other gameplay policies mostly revisits them. Remaining paths need more targeted prerequisites:AA37 requires absent ROM setting1000 or FF36/FF3A zero (neither holds here);AA93 is guarded byA90F's literal-zero result;AA5F/AA87 require residual balances not produced by the completed transfers in these runs.4AFD requires the alternate record to retain work after4AEC; ordinary inputs drained the first record completely. Service meter/serial/reel fault branches need controlled fault conditions, not more undirected autoplay.
+This is a limit of the current normal-play approach, not a claim that the remaining155 script purposes are unrecoverable. Next strategy: build per-branch prerequisite maps, investigate supported setup/feedback variants, and use precise interrupted-payout/fault experiments with explicit configuration approval where required. Keep code-derived purposes separate from observed behavior; do not label the unvisited branches ROM bugs or emulator defects.
+
+EVIDENCE
+evidence/payout-pass/discovery-summary.json,debit-and-output-validation.json,bank-transfer-validation.json,service-evidence.json,replay-verification.json,payout-records.json,script-name-evidence.json,saved-payout-verification.json. Native assembly/pseudocode exports are in saved-functions; pseudocode is not original source and can mishandle condition-code/register contracts.

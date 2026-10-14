@@ -1,0 +1,86 @@
+Purpose: dispatch_named_cash_feature_from_board_position
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, control flow, lamps, memory operations, sound/scheduler, stack/cell helpers, table/dynamic dispatch
+Callers: root/dynamic
+
+Threaded script at DFF6; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* DFF6  DFEA  clear_nudgepot_and_refresh_amount_display  body=0xDFEC
+* DFF8  7F14  vm_push_word_body_byte  value=0x00C9
+* DFFA  786B  vm_fetch_unsigned_byte  
+* DFFC  7B51  vm_duplicate_cell  
+* DFFE  7963  vm_push_inline_byte_literal  inline_value=0x0004
+* E001  7A6F  vm_compare_equal  
+* E003  798E  vm_branch_forward8_if_zero_else_drop  branch=0xE00C
+* E006  78B5  vm_push_zero  
+* E008  79B7  vm_branch_absolute16  branch=0xE0A3
+* E00C  7B51  vm_duplicate_cell  
+* E00E  7963  vm_push_inline_byte_literal  inline_value=0x0009
+* E011  7A6F  vm_compare_equal  
+* E013  798E  vm_branch_forward8_if_zero_else_drop  branch=0xE01C
+* E016  78C0  vm_push_one  
+* E018  79B7  vm_branch_absolute16  branch=0xE0A3
+* E01C  7B51  vm_duplicate_cell  
+* E01E  7963  vm_push_inline_byte_literal  inline_value=0x000C
+* E021  7A6F  vm_compare_equal  
+* E023  798E  vm_branch_forward8_if_zero_else_drop  branch=0xE02C
+* E026  78DE  vm_push_two  
+* E028  79B7  vm_branch_absolute16  branch=0xE0A3
+* E02C  7B51  vm_duplicate_cell  
+* E02E  7963  vm_push_inline_byte_literal  inline_value=0x0013
+* E031  7A6F  vm_compare_equal  
+* E033  798E  vm_branch_forward8_if_zero_else_drop  branch=0xE03D
+* E036  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* E039  79B7  vm_branch_absolute16  branch=0xE0A3
+* E03D  7B51  vm_duplicate_cell  
+* E03F  7963  vm_push_inline_byte_literal  inline_value=0x001A
+* E042  7A6F  vm_compare_equal  
+* E044  798E  vm_branch_forward8_if_zero_else_drop  branch=0xE04E
+* E047  7963  vm_push_inline_byte_literal  inline_value=0x0004
+* E04A  79B7  vm_branch_absolute16  branch=0xE0A3
+* E04E  7B51  vm_duplicate_cell  
+* E050  7963  vm_push_inline_byte_literal  inline_value=0x0020
+* E053  7A6F  vm_compare_equal  
+* E055  798E  vm_branch_forward8_if_zero_else_drop  branch=0xE05F
+* E058  7963  vm_push_inline_byte_literal  inline_value=0x0005
+* E05B  79B7  vm_branch_absolute16  branch=0xE0A3
+* E05F  7B51  vm_duplicate_cell  
+* E061  7963  vm_push_inline_byte_literal  inline_value=0x0025
+* E064  7A6F  vm_compare_equal  
+* E066  798E  vm_branch_forward8_if_zero_else_drop  branch=0xE070
+* E069  7963  vm_push_inline_byte_literal  inline_value=0x0006
+* E06C  79B7  vm_branch_absolute16  branch=0xE0A3
+* E070  7B51  vm_duplicate_cell  
+* E072  7963  vm_push_inline_byte_literal  inline_value=0x002A
+* E075  7A6F  vm_compare_equal  
+* E077  798E  vm_branch_forward8_if_zero_else_drop  branch=0xE081
+* E07A  7963  vm_push_inline_byte_literal  inline_value=0x0007
+* E07D  79B7  vm_branch_absolute16  branch=0xE0A3
+* E081  7B51  vm_duplicate_cell  
+* E083  7963  vm_push_inline_byte_literal  inline_value=0x002F
+* E086  7A6F  vm_compare_equal  
+* E088  798E  vm_branch_forward8_if_zero_else_drop  branch=0xE092
+* E08B  7963  vm_push_inline_byte_literal  inline_value=0x0008
+* E08E  79B7  vm_branch_absolute16  branch=0xE0A3
+  E092  7B51  vm_duplicate_cell  
+  E094  7B51  vm_duplicate_cell  
+  E096  7A6F  vm_compare_equal  
+  E098  798E  vm_branch_forward8_if_zero_else_drop  branch=0xE0A1
+  E09B  78B5  vm_push_zero  
+  E09D  79B7  vm_branch_absolute16  branch=0xE0A3
+  E0A1  7B3D  vm_drop_cell  
+* E0A3  8130  call_reset_sound_and_scheduler  native=0x5B77
+* E0A5  7963  vm_push_inline_byte_literal  inline_value=0x0008
+* E0A8  8581  write_byte_004e_8583  body=0x8583
+* E0AA  7963  vm_push_inline_byte_literal  inline_value=0x0005
+* E0AD  8579  write_byte_004d_857b  body=0x857B
+* E0AF  89B3  queue_sound_stream_89b5  body=0x856B, push_address=0x89B5
+* E0B1  7B51  vm_duplicate_cell  
+* E0B3  DE98  display_named_cash_feature_by_index  body=0xDE9A
+* E0B5  80F8  call_scheduler_wait_until_active_list_empty  native=0x5CCB
+* E0B7  8130  call_reset_sound_and_scheduler  native=0x5B77
+* E0B9  8345  vm_push_word_body_byte  value=0x0018
+* E0BB  8068  call_lamp_set_frame_pattern_0  native=0x4982
+* E0BD  DFD6  dispatch_indexed_token_table_dfd8  body=0x99A1, push_address=0xDFD8
+* E0BF  792F  vm_return_to_caller_stream  

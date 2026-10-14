@@ -1,0 +1,21 @@
+Purpose: attract_alternate_strip_lamp_patterns_83_and_8c
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: control flow, lamps, stack/cell helpers
+Callers: F860
+
+Threaded script at F841; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* F841  7963  vm_push_inline_byte_literal  inline_value=0x000A
+* F844  78B5  vm_push_zero  
+* F846  79DC  vm_enter_loop_frame  
+* F848  7A1C  vm_push_loop_index  
+* F84A  7B51  vm_duplicate_cell  
+* F84C  7D38  test_low_bit_nonzero  body=0x7D3A
+* F84E  7982  vm_branch_forward8_if_zero  branch=0xF856
+* F851  820C  vm_push_word_body_byte  value=0x0083
+* F853  7979  vm_branch_unsigned_forward8  branch=0xF858
+* F856  820F  vm_push_word_body_byte  value=0x008C
+* F858  9BC4  apply_indexed_lamp_id_from_724c  body=0x9B18, push_address=0x9BC6
+* F85A  7A00  vm_loop_increment_one  
+* F85C  792F  vm_return_to_caller_stream  

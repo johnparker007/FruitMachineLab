@@ -1,0 +1,10 @@
+Purpose: queue_sound_stream_from_word_body
+Confidence: reviewed token mechanics
+Groups: sound/scheduler
+Callers: DFF6, ED06, D003, DAC7, DDF3, CED7, E5CF, BC70
+
+Threaded script at 856B; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 856B  7FD3  call_scheduler_queue_sound_task  native=0x5C18
+* 856D  792F  vm_return_to_caller_stream  

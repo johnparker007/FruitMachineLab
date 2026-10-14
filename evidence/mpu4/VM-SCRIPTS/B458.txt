@@ -1,0 +1,46 @@
+Purpose: select_or_prepare_nudge_reel_records
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, control flow, memory operations, nudges, reel records, reels, reels/symbol tests, stack/cell helpers
+Callers: B4C5
+
+Threaded script at B458; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  B458  8245  vm_push_word_body_byte  value=0x00BE
+  B45A  786B  vm_fetch_unsigned_byte  
+  B45C  9F91  mask_flagged_best_reel_result_by_signed_threshold_nine  body=0x9F93
+  B45E  B291  vm_push_local_frame_address  value=0x0000
+  B460  7861  vm_store_byte  
+  B462  82DD  vm_push_word_body_byte  value=0x00BD
+  B464  786B  vm_fetch_unsigned_byte  
+  B466  7E82  vm_push_word_body_byte  value=0x0015
+  B468  7A6F  vm_compare_equal  
+  B46A  7982  vm_branch_forward8_if_zero  branch=0xB472
+  B46D  B396  script_b396  body=0xB398
+  B46F  7979  vm_branch_unsigned_forward8  branch=0xB4A5
+  B472  B291  vm_push_local_frame_address  value=0x0000
+  B474  786B  vm_fetch_unsigned_byte  
+  B476  7A46  vm_test_zero  
+  B478  7982  vm_branch_forward8_if_zero  branch=0xB49D
+  B47B  A45A  script_a45a  body=0xA45C
+  B47D  7B51  vm_duplicate_cell  
+  B47F  78B5  vm_push_zero  
+  B481  7D42  compare_top_le_second_signed  body=0x7D44
+  B483  7982  vm_branch_forward8_if_zero  branch=0xB499
+  B486  9D7A  push_three_reel_loop_bounds  body=0x9D7C
+  B488  79DC  vm_enter_loop_frame  
+  B48A  9DAD  address_record_0169_loop_index  body=0x9D86, push_address=0x9DAF
+  B48C  7861  vm_store_byte  
+  B48E  7A00  vm_loop_increment_one  
+  B490  8118  call_reels_start_motion_async  native=0x61D5
+  B492  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+  B494  7935  vm_unwind_loop_frames_to_return  
+  B499  7B43  vm_drop_two_cells  
+  B49B  7B3D  vm_drop_cell  
+  B49D  78B3  vm_push_true_minus_one  
+  B49F  7E97  vm_push_word_body_byte  value=0x00DD
+  B4A1  7861  vm_store_byte  
+  B4A3  B396  script_b396  body=0xB398
+  B4A5  7E97  vm_push_word_body_byte  value=0x00DD
+  B4A7  765F  vm_clear_byte_memory  
+  B4A9  792F  vm_return_to_caller_stream  

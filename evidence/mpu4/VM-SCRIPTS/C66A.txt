@@ -1,0 +1,13 @@
+Purpose: skill_cash_test_orange1_or_compensated_chance
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: boolean/bit operations
+Callers: C676
+
+Threaded script at C66A; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C66A  9F5E  test_two_orange1_input_conditions  body=0x9F60
+* C66C  C615  skill_cash_lookup_compensated_chance_table  body=0xC617
+* C66E  9A11  random_percentage_test  body=0x9A13
+* C670  7AA3  vm_bitwise_or  
+* C672  792F  vm_return_to_caller_stream  

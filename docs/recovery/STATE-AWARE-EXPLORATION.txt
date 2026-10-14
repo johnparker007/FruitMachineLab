@@ -1,0 +1,57 @@
+STATE-AWARE EXPLORATION — 14 October 2026
+
+Three policies each ran for 180 simulated seconds from fresh configuration and absent NVRAM, then replayed their recorded frame-exact input fixtures from reset. Every replay matched state.csv (1,801 samples), debug.log (all FC dispatch records), input-levels.csv and final 2KB RAM byte-for-byte. This establishes reproducibility with this MAME 0.281 build and instrumentation; it does not prove identical behaviour on original hardware or uninstrumented runs.
+
+RESULTS
+Observed token locations: 3113 -> 4854 (+1741).
+Observed conditional branch edges: 272 -> 437 (+165); only consecutive FC dispatches matching decoded two-successor branches count. EXECUTE/native/return/interrupt transitions are excluded.
+Reachable script bodies: 430 -> 440; at least one site observed: 250 -> 336. This is partial body coverage, not proof every branch ran.
+Reviewed purpose/mechanical names: 122 -> 145 (+23). 295 bodies still have grouping/descriptions rather than a settled purpose.
+Saved Ghidra: 439 native functions, 388 descriptive names including 24 explicit hypothesis names; 7663 typed token sites, 1014 word headers, zero missing typed items.
+Interpreter validation: 3,136,398 ordinary continuations checked, zero mismatches. Custom/native/return transitions are outside this check.
+
+The policies reached Snake Bite, Roll the Dice, TAKE 60P, 3 FREE GAMES, Roll Even / ODD YOU LOSE and HIGH / LOW / LOSE display paths. These strings and executed token paths support context, not a claim that every feature or physical payout is fully understood.
+
+RECOVERED FEATURE SELECTION
+C9 is the feature-selection index. DC34 tests Hi/Lo conditions21/20, increments/decrements with wrap0..47, waits for button release and refreshes lamps/display/timer. The wrap mechanics are static deductions; the coverage JSON identifies which branch sides actually executed.
+D938 stores the displayed selection in EB, then calls alpha output at D5D1 + 17*EB. D975 alternates this table-selected prompt with OR ROLL DICE according to IRQ timing and eligibility.
+DD38 waits for Start / Take Feature / timeout/abort, then chooses reel-motion or take paths. E43D runs the board loop until its exit flag. E227 announces a special feature and invokes the indexed token table E211. E0C3 maps indices to the visible feature names; a displayed name alone does not establish its target's complete behaviour.
+The new names are deliberately narrower than complete game rules. Full token listings retain unvisited static branches and explicitly mark observed sites.
+
+NEW REVIEWED NAMES
+9FD9  test_all_symbol_flag2_or_nonzero_matching_result
+A1CE  test_selected_feature_table_type_three
+A1DD  test_selected_feature_available_with_bf_gate
+AC6A  test_hold1_input_with_mode_or_mask0400_gate
+AD32  random_address_within_local_byte_range
+B25B  wait_reel_busy_bit_clear_and_refresh_symbols
+B271  run_dice_reel_motion_and_display
+B88C  conditionally_increment_byte_bf_and_refresh_display
+D938  display_selected_feature_from_fixed_width_table
+D975  alternate_selected_feature_prompt_with_roll_dice
+DBF1  set_feature_selection_start_and_index_lamps
+DC0A  refresh_selected_feature_lamps_and_amount_display
+DC34  handle_hi_lo_feature_selection_with_wrap
+DD38  wait_feature_selection_then_roll_or_take
+DDF3  advance_feature_index_with_lamp_and_sound_steps
+E0C3  display_special_feature_name_by_index
+E227  announce_and_dispatch_special_feature
+E2FC  repeat_special_feature_while_selected_type_three
+E340  copy_reel_request_triplet_from_da_if_nonzero
+E379  clear_feature_flags_lamp_ranges_and_sound
+E3E2  display_token_or_cash_jackpot_for_selection
+E43D  run_feature_board_until_exit_flag
+EB3B  map_result_b9_to_code_bc_and_reset_b9
+
+COIN ALARM / INPUT HARNESS
+John identifies the historical 100P LOCKED ALM as the normal held/stuck 100p coin-switch alarm. SCRIPT-CLASSIFICATION.txt and its report generator now record this explanation. The old 300s run was not used as evidence of a ROM bug or emulator defect; why its harness triggered that state has not been independently isolated.
+New runs logged AUX2 every frame: 20 coin pulses, each exactly three frames (50ms) high, with release between pulses; no ALM display sample appeared in these three runs. Port reads reflect an override one frame later than the frame callback that requests it, consistently in discovery and replay.
+The initial explore-collect-a run exposed a harness error: floating-point mask keys did not match integer control keys, so some nudge presses never reached MAME. Corrected v2 uses integer-normalized keys and verifies actual input levels. The initial run remains diagnostic and is excluded from coverage and replay claims.
+
+REPRODUCTION
+Use scripts/Run-DeepTrace.ps1, explore-state-aware.cmd and explore-state-aware.lua with a fresh RunName and Seconds180. Process-local MPU4_POLICY selects0,1,2; MPU4_REPLAY supplies a recorded actions.csv and bypasses adaptive choices. The runner copies a replay fixture into the run folder and records controller-settings.json; unset MPU4_REPLAY for discovery. No global settings or installations changed.
+Each run stores copied instrumentation/controller, actions or replay-actions.csv, configuration, arguments, input levels, state samples, final RAM, VM log and SHA256 manifest. State-aware decisions use display, credits, nudge count, reel busy bit and pending awards; other presses are explicitly labelled probes. No ROM/RAM patches or save states were used.
+Evidence: exploration-pass/coverage.json, replay-verification.json, summary.json and full *-vm.json caches. Raw records are in runs/explore-*-v2-*. Ghidra backup: work/project-before-exploration-pass.
+
+NEXT TARGETS
+Use the uncovered branch-side list to choose actions at specific feature choices, rather than long repeated polling. Extend focused logging of feature-selection C9, displayed index EB and fourth-reel result to isolate Hi/Lo selection, special-feature outcomes and the remaining table targets. Collecting awards and physical payout need separate controlled fixtures. Some service/refill/door/error paths require deliberate scenarios beyond ordinary autoplay.

@@ -1,0 +1,23 @@
+Purpose: test_reel_result_and_random_gate
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, random selection, reels, reels/symbol tests, stack/cell helpers
+Callers: F20D
+
+Threaded script at F19B; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* F19B  F184  script_f184  body=0xF186
+* F19D  80C4  call_reels_push_matching_symbol_result  native=0x1AA3
+* F19F  7B51  vm_duplicate_cell  
+* F1A1  7A46  vm_test_zero  
+* F1A3  7B7D  vm_swap_two_cells  
+* F1A5  F0E9  script_f0e9  body=0xF0EB
+* F1A7  9A11  random_percentage_test  body=0x9A13
+* F1A9  7ABB  vm_bitwise_not  
+* F1AB  7AA3  vm_bitwise_or  
+* F1AD  9FA0  reels_test_all_three_symbol_flag2  body=0x9FA2
+* F1AF  7ABB  vm_bitwise_not  
+* F1B1  7A97  vm_bitwise_and  
+* F1B3  7574  vm_return_if_nonzero  
+* F1B5  A2A9  script_a2a9  body=0xA2AB
+* F1B7  792F  vm_return_to_caller_stream  

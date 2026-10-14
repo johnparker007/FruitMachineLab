@@ -1,0 +1,23 @@
+Purpose: round_token_award_even_and_commit_to_token_or_cash_bank
+Confidence: reviewed token mechanics/channel association; see prerequisite-pass/script-name-evidence.json
+Groups: arithmetic, award/balance operations, control flow, stack/cell helpers
+Callers: AFF4
+
+Threaded script at AF2B; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* AF2B  7B51  vm_duplicate_cell  
+* AF2D  ADBE  test_award_above_thirty_for_token_balance_route  body=0xADC0
+* AF2F  7982  vm_branch_forward8_if_zero  branch=0xAF46
+* AF32  7B51  vm_duplicate_cell  
+* AF34  7D38  test_low_bit_nonzero  body=0x7D3A
+* AF36  7982  vm_branch_forward8_if_zero  branch=0xAF41
+  AF39  78C9  vm_increment_word  
+  AF3B  78C0  vm_push_one  
+  AF3D  78C0  vm_push_one  
+  AF3F  AE38  account_award_by_result_categories_and_selected_counter  body=0xAE3A
+* AF41  82D2  vm_push_word_body_word  value=0x0302
+* AF43  7979  vm_branch_unsigned_forward8  branch=0xAF48
+* AF46  82CE  vm_push_word_body_word  value=0x02FC
+* AF48  AF11  commit_current_award_to_selected_balance  body=0xAF13
+* AF4A  792F  vm_return_to_caller_stream  

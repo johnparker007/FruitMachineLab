@@ -1,0 +1,32 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: control flow, mask/address records, memory operations, stack/cell helpers
+Callers: FD8D
+
+Threaded script at FD56; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  FD56  795B  vm_push_inline_word_literal  inline_value=0x9E58
+  FD5A  82F5  vm_push_word_body_byte  value=0x002F
+  FD5C  7874  vm_store_word  
+  FD5E  A8F7  refresh_credit_and_bank_display_unless_suppressed  body=0xA8F9
+  FD60  FC21  wait_for_credit_then_clear_collect_lamp_and_refresh_display  body=0xFC23
+  FD62  F4BF  script_f4bf  body=0xF4C1
+  FD64  7B51  vm_duplicate_cell  
+  FD66  8492  push_pair_1000_00a0  body=0x8417, push_address=0x8494
+  FD68  9A62  conditionally_set_or_clear_memory_mask  body=0x9A64
+  FD6A  7982  vm_branch_forward8_if_zero  branch=0xFD89
+  FD6D  7B51  vm_duplicate_cell  
+  FD6F  8164  vm_push_word_body_byte  value=0x00B9
+  FD71  7861  vm_store_byte  
+  FD73  AC23  begin_paid_play_and_update_compensation_gates  body=0xAC25
+  FD75  A8F7  refresh_credit_and_bank_display_unless_suppressed  body=0xA8F9
+  FD77  78B5  vm_push_zero  
+  FD79  7F14  vm_push_word_body_byte  value=0x00C9
+  FD7B  7861  vm_store_byte  
+  FD7D  FD1D  script_fd1d  body=0xFD1F
+  FD7F  EDB2  normalize_pending_award_and_animate_into_current_win  body=0xEDB4
+  FD81  795B  vm_push_inline_word_literal  inline_value=0xEC78
+  FD85  82F2  vm_push_word_body_byte  value=0x002D
+  FD87  7874  vm_store_word  
+  FD89  792F  vm_return_to_caller_stream  

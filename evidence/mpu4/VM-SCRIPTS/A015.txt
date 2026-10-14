@@ -1,0 +1,14 @@
+Purpose: clear_three_reel_record_bytes
+Confidence: reviewed token mechanics
+Groups: memory operations, reel records, reels/symbol tests
+Callers: E5CF, EDD3, B7C2, EC97, EBDA, A45C
+
+Threaded script at A015; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* A015  9D7A  push_three_reel_loop_bounds  body=0x9D7C
+* A017  79DC  vm_enter_loop_frame  
+* A019  9DAD  address_record_0169_loop_index  body=0x9D86, push_address=0x9DAF
+* A01B  765F  vm_clear_byte_memory  
+* A01D  7A00  vm_loop_increment_one  
+* A01F  792F  vm_return_to_caller_stream  

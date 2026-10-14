@@ -1,0 +1,30 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, memory operations, stack/cell helpers
+Callers: FD56
+
+Threaded script at FD1F; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  FD1F  81C2  vm_push_word_body_byte  value=0x00B6
+  FD21  786B  vm_fetch_unsigned_byte  
+  FD23  7B51  vm_duplicate_cell  
+  FD25  BB6A  vm_push_word_body_byte  value=0x0001
+  FD27  7A6F  vm_compare_equal  
+  FD29  798E  vm_branch_forward8_if_zero_else_drop  branch=0xFD32
+  FD2C  E43B  run_feature_board_until_exit_flag  body=0xE43D
+  FD2E  79B7  vm_branch_absolute16  branch=0xFD52
+  FD32  7B51  vm_duplicate_cell  
+  FD34  BB6D  vm_push_word_body_byte  value=0x0002
+  FD36  7A6F  vm_compare_equal  
+  FD38  798E  vm_branch_forward8_if_zero_else_drop  branch=0xFD41
+  FD3B  C81A  cash_feature_cash_attack  body=0xC81C
+  FD3D  79B7  vm_branch_absolute16  branch=0xFD52
+  FD41  7B51  vm_duplicate_cell  
+  FD43  BB70  vm_push_word_body_byte  value=0x0003
+  FD45  7A6F  vm_compare_equal  
+  FD47  798E  vm_branch_forward8_if_zero_else_drop  branch=0xFD50
+  FD4A  C98C  cash_feature_super_stepper  body=0xC98E
+  FD4C  79B7  vm_branch_absolute16  branch=0xFD52
+  FD50  7B3D  vm_drop_cell  
+  FD52  792F  vm_return_to_caller_stream  

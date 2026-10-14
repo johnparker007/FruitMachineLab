@@ -1,0 +1,16 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, mask/address records, memory operations
+Callers: F4C1
+
+Threaded script at F4AF; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  F4AF  8492  push_pair_1000_00a0  body=0x8417, push_address=0x8494
+  F4B1  767F  vm_test_word_memory_mask  
+  F4B3  81C2  vm_push_word_body_byte  value=0x00B6
+  F4B5  786B  vm_fetch_unsigned_byte  
+  F4B7  BB6A  vm_push_word_body_byte  value=0x0001
+  F4B9  7A5B  vm_compare_not_equal  
+  F4BB  7A97  vm_bitwise_and  
+  F4BD  792F  vm_return_to_caller_stream  

@@ -1,0 +1,16 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: accounting/NVRAM, lamps, sound/scheduler
+Callers: D1F5
+
+Threaded script at D1E3; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* D1E3  8130  call_reset_sound_and_scheduler  native=0x5B77
+* D1E5  8342  vm_push_word_body_byte  value=0x0018
+* D1E7  8058  call_lamp_set_frame_pattern_3  native=0x4985
+* D1E9  820C  vm_push_word_body_byte  value=0x0083
+* D1EB  9BD8  apply_lamp_range_7325_7328  body=0x9ADB, push_address=0x9BDA
+* D1ED  8006  vm_push_word_body_word  value=0x04D9
+* D1EF  8323  call_accounting_increment_u24_if_normal_mode  native=0x57DB
+* D1F1  792F  vm_return_to_caller_stream  

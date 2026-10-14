@@ -1,0 +1,43 @@
+Purpose: clear_previous_board_rectangle_horizontal_edges
+Confidence: reviewed token mechanics; see lifecycle-pass/script-name-evidence.json
+Groups: arithmetic, boolean/bit operations, control flow, memory operations
+Callers: BAD9
+
+Threaded script at BA25; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* BA25  B958  vm_push_local_frame_address  value=0x0001
+* BA27  786B  vm_fetch_unsigned_byte  
+* BA29  78C9  vm_increment_word  
+* BA2B  B95E  vm_push_local_frame_address  value=0x0003
+* BA2D  786B  vm_fetch_unsigned_byte  
+* BA2F  7D52  duplicate_two_cells  body=0x7D54
+* BA31  7A5B  vm_compare_not_equal  
+* BA33  7982  vm_branch_forward8_if_zero  branch=0xBA6B
+* BA36  79DC  vm_enter_loop_frame  
+* BA38  B955  vm_push_local_frame_address  value=0x0000
+* BA3A  786B  vm_fetch_unsigned_byte  
+* BA3C  B961  vm_push_local_frame_address  value=0x0004
+* BA3E  786B  vm_fetch_unsigned_byte  
+* BA40  7A5B  vm_compare_not_equal  
+* BA42  7982  vm_branch_forward8_if_zero  branch=0xBA4F
+* BA45  7A1C  vm_push_loop_index  
+* BA47  B955  vm_push_local_frame_address  value=0x0000
+* BA49  786B  vm_fetch_unsigned_byte  
+* BA4B  8248  vm_push_word_body_byte  value=0x0080
+* BA4D  B944  apply_reel_grid_lamp_pattern_at_row_times_six_plus_column  body=0xB946
+* BA4F  B95B  vm_push_local_frame_address  value=0x0002
+* BA51  786B  vm_fetch_unsigned_byte  
+* BA53  B967  vm_push_local_frame_address  value=0x0006
+* BA55  786B  vm_fetch_unsigned_byte  
+* BA57  7A5B  vm_compare_not_equal  
+* BA59  7982  vm_branch_forward8_if_zero  branch=0xBA66
+* BA5C  7A1C  vm_push_loop_index  
+* BA5E  B95B  vm_push_local_frame_address  value=0x0002
+* BA60  786B  vm_fetch_unsigned_byte  
+* BA62  8248  vm_push_word_body_byte  value=0x0080
+* BA64  B944  apply_reel_grid_lamp_pattern_at_row_times_six_plus_column  body=0xB946
+* BA66  7A00  vm_loop_increment_one  
+* BA68  7979  vm_branch_unsigned_forward8  branch=0xBA6D
+  BA6B  7B43  vm_drop_two_cells  
+* BA6D  792F  vm_return_to_caller_stream  

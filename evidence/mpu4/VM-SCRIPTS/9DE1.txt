@@ -1,0 +1,12 @@
+Purpose: test_irq_timer_word_negative
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, memory operations
+Callers: D257, FBCB, D0C2, 9DF1
+
+Threaded script at 9DE1; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9DE1  82F5  vm_push_word_body_byte  value=0x002F
+* 9DE3  790D  vm_fetch_word  
+* 9DE5  7A39  vm_test_negative  
+* 9DE7  792F  vm_return_to_caller_stream  

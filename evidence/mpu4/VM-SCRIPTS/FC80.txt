@@ -1,0 +1,19 @@
+Purpose: initialize_reel_selection_once_for_state_bit0080
+Confidence: reviewed token mechanics; see payout-pass/script-name-evidence.json
+Groups: boolean/bit operations, control flow, mask/address records, reels/symbol tests
+Callers: FC99
+
+Threaded script at FC80; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* FC80  84B0  push_pair_0080_00a0  body=0x8417, push_address=0x84B2
+* FC82  767F  vm_test_word_memory_mask  
+* FC84  8498  push_pair_0800_00a0  body=0x8417, push_address=0x849A
+* FC86  767F  vm_test_word_memory_mask  
+* FC88  7ABB  vm_bitwise_not  
+* FC8A  7A97  vm_bitwise_and  
+* FC8C  7982  vm_branch_forward8_if_zero  branch=0xFC95
+  FC8F  A021  script_a021  body=0xA023
+  FC91  8498  push_pair_0800_00a0  body=0x8417, push_address=0x849A
+  FC93  7665  vm_or_word_memory  
+* FC95  792F  vm_return_to_caller_stream  

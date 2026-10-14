@@ -1,0 +1,16 @@
+Purpose: conditionally_decrement_u24_counter_07d2_by_500
+Confidence: reviewed token mechanics; see lifecycle-pass/script-name-evidence.json
+Groups: accounting/NVRAM, control flow
+Callers: AC25
+
+Threaded script at 9F28; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9F28  9F1E  test_three_byte_counter_07d2  body=0x9F20
+* 9F2A  7982  vm_branch_forward8_if_zero  branch=0x9F37
+  9F2D  9ECD  vm_push_word_body_word  value=0x01F4
+  9F2F  7CCD  vm_negate_cell  
+  9F31  8185  vm_push_word_body_word  value=0x07D2
+  9F33  9EE7  add_double_value_to_three_byte_record  body=0x9EE9
+  9F35  7FF6  call_nvram_refresh_accounting_complements  native=0x6F57
+* 9F37  792F  vm_return_to_caller_stream  

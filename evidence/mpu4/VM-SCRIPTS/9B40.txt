@@ -1,0 +1,18 @@
+Purpose: save_lamp_frames_on_vm_stack
+Confidence: reviewed token mechanics
+Groups: arithmetic, stack/cell helpers
+Callers: FA7F, A365
+
+Threaded script at 9B40; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9B40  7B2B  vm_push_data_stack_pointer  
+* 9B42  7963  vm_push_inline_byte_literal  inline_value=0x0040
+* 9B45  78A0  vm_subtract_top_from_second  
+* 9B47  7B25  vm_set_data_stack_pointer  
+* 9B49  7B2B  vm_push_data_stack_pointer  
+* 9B4B  8218  vm_push_word_body_word  value=0x0100
+* 9B4D  7B7D  vm_swap_two_cells  
+* 9B4F  7963  vm_push_inline_byte_literal  inline_value=0x0040
+* 9B52  7B89  vm_move_bytes_overlap_safe  
+* 9B54  792F  vm_return_to_caller_stream  

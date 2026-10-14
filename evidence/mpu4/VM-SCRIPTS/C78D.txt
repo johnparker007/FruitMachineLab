@@ -1,0 +1,12 @@
+Purpose: cash_attack_store_thirty_in_working_byte_ed
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: memory operations
+Callers: C81C
+
+Threaded script at C78D; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C78D  7F0D  vm_push_word_body_byte  value=0x001E
+* C78F  7ECE  vm_push_word_body_byte  value=0x00ED
+* C791  7861  vm_store_byte  
+* C793  792F  vm_return_to_caller_stream  

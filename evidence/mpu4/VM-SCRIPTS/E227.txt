@@ -1,0 +1,22 @@
+Purpose: announce_and_dispatch_special_feature
+Confidence: reviewed token mechanics
+Groups: sound/scheduler, stack/cell helpers, table/dynamic dispatch
+Callers: E2FC
+
+Threaded script at E227; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* E227  8130  call_reset_sound_and_scheduler  native=0x5B77
+* E229  DAB9  run_selection_callback_record_at_dabb  body=0xAD65, push_address=0xDABB
+* E22B  7B51  vm_duplicate_cell  
+* E22D  E0C1  display_special_feature_name_by_index  body=0xE0C3
+* E22F  7963  vm_push_inline_byte_literal  inline_value=0x0008
+* E232  8581  write_byte_004e_8583  body=0x8583
+* E234  7963  vm_push_inline_byte_literal  inline_value=0x0005
+* E237  8579  write_byte_004d_857b  body=0x857B
+* E239  89B3  queue_sound_stream_89b5  body=0x856B, push_address=0x89B5
+* E23B  80F8  call_scheduler_wait_until_active_list_empty  native=0x5CCB
+* E23D  8130  call_reset_sound_and_scheduler  native=0x5B77
+* E23F  9CA3  apply_lamp_range_constant_0080_record_9b8c_9ca5  body=0x9CA5
+* E241  E20F  dispatch_indexed_token_table_e211  body=0x99A1, push_address=0xE211
+* E243  792F  vm_return_to_caller_stream  

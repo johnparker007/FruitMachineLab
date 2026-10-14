@@ -1,0 +1,41 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: accounting/NVRAM, boolean/bit operations, control flow, lamps, memory operations
+Callers: EBDA
+
+Threaded script at EAF3; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* EAF3  E46B  vm_push_local_frame_address  value=0x0003
+* EAF5  765F  vm_clear_byte_memory  
+* EAF7  E46E  vm_push_local_frame_address  value=0x0004
+* EAF9  765F  vm_clear_byte_memory  
+* EAFB  E471  vm_push_local_frame_address  value=0x0005
+* EAFD  765F  vm_clear_byte_memory  
+* EAFF  E474  vm_push_local_frame_address  value=0x0006
+* EB01  765F  vm_clear_byte_memory  
+* EB03  E71A  script_e71a  body=0xE71C
+* EB05  EA92  script_ea92  body=0xEA94
+* EB07  E794  script_e794  body=0xE796
+* EB09  E810  script_e810  body=0xE812
+* EB0B  7AA3  vm_bitwise_or  
+* EB0D  EA20  script_ea20  body=0xEA22
+* EB0F  7AA3  vm_bitwise_or  
+* EB11  79A6  vm_branch_backward8_if_zero  branch=0xEB05
+* EB14  EA73  script_ea73  body=0xEA75
+* EB16  79A6  vm_branch_backward8_if_zero  branch=0xEB03
+* EB19  824E  vm_push_word_body_byte  value=0x008F
+* EB1B  9B86  apply_lamp_range_728f_72bf  body=0x9ADB, push_address=0x9B88
+* EB1D  E468  vm_push_local_frame_address  value=0x0002
+* EB1F  786B  vm_fetch_unsigned_byte  
+* EB21  7963  vm_push_inline_byte_literal  inline_value=0x0005
+* EB24  7D42  compare_top_le_second_signed  body=0x7D44
+* EB26  7982  vm_branch_forward8_if_zero  branch=0xEB33
+  EB29  7F07  vm_push_word_body_byte  value=0x003C
+  EB2B  9F68  normalize_award_47_to_30_with_optional_input_clamp  body=0x9F6A
+  EB2D  8318  vm_push_word_body_byte  value=0x00BA
+  EB2F  7874  vm_store_word  
+  EB31  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* EB33  E46E  vm_push_local_frame_address  value=0x0004
+* EB35  786B  vm_fetch_unsigned_byte  
+* EB37  792F  vm_return_to_caller_stream  

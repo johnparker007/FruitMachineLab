@@ -1,0 +1,10 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: primitive sequence
+Callers: D587
+
+Threaded script at D581; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* D581  78B3  vm_push_true_minus_one  
+* D583  792F  vm_return_to_caller_stream  

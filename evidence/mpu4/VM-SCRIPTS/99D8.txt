@@ -1,0 +1,17 @@
+Purpose: generate_random_word_from_seed_and_irq
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, memory operations, random selection
+Callers: 99EE, 9A13
+
+Threaded script at 99D8; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 99D8  810C  call_advance_random_seed  native=0x59BB
+* 99DA  7E9A  vm_push_word_body_byte  value=0x0033
+* 99DC  786B  vm_fetch_unsigned_byte  
+* 99DE  795B  vm_push_inline_word_literal  inline_value=0x0101
+* 99E2  7DC4  multiply_words_keep_low_cell  body=0x7DC6
+* 99E4  82E0  vm_push_word_body_word  value=0x0324
+* 99E6  790D  vm_fetch_word  
+* 99E8  7AAF  vm_bitwise_xor  
+* 99EA  792F  vm_return_to_caller_stream  

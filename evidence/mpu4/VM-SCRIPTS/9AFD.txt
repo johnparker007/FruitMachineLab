@@ -1,0 +1,20 @@
+Purpose: apply_clipped_lamp_range_from_word_body
+Confidence: reviewed token mechanics
+Groups: lamps, stack/cell helpers
+Callers: B2E8
+
+Threaded script at 9AFD; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9AFD  7915  vm_fetch_two_words  
+* 9AFF  7AF4  vm_move_cell_to_return_stack  
+* 9B01  7B6D  vm_rotate_three_cells  
+* 9B03  757E  vm_add_second_cell_to_top  
+* 9B05  7AFC  vm_copy_return_stack_cell  
+* 9B07  7ADC  vm_min_signed  
+* 9B09  7B51  vm_duplicate_cell  
+* 9B0B  7B04  vm_move_cell_from_return_stack  
+* 9B0D  832F  call_lamps_clear_working_command_ranges  native=0x4A83
+* 9B0F  7B6D  vm_rotate_three_cells  
+* 9B11  832B  call_lamp_frame_range_helper_with_synthetic_return  native=0x4A8C
+* 9B13  792F  vm_return_to_caller_stream  

@@ -1,0 +1,17 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, memory operations, reels
+Callers: B712
+
+Threaded script at B652; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B652  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* B654  80C4  call_reels_push_matching_symbol_result  native=0x1AA3
+* B656  9F68  normalize_award_47_to_30_with_optional_input_clamp  body=0x9F6A
+* B658  B2A0  vm_push_local_frame_address  value=0x0007
+* B65A  786B  vm_fetch_unsigned_byte  
+* B65C  7D42  compare_top_le_second_signed  body=0x7D44
+* B65E  9FA0  reels_test_all_three_symbol_flag2  body=0x9FA2
+* B660  7AA3  vm_bitwise_or  
+* B662  792F  vm_return_to_caller_stream  

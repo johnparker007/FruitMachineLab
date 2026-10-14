@@ -1,0 +1,28 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: arithmetic, reels, sound/scheduler, stack/cell helpers
+Callers: EC97
+
+Threaded script at EC6C; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* EC6C  80C4  call_reels_push_matching_symbol_result  native=0x1AA3
+* EC6E  9FED  lookup_first_award_threshold_index_in_75bd  body=0x9FEF
+* EC70  78D3  vm_decrement_word  
+* EC72  8130  call_reset_sound_and_scheduler  native=0x5B77
+* EC74  946D  queue_sound_stream_946f  body=0x856B, push_address=0x946F
+* EC76  7963  vm_push_inline_byte_literal  inline_value=0x0004
+* EC79  78B5  vm_push_zero  
+* EC7B  79DC  vm_enter_loop_frame  
+* EC7D  824E  vm_push_word_body_byte  value=0x008F
+* EC7F  7B59  vm_copy_second_cell  
+* EC81  EC2A  script_ec2a  body=0xEC2C
+* EC83  7B51  vm_duplicate_cell  
+* EC85  8212  vm_push_word_body_byte  value=0x0085
+* EC87  9D44  apply_three_reel_and_auxiliary_indexed_lamp_pattern  body=0x9D46
+* EC89  8248  vm_push_word_body_byte  value=0x0080
+* EC8B  7B59  vm_copy_second_cell  
+* EC8D  EC2A  script_ec2a  body=0xEC2C
+* EC8F  7A00  vm_loop_increment_one  
+* EC91  7B3D  vm_drop_cell  
+* EC93  792F  vm_return_to_caller_stream  

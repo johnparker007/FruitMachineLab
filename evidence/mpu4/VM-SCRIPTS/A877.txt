@@ -1,0 +1,9 @@
+Purpose: compatibility_empty_script_return
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: primitive sequence
+Callers: FBA2, AB1B, FCE2
+
+Threaded script at A877; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* A877  792F  vm_return_to_caller_stream  

@@ -1,0 +1,37 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: control flow, lamps, mask tests, memory operations, reels, sound/scheduler, stack/cell helpers
+Callers: E43D
+
+Threaded script at E3A3; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* E3A3  9CAB  apply_lamp_range_constant_0080_record_9c08_9cad  body=0x9CAD
+* E3A5  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* E3A7  9FD7  test_all_symbol_flag2_or_nonzero_matching_result  body=0x9FD9
+* E3A9  7982  vm_branch_forward8_if_zero  branch=0xE3B0
+* E3AC  E33E  copy_reel_request_triplet_from_da_if_nonzero  body=0xE340
+* E3AE  8120  call_reels_start_motion_async_without_sound_setup  native=0x61CF
+* E3B0  88FA  queue_sound_stream_88fc  body=0x856B, push_address=0x88FC
+* E3B2  84F2  test_mask_4000_at_719f  body=0x841E, push_address=0x84F4
+* E3B4  7982  vm_branch_forward8_if_zero  branch=0xE3C4
+  E3B7  8248  vm_push_word_body_byte  value=0x0080
+  E3B9  9B86  apply_lamp_range_728f_72bf  body=0x9ADB, push_address=0x9B88
+  E3BB  7F14  vm_push_word_body_byte  value=0x00C9
+  E3BD  786B  vm_fetch_unsigned_byte  
+  E3BF  9F56  apply_pattern_8f_to_indexed_lamp_record  body=0x9F58
+  E3C1  7979  vm_branch_unsigned_forward8  branch=0xE3D8
+* E3C4  78DE  vm_push_two  
+* E3C6  78B5  vm_push_zero  
+* E3C8  79DC  vm_enter_loop_frame  
+* E3CA  8248  vm_push_word_body_byte  value=0x0080
+* E3CC  9B86  apply_lamp_range_728f_72bf  body=0x9ADB, push_address=0x9B88
+* E3CE  7F14  vm_push_word_body_byte  value=0x00C9
+* E3D0  786B  vm_fetch_unsigned_byte  
+* E3D2  BB47  animate_shrinking_board_rectangle_to_selected_square  body=0xBB49
+* E3D4  7A00  vm_loop_increment_one  
+* E3D6  8130  call_reset_sound_and_scheduler  native=0x5B77
+* E3D8  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* E3DA  8248  vm_push_word_body_byte  value=0x0080
+* E3DC  9C1E  apply_lamp_range_7256_7257  body=0x9ADB, push_address=0x9C20
+* E3DE  792F  vm_return_to_caller_stream  

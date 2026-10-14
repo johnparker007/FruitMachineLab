@@ -1,0 +1,16 @@
+Purpose: fill_three_reel_record_bytes
+Confidence: reviewed token mechanics
+Groups: memory operations, reel records, reels/symbol tests, stack/cell helpers
+Callers: B31F, F509
+
+Threaded script at 9DCF; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9DCF  9D7A  push_three_reel_loop_bounds  body=0x9D7C
+* 9DD1  79DC  vm_enter_loop_frame  
+* 9DD3  7B51  vm_duplicate_cell  
+* 9DD5  9DB1  address_record_0170_loop_index  body=0x9D86, push_address=0x9DB3
+* 9DD7  7861  vm_store_byte  
+* 9DD9  7A00  vm_loop_increment_one  
+* 9DDB  7B3D  vm_drop_cell  
+* 9DDD  792F  vm_return_to_caller_stream  

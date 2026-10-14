@@ -1,0 +1,14 @@
+Purpose: pick_a_win_clamp_value_to_thirty_when_orange1_active
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: boolean/bit operations
+Callers: C506
+
+Threaded script at C4DD; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C4DD  9F5E  test_two_orange1_input_conditions  body=0x9F60
+* C4DF  7ABB  vm_bitwise_not  
+* C4E1  7574  vm_return_if_nonzero  
+  C4E3  7F0D  vm_push_word_body_byte  value=0x001E
+  C4E5  7ADC  vm_min_signed  
+  C4E7  792F  vm_return_to_caller_stream  

@@ -1,0 +1,12 @@
+Purpose: test_hold1_input_with_mode_or_mask0400_gate
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, input conditions
+Callers: ACC0, AD65
+
+Threaded script at AC6A; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* AC6A  994D  test_mode_or_rom_option_0400  body=0x994F
+* AC6C  83B1  vm_test_input_condition  value=0x001A
+* AC6E  7A97  vm_bitwise_and  
+* AC70  792F  vm_return_to_caller_stream  

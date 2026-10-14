@@ -1,0 +1,12 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, mask/address records, stack/cell helpers
+Callers: A2AB
+
+Threaded script at 9E44; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9E44  842F  push_pair_0020_0085  body=0x8417, push_address=0x8431
+* 9E46  7B6D  vm_rotate_three_cells  
+* 9E48  7AC3  vm_rotate_word_right_by_low_byte_count  
+* 9E4A  792F  vm_return_to_caller_stream  

@@ -1,0 +1,24 @@
+Purpose: advance_and_repeat_feature_selection_until_exit
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, control flow, stack/cell helpers
+Callers: E43D
+
+Threaded script at DE75; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* DE75  9CA3  apply_lamp_range_constant_0080_record_9b8c_9ca5  body=0x9CA5
+* DE77  78B5  vm_push_zero  
+* DE79  DDF1  advance_feature_index_with_lamp_and_sound_steps  body=0xDDF3
+* DE7B  A283  refresh_current_board_square_lamp_if_nonzero  body=0xA285
+* DE7D  A8ED  display_nudgepot_byte_as_two_decimal_digits  body=0xA8EF
+* DE7F  DBC2  dispatch_ladder_or_snake_from_board_link  body=0xDBC4
+* DE81  7ABB  vm_bitwise_not  
+* DE83  7982  vm_branch_forward8_if_zero  branch=0xDE8B
+* DE86  DDAD  dispatch_feature_choice_unless_special_or_final_position  body=0xDDAF
+* DE88  7979  vm_branch_unsigned_forward8  branch=0xDE8D
+* DE8B  78BE  vm_push_zero  
+* DE8D  7B51  vm_duplicate_cell  
+* DE8F  7A46  vm_test_zero  
+* DE91  79A6  vm_branch_backward8_if_zero  branch=0xDE79
+* DE94  7B3D  vm_drop_cell  
+* DE96  792F  vm_return_to_caller_stream  

@@ -1,0 +1,19 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: control flow, lamps, mask/address records, reels
+Callers: FC34
+
+Threaded script at EE62; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* EE62  80C4  call_reels_push_matching_symbol_result  native=0x1AA3
+* EE64  7B49  vm_duplicate_if_nonzero  
+* EE66  7982  vm_branch_forward8_if_zero  branch=0xEE72
+* EE69  8248  vm_push_word_body_byte  value=0x0080
+* EE6B  9C1E  apply_lamp_range_7256_7257  body=0x9ADB, push_address=0x9C20
+* EE6D  EE32  script_ee32  body=0xEE34
+* EE6F  7979  vm_branch_unsigned_forward8  branch=0xEE74
+* EE72  EE0F  script_ee0f  body=0xEE11
+* EE74  84C2  push_pair_0010_00a0  body=0x8417, push_address=0x84C4
+* EE76  7671  vm_clear_word_memory_bits  
+* EE78  792F  vm_return_to_caller_stream  

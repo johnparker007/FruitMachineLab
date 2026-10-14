@@ -1,0 +1,31 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, display, input conditions, mask tests, sound/scheduler
+Callers: F4C1
+
+Threaded script at F47A; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  F47A  84E0  test_mask_0200_at_719f  body=0x841E, push_address=0x84E2
+  F47C  7982  vm_branch_forward8_if_zero  branch=0xF486
+  F47F  7963  vm_push_inline_byte_literal  inline_value=0x0032
+  F482  9A11  random_percentage_test  body=0x9A13
+  F484  7935  vm_unwind_loop_frames_to_return  
+  F486  7963  vm_push_inline_byte_literal  inline_value=0x0003
+  F489  76A9  vm_allocate_local_frame  
+  F48B  F459  vm_push_word_body_address  value=0xF45B
+  F48D  831B  call_alpha_execute_stream_at_x  native=0x3CC0
+  F48F  8130  call_reset_sound_and_scheduler  native=0x5B77
+  F491  7963  vm_push_inline_byte_literal  inline_value=0x000C
+  F494  8581  write_byte_004e_8583  body=0x8583
+  F496  93CE  queue_sound_stream_93d0  body=0x856B, push_address=0x93D0
+  F498  809C  call_resume_alpha_stream_when_delay_expired  native=0x3CF7
+  F49A  F3EC  script_f3ec  body=0xF3EE
+  F49C  83FC  vm_test_input_condition  value=0x0012
+  F49E  84F2  test_mask_4000_at_719f  body=0x841E, push_address=0x84F4
+  F4A0  7AA3  vm_bitwise_or  
+  F4A2  79A6  vm_branch_backward8_if_zero  branch=0xF498
+  F4A5  80A0  call_alpha_reset_and_clear_display  native=0x3D0E
+  F4A7  8130  call_reset_sound_and_scheduler  native=0x5B77
+  F4A9  F426  script_f426  body=0xF428
+  F4AB  792F  vm_return_to_caller_stream  

@@ -1,0 +1,11 @@
+Purpose: test_word_body_mask_at_address
+Confidence: reviewed token mechanics
+Groups: primitive sequence
+Callers: E5CF, BC70, ACC0, C0AC, C416, BEE5, AA2B, CB60
+
+Threaded script at 841E; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 841E  7915  vm_fetch_two_words  
+* 8420  767F  vm_test_word_memory_mask  
+* 8422  792F  vm_return_to_caller_stream  

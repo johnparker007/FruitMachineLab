@@ -1,0 +1,30 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: arithmetic, control flow, lamps, memory operations, reel records, reels, sound/scheduler, stack/cell helpers
+Callers: E9E4
+
+Threaded script at E960; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  E960  7982  vm_branch_forward8_if_zero  branch=0xE96E
+  E963  78C0  vm_push_one  
+  E965  7FAD  vm_push_word_body_word  value=0x0166
+  E967  786B  vm_fetch_unsigned_byte  
+  E969  99EC  random_scaled_range_selection  body=0x99EE
+  E96B  7979  vm_branch_unsigned_forward8  branch=0xE979
+  E96E  7FAD  vm_push_word_body_word  value=0x0166
+  E970  786B  vm_fetch_unsigned_byte  
+  E972  78C9  vm_increment_word  
+  E974  7963  vm_push_inline_byte_literal  inline_value=0x000D
+  E977  99EC  random_scaled_range_selection  body=0x99EE
+  E979  E926  script_e926  body=0xE928
+  E97B  8212  vm_push_word_body_byte  value=0x0085
+  E97D  9BB4  apply_lamp_range_7335_7338  body=0x9ADB, push_address=0x9BB6
+  E97F  8130  call_reset_sound_and_scheduler  native=0x5B77
+  E981  883D  queue_sound_stream_883f  body=0x856B, push_address=0x883F
+  E983  811C  call_reels_start_motion_without_sound_setup  native=0x61F6
+  E985  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+  E987  8130  call_reset_sound_and_scheduler  native=0x5B77
+  E989  7963  vm_push_inline_byte_literal  inline_value=0x0003
+  E98C  802A  call_apply_pattern_8f_to_selected_reel_lamp_group  native=0x2C71
+  E98E  792F  vm_return_to_caller_stream  

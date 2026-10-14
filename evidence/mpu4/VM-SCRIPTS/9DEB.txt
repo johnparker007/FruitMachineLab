@@ -1,0 +1,10 @@
+Purpose: call_set_all_three_reel_group_lamps_pattern_8f
+Confidence: exact helper pattern
+Groups: lamps, reels, reels/symbol tests
+Callers: C506, FAFC, EC97, FBCB, 9DF1, FCE2
+
+Threaded script at 9DEB; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9DEB  7FCB  call_set_all_three_reel_group_lamps_pattern_8f  native=0x2C5E
+* 9DED  792F  vm_return_to_caller_stream  

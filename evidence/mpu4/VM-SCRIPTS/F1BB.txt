@@ -1,0 +1,11 @@
+Purpose: invoke_reel_record_selection_with_zero
+Confidence: reviewed token mechanics
+Groups: reels/symbol tests
+Callers: F20D
+
+Threaded script at F1BB; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  F1BB  A037  vm_push_word_body_byte  value=0x0000
+  F1BD  A0AB  prepare_reel_request_triplet_by_result_threshold_scan  body=0xA0AD
+  F1BF  792F  vm_return_to_caller_stream  

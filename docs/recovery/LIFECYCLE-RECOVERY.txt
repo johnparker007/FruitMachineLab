@@ -1,0 +1,30 @@
+MPU4 lifecycle / parameter recovery - 14 October 2026
+
+APPLICATION STATUS: applied and saved in the main outputs/mpu4/project/MPU4.gpr after user save/close. Structures and existing VM/native definitions verified. See evidence/lifecycle-pass/application-status.txt.
+
+528 decoded VM bodies;360 purpose-labelled;168 broader purposes unresolved.
+467 bodies partly observed. Names describe demonstrated mechanics or reviewed static dataflow, not recovered original source names.
+This batch reviews25 script names (24 newly resolved bodies and one existing helper refined), plus31 parameterized profile instances. Parameterized word names now216.
+
+BOARD ANIMATION
+BB49 animates a rectangle converging on the selected board square. It allocates a10-byte frame: previous bottom/right/top/left, current bottom/right/top/left, target column,row. Initial bounds cover columns0..5 and rows0..7.
+BB2C maps index0..47 to a serpentine6-column grid: row=index//6; column=index%6, reversed as5-column on odd rows. B975/B9A7 draw edges;B9D9/BA25 clear old edges;BA71 moves bounds one cell toward the target. BAD9 repeats the draw/clear/move sequence;BB49 leaves the target highlighted.
+Policy6 fixture verified76 coordinate conversions and608 frame updates with zero mismatches. The independent Collect experiment also matched its captured updates. These checks cover observed inputs, not invalid indices or every lamp hardware effect.
+
+PARAMETER PROFILES
+169B is compute_scaled_parameter_from_counter_and_credit_profile;A5A5 is its VM wrapper. All31 words contain14-byte records: counter address2, seven credit factors, five counter-band factors. Pointers select07C9 or07D5 signed24 counters.
+Counter thresholds are -60000,-20000,+20000,+60000. Normal eligible calls select band1..5; service/gating paths bypass band selection. A credit index0..5 can be selected when E0 and matching304/2F0 allow it;otherwise index6. Result is ceil(counter_factor*credit_factor/100).
+All seven credit factors equal100 in every profile in this ROM. Thus the format supports credit weighting but these records do not vary it.814 captured calls across24 profiles matched exactly;bands1/2/3 and credit indices2/3/4/6 were observed. Bands4/5 and seven unseen profiles remain static deductions.
+07C9 receives result*500 additions and configured stake deductions;07CF receives the opposing result change. These address-scoped names do not claim a measured payout percentage, gross income, or complete compensation policy.
+
+COLLECTION / PAID PLAY
+AC25 begins paid-play bookkeeping and updates signed-counter/state gates. ABC7 updates07C9/07CF;9F28 conditionally subtracts500 from07D2;EBB8 subtracts0305*500 from07D5. A4E1 calculates input*10 divided by clamp(signed0336/10,2,10). Native4D9B refreshes0336; its D result is not the VM stack input. One captured calculation matched500->5000, divisor4, result1250; other inputs remain static.
+AAA1 checks balances, timer/ROM/input gates, and Collect before AA2B. AA2B selects routes in priority order: special/settings gate,0302 remainder,0302 balance,0300 balance,bank remainder,bank balance,02FE balance,then the disabled credit-fraction path. The named helpers retain address-scoped balance roles.
+The new physical Collect policy did NOT enter AA2B. Its collection labels are static recovery; no payout delivery was verified. Its early collection policy may select Collect while a feature is active, so it is not a ready-state-only fixture. This remains a useful next target requiring a controlled winning/settled-bank path.
+
+REPRODUCIBILITY
+Three2400-second MAME experiments were replayed from fresh isolated config/NVRAM using recorded physical actions. Each pair matched state.csv,feature-state.csv,debug.log,ram-final.bin,input-levels.csv byte-for-byte. No save states or RAM/ROM patches were used. Original MAME settings and ROM preserved.
+Evidence: evidence/lifecycle-pass/profile-validation.json,board-and-collection-validation.json,replay-verification.json,script-name-evidence.json and parameter-profiles.json. Runs: lifecycle-policy6-a/b,lifecycle-chance-a/b,lifecycle-collect-a/b. Adaptive actions.csv is replaced by replay-actions.csv as the authoritative fixture during replay; an empty replay actions.csv is expected.
+
+LIMITS / NEXT TARGETS
+Collection/payout route runtime verification; natural extreme counter bands; correlation of compensation profile callers with game decisions;remaining168 script purposes. Executing one site does not establish every branch. Decompiled pseudocode is not original source; assembly and traces arbitrate register/stack/condition behavior.

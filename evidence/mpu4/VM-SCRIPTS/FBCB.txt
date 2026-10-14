@@ -1,0 +1,36 @@
+Purpose: background_machine_updates
+Confidence: reviewed gameplay context
+Groups: accounting/NVRAM, boolean/bit operations, control flow, lamps, memory operations, serial, stack/cell helpers
+Callers: FC07
+
+Threaded script at FBCB; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* FBCB  9DDF  test_irq_timer_word_negative  body=0x9DE1
+* FBCD  7B51  vm_duplicate_cell  
+* FBCF  FAC1  vm_push_local_frame_address  value=0x0000
+* FBD1  786B  vm_fetch_unsigned_byte  
+* FBD3  7A97  vm_bitwise_and  
+* FBD5  7982  vm_branch_forward8_if_zero  branch=0xFBE0
+  FBD8  FAC1  vm_push_local_frame_address  value=0x0000
+  FBDA  765F  vm_clear_byte_memory  
+  FBDC  9DE9  call_set_all_three_reel_group_lamps_pattern_8f_9deb  body=0x9DEB
+  FBDE  80D8  call_lamps_execute_initial_clear_stream  native=0x171D
+* FBE0  7ABB  vm_bitwise_not  
+* FBE2  7982  vm_branch_forward8_if_zero  branch=0xFBED
+* FBE5  78AA  vm_push_true_minus_one  
+* FBE7  FAC1  vm_push_local_frame_address  value=0x0000
+* FBE9  7861  vm_store_byte  
+* FBEB  801E  call_hyp_update_lamp_status_patterns  native=0x2CB3
+* FBED  80EC  call_poll_serial_transfer_until_completion_or_timeout  native=0x5429
+* FBEF  80E8  call_compatibility_noop_return_4c34  native=0x4C34
+* FBF1  80CC  call_update_service_status_lamps_from_hardware_inputs  native=0x482F
+* FBF3  80F0  call_startup_verify_characteriser_challenges  native=0x68F1
+* FBF5  80BC  call_refresh_door_mode_and_reset_on_change  native=0x6EF7
+* FBF7  80A8  call_decrement_nvram_check_count_and_gate_normal_mode  native=0x6E99
+* FBF9  8138  call_run_service_test_menu_on_test_input  native=0x2E53
+* FBFB  8173  vm_push_word_body_byte  value=0x002B
+* FBFD  765F  vm_clear_byte_memory  
+* FBFF  8248  vm_push_word_body_byte  value=0x0080
+* FC01  9C2E  apply_lamp_range_733b_733c  body=0x9ADB, push_address=0x9C30
+* FC03  792F  vm_return_to_caller_stream  

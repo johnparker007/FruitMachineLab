@@ -1,0 +1,17 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: arithmetic, memory operations, stack/cell helpers, table/dynamic dispatch
+Callers: E4D3
+
+Threaded script at E4BE; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* E4BE  A5A9  scaled_parameter_profile_at_a5ab_counter_07c9  body=0xA5A5, push_address=0xA5AB
+* E4C0  E49D  dispatch_indexed_token_table_e49f  body=0x99A1, push_address=0xE49F
+* E4C2  787E  vm_add_words  
+* E4C4  7963  vm_push_inline_byte_literal  inline_value=0x0004
+* E4C7  7ADC  vm_min_signed  
+* E4C9  7B51  vm_duplicate_cell  
+* E4CB  E462  vm_push_local_frame_address  value=0x0000
+* E4CD  7861  vm_store_byte  
+* E4CF  792F  vm_return_to_caller_stream  

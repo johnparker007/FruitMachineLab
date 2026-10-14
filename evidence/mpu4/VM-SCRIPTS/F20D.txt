@@ -1,0 +1,34 @@
+Purpose: evaluate_pre_spin_mode_and_random_gates
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, control flow, mask/address records, memory operations, random selection
+Callers: F384
+
+Threaded script at F20D; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* F20D  A295  count_selected_reel_mask_bits  body=0xA297
+* F20F  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* F212  7A6F  vm_compare_equal  
+* F214  7574  vm_return_if_nonzero  
+* F216  81D2  vm_push_word_body_word  value=0x0331
+* F218  786B  vm_fetch_unsigned_byte  
+* F21A  A5C9  scaled_parameter_profile_at_a5cb_counter_07c9  body=0xA5A5, push_address=0xA5CB
+* F21C  7A79  vm_compare_top_lt_second_signed  
+* F21E  848C  push_pair_2000_00a0  body=0x8417, push_address=0x848E
+* F220  767F  vm_test_word_memory_mask  
+* F222  7ABB  vm_bitwise_not  
+* F224  7A97  vm_bitwise_and  
+* F226  7982  vm_branch_forward8_if_zero  branch=0xF22D
+* F229  F0AE  script_f0ae  body=0xF0B0
+* F22B  7574  vm_return_if_nonzero  
+* F22D  A709  scaled_parameter_profile_at_a70b_counter_07c9  body=0xA5A5, push_address=0xA70B
+* F22F  7963  vm_push_inline_byte_literal  inline_value=0x0032
+* F232  9A11  random_percentage_test  body=0x9A13
+* F234  7A97  vm_bitwise_and  
+* F236  F1C1  test_reel_symbol_flags_and_selection_mask  body=0xF1C3
+* F238  9A11  random_percentage_test  body=0x9A13
+* F23A  7982  vm_branch_forward8_if_zero  branch=0xF242
+  F23D  F1B9  invoke_reel_record_selection_with_zero  body=0xF1BB
+  F23F  7979  vm_branch_unsigned_forward8  branch=0xF244
+* F242  F199  test_reel_result_and_random_gate  body=0xF19B
+* F244  792F  vm_return_to_caller_stream  

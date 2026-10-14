@@ -1,0 +1,14 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: stack/cell helpers
+Callers: 9F3B
+
+Threaded script at 9F12; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9F12  77F6  vm_fetch_byte_and_following_word  
+* 9F14  9ED7  bias_word_signed_value_at_bit7  body=0x9ED9
+* 9F16  75A9  vm_keep_negative_else_zero  
+* 9F18  7B7D  vm_swap_two_cells  
+* 9F1A  7B3D  vm_drop_cell  
+* 9F1C  792F  vm_return_to_caller_stream  

@@ -1,0 +1,22 @@
+Purpose: wait_irq_ticks_or_abort_flag
+Confidence: reviewed token mechanics
+Groups: arithmetic, boolean/bit operations, control flow, mask tests, memory operations
+Callers: DDF3, CED7, BC70, C90C, DB58, B666, CD29, AF93
+
+Threaded script at 99AF; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 99AF  82F2  vm_push_word_body_byte  value=0x002D
+* 99B1  790D  vm_fetch_word  
+* 99B3  7CCD  vm_negate_cell  
+* 99B5  7D52  duplicate_two_cells  body=0x7D54
+* 99B7  82F2  vm_push_word_body_byte  value=0x002D
+* 99B9  790D  vm_fetch_word  
+* 99BB  787E  vm_add_words  
+* 99BD  7A8D  vm_compare_top_lt_second_unsigned  
+* 99BF  7ABB  vm_bitwise_not  
+* 99C1  84DA  test_mask_8000_at_719b  body=0x841E, push_address=0x84DC
+* 99C3  7AA3  vm_bitwise_or  
+* 99C5  79A6  vm_branch_backward8_if_zero  branch=0x99B5
+* 99C8  7B43  vm_drop_two_cells  
+* 99CA  792F  vm_return_to_caller_stream  

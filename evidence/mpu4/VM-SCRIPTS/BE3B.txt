@@ -1,0 +1,15 @@
+Purpose: nice_dice_select_compensated_limit_plus_three
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: arithmetic, table/dynamic dispatch
+Callers: BE91, BED3
+
+Threaded script at BE3B; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* BE3B  BDC9  vm_push_word_body_byte  value=0x0009
+* BE3D  7E73  vm_push_word_body_byte  value=0x000E
+* BE3F  A10E  clip_compensation_index_difference_plus_four_to_zero_eight  body=0xA110
+* BE41  BE25  dispatch_indexed_token_table_be27  body=0x99A1, push_address=0xBE27
+* BE43  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* BE46  787E  vm_add_words  
+* BE48  792F  vm_return_to_caller_stream  

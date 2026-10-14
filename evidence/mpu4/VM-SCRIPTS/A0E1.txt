@@ -1,0 +1,29 @@
+Purpose: derive_half_rounded_ratio_from_six_byte_compensation_records
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: arithmetic, stack/cell helpers
+Callers: A110
+
+Threaded script at A0E1; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  A0E1  822E  vm_push_word_body_word  value=0x043A
+  A0E3  7B59  vm_copy_second_cell  
+  A0E5  7963  vm_push_inline_byte_literal  inline_value=0x0006
+  A0E8  7DC4  multiply_words_keep_low_cell  body=0x7DC6
+  A0EA  787E  vm_add_words  
+  A0EC  7963  vm_push_inline_byte_literal  inline_value=0x0003
+  A0EF  787E  vm_add_words  
+  A0F1  77F6  vm_fetch_byte_and_following_word  
+  A0F3  7D52  duplicate_two_cells  body=0x7D54
+  A0F5  7C78  vm_add_double_cells  
+  A0F7  7B6D  vm_rotate_three_cells  
+  A0F9  7963  vm_push_inline_byte_literal  inline_value=0x0006
+  A0FC  7DC4  multiply_words_keep_low_cell  body=0x7DC6
+  A0FE  822E  vm_push_word_body_word  value=0x043A
+  A100  787E  vm_add_words  
+  A102  77F6  vm_fetch_byte_and_following_word  
+  A104  7F8D  call_vm_signed_double_divide_drop_remainder  native=0x1B93
+  A106  7B3D  vm_drop_cell  
+  A108  78C9  vm_increment_word  
+  A10A  7905  vm_arithmetic_shift_right_one  
+  A10C  792F  vm_return_to_caller_stream  

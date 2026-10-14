@@ -1,0 +1,13 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: memory operations
+Callers: D1F5
+
+Threaded script at D0FD; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  D0FD  8140  vm_push_word_body_word  value=0x0326
+  D0FF  786B  vm_fetch_unsigned_byte  
+  D101  81DD  vm_push_word_body_byte  value=0x0086
+  D103  7861  vm_store_byte  
+  D105  792F  vm_return_to_caller_stream  

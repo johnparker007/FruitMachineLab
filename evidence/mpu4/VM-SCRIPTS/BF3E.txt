@@ -1,0 +1,21 @@
+Purpose: cash_feature_nice_dice
+Confidence: reviewed dispatch/display association; complete gameplay unresolved
+Groups: control flow, mask tests, memory operations
+Callers: DFF6
+
+Threaded script at BF3E; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* BF3E  7E73  vm_push_word_body_byte  value=0x000E
+* BF40  82DD  vm_push_word_body_byte  value=0x00BD
+* BF42  7861  vm_store_byte  
+* BF44  BB73  vm_push_word_body_byte  value=0x0004
+* BF46  81C2  vm_push_word_body_byte  value=0x00B6
+* BF48  7861  vm_store_byte  
+* BF4A  84F2  test_mask_4000_at_719f  body=0x841E, push_address=0x84F4
+* BF4C  7982  vm_branch_forward8_if_zero  branch=0xBF54
+  BF4F  BED1  nice_dice_generate_random_pending_award_from_limit  body=0xBED3
+  BF51  7979  vm_branch_unsigned_forward8  branch=0xBF58
+* BF54  BEE3  nice_dice_prompt_start_and_resolve_fourth_reel_stop  body=0xBEE5
+* BF56  BEB7  nice_dice_convert_final_reel_symbol_into_pending_award  body=0xBEB9
+* BF58  792F  vm_return_to_caller_stream  

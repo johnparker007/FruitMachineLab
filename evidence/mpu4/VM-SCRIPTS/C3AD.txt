@@ -1,0 +1,13 @@
+Purpose: money_trap_sound_and_wait_between_terms
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: sound/scheduler
+Callers: C3BA
+
+Threaded script at C3AD; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C3AD  8130  call_reset_sound_and_scheduler  native=0x5B77
+* C3AF  8703  queue_sound_stream_8705  body=0x856B, push_address=0x8705
+* C3B1  7963  vm_push_inline_byte_literal  inline_value=0x0096
+* C3B4  99AD  wait_irq_ticks_or_abort_flag  body=0x99AF
+* C3B6  792F  vm_return_to_caller_stream  

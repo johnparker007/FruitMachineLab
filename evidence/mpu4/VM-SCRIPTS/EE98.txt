@@ -1,0 +1,25 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, stack/cell helpers
+Callers: EEC2
+
+Threaded script at EE98; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* EE98  7B51  vm_duplicate_cell  
+* EE9A  7F0D  vm_push_word_body_byte  value=0x001E
+* EE9C  7D4A  compare_top_ge_second_signed  body=0x7D4C
+* EE9E  798E  vm_branch_forward8_if_zero_else_drop  branch=0xEEA7
+* EEA1  A689  scaled_parameter_profile_at_a68b_counter_07c9  body=0xA5A5, push_address=0xA68B
+* EEA3  79B7  vm_branch_absolute16  branch=0xEEBE
+* EEA7  7B51  vm_duplicate_cell  
+* EEA9  7B51  vm_duplicate_cell  
+* EEAB  7A6F  vm_compare_equal  
+* EEAD  798E  vm_branch_forward8_if_zero_else_drop  branch=0xEEBC
+* EEB0  A699  scaled_parameter_profile_at_a69b_counter_07c9  body=0xA5A5, push_address=0xA69B
+* EEB2  9F5E  test_two_orange1_input_conditions  body=0x9F60
+* EEB4  7ABB  vm_bitwise_not  
+* EEB6  7A97  vm_bitwise_and  
+* EEB8  79B7  vm_branch_absolute16  branch=0xEEBE
+  EEBC  7B3D  vm_drop_cell  
+* EEBE  792F  vm_return_to_caller_stream  

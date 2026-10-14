@@ -1,0 +1,20 @@
+Purpose: attract_flash_ten_lamp_strip_then_alternate_patterns
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: lamps, stack/cell helpers
+Callers: FA34
+
+Threaded script at F860; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* F860  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* F863  78B5  vm_push_zero  
+* F865  79DC  vm_enter_loop_frame  
+* F867  824E  vm_push_word_body_byte  value=0x008F
+* F869  F825  attract_set_ten_lamp_strip_pattern_and_wait  body=0xF827
+* F86B  8248  vm_push_word_body_byte  value=0x0080
+* F86D  F825  attract_set_ten_lamp_strip_pattern_and_wait  body=0xF827
+* F86F  7A00  vm_loop_increment_one  
+* F871  F83F  attract_alternate_strip_lamp_patterns_83_and_8c  body=0xF841
+* F873  824E  vm_push_word_body_byte  value=0x008F
+* F875  9B86  apply_lamp_range_728f_72bf  body=0x9ADB, push_address=0x9B88
+* F877  792F  vm_return_to_caller_stream  

@@ -1,0 +1,13 @@
+Purpose: test_rom_diagnostic_selector_equals_9f
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, memory operations
+Callers: AC40
+
+Threaded script at AC33; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* AC33  8281  vm_push_word_body_word  value=0x71A1
+* AC35  786B  vm_fetch_unsigned_byte  
+* AC37  7963  vm_push_inline_byte_literal  inline_value=0x009F
+* AC3A  7A6F  vm_compare_equal  
+* AC3C  792F  vm_return_to_caller_stream  

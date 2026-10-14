@@ -1,0 +1,14 @@
+Purpose: test_selected_feature_table_type_three
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, indexed memory, memory operations
+Callers: DDAF
+
+Threaded script at A1CE; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* A1CE  7F14  vm_push_word_body_byte  value=0x00C9
+* A1D0  786B  vm_fetch_unsigned_byte  
+* A1D2  A12C  read_indexed_byte_table_at_a12e  body=0x9971, push_address=0xA12E
+* A1D4  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* A1D7  7A6F  vm_compare_equal  
+* A1D9  792F  vm_return_to_caller_stream  

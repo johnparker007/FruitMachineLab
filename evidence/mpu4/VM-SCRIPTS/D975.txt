@@ -1,0 +1,35 @@
+Purpose: alternate_selected_feature_prompt_with_roll_dice
+Confidence: reviewed token mechanics
+Groups: arithmetic, boolean/bit operations, control flow, display, indexed memory, memory operations
+Callers: DD38
+
+Threaded script at D975; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* D975  809C  call_resume_alpha_stream_when_delay_expired  native=0x3CF7
+* D977  7ED4  vm_push_word_body_byte  value=0x00EB
+* D979  786B  vm_fetch_unsigned_byte  
+* D97B  D901  read_indexed_byte_table_at_d903  body=0x9971, push_address=0xD903
+* D97D  7A46  vm_test_zero  
+* D97F  A1DB  test_selected_feature_available_with_bf_gate  body=0xA1DD
+* D981  7ABB  vm_bitwise_not  
+* D983  7AA3  vm_bitwise_or  
+* D985  7574  vm_return_if_nonzero  
+* D987  82F2  vm_push_word_body_byte  value=0x002D
+* D989  790D  vm_fetch_word  
+* D98B  795B  vm_push_inline_word_literal  inline_value=0x0200
+* D98F  7A97  vm_bitwise_and  
+* D991  7A46  vm_test_zero  
+* D993  7982  vm_branch_forward8_if_zero  branch=0xD9AC
+* D996  773C  vm_execute_alpha_stream  inline_stream=[cmd70(00); cmd7A()]
+* D99B  D5CF  vm_push_word_body_address  value=0xD5D1
+* D99D  7ED4  vm_push_word_body_byte  value=0x00EB
+* D99F  786B  vm_fetch_unsigned_byte  
+* D9A1  D933  vm_push_word_body_byte  value=0x0011
+* D9A3  7DC4  multiply_words_keep_low_cell  body=0x7DC6
+* D9A5  787E  vm_add_words  
+* D9A7  831B  call_alpha_execute_stream_at_x  native=0x3CC0
+* D9A9  7979  vm_branch_unsigned_forward8  branch=0xD9C4
+* D9AC  773C  vm_execute_alpha_stream  inline_stream=[cmd70(00); cmd7A()]
+* D9B1  773C  vm_execute_alpha_stream  inline_stream=['  OR ROLL DICE  '; cmd7A()]
+* D9C4  792F  vm_return_to_caller_stream  

@@ -1,0 +1,20 @@
+Purpose: pick_a_win_increment_selection_index_with_optional_modulo_forty
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: arithmetic, boolean/bit operations, control flow, mask/address records, memory operations
+Callers: C506
+
+Threaded script at C4EB; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C4EB  C472  vm_push_local_frame_address  value=0x0001
+* C4ED  786B  vm_fetch_unsigned_byte  
+* C4EF  78C9  vm_increment_word  
+* C4F1  84BC  push_pair_0020_00a0  body=0x8417, push_address=0x84BE
+* C4F3  767F  vm_test_word_memory_mask  
+* C4F5  7ABB  vm_bitwise_not  
+* C4F7  7982  vm_branch_forward8_if_zero  branch=0xC4FE
+* C4FA  C4A6  vm_push_word_body_byte  value=0x0028
+* C4FC  7DF8  signed_cell_remainder  body=0x7DFA
+* C4FE  C472  vm_push_local_frame_address  value=0x0001
+* C500  7861  vm_store_byte  
+* C502  792F  vm_return_to_caller_stream  

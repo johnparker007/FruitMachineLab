@@ -1,0 +1,57 @@
+Purpose: move_board_rectangle_bounds_toward_target
+Confidence: reviewed token mechanics; see lifecycle-pass/script-name-evidence.json
+Groups: boolean/bit operations, control flow, memory operations
+Callers: BAD9
+
+Threaded script at BA71; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* BA71  B96A  vm_push_local_frame_address  value=0x0007
+* BA73  786B  vm_fetch_unsigned_byte  
+* BA75  B95E  vm_push_local_frame_address  value=0x0003
+* BA77  7861  vm_store_byte  
+* BA79  B964  vm_push_local_frame_address  value=0x0005
+* BA7B  786B  vm_fetch_unsigned_byte  
+* BA7D  B958  vm_push_local_frame_address  value=0x0001
+* BA7F  7861  vm_store_byte  
+* BA81  B961  vm_push_local_frame_address  value=0x0004
+* BA83  786B  vm_fetch_unsigned_byte  
+* BA85  B955  vm_push_local_frame_address  value=0x0000
+* BA87  7861  vm_store_byte  
+* BA89  B967  vm_push_local_frame_address  value=0x0006
+* BA8B  786B  vm_fetch_unsigned_byte  
+* BA8D  B95B  vm_push_local_frame_address  value=0x0002
+* BA8F  7861  vm_store_byte  
+* BA91  B96D  vm_push_local_frame_address  value=0x0008
+* BA93  786B  vm_fetch_unsigned_byte  
+* BA95  B96A  vm_push_local_frame_address  value=0x0007
+* BA97  786B  vm_fetch_unsigned_byte  
+* BA99  7A79  vm_compare_top_lt_second_signed  
+* BA9B  7982  vm_branch_forward8_if_zero  branch=0xBAA2
+* BA9E  B96A  vm_push_local_frame_address  value=0x0007
+* BAA0  7653  vm_increment_byte_memory  
+* BAA2  B96D  vm_push_local_frame_address  value=0x0008
+* BAA4  786B  vm_fetch_unsigned_byte  
+* BAA6  B964  vm_push_local_frame_address  value=0x0005
+* BAA8  786B  vm_fetch_unsigned_byte  
+* BAAA  7A65  vm_compare_top_gt_second_signed  
+* BAAC  7982  vm_branch_forward8_if_zero  branch=0xBAB3
+* BAAF  B964  vm_push_local_frame_address  value=0x0005
+* BAB1  7659  vm_decrement_byte_memory  
+* BAB3  B970  vm_push_local_frame_address  value=0x0009
+* BAB5  786B  vm_fetch_unsigned_byte  
+* BAB7  B961  vm_push_local_frame_address  value=0x0004
+* BAB9  786B  vm_fetch_unsigned_byte  
+* BABB  7A65  vm_compare_top_gt_second_signed  
+* BABD  7982  vm_branch_forward8_if_zero  branch=0xBAC4
+* BAC0  B961  vm_push_local_frame_address  value=0x0004
+* BAC2  7659  vm_decrement_byte_memory  
+* BAC4  B970  vm_push_local_frame_address  value=0x0009
+* BAC6  786B  vm_fetch_unsigned_byte  
+* BAC8  B967  vm_push_local_frame_address  value=0x0006
+* BACA  786B  vm_fetch_unsigned_byte  
+* BACC  7A79  vm_compare_top_lt_second_signed  
+* BACE  7982  vm_branch_forward8_if_zero  branch=0xBAD5
+* BAD1  B967  vm_push_local_frame_address  value=0x0006
+* BAD3  7653  vm_increment_byte_memory  
+* BAD5  792F  vm_return_to_caller_stream  

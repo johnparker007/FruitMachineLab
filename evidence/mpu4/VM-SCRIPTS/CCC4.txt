@@ -1,0 +1,29 @@
+Purpose: special_feature_back_three
+Confidence: reviewed dispatch/display association; complete gameplay unresolved
+Groups: lamps, memory operations, sound/scheduler, stack/cell helpers
+Callers: E227, 99A1
+
+Threaded script at CCC4; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* CCC4  872E  queue_sound_stream_8730  body=0x856B, push_address=0x8730
+* CCC6  80F8  call_scheduler_wait_until_active_list_empty  native=0x5CCB
+* CCC8  8130  call_reset_sound_and_scheduler  native=0x5B77
+* CCCA  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* CCCD  78B5  vm_push_zero  
+* CCCF  79DC  vm_enter_loop_frame  
+* CCD1  7F14  vm_push_word_body_byte  value=0x00C9
+* CCD3  786B  vm_fetch_unsigned_byte  
+* CCD5  8248  vm_push_word_body_byte  value=0x0080
+* CCD7  9B82  apply_indexed_lamp_id_from_728f  body=0x9B18, push_address=0x9B84
+* CCD9  7F14  vm_push_word_body_byte  value=0x00C9
+* CCDB  7659  vm_decrement_byte_memory  
+* CCDD  7F14  vm_push_word_body_byte  value=0x00C9
+* CCDF  786B  vm_fetch_unsigned_byte  
+* CCE1  824E  vm_push_word_body_byte  value=0x008F
+* CCE3  9B82  apply_indexed_lamp_id_from_728f  body=0x9B18, push_address=0x9B84
+* CCE5  8E3B  queue_sound_stream_8e3d  body=0x856B, push_address=0x8E3D
+* CCE7  80F8  call_scheduler_wait_until_active_list_empty  native=0x5CCB
+* CCE9  8130  call_reset_sound_and_scheduler  native=0x5B77
+* CCEB  7A00  vm_loop_increment_one  
+* CCED  792F  vm_return_to_caller_stream  

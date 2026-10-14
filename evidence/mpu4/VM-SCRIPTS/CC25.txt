@@ -1,0 +1,19 @@
+Purpose: select_random_board_position_different_from_current
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, control flow, memory operations, random selection, stack/cell helpers
+Callers: CC40
+
+Threaded script at CC25; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* CC25  7963  vm_push_inline_byte_literal  inline_value=0x0063
+* CC28  7B3D  vm_drop_cell  
+* CC2A  78C0  vm_push_one  
+* CC2C  7963  vm_push_inline_byte_literal  inline_value=0x0030
+* CC2F  99EC  random_scaled_range_selection  body=0x99EE
+* CC31  7B51  vm_duplicate_cell  
+* CC33  7F14  vm_push_word_body_byte  value=0x00C9
+* CC35  786B  vm_fetch_unsigned_byte  
+* CC37  7A5B  vm_compare_not_equal  
+* CC39  79A6  vm_branch_backward8_if_zero  branch=0xCC28
+* CC3C  792F  vm_return_to_caller_stream  

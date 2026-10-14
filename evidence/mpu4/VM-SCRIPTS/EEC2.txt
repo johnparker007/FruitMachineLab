@@ -1,0 +1,20 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, mask/address records, reels, stack/cell helpers
+Callers: EF6B
+
+Threaded script at EEC2; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* EEC2  849E  push_pair_0400_00a0  body=0x8417, push_address=0x84A0
+* EEC4  767F  vm_test_word_memory_mask  
+* EEC6  80C4  call_reels_push_matching_symbol_result  native=0x1AA3
+* EEC8  7A46  vm_test_zero  
+* EECA  7A97  vm_bitwise_and  
+* EECC  8016  call_push_nonzero_symbol_result_or_fallback_to_vm_stack  native=0x1AF1
+* EECE  7A97  vm_bitwise_and  
+* EED0  7982  vm_branch_forward8_if_zero  branch=0xEED9
+* EED3  7B3D  vm_drop_cell  
+* EED5  8016  call_push_nonzero_symbol_result_or_fallback_to_vm_stack  native=0x1AF1
+* EED7  EE96  script_ee96  body=0xEE98
+* EED9  792F  vm_return_to_caller_stream  

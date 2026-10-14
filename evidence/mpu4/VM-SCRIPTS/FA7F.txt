@@ -1,0 +1,37 @@
+Purpose: run_attract_sequence
+Confidence: reviewed gameplay context
+Groups: control flow, input conditions, lamps, memory operations, reels, stack/cell helpers
+Callers: FBA2
+
+Threaded script at FA7F; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* FA7F  80D8  call_lamps_execute_initial_clear_stream  native=0x171D
+* FA81  7963  vm_push_inline_byte_literal  inline_value=0x0005
+* FA84  76A9  vm_allocate_local_frame  
+* FA86  F571  vm_push_local_frame_address  value=0x0004
+* FA88  765F  vm_clear_byte_memory  
+* FA8A  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* FA8C  9B3E  save_lamp_frames_on_vm_stack  body=0x9B40
+* FA8E  821F  vm_push_word_body_byte  value=0x00F6
+* FA90  790D  vm_fetch_word  
+* FA92  7B1F  vm_push_return_stack_pointer  
+* FA94  7B2B  vm_push_data_stack_pointer  
+* FA96  F56B  vm_push_local_frame_address  value=0x0001
+* FA98  7874  vm_store_word  
+* FA9A  83D8  vm_test_input_condition  value=0x0083
+* FA9C  798C  vm_branch_forward8_if_zero  branch=0xFAAA
+* FA9F  801E  call_hyp_update_lamp_status_patterns  native=0x2CB3
+* FAA1  795B  vm_push_inline_word_literal  inline_value=0x7530
+* FAA5  F574  wait_attract_ticks_or_restore_game_state_on_credit_or_service  body=0xF576
+* FAA7  79A4  vm_branch_backward8  branch=0xFA9A
+* FAAA  9DEF  refresh_reel_lamps_when_irq_timer_nonnegative  body=0x9DF1
+* FAAC  78B5  vm_push_zero  
+* FAAE  82F5  vm_push_word_body_byte  value=0x002F
+* FAB0  7874  vm_store_word  
+* FAB2  FA6A  attract_wait_while_configuration_condition_83_active  body=0xFA6C
+* FAB4  8094  call_apply_lamp_range_7248_to_733d  native=0x4AC0
+* FAB6  F7E3  attract_start_alpha_message_if_credit_fraction_zero  body=0xF7E5
+* FAB8  FA32  attract_run_complete_lamp_and_digit_choreography  body=0xFA34
+* FABA  80D4  call_startup_test_lamp_current_sense  native=0x2892
+* FABC  799A  vm_branch_backward8  branch=0xFAB8

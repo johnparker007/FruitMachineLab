@@ -1,0 +1,16 @@
+Purpose: add_double_value_to_three_byte_record
+Confidence: reviewed token mechanics
+Groups: composition of script calls
+Callers: 9F28
+
+Threaded script at 9EE9; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  9EE9  7AF4  vm_move_cell_to_return_stack  
+  9EEB  7D62  duplicate_and_test_negative  body=0x7D64
+  9EED  7AFC  vm_copy_return_stack_cell  
+  9EEF  77F6  vm_fetch_byte_and_following_word  
+  9EF1  7C78  vm_add_double_cells  
+  9EF3  7B04  vm_move_cell_from_return_stack  
+  9EF5  7803  vm_store_byte_and_following_word  
+  9EF7  792F  vm_return_to_caller_stream  

@@ -1,0 +1,27 @@
+Purpose: display_nudge_prompt_and_buttons
+Confidence: reviewed gameplay context
+Groups: display, lamps, memory operations, nudges, sound/scheduler, stack/cell helpers
+Callers: B4C5
+
+Threaded script at B3C8; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B3C8  8130  call_reset_sound_and_scheduler  native=0x5B77
+* B3CA  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* B3CD  78B5  vm_push_zero  
+* B3CF  79DC  vm_enter_loop_frame  
+* B3D1  7A1C  vm_push_loop_index  
+* B3D3  820C  vm_push_word_body_byte  value=0x0083
+* B3D5  9BD4  apply_indexed_lamp_id_from_7325  body=0x9B18, push_address=0x9BD6
+* B3D7  7A00  vm_loop_increment_one  
+* B3D9  9309  queue_sound_stream_930b  body=0x856B, push_address=0x930B
+* B3DB  8245  vm_push_word_body_byte  value=0x00BE
+* B3DD  786B  vm_fetch_unsigned_byte  
+* B3DF  8306  vm_push_word_body_word  value=0x0327
+* B3E1  7861  vm_store_byte  
+* B3E3  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); '   '; cmd76(0327); '  NUDGE'; cmd69(0327); cmd7A()]
+* B3F7  A30E  vm_push_word_body_address  value=0xA310
+* B3F9  831B  call_alpha_execute_stream_at_x  native=0x3CC0
+* B3FB  833F  vm_push_word_body_byte  value=0x007F
+* B3FD  8060  call_lamp_set_frame_pattern_5  native=0x498B
+* B3FF  792F  vm_return_to_caller_stream  

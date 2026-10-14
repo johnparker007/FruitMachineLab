@@ -1,0 +1,11 @@
+Purpose: random_percentage_test
+Confidence: reviewed token mechanics
+Groups: random selection
+Callers: B51D, DAC7, CD29, B7F5, B0CF, CBD1, CE31, C98E
+
+Threaded script at 9A13; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9A13  99D6  generate_random_word_from_seed_and_irq  body=0x99D8
+* 9A15  99FE  compare_unsigned_scaled_percentage  body=0x9A00
+* 9A17  792F  vm_return_to_caller_stream  

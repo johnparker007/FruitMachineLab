@@ -1,0 +1,11 @@
+Purpose: invoke_disabled_credit_fraction_payout_stub_and_refresh_display
+Confidence: reviewed token mechanics; see payout-pass/script-name-evidence.json
+Groups: composition of script calls
+Callers: AA2B
+
+Threaded script at AA23; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  AA23  80DC  call_compatibility_noop_return_4b0e  native=0x4B0E
+  AA25  A8F7  refresh_credit_and_bank_display_unless_suppressed  body=0xA8F9
+  AA27  792F  vm_return_to_caller_stream  

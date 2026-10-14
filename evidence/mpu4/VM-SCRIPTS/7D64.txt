@@ -1,0 +1,11 @@
+Purpose: duplicate_and_test_negative
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, stack/cell helpers
+Callers: 7DE4, 9EE9
+
+Threaded script at 7D64; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 7D64  7B51  vm_duplicate_cell  
+* 7D66  7A39  vm_test_negative  
+* 7D68  792F  vm_return_to_caller_stream  

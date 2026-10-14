@@ -1,0 +1,39 @@
+Purpose: set_feature_destination_with_minus_one_reset
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, control flow, lamps, memory operations, sound/scheduler, stack/cell helpers
+Callers: D003, CB60, CF7B, CC8F, CE0C, CDB1, E247, CF56
+
+Threaded script at CB1D; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* CB1D  7B51  vm_duplicate_cell  
+* CB1F  7F14  vm_push_word_body_byte  value=0x00C9
+* CB21  786B  vm_fetch_unsigned_byte  
+* CB23  7A5B  vm_compare_not_equal  
+* CB25  7982  vm_branch_forward8_if_zero  branch=0xCB4B
+* CB28  8812  queue_sound_stream_8814  body=0x856B, push_address=0x8814
+* CB2A  7B51  vm_duplicate_cell  
+* CB2C  7B51  vm_duplicate_cell  
+* CB2E  78AA  vm_push_true_minus_one  
+* CB30  7A6F  vm_compare_equal  
+* CB32  7982  vm_branch_forward8_if_zero  branch=0xCB39
+* CB35  7B3D  vm_drop_cell  
+* CB37  78B5  vm_push_zero  
+* CB39  7F14  vm_push_word_body_byte  value=0x00C9
+* CB3B  786B  vm_fetch_unsigned_byte  
+* CB3D  7D5A  rotate_three_cells_twice  body=0x7D5C
+* CB3F  CA79  animate_feature_position_toward_destination  body=0xCA7B
+* CB41  7B6D  vm_rotate_three_cells  
+* CB43  7F14  vm_push_word_body_byte  value=0x00C9
+* CB45  7861  vm_store_byte  
+* CB47  CAD3  script_cad3  body=0xCAD5
+* CB49  8130  call_reset_sound_and_scheduler  native=0x5B77
+* CB4B  7B3D  vm_drop_cell  
+* CB4D  78AA  vm_push_true_minus_one  
+* CB4F  7A6F  vm_compare_equal  
+* CB51  7982  vm_branch_forward8_if_zero  branch=0xCB58
+* CB54  8248  vm_push_word_body_byte  value=0x0080
+* CB56  9B86  apply_lamp_range_728f_72bf  body=0x9ADB, push_address=0x9B88
+* CB58  80F8  call_scheduler_wait_until_active_list_empty  native=0x5CCB
+* CB5A  8130  call_reset_sound_and_scheduler  native=0x5B77
+* CB5C  792F  vm_return_to_caller_stream  

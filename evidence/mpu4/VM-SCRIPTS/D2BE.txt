@@ -1,0 +1,46 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, mask/address records, stack/cell helpers, table/dynamic dispatch
+Callers: D30F
+
+Threaded script at D2BE; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* D2BE  8435  push_pair_0038_0085  body=0x8417, push_address=0x8437
+* D2C0  767F  vm_test_word_memory_mask  
+* D2C2  845A  push_pair_0001_0090  body=0x8444, push_address=0x845C
+* D2C4  767F  vm_test_word_memory_mask  
+* D2C6  7A97  vm_bitwise_and  
+* D2C8  7982  vm_branch_forward8_if_zero  branch=0xD2D9
+* D2CB  9DEF  refresh_reel_lamps_when_irq_timer_nonnegative  body=0x9DF1
+* D2CD  8435  push_pair_0038_0085  body=0x8417, push_address=0x8437
+* D2CF  7671  vm_clear_word_memory_bits  
+* D2D1  846C  push_pair_000e_0090  body=0x8444, push_address=0x846E
+* D2D3  7671  vm_clear_word_memory_bits  
+* D2D5  845A  push_pair_0001_0090  body=0x8444, push_address=0x845C
+* D2D7  7671  vm_clear_word_memory_bits  
+* D2D9  9D7A  push_three_reel_loop_bounds  body=0x9D7C
+* D2DB  79DC  vm_enter_loop_frame  
+* D2DD  78B5  vm_push_zero  
+* D2DF  9E1C  dispatch_loop_token_table_9e1e  body=0x9992, push_address=0x9E1E
+* D2E1  767F  vm_test_word_memory_mask  
+* D2E3  7982  vm_branch_forward8_if_zero  branch=0xD2F0
+* D2E6  7B3D  vm_drop_cell  
+* D2E8  78AA  vm_push_true_minus_one  
+* D2EA  D22F  script_d22f  body=0xD231
+* D2EC  84AA  push_pair_0100_00a0  body=0x8417, push_address=0x84AC
+* D2EE  7671  vm_clear_word_memory_bits  
+* D2F0  7982  vm_branch_forward8_if_zero  branch=0xD2F7
+* D2F3  845A  push_pair_0001_0090  body=0x8444, push_address=0x845C
+* D2F5  7671  vm_clear_word_memory_bits  
+* D2F7  D255  script_d255  body=0xD257
+* D2F9  7A00  vm_loop_increment_one  
+* D2FB  8435  push_pair_0038_0085  body=0x8417, push_address=0x8437
+* D2FD  767F  vm_test_word_memory_mask  
+* D2FF  84AA  push_pair_0100_00a0  body=0x8417, push_address=0x84AC
+* D301  767F  vm_test_word_memory_mask  
+* D303  7AA3  vm_bitwise_or  
+* D305  8342  vm_push_word_body_byte  value=0x0018
+* D307  820C  vm_push_word_body_byte  value=0x0083
+* D309  9B6C  apply_lamp_pattern_gated_by_flag  body=0x9B6E
+* D30B  792F  vm_return_to_caller_stream  

@@ -1,0 +1,13 @@
+Purpose: attract_hold_lamp_range_pattern_8c_for_800_ticks
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: lamps
+Callers: FA34
+
+Threaded script at F819; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* F819  820F  vm_push_word_body_byte  value=0x008C
+* F81B  9BFE  apply_lamp_range_7249_724c  body=0x9ADB, push_address=0x9C00
+* F81D  795B  vm_push_inline_word_literal  inline_value=0x0320
+* F821  F574  wait_attract_ticks_or_restore_game_state_on_credit_or_service  body=0xF576
+* F823  792F  vm_return_to_caller_stream  

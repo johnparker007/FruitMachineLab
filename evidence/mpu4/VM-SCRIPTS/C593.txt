@@ -1,0 +1,60 @@
+Purpose: cash_feature_pick_a_win
+Confidence: reviewed dispatch/display association; complete gameplay unresolved
+Groups: accounting/NVRAM, boolean/bit operations, control flow, input conditions, lamps, mask/address records, memory operations, reels, sound/scheduler, stack/cell helpers
+Callers: DFF6
+
+Threaded script at C593; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C593  7E7F  vm_push_word_body_byte  value=0x0011
+* C595  82DD  vm_push_word_body_byte  value=0x00BD
+* C597  7861  vm_store_byte  
+* C599  BB73  vm_push_word_body_byte  value=0x0004
+* C59B  81C2  vm_push_word_body_byte  value=0x00B6
+* C59D  7861  vm_store_byte  
+* C59F  7963  vm_push_inline_byte_literal  inline_value=0x0002
+* C5A2  76A9  vm_allocate_local_frame  
+* C5A4  8248  vm_push_word_body_byte  value=0x0080
+* C5A6  9B7C  apply_lamp_range_725d_726f  body=0x9ADB, push_address=0x9B7E
+* C5A8  8435  push_pair_0038_0085  body=0x8417, push_address=0x8437
+* C5AA  7671  vm_clear_word_memory_bits  
+* C5AC  84BC  push_pair_0020_00a0  body=0x8417, push_address=0x84BE
+* C5AE  7671  vm_clear_word_memory_bits  
+* C5B0  C56B  pick_a_win_choose_random_or_weighted_selection_seed  body=0xC56D
+* C5B2  78B5  vm_push_zero  
+* C5B4  79DC  vm_enter_loop_frame  
+* C5B6  C504  pick_a_win_prepare_spin_and_present_selected_result  body=0xC506
+* C5B8  8130  call_reset_sound_and_scheduler  native=0x5B77
+* C5BA  7963  vm_push_inline_byte_literal  inline_value=0x000A
+* C5BD  8581  write_byte_004e_8583  body=0x8583
+* C5BF  93FA  queue_sound_stream_93fc  body=0x856B, push_address=0x93FC
+* C5C1  8478  clear_latched_panel_mask_008f  body=0x847A
+* C5C3  835A  vm_push_word_body_byte  value=0x0049
+* C5C5  8060  call_lamp_set_frame_pattern_5  native=0x498B
+* C5C7  80C4  call_reels_push_matching_symbol_result  native=0x1AA3
+* C5C9  8318  vm_push_word_body_byte  value=0x00BA
+* C5CB  7874  vm_store_word  
+* C5CD  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* C5CF  856F  test_zero_read_word_0047_8571  body=0x8571
+* C5D1  8393  vm_test_input_condition  value=0x001C
+* C5D3  7AA3  vm_bitwise_or  
+* C5D5  83FC  vm_test_input_condition  value=0x0012
+* C5D7  7AA3  vm_bitwise_or  
+* C5D9  79A6  vm_branch_backward8_if_zero  branch=0xC5CF
+* C5DC  83FC  vm_test_input_condition  value=0x0012
+* C5DE  8393  vm_test_input_condition  value=0x001C
+* C5E0  7AA3  vm_bitwise_or  
+* C5E2  C55A  pick_a_win_test_matching_result_threshold_with_option_0200  body=0xC55C
+* C5E4  7AA3  vm_bitwise_or  
+* C5E6  7982  vm_branch_forward8_if_zero  branch=0xC5ED
+* C5E9  7A15  vm_leave_loop_to_absolute_target  branch=0xC5EF
+* C5ED  7A00  vm_loop_increment_one  
+* C5EF  8130  call_reset_sound_and_scheduler  native=0x5B77
+* C5F1  835A  vm_push_word_body_byte  value=0x0049
+* C5F3  8068  call_lamp_set_frame_pattern_0  native=0x4982
+* C5F5  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* C5F7  80C4  call_reels_push_matching_symbol_result  native=0x1AA3
+* C5F9  8318  vm_push_word_body_byte  value=0x00BA
+* C5FB  7874  vm_store_word  
+* C5FD  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* C5FF  792F  vm_return_to_caller_stream  

@@ -1,0 +1,23 @@
+Purpose: attract_clear_lamp_grid_one_row_at_a_time
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: lamps, stack/cell helpers
+Callers: FA34, F8F1
+
+Threaded script at F87B; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* F87B  824E  vm_push_word_body_byte  value=0x008F
+* F87D  9B86  apply_lamp_range_728f_72bf  body=0x9ADB, push_address=0x9B88
+* F87F  7963  vm_push_inline_byte_literal  inline_value=0x0006
+* F882  78B5  vm_push_zero  
+* F884  79DC  vm_enter_loop_frame  
+* F886  7963  vm_push_inline_byte_literal  inline_value=0x0008
+* F889  78B5  vm_push_zero  
+* F88B  79DC  vm_enter_loop_frame  
+* F88D  8248  vm_push_word_body_byte  value=0x0080
+* F88F  9D2B  apply_lamp_id_from_nested_loop_indices  body=0x9D2D
+* F891  7A00  vm_loop_increment_one  
+* F893  7963  vm_push_inline_byte_literal  inline_value=0x0014
+* F896  F574  wait_attract_ticks_or_restore_game_state_on_credit_or_service  body=0xF576
+* F898  7A00  vm_loop_increment_one  
+* F89A  792F  vm_return_to_caller_stream  

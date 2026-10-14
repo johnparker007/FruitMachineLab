@@ -1,0 +1,15 @@
+Purpose: indexed_reel_record_address_using_loop_index
+Confidence: reviewed token mechanics
+Groups: arithmetic, memory operations, reels/symbol tests, table/dynamic dispatch
+Callers: A2AB, B666, D4AB, D462, A051, B7C2, B403, A0AD
+
+Threaded script at 9D86; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9D86  790D  vm_fetch_word  
+* 9D88  79D6  vm_execute_token_from_stack  
+* 9D8A  7A1C  vm_push_loop_index  
+* 9D8C  82B8  vm_push_word_body_byte  value=0x0002
+* 9D8E  7DC4  multiply_words_keep_low_cell  body=0x7DC6
+* 9D90  787E  vm_add_words  
+* 9D92  792F  vm_return_to_caller_stream  

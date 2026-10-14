@@ -1,0 +1,35 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, display, lamps, memory operations, stack/cell helpers
+Callers: EA22, E91C
+
+Threaded script at E8BB; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* E8BB  E46B  vm_push_local_frame_address  value=0x0003
+* E8BD  786B  vm_fetch_unsigned_byte  
+* E8BF  E46E  vm_push_local_frame_address  value=0x0004
+* E8C1  786B  vm_fetch_unsigned_byte  
+* E8C3  7AA3  vm_bitwise_or  
+* E8C5  7982  vm_branch_forward8_if_zero  branch=0xE8CC
+  E8C8  7B3D  vm_drop_cell  
+  E8CA  7935  vm_unwind_loop_frames_to_return  
+* E8CC  7982  vm_branch_forward8_if_zero  branch=0xE8EF
+* E8CF  773C  vm_execute_alpha_stream  inline_stream=[cmd70(00); '  HIGH ---      '; cmd7A()]
+* E8E4  824E  vm_push_word_body_byte  value=0x008F
+* E8E6  8248  vm_push_word_body_byte  value=0x0080
+* E8E8  824E  vm_push_word_body_byte  value=0x008F
+* E8EA  9BCE  apply_lamp_range_731e_7320  body=0x9ADB, push_address=0x9BD0
+* E8EC  7979  vm_branch_unsigned_forward8  branch=0xE90C
+* E8EF  773C  vm_execute_alpha_stream  inline_stream=[cmd70(00); '       --- LOW  '; cmd7A()]
+* E904  8248  vm_push_word_body_byte  value=0x0080
+* E906  824E  vm_push_word_body_byte  value=0x008F
+* E908  824E  vm_push_word_body_byte  value=0x008F
+* E90A  9BCE  apply_lamp_range_731e_7320  body=0x9ADB, push_address=0x9BD0
+* E90C  8354  vm_push_word_body_byte  value=0x0042
+* E90E  7B7D  vm_swap_two_cells  
+* E910  8050  call_lamp_set_four_frame_pattern  native=0x49C5
+* E912  8351  vm_push_word_body_byte  value=0x0041
+* E914  7B7D  vm_swap_two_cells  
+* E916  8050  call_lamp_set_four_frame_pattern  native=0x49C5
+* E918  792F  vm_return_to_caller_stream  

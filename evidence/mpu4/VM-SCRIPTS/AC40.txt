@@ -1,0 +1,12 @@
+Purpose: invoke_optional_diagnostic_hook_if_selector_9f
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations
+Callers: FCF0
+
+Threaded script at AC40; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* AC40  AC31  test_rom_diagnostic_selector_equals_9f  body=0xAC33
+* AC42  7ABB  vm_bitwise_not  
+* AC44  7574  vm_return_if_nonzero  
+  AC46  0000  unknown token 35fd  

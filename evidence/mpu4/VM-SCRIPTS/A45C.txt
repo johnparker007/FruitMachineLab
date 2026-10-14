@@ -1,0 +1,24 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: memory operations, reels
+Callers: B458
+
+Threaded script at A45C; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  A45C  7963  vm_push_inline_byte_literal  inline_value=0x0004
+  A45F  76A9  vm_allocate_local_frame  
+  A461  7963  vm_push_inline_byte_literal  inline_value=0x00C8
+  A464  A3A3  vm_push_local_frame_address  value=0x0003
+  A466  7861  vm_store_byte  
+  A468  A39A  vm_push_local_frame_address  value=0x0000
+  A46A  765F  vm_clear_byte_memory  
+  A46C  A39D  vm_push_local_frame_address  value=0x0001
+  A46E  765F  vm_clear_byte_memory  
+  A470  A3A0  vm_push_local_frame_address  value=0x0002
+  A472  765F  vm_clear_byte_memory  
+  A474  A3CE  script_a3ce  body=0xA3D0
+  A476  A434  select_local_reel_triplet_or_minus_one  body=0xA436
+  A478  A013  clear_three_reel_record_bytes  body=0xA015
+  A47A  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+  A47C  792F  vm_return_to_caller_stream  

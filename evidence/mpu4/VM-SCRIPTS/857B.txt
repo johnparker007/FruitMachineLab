@@ -1,0 +1,11 @@
+Purpose: write_byte_004d
+Confidence: exact helper pattern
+Groups: memory operations
+Callers: DFF6, DAC7, DDF3, BC70, C90C, ACC0, CD29, AF93
+
+Threaded script at 857B; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 857B  8254  vm_push_word_body_byte  value=0x004D
+* 857D  7861  vm_store_byte  
+* 857F  792F  vm_return_to_caller_stream  

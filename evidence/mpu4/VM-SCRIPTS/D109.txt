@@ -1,0 +1,16 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, stack/cell helpers
+Callers: D199
+
+Threaded script at D109; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  D109  78B5  vm_push_zero  
+  D10B  7963  vm_push_inline_byte_literal  inline_value=0x0003
+  D10E  78B5  vm_push_zero  
+  D110  79DC  vm_enter_loop_frame  
+  D112  9E2E  rotate_mask_0020_right_by_loop_index  body=0x9E30
+  D114  7AA3  vm_bitwise_or  
+  D116  7A00  vm_loop_increment_one  
+  D118  792F  vm_return_to_caller_stream  

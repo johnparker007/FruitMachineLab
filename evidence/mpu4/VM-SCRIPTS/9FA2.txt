@@ -1,0 +1,20 @@
+Purpose: reels_test_all_three_symbol_flag2
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, memory operations, reel records, reels, reels/symbol tests
+Callers: A2AB, B72D, F0B0, D199, EE34, EE11, F19B, B4AD
+
+Threaded script at 9FA2; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9FA2  8114  call_reels_translate_positions_to_symbol_records  native=0x2C12
+* 9FA4  78B3  vm_push_true_minus_one  
+* 9FA6  9D7A  push_three_reel_loop_bounds  body=0x9D7C
+* 9FA8  79DC  vm_enter_loop_frame  
+* 9FAA  9DA9  address_record_0161_loop_index  body=0x9D86, push_address=0x9DAB
+* 9FAC  786B  vm_fetch_unsigned_byte  
+* 9FAE  8036  vm_push_word_body_byte  value=0x0002
+* 9FB0  7A97  vm_bitwise_and  
+* 9FB2  7A97  vm_bitwise_and  
+* 9FB4  7A00  vm_loop_increment_one  
+* 9FB6  7A53  vm_test_nonzero  
+* 9FB8  792F  vm_return_to_caller_stream  

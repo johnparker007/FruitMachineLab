@@ -1,0 +1,12 @@
+Purpose: signed_cell_quotient
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: stack/cell helpers
+Callers: DDF3, C90C, CD29, DDAF, A9D5, A9A0, A4E1, B4FC
+
+Threaded script at 7DF0; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 7DF0  7DE2  signed_cell_divmod  body=0x7DE4
+* 7DF2  7B7D  vm_swap_two_cells  
+* 7DF4  7B3D  vm_drop_cell  
+* 7DF6  792F  vm_return_to_caller_stream  

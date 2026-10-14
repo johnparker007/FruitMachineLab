@@ -1,0 +1,17 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: control flow, mask/address records, stack/cell helpers
+Callers: D1F5
+
+Threaded script at D1CD; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* D1CD  8480  push_pair_8000_00a0  body=0x8417, push_address=0x8482
+* D1CF  7665  vm_or_word_memory  
+* D1D1  8486  push_pair_4000_00a0  body=0x8417, push_address=0x8488
+* D1D3  767F  vm_test_word_memory_mask  
+* D1D5  7982  vm_branch_forward8_if_zero  branch=0xD1DD
+* D1D8  D197  script_d197  body=0xD199
+* D1DA  7979  vm_branch_unsigned_forward8  branch=0xD1DF
+* D1DD  78B5  vm_push_zero  
+* D1DF  792F  vm_return_to_caller_stream  

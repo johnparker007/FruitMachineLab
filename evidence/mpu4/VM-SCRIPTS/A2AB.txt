@@ -1,0 +1,55 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: arithmetic, boolean/bit operations, control flow, memory operations, reel records, reels, stack/cell helpers
+Callers: EDD3, EC97, F19B
+
+Threaded script at A2AB; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* A2AB  A295  count_selected_reel_mask_bits  body=0xA297
+* A2AD  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* A2B0  7A6F  vm_compare_equal  
+* A2B2  7574  vm_return_if_nonzero  
+* A2B4  9D7A  push_three_reel_loop_bounds  body=0x9D7C
+* A2B6  79DC  vm_enter_loop_frame  
+* A2B8  7A1C  vm_push_loop_index  
+* A2BA  9E42  script_9e42  body=0x9E44
+* A2BC  767F  vm_test_word_memory_mask  
+* A2BE  7ABB  vm_bitwise_not  
+* A2C0  7982  vm_branch_forward8_if_zero  branch=0xA308
+* A2C3  7963  vm_push_inline_byte_literal  inline_value=0x0008
+* A2C6  7963  vm_push_inline_byte_literal  inline_value=0x000C
+* A2C9  99EC  random_scaled_range_selection  body=0x99EE
+* A2CB  7A1C  vm_push_loop_index  
+* A2CD  78D3  vm_decrement_word  
+* A2CF  78B5  vm_push_zero  
+* A2D1  7AE7  vm_max_signed  
+* A2D3  9DC1  address_record_0169_explicit_index  body=0x9D97, push_address=0x9DC3
+* A2D5  786B  vm_fetch_unsigned_byte  
+* A2D7  78DE  vm_push_two  
+* A2D9  787E  vm_add_words  
+* A2DB  7AE7  vm_max_signed  
+* A2DD  9DAD  address_record_0169_loop_index  body=0x9D86, push_address=0x9DAF
+* A2DF  7861  vm_store_byte  
+* A2E1  8114  call_reels_translate_positions_to_symbol_records  native=0x2C12
+* A2E3  78B3  vm_push_true_minus_one  
+* A2E5  9DAD  address_record_0169_loop_index  body=0x9D86, push_address=0x9DAF
+* A2E7  7653  vm_increment_byte_memory  
+* A2E9  8114  call_reels_translate_positions_to_symbol_records  native=0x2C12
+* A2EB  8114  call_reels_translate_positions_to_symbol_records  native=0x2C12
+* A2ED  80C4  call_reels_push_matching_symbol_result  native=0x1AA3
+* A2EF  7A46  vm_test_zero  
+* A2F1  7A97  vm_bitwise_and  
+* A2F3  9FA0  reels_test_all_three_symbol_flag2  body=0x9FA2
+* A2F5  7ABB  vm_bitwise_not  
+* A2F7  7A97  vm_bitwise_and  
+* A2F9  79A6  vm_branch_backward8_if_zero  branch=0xA2E3
+* A2FC  9DAD  address_record_0169_loop_index  body=0x9D86, push_address=0x9DAF
+* A2FE  786B  vm_fetch_unsigned_byte  
+* A300  7A1C  vm_push_loop_index  
+* A302  7ED7  vm_push_word_body_byte  value=0x00DA
+* A304  787E  vm_add_words  
+* A306  7861  vm_store_byte  
+* A308  7A00  vm_loop_increment_one  
+* A30A  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* A30C  792F  vm_return_to_caller_stream  

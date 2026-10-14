@@ -1,0 +1,15 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: control flow, stack/cell helpers
+Callers: B271
+
+Threaded script at B1D0; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B1D0  78B5  vm_push_zero  
+* B1D2  7B3D  vm_drop_cell  
+* B1D4  B19F  script_b19f  body=0xB1A1
+* B1D6  7B51  vm_duplicate_cell  
+* B1D8  B0CD  script_b0cd  body=0xB0CF
+* B1DA  79A6  vm_branch_backward8_if_zero  branch=0xB1D2
+* B1DD  792F  vm_return_to_caller_stream  

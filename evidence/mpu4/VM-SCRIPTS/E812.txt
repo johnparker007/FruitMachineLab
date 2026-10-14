@@ -1,0 +1,61 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: accounting/NVRAM, arithmetic, boolean/bit operations, control flow, display, input conditions, lamps, memory operations, sound/scheduler, stack/cell helpers
+Callers: EAF3
+
+Threaded script at E812; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* E812  83A8  vm_test_input_condition  value=0x0013
+* E814  E7E1  script_e7e1  body=0xE7E3
+* E816  7AA3  vm_bitwise_or  
+* E818  E70C  compare_local_feature_bytes_two_and_zero  body=0xE70E
+* E81A  7A97  vm_bitwise_and  
+* E81C  7B51  vm_duplicate_cell  
+* E81E  E46E  vm_push_local_frame_address  value=0x0004
+* E820  7861  vm_store_byte  
+* E822  7B51  vm_duplicate_cell  
+* E824  7982  vm_branch_forward8_if_zero  branch=0xE88C
+  E827  8248  vm_push_word_body_byte  value=0x0080
+  E829  9C38  apply_lamp_range_7257_725d  body=0x9ADB, push_address=0x9C3A
+  E82B  8248  vm_push_word_body_byte  value=0x0080
+  E82D  9D3E  apply_lamp_range_record_9b7c  body=0x9D40
+  E82F  824E  vm_push_word_body_byte  value=0x008F
+  E831  9BB4  apply_lamp_range_7335_7338  body=0x9ADB, push_address=0x9BB6
+  E833  8248  vm_push_word_body_byte  value=0x0080
+  E835  9BBE  apply_lamp_range_7281_7286  body=0x9ADB, push_address=0x9BC0
+  E837  E468  vm_push_local_frame_address  value=0x0002
+  E839  786B  vm_fetch_unsigned_byte  
+  E83B  8212  vm_push_word_body_byte  value=0x0085
+  E83D  9BBA  apply_indexed_lamp_id_from_7281  body=0x9B18, push_address=0x9BBC
+  E83F  9CA3  apply_lamp_range_constant_0080_record_9b8c_9ca5  body=0x9CA5
+  E841  8357  vm_push_word_body_byte  value=0x0028
+  E843  806C  call_lamp_set_frame_pattern_F  native=0x497F
+  E845  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); '   EXCHANGED  '; cmd7A()]
+  E857  78B5  vm_push_zero  
+  E859  8318  vm_push_word_body_byte  value=0x00BA
+  E85B  7874  vm_store_word  
+  E85D  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+  E85F  8130  call_reset_sound_and_scheduler  native=0x5B77
+  E861  855E  test_two_indirect_zero_conditions  body=0x8560
+  E863  7ABB  vm_bitwise_not  
+  E865  7982  vm_branch_forward8_if_zero  branch=0xE86C
+  E868  87F3  queue_sound_stream_87f5  body=0x856B, push_address=0x87F5
+  E86A  80F8  call_scheduler_wait_until_active_list_empty  native=0x5CCB
+  E86C  8130  call_reset_sound_and_scheduler  native=0x5B77
+  E86E  8248  vm_push_word_body_byte  value=0x0080
+  E870  9BBE  apply_lamp_range_7281_7286  body=0x9ADB, push_address=0x9BC0
+  E872  E468  vm_push_local_frame_address  value=0x0002
+  E874  786B  vm_fetch_unsigned_byte  
+  E876  78C9  vm_increment_word  
+  E878  813C  vm_push_word_body_word  value=0x75BD
+  E87A  787E  vm_add_words  
+  E87C  786B  vm_fetch_unsigned_byte  
+  E87E  9F68  normalize_award_47_to_30_with_optional_input_clamp  body=0x9F6A
+  E880  7ECB  vm_push_word_body_byte  value=0x0011
+  E882  78D3  vm_decrement_word  
+  E884  7AE7  vm_max_signed  
+  E886  7EC4  vm_push_word_body_word  value=0x0305
+  E888  7861  vm_store_byte  
+  E88A  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* E88C  792F  vm_return_to_caller_stream  

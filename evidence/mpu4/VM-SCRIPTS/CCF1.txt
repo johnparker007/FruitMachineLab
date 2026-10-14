@@ -1,0 +1,34 @@
+Purpose: special_feature_advance
+Confidence: reviewed dispatch/display association; complete gameplay unresolved
+Groups: boolean/bit operations, control flow, indexed memory, lamps, memory operations, sound/scheduler
+Callers: E227
+
+Threaded script at CCF1; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* CCF1  7F14  vm_push_word_body_byte  value=0x00C9
+* CCF3  786B  vm_fetch_unsigned_byte  
+* CCF5  8248  vm_push_word_body_byte  value=0x0080
+* CCF7  9B82  apply_indexed_lamp_id_from_728f  body=0x9B18, push_address=0x9B84
+* CCF9  7F14  vm_push_word_body_byte  value=0x00C9
+* CCFB  7653  vm_increment_byte_memory  
+* CCFD  7F14  vm_push_word_body_byte  value=0x00C9
+* CCFF  786B  vm_fetch_unsigned_byte  
+* CD01  824E  vm_push_word_body_byte  value=0x008F
+* CD03  9B82  apply_indexed_lamp_id_from_728f  body=0x9B18, push_address=0x9B84
+* CD05  8E3B  queue_sound_stream_8e3d  body=0x856B, push_address=0x8E3D
+* CD07  80F8  call_scheduler_wait_until_active_list_empty  native=0x5CCB
+* CD09  8130  call_reset_sound_and_scheduler  native=0x5B77
+* CD0B  7F14  vm_push_word_body_byte  value=0x00C9
+* CD0D  786B  vm_fetch_unsigned_byte  
+* CD0F  A15E  read_indexed_byte_table_at_a160  body=0x9971, push_address=0xA160
+* CD11  7F14  vm_push_word_body_byte  value=0x00C9
+* CD13  786B  vm_fetch_unsigned_byte  
+* CD15  7A79  vm_compare_top_lt_second_signed  
+* CD17  7F14  vm_push_word_body_byte  value=0x00C9
+* CD19  786B  vm_fetch_unsigned_byte  
+* CD1B  7963  vm_push_inline_byte_literal  inline_value=0x002F
+* CD1E  7A6F  vm_compare_equal  
+* CD20  7AA3  vm_bitwise_or  
+* CD22  79A6  vm_branch_backward8_if_zero  branch=0xCCF1
+* CD25  792F  vm_return_to_caller_stream  

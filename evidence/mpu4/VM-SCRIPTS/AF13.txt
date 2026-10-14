@@ -1,0 +1,19 @@
+Purpose: commit_current_award_to_selected_balance
+Confidence: reviewed gameplay context
+Groups: accounting/NVRAM, award/balance operations, memory operations, stack/cell helpers
+Callers: AF2B
+
+Threaded script at AF13; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* AF13  7888  vm_add_to_word_memory  
+* AF15  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* AF17  78B5  vm_push_zero  
+* AF19  82D6  vm_push_word_body_word  value=0x02FA
+* AF1B  7874  vm_store_word  
+* AF1D  78B5  vm_push_zero  
+* AF1F  8318  vm_push_word_body_byte  value=0x00BA
+* AF21  7874  vm_store_word  
+* AF23  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* AF25  AEF7  service_combined_bank_until_at_or_below_limit  body=0xAEF9
+* AF27  792F  vm_return_to_caller_stream  

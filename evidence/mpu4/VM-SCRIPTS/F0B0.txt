@@ -1,0 +1,35 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: arithmetic, boolean/bit operations, indexed memory, memory operations, reels, stack/cell helpers
+Callers: F20D
+
+Threaded script at F0B0; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* F0B0  81D2  vm_push_word_body_word  value=0x0331
+* F0B2  786B  vm_fetch_unsigned_byte  
+* F0B4  A5C9  scaled_parameter_profile_at_a5cb_counter_07c9  body=0xA5A5, push_address=0xA5CB
+* F0B6  78A0  vm_subtract_top_from_second  
+* F0B8  7963  vm_push_inline_byte_literal  inline_value=0x0008
+* F0BB  7ADC  vm_min_signed  
+* F0BD  F0A3  read_indexed_byte_table_at_f0a5  body=0x9971, push_address=0xF0A5
+* F0BF  78B5  vm_push_zero  
+* F0C1  79DC  vm_enter_loop_frame  
+* F0C3  8134  call_prepare_unheld_reel_requests_with_random_multiple_of_four  native=0x2BBC
+* F0C5  8114  call_reels_translate_positions_to_symbol_records  native=0x2C12
+* F0C7  80C4  call_reels_push_matching_symbol_result  native=0x1AA3
+* F0C9  7B51  vm_duplicate_cell  
+* F0CB  7963  vm_push_inline_byte_literal  inline_value=0x0010
+* F0CE  7A65  vm_compare_top_gt_second_signed  
+* F0D0  7A97  vm_bitwise_and  
+* F0D2  7A53  vm_test_nonzero  
+* F0D4  9FA0  reels_test_all_three_symbol_flag2  body=0x9FA2
+* F0D6  7963  vm_push_inline_byte_literal  inline_value=0x0001
+* F0D9  9A11  random_percentage_test  body=0x9A13
+* F0DB  7A97  vm_bitwise_and  
+* F0DD  7AA3  vm_bitwise_or  
+* F0DF  7B49  vm_duplicate_if_nonzero  
+* F0E1  7574  vm_return_if_nonzero  
+* F0E3  7A00  vm_loop_increment_one  
+* F0E5  78BE  vm_push_zero  
+* F0E7  792F  vm_return_to_caller_stream  

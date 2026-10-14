@@ -1,0 +1,20 @@
+Purpose: service_background_credit_and_refill_before_play
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: boolean/bit operations, control flow, display, input conditions
+Callers: FCBD, FC23
+
+Threaded script at FC07; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* FC07  FBC9  background_machine_updates  body=0xFBCB
+* FC09  AB19  test_credit_available  body=0xAB1B
+* FC0B  7ABB  vm_bitwise_not  
+* FC0D  7982  vm_branch_forward8_if_zero  branch=0xFC12
+* FC10  FBA0  attract_gate_and_dispatch  body=0xFBA2
+* FC12  FB43  process_credit_change_and_display  body=0xFB45
+* FC14  83C9  vm_test_input_condition  value=0x000F
+* FC16  7982  vm_branch_forward8_if_zero  branch=0xFC1D
+  FC19  80D0  call_run_meter_reporting_menu_on_refill_input  native=0x20F2
+  FC1B  80A0  call_alpha_reset_and_clear_display  native=0x3D0E
+* FC1D  A8F7  refresh_credit_and_bank_display_unless_suppressed  body=0xA8F9
+* FC1F  792F  vm_return_to_caller_stream  

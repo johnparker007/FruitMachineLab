@@ -1,0 +1,1727 @@
+{
+  "lamp_rows": [
+    {
+      "rom_command_id": 0,
+      "mame_lamp": 0,
+      "buffer_column": 0,
+      "mask": 1,
+      "captions": [
+        "Reel illumination"
+      ]
+    },
+    {
+      "rom_command_id": 1,
+      "mame_lamp": 97,
+      "buffer_column": 12,
+      "mask": 2,
+      "captions": [
+        "NUDGE POT"
+      ]
+    },
+    {
+      "rom_command_id": 2,
+      "mame_lamp": 98,
+      "buffer_column": 12,
+      "mask": 4,
+      "captions": [
+        "?"
+      ]
+    },
+    {
+      "rom_command_id": 3,
+      "mame_lamp": 67,
+      "buffer_column": 8,
+      "mask": 8,
+      "captions": [
+        "?"
+      ]
+    },
+    {
+      "rom_command_id": 4,
+      "mame_lamp": 68,
+      "buffer_column": 8,
+      "mask": 16,
+      "captions": [
+        "\u00a34.00"
+      ]
+    },
+    {
+      "rom_command_id": 5,
+      "mame_lamp": 101,
+      "buffer_column": 12,
+      "mask": 32,
+      "captions": [
+        "NUDGE POT"
+      ]
+    },
+    {
+      "rom_command_id": 6,
+      "mame_lamp": 102,
+      "buffer_column": 12,
+      "mask": 64,
+      "captions": [
+        "SNAKE BITE"
+      ]
+    },
+    {
+      "rom_command_id": 7,
+      "mame_lamp": 71,
+      "buffer_column": 8,
+      "mask": 128,
+      "captions": [
+        "RATTLER"
+      ]
+    },
+    {
+      "rom_command_id": 8,
+      "mame_lamp": 8,
+      "buffer_column": 1,
+      "mask": 1,
+      "captions": [
+        "Reel illumination"
+      ]
+    },
+    {
+      "rom_command_id": 9,
+      "mame_lamp": 105,
+      "buffer_column": 13,
+      "mask": 2,
+      "captions": [
+        "?"
+      ]
+    },
+    {
+      "rom_command_id": 10,
+      "mame_lamp": 106,
+      "buffer_column": 13,
+      "mask": 4,
+      "captions": [
+        "\u00a31.20"
+      ]
+    },
+    {
+      "rom_command_id": 11,
+      "mame_lamp": 75,
+      "buffer_column": 9,
+      "mask": 8,
+      "captions": [
+        "\u00a33.60"
+      ]
+    },
+    {
+      "rom_command_id": 12,
+      "mame_lamp": 76,
+      "buffer_column": 9,
+      "mask": 16,
+      "captions": [
+        "?"
+      ]
+    },
+    {
+      "rom_command_id": 13,
+      "mame_lamp": 109,
+      "buffer_column": 13,
+      "mask": 32,
+      "captions": [
+        "\u00a31.60"
+      ]
+    },
+    {
+      "rom_command_id": 14,
+      "mame_lamp": 110,
+      "buffer_column": 13,
+      "mask": 64,
+      "captions": []
+    },
+    {
+      "rom_command_id": 15,
+      "mame_lamp": 79,
+      "buffer_column": 9,
+      "mask": 128,
+      "captions": [
+        "UP AND OVER"
+      ]
+    },
+    {
+      "rom_command_id": 16,
+      "mame_lamp": 16,
+      "buffer_column": 2,
+      "mask": 1,
+      "captions": [
+        "Reel illumination"
+      ]
+    },
+    {
+      "rom_command_id": 17,
+      "mame_lamp": 113,
+      "buffer_column": 14,
+      "mask": 2,
+      "captions": [
+        "\u00a31"
+      ]
+    },
+    {
+      "rom_command_id": 18,
+      "mame_lamp": 114,
+      "buffer_column": 14,
+      "mask": 4,
+      "captions": [
+        "NICE DICE"
+      ]
+    },
+    {
+      "rom_command_id": 19,
+      "mame_lamp": 83,
+      "buffer_column": 10,
+      "mask": 8,
+      "captions": [
+        "SKILL CASH"
+      ]
+    },
+    {
+      "rom_command_id": 20,
+      "mame_lamp": 84,
+      "buffer_column": 10,
+      "mask": 16,
+      "captions": [
+        "NUDGE POT"
+      ]
+    },
+    {
+      "rom_command_id": 21,
+      "mame_lamp": 117,
+      "buffer_column": 14,
+      "mask": 32,
+      "captions": [
+        "LADDER"
+      ]
+    },
+    {
+      "rom_command_id": 22,
+      "mame_lamp": 118,
+      "buffer_column": 14,
+      "mask": 64,
+      "captions": [
+        "NUDGE POT"
+      ]
+    },
+    {
+      "rom_command_id": 23,
+      "mame_lamp": 87,
+      "buffer_column": 10,
+      "mask": 128,
+      "captions": [
+        "ADVANCE"
+      ]
+    },
+    {
+      "rom_command_id": 24,
+      "mame_lamp": 24,
+      "buffer_column": 3,
+      "mask": 1,
+      "captions": [
+        "CAN/COLL"
+      ]
+    },
+    {
+      "rom_command_id": 25,
+      "mame_lamp": 121,
+      "buffer_column": 15,
+      "mask": 2,
+      "captions": [
+        "NUDGE POT"
+      ]
+    },
+    {
+      "rom_command_id": 26,
+      "mame_lamp": 122,
+      "buffer_column": 15,
+      "mask": 4,
+      "captions": [
+        "UP"
+      ]
+    },
+    {
+      "rom_command_id": 27,
+      "mame_lamp": 91,
+      "buffer_column": 11,
+      "mask": 8,
+      "captions": [
+        "?"
+      ]
+    },
+    {
+      "rom_command_id": 28,
+      "mame_lamp": 92,
+      "buffer_column": 11,
+      "mask": 16,
+      "captions": [
+        "\u00a32.40"
+      ]
+    },
+    {
+      "rom_command_id": 29,
+      "mame_lamp": 125,
+      "buffer_column": 15,
+      "mask": 32,
+      "captions": [
+        "?"
+      ]
+    },
+    {
+      "rom_command_id": 30,
+      "mame_lamp": 126,
+      "buffer_column": 15,
+      "mask": 64,
+      "captions": []
+    },
+    {
+      "rom_command_id": 31,
+      "mame_lamp": 95,
+      "buffer_column": 11,
+      "mask": 128,
+      "captions": [
+        "BACK 3"
+      ]
+    },
+    {
+      "rom_command_id": 32,
+      "mame_lamp": 32,
+      "buffer_column": 4,
+      "mask": 1,
+      "captions": [
+        "HOLD"
+      ]
+    },
+    {
+      "rom_command_id": 33,
+      "mame_lamp": 65,
+      "buffer_column": 8,
+      "mask": 2,
+      "captions": [
+        "ADDER"
+      ]
+    },
+    {
+      "rom_command_id": 34,
+      "mame_lamp": 66,
+      "buffer_column": 8,
+      "mask": 4,
+      "captions": [
+        "\u00a36 JACKPOT"
+      ]
+    },
+    {
+      "rom_command_id": 35,
+      "mame_lamp": 99,
+      "buffer_column": 12,
+      "mask": 8,
+      "captions": [
+        "\u00a31.80"
+      ]
+    },
+    {
+      "rom_command_id": 36,
+      "mame_lamp": 100,
+      "buffer_column": 12,
+      "mask": 16,
+      "captions": [
+        "MONEY TRAP"
+      ]
+    },
+    {
+      "rom_command_id": 37,
+      "mame_lamp": 69,
+      "buffer_column": 8,
+      "mask": 32,
+      "captions": [
+        "SUPA STEPPER"
+      ]
+    },
+    {
+      "rom_command_id": 38,
+      "mame_lamp": 70,
+      "buffer_column": 8,
+      "mask": 64,
+      "captions": [
+        "BOOST"
+      ]
+    },
+    {
+      "rom_command_id": 39,
+      "mame_lamp": 103,
+      "buffer_column": 12,
+      "mask": 128,
+      "captions": [
+        "ADDERS N LADDERS"
+      ]
+    },
+    {
+      "rom_command_id": 40,
+      "mame_lamp": 40,
+      "buffer_column": 5,
+      "mask": 1,
+      "captions": [
+        "EXCHANGE"
+      ]
+    },
+    {
+      "rom_command_id": 41,
+      "mame_lamp": 73,
+      "buffer_column": 9,
+      "mask": 2,
+      "captions": [
+        "CASH ATTACK"
+      ]
+    },
+    {
+      "rom_command_id": 42,
+      "mame_lamp": 74,
+      "buffer_column": 9,
+      "mask": 4,
+      "captions": [
+        "?"
+      ]
+    },
+    {
+      "rom_command_id": 43,
+      "mame_lamp": 107,
+      "buffer_column": 13,
+      "mask": 8,
+      "captions": [
+        "LADDER"
+      ]
+    },
+    {
+      "rom_command_id": 44,
+      "mame_lamp": 108,
+      "buffer_column": 13,
+      "mask": 16,
+      "captions": [
+        "ADDER"
+      ]
+    },
+    {
+      "rom_command_id": 45,
+      "mame_lamp": 77,
+      "buffer_column": 9,
+      "mask": 32,
+      "captions": [
+        "ADDER"
+      ]
+    },
+    {
+      "rom_command_id": 46,
+      "mame_lamp": 78,
+      "buffer_column": 9,
+      "mask": 64,
+      "captions": [
+        "SNAKE BITE"
+      ]
+    },
+    {
+      "rom_command_id": 47,
+      "mame_lamp": 111,
+      "buffer_column": 13,
+      "mask": 128,
+      "captions": []
+    },
+    {
+      "rom_command_id": 48,
+      "mame_lamp": 48,
+      "buffer_column": 6,
+      "mask": 1,
+      "captions": [
+        "RESPIN"
+      ]
+    },
+    {
+      "rom_command_id": 49,
+      "mame_lamp": 81,
+      "buffer_column": 10,
+      "mask": 2,
+      "captions": [
+        "?"
+      ]
+    },
+    {
+      "rom_command_id": 50,
+      "mame_lamp": 82,
+      "buffer_column": 10,
+      "mask": 4,
+      "captions": [
+        "\u00a33.00"
+      ]
+    },
+    {
+      "rom_command_id": 51,
+      "mame_lamp": 115,
+      "buffer_column": 14,
+      "mask": 8,
+      "captions": [
+        "NUDGE POT"
+      ]
+    },
+    {
+      "rom_command_id": 52,
+      "mame_lamp": 116,
+      "buffer_column": 14,
+      "mask": 16,
+      "captions": [
+        "80p"
+      ]
+    },
+    {
+      "rom_command_id": 53,
+      "mame_lamp": 85,
+      "buffer_column": 10,
+      "mask": 32,
+      "captions": [
+        "\u00a32.60"
+      ]
+    },
+    {
+      "rom_command_id": 54,
+      "mame_lamp": 86,
+      "buffer_column": 10,
+      "mask": 64,
+      "captions": [
+        "ROLL EVEN"
+      ]
+    },
+    {
+      "rom_command_id": 55,
+      "mame_lamp": 119,
+      "buffer_column": 14,
+      "mask": 128,
+      "captions": [
+        "LOSE"
+      ]
+    },
+    {
+      "rom_command_id": 56,
+      "mame_lamp": 56,
+      "buffer_column": 7,
+      "mask": 1,
+      "captions": []
+    },
+    {
+      "rom_command_id": 57,
+      "mame_lamp": 89,
+      "buffer_column": 11,
+      "mask": 2,
+      "captions": [
+        "\u00a32.20"
+      ]
+    },
+    {
+      "rom_command_id": 58,
+      "mame_lamp": 90,
+      "buffer_column": 11,
+      "mask": 4,
+      "captions": [
+        "PICK A WIN"
+      ]
+    },
+    {
+      "rom_command_id": 59,
+      "mame_lamp": 123,
+      "buffer_column": 15,
+      "mask": 8,
+      "captions": [
+        "60p"
+      ]
+    },
+    {
+      "rom_command_id": 60,
+      "mame_lamp": 124,
+      "buffer_column": 15,
+      "mask": 16,
+      "captions": [
+        "MONEY TRAP"
+      ]
+    },
+    {
+      "rom_command_id": 61,
+      "mame_lamp": 93,
+      "buffer_column": 11,
+      "mask": 32,
+      "captions": [
+        "NUDGE POT"
+      ]
+    },
+    {
+      "rom_command_id": 62,
+      "mame_lamp": 94,
+      "buffer_column": 11,
+      "mask": 64,
+      "captions": [
+        "SNAKE BITE"
+      ]
+    },
+    {
+      "rom_command_id": 63,
+      "mame_lamp": 127,
+      "buffer_column": 15,
+      "mask": 128,
+      "captions": []
+    },
+    {
+      "rom_command_id": 64,
+      "mame_lamp": 64,
+      "buffer_column": 8,
+      "mask": 1,
+      "captions": [
+        "JACKPOT RESTART"
+      ]
+    },
+    {
+      "rom_command_id": 65,
+      "mame_lamp": 33,
+      "buffer_column": 4,
+      "mask": 2,
+      "captions": [
+        "HI",
+        "LO"
+      ]
+    },
+    {
+      "rom_command_id": 66,
+      "mame_lamp": 34,
+      "buffer_column": 4,
+      "mask": 4,
+      "captions": [
+        "LO"
+      ]
+    },
+    {
+      "rom_command_id": 67,
+      "mame_lamp": 3,
+      "buffer_column": 0,
+      "mask": 8,
+      "captions": []
+    },
+    {
+      "rom_command_id": 68,
+      "mame_lamp": 4,
+      "buffer_column": 0,
+      "mask": 16,
+      "captions": [
+        "RED   7"
+      ]
+    },
+    {
+      "rom_command_id": 69,
+      "mame_lamp": 37,
+      "buffer_column": 4,
+      "mask": 32,
+      "captions": [
+        "1 BAR"
+      ]
+    },
+    {
+      "rom_command_id": 70,
+      "mame_lamp": 38,
+      "buffer_column": 4,
+      "mask": 64,
+      "captions": [
+        "1 BAR"
+      ]
+    },
+    {
+      "rom_command_id": 71,
+      "mame_lamp": 7,
+      "buffer_column": 0,
+      "mask": 128,
+      "captions": [
+        "\u00a36.00"
+      ]
+    },
+    {
+      "rom_command_id": 72,
+      "mame_lamp": 72,
+      "buffer_column": 9,
+      "mask": 1,
+      "captions": [
+        "\u00a33.20"
+      ]
+    },
+    {
+      "rom_command_id": 73,
+      "mame_lamp": 41,
+      "buffer_column": 5,
+      "mask": 2,
+      "captions": [
+        "START"
+      ]
+    },
+    {
+      "rom_command_id": 74,
+      "mame_lamp": 42,
+      "buffer_column": 5,
+      "mask": 4,
+      "captions": [
+        "FEATURE RESTART"
+      ]
+    },
+    {
+      "rom_command_id": 75,
+      "mame_lamp": 11,
+      "buffer_column": 1,
+      "mask": 8,
+      "captions": []
+    },
+    {
+      "rom_command_id": 76,
+      "mame_lamp": 12,
+      "buffer_column": 1,
+      "mask": 16,
+      "captions": [
+        "BLUE  7"
+      ]
+    },
+    {
+      "rom_command_id": 77,
+      "mame_lamp": 45,
+      "buffer_column": 5,
+      "mask": 32,
+      "captions": [
+        "7'S MIX"
+      ]
+    },
+    {
+      "rom_command_id": 78,
+      "mame_lamp": 46,
+      "buffer_column": 5,
+      "mask": 64,
+      "captions": [
+        "7'S MIX"
+      ]
+    },
+    {
+      "rom_command_id": 79,
+      "mame_lamp": 15,
+      "buffer_column": 1,
+      "mask": 128,
+      "captions": [
+        "\u00a33.00"
+      ]
+    },
+    {
+      "rom_command_id": 80,
+      "mame_lamp": 80,
+      "buffer_column": 10,
+      "mask": 1,
+      "captions": [
+        "LADDER"
+      ]
+    },
+    {
+      "rom_command_id": 81,
+      "mame_lamp": 49,
+      "buffer_column": 6,
+      "mask": 2,
+      "captions": [
+        "FEATURE RESTART"
+      ]
+    },
+    {
+      "rom_command_id": 82,
+      "mame_lamp": 50,
+      "buffer_column": 6,
+      "mask": 4,
+      "captions": [
+        "RESPIN"
+      ]
+    },
+    {
+      "rom_command_id": 83,
+      "mame_lamp": 19,
+      "buffer_column": 2,
+      "mask": 8,
+      "captions": [
+        "RESPIN"
+      ]
+    },
+    {
+      "rom_command_id": 84,
+      "mame_lamp": 20,
+      "buffer_column": 2,
+      "mask": 16,
+      "captions": [
+        "3 BARS"
+      ]
+    },
+    {
+      "rom_command_id": 85,
+      "mame_lamp": 53,
+      "buffer_column": 6,
+      "mask": 32,
+      "captions": [
+        "EXCHANGE"
+      ]
+    },
+    {
+      "rom_command_id": 86,
+      "mame_lamp": 54,
+      "buffer_column": 6,
+      "mask": 64,
+      "captions": [
+        "EXCHANGE"
+      ]
+    },
+    {
+      "rom_command_id": 87,
+      "mame_lamp": 23,
+      "buffer_column": 2,
+      "mask": 128,
+      "captions": [
+        "\u00a32.40"
+      ]
+    },
+    {
+      "rom_command_id": 88,
+      "mame_lamp": 88,
+      "buffer_column": 11,
+      "mask": 1,
+      "captions": [
+        "ADDER"
+      ]
+    },
+    {
+      "rom_command_id": 89,
+      "mame_lamp": 57,
+      "buffer_column": 7,
+      "mask": 2,
+      "captions": []
+    },
+    {
+      "rom_command_id": 90,
+      "mame_lamp": 58,
+      "buffer_column": 7,
+      "mask": 4,
+      "captions": []
+    },
+    {
+      "rom_command_id": 91,
+      "mame_lamp": 27,
+      "buffer_column": 3,
+      "mask": 8,
+      "captions": [
+        "FEATURE RESTART"
+      ]
+    },
+    {
+      "rom_command_id": 92,
+      "mame_lamp": 28,
+      "buffer_column": 3,
+      "mask": 16,
+      "captions": [
+        "2 BARS"
+      ]
+    },
+    {
+      "rom_command_id": 93,
+      "mame_lamp": 61,
+      "buffer_column": 7,
+      "mask": 32,
+      "captions": [
+        "2"
+      ]
+    },
+    {
+      "rom_command_id": 94,
+      "mame_lamp": 62,
+      "buffer_column": 7,
+      "mask": 64,
+      "captions": [
+        "1"
+      ]
+    },
+    {
+      "rom_command_id": 95,
+      "mame_lamp": 31,
+      "buffer_column": 3,
+      "mask": 128,
+      "captions": [
+        "\u00a32.00"
+      ]
+    },
+    {
+      "rom_command_id": 96,
+      "mame_lamp": 96,
+      "buffer_column": 12,
+      "mask": 1,
+      "captions": [
+        "\u00a32.00"
+      ]
+    },
+    {
+      "rom_command_id": 97,
+      "mame_lamp": 1,
+      "buffer_column": 0,
+      "mask": 2,
+      "captions": [
+        "Reel illumination"
+      ]
+    },
+    {
+      "rom_command_id": 98,
+      "mame_lamp": 2,
+      "buffer_column": 0,
+      "mask": 4,
+      "captions": [
+        "Reel illumination"
+      ]
+    },
+    {
+      "rom_command_id": 99,
+      "mame_lamp": 35,
+      "buffer_column": 4,
+      "mask": 8,
+      "captions": [
+        "RESPIN"
+      ]
+    },
+    {
+      "rom_command_id": 100,
+      "mame_lamp": 36,
+      "buffer_column": 4,
+      "mask": 16,
+      "captions": [
+        "1 BAR"
+      ]
+    },
+    {
+      "rom_command_id": 101,
+      "mame_lamp": 5,
+      "buffer_column": 0,
+      "mask": 32,
+      "captions": [
+        "RED   7"
+      ]
+    },
+    {
+      "rom_command_id": 102,
+      "mame_lamp": 6,
+      "buffer_column": 0,
+      "mask": 64,
+      "captions": [
+        "RED   7"
+      ]
+    },
+    {
+      "rom_command_id": 103,
+      "mame_lamp": 39,
+      "buffer_column": 4,
+      "mask": 128,
+      "captions": [
+        "\u00a31.60"
+      ]
+    },
+    {
+      "rom_command_id": 104,
+      "mame_lamp": 104,
+      "buffer_column": 13,
+      "mask": 1,
+      "captions": [
+        "CASH CLIMB"
+      ]
+    },
+    {
+      "rom_command_id": 105,
+      "mame_lamp": 9,
+      "buffer_column": 1,
+      "mask": 2,
+      "captions": [
+        "Reel illumination"
+      ]
+    },
+    {
+      "rom_command_id": 106,
+      "mame_lamp": 10,
+      "buffer_column": 1,
+      "mask": 4,
+      "captions": [
+        "Reel illumination"
+      ]
+    },
+    {
+      "rom_command_id": 107,
+      "mame_lamp": 43,
+      "buffer_column": 5,
+      "mask": 8,
+      "captions": [
+        "FEATURE RESTART"
+      ]
+    },
+    {
+      "rom_command_id": 108,
+      "mame_lamp": 44,
+      "buffer_column": 5,
+      "mask": 16,
+      "captions": [
+        "7'S MIX"
+      ]
+    },
+    {
+      "rom_command_id": 109,
+      "mame_lamp": 13,
+      "buffer_column": 1,
+      "mask": 32,
+      "captions": [
+        "BLUE  7"
+      ]
+    },
+    {
+      "rom_command_id": 110,
+      "mame_lamp": 14,
+      "buffer_column": 1,
+      "mask": 64,
+      "captions": [
+        "BLUE  7"
+      ]
+    },
+    {
+      "rom_command_id": 111,
+      "mame_lamp": 47,
+      "buffer_column": 5,
+      "mask": 128,
+      "captions": [
+        "60P"
+      ]
+    },
+    {
+      "rom_command_id": 112,
+      "mame_lamp": 112,
+      "buffer_column": 14,
+      "mask": 1,
+      "captions": [
+        "LADDER"
+      ]
+    },
+    {
+      "rom_command_id": 113,
+      "mame_lamp": 17,
+      "buffer_column": 2,
+      "mask": 2,
+      "captions": [
+        "Reel illumination"
+      ]
+    },
+    {
+      "rom_command_id": 114,
+      "mame_lamp": 18,
+      "buffer_column": 2,
+      "mask": 4,
+      "captions": [
+        "Reel illumination"
+      ]
+    },
+    {
+      "rom_command_id": 115,
+      "mame_lamp": 51,
+      "buffer_column": 6,
+      "mask": 8,
+      "captions": [
+        "EXCHANGE"
+      ]
+    },
+    {
+      "rom_command_id": 116,
+      "mame_lamp": 52,
+      "buffer_column": 6,
+      "mask": 16,
+      "captions": [
+        "EXCHANGE"
+      ]
+    },
+    {
+      "rom_command_id": 117,
+      "mame_lamp": 21,
+      "buffer_column": 2,
+      "mask": 32,
+      "captions": [
+        "3 BARS"
+      ]
+    },
+    {
+      "rom_command_id": 118,
+      "mame_lamp": 22,
+      "buffer_column": 2,
+      "mask": 64,
+      "captions": [
+        "3 BARS"
+      ]
+    },
+    {
+      "rom_command_id": 119,
+      "mame_lamp": 55,
+      "buffer_column": 6,
+      "mask": 128,
+      "captions": [
+        "EXCHANGE"
+      ]
+    },
+    {
+      "rom_command_id": 120,
+      "mame_lamp": 120,
+      "buffer_column": 15,
+      "mask": 1,
+      "captions": [
+        "START"
+      ]
+    },
+    {
+      "rom_command_id": 121,
+      "mame_lamp": 25,
+      "buffer_column": 3,
+      "mask": 2,
+      "captions": [
+        "HOLD"
+      ]
+    },
+    {
+      "rom_command_id": 122,
+      "mame_lamp": 26,
+      "buffer_column": 3,
+      "mask": 4,
+      "captions": [
+        "HOLD"
+      ]
+    },
+    {
+      "rom_command_id": 123,
+      "mame_lamp": 59,
+      "buffer_column": 7,
+      "mask": 8,
+      "captions": []
+    },
+    {
+      "rom_command_id": 124,
+      "mame_lamp": 60,
+      "buffer_column": 7,
+      "mask": 16,
+      "captions": [
+        "3"
+      ]
+    },
+    {
+      "rom_command_id": 125,
+      "mame_lamp": 29,
+      "buffer_column": 3,
+      "mask": 32,
+      "captions": [
+        "2 BARS"
+      ]
+    },
+    {
+      "rom_command_id": 126,
+      "mame_lamp": 30,
+      "buffer_column": 3,
+      "mask": 64,
+      "captions": [
+        "2 BARS"
+      ]
+    },
+    {
+      "rom_command_id": 127,
+      "mame_lamp": 63,
+      "buffer_column": 7,
+      "mask": 128,
+      "captions": [
+        "NUDGE NOW"
+      ]
+    }
+  ],
+  "button_view_bindings": [
+    {
+      "name": "lamp24",
+      "ref": "colour_button_119_border",
+      "state": "0",
+      "inputtag": "BLACK2",
+      "inputmask": "0x01"
+    },
+    {
+      "name": "lamp24",
+      "ref": "colour_button_119",
+      "state": "0",
+      "inputtag": "BLACK2",
+      "inputmask": "0x01"
+    },
+    {
+      "name": "lamp-1",
+      "ref": "colour_button_120_border",
+      "state": "0",
+      "inputtag": "AUX2",
+      "inputmask": "0x80"
+    },
+    {
+      "name": "lamp-1",
+      "ref": "colour_button_120",
+      "state": "0",
+      "inputtag": "AUX2",
+      "inputmask": "0x80"
+    },
+    {
+      "name": "lamp-1",
+      "ref": "colour_button_121_border",
+      "state": "0",
+      "inputtag": "AUX2",
+      "inputmask": "0x20"
+    },
+    {
+      "name": "lamp-1",
+      "ref": "colour_button_121",
+      "state": "0",
+      "inputtag": "AUX2",
+      "inputmask": "0x20"
+    },
+    {
+      "name": "lamp41",
+      "ref": "colour_button_122_border",
+      "state": "0",
+      "inputtag": "BLACK2",
+      "inputmask": "0x80"
+    },
+    {
+      "name": "lamp41",
+      "ref": "colour_button_122",
+      "state": "0",
+      "inputtag": "BLACK2",
+      "inputmask": "0x80"
+    },
+    {
+      "name": "lamp40",
+      "ref": "colour_button_123_border",
+      "state": "0",
+      "inputtag": "BLACK2",
+      "inputmask": "0x40"
+    },
+    {
+      "name": "lamp40",
+      "ref": "colour_button_123",
+      "state": "0",
+      "inputtag": "BLACK2",
+      "inputmask": "0x40"
+    },
+    {
+      "name": "lamp34",
+      "ref": "colour_button_124_border",
+      "state": "0",
+      "inputtag": "BLACK2",
+      "inputmask": "0x20"
+    },
+    {
+      "name": "lamp34",
+      "ref": "colour_button_124",
+      "state": "0",
+      "inputtag": "BLACK2",
+      "inputmask": "0x20"
+    },
+    {
+      "name": "lamp33",
+      "ref": "colour_button_125_border",
+      "state": "0",
+      "inputtag": "BLACK2",
+      "inputmask": "0x10"
+    },
+    {
+      "name": "lamp33",
+      "ref": "colour_button_125",
+      "state": "0",
+      "inputtag": "BLACK2",
+      "inputmask": "0x10"
+    },
+    {
+      "name": "lamp32",
+      "ref": "colour_button_126_border",
+      "state": "0",
+      "inputtag": "BLACK2",
+      "inputmask": "0x08"
+    },
+    {
+      "name": "lamp32",
+      "ref": "colour_button_126",
+      "state": "0",
+      "inputtag": "BLACK2",
+      "inputmask": "0x08"
+    },
+    {
+      "name": "lamp26",
+      "ref": "colour_button_127_border",
+      "state": "0",
+      "inputtag": "BLACK2",
+      "inputmask": "0x04"
+    },
+    {
+      "name": "lamp26",
+      "ref": "colour_button_127",
+      "state": "0",
+      "inputtag": "BLACK2",
+      "inputmask": "0x04"
+    },
+    {
+      "name": "lamp25",
+      "ref": "colour_button_128_border",
+      "state": "0",
+      "inputtag": "BLACK2",
+      "inputmask": "0x02"
+    },
+    {
+      "name": "lamp25",
+      "ref": "colour_button_128",
+      "state": "0",
+      "inputtag": "BLACK2",
+      "inputmask": "0x02"
+    },
+    {
+      "name": "debug_button_0",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "ORANGE1",
+      "inputmask": "0x01"
+    },
+    {
+      "name": "debug_button_1",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "ORANGE1",
+      "inputmask": "0x02"
+    },
+    {
+      "name": "debug_button_2",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "ORANGE1",
+      "inputmask": "0x04"
+    },
+    {
+      "name": "debug_button_3",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "ORANGE1",
+      "inputmask": "0x08"
+    },
+    {
+      "name": "debug_button_4",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "ORANGE1",
+      "inputmask": "0x10"
+    },
+    {
+      "name": "debug_button_5",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "ORANGE1",
+      "inputmask": "0x20"
+    },
+    {
+      "name": "debug_button_6",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "ORANGE1",
+      "inputmask": "0x40"
+    },
+    {
+      "name": "debug_button_7",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "ORANGE1",
+      "inputmask": "0x80"
+    },
+    {
+      "name": "debug_button_8",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "ORANGE2",
+      "inputmask": "0x01"
+    },
+    {
+      "name": "debug_button_9",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "ORANGE2",
+      "inputmask": "0x02"
+    },
+    {
+      "name": "debug_button_10",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "ORANGE2",
+      "inputmask": "0x04"
+    },
+    {
+      "name": "debug_button_11",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "ORANGE2",
+      "inputmask": "0x08"
+    },
+    {
+      "name": "debug_button_12",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "ORANGE2",
+      "inputmask": "0x10"
+    },
+    {
+      "name": "debug_button_13",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "ORANGE2",
+      "inputmask": "0x20"
+    },
+    {
+      "name": "debug_button_14",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "ORANGE2",
+      "inputmask": "0x40"
+    },
+    {
+      "name": "debug_button_15",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "ORANGE2",
+      "inputmask": "0x80"
+    },
+    {
+      "name": "debug_button_16",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "BLACK1",
+      "inputmask": "0x01"
+    },
+    {
+      "name": "debug_button_17",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "BLACK1",
+      "inputmask": "0x02"
+    },
+    {
+      "name": "debug_button_18",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "BLACK1",
+      "inputmask": "0x04"
+    },
+    {
+      "name": "debug_button_19",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "BLACK1",
+      "inputmask": "0x08"
+    },
+    {
+      "name": "debug_button_20",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "BLACK1",
+      "inputmask": "0x10"
+    },
+    {
+      "name": "debug_button_21",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "BLACK1",
+      "inputmask": "0x20"
+    },
+    {
+      "name": "debug_button_22",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "BLACK1",
+      "inputmask": "0x40"
+    },
+    {
+      "name": "debug_button_23",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "BLACK1",
+      "inputmask": "0x80"
+    },
+    {
+      "name": "lamp24",
+      "ref": "debug_button_standard",
+      "state": "0",
+      "inputtag": "BLACK2",
+      "inputmask": "0x01"
+    },
+    {
+      "name": "lamp25",
+      "ref": "debug_button_standard",
+      "state": "0",
+      "inputtag": "BLACK2",
+      "inputmask": "0x02"
+    },
+    {
+      "name": "lamp26",
+      "ref": "debug_button_standard",
+      "state": "0",
+      "inputtag": "BLACK2",
+      "inputmask": "0x04"
+    },
+    {
+      "name": "lamp32",
+      "ref": "debug_button_standard",
+      "state": "0",
+      "inputtag": "BLACK2",
+      "inputmask": "0x08"
+    },
+    {
+      "name": "lamp33",
+      "ref": "debug_button_standard",
+      "state": "0",
+      "inputtag": "BLACK2",
+      "inputmask": "0x10"
+    },
+    {
+      "name": "lamp34",
+      "ref": "debug_button_standard",
+      "state": "0",
+      "inputtag": "BLACK2",
+      "inputmask": "0x20"
+    },
+    {
+      "name": "lamp40",
+      "ref": "debug_button_standard",
+      "state": "0",
+      "inputtag": "BLACK2",
+      "inputmask": "0x40"
+    },
+    {
+      "name": "lamp41",
+      "ref": "debug_button_standard",
+      "state": "0",
+      "inputtag": "BLACK2",
+      "inputmask": "0x80"
+    },
+    {
+      "name": "debug_button_32",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "DIL1",
+      "inputmask": "0x01"
+    },
+    {
+      "name": "debug_button_33",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "DIL1",
+      "inputmask": "0x02"
+    },
+    {
+      "name": "debug_button_34",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "DIL1",
+      "inputmask": "0x04"
+    },
+    {
+      "name": "debug_button_35",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "DIL1",
+      "inputmask": "0x08"
+    },
+    {
+      "name": "debug_button_36",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "DIL1",
+      "inputmask": "0x10"
+    },
+    {
+      "name": "debug_button_37",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "DIL1",
+      "inputmask": "0x20"
+    },
+    {
+      "name": "debug_button_38",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "DIL1",
+      "inputmask": "0x40"
+    },
+    {
+      "name": "debug_button_39",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "DIL1",
+      "inputmask": "0x80"
+    },
+    {
+      "name": "debug_button_40",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "DIL2",
+      "inputmask": "0x01"
+    },
+    {
+      "name": "debug_button_41",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "DIL2",
+      "inputmask": "0x02"
+    },
+    {
+      "name": "debug_button_42",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "DIL2",
+      "inputmask": "0x04"
+    },
+    {
+      "name": "debug_button_43",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "DIL2",
+      "inputmask": "0x08"
+    },
+    {
+      "name": "debug_button_44",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "DIL2",
+      "inputmask": "0x10"
+    },
+    {
+      "name": "debug_button_45",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "DIL2",
+      "inputmask": "0x20"
+    },
+    {
+      "name": "debug_button_46",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "DIL2",
+      "inputmask": "0x40"
+    },
+    {
+      "name": "debug_button_47",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "DIL2",
+      "inputmask": "0x80"
+    },
+    {
+      "name": "debug_button_48",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "AUX1",
+      "inputmask": "0x01"
+    },
+    {
+      "name": "debug_button_49",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "AUX1",
+      "inputmask": "0x02"
+    },
+    {
+      "name": "debug_button_50",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "AUX1",
+      "inputmask": "0x04"
+    },
+    {
+      "name": "debug_button_51",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "AUX1",
+      "inputmask": "0x08"
+    },
+    {
+      "name": "debug_button_52",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "AUX1",
+      "inputmask": "0x10"
+    },
+    {
+      "name": "debug_button_53",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "AUX1",
+      "inputmask": "0x20"
+    },
+    {
+      "name": "debug_button_54",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "AUX1",
+      "inputmask": "0x40"
+    },
+    {
+      "name": "debug_button_55",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "AUX1",
+      "inputmask": "0x80"
+    },
+    {
+      "name": "debug_button_56",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "AUX2",
+      "inputmask": "0x01"
+    },
+    {
+      "name": "debug_button_57",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "AUX2",
+      "inputmask": "0x02"
+    },
+    {
+      "name": "debug_button_58",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "AUX2",
+      "inputmask": "0x04"
+    },
+    {
+      "name": "debug_button_59",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "AUX2",
+      "inputmask": "0x08"
+    },
+    {
+      "name": "debug_button_60",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "AUX2",
+      "inputmask": "0x10"
+    },
+    {
+      "name": "debug_button_61",
+      "ref": "debug_button_standard",
+      "state": "0",
+      "inputtag": "AUX2",
+      "inputmask": "0x20"
+    },
+    {
+      "name": "debug_button_62",
+      "ref": "debug_button_unreferenced",
+      "state": "0",
+      "inputtag": "AUX2",
+      "inputmask": "0x40"
+    },
+    {
+      "name": "debug_button_63",
+      "ref": "debug_button_standard",
+      "state": "0",
+      "inputtag": "AUX2",
+      "inputmask": "0x80"
+    }
+  ]
+}

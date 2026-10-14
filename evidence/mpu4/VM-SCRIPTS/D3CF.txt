@@ -1,0 +1,33 @@
+Purpose: execute_preselected_super_hold_reel_requests
+Confidence: reviewed token mechanics
+Groups: mask/address records, memory operations, reel records, reels, reels/symbol tests, stack/cell helpers
+Callers: D587
+
+Threaded script at D3CF; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  D3CF  D37D  script_d37d  body=0xD37F
+  D3D1  7B3D  vm_drop_cell  
+  D3D3  D319  vm_push_local_frame_address  value=0x0000
+  D3D5  786B  vm_fetch_unsigned_byte  
+  D3D7  78B5  vm_push_zero  
+  D3D9  9DC1  address_record_0169_explicit_index  body=0x9D97, push_address=0x9DC3
+  D3DB  7861  vm_store_byte  
+  D3DD  D31C  vm_push_local_frame_address  value=0x0001
+  D3DF  786B  vm_fetch_unsigned_byte  
+  D3E1  78C0  vm_push_one  
+  D3E3  9DC1  address_record_0169_explicit_index  body=0x9D97, push_address=0x9DC3
+  D3E5  7861  vm_store_byte  
+  D3E7  D31F  vm_push_local_frame_address  value=0x0002
+  D3E9  786B  vm_fetch_unsigned_byte  
+  D3EB  78DE  vm_push_two  
+  D3ED  9DC1  address_record_0169_explicit_index  body=0x9D97, push_address=0x9DC3
+  D3EF  7861  vm_store_byte  
+  D3F1  8118  call_reels_start_motion_async  native=0x61D5
+  D3F3  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+  D3F5  8480  push_pair_8000_00a0  body=0x8417, push_address=0x8482
+  D3F7  7671  vm_clear_word_memory_bits  
+  D3F9  D1F3  script_d1f3  body=0xD1F5
+  D3FB  848C  push_pair_2000_00a0  body=0x8417, push_address=0x848E
+  D3FD  7665  vm_or_word_memory  
+  D3FF  792F  vm_return_to_caller_stream  

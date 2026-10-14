@@ -1,0 +1,18 @@
+Purpose: copy_three_reel_record_bytes_to_local_frame
+Confidence: reviewed token mechanics
+Groups: arithmetic, memory operations, reel records, reels/symbol tests
+Callers: A3D0
+
+Threaded script at A3BA; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  A3BA  9D7A  push_three_reel_loop_bounds  body=0x9D7C
+  A3BC  79DC  vm_enter_loop_frame  
+  A3BE  9DAD  address_record_0169_loop_index  body=0x9D86, push_address=0x9DAF
+  A3C0  786B  vm_fetch_unsigned_byte  
+  A3C2  A39A  vm_push_local_frame_address  value=0x0000
+  A3C4  7A1C  vm_push_loop_index  
+  A3C6  787E  vm_add_words  
+  A3C8  7861  vm_store_byte  
+  A3CA  7A00  vm_loop_increment_one  
+  A3CC  792F  vm_return_to_caller_stream  

@@ -1,0 +1,20 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, memory operations, reel records, reels, stack/cell helpers
+Callers: B1FD
+
+Threaded script at B1E1; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B1E1  7B59  vm_copy_second_cell  
+* B1E3  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* B1E6  9DC1  address_record_0169_explicit_index  body=0x9D97, push_address=0x9DC3
+* B1E8  7894  vm_add_to_byte_memory  
+* B1EA  8114  call_reels_translate_positions_to_symbol_records  native=0x2C12
+* B1EC  7B51  vm_duplicate_cell  
+* B1EE  7FAD  vm_push_word_body_word  value=0x0166
+* B1F0  786B  vm_fetch_unsigned_byte  
+* B1F2  7A6F  vm_compare_equal  
+* B1F4  79A6  vm_branch_backward8_if_zero  branch=0xB1E1
+* B1F7  7B43  vm_drop_two_cells  
+* B1F9  792F  vm_return_to_caller_stream  

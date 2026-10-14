@@ -1,0 +1,38 @@
+Purpose: display_two_decimal_digits_or_blank_zero
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: arithmetic, boolean/bit operations, control flow, memory operations
+Callers: F576, FA34, F71A, F6A0, A8EF
+
+Threaded script at A8AD; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* A8AD  7B49  vm_duplicate_if_nonzero  
+* A8AF  7A46  vm_test_zero  
+* A8B1  7982  vm_branch_forward8_if_zero  branch=0xA8C0
+* A8B4  81A6  vm_push_word_body_byte  value=0x001A
+* A8B6  765F  vm_clear_byte_memory  
+* A8B8  81A6  vm_push_word_body_byte  value=0x001A
+* A8BA  78C9  vm_increment_word  
+* A8BC  765F  vm_clear_byte_memory  
+* A8BE  7935  vm_unwind_loop_frames_to_return  
+* A8C0  7963  vm_push_inline_byte_literal  inline_value=0x000A
+* A8C3  7DE2  signed_cell_divmod  body=0x7DE4
+* A8C5  7B49  vm_duplicate_if_nonzero  
+* A8C7  7A46  vm_test_zero  
+* A8C9  7982  vm_branch_forward8_if_zero  branch=0xA8D5
+* A8CC  81A6  vm_push_word_body_byte  value=0x001A
+* A8CE  78C9  vm_increment_word  
+* A8D0  765F  vm_clear_byte_memory  
+* A8D2  7979  vm_branch_unsigned_forward8  branch=0xA8E1
+* A8D5  81B3  vm_push_word_body_word  value=0x6C3C
+* A8D7  787E  vm_add_words  
+* A8D9  786B  vm_fetch_unsigned_byte  
+* A8DB  81A6  vm_push_word_body_byte  value=0x001A
+* A8DD  78C9  vm_increment_word  
+* A8DF  7861  vm_store_byte  
+* A8E1  81B3  vm_push_word_body_word  value=0x6C3C
+* A8E3  787E  vm_add_words  
+* A8E5  786B  vm_fetch_unsigned_byte  
+* A8E7  81A6  vm_push_word_body_byte  value=0x001A
+* A8E9  7861  vm_store_byte  
+* A8EB  792F  vm_return_to_caller_stream  

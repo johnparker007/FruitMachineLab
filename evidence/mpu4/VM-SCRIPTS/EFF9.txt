@@ -1,0 +1,41 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, memory operations, reel records
+Callers: F042
+
+Threaded script at EFF9; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* EFF9  9E5B  reels_test_symbols_1_equal_2  body=0x9E5D
+* EFFB  9E69  reels_test_symbols_1_equal_3  body=0x9E6B
+* EFFD  7AA3  vm_bitwise_or  
+* EFFF  7982  vm_branch_forward8_if_zero  branch=0xF008
+  F002  7FA1  vm_push_word_body_word  value=0x0160
+  F004  786B  vm_fetch_unsigned_byte  
+  F006  7935  vm_unwind_loop_frames_to_return  
+* F008  9E77  reels_test_symbols_2_equal_3  body=0x9E79
+* F00A  7982  vm_branch_forward8_if_zero  branch=0xF013
+  F00D  7FA5  vm_push_word_body_word  value=0x0162
+  F00F  786B  vm_fetch_unsigned_byte  
+  F011  7935  vm_unwind_loop_frames_to_return  
+* F013  EFDF  script_efdf  body=0xEFE1
+* F015  EFE7  script_efe7  body=0xEFE9
+* F017  7A97  vm_bitwise_and  
+* F019  EFE7  script_efe7  body=0xEFE9
+* F01B  EFEF  script_efef  body=0xEFF1
+* F01D  7A97  vm_bitwise_and  
+* F01F  7AA3  vm_bitwise_or  
+* F021  EFDF  script_efdf  body=0xEFE1
+* F023  EFEF  script_efef  body=0xEFF1
+* F025  7A97  vm_bitwise_and  
+* F027  7AA3  vm_bitwise_or  
+* F029  7982  vm_branch_forward8_if_zero  branch=0xF030
+* F02C  7F04  vm_push_word_body_byte  value=0x0001
+* F02E  7935  vm_unwind_loop_frames_to_return  
+* F030  9FBA  reels_test_exactly_two_symbol_flag2  body=0x9FBC
+* F032  7982  vm_branch_forward8_if_zero  branch=0xF03A
+* F035  A037  vm_push_word_body_byte  value=0x0000
+* F037  7979  vm_branch_unsigned_forward8  branch=0xF03E
+  F03A  ADAD  invoke_optional_hook_when_diagnostic_flag_and_mode_mask  body=0xADAF
+  F03C  A037  vm_push_word_body_byte  value=0x0000
+* F03E  792F  vm_return_to_caller_stream  

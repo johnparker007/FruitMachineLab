@@ -1,0 +1,63 @@
+# Local and cloud development
+
+Repository: https://github.com/johnparker007/FruitMachineLab
+Local clone: C:\projects\GitRepos\FruitMachineLab
+
+## Current status
+
+The local clone points to the expected GitHub remote. Installed .NET SDKs observed on
+2026-10-14: 5.0.404, 7.0.304, 8.0.407 and 9.0.313. The initial solution uses installed SDK 9.0.313 and net8.0 targeting packs. No SDK was installed or pinned. FruitMachineLab.sln includes WPF; FruitMachineLab.Headless.sln builds independently.
+
+Shared instructions are in AGENTS.md. No app project registration, cloud environment,
+GitHub authorization, commit, or push has been performed by this setup pass.
+
+## Local project
+
+Add the existing clone as a local project in the desktop app's Codex view, with this folder
+as the primary project directory. Start a local task there. This makes repository Git tools
+and automatic project-instruction discovery target FruitMachineLab.
+
+The original analysis workspace remains separate. Bring across curated reports, semantic
+maps, reproducible tooling and selected fixtures; preserve the original forensic workspace.
+
+## Cloud environment
+
+Create an environment through Work in > Cloud > Select environment > Create environment,
+or Settings > Codex Cloud > Environments. Select johnparker007/FruitMachineLab and complete
+GitHub authorization if requested. Review the proposed dependencies before approving setup
+or publishing the environment.
+
+First establish the headless solution and documented build/test commands locally, then use
+those commands to prepare and verify the cloud environment. Windows UI and local hardware
+tools need separate validation on Windows; do not treat headless cloud tests as UI validation.
+
+Cloud tasks have isolated working files. Local changes become available through reviewed
+commits and pushes, not automatic folder synchronization. Local ROMs, MAME, Ghidra and
+loopback MCP services are not automatically available to cloud tasks.
+
+Use separate branches for concurrent work and integrate through review. Preserve a reference
+behaviour baseline separate from experiments that change game rules.
+
+Official guidance:
+- https://learn.chatgpt.com/docs/projects
+- https://learn.chatgpt.com/docs/environments/modes
+- https://learn.chatgpt.com/docs/environments/cloud-environments
+
+## First implementation milestone
+
+Create the C# headless runtime and a simple Windows diagnostic UI, then execute Skill Cash
+against a selected recorded path. Record the exact SDK and build/test commands. Do not
+publish ROM binaries or assume apparent ROM padding is usable space.
+
+## Initial C# batch — 14 October 2026
+
+The repository now contains curated recovery reports, semantic maps, decoded scripts,
+a selected Skill Cash trace with independently checked a/b hashes, and headless/WPF
+projects. See ../README.md for exact build/run commands and ../IMPLEMENTATION-STATUS.md
+for evidence boundaries. Eight dependency-free verification groups cover cell semantics,
+initialization, normalization, intermediate replay stacks, fail-fast unsupported helpers,
+corrupted-fixture rejection and recorded dispatch tokens.
+
+Skill Cash is currently a bounded mechanics replay, not complete standalone feature
+execution. Selection/timing/random gates, NVRAM and win animation remain untranslated.
+No installation, system configuration, commit, push or cloud setup was performed.

@@ -1,0 +1,11 @@
+Purpose: fetch_byte_at_base_plus_offset
+Confidence: reviewed token mechanics
+Groups: arithmetic, memory operations
+Callers: DAC7, E5CF, C90C, DB58, CD29, C506, B0CF, CBD1
+
+Threaded script at 9971; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9971  787E  vm_add_words  
+* 9973  786B  vm_fetch_unsigned_byte  
+* 9975  792F  vm_return_to_caller_stream  

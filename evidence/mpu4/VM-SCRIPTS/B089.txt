@@ -1,0 +1,17 @@
+Purpose: test_board_link_destination_nonzero_and_forward
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: boolean/bit operations, indexed memory, stack/cell helpers
+Callers: DDF3, B09D, B144, B124
+
+Threaded script at B089; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B089  7B51  vm_duplicate_cell  
+* B08B  A15E  read_indexed_byte_table_at_a160  body=0x9971, push_address=0xA160
+* B08D  7B51  vm_duplicate_cell  
+* B08F  7A53  vm_test_nonzero  
+* B091  7B7D  vm_swap_two_cells  
+* B093  7B6D  vm_rotate_three_cells  
+* B095  7A65  vm_compare_top_gt_second_signed  
+* B097  7A97  vm_bitwise_and  
+* B099  792F  vm_return_to_caller_stream  

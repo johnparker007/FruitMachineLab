@@ -1,0 +1,41 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: accounting/NVRAM, boolean/bit operations, control flow, mask/address records, reels
+Callers: FDBA
+
+Threaded script at EF6B; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* EF6B  843B  push_pair_0001_0085  body=0x8417, push_address=0x843D
+* EF6D  767F  vm_test_word_memory_mask  
+* EF6F  7ABB  vm_bitwise_not  
+* EF71  EE7A  script_ee7a  body=0xEE7C
+* EF73  7963  vm_push_inline_byte_literal  inline_value=0x0032
+* EF76  9A11  random_percentage_test  body=0x9A13
+* EF78  7A97  vm_bitwise_and  
+* EF7A  7982  vm_branch_forward8_if_zero  branch=0xEFB3
+* EF7D  80C4  call_reels_push_matching_symbol_result  native=0x1AA3
+* EF7F  7982  vm_branch_forward8_if_zero  branch=0xEF87
+* EF82  A669  scaled_parameter_profile_at_a66b_counter_07c9  body=0xA5A5, push_address=0xA66B
+* EF84  7979  vm_branch_unsigned_forward8  branch=0xEF96
+* EF87  8016  call_push_nonzero_symbol_result_or_fallback_to_vm_stack  native=0x1AF1
+* EF89  7A46  vm_test_zero  
+* EF8B  7982  vm_branch_forward8_if_zero  branch=0xEF94
+* EF8E  7963  vm_push_inline_byte_literal  inline_value=0x0064
+* EF91  7979  vm_branch_unsigned_forward8  branch=0xEF96
+* EF94  A5B9  scaled_parameter_profile_at_a5bb_counter_07c9  body=0xA5A5, push_address=0xA5BB
+* EF96  EEC0  script_eec0  body=0xEEC2
+* EF98  9A11  random_percentage_test  body=0x9A13
+* EF9A  8486  push_pair_4000_00a0  body=0x8417, push_address=0x8488
+* EF9C  9A62  conditionally_set_or_clear_memory_mask  body=0x9A64
+* EF9E  80C4  call_reels_push_matching_symbol_result  native=0x1AA3
+* EFA0  8486  push_pair_4000_00a0  body=0x8417, push_address=0x8488
+* EFA2  767F  vm_test_word_memory_mask  
+* EFA4  7A97  vm_bitwise_and  
+* EFA6  7982  vm_branch_forward8_if_zero  branch=0xEFB1
+  EFA9  84B0  push_pair_0080_00a0  body=0x8417, push_address=0x84B2
+  EFAB  7665  vm_or_word_memory  
+  EFAD  800E  vm_push_word_body_word  value=0x04DF
+  EFAF  8323  call_accounting_increment_u24_if_normal_mode  native=0x57DB
+* EFB1  EF2E  script_ef2e  body=0xEF30
+* EFB3  792F  vm_return_to_caller_stream  

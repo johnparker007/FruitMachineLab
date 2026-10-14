@@ -1,0 +1,13 @@
+Purpose: apply_lamp_pattern_gated_by_flag
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, lamps, stack/cell helpers
+Callers: D2BE
+
+Threaded script at 9B6E; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9B6E  7B6D  vm_rotate_three_cells  
+* 9B70  7A53  vm_test_nonzero  
+* 9B72  7A97  vm_bitwise_and  
+* 9B74  8050  call_lamp_set_four_frame_pattern  native=0x49C5
+* 9B76  792F  vm_return_to_caller_stream  

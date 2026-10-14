@@ -1,0 +1,20 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, mask tests, mask/address records, memory operations
+Callers: F509
+
+Threaded script at F4D3; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  F4D3  8486  push_pair_4000_00a0  body=0x8417, push_address=0x8488
+  F4D5  7665  vm_or_word_memory  
+  F4D7  8435  push_pair_0038_0085  body=0x8417, push_address=0x8437
+  F4D9  7665  vm_or_word_memory  
+  F4DB  8140  vm_push_word_body_word  value=0x0326
+  F4DD  765F  vm_clear_byte_memory  
+  F4DF  8504  test_mask_8000_at_719e  body=0x841E, push_address=0x8506
+  F4E1  7ABB  vm_bitwise_not  
+  F4E3  7982  vm_branch_forward8_if_zero  branch=0xF4EA
+  F4E6  8480  push_pair_8000_00a0  body=0x8417, push_address=0x8482
+  F4E8  7671  vm_clear_word_memory_bits  
+  F4EA  792F  vm_return_to_caller_stream  

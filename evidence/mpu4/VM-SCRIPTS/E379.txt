@@ -1,0 +1,28 @@
+Purpose: clear_feature_flags_lamp_ranges_and_sound
+Confidence: reviewed token mechanics
+Groups: lamps, mask/address records, memory operations, sound/scheduler
+Callers: E43D
+
+Threaded script at E379; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* E379  84C2  push_pair_0010_00a0  body=0x8417, push_address=0x84C4
+* E37B  7671  vm_clear_word_memory_bits  
+* E37D  8492  push_pair_1000_00a0  body=0x8417, push_address=0x8494
+* E37F  7671  vm_clear_word_memory_bits  
+* E381  81C2  vm_push_word_body_byte  value=0x00B6
+* E383  765F  vm_clear_byte_memory  
+* E385  8248  vm_push_word_body_byte  value=0x0080
+* E387  9D3E  apply_lamp_range_record_9b7c  body=0x9D40
+* E389  8248  vm_push_word_body_byte  value=0x0080
+* E38B  9C38  apply_lamp_range_7257_725d  body=0x9ADB, push_address=0x9C3A
+* E38D  8248  vm_push_word_body_byte  value=0x0080
+* E38F  9B86  apply_lamp_range_728f_72bf  body=0x9ADB, push_address=0x9B88
+* E391  8248  vm_push_word_body_byte  value=0x0080
+* E393  9BBE  apply_lamp_range_7281_7286  body=0x9ADB, push_address=0x9BC0
+* E395  8248  vm_push_word_body_byte  value=0x0080
+* E397  9BCE  apply_lamp_range_731e_7320  body=0x9ADB, push_address=0x9BD0
+* E399  8435  push_pair_0038_0085  body=0x8417, push_address=0x8437
+* E39B  7671  vm_clear_word_memory_bits  
+* E39D  8130  call_reset_sound_and_scheduler  native=0x5B77
+* E39F  792F  vm_return_to_caller_stream  

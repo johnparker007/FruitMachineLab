@@ -1,0 +1,16 @@
+Purpose: refresh_current_board_square_lamp_if_nonzero
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: boolean/bit operations, memory operations
+Callers: DDF3, FDBA, DE75
+
+Threaded script at A285; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* A285  7F14  vm_push_word_body_byte  value=0x00C9
+* A287  786B  vm_fetch_unsigned_byte  
+* A289  7A46  vm_test_zero  
+* A28B  7574  vm_return_if_nonzero  
+* A28D  7F14  vm_push_word_body_byte  value=0x00C9
+* A28F  786B  vm_fetch_unsigned_byte  
+* A291  9F56  apply_pattern_8f_to_indexed_lamp_record  body=0x9F58
+* A293  792F  vm_return_to_caller_stream  

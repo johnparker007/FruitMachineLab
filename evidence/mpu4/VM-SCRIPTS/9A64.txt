@@ -1,0 +1,14 @@
+Purpose: conditionally_set_or_clear_memory_mask
+Confidence: reviewed token mechanics
+Groups: control flow, stack/cell helpers
+Callers: C98E, E2FC, EF6B, C81C, EF30, DD04, F428, FD56
+
+Threaded script at 9A64; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9A64  7B6D  vm_rotate_three_cells  
+* 9A66  7982  vm_branch_forward8_if_zero  branch=0x9A6E
+* 9A69  7665  vm_or_word_memory  
+* 9A6B  7979  vm_branch_unsigned_forward8  branch=0x9A70
+* 9A6E  7671  vm_clear_word_memory_bits  
+* 9A70  792F  vm_return_to_caller_stream  

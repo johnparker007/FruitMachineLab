@@ -1,0 +1,10 @@
+Purpose: execute_lamp_pattern_stream
+Confidence: exact helper pattern
+Groups: lamps
+Callers: 9C87
+
+Threaded script at 9C58; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  9C58  7753  vm_execute_lamp_stream  inline_stream=[cmd90(5); cmd91(0)]
+  9C5F  792F  vm_return_to_caller_stream  

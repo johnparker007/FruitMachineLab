@@ -1,0 +1,30 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, mask tests, mask/address records, reels, stack/cell helpers
+Callers: D1CD
+
+Threaded script at D199; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* D199  80C4  call_reels_push_matching_symbol_result  native=0x1AA3
+* D19B  9FA0  reels_test_all_three_symbol_flag2  body=0x9FA2
+* D19D  7AA3  vm_bitwise_or  
+* D19F  7982  vm_branch_forward8_if_zero  branch=0xD1A7
+  D1A2  D107  script_d107  body=0xD109
+  D1A4  7979  vm_branch_unsigned_forward8  branch=0xD1B6
+* D1A7  7963  vm_push_inline_byte_literal  inline_value=0x0005
+* D1AA  9A11  random_percentage_test  body=0x9A13
+* D1AC  7982  vm_branch_forward8_if_zero  branch=0xD1B4
+* D1AF  D175  script_d175  body=0xD177
+* D1B1  7979  vm_branch_unsigned_forward8  branch=0xD1B6
+* D1B4  D13E  script_d13e  body=0xD140
+* D1B6  84E0  test_mask_0200_at_719f  body=0x841E, push_address=0x84E2
+* D1B8  7A97  vm_bitwise_and  
+* D1BA  84AA  push_pair_0100_00a0  body=0x8417, push_address=0x84AC
+* D1BC  767F  vm_test_word_memory_mask  
+* D1BE  7982  vm_branch_forward8_if_zero  branch=0xD1C9
+* D1C1  7B3D  vm_drop_cell  
+* D1C3  D11A  script_d11a  body=0xD11C
+* D1C5  84E0  test_mask_0200_at_719f  body=0x841E, push_address=0x84E2
+* D1C7  7A97  vm_bitwise_and  
+* D1C9  792F  vm_return_to_caller_stream  

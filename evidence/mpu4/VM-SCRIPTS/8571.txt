@@ -1,0 +1,12 @@
+Purpose: test_zero_read_word_0047
+Confidence: exact helper pattern
+Groups: boolean/bit operations, memory operations
+Callers: C593, B666, ACC0, FC34, D462, A831, C3BA, A91B
+
+Threaded script at 8571; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 8571  7FE7  vm_push_word_body_byte  value=0x0047
+* 8573  790D  vm_fetch_word  
+* 8575  7A46  vm_test_zero  
+* 8577  792F  vm_return_to_caller_stream  

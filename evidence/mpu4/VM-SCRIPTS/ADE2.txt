@@ -1,0 +1,17 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, mask/address records, memory operations
+Callers: AE3A
+
+Threaded script at ADE2; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* ADE2  8181  vm_push_word_body_word  value=0x07CF
+* ADE4  786B  vm_fetch_unsigned_byte  
+* ADE6  7963  vm_push_inline_byte_literal  inline_value=0x0080
+* ADE9  7A97  vm_bitwise_and  
+* ADEB  7A46  vm_test_zero  
+* ADED  7982  vm_branch_forward8_if_zero  branch=0xADF4
+* ADF0  84C8  push_pair_0004_00a0  body=0x8417, push_address=0x84CA
+* ADF2  7671  vm_clear_word_memory_bits  
+* ADF4  792F  vm_return_to_caller_stream  

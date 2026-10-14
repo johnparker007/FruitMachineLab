@@ -1,0 +1,18 @@
+Purpose: apply_hold_selection_feedback_and_wait
+Confidence: reviewed token mechanics
+Groups: control flow, lamps
+Callers: D501, D0DB
+
+Threaded script at D0C2; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* D0C2  9E4C  script_9e4c  body=0x9E4E
+* D0C4  7963  vm_push_inline_byte_literal  inline_value=0x0064
+* D0C7  99AD  wait_irq_ticks_or_abort_flag  body=0x99AF
+* D0C9  9DDF  test_irq_timer_word_negative  body=0x9DE1
+* D0CB  7982  vm_branch_forward8_if_zero  branch=0xD0D5
+* D0CE  7A1C  vm_push_loop_index  
+* D0D0  D0B4  call_show_reel_group_lamp_candidate_d0b6  body=0xD0B6
+* D0D2  7979  vm_branch_unsigned_forward8  branch=0xD0D7
+  D0D5  801E  call_hyp_update_lamp_status_patterns  native=0x2CB3
+* D0D7  792F  vm_return_to_caller_stream  

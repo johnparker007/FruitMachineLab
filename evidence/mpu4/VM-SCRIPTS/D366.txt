@@ -1,0 +1,18 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, reels, stack/cell helpers
+Callers: D37F
+
+Threaded script at D366; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  D366  80C4  call_reels_push_matching_symbol_result  native=0x1AA3
+  D368  9FA0  reels_test_all_three_symbol_flag2  body=0x9FA2
+  D36A  7982  vm_branch_forward8_if_zero  branch=0xD373
+  D36D  7963  vm_push_inline_byte_literal  inline_value=0x0011
+  D370  7979  vm_branch_unsigned_forward8  branch=0xD375
+  D373  78B5  vm_push_zero  
+  D375  7AE7  vm_max_signed  
+  D377  7B59  vm_copy_second_cell  
+  D379  7A79  vm_compare_top_lt_second_signed  
+  D37B  792F  vm_return_to_caller_stream  

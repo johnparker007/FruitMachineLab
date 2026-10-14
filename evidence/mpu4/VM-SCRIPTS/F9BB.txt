@@ -1,0 +1,46 @@
+Purpose: attract_render_mirrored_six_row_grid_patterns
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: arithmetic, stack/cell helpers
+Callers: FA11
+
+Threaded script at F9BB; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* F9BB  7963  vm_push_inline_byte_literal  inline_value=0x0008
+* F9BE  78B5  vm_push_zero  
+* F9C0  79DC  vm_enter_loop_frame  
+* F9C2  7B51  vm_duplicate_cell  
+* F9C4  78C0  vm_push_one  
+* F9C6  7A1C  vm_push_loop_index  
+* F9C8  9D04  apply_indexed_six_id_lamp_record  body=0x9D06
+* F9CA  7B51  vm_duplicate_cell  
+* F9CC  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* F9CF  7A1C  vm_push_loop_index  
+* F9D1  9D04  apply_indexed_six_id_lamp_record  body=0x9D06
+* F9D3  7B51  vm_duplicate_cell  
+* F9D5  7963  vm_push_inline_byte_literal  inline_value=0x0005
+* F9D8  7A1C  vm_push_loop_index  
+* F9DA  9D04  apply_indexed_six_id_lamp_record  body=0x9D06
+* F9DC  7B51  vm_duplicate_cell  
+* F9DE  78B5  vm_push_zero  
+* F9E0  7963  vm_push_inline_byte_literal  inline_value=0x0007
+* F9E3  7A1C  vm_push_loop_index  
+* F9E5  78A0  vm_subtract_top_from_second  
+* F9E7  9D04  apply_indexed_six_id_lamp_record  body=0x9D06
+* F9E9  7B51  vm_duplicate_cell  
+* F9EB  78DE  vm_push_two  
+* F9ED  7963  vm_push_inline_byte_literal  inline_value=0x0007
+* F9F0  7A1C  vm_push_loop_index  
+* F9F2  78A0  vm_subtract_top_from_second  
+* F9F4  9D04  apply_indexed_six_id_lamp_record  body=0x9D06
+* F9F6  7B51  vm_duplicate_cell  
+* F9F8  7963  vm_push_inline_byte_literal  inline_value=0x0004
+* F9FB  7963  vm_push_inline_byte_literal  inline_value=0x0007
+* F9FE  7A1C  vm_push_loop_index  
+* FA00  78A0  vm_subtract_top_from_second  
+* FA02  9D04  apply_indexed_six_id_lamp_record  body=0x9D06
+* FA04  7963  vm_push_inline_byte_literal  inline_value=0x0014
+* FA07  F574  wait_attract_ticks_or_restore_game_state_on_credit_or_service  body=0xF576
+* FA09  7A00  vm_loop_increment_one  
+* FA0B  7B3D  vm_drop_cell  
+* FA0D  792F  vm_return_to_caller_stream  

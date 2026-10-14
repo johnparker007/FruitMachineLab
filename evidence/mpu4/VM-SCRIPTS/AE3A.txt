@@ -1,0 +1,88 @@
+Purpose: account_award_by_result_categories_and_selected_counter
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: accounting/NVRAM, arithmetic, award/balance operations, boolean/bit operations, control flow, mask/address records, memory operations, stack/cell helpers
+Callers: D003, E656, BD61, AFF4, F384, AF2B
+
+Threaded script at AE3A; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* AE3A  7B51  vm_duplicate_cell  
+* AE3C  7A46  vm_test_zero  
+* AE3E  7982  vm_branch_forward8_if_zero  branch=0xAE43
+  AE41  ADAD  invoke_optional_hook_when_diagnostic_flag_and_mode_mask  body=0xADAF
+* AE43  8492  push_pair_1000_00a0  body=0x8417, push_address=0x8494
+* AE45  767F  vm_test_word_memory_mask  
+* AE47  7982  vm_branch_forward8_if_zero  branch=0xAE57
+* AE4A  7B3D  vm_drop_cell  
+* AE4C  7B51  vm_duplicate_cell  
+* AE4E  830A  vm_push_word_body_word  value=0x0306
+* AE50  7888  vm_add_to_word_memory  
+* AE52  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* AE54  7979  vm_branch_unsigned_forward8  branch=0xAEB6
+* AE57  7D52  duplicate_two_cells  body=0x7D54
+* AE59  7B7D  vm_swap_two_cells  
+* AE5B  AE26  script_ae26  body=0xAE28
+* AE5D  7B7D  vm_swap_two_cells  
+* AE5F  7D52  duplicate_two_cells  body=0x7D54
+* AE61  AC56  invoke_optional_diagnostic_hook_if_selector_nonzero_else_drop_pair  body=0xAC58
+* AE63  7D52  duplicate_two_cells  body=0x7D54
+* AE65  833B  call_record_global_and_indexed_u16_amount_in_u24_statistics  native=0x1622
+* AE67  7B3D  vm_drop_cell  
+* AE69  8164  vm_push_word_body_byte  value=0x00B9
+* AE6B  786B  vm_fetch_unsigned_byte  
+* AE6D  7E6A  vm_push_word_body_byte  value=0x0003
+* AE6F  7A6F  vm_compare_equal  
+* AE71  7982  vm_branch_forward8_if_zero  branch=0xAE78
+* AE74  7B51  vm_duplicate_cell  
+* AE76  ADCC  script_adcc  body=0xADCE
+* AE78  7B51  vm_duplicate_cell  
+* AE7A  82DA  vm_push_word_body_byte  value=0x00BC
+* AE7C  786B  vm_fetch_unsigned_byte  
+* AE7E  7B51  vm_duplicate_cell  
+* AE80  8164  vm_push_word_body_byte  value=0x00B9
+* AE82  786B  vm_fetch_unsigned_byte  
+* AE84  7A5B  vm_compare_not_equal  
+* AE86  7A97  vm_bitwise_and  
+* AE88  7982  vm_branch_forward8_if_zero  branch=0xAE94
+* AE8B  82DA  vm_push_word_body_byte  value=0x00BC
+* AE8D  786B  vm_fetch_unsigned_byte  
+* AE8F  8337  call_record_indexed_u16_amount_in_u24_statistics  native=0x166D
+* AE91  7979  vm_branch_unsigned_forward8  branch=0xAE96
+* AE94  7B3D  vm_drop_cell  
+* AE96  82DD  vm_push_word_body_byte  value=0x00BD
+* AE98  786B  vm_fetch_unsigned_byte  
+* AE9A  7982  vm_branch_forward8_if_zero  branch=0xAEA6
+* AE9D  82DD  vm_push_word_body_byte  value=0x00BD
+* AE9F  786B  vm_fetch_unsigned_byte  
+* AEA1  8337  call_record_indexed_u16_amount_in_u24_statistics  native=0x166D
+* AEA3  7979  vm_branch_unsigned_forward8  branch=0xAEA8
+* AEA6  7B3D  vm_drop_cell  
+* AEA8  8164  vm_push_word_body_byte  value=0x00B9
+* AEAA  765F  vm_clear_byte_memory  
+* AEAC  82DA  vm_push_word_body_byte  value=0x00BC
+* AEAE  765F  vm_clear_byte_memory  
+* AEB0  82DD  vm_push_word_body_byte  value=0x00BD
+* AEB2  765F  vm_clear_byte_memory  
+* AEB4  7B3D  vm_drop_cell  
+* AEB6  9945  test_normal_mode_byte_nonzero  body=0x9947
+* AEB8  7982  vm_branch_forward8_if_zero  branch=0xAEC0
+  AEBB  7B3D  vm_drop_cell  
+  AEBD  7979  vm_branch_unsigned_forward8  branch=0xAEC6
+* AEC0  ADF6  script_adf6  body=0xADF8
+* AEC2  8333  call_accounting_add_500_times_amount_to_selected_u24_counter  native=0x151F
+* AEC4  ADE0  script_ade0  body=0xADE2
+* AEC6  81D2  vm_push_word_body_word  value=0x0331
+* AEC8  786B  vm_fetch_unsigned_byte  
+* AECA  7FFA  vm_push_word_body_word  value=0x04D0
+* AECC  78DE  vm_push_two  
+* AECE  787E  vm_add_words  
+* AED0  786B  vm_fetch_unsigned_byte  
+* AED2  7AE7  vm_max_signed  
+* AED4  7FFA  vm_push_word_body_word  value=0x04D0
+* AED6  78DE  vm_push_two  
+* AED8  787E  vm_add_words  
+* AEDA  7861  vm_store_byte  
+* AEDC  81D2  vm_push_word_body_word  value=0x0331
+* AEDE  765F  vm_clear_byte_memory  
+* AEE0  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* AEE2  792F  vm_return_to_caller_stream  

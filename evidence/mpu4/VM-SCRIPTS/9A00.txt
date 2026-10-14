@@ -1,0 +1,16 @@
+Purpose: compare_unsigned_scaled_percentage
+Confidence: reviewed token mechanics
+Groups: arithmetic, boolean/bit operations, random selection, stack/cell helpers
+Callers: 9A13
+
+Threaded script at 9A00; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9A00  78B5  vm_push_zero  
+* 9A02  7B6D  vm_rotate_three_cells  
+* 9A04  7963  vm_push_inline_byte_literal  inline_value=0x0064
+* 9A07  7BFE  vm_divide_double_cells_keep_quotient  
+* 9A09  7B7D  vm_swap_two_cells  
+* 9A0B  7B3D  vm_drop_cell  
+* 9A0D  7A83  vm_compare_top_gt_second_unsigned  
+* 9A0F  792F  vm_return_to_caller_stream  

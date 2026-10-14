@@ -1,0 +1,14 @@
+Purpose: invoke_optional_diagnostic_hook_if_selector_nonzero_else_drop_pair
+Confidence: reviewed token mechanics
+Groups: control flow, memory operations
+Callers: AE3A
+
+Threaded script at AC58; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* AC58  8281  vm_push_word_body_word  value=0x71A1
+* AC5A  786B  vm_fetch_unsigned_byte  
+* AC5C  7982  vm_branch_forward8_if_zero  branch=0xAC64
+  AC5F  0000  unknown token 3647  
+* AC64  7B43  vm_drop_two_cells  
+* AC66  792F  vm_return_to_caller_stream  

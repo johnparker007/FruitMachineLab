@@ -1,0 +1,316 @@
+{
+  "7de4": {
+    "checked": 265,
+    "mismatches": [],
+    "examples": [
+      {
+        "input": [
+          10,
+          40
+        ],
+        "expected": [
+          4,
+          0
+        ],
+        "actual": [
+          4,
+          0
+        ],
+        "u_before": 1644,
+        "u_after": 1644
+      },
+      {
+        "input": [
+          4,
+          5000
+        ],
+        "expected": [
+          1250,
+          0
+        ],
+        "actual": [
+          1250,
+          0
+        ],
+        "u_before": 1646,
+        "u_after": 1646
+      },
+      {
+        "input": [
+          10,
+          2
+        ],
+        "expected": [
+          0,
+          2
+        ],
+        "actual": [
+          0,
+          2
+        ],
+        "u_before": 1646,
+        "u_after": 1646
+      },
+      {
+        "input": [
+          6,
+          0
+        ],
+        "expected": [
+          0,
+          0
+        ],
+        "actual": [
+          0,
+          0
+        ],
+        "u_before": 1646,
+        "u_after": 1646
+      },
+      {
+        "input": [
+          6,
+          0
+        ],
+        "expected": [
+          0,
+          0
+        ],
+        "actual": [
+          0,
+          0
+        ],
+        "u_before": 1646,
+        "u_after": 1646
+      }
+    ]
+  },
+  "7df0": {
+    "checked": 16,
+    "mismatches": [],
+    "examples": [
+      {
+        "input": [
+          10,
+          40
+        ],
+        "expected": [
+          4
+        ],
+        "actual": [
+          4
+        ],
+        "u_before": 1644,
+        "u_after": 1646
+      },
+      {
+        "input": [
+          4,
+          5000
+        ],
+        "expected": [
+          1250
+        ],
+        "actual": [
+          1250
+        ],
+        "u_before": 1646,
+        "u_after": 1648
+      },
+      {
+        "input": [
+          2,
+          0
+        ],
+        "expected": [
+          0
+        ],
+        "actual": [
+          0
+        ],
+        "u_before": 1646,
+        "u_after": 1648
+      },
+      {
+        "input": [
+          2,
+          1
+        ],
+        "expected": [
+          0
+        ],
+        "actual": [
+          0
+        ],
+        "u_before": 1638,
+        "u_after": 1640
+      },
+      {
+        "input": [
+          2,
+          2
+        ],
+        "expected": [
+          1
+        ],
+        "actual": [
+          1
+        ],
+        "u_before": 1638,
+        "u_after": 1640
+      }
+    ]
+  },
+  "7dfa": {
+    "checked": 239,
+    "mismatches": [],
+    "examples": [
+      {
+        "input": [
+          10,
+          6
+        ],
+        "expected": [
+          6
+        ],
+        "actual": [
+          6
+        ],
+        "u_before": 1646,
+        "u_after": 1648
+      },
+      {
+        "input": [
+          10,
+          7
+        ],
+        "expected": [
+          7
+        ],
+        "actual": [
+          7
+        ],
+        "u_before": 1646,
+        "u_after": 1648
+      },
+      {
+        "input": [
+          10,
+          8
+        ],
+        "expected": [
+          8
+        ],
+        "actual": [
+          8
+        ],
+        "u_before": 1646,
+        "u_after": 1648
+      },
+      {
+        "input": [
+          10,
+          9
+        ],
+        "expected": [
+          9
+        ],
+        "actual": [
+          9
+        ],
+        "u_before": 1646,
+        "u_after": 1648
+      },
+      {
+        "input": [
+          10,
+          10
+        ],
+        "expected": [
+          0
+        ],
+        "actual": [
+          0
+        ],
+        "u_before": 1646,
+        "u_after": 1648
+      }
+    ]
+  },
+  "9f6a": {
+    "checked": 25,
+    "mismatches": [],
+    "examples": [
+      {
+        "input": [
+          0,
+          0
+        ],
+        "expected": [
+          0
+        ],
+        "actual": [
+          0
+        ],
+        "u_before": 1648,
+        "u_after": 1648
+      },
+      {
+        "input": [
+          0,
+          0
+        ],
+        "expected": [
+          0
+        ],
+        "actual": [
+          0
+        ],
+        "u_before": 1648,
+        "u_after": 1648
+      },
+      {
+        "input": [
+          0,
+          0
+        ],
+        "expected": [
+          0
+        ],
+        "actual": [
+          0
+        ],
+        "u_before": 1648,
+        "u_after": 1648
+      },
+      {
+        "input": [
+          0,
+          0
+        ],
+        "expected": [
+          0
+        ],
+        "actual": [
+          0
+        ],
+        "u_before": 1648,
+        "u_after": 1648
+      },
+      {
+        "input": [
+          0,
+          0
+        ],
+        "expected": [
+          0
+        ],
+        "actual": [
+          0
+        ],
+        "u_before": 1648,
+        "u_after": 1648
+      }
+    ]
+  }
+}

@@ -1,0 +1,48 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: arithmetic, boolean/bit operations, control flow, lamps, memory operations, sound/scheduler, stack/cell helpers
+Callers: EBDA
+
+Threaded script at E4D3; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* E4D3  8248  vm_push_word_body_byte  value=0x0080
+* E4D5  9BBE  apply_lamp_range_7281_7286  body=0x9ADB, push_address=0x9BC0
+* E4D7  8318  vm_push_word_body_byte  value=0x00BA
+* E4D9  790D  vm_fetch_word  
+* E4DB  9FED  lookup_first_award_threshold_index_in_75bd  body=0x9FEF
+* E4DD  78D3  vm_decrement_word  
+* E4DF  7B51  vm_duplicate_cell  
+* E4E1  E468  vm_push_local_frame_address  value=0x0002
+* E4E3  7861  vm_store_byte  
+* E4E5  E4BC  script_e4bc  body=0xE4BE
+* E4E7  7963  vm_push_inline_byte_literal  inline_value=0x0004
+* E4EA  79DC  vm_enter_loop_frame  
+* E4EC  7A1C  vm_push_loop_index  
+* E4EE  855E  test_two_indirect_zero_conditions  body=0x8560
+* E4F0  7ABB  vm_bitwise_not  
+* E4F2  7982  vm_branch_forward8_if_zero  branch=0xE510
+* E4F5  7B51  vm_duplicate_cell  
+* E4F7  8212  vm_push_word_body_byte  value=0x0085
+* E4F9  9BBA  apply_indexed_lamp_id_from_7281  body=0x9B18, push_address=0x9BBC
+* E4FB  7B51  vm_duplicate_cell  
+* E4FD  7963  vm_push_inline_byte_literal  inline_value=0x0005
+* E500  7B7D  vm_swap_two_cells  
+* E502  78A0  vm_subtract_top_from_second  
+* E504  78DE  vm_push_two  
+* E506  7DC4  multiply_words_keep_low_cell  body=0x7DC6
+* E508  8579  write_byte_004d_857b  body=0x857B
+* E50A  9380  queue_sound_stream_9382  body=0x856B, push_address=0x9382
+* E50C  80F8  call_scheduler_wait_until_active_list_empty  native=0x5CCB
+* E50E  8130  call_reset_sound_and_scheduler  native=0x5B77
+* E510  824E  vm_push_word_body_byte  value=0x008F
+* E512  9BBA  apply_indexed_lamp_id_from_7281  body=0x9B18, push_address=0x9BBC
+* E514  78AA  vm_push_true_minus_one  
+* E516  79EB  vm_loop_add_variable_step  
+* E518  855E  test_two_indirect_zero_conditions  body=0x8560
+* E51A  7982  vm_branch_forward8_if_zero  branch=0xE525
+  E51D  8130  call_reset_sound_and_scheduler  native=0x5B77
+  E51F  9380  queue_sound_stream_9382  body=0x856B, push_address=0x9382
+  E521  80F8  call_scheduler_wait_until_active_list_empty  native=0x5CCB
+  E523  8130  call_reset_sound_and_scheduler  native=0x5B77
+* E525  792F  vm_return_to_caller_stream  

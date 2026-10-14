@@ -1,0 +1,73 @@
+Purpose: display_special_feature_name_by_index
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, control flow, display, lamps, stack/cell helpers
+Callers: E227
+
+Threaded script at E0C3; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* E0C3  7B51  vm_duplicate_cell  
+* E0C5  824E  vm_push_word_body_byte  value=0x008F
+* E0C7  9BC4  apply_indexed_lamp_id_from_724c  body=0x9B18, push_address=0x9BC6
+* E0C9  7B51  vm_duplicate_cell  
+* E0CB  78B5  vm_push_zero  
+* E0CD  7A6F  vm_compare_equal  
+* E0CF  79B9  vm_branch_absolute16_if_zero  branch=0xE0E9
+* E0D3  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); '   SNAKE BITE '; cmd7A()]
+* E0E5  79B0  vm_branch_absolute16  branch=0xE20B
+* E0E9  7B51  vm_duplicate_cell  
+* E0EB  78C0  vm_push_one  
+* E0ED  7A6F  vm_compare_equal  
+* E0EF  79B9  vm_branch_absolute16_if_zero  branch=0xE10B
+* E0F3  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); 'ADDERS '; cmd6E(); ' LADDERS'; cmd7A()]
+* E107  79B0  vm_branch_absolute16  branch=0xE20B
+* E10B  7B51  vm_duplicate_cell  
+* E10D  78DE  vm_push_two  
+* E10F  7A6F  vm_compare_equal  
+* E111  79B9  vm_branch_absolute16_if_zero  branch=0xE12A
+* E115  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); '    BACK 3   '; cmd7A()]
+* E126  79B0  vm_branch_absolute16  branch=0xE20B
+* E12A  7B51  vm_duplicate_cell  
+* E12C  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* E12F  7A6F  vm_compare_equal  
+* E131  79B9  vm_branch_absolute16_if_zero  branch=0xE14B
+* E135  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); '   SNAKE BITE '; cmd7A()]
+* E147  79B0  vm_branch_absolute16  branch=0xE20B
+* E14B  7B51  vm_duplicate_cell  
+* E14D  7963  vm_push_inline_byte_literal  inline_value=0x0004
+* E150  7A6F  vm_compare_equal  
+* E152  79B9  vm_branch_absolute16_if_zero  branch=0xE16B
+* E156  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); '   ROLL EVEN '; cmd7A()]
+* E167  79B0  vm_branch_absolute16  branch=0xE20B
+* E16B  7B51  vm_duplicate_cell  
+* E16D  7963  vm_push_inline_byte_literal  inline_value=0x0005
+* E170  7A6F  vm_compare_equal  
+* E172  79B9  vm_branch_absolute16_if_zero  branch=0xE18B
+* E176  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); '    ADVANCE  '; cmd7A()]
+* E187  79B0  vm_branch_absolute16  branch=0xE20B
+* E18B  7B51  vm_duplicate_cell  
+* E18D  7963  vm_push_inline_byte_literal  inline_value=0x0006
+* E190  7A6F  vm_compare_equal  
+* E192  79B9  vm_branch_absolute16_if_zero  branch=0xE1AB
+* E196  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); '   UP N OVER '; cmd7A()]
+* E1A7  79B0  vm_branch_absolute16  branch=0xE20B
+* E1AB  7B51  vm_duplicate_cell  
+* E1AD  7963  vm_push_inline_byte_literal  inline_value=0x0007
+* E1B0  7A6F  vm_compare_equal  
+* E1B2  79B9  vm_branch_absolute16_if_zero  branch=0xE1CC
+* E1B6  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); '   SNAKE BITE '; cmd7A()]
+* E1C8  79B0  vm_branch_absolute16  branch=0xE20B
+* E1CC  7B51  vm_duplicate_cell  
+* E1CE  7963  vm_push_inline_byte_literal  inline_value=0x0008
+* E1D1  7A6F  vm_compare_equal  
+* E1D3  79B9  vm_branch_absolute16_if_zero  branch=0xE1EA
+* E1D7  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); '    BOOST  '; cmd7A()]
+* E1E6  79B0  vm_branch_absolute16  branch=0xE20B
+* E1EA  7B51  vm_duplicate_cell  
+* E1EC  7963  vm_push_inline_byte_literal  inline_value=0x0009
+* E1EF  7A6F  vm_compare_equal  
+* E1F1  79B9  vm_branch_absolute16_if_zero  branch=0xE20B
+* E1F5  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); '    RATTLER   '; cmd7A()]
+* E207  79B0  vm_branch_absolute16  branch=0xE20B
+* E20B  7B3D  vm_drop_cell  
+* E20D  792F  vm_return_to_caller_stream  

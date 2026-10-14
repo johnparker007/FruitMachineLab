@@ -1,0 +1,64 @@
+Purpose: display_named_cash_feature_by_index
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, control flow, display, stack/cell helpers
+Callers: DFF6
+
+Threaded script at DE9A; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* DE9A  7B51  vm_duplicate_cell  
+* DE9C  78B5  vm_push_zero  
+* DE9E  7A6F  vm_compare_equal  
+* DEA0  79B9  vm_branch_absolute16_if_zero  branch=0xDEBC
+* DEA4  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); '   LOOT SHOOT   '; cmd7A()]
+* DEB8  79B0  vm_branch_absolute16  branch=0xDFD2
+* DEBC  7B51  vm_duplicate_cell  
+* DEBE  78C0  vm_push_one  
+* DEC0  7A6F  vm_compare_equal  
+* DEC2  79B9  vm_branch_absolute16_if_zero  branch=0xDEDE
+* DEC6  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); '   NICE  DICE   '; cmd7A()]
+* DEDA  79B0  vm_branch_absolute16  branch=0xDFD2
+* DEDE  7B51  vm_duplicate_cell  
+* DEE0  78DE  vm_push_two  
+* DEE2  7A6F  vm_compare_equal  
+* DEE4  79B9  vm_branch_absolute16_if_zero  branch=0xDF00
+* DEE8  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); '  CASH CLIMBER  '; cmd7A()]
+* DEFC  79B0  vm_branch_absolute16  branch=0xDFD2
+* DF00  7B51  vm_duplicate_cell  
+* DF02  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* DF05  7A6F  vm_compare_equal  
+* DF07  79B9  vm_branch_absolute16_if_zero  branch=0xDF23
+* DF0B  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); '   MONEY TRAP   '; cmd7A()]
+* DF1F  79B0  vm_branch_absolute16  branch=0xDFD2
+* DF23  7B51  vm_duplicate_cell  
+* DF25  7963  vm_push_inline_byte_literal  inline_value=0x0004
+* DF28  7A6F  vm_compare_equal  
+* DF2A  79B9  vm_branch_absolute16_if_zero  branch=0xDF46
+* DF2E  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); '   PICK A WIN   '; cmd7A()]
+* DF42  79B0  vm_branch_absolute16  branch=0xDFD2
+* DF46  7B51  vm_duplicate_cell  
+* DF48  7963  vm_push_inline_byte_literal  inline_value=0x0005
+* DF4B  7A6F  vm_compare_equal  
+* DF4D  79B9  vm_branch_absolute16_if_zero  branch=0xDF69
+* DF51  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); '   SKILL CASH   '; cmd7A()]
+* DF65  79B0  vm_branch_absolute16  branch=0xDFD2
+* DF69  7B51  vm_duplicate_cell  
+* DF6B  7963  vm_push_inline_byte_literal  inline_value=0x0006
+* DF6E  7A6F  vm_compare_equal  
+* DF70  79B9  vm_branch_absolute16_if_zero  branch=0xDF8C
+* DF74  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); '  CASH  ATTACK  '; cmd7A()]
+* DF88  79B0  vm_branch_absolute16  branch=0xDFD2
+* DF8C  7B51  vm_duplicate_cell  
+* DF8E  7963  vm_push_inline_byte_literal  inline_value=0x0007
+* DF91  7A6F  vm_compare_equal  
+* DF93  79B9  vm_branch_absolute16_if_zero  branch=0xDFAF
+* DF97  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); ' SUPER  STEPPER '; cmd7A()]
+* DFAB  79B0  vm_branch_absolute16  branch=0xDFD2
+* DFAF  7B51  vm_duplicate_cell  
+* DFB1  7963  vm_push_inline_byte_literal  inline_value=0x0008
+* DFB4  7A6F  vm_compare_equal  
+* DFB6  79B9  vm_branch_absolute16_if_zero  branch=0xDFD2
+* DFBA  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); '  CASH JACKPOT  '; cmd7A()]
+* DFCE  79B0  vm_branch_absolute16  branch=0xDFD2
+* DFD2  7B3D  vm_drop_cell  
+* DFD4  792F  vm_return_to_caller_stream  

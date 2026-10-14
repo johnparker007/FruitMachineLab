@@ -1,0 +1,16 @@
+Purpose: conditionally_increment_byte_bf_and_refresh_display
+Confidence: reviewed token mechanics
+Groups: control flow, memory operations
+Callers: DDF3
+
+Threaded script at B88C; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B88C  B851  script_b851  body=0xB853
+* B88E  9A11  random_percentage_test  body=0x9A13
+* B890  7982  vm_branch_forward8_if_zero  branch=0xB89B
+* B893  7EED  vm_push_word_body_byte  value=0x00BF
+* B895  7653  vm_increment_byte_memory  
+* B897  A8ED  display_nudgepot_byte_as_two_decimal_digits  body=0xA8EF
+* B899  A893  clear_display_mode_bytes_unless_option_0200  body=0xA895
+* B89B  792F  vm_return_to_caller_stream  

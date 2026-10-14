@@ -1,0 +1,87 @@
+[
+  {
+    "fixture": "policy6",
+    "equal_files": {
+      "state.csv": true,
+      "feature-state.csv": true,
+      "debug.log": true,
+      "ram-final.bin": true,
+      "input-levels.csv": true
+    }
+  },
+  {
+    "fixture": "policy7",
+    "equal_files": {
+      "state.csv": true,
+      "feature-state.csv": true,
+      "debug.log": true,
+      "ram-final.bin": true,
+      "input-levels.csv": true
+    }
+  },
+  {
+    "fixture": "service-tests",
+    "equal_files": {
+      "state.csv": true,
+      "feature-state.csv": true,
+      "debug.log": true,
+      "ram-final.bin": true,
+      "input-levels.csv": true
+    }
+  },
+  {
+    "fixture": "cash8",
+    "equal_files": {
+      "state.csv": true,
+      "feature-state.csv": true,
+      "debug.log": true,
+      "ram-final.bin": true,
+      "input-levels.csv": true
+    }
+  },
+  {
+    "fixture": "cash-check",
+    "equal_files": {
+      "state.csv": true,
+      "feature-state.csv": true,
+      "debug.log": true,
+      "ram-final.bin": true,
+      "input-levels.csv": true
+    }
+  },
+  {
+    "fixture": "pct98",
+    "equal_files": {
+      "state.csv": true,
+      "feature-state.csv": true,
+      "debug.log": true,
+      "ram-final.bin": true,
+      "input-levels.csv": true,
+      "dip-settings.txt": true
+    }
+  },
+  {
+    "fixture": "stepper10",
+    "equal_files": {
+      "state.csv": true,
+      "feature-state.csv": true,
+      "debug.log": true,
+      "ram-final.bin": true,
+      "input-levels.csv": true
+    }
+  },
+  {
+    "fixture": "stepper-check-corrected",
+    "runs": [
+      "vm-batch-stepper-check-b",
+      "vm-batch-stepper-check-c"
+    ],
+    "equal_files": {
+      "state.csv": true,
+      "feature-state.csv": true,
+      "debug.log": true,
+      "ram-final.bin": true,
+      "input-levels.csv": true
+    }
+  }
+]

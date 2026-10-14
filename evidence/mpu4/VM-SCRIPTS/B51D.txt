@@ -1,0 +1,77 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, stack/cell helpers
+Callers: B5ED
+
+Threaded script at B51D; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B51D  7B51  vm_duplicate_cell  
+* B51F  78B5  vm_push_zero  
+* B521  7A6F  vm_compare_equal  
+* B523  798E  vm_branch_forward8_if_zero_else_drop  branch=0xB52C
+* B526  A789  scaled_parameter_profile_at_a78b_counter_07c9  body=0xA5A5, push_address=0xA78B
+* B528  79B7  vm_branch_absolute16  branch=0xB5BA
+* B52C  7B51  vm_duplicate_cell  
+* B52E  7963  vm_push_inline_byte_literal  inline_value=0x000A
+* B531  7A6F  vm_compare_equal  
+* B533  798E  vm_branch_forward8_if_zero_else_drop  branch=0xB53E
+* B536  A779  scaled_parameter_profile_at_a77b_counter_07c9  body=0xA5A5, push_address=0xA77B
+* B538  B4FA  script_b4fa  body=0xB4FC
+* B53A  79B7  vm_branch_absolute16  branch=0xB5BA
+* B53E  7B51  vm_duplicate_cell  
+* B540  7963  vm_push_inline_byte_literal  inline_value=0x0010
+* B543  7A6F  vm_compare_equal  
+* B545  798E  vm_branch_forward8_if_zero_else_drop  branch=0xB550
+* B548  A769  scaled_parameter_profile_at_a76b_counter_07c9  body=0xA5A5, push_address=0xA76B
+* B54A  B4FA  script_b4fa  body=0xB4FC
+* B54C  79B7  vm_branch_absolute16  branch=0xB5BA
+* B550  7B51  vm_duplicate_cell  
+* B552  7ECB  vm_push_word_body_byte  value=0x0011
+* B554  7A6F  vm_compare_equal  
+* B556  798E  vm_branch_forward8_if_zero_else_drop  branch=0xB561
+* B559  A799  scaled_parameter_profile_at_a79b_counter_07c9  body=0xA5A5, push_address=0xA79B
+* B55B  B4FA  script_b4fa  body=0xB4FC
+* B55D  79B7  vm_branch_absolute16  branch=0xB5BA
+* B561  7B51  vm_duplicate_cell  
+* B563  7963  vm_push_inline_byte_literal  inline_value=0x0014
+* B566  7A6F  vm_compare_equal  
+* B568  798E  vm_branch_forward8_if_zero_else_drop  branch=0xB571
+* B56B  A759  scaled_parameter_profile_at_a75b_counter_07c9  body=0xA5A5, push_address=0xA75B
+* B56D  79B7  vm_branch_absolute16  branch=0xB5BA
+* B571  7B51  vm_duplicate_cell  
+* B573  7963  vm_push_inline_byte_literal  inline_value=0x0016
+* B576  7A6F  vm_compare_equal  
+* B578  798E  vm_branch_forward8_if_zero_else_drop  branch=0xB581
+* B57B  A749  scaled_parameter_profile_at_a74b_counter_07c9  body=0xA5A5, push_address=0xA74B
+* B57D  79B7  vm_branch_absolute16  branch=0xB5BA
+* B581  7B51  vm_duplicate_cell  
+* B583  7F0A  vm_push_word_body_byte  value=0x002F
+* B585  7A6F  vm_compare_equal  
+* B587  798E  vm_branch_forward8_if_zero_else_drop  branch=0xB590
+* B58A  A739  scaled_parameter_profile_at_a73b_counter_07c9  body=0xA5A5, push_address=0xA73B
+* B58C  79B7  vm_branch_absolute16  branch=0xB5BA
+* B590  7B51  vm_duplicate_cell  
+* B592  7F07  vm_push_word_body_byte  value=0x003C
+* B594  7A6F  vm_compare_equal  
+* B596  798E  vm_branch_forward8_if_zero_else_drop  branch=0xB5A8
+* B599  A729  scaled_parameter_profile_at_a72b_counter_07c9  body=0xA5A5, push_address=0xA72B
+* B59B  9F5E  test_two_orange1_input_conditions  body=0x9F60
+* B59D  7963  vm_push_inline_byte_literal  inline_value=0x0064
+* B5A0  7A97  vm_bitwise_and  
+* B5A2  7AE7  vm_max_signed  
+* B5A4  79B7  vm_branch_absolute16  branch=0xB5BA
+  B5A8  7B51  vm_duplicate_cell  
+  B5AA  7B51  vm_duplicate_cell  
+  B5AC  7A6F  vm_compare_equal  
+  B5AE  798E  vm_branch_forward8_if_zero_else_drop  branch=0xB5B8
+  B5B1  7963  vm_push_inline_byte_literal  inline_value=0x0064
+  B5B4  79B7  vm_branch_absolute16  branch=0xB5BA
+  B5B8  7B3D  vm_drop_cell  
+* B5BA  78B5  vm_push_zero  
+* B5BC  7AE7  vm_max_signed  
+* B5BE  7963  vm_push_inline_byte_literal  inline_value=0x0064
+* B5C1  7ADC  vm_min_signed  
+* B5C3  9A11  random_percentage_test  body=0x9A13
+* B5C5  7ABB  vm_bitwise_not  
+* B5C7  792F  vm_return_to_caller_stream  

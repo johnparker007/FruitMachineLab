@@ -1,0 +1,54 @@
+Purpose: announce_improvement_and_reposition_reels
+Confidence: reviewed token mechanics
+Groups: arithmetic, boolean/bit operations, control flow, display, memory operations, reel records, reels, reels/symbol tests, sound/scheduler, stack/cell helpers
+Callers: B712
+
+Threaded script at B666; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B666  8B99  queue_sound_stream_8b9b  body=0x856B, push_address=0x8B9B
+* B668  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); 'I CAN DO BETTER '; cmd7A()]
+* B67C  A30E  vm_push_word_body_address  value=0xA310
+* B67E  831B  call_alpha_execute_stream_at_x  native=0x3CC0
+* B680  809C  call_resume_alpha_stream_when_delay_expired  native=0x3CF7
+* B682  856F  test_zero_read_word_0047_8571  body=0x8571
+* B684  79A6  vm_branch_backward8_if_zero  branch=0xB680
+* B687  B2A3  vm_push_local_frame_address  value=0x0008
+* B689  786B  vm_fetch_unsigned_byte  
+* B68B  7B51  vm_duplicate_cell  
+* B68D  8245  vm_push_word_body_byte  value=0x00BE
+* B68F  7861  vm_store_byte  
+* B691  7EED  vm_push_word_body_byte  value=0x00BF
+* B693  7861  vm_store_byte  
+* B695  9D7A  push_three_reel_loop_bounds  body=0x9D7C
+* B697  79DC  vm_enter_loop_frame  
+* B699  B29D  vm_push_local_frame_address  value=0x0004
+* B69B  7A1C  vm_push_loop_index  
+* B69D  787E  vm_add_words  
+* B69F  786B  vm_fetch_unsigned_byte  
+* B6A1  9DB5  address_record_0198_loop_index  body=0x9D86, push_address=0x9DB7
+* B6A3  786B  vm_fetch_unsigned_byte  
+* B6A5  78A0  vm_subtract_top_from_second  
+* B6A7  7B49  vm_duplicate_if_nonzero  
+* B6A9  7982  vm_branch_forward8_if_zero  branch=0xB6D3
+* B6AC  7B51  vm_duplicate_cell  
+* B6AE  78B5  vm_push_zero  
+* B6B0  7A65  vm_compare_top_gt_second_signed  
+* B6B2  7982  vm_branch_forward8_if_zero  branch=0xB6BA
+* B6B5  7963  vm_push_inline_byte_literal  inline_value=0x0010
+* B6B8  787E  vm_add_words  
+* B6BA  78B5  vm_push_zero  
+* B6BC  79DC  vm_enter_loop_frame  
+* B6BE  7A26  vm_push_outer_loop_index  
+* B6C0  9DC1  address_record_0169_explicit_index  body=0x9D97, push_address=0x9DC3
+* B6C2  7659  vm_decrement_byte_memory  
+* B6C4  811C  call_reels_start_motion_without_sound_setup  native=0x61F6
+* B6C6  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* B6C8  809C  call_resume_alpha_stream_when_delay_expired  native=0x3CF7
+* B6CA  7963  vm_push_inline_byte_literal  inline_value=0x0064
+* B6CD  99AD  wait_irq_ticks_or_abort_flag  body=0x99AF
+* B6CF  809C  call_resume_alpha_stream_when_delay_expired  native=0x3CF7
+* B6D1  7A00  vm_loop_increment_one  
+* B6D3  7A00  vm_loop_increment_one  
+* B6D5  8130  call_reset_sound_and_scheduler  native=0x5B77
+* B6D7  792F  vm_return_to_caller_stream  

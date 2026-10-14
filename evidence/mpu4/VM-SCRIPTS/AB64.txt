@@ -1,0 +1,54 @@
+Purpose: consume_credit_and_record_stake
+Confidence: reviewed gameplay context
+Groups: accounting/NVRAM, boolean/bit operations, control flow, credits, input conditions, memory operations, stack/cell helpers
+Callers: AC25
+
+Threaded script at AB64; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* AB64  7FCF  call_game_decay_counter_035b_every_forty_calls  native=0x3AFA
+* AB66  7EF6  vm_push_word_body_byte  value=0x00E0
+* AB68  786B  vm_fetch_unsigned_byte  
+* AB6A  7982  vm_branch_forward8_if_zero  branch=0xABA0
+* AB6D  7EF9  vm_push_word_body_word  value=0x0304
+* AB6F  786B  vm_fetch_unsigned_byte  
+* AB71  8190  vm_push_word_body_word  value=0x02F0
+* AB73  786B  vm_fetch_unsigned_byte  
+* AB75  7A6F  vm_compare_equal  
+* AB77  7982  vm_branch_forward8_if_zero  branch=0xABA0
+* AB7A  78AA  vm_push_true_minus_one  
+* AB7C  7EF9  vm_push_word_body_word  value=0x0304
+* AB7E  7894  vm_add_to_byte_memory  
+* AB80  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* AB82  7EF9  vm_push_word_body_word  value=0x0304
+* AB84  786B  vm_fetch_unsigned_byte  
+* AB86  7B51  vm_duplicate_cell  
+* AB88  7963  vm_push_inline_byte_literal  inline_value=0x0005
+* AB8B  7A79  vm_compare_top_lt_second_signed  
+* AB8D  7B7D  vm_swap_two_cells  
+* AB8F  78B5  vm_push_zero  
+* AB91  7A65  vm_compare_top_gt_second_signed  
+* AB93  7AA3  vm_bitwise_or  
+* AB95  7982  vm_branch_forward8_if_zero  branch=0xABA0
+  AB98  78B5  vm_push_zero  
+  AB9A  7EF9  vm_push_word_body_word  value=0x0304
+  AB9C  7861  vm_store_byte  
+  AB9E  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* ABA0  8190  vm_push_word_body_word  value=0x02F0
+* ABA2  7659  vm_decrement_byte_memory  
+* ABA4  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* ABA6  78DE  vm_push_two  
+* ABA8  8402  vm_test_input_condition  value=0x0002
+* ABAA  7982  vm_branch_forward8_if_zero  branch=0xABB1
+  ABAD  7B3D  vm_drop_cell  
+  ABAF  78C0  vm_push_one  
+* ABB1  78B5  vm_push_zero  
+* ABB3  79DC  vm_enter_loop_frame  
+* ABB5  AB31  record_stake_accounting_unit  body=0xAB33
+* ABB7  7A00  vm_loop_increment_one  
+* ABB9  81D2  vm_push_word_body_word  value=0x0331
+* ABBB  7653  vm_increment_byte_memory  
+* ABBD  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* ABBF  7F6D  vm_push_word_body_byte  value=0x00C0
+* ABC1  7653  vm_increment_byte_memory  
+* ABC3  792F  vm_return_to_caller_stream  

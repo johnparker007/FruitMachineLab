@@ -1,0 +1,20 @@
+Purpose: nice_dice_convert_final_reel_symbol_into_pending_award
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: accounting/NVRAM, award/balance operations, display, memory operations, reel records, reels, reels/symbol tests, sound/scheduler, stack/cell helpers
+Callers: BF3E
+
+Threaded script at BEB9; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* BEB9  80A0  call_alpha_reset_and_clear_display  native=0x3D0E
+* BEBB  80F8  call_scheduler_wait_until_active_list_empty  native=0x5CCB
+* BEBD  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* BEBF  7FAD  vm_push_word_body_word  value=0x0166
+* BEC1  786B  vm_fetch_unsigned_byte  
+* BEC3  7B51  vm_duplicate_cell  
+* BEC5  BD28  animate_cash_result_character_then_flash_amount  body=0xBD2A
+* BEC7  78FD  vm_shift_left_one  
+* BEC9  8318  vm_push_word_body_byte  value=0x00BA
+* BECB  7874  vm_store_word  
+* BECD  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* BECF  792F  vm_return_to_caller_stream  

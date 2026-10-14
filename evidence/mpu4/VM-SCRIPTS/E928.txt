@@ -1,0 +1,31 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, memory operations, reel records, reels, stack/cell helpers
+Callers: E99E, E960
+
+Threaded script at E928; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* E928  7963  vm_push_inline_byte_literal  inline_value=0x0005
+* E92B  7963  vm_push_inline_byte_literal  inline_value=0x0008
+* E92E  99EC  random_scaled_range_selection  body=0x99EE
+* E930  7CCD  vm_negate_cell  
+* E932  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* E935  9DC1  address_record_0169_explicit_index  body=0x9D97, push_address=0x9DC3
+* E937  7861  vm_store_byte  
+* E939  7963  vm_push_inline_byte_literal  inline_value=0x0010
+* E93C  78B5  vm_push_zero  
+* E93E  79DC  vm_enter_loop_frame  
+* E940  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* E943  9DC1  address_record_0169_explicit_index  body=0x9D97, push_address=0x9DC3
+* E945  7659  vm_decrement_byte_memory  
+* E947  8114  call_reels_translate_positions_to_symbol_records  native=0x2C12
+* E949  7B51  vm_duplicate_cell  
+* E94B  7FAD  vm_push_word_body_word  value=0x0166
+* E94D  786B  vm_fetch_unsigned_byte  
+* E94F  7A6F  vm_compare_equal  
+* E951  7982  vm_branch_forward8_if_zero  branch=0xE958
+* E954  7A15  vm_leave_loop_to_absolute_target  branch=0xE95A
+* E958  7A00  vm_loop_increment_one  
+* E95A  7B3D  vm_drop_cell  
+* E95C  792F  vm_return_to_caller_stream  

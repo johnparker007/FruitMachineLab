@@ -1,0 +1,13 @@
+Purpose: skill_cash_dispatch_selected_index_lamp_pattern
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: memory operations, table/dynamic dispatch
+Callers: C699
+
+Threaded script at C62B; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C62B  824E  vm_push_word_body_byte  value=0x008F
+* C62D  C601  vm_push_local_frame_address  value=0x0000
+* C62F  786B  vm_fetch_unsigned_byte  
+* C631  C621  dispatch_indexed_token_table_c623  body=0x99A1, push_address=0xC623
+* C633  792F  vm_return_to_caller_stream  

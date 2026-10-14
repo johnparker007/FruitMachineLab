@@ -1,0 +1,36 @@
+Purpose: cash_feature_cash_attack
+Confidence: reviewed dispatch/display association; complete gameplay unresolved
+Groups: arithmetic, boolean/bit operations, control flow, mask/address records, memory operations
+Callers: DFF6, FD1F
+
+Threaded script at C81C; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C81C  7ED1  vm_push_word_body_byte  value=0x00EC
+* C81E  765F  vm_clear_byte_memory  
+* C820  C78B  cash_attack_store_thirty_in_working_byte_ed  body=0xC78D
+* C822  8492  push_pair_1000_00a0  body=0x8417, push_address=0x8494
+* C824  7671  vm_clear_word_memory_bits  
+* C826  BB6D  vm_push_word_body_byte  value=0x0002
+* C828  81C2  vm_push_word_body_byte  value=0x00B6
+* C82A  7861  vm_store_byte  
+* C82C  7E4F  vm_push_word_body_byte  value=0x0013
+* C82E  82DD  vm_push_word_body_byte  value=0x00BD
+* C830  7861  vm_store_byte  
+* C832  C7E2  cash_attack_announce_select_and_commit_table_award  body=0xC7E4
+* C834  C783  cash_attack_test_compensated_chance  body=0xC785
+* C836  7ABB  vm_bitwise_not  
+* C838  7574  vm_return_if_nonzero  
+* C83A  7ED1  vm_push_word_body_byte  value=0x00EC
+* C83C  786B  vm_fetch_unsigned_byte  
+* C83E  7ECE  vm_push_word_body_byte  value=0x00ED
+* C840  786B  vm_fetch_unsigned_byte  
+* C842  7963  vm_push_inline_byte_literal  inline_value=0x0006
+* C845  78A0  vm_subtract_top_from_second  
+* C847  7A79  vm_compare_top_lt_second_signed  
+* C849  79A6  vm_branch_backward8_if_zero  branch=0xC832
+* C84C  7963  vm_push_inline_byte_literal  inline_value=0x0032
+* C84F  9A11  random_percentage_test  body=0x9A13
+* C851  8492  push_pair_1000_00a0  body=0x8417, push_address=0x8494
+* C853  9A62  conditionally_set_or_clear_memory_mask  body=0x9A64
+* C855  792F  vm_return_to_caller_stream  

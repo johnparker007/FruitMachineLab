@@ -1,0 +1,23 @@
+Purpose: skill_cash_apply_option_controlled_random_override
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: arithmetic, boolean/bit operations, control flow, mask tests, random selection, stack/cell helpers
+Callers: C699
+
+Threaded script at C646; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C646  84E0  test_mask_0200_at_719f  body=0x841E, push_address=0x84E2
+* C648  7B51  vm_duplicate_cell  
+* C64A  7982  vm_branch_forward8_if_zero  branch=0xC666
+  C64D  7B7D  vm_swap_two_cells  
+  C64F  7B3D  vm_drop_cell  
+  C651  7963  vm_push_inline_byte_literal  inline_value=0x0005
+  C654  7963  vm_push_inline_byte_literal  inline_value=0x001E
+  C657  9A11  random_percentage_test  body=0x9A13
+  C659  9F5E  test_two_orange1_input_conditions  body=0x9F60
+  C65B  7ABB  vm_bitwise_not  
+  C65D  7A97  vm_bitwise_and  
+  C65F  7982  vm_branch_forward8_if_zero  branch=0xC664
+  C662  78C9  vm_increment_word  
+  C664  7B7D  vm_swap_two_cells  
+* C666  792F  vm_return_to_caller_stream  

@@ -1,0 +1,16 @@
+Purpose: run_reel_spin_and_refresh_symbols
+Confidence: reviewed gameplay context
+Groups: lamps, reels, reels/symbol tests, sound/scheduler
+Callers: F384
+
+Threaded script at F2B5; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* F2B5  8130  call_reset_sound_and_scheduler  native=0x5B77
+* F2B7  8022  call_show_reel_request_direction_on_lamp_groups  native=0x2CD0
+* F2B9  8118  call_reels_start_motion_async  native=0x61D5
+* F2BB  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* F2BD  7963  vm_push_inline_byte_literal  inline_value=0x0023
+* F2C0  99AD  wait_irq_ticks_or_abort_flag  body=0x99AF
+* F2C2  8130  call_reset_sound_and_scheduler  native=0x5B77
+* F2C4  792F  vm_return_to_caller_stream  

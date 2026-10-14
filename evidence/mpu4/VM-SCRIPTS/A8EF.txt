@@ -1,0 +1,12 @@
+Purpose: display_nudgepot_byte_as_two_decimal_digits
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: memory operations, nudges
+Callers: DAC7, DB58, FAFC, B89F, CC8F, DE75, B2E8, B88C
+
+Threaded script at A8EF; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* A8EF  7EED  vm_push_word_body_byte  value=0x00BF
+* A8F1  786B  vm_fetch_unsigned_byte  
+* A8F3  A8AB  display_two_decimal_digits_or_blank_zero  body=0xA8AD
+* A8F5  792F  vm_return_to_caller_stream  

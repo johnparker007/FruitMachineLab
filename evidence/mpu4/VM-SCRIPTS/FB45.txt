@@ -1,0 +1,50 @@
+Purpose: process_credit_change_and_display
+Confidence: reviewed gameplay context
+Groups: accounting/NVRAM, arithmetic, boolean/bit operations, control flow, credits, memory operations, sound/scheduler, stack/cell helpers
+Callers: FC07
+
+Threaded script at FB45; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* FB45  8190  vm_push_word_body_word  value=0x02F0
+* FB47  786B  vm_fetch_unsigned_byte  
+* FB49  824B  vm_push_word_body_byte  value=0x00C1
+* FB4B  786B  vm_fetch_unsigned_byte  
+* FB4D  78A0  vm_subtract_top_from_second  
+* FB4F  7B49  vm_duplicate_if_nonzero  
+* FB51  7982  vm_branch_forward8_if_zero  branch=0xFB95
+* FB54  A8F7  refresh_credit_and_bank_display_unless_suppressed  body=0xA8F9
+* FB56  7B51  vm_duplicate_cell  
+* FB58  7A31  vm_test_greater_than_zero  
+* FB5A  7982  vm_branch_forward8_if_zero  branch=0xFB89
+* FB5D  7B51  vm_duplicate_cell  
+* FB5F  7963  vm_push_inline_byte_literal  inline_value=0x0005
+* FB62  7A6F  vm_compare_equal  
+* FB64  7EF9  vm_push_word_body_word  value=0x0304
+* FB66  786B  vm_fetch_unsigned_byte  
+* FB68  7A46  vm_test_zero  
+* FB6A  7A97  vm_bitwise_and  
+* FB6C  7982  vm_branch_forward8_if_zero  branch=0xFB7E
+* FB6F  78B3  vm_push_true_minus_one  
+* FB71  7EF6  vm_push_word_body_byte  value=0x00E0
+* FB73  7861  vm_store_byte  
+* FB75  7963  vm_push_inline_byte_literal  inline_value=0x0005
+* FB78  7EF9  vm_push_word_body_word  value=0x0304
+* FB7A  7861  vm_store_byte  
+* FB7C  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* FB7E  7B51  vm_duplicate_cell  
+* FB80  7963  vm_push_inline_byte_literal  inline_value=0x000A
+* FB83  7ADC  vm_min_signed  
+* FB85  8579  write_byte_004d_857b  body=0x857B
+* FB87  8725  queue_sound_stream_8727  body=0x856B, push_address=0x8727
+* FB89  7B3D  vm_drop_cell  
+* FB8B  8190  vm_push_word_body_word  value=0x02F0
+* FB8D  786B  vm_fetch_unsigned_byte  
+* FB8F  824B  vm_push_word_body_byte  value=0x00C1
+* FB91  7861  vm_store_byte  
+* FB93  9DEF  refresh_reel_lamps_when_irq_timer_nonnegative  body=0x9DF1
+* FB95  81D9  vm_push_word_body_word  value=0x02F1
+* FB97  786B  vm_fetch_unsigned_byte  
+* FB99  7982  vm_branch_forward8_if_zero  branch=0xFB9E
+  FB9C  A7D9  refresh_credit_display_unless_suppressed  body=0xA7DB
+* FB9E  792F  vm_return_to_caller_stream  

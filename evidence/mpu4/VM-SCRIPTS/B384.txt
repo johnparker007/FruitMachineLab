@@ -1,0 +1,17 @@
+Purpose: run_automatic_nudges_with_local_flag
+Confidence: reviewed token mechanics
+Groups: memory operations, nudges, sound/scheduler
+Callers: B6DB
+
+Threaded script at B384; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B384  78B3  vm_push_true_minus_one  
+* B386  B297  vm_push_local_frame_address  value=0x0002
+* B388  7861  vm_store_byte  
+* B38A  8130  call_reset_sound_and_scheduler  native=0x5B77
+* B38C  9CA3  apply_lamp_range_constant_0080_record_9b8c_9ca5  body=0x9CA5
+* B38E  B350  execute_selected_automatic_nudge_moves  body=0xB352
+* B390  B297  vm_push_local_frame_address  value=0x0002
+* B392  765F  vm_clear_byte_memory  
+* B394  792F  vm_return_to_caller_stream  

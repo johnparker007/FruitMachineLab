@@ -1,0 +1,52 @@
+Purpose: animate_pending_award_into_current_win
+Confidence: reviewed gameplay context
+Groups: accounting/NVRAM, arithmetic, award/balance operations, boolean/bit operations, control flow, display, memory operations, sound/scheduler, stack/cell helpers
+Callers: C90C, C7E4, C6FC, EDB4
+
+Threaded script at AF93; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* AF93  8318  vm_push_word_body_byte  value=0x00BA
+* AF95  790D  vm_fetch_word  
+* AF97  7A46  vm_test_zero  
+* AF99  7574  vm_return_if_nonzero  
+* AF9B  80A0  call_alpha_reset_and_clear_display  native=0x3D0E
+* AF9D  8318  vm_push_word_body_byte  value=0x00BA
+* AF9F  790D  vm_fetch_word  
+* AFA1  7A31  vm_test_greater_than_zero  
+* AFA3  798C  vm_branch_forward8_if_zero  branch=0xAFE6
+* AFA6  855E  test_two_indirect_zero_conditions  body=0x8560
+* AFA8  7982  vm_branch_forward8_if_zero  branch=0xAFB2
+  AFAB  795B  vm_push_inline_word_literal  inline_value=0xFFFE
+  AFAF  7979  vm_branch_unsigned_forward8  branch=0xAFB4
+* AFB2  78AA  vm_push_true_minus_one  
+* AFB4  7B51  vm_duplicate_cell  
+* AFB6  8318  vm_push_word_body_byte  value=0x00BA
+* AFB8  7888  vm_add_to_word_memory  
+* AFBA  7CCD  vm_negate_cell  
+* AFBC  82D6  vm_push_word_body_word  value=0x02FA
+* AFBE  7888  vm_add_to_word_memory  
+* AFC0  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* AFC2  82D6  vm_push_word_body_word  value=0x02FA
+* AFC4  790D  vm_fetch_word  
+* AFC6  8579  write_byte_004d_857b  body=0x857B
+* AFC8  78DE  vm_push_two  
+* AFCA  855E  test_two_indirect_zero_conditions  body=0x8560
+* AFCC  78C0  vm_push_one  
+* AFCE  7A97  vm_bitwise_and  
+* AFD0  78A0  vm_subtract_top_from_second  
+* AFD2  78B5  vm_push_zero  
+* AFD4  79DC  vm_enter_loop_frame  
+* AFD6  8703  queue_sound_stream_8705  body=0x856B, push_address=0x8705
+* AFD8  7963  vm_push_inline_byte_literal  inline_value=0x0019
+* AFDB  99AD  wait_irq_ticks_or_abort_flag  body=0x99AF
+* AFDD  8130  call_reset_sound_and_scheduler  native=0x5B77
+* AFDF  7A00  vm_loop_increment_one  
+* AFE1  A8F7  refresh_credit_and_bank_display_unless_suppressed  body=0xA8F9
+* AFE3  79A4  vm_branch_backward8  branch=0xAF9D
+* AFE6  78B5  vm_push_zero  
+* AFE8  8318  vm_push_word_body_byte  value=0x00BA
+* AFEA  7874  vm_store_word  
+* AFEC  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* AFEE  AF65  round_current_award_even_and_flash_balance_display_seven_times  body=0xAF67
+* AFF0  792F  vm_return_to_caller_stream  

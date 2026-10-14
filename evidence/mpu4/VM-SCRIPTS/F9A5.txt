@@ -1,0 +1,18 @@
+Purpose: attract_combine_reel_group_sweep_sequences
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: reels/symbol tests, stack/cell helpers
+Callers: FA34
+
+Threaded script at F9A5; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* F9A5  F95F  attract_repeat_reel_group_off_on_sweeps  body=0xF961
+* F9A7  78DE  vm_push_two  
+* F9A9  78B5  vm_push_zero  
+* F9AB  79DC  vm_enter_loop_frame  
+* F9AD  8248  vm_push_word_body_byte  value=0x0080
+* F9AF  F973  attract_sweep_auxiliary_then_reel_groups_reverse  body=0xF975
+* F9B1  824E  vm_push_word_body_byte  value=0x008F
+* F9B3  F973  attract_sweep_auxiliary_then_reel_groups_reverse  body=0xF975
+* F9B5  7A00  vm_loop_increment_one  
+* F9B7  792F  vm_return_to_caller_stream  

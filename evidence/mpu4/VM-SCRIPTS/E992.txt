@@ -1,0 +1,13 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, memory operations
+Callers: E99E
+
+Threaded script at E992; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* E992  E465  vm_push_local_frame_address  value=0x0001
+* E994  786B  vm_fetch_unsigned_byte  
+* E996  7B59  vm_copy_second_cell  
+* E998  7A5B  vm_compare_not_equal  
+* E99A  792F  vm_return_to_caller_stream  

@@ -1,0 +1,23 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, indexed memory, memory operations, stack/cell helpers
+Callers: DD04
+
+Threaded script at DCE2; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  DCE2  7F14  vm_push_word_body_byte  value=0x00C9
+  DCE4  786B  vm_fetch_unsigned_byte  
+  DCE6  A12C  read_indexed_byte_table_at_a12e  body=0x9971, push_address=0xA12E
+  DCE8  78C0  vm_push_one  
+  DCEA  7A6F  vm_compare_equal  
+  DCEC  7982  vm_branch_forward8_if_zero  branch=0xDD00
+  DCEF  7EED  vm_push_word_body_byte  value=0x00BF
+  DCF1  786B  vm_fetch_unsigned_byte  
+  DCF3  9F82  mask_best_reel_result_by_signed_threshold_nine  body=0x9F84
+  DCF5  7F0D  vm_push_word_body_byte  value=0x001E
+  DCF7  7D42  compare_top_le_second_signed  body=0x7D44
+  DCF9  7963  vm_push_inline_byte_literal  inline_value=0x0064
+  DCFC  7A97  vm_bitwise_and  
+  DCFE  7AE7  vm_max_signed  
+  DD00  792F  vm_return_to_caller_stream  

@@ -1,0 +1,23 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: accounting/NVRAM, arithmetic, control flow, memory operations
+Callers: EE62
+
+Threaded script at EE11; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* EE11  9FA0  reels_test_all_three_symbol_flag2  body=0x9FA2
+* EE13  7982  vm_branch_forward8_if_zero  branch=0xEE22
+* EE16  7ECB  vm_push_word_body_byte  value=0x0011
+* EE18  78D3  vm_decrement_word  
+* EE1A  7EC4  vm_push_word_body_word  value=0x0305
+* EE1C  7861  vm_store_byte  
+* EE1E  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* EE20  EBB6  subtract_0305_scaled_by_500_from_counter_07d5  body=0xEBB8
+* EE22  9FA0  reels_test_all_three_symbol_flag2  body=0x9FA2
+* EE24  798C  vm_branch_forward8_if_zero  branch=0xEE2C
+* EE27  EDD1  script_edd1  body=0xEDD3
+* EE29  79A4  vm_branch_backward8  branch=0xEE22
+* EE2C  EDB2  normalize_pending_award_and_animate_into_current_win  body=0xEDB4
+* EE2E  9CA3  apply_lamp_range_constant_0080_record_9b8c_9ca5  body=0x9CA5
+* EE30  792F  vm_return_to_caller_stream  

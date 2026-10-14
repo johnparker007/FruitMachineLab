@@ -1,0 +1,29 @@
+Purpose: store_selected_board_cash_amount_as_pending_award
+Confidence: reviewed token mechanics
+Groups: accounting/NVRAM, award/balance operations, boolean/bit operations, control flow, indexed memory, memory operations, stack/cell helpers
+Callers: 99A1
+
+Threaded script at E2AA; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* E2AA  DFEA  clear_nudgepot_and_refresh_amount_display  body=0xDFEC
+* E2AC  7F14  vm_push_word_body_byte  value=0x00C9
+* E2AE  786B  vm_fetch_unsigned_byte  
+* E2B0  A12C  read_indexed_byte_table_at_a12e  body=0x9971, push_address=0xA12E
+* E2B2  7B51  vm_duplicate_cell  
+* E2B4  7F0D  vm_push_word_body_byte  value=0x001E
+* E2B6  7A79  vm_compare_top_lt_second_signed  
+* E2B8  7982  vm_branch_forward8_if_zero  branch=0xE2C7
+* E2BB  9F5E  test_two_orange1_input_conditions  body=0x9F60
+* E2BD  7982  vm_branch_forward8_if_zero  branch=0xE2C2
+  E2C0  ADAD  invoke_optional_hook_when_diagnostic_flag_and_mode_mask  body=0xADAF
+* E2C2  7E91  vm_push_word_body_byte  value=0x0018
+* E2C4  7979  vm_branch_unsigned_forward8  branch=0xE2C9
+* E2C7  7E52  vm_push_word_body_byte  value=0x0017
+* E2C9  82DD  vm_push_word_body_byte  value=0x00BD
+* E2CB  7861  vm_store_byte  
+* E2CD  8318  vm_push_word_body_byte  value=0x00BA
+* E2CF  7874  vm_store_word  
+* E2D1  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* E2D3  E286  script_e286  body=0xE288
+* E2D5  792F  vm_return_to_caller_stream  

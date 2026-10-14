@@ -1,0 +1,29 @@
+Purpose: skill_cash_animate_selected_level_lamps
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: arithmetic, lamps, memory operations, sound/scheduler
+Callers: C6FC
+
+Threaded script at C6D0; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C6D0  C604  vm_push_local_frame_address  value=0x0001
+* C6D2  786B  vm_fetch_unsigned_byte  
+* C6D4  78D3  vm_decrement_word  
+* C6D6  8212  vm_push_word_body_byte  value=0x0085
+* C6D8  7D52  duplicate_two_cells  body=0x7D54
+* C6DA  9CB3  apply_three_id_lamp_record  body=0x9CB5
+* C6DC  9C34  apply_indexed_lamp_id_from_7257  body=0x9B18, push_address=0x9C36
+* C6DE  896B  queue_sound_stream_896d  body=0x856B, push_address=0x896D
+* C6E0  80F8  call_scheduler_wait_until_active_list_empty  native=0x5CCB
+* C6E2  8248  vm_push_word_body_byte  value=0x0080
+* C6E4  9D3E  apply_lamp_range_record_9b7c  body=0x9D40
+* C6E6  8248  vm_push_word_body_byte  value=0x0080
+* C6E8  9C38  apply_lamp_range_7257_725d  body=0x9ADB, push_address=0x9C3A
+* C6EA  C604  vm_push_local_frame_address  value=0x0001
+* C6EC  786B  vm_fetch_unsigned_byte  
+* C6EE  78D3  vm_decrement_word  
+* C6F0  824E  vm_push_word_body_byte  value=0x008F
+* C6F2  7D52  duplicate_two_cells  body=0x7D54
+* C6F4  9CB3  apply_three_id_lamp_record  body=0x9CB5
+* C6F6  9C34  apply_indexed_lamp_id_from_7257  body=0x9B18, push_address=0x9C36
+* C6F8  792F  vm_return_to_caller_stream  

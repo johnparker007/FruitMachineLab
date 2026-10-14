@@ -1,0 +1,63 @@
+Purpose: handle_hi_lo_feature_selection_with_wrap
+Confidence: reviewed token mechanics
+Groups: arithmetic, boolean/bit operations, control flow, input conditions, lamps, memory operations, stack/cell helpers
+Callers: DD38
+
+Threaded script at DC34; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* DC34  994D  test_mode_or_rom_option_0400  body=0x994F
+* DC36  83AB  vm_test_input_condition  value=0x0015
+* DC38  83C0  vm_test_input_condition  value=0x0014
+* DC3A  7AA3  vm_bitwise_or  
+* DC3C  7A97  vm_bitwise_and  
+* DC3E  7ABB  vm_bitwise_not  
+* DC40  7574  vm_return_if_nonzero  
+  DC42  7F14  vm_push_word_body_byte  value=0x00C9
+  DC44  786B  vm_fetch_unsigned_byte  
+  DC46  8248  vm_push_word_body_byte  value=0x0080
+  DC48  9B82  apply_indexed_lamp_id_from_728f  body=0x9B18, push_address=0x9B84
+  DC4A  83AB  vm_test_input_condition  value=0x0015
+  DC4C  7982  vm_branch_forward8_if_zero  branch=0xDC6F
+  DC4F  7B7D  vm_swap_two_cells  
+  DC51  7B3D  vm_drop_cell  
+  DC53  7F14  vm_push_word_body_byte  value=0x00C9
+  DC55  786B  vm_fetch_unsigned_byte  
+  DC57  78C9  vm_increment_word  
+  DC59  7B51  vm_duplicate_cell  
+  DC5B  7963  vm_push_inline_byte_literal  inline_value=0x002F
+  DC5E  7A79  vm_compare_top_lt_second_signed  
+  DC60  7982  vm_branch_forward8_if_zero  branch=0xDC67
+  DC63  7B3D  vm_drop_cell  
+  DC65  78B5  vm_push_zero  
+  DC67  7F14  vm_push_word_body_byte  value=0x00C9
+  DC69  7861  vm_store_byte  
+  DC6B  A1DB  test_selected_feature_available_with_bf_gate  body=0xA1DD
+  DC6D  7B7D  vm_swap_two_cells  
+  DC6F  83C0  vm_test_input_condition  value=0x0014
+  DC71  7982  vm_branch_forward8_if_zero  branch=0xDC94
+  DC74  7B7D  vm_swap_two_cells  
+  DC76  7B3D  vm_drop_cell  
+  DC78  7F14  vm_push_word_body_byte  value=0x00C9
+  DC7A  786B  vm_fetch_unsigned_byte  
+  DC7C  78D3  vm_decrement_word  
+  DC7E  7B51  vm_duplicate_cell  
+  DC80  78B5  vm_push_zero  
+  DC82  7A65  vm_compare_top_gt_second_signed  
+  DC84  7982  vm_branch_forward8_if_zero  branch=0xDC8C
+  DC87  7B3D  vm_drop_cell  
+  DC89  7963  vm_push_inline_byte_literal  inline_value=0x002F
+  DC8C  7F14  vm_push_word_body_byte  value=0x00C9
+  DC8E  7861  vm_store_byte  
+  DC90  A1DB  test_selected_feature_available_with_bf_gate  body=0xA1DD
+  DC92  7B7D  vm_swap_two_cells  
+  DC94  9984  wait_for_all_panel_buttons_released  body=0x9986
+  DC96  7F14  vm_push_word_body_byte  value=0x00C9
+  DC98  786B  vm_fetch_unsigned_byte  
+  DC9A  9F56  apply_pattern_8f_to_indexed_lamp_record  body=0x9F58
+  DC9C  7F14  vm_push_word_body_byte  value=0x00C9
+  DC9E  786B  vm_fetch_unsigned_byte  
+  DCA0  D936  display_selected_feature_from_fixed_width_table  body=0xD938
+  DCA2  DC08  refresh_selected_feature_lamps_and_amount_display  body=0xDC0A
+  DCA4  9A4E  store_irq_timer_c568  body=0x9A50
+  DCA6  792F  vm_return_to_caller_stream  

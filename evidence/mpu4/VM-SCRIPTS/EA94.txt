@@ -1,0 +1,35 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, display, lamps, memory operations, sound/scheduler
+Callers: EAF3
+
+Threaded script at EA94; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* EA94  E4AB  test_orange1_conditions_and_local_mode_four  body=0xE4AD
+* EA96  7ABB  vm_bitwise_not  
+* EA98  7574  vm_return_if_nonzero  
+  EA9A  856F  test_zero_read_word_0047_8571  body=0x8571
+  EA9C  7982  vm_branch_forward8_if_zero  branch=0xEAEF
+  EA9F  8833  queue_sound_stream_8835  body=0x856B, push_address=0x8835
+  EAA1  E477  vm_push_local_frame_address  value=0x0007
+  EAA3  786B  vm_fetch_unsigned_byte  
+  EAA5  7A53  vm_test_nonzero  
+  EAA7  7982  vm_branch_forward8_if_zero  branch=0xEACD
+  EAAA  E477  vm_push_local_frame_address  value=0x0007
+  EAAC  765F  vm_clear_byte_memory  
+  EAAE  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); '  COLLECT WIN   '; cmd7A()]
+  EAC2  8345  vm_push_word_body_byte  value=0x0018
+  EAC4  806C  call_lamp_set_frame_pattern_F  native=0x497F
+  EAC6  8357  vm_push_word_body_byte  value=0x0028
+  EAC8  8068  call_lamp_set_frame_pattern_0  native=0x4982
+  EACA  7979  vm_branch_unsigned_forward8  branch=0xEAEF
+  EACD  78B3  vm_push_true_minus_one  
+  EACF  E477  vm_push_local_frame_address  value=0x0007
+  EAD1  7861  vm_store_byte  
+  EAD3  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); '    EXCHANGE    '; cmd7A()]
+  EAE7  8345  vm_push_word_body_byte  value=0x0018
+  EAE9  8068  call_lamp_set_frame_pattern_0  native=0x4982
+  EAEB  8357  vm_push_word_body_byte  value=0x0028
+  EAED  8060  call_lamp_set_frame_pattern_5  native=0x498B
+  EAEF  792F  vm_return_to_caller_stream  

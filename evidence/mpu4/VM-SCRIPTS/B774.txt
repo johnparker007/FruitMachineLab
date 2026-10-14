@@ -1,0 +1,22 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, indexed memory, memory operations, stack/cell helpers
+Callers: B853, B906
+
+Threaded script at B774; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B774  7963  vm_push_inline_byte_literal  inline_value=0x0030
+* B777  7F14  vm_push_word_body_byte  value=0x00C9
+* B779  786B  vm_fetch_unsigned_byte  
+* B77B  79DC  vm_enter_loop_frame  
+* B77D  7A1C  vm_push_loop_index  
+* B77F  A12C  read_indexed_byte_table_at_a12e  body=0x9971, push_address=0xA12E
+* B781  7B51  vm_duplicate_cell  
+* B783  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* B786  7A79  vm_compare_top_lt_second_signed  
+* B788  7574  vm_return_if_nonzero  
+* B78A  7B3D  vm_drop_cell  
+* B78C  7A00  vm_loop_increment_one  
+* B78E  7963  vm_push_inline_byte_literal  inline_value=0x000A
+* B791  792F  vm_return_to_caller_stream  

@@ -1,0 +1,21 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: mask/address records
+Callers: EF6B, FD8D
+
+Threaded script at EE7C; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* EE7C  8486  push_pair_4000_00a0  body=0x8417, push_address=0x8488
+* EE7E  7671  vm_clear_word_memory_bits  
+* EE80  8435  push_pair_0038_0085  body=0x8417, push_address=0x8437
+* EE82  7671  vm_clear_word_memory_bits  
+* EE84  8480  push_pair_8000_00a0  body=0x8417, push_address=0x8482
+* EE86  7671  vm_clear_word_memory_bits  
+* EE88  843B  push_pair_0001_0085  body=0x8417, push_address=0x843D
+* EE8A  7671  vm_clear_word_memory_bits  
+* EE8C  84B0  push_pair_0080_00a0  body=0x8417, push_address=0x84B2
+* EE8E  7671  vm_clear_word_memory_bits  
+* EE90  84AA  push_pair_0100_00a0  body=0x8417, push_address=0x84AC
+* EE92  7671  vm_clear_word_memory_bits  
+* EE94  792F  vm_return_to_caller_stream  

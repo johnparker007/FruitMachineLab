@@ -1,0 +1,25 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: arithmetic, lamps, memory operations, stack/cell helpers
+Callers: F3EE, F428
+
+Threaded script at F3C9; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  F3C9  F3B3  vm_push_local_frame_address  value=0x0000
+  F3CB  786B  vm_fetch_unsigned_byte  
+  F3CD  8248  vm_push_word_body_byte  value=0x0080
+  F3CF  9C24  apply_indexed_lamp_id_from_7286  body=0x9B18, push_address=0x9C26
+  F3D1  F3B3  vm_push_local_frame_address  value=0x0000
+  F3D3  7B51  vm_duplicate_cell  
+  F3D5  786B  vm_fetch_unsigned_byte  
+  F3D7  78C9  vm_increment_word  
+  F3D9  7963  vm_push_inline_byte_literal  inline_value=0x0009
+  F3DC  7DF8  signed_cell_remainder  body=0x7DFA
+  F3DE  7B7D  vm_swap_two_cells  
+  F3E0  7861  vm_store_byte  
+  F3E2  F3B3  vm_push_local_frame_address  value=0x0000
+  F3E4  786B  vm_fetch_unsigned_byte  
+  F3E6  824E  vm_push_word_body_byte  value=0x008F
+  F3E8  9C24  apply_indexed_lamp_id_from_7286  body=0x9B18, push_address=0x9C26
+  F3EA  792F  vm_return_to_caller_stream  

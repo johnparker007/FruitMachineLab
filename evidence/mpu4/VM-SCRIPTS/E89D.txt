@@ -1,0 +1,13 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, input conditions, stack/cell helpers
+Callers: E8A9
+
+Threaded script at E89D; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* E89D  83AB  vm_test_input_condition  value=0x0015
+* E89F  7B51  vm_duplicate_cell  
+* E8A1  83C0  vm_test_input_condition  value=0x0014
+* E8A3  7AA3  vm_bitwise_or  
+* E8A5  792F  vm_return_to_caller_stream  

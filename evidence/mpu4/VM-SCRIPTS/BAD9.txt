@@ -1,0 +1,21 @@
+Purpose: animate_board_rectangle_convergence
+Confidence: reviewed token mechanics; see lifecycle-pass/script-name-evidence.json
+Groups: stack/cell helpers
+Callers: BB49
+
+Threaded script at BAD9; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* BAD9  B973  draw_board_rectangle_vertical_edges  body=0xB975
+* BADB  B9A5  draw_board_rectangle_horizontal_edges  body=0xB9A7
+* BADD  BA6F  move_board_rectangle_bounds_toward_target  body=0xBA71
+* BADF  7963  vm_push_inline_byte_literal  inline_value=0x0007
+* BAE2  78B5  vm_push_zero  
+* BAE4  79DC  vm_enter_loop_frame  
+* BAE6  B973  draw_board_rectangle_vertical_edges  body=0xB975
+* BAE8  B9A5  draw_board_rectangle_horizontal_edges  body=0xB9A7
+* BAEA  B9D7  clear_previous_board_rectangle_vertical_edges  body=0xB9D9
+* BAEC  BA23  clear_previous_board_rectangle_horizontal_edges  body=0xBA25
+* BAEE  BA6F  move_board_rectangle_bounds_toward_target  body=0xBA71
+* BAF0  7A00  vm_loop_increment_one  
+* BAF2  792F  vm_return_to_caller_stream  

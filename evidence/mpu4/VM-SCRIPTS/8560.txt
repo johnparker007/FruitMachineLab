@@ -1,0 +1,12 @@
+Purpose: test_two_indirect_zero_conditions
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, byte tests
+Callers: AF93, AA2B, E4D3, EDD3, EC97, ECD6, E812, E6CD
+
+Threaded script at 8560; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 8560  851C  test_byte_zero_at_ff36  body=0x8427, push_address=0x851E
+* 8562  8520  test_byte_zero_at_ff3a  body=0x8427, push_address=0x8522
+* 8564  7AA3  vm_bitwise_or  
+* 8566  792F  vm_return_to_caller_stream  

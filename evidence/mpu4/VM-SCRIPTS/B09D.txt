@@ -1,0 +1,31 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: arithmetic, control flow, memory operations, stack/cell helpers
+Callers: B144
+
+Threaded script at B09D; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B09D  7F14  vm_push_word_body_byte  value=0x00C9
+* B09F  786B  vm_fetch_unsigned_byte  
+* B0A1  A129  vm_push_word_body_byte  value=0x002F
+* B0A3  7D42  compare_top_le_second_signed  body=0x7D44
+* B0A5  7982  vm_branch_forward8_if_zero  branch=0xB0AC
+  B0A8  78BE  vm_push_zero  
+  B0AA  7935  vm_unwind_loop_frames_to_return  
+* B0AC  7F14  vm_push_word_body_byte  value=0x00C9
+* B0AE  786B  vm_fetch_unsigned_byte  
+* B0B0  7B51  vm_duplicate_cell  
+* B0B2  7963  vm_push_inline_byte_literal  inline_value=0x0009
+* B0B5  787E  vm_add_words  
+* B0B7  A129  vm_push_word_body_byte  value=0x002F
+* B0B9  7ADC  vm_min_signed  
+* B0BB  7B7D  vm_swap_two_cells  
+* B0BD  79DC  vm_enter_loop_frame  
+* B0BF  7A1C  vm_push_loop_index  
+* B0C1  B087  test_board_link_destination_nonzero_and_forward  body=0xB089
+* B0C3  7B49  vm_duplicate_if_nonzero  
+* B0C5  7574  vm_return_if_nonzero  
+* B0C7  7A00  vm_loop_increment_one  
+* B0C9  78BE  vm_push_zero  
+* B0CB  792F  vm_return_to_caller_stream  

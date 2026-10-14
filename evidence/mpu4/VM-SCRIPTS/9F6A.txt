@@ -1,0 +1,19 @@
+Purpose: normalize_award_47_to_30_with_optional_input_clamp
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: award/balance operations, boolean/bit operations, control flow, input conditions, stack/cell helpers
+Callers: ED06, B0CF, EAF3, B626, B795, B91D, EE34, C6FC
+
+Threaded script at 9F6A; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9F6A  8384  vm_test_input_condition  value=0x0001
+* 9F6C  7982  vm_branch_forward8_if_zero  branch=0x9F73
+  9F6F  7F0A  vm_push_word_body_byte  value=0x002F
+  9F71  7ADC  vm_min_signed  
+* 9F73  7B51  vm_duplicate_cell  
+* 9F75  7F0A  vm_push_word_body_byte  value=0x002F
+* 9F77  7A6F  vm_compare_equal  
+* 9F79  7982  vm_branch_forward8_if_zero  branch=0x9F80
+* 9F7C  7B3D  vm_drop_cell  
+* 9F7E  7F0D  vm_push_word_body_byte  value=0x001E
+* 9F80  792F  vm_return_to_caller_stream  

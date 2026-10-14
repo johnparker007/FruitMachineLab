@@ -1,0 +1,16 @@
+Purpose: cash_climber_reset_shot_lamps_and_flag
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: lamps, memory operations, stack/cell helpers
+Callers: C06F, C049
+
+Threaded script at BFF3; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* BFF3  8248  vm_push_word_body_byte  value=0x0080
+* BFF5  9B96  apply_lamp_range_72ef_72fd  body=0x9ADB, push_address=0x9B98
+* BFF7  78C0  vm_push_one  
+* BFF9  9C48  word_9c48_shared_9ae6  body=0x9AE6, push_address=0x9C4A
+* BFFB  78B5  vm_push_zero  
+* BFFD  819F  vm_push_word_body_byte  value=0x00B3
+* BFFF  7861  vm_store_byte  
+* C001  792F  vm_return_to_caller_stream  

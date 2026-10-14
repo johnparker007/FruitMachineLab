@@ -1,0 +1,40 @@
+Purpose: update_pre_spin_symbol_mode_flags
+Confidence: reviewed token mechanics
+Groups: accounting/NVRAM, boolean/bit operations, control flow, mask/address records, memory operations, reels
+Callers: F384
+
+Threaded script at F2C8; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* F2C8  A295  count_selected_reel_mask_bits  body=0xA297
+* F2CA  7A46  vm_test_zero  
+* F2CC  84AA  push_pair_0100_00a0  body=0x8417, push_address=0x84AC
+* F2CE  767F  vm_test_word_memory_mask  
+* F2D0  7A97  vm_bitwise_and  
+* F2D2  7982  vm_branch_forward8_if_zero  branch=0xF2D9
+  F2D5  EEDB  script_eedb  body=0xEEDD
+  F2D7  ABC5  account_result_into_u24_counters_07c9_and_07cf  body=0xABC7
+* F2D9  A295  count_selected_reel_mask_bits  body=0xA297
+* F2DB  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* F2DE  7A65  vm_compare_top_gt_second_signed  
+* F2E0  84B0  push_pair_0080_00a0  body=0x8417, push_address=0x84B2
+* F2E2  767F  vm_test_word_memory_mask  
+* F2E4  7A97  vm_bitwise_and  
+* F2E6  7982  vm_branch_forward8_if_zero  branch=0xF2ED
+  F2E9  80C4  call_reels_push_matching_symbol_result  native=0x1AA3
+  F2EB  ABC5  account_result_into_u24_counters_07c9_and_07cf  body=0xABC7
+* F2ED  A295  count_selected_reel_mask_bits  body=0xA297
+* F2EF  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* F2F2  7A6F  vm_compare_equal  
+* F2F4  84B0  push_pair_0080_00a0  body=0x8417, push_address=0x84B2
+* F2F6  767F  vm_test_word_memory_mask  
+* F2F8  7A97  vm_bitwise_and  
+* F2FA  7982  vm_branch_forward8_if_zero  branch=0xF307
+  F2FD  7E61  vm_push_word_body_byte  value=0x0006
+  F2FF  8164  vm_push_word_body_byte  value=0x00B9
+  F301  7861  vm_store_byte  
+  F303  8012  vm_push_word_body_word  value=0x04E2
+  F305  8323  call_accounting_increment_u24_if_normal_mode  native=0x57DB
+* F307  84B0  push_pair_0080_00a0  body=0x8417, push_address=0x84B2
+* F309  7671  vm_clear_word_memory_bits  
+* F30B  792F  vm_return_to_caller_stream  

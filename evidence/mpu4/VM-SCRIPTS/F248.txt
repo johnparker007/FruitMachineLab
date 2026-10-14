@@ -1,0 +1,57 @@
+Purpose: adjust_unselected_reel_records_for_mode_two
+Confidence: reviewed token mechanics
+Groups: accounting/NVRAM, boolean/bit operations, control flow, mask/address records, memory operations, reel records, reels, reels/symbol tests, stack/cell helpers
+Callers: F384
+
+Threaded script at F248; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* F248  84AA  push_pair_0100_00a0  body=0x8417, push_address=0x84AC
+* F24A  767F  vm_test_word_memory_mask  
+* F24C  A295  count_selected_reel_mask_bits  body=0xA297
+* F24E  78DE  vm_push_two  
+* F250  7A6F  vm_compare_equal  
+* F252  7A97  vm_bitwise_and  
+* F254  7982  vm_branch_forward8_if_zero  branch=0xF2B1
+  F257  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+  F259  7963  vm_push_inline_byte_literal  inline_value=0x0003
+  F25C  78B5  vm_push_zero  
+  F25E  79DC  vm_enter_loop_frame  
+  F260  9E38  push_current_reel_selection_mask_and_address  body=0x9E3A
+  F262  767F  vm_test_word_memory_mask  
+  F264  7ABB  vm_bitwise_not  
+  F266  7982  vm_branch_forward8_if_zero  branch=0xF26F
+  F269  78B5  vm_push_zero  
+  F26B  9DA5  address_record_0160_loop_index  body=0x9D86, push_address=0x9DA7
+  F26D  7874  vm_store_word  
+  F26F  7A00  vm_loop_increment_one  
+  F271  8016  call_push_nonzero_symbol_result_or_fallback_to_vm_stack  native=0x1AF1
+  F273  7B49  vm_duplicate_if_nonzero  
+  F275  7982  vm_branch_forward8_if_zero  branch=0xF2B1
+  F278  7963  vm_push_inline_byte_literal  inline_value=0x0003
+  F27B  78B5  vm_push_zero  
+  F27D  79DC  vm_enter_loop_frame  
+  F27F  9E38  push_current_reel_selection_mask_and_address  body=0x9E3A
+  F281  767F  vm_test_word_memory_mask  
+  F283  7ABB  vm_bitwise_not  
+  F285  7982  vm_branch_forward8_if_zero  branch=0xF2AF
+  F288  7963  vm_push_inline_byte_literal  inline_value=0x0004
+  F28B  7963  vm_push_inline_byte_literal  inline_value=0x000A
+  F28E  99EC  random_scaled_range_selection  body=0x99EE
+  F290  9DAD  address_record_0169_loop_index  body=0x9D86, push_address=0x9DAF
+  F292  7861  vm_store_byte  
+  F294  9DAD  address_record_0169_loop_index  body=0x9D86, push_address=0x9DAF
+  F296  7653  vm_increment_byte_memory  
+  F298  8114  call_reels_translate_positions_to_symbol_records  native=0x2C12
+  F29A  80C4  call_reels_push_matching_symbol_result  native=0x1AA3
+  F29C  7B59  vm_copy_second_cell  
+  F29E  7A6F  vm_compare_equal  
+  F2A0  79A6  vm_branch_backward8_if_zero  branch=0xF294
+  F2A3  7B3D  vm_drop_cell  
+  F2A5  800A  vm_push_word_body_word  value=0x04DC
+  F2A7  8323  call_accounting_increment_u24_if_normal_mode  native=0x57DB
+  F2A9  7E8B  vm_push_word_body_byte  value=0x0005
+  F2AB  8164  vm_push_word_body_byte  value=0x00B9
+  F2AD  7861  vm_store_byte  
+  F2AF  7A00  vm_loop_increment_one  
+* F2B1  792F  vm_return_to_caller_stream  

@@ -1,0 +1,23 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, lamps, memory operations, reels
+Callers: D1F5
+
+Threaded script at D0DB; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  D0DB  9D7A  push_three_reel_loop_bounds  body=0x9D7C
+  D0DD  79DC  vm_enter_loop_frame  
+  D0DF  8140  vm_push_word_body_word  value=0x0326
+  D0E1  786B  vm_fetch_unsigned_byte  
+  D0E3  9E2E  rotate_mask_0020_right_by_loop_index  body=0x9E30
+  D0E5  7A97  vm_bitwise_and  
+  D0E7  7982  vm_branch_forward8_if_zero  branch=0xD0F7
+  D0EA  80C4  call_reels_push_matching_symbol_result  native=0x1AA3
+  D0EC  7A46  vm_test_zero  
+  D0EE  7982  vm_branch_forward8_if_zero  branch=0xD0F5
+  D0F1  9E24  lookup_byte_7325_using_loop_index  body=0x9E26
+  D0F3  806C  call_lamp_set_frame_pattern_F  native=0x497F
+  D0F5  D0C0  apply_hold_selection_feedback_and_wait  body=0xD0C2
+  D0F7  7A00  vm_loop_increment_one  
+  D0F9  792F  vm_return_to_caller_stream  

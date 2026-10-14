@@ -1,0 +1,36 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: arithmetic, boolean/bit operations, control flow, stack/cell helpers
+Callers: EC6C
+
+Threaded script at EC2C; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* EC2C  7963  vm_push_inline_byte_literal  inline_value=0x0005
+* EC2F  78B5  vm_push_zero  
+* EC31  79DC  vm_enter_loop_frame  
+* EC33  7A1C  vm_push_loop_index  
+* EC35  7B59  vm_copy_second_cell  
+* EC37  7A65  vm_compare_top_gt_second_signed  
+* EC39  7982  vm_branch_forward8_if_zero  branch=0xEC44
+  EC3C  7B59  vm_copy_second_cell  
+  EC3E  7A1C  vm_push_loop_index  
+  EC40  7B7D  vm_swap_two_cells  
+  EC42  9D44  apply_three_reel_and_auxiliary_indexed_lamp_pattern  body=0x9D46
+* EC44  7963  vm_push_inline_byte_literal  inline_value=0x0005
+* EC47  7A1C  vm_push_loop_index  
+* EC49  78A0  vm_subtract_top_from_second  
+* EC4B  7B59  vm_copy_second_cell  
+* EC4D  7A79  vm_compare_top_lt_second_signed  
+* EC4F  7982  vm_branch_forward8_if_zero  branch=0xEC5F
+* EC52  7B59  vm_copy_second_cell  
+* EC54  7963  vm_push_inline_byte_literal  inline_value=0x0005
+* EC57  7A1C  vm_push_loop_index  
+* EC59  78A0  vm_subtract_top_from_second  
+* EC5B  7B7D  vm_swap_two_cells  
+* EC5D  9D44  apply_three_reel_and_auxiliary_indexed_lamp_pattern  body=0x9D46
+* EC5F  7963  vm_push_inline_byte_literal  inline_value=0x0014
+* EC62  99AD  wait_irq_ticks_or_abort_flag  body=0x99AF
+* EC64  7A00  vm_loop_increment_one  
+* EC66  7B43  vm_drop_two_cells  
+* EC68  792F  vm_return_to_caller_stream  

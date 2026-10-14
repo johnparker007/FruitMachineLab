@@ -1,0 +1,23 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, input conditions, mask/address records, memory operations, reels
+Callers: EDB4
+
+Threaded script at ED94; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* ED94  8318  vm_push_word_body_byte  value=0x00BA
+* ED96  790D  vm_fetch_word  
+* ED98  7F07  vm_push_word_body_byte  value=0x003C
+* ED9A  7A6F  vm_compare_equal  
+* ED9C  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* ED9E  9FE3  reels_test_matching_result_3c  body=0x9FE5
+* EDA0  7AA3  vm_bitwise_or  
+* EDA2  7ABB  vm_bitwise_not  
+* EDA4  7574  vm_return_if_nonzero  
+  EDA6  8384  vm_test_input_condition  value=0x0001
+  EDA8  7574  vm_return_if_nonzero  
+  EDAA  A363  announce_new_six_pound_jackpot_and_restore_lamps  body=0xA365
+  EDAC  84B6  push_pair_0040_00a0  body=0x8417, push_address=0x84B8
+  EDAE  7665  vm_or_word_memory  
+  EDB0  792F  vm_return_to_caller_stream  

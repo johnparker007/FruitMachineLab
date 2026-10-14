@@ -1,0 +1,18 @@
+Purpose: select_random_board_index_with_nonzero_link
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, control flow, indexed memory, random selection, stack/cell helpers
+Callers: CB60, CA41
+
+Threaded script at CA28; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* CA28  7963  vm_push_inline_byte_literal  inline_value=0x0063
+* CA2B  7B3D  vm_drop_cell  
+* CA2D  78B5  vm_push_zero  
+* CA2F  7963  vm_push_inline_byte_literal  inline_value=0x0030
+* CA32  99EC  random_scaled_range_selection  body=0x99EE
+* CA34  7B51  vm_duplicate_cell  
+* CA36  A15E  read_indexed_byte_table_at_a160  body=0x9971, push_address=0xA160
+* CA38  7A53  vm_test_nonzero  
+* CA3A  79A6  vm_branch_backward8_if_zero  branch=0xCA2B
+* CA3D  792F  vm_return_to_caller_stream  

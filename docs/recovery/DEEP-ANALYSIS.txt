@@ -1,0 +1,218 @@
+MPU4 / m4addr — deeper recovery pass, 13 October 2026
+
+The saved Ghidra project has been reopened and read back through MCP.
+This pass concentrates on initialization, interrupt updates, output/input
+drivers, data structures, and the interpreter that runs the game's higher-level
+logic. It is a substantially expanded analysis, not a complete game-source recovery.
+
+Verified result
+  Previous project: 114 recognized functions, two meaningful routine names.
+  Current project: 251 recognized functions, 232 descriptive names.
+  Of those names, 26 use the hyp_ prefix and are provisional interpretations.
+  90 names begin vm_ and describe native interpreter operations. Further VM
+  hypotheses use hyp_vm_. These are real native routines, distinct from the
+  higher-level threaded words that call them.
+  697 user-defined symbols: functions, hardware ports, RAM variables, tables,
+  lamp frame bytes, code-pointer headers, and observed threaded game words.
+  Four 16-byte lamp-animation frames, a separate lamp-inhibit mask, 128 logical
+  lamp command identifiers, and corresponding MAME output identifiers.
+  118 output IDs have captions/reel-illumination labels from the layout.
+  31 named input-condition records and a typed input-condition enum.
+  Typed PIA initialization records and scheduler task records.
+
+Where to look in Ghidra
+Use G to go to an address, or browse/search Symbol Tree > Functions.
+  7CCF  reset_and_game_entry
+  6750  initialize_machine_and_game — full chain, formerly truncated at 6772
+  FE70  irq_dispatch_pia_and_ptm
+  28FE  irq_update_lamp_and_digit_multiplex
+  27D2  irq_update_inputs_reels_and_counters
+  19B8  irq_accumulate_inputs_and_check_modes
+  48FD  lamp_timer3_apply_inhibit_masks
+  69C0  serial_timer2_transmit_callback
+  5CD0  scheduler_tick_and_dispatch_due_task
+  76C7  threaded_vm_enter
+  FDF0  game_thread_initial_stream (data/token stream, not a native function)
+  49C5  lamp_set_four_frame_pattern
+  3CB2  alpha_execute_inline_stream
+  4A25  lamps_execute_inline_stream
+  59BB  advance_random_seed
+
+Data Type Manager > /MPU4 contains RomLampCommandId, MameLampOutput,
+MuxInputConditionId, DipInputConditionId, MuxInputCondition, PiaInitRecord,
+and SchedulerTaskRecord. Lamp-buffer comments describe the individual bits
+using actual layout captions. Multiple lamps share captions; their numeric
+IDs distinguish them. Layout element-definition numbers do not necessarily
+match the output binding: the binding name lampNN is the authoritative ID.
+
+Recovered initialization chain
+7CCF masks IRQ/FIRQ, sets S=07C8, calls 7D2B to set U=0672 and DP=00,
+then calls 6750. The initialization root now exposes:
+  RAM tests (00,55,AA,FF patterns, preserving stored bytes)
+  PIA and PTM self-tests
+  twelve PIA configuration records at 2045
+  serial state and NVRAM identity validation
+  lamp/digit mux state and periodic IRQ enable
+  IRQ timing test
+  YM2413 register shadow, sound state and scheduler free list
+  lamp-current-sense self-test
+  display/serial startup work
+  ROM sum/XOR validation and characteriser challenge checks
+  complementary NVRAM records and queue checksum validation
+  reel restoration and serial configuration messages
+  a final tail call to startup reset-history display handling.
+
+The earlier automatic analysis falsely stopped at an inline-display wrapper.
+Initialization really continues through 6775..67B3; this was verified with
+MAME's disassembly and the breakpoint at its return to the reset caller.
+Default pseudocode may absorb a tail-called helper into the caller; the named
+functions and saved assembly remain the reference for exact boundaries.
+
+Recovered interrupt/update chain
+FE70 distinguishes IC4 PIA interrupts from PTM timer interrupts.
+The periodic timer branch calls:
+  28FE lamp/digit multiplex update
+  27D2 input/reel/counter update, including:
+    438C or 4167 coin-input update
+    [00C6] -> 19B8 -> 1A87,1A05,1A58 input accumulation and mode checks
+    6403 reel-motion update
+  6B4D serial link/queue update
+  58BB meter pulse queue update
+  5CD0 scheduler tick and due-task dispatch.
+002C guards the nested update chain. 0044 separately guards the scheduler.
+
+Indirect callbacks recovered
+  003B timer2 callback: 69C0, serial bit transmission.
+    Registration at 69FE/70D6; observed IRQ dispatch at FEDD.
+  003D timer3 callback: 48FD, live lamp-output masking.
+    Registration from 19C2/70EF; observed IRQ dispatch at FEF0.
+  0081 IC4 edge callback: 6A3B, inferred serial receive path.
+    Registered at 6A08; not triggered in the recorded input-only experiment.
+  00C6 input callback: 19B8, confirmed from RAM and executed instructions.
+
+19C2 adjusts a timer word between boundaries and arms 48FD. The callback
+actually ANDs lamp ports with RAM masks at 0140/0148 plus the mux column.
+Its visible pulse-width/brightness interpretation remains a hypothesis.
+Tracing prevented a misleading provisional sound-related interpretation.
+
+Interpreter and readable higher-level game logic
+This ROM uses an indirect-threaded interpreter. Many game routines are token
+streams, not native JSR functions. Reset resolves FF20 -> 7D34 -> FDF0 and
+enters 76C7. Y is the token cursor; U is the data-stack pointer. A template
+at 7927 is copied to RAM F8..FF:
+  F8: PSHS Y; LEAY ,X              (enter a nested threaded definition)
+  FC: LDX ,Y++; JMP [,X++]         (fetch and dispatch the next token)
+
+The word headers preceding primitives contain pointers to executable entries.
+For example 76ED is a pointer word; the real instruction at 76EF is STS <F2.
+The previous decompilation's ROR F410 was an instruction-boundary error.
+Self-pointer headers and observed CPU instruction boundaries are now marked.
+
+Named primitives include byte/word loads and stores, literals, arithmetic,
+comparisons, shifts, stack manipulation, branches, loop frames, native-call
+bridges, display/lamp streams, overlapping byte moves and memory fills.
+232 named functions does not imply 232 recovered gameplay rules: many are
+engine services and interpreter primitives.
+
+70 threaded tokens were identified in the observed game-update window;
+69 received safe code-pointer labels. One overlapping case was left unresolved
+instead of clearing a CPU instruction without sufficient evidence. Twenty
+observed tokens enter nested threaded definitions. Their high-level game roles
+are deliberately unresolved; word labels describe the handler/native target.
+The next gameplay work is to decode these token streams into structured rules,
+follow credits/start/feature decisions, and connect their branch conditions
+to repeatable input experiments. Full payout/feature logic is not recovered yet.
+
+Lamp mapping
+49C5 takes a logical command ID in A and a four-frame pattern in B.
+For logical ID L:
+  bit = L & 7
+  response = {00,60,60,40,40,60,60,40}[bit]  (m4addr characteriser table)
+  column = ((response XOR L) & 78h) >> 3
+  mask = 1 << bit
+The bit is set/cleared in bytes 0100+column,0110+column,0120+column,0130+column
+according to B's low four bits. Output ports 0A00/0A02 emit the selected frame
+and column. MAME's output number is (column & 7)*8 + bit, plus 64 for column>=8.
+This is a permutation; logical ID and displayed lamp number are often different.
+
+Examples:
+  ROM command 79h -> MAME lamp25, HOLD (Hold 1 button lamp)
+  ROM command 7Ah -> MAME lamp26, HOLD (Hold 2 button lamp)
+  ROM command 49h -> MAME lamp41, START
+Full mapping and captions: evidence/deep-pass/lamp-map.json.
+382 traced commands matched the predicted RAM column without a mismatch.
+This validates the emulated translation; it does not independently validate
+an original physical PAL or the semantics of every lamp-animation sequence.
+
+Inputs
+The mux order in the pinned driver is Orange1,Orange2,Black1,Black2,
+Orange1,Orange2,DIL1,DIL2. 27D2 writes these samples at RAM 0000..0007;
+columns 0/1 are also copied to 4/5. Input-condition records at 71AA are
+four masks read against Orange1/Orange2/Black1/Black2. The caller determines
+whether a mask test means any/all, pressed/released, or an inverted condition.
+The separate two-byte table at 7226 tests DIL1/DIL2.
+
+BLACK2 at RAM0003:
+  01 Collect/Take Feature;02 Hold1/Nudge1;04 Hold2/Nudge2;08 Hold3/Nudge3;
+  10 Hi;20 Lo;40 Exchange Feature;80 Start.
+BLACK1 includes Test,Refill and Cashbox/back door. Coin inputs arrive through
+the AUX2 PIA path, rather than being silently assumed to share BLACK2.
+
+Reproducibility and observed results
+The baseline ROM and MAME executable are unchanged. New experiments used
+isolated default settings and absent initial NVRAM. No save states were used.
+
+deep-startup-a: 410,265 instruction records over the initial one-second window.
+deep-init-return-a/b: both reached the initialization-return breakpoint, then
+ran a 200 ms update window. All 77,913 trace records matched byte for byte.
+Initialization-complete RAM and final RAM also matched. The input update ran
+100 times during that window (500 Hz in this MAME configuration).
+
+deep-input-baseline-a and deep-input-hold1-a/b:
+Lua overrode MAME's actual BLACK2 Hold1 field, not CPU memory. The requested
+press interval was 30.0..30.2 emulated seconds; frame/input-sampling boundaries
+determine when it is visible. The two pressed runs have identical 48 observation
+rows and identical final NVRAM. First sampled RAM0003=02:30.016666667 s;
+last sampled RAM0003=02:30.200000000 s; it subsequently returns to00.
+The baseline's sampled RAM0003 stays00. This proves input acquisition and
+replay consistency, not acceptance of the button by every gameplay state.
+
+Each run stores launch arguments, effective settings, debugger commands,
+Lua input script where used, console output, snapshots and file hashes.
+Compare the supplied experiment scripts and replay JSONs before relying on
+old findings after changing MAME, ROM, NVRAM or settings.
+
+PRNG recovery
+59BB updates the 16-bit word at0324 with:
+  seed = (2053*seed + 3619h) modulo65536
+  returned B = high(seed) XOR RAM0033
+This is assembly-derived. Randomness quality, distribution, and use in payout
+decisions have not been evaluated.
+
+Evidence/confidence
+Names are recovered descriptions, not original source identifiers.
+hyp_ names explicitly flag uncertain interpretations. Other names describe
+assembly operations, driver-backed hardware, or trace-confirmed control flow;
+they are not all separately exercised under every branch/input.
+Some decompilations still warn about uninitialized RAM callback pointers,
+software exceptions, edited return addresses and indirect jumps. Read the
+instruction listing and comments for those functions; do not treat a malformed
+C rendering as a ROM bug. Complement checks and register/flag outputs can be
+lost in a default C prototype. No ROM bug has been established in this pass.
+MAME's protection shortcut must remain part of any hardware-vs-ROM diagnosis.
+
+Files
+  FUNCTION-INDEX.txt — all current routine names and addresses.
+  evidence/deep-pass/after/ — per-function saved assembly and pseudocode.
+  evidence/deep-pass/mcp-final-verification.json — readback from reopened GUI.
+  evidence/deep-pass/*comparison.json — repeated-run results.
+  evidence/deep-pass/threaded-word-map.json — observed token/handler map.
+  evidence/deep-pass/input-conditions.json — source-backed condition masks.
+  scripts/ — reproducible annotation and MAME experiments.
+The saved pre-pass project backup is kept separately under work.
+
+Pinned sources include MAME0.281 driver/layout and characteriser files in
+evidence/, alongside the original executable/ROM hashes. Lua API usage was
+checked against https://docs.mamedev.org/luascript/ref-input.html and
+https://docs.mamedev.org/luascript/index.html, then exercised on the installed
+MAME0.281 executable; successful execution is the version-specific evidence.

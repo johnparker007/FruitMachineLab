@@ -1,0 +1,29 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: accounting/NVRAM, control flow, lamps, mask/address records, memory operations
+Callers: EE62
+
+Threaded script at EE34; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* EE34  8248  vm_push_word_body_byte  value=0x0080
+* EE36  9D4E  clear_selected_reel_lamp_record_and_auxiliary_range  body=0x9D50
+* EE38  84A4  push_pair_0200_00a0  body=0x8417, push_address=0x84A6
+* EE3A  7665  vm_or_word_memory  
+* EE3C  9F68  normalize_award_47_to_30_with_optional_input_clamp  body=0x9F6A
+* EE3E  8318  vm_push_word_body_byte  value=0x00BA
+* EE40  7874  vm_store_word  
+* EE42  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* EE44  7E85  vm_push_word_body_byte  value=0x0001
+* EE46  9F41  store_result_byte_b9_if_zero  body=0x9F43
+* EE48  EC95  script_ec95  body=0xEC97
+* EE4A  EBD8  script_ebd8  body=0xEBDA
+* EE4C  9FA0  reels_test_all_three_symbol_flag2  body=0x9FA2
+* EE4E  798C  vm_branch_forward8_if_zero  branch=0xEE56
+  EE51  EDD1  script_edd1  body=0xEDD3
+  EE53  79A4  vm_branch_backward8  branch=0xEE4C
+* EE56  8248  vm_push_word_body_byte  value=0x0080
+* EE58  9BA8  apply_lamp_range_731c_731d  body=0x9ADB, push_address=0x9BAA
+* EE5A  EDB2  normalize_pending_award_and_animate_into_current_win  body=0xEDB4
+* EE5C  9CA3  apply_lamp_range_constant_0080_record_9b8c_9ca5  body=0x9CA5
+* EE5E  792F  vm_return_to_caller_stream  

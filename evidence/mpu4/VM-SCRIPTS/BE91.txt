@@ -1,0 +1,26 @@
+Purpose: nice_dice_wait_eligible_sector_then_stop_fourth_reel
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: boolean/bit operations, control flow, memory operations, reels, reels/symbol tests, stack/cell helpers
+Callers: BEE5
+
+Threaded script at BE91; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* BE91  BE39  nice_dice_select_compensated_limit_plus_three  body=0xBE3B
+* BE93  BE4A  fetch_fourth_reel_sector_value_from_763b  body=0xBE4C
+* BE95  7B51  vm_duplicate_cell  
+* BE97  78DE  vm_push_two  
+* BE99  7B61  vm_pick_cell_by_unsigned_word_index  
+* BE9B  7A65  vm_compare_top_gt_second_signed  
+* BE9D  7B7D  vm_swap_two_cells  
+* BE9F  78C0  vm_push_one  
+* BEA1  7A79  vm_compare_top_lt_second_signed  
+* BEA3  7A97  vm_bitwise_and  
+* BEA5  79A6  vm_branch_backward8_if_zero  branch=0xBE93
+* BEA8  7B3D  vm_drop_cell  
+* BEAA  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* BEAD  7F82  call_timing_update_reel_word_modulo_eight  native=0x2D34
+* BEAF  78B5  vm_push_zero  
+* BEB1  8194  vm_push_word_body_byte  value=0x00C2
+* BEB3  7874  vm_store_word  
+* BEB5  792F  vm_return_to_caller_stream  

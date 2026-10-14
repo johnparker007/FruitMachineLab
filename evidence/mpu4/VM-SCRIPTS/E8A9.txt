@@ -1,0 +1,15 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: control flow, mask tests
+Callers: EA22
+
+Threaded script at E8A9; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* E8A9  84E0  test_mask_0200_at_719f  body=0x841E, push_address=0x84E2
+* E8AB  7982  vm_branch_forward8_if_zero  branch=0xE8B5
+  E8AE  E88E  script_e88e  body=0xE890
+  E8B0  78B3  vm_push_true_minus_one  
+  E8B2  7979  vm_branch_unsigned_forward8  branch=0xE8B7
+* E8B5  E89B  script_e89b  body=0xE89D
+* E8B7  792F  vm_return_to_caller_stream  

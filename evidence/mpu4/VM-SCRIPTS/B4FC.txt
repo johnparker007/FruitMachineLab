@@ -1,0 +1,21 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: control flow, memory operations
+Callers: B51D
+
+Threaded script at B4FC; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B4FC  81D2  vm_push_word_body_word  value=0x0331
+* B4FE  786B  vm_fetch_unsigned_byte  
+* B500  A5C9  scaled_parameter_profile_at_a5cb_counter_07c9  body=0xA5A5, push_address=0xA5CB
+* B502  7D42  compare_top_le_second_signed  body=0x7D44
+* B504  7982  vm_branch_forward8_if_zero  branch=0xB519
+* B507  7EB4  vm_push_word_body_word  value=0x0330
+* B509  786B  vm_fetch_unsigned_byte  
+* B50B  7982  vm_branch_forward8_if_zero  branch=0xB514
+  B50E  7963  vm_push_inline_byte_literal  inline_value=0x0004
+  B511  7979  vm_branch_unsigned_forward8  branch=0xB517
+* B514  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* B517  7DEE  signed_cell_quotient  body=0x7DF0
+* B519  792F  vm_return_to_caller_stream  

@@ -1,0 +1,14 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: lamps
+Callers: FCF0
+
+Threaded script at FCE2; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* FCE2  8094  call_apply_lamp_range_7248_to_733d  native=0x4AC0
+* FCE4  824E  vm_push_word_body_byte  value=0x008F
+* FCE6  9C38  apply_lamp_range_7257_725d  body=0x9ADB, push_address=0x9C3A
+* FCE8  9DE9  call_set_all_three_reel_group_lamps_pattern_8f_9deb  body=0x9DEB
+* FCEA  A875  compatibility_empty_script_return  body=0xA877
+* FCEC  792F  vm_return_to_caller_stream  

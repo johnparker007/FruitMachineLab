@@ -1,0 +1,19 @@
+Purpose: clear_display_mode_bytes_unless_option_0200
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: arithmetic, mask tests, memory operations, stack/cell helpers
+Callers: DD38, E5CF, B91D, DC0A, B88C
+
+Threaded script at A895; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* A895  84E0  test_mask_0200_at_719f  body=0x841E, push_address=0x84E2
+* A897  7574  vm_return_if_nonzero  
+* A899  78DE  vm_push_two  
+* A89B  78B5  vm_push_zero  
+* A89D  79DC  vm_enter_loop_frame  
+* A89F  7A1C  vm_push_loop_index  
+* A8A1  81C8  vm_push_word_body_word  value=0x02BE
+* A8A3  787E  vm_add_words  
+* A8A5  765F  vm_clear_byte_memory  
+* A8A7  7A00  vm_loop_increment_one  
+* A8A9  792F  vm_return_to_caller_stream  

@@ -1,0 +1,21 @@
+Purpose: money_trap_seed_offset_and_render_sixteen_display_steps
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: memory operations, stack/cell helpers
+Callers: C416
+
+Threaded script at C3F7; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C3F7  78B5  vm_push_zero  
+* C3F9  7963  vm_push_inline_byte_literal  inline_value=0x000F
+* C3FC  99EC  random_scaled_range_selection  body=0x99EE
+* C3FE  7963  vm_push_inline_byte_literal  inline_value=0x0004
+* C401  7DC4  multiply_words_keep_low_cell  body=0x7DC6
+* C403  C128  vm_push_local_frame_address  value=0x0000
+* C405  7874  vm_store_word  
+* C407  7963  vm_push_inline_byte_literal  inline_value=0x0010
+* C40A  78B5  vm_push_zero  
+* C40C  79DC  vm_enter_loop_frame  
+* C40E  C2C3  money_trap_render_next_stream_character_and_wrap_120  body=0xC2C5
+* C410  7A00  vm_loop_increment_one  
+* C412  792F  vm_return_to_caller_stream  

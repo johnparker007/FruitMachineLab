@@ -1,0 +1,21 @@
+Purpose: reels_test_exactly_two_symbol_flag2
+Confidence: reviewed token mechanics
+Groups: arithmetic, boolean/bit operations, control flow, memory operations, reel records, reels/symbol tests, stack/cell helpers
+Callers: EFF9, D140, F1C3, D177, F052, F186, A3D0
+
+Threaded script at 9FBC; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9FBC  78B5  vm_push_zero  
+* 9FBE  9D7A  push_three_reel_loop_bounds  body=0x9D7C
+* 9FC0  79DC  vm_enter_loop_frame  
+* 9FC2  9DA9  address_record_0161_loop_index  body=0x9D86, push_address=0x9DAB
+* 9FC4  786B  vm_fetch_unsigned_byte  
+* 9FC6  8036  vm_push_word_body_byte  value=0x0002
+* 9FC8  7A97  vm_bitwise_and  
+* 9FCA  7982  vm_branch_forward8_if_zero  branch=0x9FCF
+* 9FCD  78C9  vm_increment_word  
+* 9FCF  7A00  vm_loop_increment_one  
+* 9FD1  78DE  vm_push_two  
+* 9FD3  7A6F  vm_compare_equal  
+* 9FD5  792F  vm_return_to_caller_stream  

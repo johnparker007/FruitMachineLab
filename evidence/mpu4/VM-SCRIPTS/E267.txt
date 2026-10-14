@@ -1,0 +1,14 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: display, sound/scheduler
+Callers: E288
+
+Threaded script at E267; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* E267  896B  queue_sound_stream_896d  body=0x856B, push_address=0x896D
+* E269  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); '  RESTART CHANCE '; cmd7A()]
+* E27E  A30E  vm_push_word_body_address  value=0xA310
+* E280  831B  call_alpha_execute_stream_at_x  native=0x3CC0
+* E282  80F8  call_scheduler_wait_until_active_list_empty  native=0x5CCB
+* E284  792F  vm_return_to_caller_stream  

@@ -1,0 +1,10 @@
+Purpose: return_zero_nudge_exit_hook
+Confidence: reviewed token mechanics
+Groups: nudges, stack/cell helpers
+Callers: B43D
+
+Threaded script at B437; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B437  78BE  vm_push_zero  
+* B439  792F  vm_return_to_caller_stream  

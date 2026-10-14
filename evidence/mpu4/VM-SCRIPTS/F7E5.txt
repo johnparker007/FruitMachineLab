@@ -1,0 +1,15 @@
+Purpose: attract_start_alpha_message_if_credit_fraction_zero
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: boolean/bit operations, display, memory operations
+Callers: FA7F
+
+Threaded script at F7E5; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* F7E5  81D9  vm_push_word_body_word  value=0x02F1
+* F7E7  786B  vm_fetch_unsigned_byte  
+* F7E9  7A53  vm_test_nonzero  
+* F7EB  7574  vm_return_if_nonzero  
+* F7ED  F752  vm_push_word_body_address  value=0xF754
+* F7EF  831B  call_alpha_execute_stream_at_x  native=0x3CC0
+* F7F1  792F  vm_return_to_caller_stream  

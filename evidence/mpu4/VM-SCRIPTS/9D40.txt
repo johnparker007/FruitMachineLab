@@ -1,0 +1,10 @@
+Purpose: apply_lamp_range_record_9b7c
+Confidence: reviewed token mechanics
+Groups: lamps
+Callers: E5CF, C506, FAFC, C721, E656, E796, B403, C6D0
+
+Threaded script at 9D40; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9D40  9B7C  apply_lamp_range_725d_726f  body=0x9ADB, push_address=0x9B7E
+* 9D42  792F  vm_return_to_caller_stream  

@@ -1,0 +1,36 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, mask/address records, reels, stack/cell helpers
+Callers: EF6B
+
+Threaded script at EF30; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* EF30  84AA  push_pair_0100_00a0  body=0x8417, push_address=0x84AC
+* EF32  7671  vm_clear_word_memory_bits  
+* EF34  80C4  call_reels_push_matching_symbol_result  native=0x1AA3
+* EF36  849E  push_pair_0400_00a0  body=0x8417, push_address=0x84A0
+* EF38  767F  vm_test_word_memory_mask  
+* EF3A  7AA3  vm_bitwise_or  
+* EF3C  7574  vm_return_if_nonzero  
+* EF3E  A679  scaled_parameter_profile_at_a67b_counter_07c9  body=0xA5A5, push_address=0xA67B
+* EF40  9A11  random_percentage_test  body=0x9A13
+* EF42  8486  push_pair_4000_00a0  body=0x8417, push_address=0x8488
+* EF44  767F  vm_test_word_memory_mask  
+* EF46  7A97  vm_bitwise_and  
+* EF48  7B49  vm_duplicate_if_nonzero  
+* EF4A  7A46  vm_test_zero  
+* EF4C  7574  vm_return_if_nonzero  
+  EF4E  EEDB  script_eedb  body=0xEEDD
+  EF50  9F68  normalize_award_47_to_30_with_optional_input_clamp  body=0x9F6A
+  EF52  7B51  vm_duplicate_cell  
+  EF54  7963  vm_push_inline_byte_literal  inline_value=0x000A
+  EF57  7A79  vm_compare_top_lt_second_signed  
+  EF59  7B7D  vm_swap_two_cells  
+  EF5B  7F07  vm_push_word_body_byte  value=0x003C
+  EF5D  7A65  vm_compare_top_gt_second_signed  
+  EF5F  7A97  vm_bitwise_and  
+  EF61  7A97  vm_bitwise_and  
+  EF63  84AA  push_pair_0100_00a0  body=0x8417, push_address=0x84AC
+  EF65  9A62  conditionally_set_or_clear_memory_mask  body=0x9A64
+  EF67  792F  vm_return_to_caller_stream  

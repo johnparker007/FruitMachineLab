@@ -1,0 +1,14 @@
+Purpose: cash_climber_choose_step_limit_from_orange1_inputs
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: control flow, stack/cell helpers
+Callers: BF8F
+
+Threaded script at BF7E; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* BF7E  7963  vm_push_inline_byte_literal  inline_value=0x000D
+* BF81  9F5E  test_two_orange1_input_conditions  body=0x9F60
+* BF83  7982  vm_branch_forward8_if_zero  branch=0xBF8B
+  BF86  7B3D  vm_drop_cell  
+  BF88  7963  vm_push_inline_byte_literal  inline_value=0x000B
+* BF8B  792F  vm_return_to_caller_stream  

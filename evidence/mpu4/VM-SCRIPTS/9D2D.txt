@@ -1,0 +1,16 @@
+Purpose: apply_lamp_id_from_nested_loop_indices
+Confidence: reviewed token mechanics
+Groups: arithmetic, lamps, stack/cell helpers
+Callers: F64F, F87B, F8B6
+
+Threaded script at 9D2D; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9D2D  7A1C  vm_push_loop_index  
+* 9D2F  7963  vm_push_inline_byte_literal  inline_value=0x0006
+* 9D32  7DC4  multiply_words_keep_low_cell  body=0x7DC6
+* 9D34  7A26  vm_push_outer_loop_index  
+* 9D36  787E  vm_add_words  
+* 9D38  7B7D  vm_swap_two_cells  
+* 9D3A  9C44  apply_indexed_lamp_id_from_72bf  body=0x9B18, push_address=0x9C46
+* 9D3C  792F  vm_return_to_caller_stream  

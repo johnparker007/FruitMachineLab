@@ -1,0 +1,22 @@
+Purpose: normalize_pending_award_and_animate_into_current_win
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: accounting/NVRAM, award/balance operations, boolean/bit operations, control flow, memory operations
+Callers: EE34, EE11, FD56
+
+Threaded script at EDB4; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* EDB4  8318  vm_push_word_body_byte  value=0x00BA
+* EDB6  790D  vm_fetch_word  
+* EDB8  7A53  vm_test_nonzero  
+* EDBA  7982  vm_branch_forward8_if_zero  branch=0xEDBF
+* EDBD  ED04  script_ed04  body=0xED06
+* EDBF  ED92  script_ed92  body=0xED94
+* EDC1  8318  vm_push_word_body_byte  value=0x00BA
+* EDC3  790D  vm_fetch_word  
+* EDC5  9F68  normalize_award_47_to_30_with_optional_input_clamp  body=0x9F6A
+* EDC7  8318  vm_push_word_body_byte  value=0x00BA
+* EDC9  7874  vm_store_word  
+* EDCB  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* EDCD  AF91  animate_pending_award_into_current_win  body=0xAF93
+* EDCF  792F  vm_return_to_caller_stream  

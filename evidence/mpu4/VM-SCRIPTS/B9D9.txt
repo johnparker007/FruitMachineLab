@@ -1,0 +1,43 @@
+Purpose: clear_previous_board_rectangle_vertical_edges
+Confidence: reviewed token mechanics; see lifecycle-pass/script-name-evidence.json
+Groups: arithmetic, boolean/bit operations, control flow, memory operations
+Callers: BAD9
+
+Threaded script at B9D9; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B9D9  B955  vm_push_local_frame_address  value=0x0000
+* B9DB  786B  vm_fetch_unsigned_byte  
+* B9DD  78C9  vm_increment_word  
+* B9DF  B95B  vm_push_local_frame_address  value=0x0002
+* B9E1  786B  vm_fetch_unsigned_byte  
+* B9E3  7D52  duplicate_two_cells  body=0x7D54
+* B9E5  7A5B  vm_compare_not_equal  
+* B9E7  7982  vm_branch_forward8_if_zero  branch=0xBA1F
+* B9EA  79DC  vm_enter_loop_frame  
+* B9EC  B958  vm_push_local_frame_address  value=0x0001
+* B9EE  786B  vm_fetch_unsigned_byte  
+* B9F0  B964  vm_push_local_frame_address  value=0x0005
+* B9F2  786B  vm_fetch_unsigned_byte  
+* B9F4  7A5B  vm_compare_not_equal  
+* B9F6  7982  vm_branch_forward8_if_zero  branch=0xBA03
+* B9F9  B958  vm_push_local_frame_address  value=0x0001
+* B9FB  786B  vm_fetch_unsigned_byte  
+* B9FD  7A1C  vm_push_loop_index  
+* B9FF  8248  vm_push_word_body_byte  value=0x0080
+* BA01  B944  apply_reel_grid_lamp_pattern_at_row_times_six_plus_column  body=0xB946
+* BA03  B95E  vm_push_local_frame_address  value=0x0003
+* BA05  786B  vm_fetch_unsigned_byte  
+* BA07  B96A  vm_push_local_frame_address  value=0x0007
+* BA09  786B  vm_fetch_unsigned_byte  
+* BA0B  7A5B  vm_compare_not_equal  
+* BA0D  7982  vm_branch_forward8_if_zero  branch=0xBA1A
+* BA10  B95E  vm_push_local_frame_address  value=0x0003
+* BA12  786B  vm_fetch_unsigned_byte  
+* BA14  7A1C  vm_push_loop_index  
+* BA16  8248  vm_push_word_body_byte  value=0x0080
+* BA18  B944  apply_reel_grid_lamp_pattern_at_row_times_six_plus_column  body=0xB946
+* BA1A  7A00  vm_loop_increment_one  
+* BA1C  7979  vm_branch_unsigned_forward8  branch=0xBA21
+  BA1F  7B43  vm_drop_two_cells  
+* BA21  792F  vm_return_to_caller_stream  

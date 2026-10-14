@@ -1,0 +1,14 @@
+Purpose: compare_local_feature_bytes_two_and_zero
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: memory operations
+Callers: E71C, E7E3, E812, E75E
+
+Threaded script at E70E; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* E70E  E468  vm_push_local_frame_address  value=0x0002
+* E710  786B  vm_fetch_unsigned_byte  
+* E712  E462  vm_push_local_frame_address  value=0x0000
+* E714  786B  vm_fetch_unsigned_byte  
+* E716  7D42  compare_top_le_second_signed  body=0x7D44
+* E718  792F  vm_return_to_caller_stream  

@@ -1,0 +1,11 @@
+Purpose: test_normal_mode_byte_nonzero
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations
+Callers: AE3A, ABC7, AB33, EBB8, AC03, A588, ADCE, 994F
+
+Threaded script at 9947; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9947  993B  test_normal_mode_byte_zero  body=0x993D
+* 9949  7ABB  vm_bitwise_not  
+* 994B  792F  vm_return_to_caller_stream  

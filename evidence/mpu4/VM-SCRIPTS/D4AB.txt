@@ -1,0 +1,48 @@
+Purpose: advance_unlocked_super_hold_reel_requests
+Confidence: reviewed token mechanics
+Groups: arithmetic, boolean/bit operations, control flow, memory operations, reel records, reels/symbol tests, stack/cell helpers
+Callers: D547
+
+Threaded script at D4AB; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* D4AB  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* D4AE  78B5  vm_push_zero  
+* D4B0  79DC  vm_enter_loop_frame  
+* D4B2  9E38  push_current_reel_selection_mask_and_address  body=0x9E3A
+* D4B4  767F  vm_test_word_memory_mask  
+* D4B6  7ABB  vm_bitwise_not  
+* D4B8  7982  vm_branch_forward8_if_zero  branch=0xD4CD
+* D4BB  D325  vm_push_local_frame_address  value=0x0004
+* D4BD  790D  vm_fetch_word  
+* D4BF  7B51  vm_duplicate_cell  
+* D4C1  9DAD  address_record_0169_loop_index  body=0x9D86, push_address=0x9DAF
+* D4C3  7861  vm_store_byte  
+* D4C5  D328  vm_push_local_frame_address  value=0x0006
+* D4C7  7A1C  vm_push_loop_index  
+* D4C9  787E  vm_add_words  
+* D4CB  7894  vm_add_to_byte_memory  
+* D4CD  7A00  vm_loop_increment_one  
+* D4CF  D325  vm_push_local_frame_address  value=0x0004
+* D4D1  790D  vm_fetch_word  
+* D4D3  D32B  vm_push_local_frame_address  value=0x0009
+* D4D5  7894  vm_add_to_byte_memory  
+* D4D7  D32B  vm_push_local_frame_address  value=0x0009
+* D4D9  786B  vm_fetch_unsigned_byte  
+* D4DB  7B51  vm_duplicate_cell  
+* D4DD  D401  script_d401  body=0xD403
+* D4DF  D460  script_d460  body=0xD462
+* D4E1  7B51  vm_duplicate_cell  
+* D4E3  78C0  vm_push_one  
+* D4E5  7A6F  vm_compare_equal  
+* D4E7  7B7D  vm_swap_two_cells  
+* D4E9  7963  vm_push_inline_byte_literal  inline_value=0x00FF
+* D4EC  7A6F  vm_compare_equal  
+* D4EE  7AA3  vm_bitwise_or  
+* D4F0  7982  vm_branch_forward8_if_zero  branch=0xD4FD
+* D4F3  D325  vm_push_local_frame_address  value=0x0004
+* D4F5  790D  vm_fetch_word  
+* D4F7  7CCD  vm_negate_cell  
+* D4F9  D325  vm_push_local_frame_address  value=0x0004
+* D4FB  7874  vm_store_word  
+* D4FD  792F  vm_return_to_caller_stream  

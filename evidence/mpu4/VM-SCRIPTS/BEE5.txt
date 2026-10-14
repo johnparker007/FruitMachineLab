@@ -1,0 +1,48 @@
+Purpose: nice_dice_prompt_start_and_resolve_fourth_reel_stop
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: arithmetic, boolean/bit operations, control flow, display, input conditions, lamps, mask tests, memory operations, reels/symbol tests, sound/scheduler
+Callers: BF3E
+
+Threaded script at BEE5; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* BEE5  9984  wait_for_all_panel_buttons_released  body=0x9986
+* BEE7  82BB  vm_push_word_body_word  value=0x0170
+* BEE9  7963  vm_push_inline_byte_literal  inline_value=0x0006
+* BEEC  787E  vm_add_words  
+* BEEE  786B  vm_fetch_unsigned_byte  
+* BEF0  78DE  vm_push_two  
+* BEF2  82BB  vm_push_word_body_word  value=0x0170
+* BEF4  7963  vm_push_inline_byte_literal  inline_value=0x0006
+* BEF7  787E  vm_add_words  
+* BEF9  7861  vm_store_byte  
+* BEFB  BDCC  vm_push_word_body_address  value=0xBDCE
+* BEFD  831B  call_alpha_execute_stream_at_x  native=0x3CC0
+* BEFF  BE62  nice_dice_start_fourth_reel_with_random_wait  body=0xBE64
+* BF01  835A  vm_push_word_body_byte  value=0x0049
+* BF03  8060  call_lamp_set_frame_pattern_5  native=0x498B
+* BF05  7963  vm_push_inline_byte_literal  inline_value=0x0009
+* BF08  8581  write_byte_004e_8583  body=0x8583
+* BF0A  8DF8  queue_sound_stream_8dfa  body=0x856B, push_address=0x8DFA
+* BF0C  795B  vm_push_inline_word_literal  inline_value=0xE2B4
+* BF10  82F2  vm_push_word_body_byte  value=0x002D
+* BF12  7874  vm_store_word  
+* BF14  809C  call_resume_alpha_stream_when_delay_expired  native=0x3CF7
+* BF16  83FC  vm_test_input_condition  value=0x0012
+* BF18  9A40  test_irq_timer_positive_or_abort_flag  body=0x9A42
+* BF1A  7AA3  vm_bitwise_or  
+* BF1C  84E0  test_mask_0200_at_719f  body=0x841E, push_address=0x84E2
+* BF1E  7AA3  vm_bitwise_or  
+* BF20  79A6  vm_branch_backward8_if_zero  branch=0xBF14
+* BF23  835A  vm_push_word_body_byte  value=0x0049
+* BF25  8068  call_lamp_set_frame_pattern_0  native=0x4982
+* BF27  824E  vm_push_word_body_byte  value=0x008F
+* BF29  9BB4  apply_lamp_range_7335_7338  body=0x9ADB, push_address=0x9BB6
+* BF2B  8130  call_reset_sound_and_scheduler  native=0x5B77
+* BF2D  8AD2  queue_sound_stream_8ad4  body=0x856B, push_address=0x8AD4
+* BF2F  BE8F  nice_dice_wait_eligible_sector_then_stop_fourth_reel  body=0xBE91
+* BF31  82BB  vm_push_word_body_word  value=0x0170
+* BF33  7963  vm_push_inline_byte_literal  inline_value=0x0006
+* BF36  787E  vm_add_words  
+* BF38  7861  vm_store_byte  
+* BF3A  792F  vm_return_to_caller_stream  

@@ -1,0 +1,33 @@
+Purpose: cash_feature_cash_jackpot_restart
+Confidence: reviewed dispatch/display association; complete gameplay unresolved
+Groups: accounting/NVRAM, lamps, mask/address records, memory operations, sound/scheduler, stack/cell helpers
+Callers: DFF6
+
+Threaded script at C9F4; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C9F4  7E67  vm_push_word_body_byte  value=0x0016
+* C9F6  82DD  vm_push_word_body_byte  value=0x00BD
+* C9F8  7861  vm_store_byte  
+* C9FA  7F0D  vm_push_word_body_byte  value=0x001E
+* C9FC  8318  vm_push_word_body_byte  value=0x00BA
+* C9FE  7874  vm_store_word  
+* CA00  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* CA02  8492  push_pair_1000_00a0  body=0x8417, push_address=0x8494
+* CA04  7665  vm_or_word_memory  
+* CA06  BB6A  vm_push_word_body_byte  value=0x0001
+* CA08  81C2  vm_push_word_body_byte  value=0x00B6
+* CA0A  7861  vm_store_byte  
+* CA0C  88FA  queue_sound_stream_88fc  body=0x856B, push_address=0x88FC
+* CA0E  78DE  vm_push_two  
+* CA10  78B5  vm_push_zero  
+* CA12  79DC  vm_enter_loop_frame  
+* CA14  8130  call_reset_sound_and_scheduler  native=0x5B77
+* CA16  94C1  queue_sound_stream_94c3  body=0x856B, push_address=0x94C3
+* CA18  8248  vm_push_word_body_byte  value=0x0080
+* CA1A  9B86  apply_lamp_range_728f_72bf  body=0x9ADB, push_address=0x9B88
+* CA1C  A129  vm_push_word_body_byte  value=0x002F
+* CA1E  BB47  animate_shrinking_board_rectangle_to_selected_square  body=0xBB49
+* CA20  7A00  vm_loop_increment_one  
+* CA22  8130  call_reset_sound_and_scheduler  native=0x5B77
+* CA24  792F  vm_return_to_caller_stream  

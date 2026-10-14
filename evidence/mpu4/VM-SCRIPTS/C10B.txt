@@ -1,0 +1,22 @@
+Purpose: cash_feature_cash_climber
+Confidence: reviewed dispatch/display association; complete gameplay unresolved
+Groups: lamps, memory operations
+Callers: DFF6
+
+Threaded script at C10B; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C10B  7963  vm_push_inline_byte_literal  inline_value=0x0001
+* C10E  76A9  vm_allocate_local_frame  
+* C110  BB73  vm_push_word_body_byte  value=0x0004
+* C112  81C2  vm_push_word_body_byte  value=0x00B6
+* C114  7861  vm_store_byte  
+* C116  8248  vm_push_word_body_byte  value=0x0080
+* C118  9B86  apply_lamp_range_728f_72bf  body=0x9ADB, push_address=0x9B88
+* C11A  7E4C  vm_push_word_body_byte  value=0x000F
+* C11C  82DD  vm_push_word_body_byte  value=0x00BD
+* C11E  7861  vm_store_byte  
+* C120  BFCC  cash_climber_initialize_timer_and_shot_state  body=0xBFCE
+* C122  C0AA  cash_climber_run_three_shot_start_input_loop  body=0xC0AC
+* C124  C047  cash_climber_store_selected_step_award_and_cleanup  body=0xC049
+* C126  792F  vm_return_to_caller_stream  

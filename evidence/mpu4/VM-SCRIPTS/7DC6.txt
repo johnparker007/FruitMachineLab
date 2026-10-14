@@ -1,0 +1,11 @@
+Purpose: multiply_words_keep_low_cell
+Confidence: reviewed token mechanics
+Groups: arithmetic, stack/cell helpers
+Callers: CED7, BC70, E4D3, C721, D938, D975, C37A, A9A0
+
+Threaded script at 7DC6; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 7DC6  7BCC  vm_multiply_to_double_cell  
+* 7DC8  7B3D  vm_drop_cell  
+* 7DCA  792F  vm_return_to_caller_stream  

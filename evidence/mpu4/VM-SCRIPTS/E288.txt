@@ -1,0 +1,23 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, mask/address records, memory operations
+Callers: E2AA
+
+Threaded script at E288; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* E288  7F14  vm_push_word_body_byte  value=0x00C9
+* E28A  786B  vm_fetch_unsigned_byte  
+* E28C  A126  vm_push_word_body_byte  value=0x002D
+* E28E  7A6F  vm_compare_equal  
+* E290  7963  vm_push_inline_byte_literal  inline_value=0x001E
+* E293  9A11  random_percentage_test  body=0x9A13
+* E295  7A97  vm_bitwise_and  
+* E297  7982  vm_branch_forward8_if_zero  branch=0xE2A6
+* E29A  E265  script_e265  body=0xE267
+* E29C  8492  push_pair_1000_00a0  body=0x8417, push_address=0x8494
+* E29E  7665  vm_or_word_memory  
+* E2A0  BB6A  vm_push_word_body_byte  value=0x0001
+* E2A2  81C2  vm_push_word_body_byte  value=0x00B6
+* E2A4  7861  vm_store_byte  
+* E2A6  792F  vm_return_to_caller_stream  

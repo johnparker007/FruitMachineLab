@@ -1,0 +1,33 @@
+Purpose: run_super_hold_symbol_selection
+Confidence: reviewed token mechanics
+Groups: accounting/NVRAM, boolean/bit operations, control flow, display, lamps, mask tests, mask/address records, memory operations
+Callers: FC99
+
+Threaded script at D587; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* D587  84AA  push_pair_0100_00a0  body=0x8417, push_address=0x84AC
+* D589  767F  vm_test_word_memory_mask  
+* D58B  D57F  script_d57f  body=0xD581
+* D58D  7A97  vm_bitwise_and  
+* D58F  7982  vm_branch_forward8_if_zero  branch=0xD5CD
+* D592  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); '** SUPER HOLD **'; cmd7A()]
+* D5A6  9984  wait_for_all_panel_buttons_released  body=0x9986
+* D5A8  84AA  push_pair_0100_00a0  body=0x8417, push_address=0x84AC
+* D5AA  7671  vm_clear_word_memory_bits  
+* D5AC  800A  vm_push_word_body_word  value=0x04DC
+* D5AE  8323  call_accounting_increment_u24_if_normal_mode  native=0x57DB
+* D5B0  7963  vm_push_inline_byte_literal  inline_value=0x000A
+* D5B3  76A9  vm_allocate_local_frame  
+* D5B5  7E8B  vm_push_word_body_byte  value=0x0005
+* D5B7  8164  vm_push_word_body_byte  value=0x00B9
+* D5B9  7861  vm_store_byte  
+* D5BB  84E0  test_mask_0200_at_719f  body=0x841E, push_address=0x84E2
+* D5BD  7982  vm_branch_forward8_if_zero  branch=0xD5C5
+  D5C0  D3CD  execute_preselected_super_hold_reel_requests  body=0xD3CF
+  D5C2  7979  vm_branch_unsigned_forward8  branch=0xD5C7
+* D5C5  D545  sweep_super_hold_reels_until_selected_and_start  body=0xD547
+* D5C7  8342  vm_push_word_body_byte  value=0x0018
+* D5C9  8068  call_lamp_set_frame_pattern_0  native=0x4982
+* D5CB  80A0  call_alpha_reset_and_clear_display  native=0x3D0E
+* D5CD  792F  vm_return_to_caller_stream  

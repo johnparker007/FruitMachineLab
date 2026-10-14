@@ -1,0 +1,15 @@
+Purpose: cash_climber_lookup_compensated_chance_divided_by_three
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: indexed memory
+Callers: BF8F
+
+Threaded script at BF6D; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* BF6D  BF5A  vm_push_word_body_byte  value=0x000B
+* BF6F  7E4C  vm_push_word_body_byte  value=0x000F
+* BF71  A10E  clip_compensation_index_difference_plus_four_to_zero_eight  body=0xA110
+* BF73  BF60  read_indexed_byte_table_at_bf62  body=0x9971, push_address=0xBF62
+* BF75  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* BF78  7DEE  signed_cell_quotient  body=0x7DF0
+* BF7A  792F  vm_return_to_caller_stream  

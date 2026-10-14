@@ -1,0 +1,25 @@
+Purpose: aggregate_preplay_input_feature_and_latched_start_conditions
+Confidence: reviewed token mechanics; see payout-pass/script-name-evidence.json
+Groups: boolean/bit operations, input conditions, lamps, mask tests, mask/address records
+Callers: FCBD
+
+Threaded script at FC99; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* FC99  D30D  script_d30d  body=0xD30F
+* FC9B  FC7E  initialize_reel_selection_once_for_state_bit0080  body=0xFC80
+* FC9D  835A  vm_push_word_body_byte  value=0x0049
+* FC9F  8058  call_lamp_set_frame_pattern_3  native=0x4985
+* FCA1  F507  script_f507  body=0xF509
+* FCA3  D585  run_super_hold_symbol_selection  body=0xD587
+* FCA5  84F2  test_mask_4000_at_719f  body=0x841E, push_address=0x84F4
+* FCA7  83FC  vm_test_input_condition  value=0x0012
+* FCA9  7AA3  vm_bitwise_or  
+* FCAB  7AA3  vm_bitwise_or  
+* FCAD  848C  push_pair_2000_00a0  body=0x8417, push_address=0x848E
+* FCAF  767F  vm_test_word_memory_mask  
+* FCB1  7AA3  vm_bitwise_or  
+* FCB3  8466  push_pair_0080_0090  body=0x8444, push_address=0x8468
+* FCB5  767F  vm_test_word_memory_mask  
+* FCB7  7AA3  vm_bitwise_or  
+* FCB9  792F  vm_return_to_caller_stream  

@@ -1,0 +1,13 @@
+Purpose: test_all_symbol_flag2_or_nonzero_matching_result
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, reels
+Callers: E3A3
+
+Threaded script at 9FD9; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9FD9  9FA0  reels_test_all_three_symbol_flag2  body=0x9FA2
+* 9FDB  80C4  call_reels_push_matching_symbol_result  native=0x1AA3
+* 9FDD  7A53  vm_test_nonzero  
+* 9FDF  7AA3  vm_bitwise_or  
+* 9FE1  792F  vm_return_to_caller_stream  

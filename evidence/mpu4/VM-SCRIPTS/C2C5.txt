@@ -1,0 +1,26 @@
+Purpose: money_trap_render_next_stream_character_and_wrap_120
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: arithmetic, boolean/bit operations, control flow, display, memory operations, stack/cell helpers
+Callers: C416, C3F7
+
+Threaded script at C2C5; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C2C5  C128  vm_push_local_frame_address  value=0x0000
+* C2C7  790D  vm_fetch_word  
+* C2C9  C2AA  money_trap_select_compensated_digit_stream_base  body=0xC2AC
+* C2CB  787E  vm_add_words  
+* C2CD  786B  vm_fetch_unsigned_byte  
+* C2CF  7F00  call_alpha_render_shadow_buffer_and_extra_character  native=0x40B5
+* C2D1  78C0  vm_push_one  
+* C2D3  C128  vm_push_local_frame_address  value=0x0000
+* C2D5  7888  vm_add_to_word_memory  
+* C2D7  C128  vm_push_local_frame_address  value=0x0000
+* C2D9  790D  vm_fetch_word  
+* C2DB  C1AB  vm_push_word_body_byte  value=0x0078
+* C2DD  7A6F  vm_compare_equal  
+* C2DF  7982  vm_branch_forward8_if_zero  branch=0xC2E8
+  C2E2  78B5  vm_push_zero  
+  C2E4  C128  vm_push_local_frame_address  value=0x0000
+  C2E6  7874  vm_store_word  
+* C2E8  792F  vm_return_to_caller_stream  

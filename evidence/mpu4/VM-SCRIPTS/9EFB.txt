@@ -1,0 +1,18 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, stack/cell helpers
+Callers: 9F20
+
+Threaded script at 9EFB; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9EFB  77F6  vm_fetch_byte_and_following_word  
+* 9EFD  9ED7  bias_word_signed_value_at_bit7  body=0x9ED9
+* 9EFF  75A9  vm_keep_negative_else_zero  
+* 9F01  7982  vm_branch_forward8_if_zero  branch=0x9F0A
+* 9F04  7B3D  vm_drop_cell  
+* 9F06  78BE  vm_push_zero  
+* 9F08  7935  vm_unwind_loop_frames_to_return  
+* 9F0A  78B5  vm_push_zero  
+* 9F0C  7A5B  vm_compare_not_equal  
+* 9F0E  792F  vm_return_to_caller_stream  

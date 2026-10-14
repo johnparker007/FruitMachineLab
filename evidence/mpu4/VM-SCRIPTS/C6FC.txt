@@ -1,0 +1,25 @@
+Purpose: skill_cash_commit_threshold_award_and_animate_win
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: accounting/NVRAM, arithmetic, award/balance operations, boolean/bit operations, control flow, memory operations, stack/cell helpers
+Callers: C721
+
+Threaded script at C6FC; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C6FC  C6CE  skill_cash_animate_selected_level_lamps  body=0xC6D0
+* C6FE  C604  vm_push_local_frame_address  value=0x0001
+* C700  786B  vm_fetch_unsigned_byte  
+* C702  813C  vm_push_word_body_word  value=0x75BD
+* C704  787E  vm_add_words  
+* C706  786B  vm_fetch_unsigned_byte  
+* C708  9F68  normalize_award_47_to_30_with_optional_input_clamp  body=0x9F6A
+* C70A  7B51  vm_duplicate_cell  
+* C70C  8318  vm_push_word_body_byte  value=0x00BA
+* C70E  7874  vm_store_word  
+* C710  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* C712  7F07  vm_push_word_body_byte  value=0x003C
+* C714  7A6F  vm_compare_equal  
+* C716  7982  vm_branch_forward8_if_zero  branch=0xC71B
+  C719  A363  announce_new_six_pound_jackpot_and_restore_lamps  body=0xA365
+* C71B  AF91  animate_pending_award_into_current_win  body=0xAF93
+* C71D  792F  vm_return_to_caller_stream  

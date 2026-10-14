@@ -1,0 +1,31 @@
+Purpose: spin_and_evaluate_reels
+Confidence: reviewed gameplay context
+Groups: boolean/bit operations, control flow, mask/address records, reels, reels/symbol tests, stack/cell helpers
+Callers: FC34
+
+Threaded script at F384; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* F384  F2C6  update_pre_spin_symbol_mode_flags  body=0xF2C8
+* F386  80C4  call_reels_push_matching_symbol_result  native=0x1AA3
+* F388  7A46  vm_test_zero  
+* F38A  F20B  evaluate_pre_spin_mode_and_random_gates  body=0xF20D
+* F38C  F070  script_f070  body=0xF072
+* F38E  F246  adjust_unselected_reel_records_for_mode_two  body=0xF248
+* F390  A03A  clear_unselected_reel_record_bytes  body=0xA03C
+* F392  F30D  evaluate_fourth_reel_symbol_and_flags  body=0xF30F
+* F394  8114  call_reels_translate_positions_to_symbol_records  native=0x2C12
+* F396  F2B3  run_reel_spin_and_refresh_symbols  body=0xF2B5
+* F398  80C4  call_reels_push_matching_symbol_result  native=0x1AA3
+* F39A  7A46  vm_test_zero  
+* F39C  7A97  vm_bitwise_and  
+* F39E  849E  push_pair_0400_00a0  body=0x8417, push_address=0x84A0
+* F3A0  767F  vm_test_word_memory_mask  
+* F3A2  7A97  vm_bitwise_and  
+* F3A4  7982  vm_branch_forward8_if_zero  branch=0xF3B1
+* F3A7  78B5  vm_push_zero  
+* F3A9  7E7C  vm_push_word_body_byte  value=0x0007
+* F3AB  AE38  account_award_by_result_categories_and_selected_counter  body=0xAE3A
+* F3AD  849E  push_pair_0400_00a0  body=0x8417, push_address=0x84A0
+* F3AF  7671  vm_clear_word_memory_bits  
+* F3B1  792F  vm_return_to_caller_stream  

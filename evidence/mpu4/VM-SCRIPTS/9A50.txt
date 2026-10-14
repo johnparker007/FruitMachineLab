@@ -1,0 +1,12 @@
+Purpose: store_irq_timer_c568
+Confidence: reviewed token mechanics
+Groups: memory operations
+Callers: DD38, C0AC, C416, CB60, AD65, CE31, CC40, E71C
+
+Threaded script at 9A50; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9A50  795B  vm_push_inline_word_literal  inline_value=0xC568
+* 9A54  82F2  vm_push_word_body_byte  value=0x002D
+* 9A56  7874  vm_store_word  
+* 9A58  792F  vm_return_to_caller_stream  

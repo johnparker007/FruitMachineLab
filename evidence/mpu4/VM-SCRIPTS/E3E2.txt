@@ -1,0 +1,30 @@
+Purpose: display_token_or_cash_jackpot_for_selection
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, control flow, display, memory operations, stack/cell helpers
+Callers: E43D
+
+Threaded script at E3E2; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* E3E2  7F14  vm_push_word_body_byte  value=0x00C9
+* E3E4  786B  vm_fetch_unsigned_byte  
+* E3E6  7B51  vm_duplicate_cell  
+* E3E8  A126  vm_push_word_body_byte  value=0x002D
+* E3EA  7A6F  vm_compare_equal  
+* E3EC  798E  vm_branch_forward8_if_zero_else_drop  branch=0xE407
+* E3EF  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); ' TOKEN JACKPOT  '; cmd7A()]
+* E403  79B7  vm_branch_absolute16  branch=0xE439
+* E407  7B51  vm_duplicate_cell  
+* E409  A129  vm_push_word_body_byte  value=0x002F
+* E40B  7A6F  vm_compare_equal  
+* E40D  798E  vm_branch_forward8_if_zero_else_drop  branch=0xE428
+* E410  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); '  CASH JACKPOT  '; cmd7A()]
+* E424  79B7  vm_branch_absolute16  branch=0xE439
+* E428  7B51  vm_duplicate_cell  
+* E42A  7B51  vm_duplicate_cell  
+* E42C  7A6F  vm_compare_equal  
+* E42E  798E  vm_branch_forward8_if_zero_else_drop  branch=0xE437
+* E431  80A0  call_alpha_reset_and_clear_display  native=0x3D0E
+* E433  79B7  vm_branch_absolute16  branch=0xE439
+  E437  7B3D  vm_drop_cell  
+* E439  792F  vm_return_to_caller_stream  

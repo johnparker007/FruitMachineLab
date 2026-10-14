@@ -1,0 +1,22 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: arithmetic, control flow, memory operations, stack/cell helpers
+Callers: B144
+
+Threaded script at B124; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B124  78B5  vm_push_zero  
+* B126  7B3D  vm_drop_cell  
+* B128  78C0  vm_push_one  
+* B12A  7963  vm_push_inline_byte_literal  inline_value=0x000A
+* B12D  99EC  random_scaled_range_selection  body=0x99EE
+* B12F  7B51  vm_duplicate_cell  
+* B131  7F14  vm_push_word_body_byte  value=0x00C9
+* B133  786B  vm_fetch_unsigned_byte  
+* B135  787E  vm_add_words  
+* B137  A129  vm_push_word_body_byte  value=0x002F
+* B139  7ADC  vm_min_signed  
+* B13B  B087  test_board_link_destination_nonzero_and_forward  body=0xB089
+* B13D  79A6  vm_branch_backward8_if_zero  branch=0xB126
+* B140  792F  vm_return_to_caller_stream  

@@ -1,0 +1,13 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, stack/cell helpers
+Callers: EA22
+
+Threaded script at E91C; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* E91C  8591  read_byte_004f_8593  body=0x8593
+* E91E  78C0  vm_push_one  
+* E920  7A97  vm_bitwise_and  
+* E922  E8B9  script_e8b9  body=0xE8BB
+* E924  792F  vm_return_to_caller_stream  

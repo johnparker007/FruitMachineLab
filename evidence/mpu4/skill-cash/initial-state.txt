@@ -1,0 +1,1 @@
+Fresh default configuration and absent NVRAM. Inputs are recorded in the copied input.lua and its generated input-plan.txt or actions.csv; debugger.cmd records instrumentation.

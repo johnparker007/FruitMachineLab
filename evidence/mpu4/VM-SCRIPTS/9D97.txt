@@ -1,0 +1,15 @@
+Purpose: indexed_reel_record_address
+Confidence: reviewed token mechanics
+Groups: arithmetic, memory operations, reels/symbol tests, stack/cell helpers, table/dynamic dispatch
+Callers: F30F, A2AB, B666, B352, E928, B1E1, BE4C, A3D0
+
+Threaded script at 9D97; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9D97  790D  vm_fetch_word  
+* 9D99  79D6  vm_execute_token_from_stack  
+* 9D9B  7B7D  vm_swap_two_cells  
+* 9D9D  82B8  vm_push_word_body_byte  value=0x0002
+* 9D9F  7DC4  multiply_words_keep_low_cell  body=0x7DC6
+* 9DA1  787E  vm_add_words  
+* 9DA3  792F  vm_return_to_caller_stream  

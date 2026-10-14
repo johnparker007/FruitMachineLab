@@ -1,0 +1,15 @@
+Purpose: initialize_selection_pool_with_ten_indices
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: stack/cell helpers
+Callers: AC81
+
+Threaded script at D9C8; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* D9C8  7963  vm_push_inline_byte_literal  inline_value=0x000A
+* D9CB  78B5  vm_push_zero  
+* D9CD  79DC  vm_enter_loop_frame  
+* D9CF  7A1C  vm_push_loop_index  
+* D9D1  ACAC  append_byte_to_local_selection_pool  body=0xACAE
+* D9D3  7A00  vm_loop_increment_one  
+* D9D5  792F  vm_return_to_caller_stream  

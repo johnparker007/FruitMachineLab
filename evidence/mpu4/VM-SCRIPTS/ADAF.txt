@@ -1,0 +1,15 @@
+Purpose: invoke_optional_hook_when_diagnostic_flag_and_mode_mask
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, control flow, mask tests, memory operations
+Callers: AE3A, EFF9, E2AA, F0EB, E35D
+
+Threaded script at ADAF; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  ADAF  7F99  vm_push_word_body_word  value=0x719A
+  ADB1  786B  vm_fetch_unsigned_byte  
+  ADB3  84E0  test_mask_0200_at_719f  body=0x841E, push_address=0x84E2
+  ADB5  7A97  vm_bitwise_and  
+  ADB7  7982  vm_branch_forward8_if_zero  branch=0xADBC
+  ADBA  0000  unknown token 2d29  
+  ADBC  792F  vm_return_to_caller_stream  

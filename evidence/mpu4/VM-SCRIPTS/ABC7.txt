@@ -1,0 +1,34 @@
+Purpose: account_result_into_u24_counters_07c9_and_07cf
+Confidence: reviewed token mechanics; see lifecycle-pass/script-name-evidence.json
+Groups: accounting/NVRAM, arithmetic, boolean/bit operations, control flow, stack/cell helpers
+Callers: F2C8, F072
+
+Threaded script at ABC7; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* ABC7  9945  test_normal_mode_byte_nonzero  body=0x9947
+* ABC9  7982  vm_branch_forward8_if_zero  branch=0xABD1
+  ABCC  7B3D  vm_drop_cell  
+  ABCE  7979  vm_branch_unsigned_forward8  branch=0xABFF
+* ABD1  7B51  vm_duplicate_cell  
+* ABD3  7F0A  vm_push_word_body_byte  value=0x002F
+* ABD5  7A6F  vm_compare_equal  
+* ABD7  7982  vm_branch_forward8_if_zero  branch=0xABDF
+  ABDA  7B3D  vm_drop_cell  
+  ABDC  7963  vm_push_inline_byte_literal  inline_value=0x001E
+* ABDF  795B  vm_push_inline_word_literal  inline_value=0x01F4
+* ABE3  7BCC  vm_multiply_to_double_cell  
+* ABE5  7D52  duplicate_two_cells  body=0x7D54
+* ABE7  8179  vm_push_word_body_word  value=0x07C9
+* ABE9  77F6  vm_fetch_byte_and_following_word  
+* ABEB  7C78  vm_add_double_cells  
+* ABED  8179  vm_push_word_body_word  value=0x07C9
+* ABEF  7803  vm_store_byte_and_following_word  
+* ABF1  7CB3  vm_negate_double_cell  
+* ABF3  8181  vm_push_word_body_word  value=0x07CF
+* ABF5  77F6  vm_fetch_byte_and_following_word  
+* ABF7  7C78  vm_add_double_cells  
+* ABF9  8181  vm_push_word_body_word  value=0x07CF
+* ABFB  7803  vm_store_byte_and_following_word  
+* ABFD  7FF6  call_nvram_refresh_accounting_complements  native=0x6F57
+* ABFF  792F  vm_return_to_caller_stream  

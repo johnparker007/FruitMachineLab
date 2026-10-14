@@ -1,0 +1,37 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: control flow, lamps, mask/address records, memory operations, sound/scheduler
+Callers: EE34, EE11
+
+Threaded script at EDD3; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* EDD3  84A4  push_pair_0200_00a0  body=0x8417, push_address=0x84A6
+* EDD5  7665  vm_or_word_memory  
+* EDD7  8212  vm_push_word_body_byte  value=0x0085
+* EDD9  9C1E  apply_lamp_range_7256_7257  body=0x9ADB, push_address=0x9C20
+* EDDB  8212  vm_push_word_body_byte  value=0x0085
+* EDDD  9C3E  apply_lamp_range_7320_7323  body=0x9ADB, push_address=0x9C40
+* EDDF  7E6A  vm_push_word_body_byte  value=0x0003
+* EDE1  9F41  store_result_byte_b9_if_zero  body=0x9F43
+* EDE3  EB39  map_result_b9_to_code_bc_and_reset_b9  body=0xEB3B
+* EDE5  8435  push_pair_0038_0085  body=0x8417, push_address=0x8437
+* EDE7  7671  vm_clear_word_memory_bits  
+* EDE9  A2A9  script_a2a9  body=0xA2AB
+* EDEB  7F14  vm_push_word_body_byte  value=0x00C9
+* EDED  765F  vm_clear_byte_memory  
+* EDEF  855E  test_two_indirect_zero_conditions  body=0x8560
+* EDF1  7982  vm_branch_forward8_if_zero  branch=0xEDF9
+  EDF4  9535  queue_sound_stream_9537  body=0x856B, push_address=0x9537
+  EDF6  7979  vm_branch_unsigned_forward8  branch=0xEDFB
+* EDF9  94FA  queue_sound_stream_94fc  body=0x856B, push_address=0x94FC
+* EDFB  B7C0  script_b7c0  body=0xB7C2
+* EDFD  80F8  call_scheduler_wait_until_active_list_empty  native=0x5CCB
+* EDFF  824E  vm_push_word_body_byte  value=0x008F
+* EE01  9C1E  apply_lamp_range_7256_7257  body=0x9ADB, push_address=0x9C20
+* EE03  824E  vm_push_word_body_byte  value=0x008F
+* EE05  9C3E  apply_lamp_range_7320_7323  body=0x9ADB, push_address=0x9C40
+* EE07  A013  clear_three_reel_record_bytes  body=0xA015
+* EE09  B89D  seed_zero_nudgepot_from_ca_table_or_random_gate_and_animate_digits  body=0xB89F
+* EE0B  E43B  run_feature_board_until_exit_flag  body=0xE43D
+* EE0D  792F  vm_return_to_caller_stream  

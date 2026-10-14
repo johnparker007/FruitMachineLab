@@ -1,0 +1,11 @@
+Purpose: apply_pattern_8f_to_indexed_lamp_record
+Confidence: reviewed token mechanics
+Groups: lamps
+Callers: DAC7, DDF3, C90C, DB58, CD29, CA7B, CB60, C98E
+
+Threaded script at 9F58; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9F58  824E  vm_push_word_body_byte  value=0x008F
+* 9F5A  9B82  apply_indexed_lamp_id_from_728f  body=0x9B18, push_address=0x9B84
+* 9F5C  792F  vm_return_to_caller_stream  

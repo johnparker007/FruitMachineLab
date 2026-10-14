@@ -1,0 +1,12 @@
+Purpose: test_byte_zero_through_word_body_pointer
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, memory operations
+Callers: D003, D1F5, ADC0, 8560, AEE6
+
+Threaded script at 8427; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 8427  790D  vm_fetch_word  
+* 8429  786B  vm_fetch_unsigned_byte  
+* 842B  7A46  vm_test_zero  
+* 842D  792F  vm_return_to_caller_stream  

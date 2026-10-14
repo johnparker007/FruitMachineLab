@@ -1,0 +1,19 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations
+Callers: CF7B, CE99
+
+Threaded script at CE81; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* CE81  CE7C  vm_push_word_body_byte  value=0x0032
+* CE83  9A11  random_percentage_test  body=0x9A13
+* CE85  9F5E  test_two_orange1_input_conditions  body=0x9F60
+* CE87  7ABB  vm_bitwise_not  
+* CE89  7A97  vm_bitwise_and  
+* CE8B  A609  scaled_parameter_profile_at_a60b_counter_07d5  body=0xA5A5, push_address=0xA60B
+* CE8D  9A11  random_percentage_test  body=0x9A13
+* CE8F  7A46  vm_test_zero  
+* CE91  7A97  vm_bitwise_and  
+* CE93  9A72  merge_hold1_and_refill_gates_when_mode_or_option_enabled  body=0x9A74
+* CE95  792F  vm_return_to_caller_stream  

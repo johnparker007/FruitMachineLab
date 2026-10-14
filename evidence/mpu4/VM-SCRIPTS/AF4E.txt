@@ -1,0 +1,19 @@
+Purpose: round_current_award_up_to_even
+Confidence: reviewed token mechanics
+Groups: accounting/NVRAM, arithmetic, award/balance operations, boolean/bit operations, control flow, memory operations, stack/cell helpers
+Callers: AF67
+
+Threaded script at AF4E; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* AF4E  82D6  vm_push_word_body_word  value=0x02FA
+* AF50  790D  vm_fetch_word  
+* AF52  7B51  vm_duplicate_cell  
+* AF54  78C0  vm_push_one  
+* AF56  7A97  vm_bitwise_and  
+* AF58  7982  vm_branch_forward8_if_zero  branch=0xAF5D
+  AF5B  78C9  vm_increment_word  
+* AF5D  82D6  vm_push_word_body_word  value=0x02FA
+* AF5F  7874  vm_store_word  
+* AF61  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* AF63  792F  vm_return_to_caller_stream  

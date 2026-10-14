@@ -1,0 +1,11 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: composition of script calls
+Callers: EFF9
+
+Threaded script at EFE9; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* EFE9  7FB5  vm_push_word_body_word  value=0x0163
+* EFEB  EFD5  fetch_byte_and_keep_low_bit  body=0xEFD7
+* EFED  792F  vm_return_to_caller_stream  

@@ -1,0 +1,10 @@
+Purpose: call_show_reel_group_lamp_candidate
+Confidence: exact helper pattern
+Groups: lamps, reels, reels/symbol tests
+Callers: D257, D0C2
+
+Threaded script at D0B6; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* D0B6  8032  call_show_reel_group_lamp_candidate  native=0x2C94
+* D0B8  792F  vm_return_to_caller_stream  

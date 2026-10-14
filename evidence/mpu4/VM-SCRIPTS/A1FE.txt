@@ -1,0 +1,58 @@
+Purpose: map_ladder_or_snake_position_to_path_index
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, control flow, stack/cell helpers
+Callers: DAC7, DB58
+
+Threaded script at A1FE; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* A1FE  7B51  vm_duplicate_cell  
+* A200  78DE  vm_push_two  
+* A202  7A6F  vm_compare_equal  
+* A204  798E  vm_branch_forward8_if_zero_else_drop  branch=0xA20D
+  A207  78B5  vm_push_zero  
+  A209  79B7  vm_branch_absolute16  branch=0xA281
+* A20D  7B51  vm_duplicate_cell  
+* A20F  7963  vm_push_inline_byte_literal  inline_value=0x0006
+* A212  7A6F  vm_compare_equal  
+* A214  798E  vm_branch_forward8_if_zero_else_drop  branch=0xA21D
+  A217  78C0  vm_push_one  
+  A219  79B7  vm_branch_absolute16  branch=0xA281
+* A21D  7B51  vm_duplicate_cell  
+* A21F  7963  vm_push_inline_byte_literal  inline_value=0x000F
+* A222  7A6F  vm_compare_equal  
+* A224  798E  vm_branch_forward8_if_zero_else_drop  branch=0xA22D
+  A227  78DE  vm_push_two  
+  A229  79B7  vm_branch_absolute16  branch=0xA281
+* A22D  7B51  vm_duplicate_cell  
+* A22F  7963  vm_push_inline_byte_literal  inline_value=0x0023
+* A232  7A6F  vm_compare_equal  
+* A234  798E  vm_branch_forward8_if_zero_else_drop  branch=0xA23E
+  A237  7963  vm_push_inline_byte_literal  inline_value=0x0003
+  A23A  79B7  vm_branch_absolute16  branch=0xA281
+* A23E  7B51  vm_duplicate_cell  
+* A240  7963  vm_push_inline_byte_literal  inline_value=0x0010
+* A243  7A6F  vm_compare_equal  
+* A245  798E  vm_branch_forward8_if_zero_else_drop  branch=0xA24E
+* A248  78B5  vm_push_zero  
+* A24A  79B7  vm_branch_absolute16  branch=0xA281
+  A24E  7B51  vm_duplicate_cell  
+  A250  7963  vm_push_inline_byte_literal  inline_value=0x0018
+  A253  7A6F  vm_compare_equal  
+  A255  798E  vm_branch_forward8_if_zero_else_drop  branch=0xA25E
+  A258  78C0  vm_push_one  
+  A25A  79B7  vm_branch_absolute16  branch=0xA281
+  A25E  7B51  vm_duplicate_cell  
+  A260  7963  vm_push_inline_byte_literal  inline_value=0x0029
+  A263  7A6F  vm_compare_equal  
+  A265  798E  vm_branch_forward8_if_zero_else_drop  branch=0xA26E
+  A268  78DE  vm_push_two  
+  A26A  79B7  vm_branch_absolute16  branch=0xA281
+  A26E  7B51  vm_duplicate_cell  
+  A270  7963  vm_push_inline_byte_literal  inline_value=0x002E
+  A273  7A6F  vm_compare_equal  
+  A275  798E  vm_branch_forward8_if_zero_else_drop  branch=0xA27F
+  A278  7963  vm_push_inline_byte_literal  inline_value=0x0003
+  A27B  79B7  vm_branch_absolute16  branch=0xA281
+  A27F  7B3D  vm_drop_cell  
+* A281  792F  vm_return_to_caller_stream  

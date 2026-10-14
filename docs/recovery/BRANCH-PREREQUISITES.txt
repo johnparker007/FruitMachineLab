@@ -1,0 +1,33 @@
+MPU4 branch prerequisites -14 October2026
+
+AA37
+Requires: word719F &1000, or FF36=0, or FF3A=0
+Result: Excluded by immutable current ROM values:719F=0000,FF36=FF,FF3A=FF.
+
+AA93
+Requires: A90F returns nonzero
+Result: Excluded by explicit zero result; not missing code.
+
+AA5F
+Requires: 0300 nonzero;0302=0;earlier route gates false
+Result: Verified by cold restart from recorded pending0300=2 with0302=2FC=2FE=0, then normal Collect.
+
+AA87
+Requires: 02FE nonzero;02FC=0300=0302=0;earlier gates false
+Result: Verified after physical door interruption left pending2FE=10; normal Collect serviced it.
+
+4AFD debit
+Requires: 0300 remains after4AEC service; appropriate record-input/counter state
+Result: Verified by asserting exposed ORANGE1 mask04 (MAMEToken1 level), which suppresses4AEC; direct4D45 services4AFD. No DIP/key change or ROM/RAM patch.
+
+333B
+Requires: meter read bit80 clear while FF30 nonzero
+Result: Verified only with synthetic CPU read-result/flags. Saved return2E81->0181, then RAM fetch; normal control unaffected.
+
+serial failure33C7
+Requires: no response within timer bound or response03A7 !=06
+Result: Synthetic wrong-response and receive non-completion diagnostics reached failure/cleanup; normal controlPASS.
+
+4BC5 manager prompt
+Requires: balance remains after available payout records
+Result: Not reached. Current FF48/FF4A/FF40/FF3C/FF3E/FF3A/FF36 values are allFF and select direct-drain branches in these payout paths; do not infer a naturally reachable manager prompt merely from its code.

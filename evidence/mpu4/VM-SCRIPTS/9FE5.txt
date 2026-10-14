@@ -1,0 +1,12 @@
+Purpose: reels_test_matching_result_3c
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, reels, reels/symbol tests
+Callers: ED94
+
+Threaded script at 9FE5; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9FE5  80C4  call_reels_push_matching_symbol_result  native=0x1AA3
+* 9FE7  7F07  vm_push_word_body_byte  value=0x003C
+* 9FE9  7A6F  vm_compare_equal  
+* 9FEB  792F  vm_return_to_caller_stream  

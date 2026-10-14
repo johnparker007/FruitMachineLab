@@ -1,0 +1,45 @@
+Purpose: money_trap_copy_and_compact_four_display_terms
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: arithmetic, memory operations, stack/cell helpers
+Callers: C416
+
+Threaded script at C2FD; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C2FD  7963  vm_push_inline_byte_literal  inline_value=0x0070
+* C300  C12B  vm_push_local_frame_address  value=0x0002
+* C302  7861  vm_store_byte  
+* C304  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* C307  C12B  vm_push_local_frame_address  value=0x0002
+* C309  78C9  vm_increment_word  
+* C30B  7861  vm_store_byte  
+* C30D  8144  vm_push_word_body_byte  value=0x0058
+* C30F  7963  vm_push_inline_byte_literal  inline_value=0x0004
+* C312  787E  vm_add_words  
+* C314  C12B  vm_push_local_frame_address  value=0x0002
+* C316  78E7  vm_add_two  
+* C318  7963  vm_push_inline_byte_literal  inline_value=0x000B
+* C31B  7B89  vm_move_bytes_overlap_safe  
+* C31D  7963  vm_push_inline_byte_literal  inline_value=0x007A
+* C320  C12B  vm_push_local_frame_address  value=0x0002
+* C322  7963  vm_push_inline_byte_literal  inline_value=0x000D
+* C325  787E  vm_add_words  
+* C327  7861  vm_store_byte  
+* C329  C2EA  money_trap_play_sound_and_display_local_terms  body=0xC2EC
+* C32B  C12B  vm_push_local_frame_address  value=0x0002
+* C32D  7963  vm_push_inline_byte_literal  inline_value=0x0005
+* C330  787E  vm_add_words  
+* C332  7B51  vm_duplicate_cell  
+* C334  78D3  vm_decrement_word  
+* C336  7963  vm_push_inline_byte_literal  inline_value=0x0009
+* C339  7B89  vm_move_bytes_overlap_safe  
+* C33B  C2EA  money_trap_play_sound_and_display_local_terms  body=0xC2EC
+* C33D  C12B  vm_push_local_frame_address  value=0x0002
+* C33F  7963  vm_push_inline_byte_literal  inline_value=0x0008
+* C342  787E  vm_add_words  
+* C344  7B51  vm_duplicate_cell  
+* C346  78D3  vm_decrement_word  
+* C348  7963  vm_push_inline_byte_literal  inline_value=0x0005
+* C34B  7B89  vm_move_bytes_overlap_safe  
+* C34D  C2EA  money_trap_play_sound_and_display_local_terms  body=0xC2EC
+* C34F  792F  vm_return_to_caller_stream  

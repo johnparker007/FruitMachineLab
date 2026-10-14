@@ -1,0 +1,23 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, mask/address records, reels
+Callers: F072
+
+Threaded script at F052; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* F052  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* F054  80C4  call_reels_push_matching_symbol_result  native=0x1AA3
+* F056  7A46  vm_test_zero  
+* F058  8486  push_pair_4000_00a0  body=0x8417, push_address=0x8488
+* F05A  767F  vm_test_word_memory_mask  
+* F05C  7A97  vm_bitwise_and  
+* F05E  849E  push_pair_0400_00a0  body=0x8417, push_address=0x84A0
+* F060  767F  vm_test_word_memory_mask  
+* F062  7A97  vm_bitwise_and  
+* F064  8016  call_push_nonzero_symbol_result_or_fallback_to_vm_stack  native=0x1AF1
+* F066  7A53  vm_test_nonzero  
+* F068  9FBA  reels_test_exactly_two_symbol_flag2  body=0x9FBC
+* F06A  7AA3  vm_bitwise_or  
+* F06C  7A97  vm_bitwise_and  
+* F06E  792F  vm_return_to_caller_stream  

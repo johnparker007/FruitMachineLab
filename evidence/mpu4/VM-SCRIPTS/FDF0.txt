@@ -1,0 +1,31 @@
+Purpose: main_vm_initialize_and_repeat_idle_play_feature_cycle
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: boolean/bit operations, control flow, credits, lamps, memory operations, stack/cell helpers
+Callers: root/dynamic
+
+Threaded script at FDF0; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* FDF0  7FBD  call_lamps_enable_all_inhibit_mask_bits  native=0x496A
+* FDF2  7963  vm_push_inline_byte_literal  inline_value=0x0002
+* FDF5  76A9  vm_allocate_local_frame  
+* FDF7  78B5  vm_push_zero  
+* FDF9  FAC1  vm_push_local_frame_address  value=0x0000
+* FDFB  7861  vm_store_byte  
+* FDFD  7963  vm_push_inline_byte_literal  inline_value=0x0028
+* FE00  81A2  vm_push_word_body_word  value=0x032D
+* FE02  7874  vm_store_word  
+* FE04  FCEE  initialize_game_script_state  body=0xFCF0
+* FE06  78AA  vm_push_true_minus_one  
+* FE08  819F  vm_push_word_body_byte  value=0x00B3
+* FE0A  7861  vm_store_byte  
+* FE0C  FAC7  initialize_vm_cycle_timers_serial_and_status_lamps  body=0xFAC9
+* FE0E  FDB8  dispatch_idle_play_and_feature_paths  body=0xFDBA
+* FE10  7EF9  vm_push_word_body_word  value=0x0304
+* FE12  786B  vm_fetch_unsigned_byte  
+* FE14  7A46  vm_test_zero  
+* FE16  7982  vm_branch_forward8_if_zero  branch=0xFE1D
+  FE19  7EF6  vm_push_word_body_byte  value=0x00E0
+  FE1B  765F  vm_clear_byte_memory  
+* FE1D  9ABC  check_vm_data_stack_balance  body=0x9ABE
+* FE1F  799A  vm_branch_backward8  branch=0xFE06

@@ -1,0 +1,16 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: accounting/NVRAM, control flow, stack/cell helpers
+Callers: AE3A
+
+Threaded script at ADCE; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* ADCE  9945  test_normal_mode_byte_nonzero  body=0x9947
+* ADD0  7982  vm_branch_forward8_if_zero  branch=0xADD8
+  ADD3  7B3D  vm_drop_cell  
+  ADD5  7979  vm_branch_unsigned_forward8  branch=0xADDE
+* ADD8  816D  vm_push_word_body_byte  value=0x0004
+* ADDA  8333  call_accounting_add_500_times_amount_to_selected_u24_counter  native=0x151F
+* ADDC  7FF6  call_nvram_refresh_accounting_complements  native=0x6F57
+* ADDE  792F  vm_return_to_caller_stream  

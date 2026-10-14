@@ -1,0 +1,45 @@
+Purpose: cash_feature_super_stepper
+Confidence: reviewed dispatch/display association; complete gameplay unresolved
+Groups: arithmetic, boolean/bit operations, control flow, mask/address records, memory operations
+Callers: DFF6, FD1F
+
+Threaded script at C98E; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C98E  7963  vm_push_inline_byte_literal  inline_value=0x0002
+* C991  76A9  vm_allocate_local_frame  
+* C993  C85A  vm_push_local_frame_address  value=0x0000
+* C995  765F  vm_clear_byte_memory  
+* C997  C893  super_stepper_select_working_limit_thirty_or_sixty  body=0xC895
+* C999  8492  push_pair_1000_00a0  body=0x8417, push_address=0x8494
+* C99B  7671  vm_clear_word_memory_bits  
+* C99D  BB70  vm_push_word_body_byte  value=0x0003
+* C99F  81C2  vm_push_word_body_byte  value=0x00B6
+* C9A1  7861  vm_store_byte  
+* C9A3  7E8E  vm_push_word_body_byte  value=0x0014
+* C9A5  82DD  vm_push_word_body_byte  value=0x00BD
+* C9A7  7861  vm_store_byte  
+* C9A9  C8E2  super_stepper_select_weighted_step_with_remaining_limit  body=0xC8E4
+* C9AB  C90A  super_stepper_animate_step_commit_award_and_clear_trail  body=0xC90C
+* C9AD  C876  super_stepper_lookup_compensated_continue_chance  body=0xC878
+* C9AF  9A11  random_percentage_test  body=0x9A13
+* C9B1  7ABB  vm_bitwise_not  
+* C9B3  7982  vm_branch_forward8_if_zero  branch=0xC9BD
+  C9B6  7963  vm_push_inline_byte_literal  inline_value=0x002A
+  C9B9  9F56  apply_pattern_8f_to_indexed_lamp_record  body=0x9F58
+  C9BB  7935  vm_unwind_loop_frames_to_return  
+* C9BD  C85D  vm_push_local_frame_address  value=0x0001
+* C9BF  786B  vm_fetch_unsigned_byte  
+* C9C1  7963  vm_push_inline_byte_literal  inline_value=0x0006
+* C9C4  78A0  vm_subtract_top_from_second  
+* C9C6  C85A  vm_push_local_frame_address  value=0x0000
+* C9C8  786B  vm_fetch_unsigned_byte  
+* C9CA  7A65  vm_compare_top_gt_second_signed  
+* C9CC  79A6  vm_branch_backward8_if_zero  branch=0xC9A9
+* C9CF  C882  super_stepper_lookup_compensated_final_chance_clipped_fifty  body=0xC884
+* C9D1  9A11  random_percentage_test  body=0x9A13
+* C9D3  8492  push_pair_1000_00a0  body=0x8417, push_address=0x8494
+* C9D5  9A62  conditionally_set_or_clear_memory_mask  body=0x9A64
+* C9D7  7963  vm_push_inline_byte_literal  inline_value=0x002A
+* C9DA  9F56  apply_pattern_8f_to_indexed_lamp_record  body=0x9F58
+* C9DC  792F  vm_return_to_caller_stream  

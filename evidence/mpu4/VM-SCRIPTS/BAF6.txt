@@ -1,0 +1,33 @@
+Purpose: initialize_full_board_rectangle_bounds
+Confidence: reviewed token mechanics; see lifecycle-pass/script-name-evidence.json
+Groups: memory operations, stack/cell helpers
+Callers: BB49
+
+Threaded script at BAF6; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* BAF6  78B5  vm_push_zero  
+* BAF8  B96A  vm_push_local_frame_address  value=0x0007
+* BAFA  7861  vm_store_byte  
+* BAFC  7963  vm_push_inline_byte_literal  inline_value=0x0005
+* BAFF  B964  vm_push_local_frame_address  value=0x0005
+* BB01  7861  vm_store_byte  
+* BB03  78B5  vm_push_zero  
+* BB05  B967  vm_push_local_frame_address  value=0x0006
+* BB07  7861  vm_store_byte  
+* BB09  7963  vm_push_inline_byte_literal  inline_value=0x0007
+* BB0C  B961  vm_push_local_frame_address  value=0x0004
+* BB0E  7861  vm_store_byte  
+* BB10  78AA  vm_push_true_minus_one  
+* BB12  B955  vm_push_local_frame_address  value=0x0000
+* BB14  7861  vm_store_byte  
+* BB16  78AA  vm_push_true_minus_one  
+* BB18  B958  vm_push_local_frame_address  value=0x0001
+* BB1A  7861  vm_store_byte  
+* BB1C  78AA  vm_push_true_minus_one  
+* BB1E  B95B  vm_push_local_frame_address  value=0x0002
+* BB20  7861  vm_store_byte  
+* BB22  78AA  vm_push_true_minus_one  
+* BB24  B95E  vm_push_local_frame_address  value=0x0003
+* BB26  7861  vm_store_byte  
+* BB28  792F  vm_return_to_caller_stream  

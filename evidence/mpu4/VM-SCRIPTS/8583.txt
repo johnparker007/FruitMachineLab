@@ -1,0 +1,11 @@
+Purpose: write_byte_004e
+Confidence: exact helper pattern
+Groups: memory operations
+Callers: DFF6, ED06, CED7, C593, C416, BEE5, D462, E71C
+
+Threaded script at 8583; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 8583  8311  vm_push_word_body_byte  value=0x004E
+* 8585  7861  vm_store_byte  
+* 8587  792F  vm_return_to_caller_stream  

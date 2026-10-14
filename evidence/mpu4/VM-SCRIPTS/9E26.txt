@@ -1,0 +1,12 @@
+Purpose: lookup_byte_7325_using_loop_index
+Confidence: reviewed token mechanics
+Groups: memory operations
+Callers: D257, D0DB
+
+Threaded script at 9E26; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9E26  7EAC  vm_push_word_body_word  value=0x7325
+* 9E28  7568  vm_add_loop_index_to_top  
+* 9E2A  786B  vm_fetch_unsigned_byte  
+* 9E2C  792F  vm_return_to_caller_stream  

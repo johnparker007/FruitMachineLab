@@ -1,0 +1,19 @@
+Purpose: refresh_collect_lamp_and_prompt_sound
+Confidence: reviewed token mechanics; see lifecycle-pass/script-name-evidence.json
+Groups: control flow, lamps, sound/scheduler
+Callers: AAA1
+
+Threaded script at A91B; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* A91B  7982  vm_branch_forward8_if_zero  branch=0xA92E
+* A91E  8345  vm_push_word_body_byte  value=0x0018
+* A920  8058  call_lamp_set_frame_pattern_3  native=0x4985
+* A922  856F  test_zero_read_word_0047_8571  body=0x8571
+* A924  7982  vm_branch_forward8_if_zero  branch=0xA92B
+* A927  8130  call_reset_sound_and_scheduler  native=0x5B77
+* A929  8782  queue_sound_stream_8784  body=0x856B, push_address=0x8784
+* A92B  7979  vm_branch_unsigned_forward8  branch=0xA932
+  A92E  8345  vm_push_word_body_byte  value=0x0018
+  A930  8058  call_lamp_set_frame_pattern_3  native=0x4985
+* A932  792F  vm_return_to_caller_stream  

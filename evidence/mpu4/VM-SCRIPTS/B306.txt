@@ -1,0 +1,19 @@
+Purpose: consume_nudge_and_refresh_lamps
+Confidence: reviewed gameplay context
+Groups: boolean/bit operations, control flow, memory operations, nudges
+Callers: B31F
+
+Threaded script at B306; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B306  8245  vm_push_word_body_byte  value=0x00BE
+* B308  7659  vm_decrement_byte_memory  
+* B30A  82DD  vm_push_word_body_byte  value=0x00BD
+* B30C  786B  vm_fetch_unsigned_byte  
+* B30E  7E82  vm_push_word_body_byte  value=0x0015
+* B310  7A6F  vm_compare_equal  
+* B312  7982  vm_branch_forward8_if_zero  branch=0xB319
+* B315  7EED  vm_push_word_body_byte  value=0x00BF
+* B317  7659  vm_decrement_byte_memory  
+* B319  B2E6  refresh_nudge_count_lamps  body=0xB2E8
+* B31B  792F  vm_return_to_caller_stream  

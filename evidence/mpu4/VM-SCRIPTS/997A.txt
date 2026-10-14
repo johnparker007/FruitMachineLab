@@ -1,0 +1,13 @@
+Purpose: fetch_word_from_indexed_table
+Confidence: reviewed token mechanics
+Groups: arithmetic, memory operations, stack/cell helpers
+Callers: DAC7, DB58, A4FF, A553
+
+Threaded script at 997A; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 997A  7B7D  vm_swap_two_cells  
+* 997C  78FD  vm_shift_left_one  
+* 997E  787E  vm_add_words  
+* 9980  790D  vm_fetch_word  
+* 9982  792F  vm_return_to_caller_stream  

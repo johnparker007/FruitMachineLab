@@ -1,0 +1,35 @@
+SPECIAL-FEATURE HELPERS AND INLINE TABLE CORRECTION — 14 October 2026
+
+Continued the known Back3 / Nudgepot starting fixture with physical Start pulses every180 frames from frame6480. Two180s runs match byte-for-byte in state.csv, feature-state.csv, debug.log, final RAM and effective input levels. The continuation added88 observed token locations. It returned to a TAKE60P bank offer and later a nudge state; it did not establish runtime coverage of Boost, Rattler, Advance, Up N Over or Adders & Ladders.
+
+IMPORTANT CORRECTION
+Shared byte reader9971 adds an inline word-body ADDRESS to the index and fetches directly. Shared word reader997A scales the index by2 before adding that ADDRESS. Earlier generated names used the first table entry as though it were a pointer field, producing misleading read_indexed_byte_from_0000/from_0001 labels and references. These were analysis mistakes, not ROM behaviour.
+Names now identify actual inline table addresses; generated false pointer references were removed and the initial data entries retyped. WordA12C indexes ROM A12E, the feature-type table. WordA15E indexes ROM A160, the board-link table. Existing valid mask/address and lamp-range word families retain their different conventions.
+The MAME trace independently checked386 byte-table fetches against ROM[address], with zero mismatches. Observed feature-type indices: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]; observed board-link indices: [0, 3, 8, 11, 16]. This validates these observed reads, not every table's size or complete gameplay interpretation.
+
+NEW HELPER NAMES
+CA28 select_random_board_index_with_nonzero_link
+CA41 select_board_destination_with_direction_gates
+CA7B animate_feature_position_toward_destination
+CB1D set_feature_destination_with_minus_one_reset
+CC25 select_random_board_position_different_from_current
+CC40 cycle_rattler_candidates_until_start_or_timeout
+CBD1 select_rattler_destination_with_eligibility_gates
+CD89 scan_neighbor_feature_type_thresholds
+CDB1 announce_up_we_go_and_commit_destination
+These are reviewed token mechanics. CA7B/CB1D have runtime observations; unobserved helpers retain static-only markers. The names are descriptive, not original source names.
+
+STATIC FEATURE MECHANICS
+Advance CCF1 repeatedly increments the selection, updates lamp/sound, and exits on a board-link comparison or final position47.
+Boost CD29 advances with a tick wait, then combines feature-type eligibility and random selection with final-position and input gates. Its parameter40 is retained as a ROM random-test argument; no measured odds are claimed.
+Rattler CC8F selects/commits a destination through CC40 and CBD1; CC40 cycles candidate positions until Start/timer/abort and has a mode-gated Hold1 timing variation. CBD1 additionally filters destinations against feature type and BF-related eligibility. Full probability and payout semantics remain unresolved.
+Up N Over CE31 uses CD89 to find neighbouring type-threshold positions, animates alternatives, and ultimately commits through the shared destination helper. These paths remain static deductions until reached in a reproducible run.
+
+SAVED RESULTS
+Indexed scripts469; reviewed names173 (+9); partly observed bodies357. 296 purposes remain unresolved.
+Observed token locations5184; ordinary continuation validation6,022,535 checks, zero mismatches. Saved Ghidra has8137 typed sites, 1042 headers, zero missing typed items. Native function count439.
+No installations, global configuration changes, ROM/RAM patches or save states. Backup: work/project-before-special-pass.
+
+REPRODUCTION
+Process-local MPU4_REPLAY=evidence/special-pass/continue-actions.csv; run scripts/Run-DeepTrace.ps1 with feature-choice.lua, feature-nudgepot.cmd, Seconds180 and a fresh RunName. The run folder captures the copied fixture and instrumentation, arguments/settings, input/state/VM logs, final RAM and SHA256 hashes. Evidence: special-pass/experiment.json, inline-table-validation.json, summary.json and full VM cache.
+Next: reach rare feature types through alternate real play sequences and use the corrected ROM tables to explain eligibility and movement, rather than inferring behaviour from lamp names alone.

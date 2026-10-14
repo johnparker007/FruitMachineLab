@@ -1,0 +1,18 @@
+Purpose: refresh_credit_and_bank_display_unless_suppressed
+Confidence: reviewed token mechanics
+Groups: award/balance operations, mask tests, mask/address records, memory operations
+Callers: D003, E5CF, AF93, FB45, F576, FAC9, AF67, FC07
+
+Threaded script at A8F9; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* A8F9  84D4  push_pair_0001_00a0  body=0x8417, push_address=0x84D6
+* A8FB  767F  vm_test_word_memory_mask  
+* A8FD  7574  vm_return_if_nonzero  
+* A8FF  84E0  test_mask_0200_at_719f  body=0x841E, push_address=0x84E2
+* A901  7574  vm_return_if_nonzero  
+* A903  81B0  vm_push_word_body_byte  value=0x0022
+* A905  765F  vm_clear_byte_memory  
+* A907  A7D9  refresh_credit_display_unless_suppressed  body=0xA7DB
+* A909  A869  display_sum_of_bank_related_balances  body=0xA86B
+* A90B  792F  vm_return_to_caller_stream  

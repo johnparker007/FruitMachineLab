@@ -1,0 +1,25 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, indexed memory, stack/cell helpers
+Callers: CBD1
+
+Threaded script at CBAD; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* CBAD  7B51  vm_duplicate_cell  
+* CBAF  A12C  read_indexed_byte_table_at_a12e  body=0x9971, push_address=0xA12E
+* CBB1  7F0D  vm_push_word_body_byte  value=0x001E
+* CBB3  7A79  vm_compare_top_lt_second_signed  
+* CBB5  7B59  vm_copy_second_cell  
+* CBB7  7B51  vm_duplicate_cell  
+* CBB9  A15E  read_indexed_byte_table_at_a160  body=0x9971, push_address=0xA160
+* CBBB  7A65  vm_compare_top_gt_second_signed  
+* CBBD  7AA3  vm_bitwise_or  
+* CBBF  7B7D  vm_swap_two_cells  
+* CBC1  A12C  read_indexed_byte_table_at_a12e  body=0x9971, push_address=0xA12E
+* CBC3  78C0  vm_push_one  
+* CBC5  7A6F  vm_compare_equal  
+* CBC7  7AA3  vm_bitwise_or  
+* CBC9  9F5E  test_two_orange1_input_conditions  body=0x9F60
+* CBCB  7A97  vm_bitwise_and  
+* CBCD  792F  vm_return_to_caller_stream  

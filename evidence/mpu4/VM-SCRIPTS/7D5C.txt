@@ -1,0 +1,11 @@
+Purpose: rotate_three_cells_twice
+Confidence: reviewed token mechanics
+Groups: stack/cell helpers
+Callers: CE31, CB1D, CD89, B946, 9C63
+
+Threaded script at 7D5C; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 7D5C  7B6D  vm_rotate_three_cells  
+* 7D5E  7B6D  vm_rotate_three_cells  
+* 7D60  792F  vm_return_to_caller_stream  

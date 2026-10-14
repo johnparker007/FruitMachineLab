@@ -1,0 +1,24 @@
+Purpose: pick_a_win_choose_random_or_weighted_selection_seed
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: arithmetic, control flow, mask/address records, memory operations, random selection, stack/cell helpers
+Callers: C593
+
+Threaded script at C56D; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C56D  7963  vm_push_inline_byte_literal  inline_value=0x000F
+* C570  9A11  random_percentage_test  body=0x9A13
+* C572  7982  vm_branch_forward8_if_zero  branch=0xC583
+  C575  84BC  push_pair_0020_00a0  body=0x8417, push_address=0x84BE
+  C577  7665  vm_or_word_memory  
+  C579  7963  vm_push_inline_byte_literal  inline_value=0x0007
+  C57C  C4A6  vm_push_word_body_byte  value=0x0028
+  C57E  78D3  vm_decrement_word  
+  C580  7979  vm_branch_unsigned_forward8  branch=0xC58B
+* C583  C4A9  weighted_index_table_at_c4ab  body=0x9A1C, push_address=0xC4AB
+* C585  78B5  vm_push_zero  
+* C587  C4A6  vm_push_word_body_byte  value=0x0028
+* C589  99EC  random_scaled_range_selection  body=0x99EE
+* C58B  C472  vm_push_local_frame_address  value=0x0001
+* C58D  7861  vm_store_byte  
+* C58F  792F  vm_return_to_caller_stream  

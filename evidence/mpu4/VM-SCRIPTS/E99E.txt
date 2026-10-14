@@ -1,0 +1,38 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: control flow, lamps, reels, sound/scheduler, stack/cell helpers
+Callers: E9E4
+
+Threaded script at E99E; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* E99E  7B3D  vm_drop_cell  
+* E9A0  A5D9  scaled_parameter_profile_at_a5db_counter_07c9  body=0xA5A5, push_address=0xA5DB
+* E9A2  9A11  random_percentage_test  body=0x9A13
+* E9A4  7982  vm_branch_forward8_if_zero  branch=0xE9BB
+* E9A7  78B5  vm_push_zero  
+* E9A9  7B3D  vm_drop_cell  
+* E9AB  7963  vm_push_inline_byte_literal  inline_value=0x0005
+* E9AE  7963  vm_push_inline_byte_literal  inline_value=0x0009
+* E9B1  99EC  random_scaled_range_selection  body=0x99EE
+* E9B3  E990  script_e990  body=0xE992
+* E9B5  79A6  vm_branch_backward8_if_zero  branch=0xE9A9
+* E9B8  7979  vm_branch_unsigned_forward8  branch=0xE9CB
+  E9BB  78B5  vm_push_zero  
+  E9BD  7B3D  vm_drop_cell  
+  E9BF  78C0  vm_push_one  
+  E9C1  7963  vm_push_inline_byte_literal  inline_value=0x000D
+  E9C4  99EC  random_scaled_range_selection  body=0x99EE
+  E9C6  E990  script_e990  body=0xE992
+  E9C8  79A6  vm_branch_backward8_if_zero  branch=0xE9BD
+* E9CB  E926  script_e926  body=0xE928
+* E9CD  8212  vm_push_word_body_byte  value=0x0085
+* E9CF  9BB4  apply_lamp_range_7335_7338  body=0x9ADB, push_address=0x9BB6
+* E9D1  8130  call_reset_sound_and_scheduler  native=0x5B77
+* E9D3  883D  queue_sound_stream_883f  body=0x856B, push_address=0x883F
+* E9D5  811C  call_reels_start_motion_without_sound_setup  native=0x61F6
+* E9D7  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* E9D9  8130  call_reset_sound_and_scheduler  native=0x5B77
+* E9DB  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* E9DE  802A  call_apply_pattern_8f_to_selected_reel_lamp_group  native=0x2C71
+* E9E0  792F  vm_return_to_caller_stream  

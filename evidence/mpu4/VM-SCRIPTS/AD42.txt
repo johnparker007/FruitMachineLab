@@ -1,0 +1,23 @@
+Purpose: shuffle_local_selection_bytes_with_twenty_random_swaps
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: memory operations, random selection, stack/cell helpers
+Callers: AD65
+
+Threaded script at AD42; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* AD42  7963  vm_push_inline_byte_literal  inline_value=0x0014
+* AD45  78B5  vm_push_zero  
+* AD47  79DC  vm_enter_loop_frame  
+* AD49  AD30  random_address_within_local_byte_range  body=0xAD32
+* AD4B  7B51  vm_duplicate_cell  
+* AD4D  786B  vm_fetch_unsigned_byte  
+* AD4F  AD30  random_address_within_local_byte_range  body=0xAD32
+* AD51  7B51  vm_duplicate_cell  
+* AD53  786B  vm_fetch_unsigned_byte  
+* AD55  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* AD58  7E16  move_indexed_stack_cell_to_top  body=0x7E18
+* AD5A  7861  vm_store_byte  
+* AD5C  7861  vm_store_byte  
+* AD5E  7A00  vm_loop_increment_one  
+* AD60  792F  vm_return_to_caller_stream  

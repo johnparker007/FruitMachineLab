@@ -1,0 +1,31 @@
+Purpose: draw_board_rectangle_vertical_edges
+Confidence: reviewed token mechanics; see lifecycle-pass/script-name-evidence.json
+Groups: arithmetic, boolean/bit operations, control flow, memory operations
+Callers: BAD9
+
+Threaded script at B975; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B975  B961  vm_push_local_frame_address  value=0x0004
+* B977  786B  vm_fetch_unsigned_byte  
+* B979  78C9  vm_increment_word  
+* B97B  B967  vm_push_local_frame_address  value=0x0006
+* B97D  786B  vm_fetch_unsigned_byte  
+* B97F  7D52  duplicate_two_cells  body=0x7D54
+* B981  7A5B  vm_compare_not_equal  
+* B983  7982  vm_branch_forward8_if_zero  branch=0xB9A1
+* B986  79DC  vm_enter_loop_frame  
+* B988  B964  vm_push_local_frame_address  value=0x0005
+* B98A  786B  vm_fetch_unsigned_byte  
+* B98C  7A1C  vm_push_loop_index  
+* B98E  824E  vm_push_word_body_byte  value=0x008F
+* B990  B944  apply_reel_grid_lamp_pattern_at_row_times_six_plus_column  body=0xB946
+* B992  B96A  vm_push_local_frame_address  value=0x0007
+* B994  786B  vm_fetch_unsigned_byte  
+* B996  7A1C  vm_push_loop_index  
+* B998  824E  vm_push_word_body_byte  value=0x008F
+* B99A  B944  apply_reel_grid_lamp_pattern_at_row_times_six_plus_column  body=0xB946
+* B99C  7A00  vm_loop_increment_one  
+* B99E  7979  vm_branch_unsigned_forward8  branch=0xB9A3
+  B9A1  7B43  vm_drop_two_cells  
+* B9A3  792F  vm_return_to_caller_stream  

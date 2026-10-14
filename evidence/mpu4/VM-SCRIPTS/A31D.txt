@@ -1,0 +1,23 @@
+Purpose: announce_and_flash_award_amount
+Confidence: reviewed token mechanics; see lifecycle-pass/script-name-evidence.json
+Groups: award/balance operations, control flow, display, memory operations, sound/scheduler
+Callers: C06F, C7E4
+
+Threaded script at A31D; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  A31D  8306  vm_push_word_body_word  value=0x0327
+  A31F  7874  vm_store_word  
+  A321  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); 'YOUVE WON'; cmd79(2003270401); '0'; cmd7A()]
+  A335  8B99  queue_sound_stream_8b9b  body=0x856B, push_address=0x8B9B
+  A337  773C  vm_execute_alpha_stream  inline_stream=[cmd70(09); '     '; cmd7A()]
+  A341  7963  vm_push_inline_byte_literal  inline_value=0x0014
+  A344  99AD  wait_irq_ticks_or_abort_flag  body=0x99AF
+  A346  773C  vm_execute_alpha_stream  inline_stream=[cmd70(09); cmd79(2003270401); '0'; cmd7A()]
+  A352  7963  vm_push_inline_byte_literal  inline_value=0x0014
+  A355  99AD  wait_irq_ticks_or_abort_flag  body=0x99AF
+  A357  856F  test_zero_read_word_0047_8571  body=0x8571
+  A359  79A6  vm_branch_backward8_if_zero  branch=0xA337
+  A35C  7963  vm_push_inline_byte_literal  inline_value=0x0096
+  A35F  99AD  wait_irq_ticks_or_abort_flag  body=0x99AF
+  A361  792F  vm_return_to_caller_stream  

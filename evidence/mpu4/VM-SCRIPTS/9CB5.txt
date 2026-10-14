@@ -1,0 +1,22 @@
+Purpose: apply_three_id_lamp_record
+Confidence: reviewed token mechanics
+Groups: arithmetic, lamps, stack/cell helpers
+Callers: ED06, C506, C6D0, F975, 9D46
+
+Threaded script at 9CB5; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9CB5  7B7D  vm_swap_two_cells  
+* 9CB7  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* 9CBA  7DC4  multiply_words_keep_low_cell  body=0x7DC6
+* 9CBC  7B51  vm_duplicate_cell  
+* 9CBE  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* 9CC1  787E  vm_add_words  
+* 9CC3  7B7D  vm_swap_two_cells  
+* 9CC5  79DC  vm_enter_loop_frame  
+* 9CC7  7A1C  vm_push_loop_index  
+* 9CC9  7B59  vm_copy_second_cell  
+* 9CCB  9B78  apply_indexed_lamp_id_from_725d  body=0x9B18, push_address=0x9B7A
+* 9CCD  7A00  vm_loop_increment_one  
+* 9CCF  7B3D  vm_drop_cell  
+* 9CD1  792F  vm_return_to_caller_stream  

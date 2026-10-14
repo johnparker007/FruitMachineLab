@@ -1,0 +1,48 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, memory operations, reel records, reels, stack/cell helpers
+Callers: F2C8, EF30
+
+Threaded script at EEDD; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  EEDD  78B5  vm_push_zero  
+  EEDF  78DE  vm_push_two  
+  EEE1  78AA  vm_push_true_minus_one  
+  EEE3  79DC  vm_enter_loop_frame  
+  EEE5  7A1C  vm_push_loop_index  
+  EEE7  78B5  vm_push_zero  
+  EEE9  9DC1  address_record_0169_explicit_index  body=0x9D97, push_address=0x9DC3
+  EEEB  7861  vm_store_byte  
+  EEED  78DE  vm_push_two  
+  EEEF  78AA  vm_push_true_minus_one  
+  EEF1  79DC  vm_enter_loop_frame  
+  EEF3  7A1C  vm_push_loop_index  
+  EEF5  78C0  vm_push_one  
+  EEF7  9DC1  address_record_0169_explicit_index  body=0x9D97, push_address=0x9DC3
+  EEF9  7861  vm_store_byte  
+  EEFB  78DE  vm_push_two  
+  EEFD  78AA  vm_push_true_minus_one  
+  EEFF  79DC  vm_enter_loop_frame  
+  EF01  7A1C  vm_push_loop_index  
+  EF03  78DE  vm_push_two  
+  EF05  9DC1  address_record_0169_explicit_index  body=0x9D97, push_address=0x9DC3
+  EF07  7861  vm_store_byte  
+  EF09  8114  call_reels_translate_positions_to_symbol_records  native=0x2C12
+  EF0B  80C4  call_reels_push_matching_symbol_result  native=0x1AA3
+  EF0D  9FA0  reels_test_all_three_symbol_flag2  body=0x9FA2
+  EF0F  7ECB  vm_push_word_body_byte  value=0x0011
+  EF11  7A97  vm_bitwise_and  
+  EF13  7AE7  vm_max_signed  
+  EF15  7AE7  vm_max_signed  
+  EF17  7A00  vm_loop_increment_one  
+  EF19  7A00  vm_loop_increment_one  
+  EF1B  7A00  vm_loop_increment_one  
+  EF1D  7963  vm_push_inline_byte_literal  inline_value=0x0003
+  EF20  78B5  vm_push_zero  
+  EF22  79DC  vm_enter_loop_frame  
+  EF24  9DAD  address_record_0169_loop_index  body=0x9D86, push_address=0x9DAF
+  EF26  765F  vm_clear_byte_memory  
+  EF28  7A00  vm_loop_increment_one  
+  EF2A  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+  EF2C  792F  vm_return_to_caller_stream  

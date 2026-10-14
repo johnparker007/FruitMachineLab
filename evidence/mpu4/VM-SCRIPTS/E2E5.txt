@@ -1,0 +1,17 @@
+Purpose: dispatch_taken_board_result_by_clipped_type
+Confidence: reviewed token mechanics
+Groups: control flow, mask/address records, stack/cell helpers, table/dynamic dispatch
+Callers: E2FC
+
+Threaded script at E2E5; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* E2E5  84C2  push_pair_0010_00a0  body=0x8417, push_address=0x84C4
+* E2E7  767F  vm_test_word_memory_mask  
+* E2E9  7982  vm_branch_forward8_if_zero  branch=0xE2F6
+* E2EC  7963  vm_push_inline_byte_literal  inline_value=0x0004
+* E2EF  7ADC  vm_min_signed  
+* E2F1  E2D7  dispatch_indexed_token_table_e2d9  body=0x99A1, push_address=0xE2D9
+* E2F3  7979  vm_branch_unsigned_forward8  branch=0xE2F8
+* E2F6  7B3D  vm_drop_cell  
+* E2F8  792F  vm_return_to_caller_stream  

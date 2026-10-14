@@ -1,0 +1,16 @@
+Purpose: nice_dice_generate_random_pending_award_from_limit
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: accounting/NVRAM, award/balance operations, memory operations, random selection
+Callers: BF3E
+
+Threaded script at BED3; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  BED3  78DE  vm_push_two  
+  BED5  BE39  nice_dice_select_compensated_limit_plus_three  body=0xBE3B
+  BED7  99EC  random_scaled_range_selection  body=0x99EE
+  BED9  78FD  vm_shift_left_one  
+  BEDB  8318  vm_push_word_body_byte  value=0x00BA
+  BEDD  7874  vm_store_word  
+  BEDF  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+  BEE1  792F  vm_return_to_caller_stream  

@@ -1,0 +1,23 @@
+Purpose: subtract_0305_scaled_by_500_from_counter_07d5
+Confidence: reviewed token mechanics; see lifecycle-pass/script-name-evidence.json
+Groups: accounting/NVRAM, arithmetic, memory operations
+Callers: EBDA, EE11
+
+Threaded script at EBB8; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* EBB8  9945  test_normal_mode_byte_nonzero  body=0x9947
+* EBBA  7574  vm_return_if_nonzero  
+* EBBC  8189  vm_push_word_body_word  value=0x07D5
+* EBBE  77F6  vm_fetch_byte_and_following_word  
+* EBC0  7EC4  vm_push_word_body_word  value=0x0305
+* EBC2  786B  vm_fetch_unsigned_byte  
+* EBC4  795B  vm_push_inline_word_literal  inline_value=0x01F4
+* EBC8  7BCC  vm_multiply_to_double_cell  
+* EBCA  9ED7  bias_word_signed_value_at_bit7  body=0x9ED9
+* EBCC  7CB3  vm_negate_double_cell  
+* EBCE  7C78  vm_add_double_cells  
+* EBD0  8189  vm_push_word_body_word  value=0x07D5
+* EBD2  7803  vm_store_byte_and_following_word  
+* EBD4  7FF6  call_nvram_refresh_accounting_complements  native=0x6F57
+* EBD6  792F  vm_return_to_caller_stream  

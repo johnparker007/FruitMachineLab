@@ -1,0 +1,10 @@
+Purpose: push_word_body_two_cells
+Confidence: reviewed token mechanics
+Groups: primitive sequence
+Callers: AE3A, ED06, D003, DD38, C593, DB58, F30F, D2BE
+
+Threaded script at 8417; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 8417  7915  vm_fetch_two_words  
+* 8419  792F  vm_return_to_caller_stream  

@@ -1,0 +1,23 @@
+Purpose: attract_scroll_repeated_lamp_bitmap_frames
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: boolean/bit operations, control flow, memory operations, stack/cell helpers
+Callers: FA34
+
+Threaded script at F6A0; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* F6A0  7963  vm_push_inline_byte_literal  inline_value=0x0080
+* F6A3  F56E  vm_push_local_frame_address  value=0x0003
+* F6A5  7861  vm_store_byte  
+* F6A7  F64A  vm_push_word_body_byte  value=0x0086
+* F6A9  78B5  vm_push_zero  
+* F6AB  79DC  vm_enter_loop_frame  
+* F6AD  7A1C  vm_push_loop_index  
+* F6AF  7963  vm_push_inline_byte_literal  inline_value=0x0028
+* F6B2  7A6F  vm_compare_equal  
+* F6B4  7982  vm_branch_forward8_if_zero  branch=0xF6BB
+* F6B7  78B5  vm_push_zero  
+* F6B9  A8AB  display_two_decimal_digits_or_blank_zero  body=0xA8AD
+* F6BB  F64D  attract_render_six_by_eight_lamp_bitmap_from_token_table  body=0xF64F
+* F6BD  7A00  vm_loop_increment_one  
+* F6BF  792F  vm_return_to_caller_stream  

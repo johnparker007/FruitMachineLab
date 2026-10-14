@@ -1,0 +1,1966 @@
+[
+  {
+    "feature": "Loot Shoot",
+    "entry": 48537,
+    "observed": true,
+    "observed_sites": 22,
+    "total_sites": 22,
+    "description": "Reads working byteE7, displays its doubled amount, records result categories, temporarily services repeated two-unit balances through native4B39, then restores the prior02FE balance. This is the emulated path; physical coin delivery is not independently established.",
+    "helpers": [
+      {
+        "entry": 48426,
+        "word_header": 48424,
+        "name": "animate_cash_result_character_then_flash_amount",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "arithmetic",
+          "display",
+          "memory operations",
+          "sound/scheduler",
+          "stack/cell helpers"
+        ],
+        "observed": true,
+        "observed_sites": 24,
+        "sites": 24,
+        "callers": [
+          48481,
+          48825
+        ],
+        "callees": [
+          34155,
+          48371
+        ],
+        "native_calls": [
+          15552,
+          23755
+        ],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [
+          807
+        ],
+        "input_conditions": [],
+        "description": "writes 0327; native calls 3CC0,5CCB",
+        "is_shared_body": false,
+        "main_callers": [
+          48481,
+          48825
+        ]
+      },
+      {
+        "entry": 48371,
+        "word_header": 48369,
+        "name": "flash_cash_amount_display_from_doubled_result",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "display",
+          "memory operations",
+          "sound/scheduler",
+          "stack/cell helpers"
+        ],
+        "observed": true,
+        "observed_sites": 16,
+        "sites": 16,
+        "callers": [
+          48426
+        ],
+        "callees": [
+          32198,
+          34155,
+          39343
+        ],
+        "native_calls": [],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [
+          807
+        ],
+        "input_conditions": [],
+        "description": "writes 0327; display text '0'",
+        "is_shared_body": false,
+        "main_callers": [
+          48426
+        ]
+      },
+      {
+        "entry": 48481,
+        "word_header": 48479,
+        "name": "loot_shoot_account_and_service_repeated_two_unit_payouts",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "accounting/NVRAM",
+          "control flow",
+          "memory operations"
+        ],
+        "observed": true,
+        "observed_sites": 26,
+        "sites": 26,
+        "callers": [
+          48537
+        ],
+        "callees": [
+          44602,
+          48426
+        ],
+        "native_calls": [
+          19257,
+          28166
+        ],
+        "direct_read_addresses": [
+          185,
+          231,
+          766
+        ],
+        "direct_write_addresses": [
+          231,
+          766
+        ],
+        "input_conditions": [],
+        "description": "reads 00B9,00E7,02FE; writes 00E7,02FE; native calls 4B39,6E06",
+        "is_shared_body": false,
+        "main_callers": [
+          48537
+        ]
+      },
+      {
+        "entry": 44602,
+        "word_header": 44600,
+        "name": "account_award_by_result_categories_and_selected_counter",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "accounting/NVRAM",
+          "arithmetic",
+          "award/balance operations",
+          "boolean/bit operations",
+          "control flow",
+          "mask/address records",
+          "memory operations",
+          "stack/cell helpers"
+        ],
+        "observed": true,
+        "observed_sites": 71,
+        "sites": 80,
+        "callers": [
+          44843,
+          45044,
+          48481,
+          53251,
+          58966,
+          62340
+        ],
+        "callees": [
+          32084,
+          33815,
+          39239,
+          44120,
+          44463,
+          44494,
+          44514,
+          44536,
+          44584
+        ],
+        "native_calls": [
+          5407,
+          5666,
+          5741,
+          28166
+        ],
+        "direct_read_addresses": [
+          185,
+          188,
+          189,
+          817
+        ],
+        "direct_write_addresses": [
+          185,
+          188,
+          189,
+          817
+        ],
+        "input_conditions": [],
+        "description": "reads 00B9,00BC,00BD,0331; writes 00B9,00BC,00BD,0331; native calls 151F,1622,166D,6E06",
+        "is_shared_body": false,
+        "main_callers": [
+          53251,
+          58966,
+          48481,
+          62340,
+          45044,
+          44843
+        ]
+      }
+    ]
+  },
+  {
+    "feature": "Nice Dice",
+    "entry": 48958,
+    "observed": true,
+    "observed_sites": 11,
+    "total_sites": 13,
+    "description": "ROM option4000 selects a random award route instead of the physical fourth-reel selection route. Normal path saves fourth-reel parameters, starts motion, waits for Start/timer/option0200, resolves an eligible sector and stores twice the final reel symbol in pendingBA. The alternative random route remains a separate branch.",
+    "helpers": [
+      {
+        "entry": 48699,
+        "word_header": 48697,
+        "name": "nice_dice_select_compensated_limit_plus_three",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "arithmetic",
+          "table/dynamic dispatch"
+        ],
+        "observed": true,
+        "observed_sites": 7,
+        "sites": 7,
+        "callers": [
+          48785,
+          48851
+        ],
+        "callees": [
+          39329,
+          41232
+        ],
+        "native_calls": [],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [],
+        "input_conditions": [],
+        "description": "operations vm_push_word_body_byte, vm_push_word_body_byte, clip_compensation_index_difference_plus_four_to_zero_eight, dispatch_indexed_token_table_be27",
+        "is_shared_body": false,
+        "main_callers": [
+          48785,
+          48851
+        ]
+      },
+      {
+        "entry": 48716,
+        "word_header": 48714,
+        "name": "fetch_fourth_reel_sector_value_from_763b",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "arithmetic",
+          "memory operations",
+          "reel records",
+          "reels/symbol tests"
+        ],
+        "observed": true,
+        "observed_sites": 10,
+        "sites": 10,
+        "callers": [
+          48785,
+          52889
+        ],
+        "callees": [
+          32240,
+          40343
+        ],
+        "native_calls": [],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [],
+        "input_conditions": [],
+        "description": "operations vm_push_inline_byte_literal, address_record_0168_explicit_index, vm_fetch_unsigned_byte, vm_push_inline_byte_literal",
+        "is_shared_body": false,
+        "main_callers": [
+          52889,
+          48785
+        ]
+      },
+      {
+        "entry": 48740,
+        "word_header": 48738,
+        "name": "nice_dice_start_fourth_reel_with_random_wait",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "arithmetic",
+          "lamps",
+          "memory operations",
+          "random selection",
+          "reels",
+          "reels/symbol tests"
+        ],
+        "observed": true,
+        "observed_sites": 18,
+        "sites": 18,
+        "callers": [
+          48869
+        ],
+        "callees": [
+          32198,
+          39343,
+          39406,
+          39643
+        ],
+        "native_calls": [
+          25045
+        ],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [
+          194
+        ],
+        "input_conditions": [],
+        "description": "writes 00C2; native calls 61D5",
+        "is_shared_body": false,
+        "main_callers": [
+          48869
+        ]
+      },
+      {
+        "entry": 48785,
+        "word_header": 48783,
+        "name": "nice_dice_wait_eligible_sector_then_stop_fourth_reel",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "boolean/bit operations",
+          "control flow",
+          "memory operations",
+          "reels",
+          "reels/symbol tests",
+          "stack/cell helpers"
+        ],
+        "observed": true,
+        "observed_sites": 18,
+        "sites": 18,
+        "callers": [
+          48869
+        ],
+        "callees": [
+          48699,
+          48716
+        ],
+        "native_calls": [
+          11572
+        ],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [
+          194
+        ],
+        "input_conditions": [],
+        "description": "writes 00C2; native calls 2D34",
+        "is_shared_body": false,
+        "main_callers": [
+          48869
+        ]
+      },
+      {
+        "entry": 48869,
+        "word_header": 48867,
+        "name": "nice_dice_prompt_start_and_resolve_fourth_reel_stop",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "arithmetic",
+          "boolean/bit operations",
+          "control flow",
+          "display",
+          "input conditions",
+          "lamps",
+          "mask tests",
+          "memory operations",
+          "reels/symbol tests",
+          "sound/scheduler"
+        ],
+        "observed": true,
+        "observed_sites": 40,
+        "sites": 40,
+        "callers": [
+          48958
+        ],
+        "callees": [
+          33822,
+          34155,
+          34179,
+          39302,
+          39490,
+          39643,
+          48740,
+          48785
+        ],
+        "native_calls": [
+          15552,
+          15607,
+          18818,
+          18827,
+          23415
+        ],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [
+          45
+        ],
+        "input_conditions": [
+          18
+        ],
+        "description": "tests INPUT_Start_condition_18; writes 002D; native calls 3CC0,3CF7,4982,498B,5B77",
+        "is_shared_body": false,
+        "main_callers": [
+          48958
+        ]
+      },
+      {
+        "entry": 48825,
+        "word_header": 48823,
+        "name": "nice_dice_convert_final_reel_symbol_into_pending_award",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "accounting/NVRAM",
+          "award/balance operations",
+          "display",
+          "memory operations",
+          "reel records",
+          "reels",
+          "reels/symbol tests",
+          "sound/scheduler",
+          "stack/cell helpers"
+        ],
+        "observed": true,
+        "observed_sites": 12,
+        "sites": 12,
+        "callers": [
+          48958
+        ],
+        "callees": [
+          48426
+        ],
+        "native_calls": [
+          11243,
+          15630,
+          23755,
+          28166
+        ],
+        "direct_read_addresses": [
+          358
+        ],
+        "direct_write_addresses": [
+          186
+        ],
+        "input_conditions": [],
+        "description": "reads 0166; writes 00BA; native calls 2BEB,3D0E,5CCB,6E06",
+        "is_shared_body": false,
+        "main_callers": [
+          48958
+        ]
+      },
+      {
+        "entry": 48851,
+        "word_header": 48849,
+        "name": "nice_dice_generate_random_pending_award_from_limit",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "accounting/NVRAM",
+          "award/balance operations",
+          "memory operations",
+          "random selection"
+        ],
+        "observed": false,
+        "observed_sites": 0,
+        "sites": 8,
+        "callers": [
+          48958
+        ],
+        "callees": [
+          39406,
+          48699
+        ],
+        "native_calls": [
+          28166
+        ],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [
+          186
+        ],
+        "input_conditions": [],
+        "description": "writes 00BA; native calls 6E06",
+        "is_shared_body": false,
+        "main_callers": [
+          48958
+        ]
+      }
+    ]
+  },
+  {
+    "feature": "Cash Climber",
+    "entry": 49419,
+    "observed": true,
+    "observed_sites": 14,
+    "total_sites": 14,
+    "description": "One-byte frame stores shots remaining. Initialises timer/flags, loops through a15-step progression, resets the shot budget to3 per step, waits for Start or timing/option gates, and tests progression eligibility. Final selected step indexesC039 into pendingBA and updates NVRAM integrity. Focused trace: index0 ->6 units, confirmed atC126.",
+    "helpers": [
+      {
+        "entry": 49102,
+        "word_header": 49100,
+        "name": "cash_climber_initialize_timer_and_shot_state",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "lamps",
+          "memory operations",
+          "stack/cell helpers"
+        ],
+        "observed": true,
+        "observed_sites": 17,
+        "sites": 17,
+        "callers": [
+          49419
+        ],
+        "callees": [
+          39643,
+          39654
+        ],
+        "native_calls": [],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [
+          179,
+          233,
+          234,
+          813
+        ],
+        "input_conditions": [],
+        "description": "writes 00B3,00E9,00EA,032D",
+        "is_shared_body": false,
+        "main_callers": [
+          49419
+        ]
+      },
+      {
+        "entry": 49157,
+        "word_header": 49155,
+        "name": "cash_climber_refresh_progress_lamp_strip",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "arithmetic",
+          "control flow",
+          "lamps",
+          "stack/cell helpers"
+        ],
+        "observed": true,
+        "observed_sites": 24,
+        "sites": 24,
+        "callers": [
+          49324
+        ],
+        "callees": [
+          32068,
+          39704,
+          39721
+        ],
+        "native_calls": [],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [],
+        "input_conditions": [],
+        "description": "operations vm_duplicate_cell, vm_increment_word, vm_push_zero, vm_enter_loop_frame",
+        "is_shared_body": false,
+        "main_callers": [
+          49324
+        ]
+      },
+      {
+        "entry": 49263,
+        "word_header": 49261,
+        "name": "cash_climber_display_shot_count_or_previous_step_amount",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "arithmetic",
+          "boolean/bit operations",
+          "control flow",
+          "display",
+          "indexed memory",
+          "lamps",
+          "memory operations"
+        ],
+        "observed": true,
+        "observed_sites": 20,
+        "sites": 20,
+        "callers": [
+          49324
+        ],
+        "callees": [
+          39281,
+          39704,
+          41757,
+          49139
+        ],
+        "native_calls": [],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [
+          807
+        ],
+        "input_conditions": [],
+        "description": "writes 0327; display text 'SHOT'",
+        "is_shared_body": false,
+        "main_callers": [
+          49324
+        ]
+      },
+      {
+        "entry": 49039,
+        "word_header": 49037,
+        "name": "cash_climber_test_progress_or_display_unlucky",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "boolean/bit operations",
+          "control flow",
+          "display",
+          "memory operations",
+          "sound/scheduler",
+          "stack/cell helpers"
+        ],
+        "observed": true,
+        "observed_sites": 23,
+        "sites": 23,
+        "callers": [
+          49324
+        ],
+        "callees": [
+          34155,
+          39443,
+          39540,
+          49005,
+          49022
+        ],
+        "native_calls": [
+          23755
+        ],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [],
+        "input_conditions": [],
+        "description": "native calls 5CCB; display text 'UNLUCKY'",
+        "is_shared_body": false,
+        "main_callers": [
+          49324
+        ]
+      },
+      {
+        "entry": 49324,
+        "word_header": 49322,
+        "name": "cash_climber_run_three_shot_start_input_loop",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "arithmetic",
+          "boolean/bit operations",
+          "control flow",
+          "input conditions",
+          "lamps",
+          "mask tests",
+          "memory operations",
+          "sound/scheduler",
+          "stack/cell helpers"
+        ],
+        "observed": true,
+        "observed_sites": 43,
+        "sites": 44,
+        "callers": [
+          49419
+        ],
+        "callees": [
+          33822,
+          34155,
+          39490,
+          39504,
+          39704,
+          49039,
+          49157,
+          49263
+        ],
+        "native_calls": [
+          18818,
+          18827,
+          23415,
+          23755
+        ],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [],
+        "input_conditions": [
+          18
+        ],
+        "description": "tests INPUT_Start_condition_18; native calls 4982,498B,5B77,5CCB",
+        "is_shared_body": false,
+        "main_callers": [
+          49419
+        ]
+      },
+      {
+        "entry": 49225,
+        "word_header": 49223,
+        "name": "cash_climber_store_selected_step_award_and_cleanup",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "accounting/NVRAM",
+          "award/balance operations",
+          "indexed memory",
+          "lamps",
+          "memory operations",
+          "sound/scheduler",
+          "stack/cell helpers"
+        ],
+        "observed": true,
+        "observed_sites": 18,
+        "sites": 18,
+        "callers": [
+          49419
+        ],
+        "callees": [
+          34155,
+          39281,
+          39643,
+          39704,
+          49139
+        ],
+        "native_calls": [
+          23755,
+          28166
+        ],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [
+          186
+        ],
+        "input_conditions": [],
+        "description": "writes 00BA; native calls 5CCB,6E06",
+        "is_shared_body": false,
+        "main_callers": [
+          49419
+        ]
+      }
+    ]
+  },
+  {
+    "feature": "Money Trap",
+    "entry": 50198,
+    "observed": true,
+    "observed_sites": 41,
+    "total_sites": 41,
+    "description": "Twenty-byte local frame holds stream offset and a compacted display stream. Streams characters until button/timer/option conditions align with an offset divisible by4, freezes/copies four displayed terms, adds their leading digits, presents plus/equals animations and commits pendingBA. Focused trace: displayed8,8,8,6 ->30, then pendingBA=30 atC46D. Other sums and gate branches remain partly unverified.",
+    "helpers": [
+      {
+        "entry": 49836,
+        "word_header": 49834,
+        "name": "money_trap_select_compensated_digit_stream_base",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "arithmetic",
+          "stack/cell helpers",
+          "table/dynamic dispatch"
+        ],
+        "observed": true,
+        "observed_sites": 11,
+        "sites": 11,
+        "callers": [
+          49861
+        ],
+        "callees": [
+          39329,
+          41232
+        ],
+        "native_calls": [],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [],
+        "input_conditions": [],
+        "description": "operations vm_push_word_body_byte, vm_push_word_body_byte, clip_compensation_index_difference_plus_four_to_zero_eight, vm_push_inline_byte_literal",
+        "is_shared_body": false,
+        "main_callers": [
+          49861
+        ]
+      },
+      {
+        "entry": 49861,
+        "word_header": 49859,
+        "name": "money_trap_render_next_stream_character_and_wrap_120",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "arithmetic",
+          "boolean/bit operations",
+          "control flow",
+          "display",
+          "memory operations",
+          "stack/cell helpers"
+        ],
+        "observed": true,
+        "observed_sites": 15,
+        "sites": 18,
+        "callers": [
+          50167,
+          50198
+        ],
+        "callees": [
+          49836
+        ],
+        "native_calls": [
+          16565
+        ],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [],
+        "input_conditions": [],
+        "description": "native calls 40B5",
+        "is_shared_body": false,
+        "main_callers": [
+          50198,
+          50167
+        ]
+      },
+      {
+        "entry": 50167,
+        "word_header": 50165,
+        "name": "money_trap_seed_offset_and_render_sixteen_display_steps",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "memory operations",
+          "stack/cell helpers"
+        ],
+        "observed": true,
+        "observed_sites": 13,
+        "sites": 13,
+        "callers": [
+          50198
+        ],
+        "callees": [
+          32198,
+          39406,
+          49861
+        ],
+        "native_calls": [],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [],
+        "input_conditions": [],
+        "description": "operations vm_push_zero, vm_push_inline_byte_literal, random_scaled_range_selection, vm_push_inline_byte_literal",
+        "is_shared_body": false,
+        "main_callers": [
+          50198
+        ]
+      },
+      {
+        "entry": 49917,
+        "word_header": 49915,
+        "name": "money_trap_copy_and_compact_four_display_terms",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "arithmetic",
+          "memory operations",
+          "stack/cell helpers"
+        ],
+        "observed": true,
+        "observed_sites": 37,
+        "sites": 37,
+        "callers": [
+          50198
+        ],
+        "callees": [
+          49900
+        ],
+        "native_calls": [],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [],
+        "input_conditions": [],
+        "description": "operations vm_push_inline_byte_literal, vm_push_local_frame_address, vm_store_byte, vm_push_inline_byte_literal",
+        "is_shared_body": false,
+        "main_callers": [
+          50198
+        ]
+      },
+      {
+        "entry": 49900,
+        "word_header": 49898,
+        "name": "money_trap_play_sound_and_display_local_terms",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "display",
+          "sound/scheduler"
+        ],
+        "observed": true,
+        "observed_sites": 7,
+        "sites": 7,
+        "callers": [
+          49917
+        ],
+        "callees": [
+          34155,
+          39343
+        ],
+        "native_calls": [
+          15552,
+          23415
+        ],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [],
+        "input_conditions": [],
+        "description": "native calls 3CC0,5B77",
+        "is_shared_body": false,
+        "main_callers": [
+          49917
+        ]
+      },
+      {
+        "entry": 50042,
+        "word_header": 50040,
+        "name": "money_trap_sum_four_display_digits",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "arithmetic",
+          "memory operations"
+        ],
+        "observed": true,
+        "observed_sites": 22,
+        "sites": 22,
+        "callers": [
+          50106
+        ],
+        "callees": [
+          32198
+        ],
+        "native_calls": [],
+        "direct_read_addresses": [
+          88
+        ],
+        "direct_write_addresses": [],
+        "input_conditions": [],
+        "description": "reads 0058",
+        "is_shared_body": false,
+        "main_callers": [
+          50106
+        ]
+      },
+      {
+        "entry": 50003,
+        "word_header": 50001,
+        "name": "money_trap_display_amount_and_equals_sign",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "display",
+          "memory operations"
+        ],
+        "observed": true,
+        "observed_sites": 5,
+        "sites": 5,
+        "callers": [
+          50106
+        ],
+        "callees": [],
+        "native_calls": [],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [
+          807
+        ],
+        "input_conditions": [],
+        "description": "writes 0327; display text '0 / ='",
+        "is_shared_body": false,
+        "main_callers": [
+          50106
+        ]
+      },
+      {
+        "entry": 50106,
+        "word_header": 50104,
+        "name": "money_trap_sum_animate_and_commit_pending_award",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "accounting/NVRAM",
+          "award/balance operations",
+          "control flow",
+          "display",
+          "memory operations",
+          "sound/scheduler",
+          "stack/cell helpers"
+        ],
+        "observed": true,
+        "observed_sites": 22,
+        "sites": 22,
+        "callers": [
+          50198
+        ],
+        "callees": [
+          34155,
+          34161,
+          39343,
+          50003,
+          50029,
+          50042,
+          50093
+        ],
+        "native_calls": [
+          23415,
+          28166
+        ],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [
+          186
+        ],
+        "input_conditions": [],
+        "description": "writes 00BA; native calls 5B77,6E06; display text '+ / + / +'",
+        "is_shared_body": false,
+        "main_callers": [
+          50198
+        ]
+      }
+    ]
+  },
+  {
+    "feature": "Pick A Win",
+    "entry": 50579,
+    "observed": true,
+    "observed_sites": 52,
+    "total_sites": 52,
+    "description": "Chooses a random or weighted selection seed. Selection index may wrap modulo40 unless state mask0020 is set. Builds a table-selected reel request, spins it with lamp feedback, waits for the third request to become nonzero and tests the resulting symbols. Option0200 and orange-input branches alter the path; not all outcomes verified.",
+    "helpers": [
+      {
+        "entry": 50541,
+        "word_header": 50539,
+        "name": "pick_a_win_choose_random_or_weighted_selection_seed",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "arithmetic",
+          "control flow",
+          "mask/address records",
+          "memory operations",
+          "random selection",
+          "stack/cell helpers"
+        ],
+        "observed": true,
+        "observed_sites": 10,
+        "sites": 16,
+        "callers": [
+          50579
+        ],
+        "callees": [
+          33815,
+          39406,
+          39443,
+          39452
+        ],
+        "native_calls": [],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [],
+        "input_conditions": [],
+        "description": "operations vm_push_inline_byte_literal, random_percentage_test, vm_branch_forward8_if_zero, push_pair_0020_00a0",
+        "is_shared_body": false,
+        "main_callers": [
+          50579
+        ]
+      },
+      {
+        "entry": 50411,
+        "word_header": 50409,
+        "name": "pick_a_win_increment_selection_index_with_optional_modulo_forty",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "arithmetic",
+          "boolean/bit operations",
+          "control flow",
+          "mask/address records",
+          "memory operations"
+        ],
+        "observed": true,
+        "observed_sites": 12,
+        "sites": 12,
+        "callers": [
+          50438
+        ],
+        "callees": [
+          32250,
+          33815
+        ],
+        "native_calls": [],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [],
+        "input_conditions": [],
+        "description": "operations vm_push_local_frame_address, vm_fetch_unsigned_byte, vm_increment_word, push_pair_0020_00a0",
+        "is_shared_body": false,
+        "main_callers": [
+          50438
+        ]
+      },
+      {
+        "entry": 50397,
+        "word_header": 50395,
+        "name": "pick_a_win_clamp_value_to_thirty_when_orange1_active",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "boolean/bit operations"
+        ],
+        "observed": true,
+        "observed_sites": 3,
+        "sites": 6,
+        "callers": [
+          50438
+        ],
+        "callees": [
+          40800
+        ],
+        "native_calls": [],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [],
+        "input_conditions": [],
+        "description": "operations test_two_orange1_input_conditions, vm_bitwise_not, vm_return_if_nonzero, vm_push_word_body_byte",
+        "is_shared_body": false,
+        "main_callers": [
+          50438
+        ]
+      },
+      {
+        "entry": 50438,
+        "word_header": 50436,
+        "name": "pick_a_win_prepare_spin_and_present_selected_result",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "arithmetic",
+          "indexed memory",
+          "lamps",
+          "memory operations",
+          "reels",
+          "sound/scheduler",
+          "stack/cell helpers"
+        ],
+        "observed": true,
+        "observed_sites": 42,
+        "sites": 42,
+        "callers": [
+          50579
+        ],
+        "callees": [
+          34155,
+          34171,
+          39281,
+          39704,
+          40117,
+          40256,
+          40272,
+          40316,
+          40427,
+          40943,
+          41133,
+          50356,
+          50397,
+          50411
+        ],
+        "native_calls": [
+          11243,
+          11458,
+          11472,
+          18818,
+          23415,
+          25078
+        ],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [],
+        "input_conditions": [],
+        "description": "native calls 2BEB,2CC2,2CD0,4982,5B77,61F6",
+        "is_shared_body": false,
+        "main_callers": [
+          50579
+        ]
+      },
+      {
+        "entry": 50356,
+        "word_header": 50354,
+        "name": "pick_a_win_flash_reel_lamps_until_third_request_nonzero",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "arithmetic",
+          "boolean/bit operations",
+          "control flow",
+          "memory operations",
+          "reels/symbol tests",
+          "stack/cell helpers"
+        ],
+        "observed": true,
+        "observed_sites": 18,
+        "sites": 18,
+        "callers": [
+          50438
+        ],
+        "callees": [
+          39343,
+          39406,
+          40256,
+          40262,
+          40272
+        ],
+        "native_calls": [],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [],
+        "input_conditions": [],
+        "description": "operations vm_push_word_body_byte, apply_lamp_range_record_9b7c, vm_push_zero, vm_push_inline_byte_literal",
+        "is_shared_body": false,
+        "main_callers": [
+          50438
+        ]
+      },
+      {
+        "entry": 50524,
+        "word_header": 50522,
+        "name": "pick_a_win_test_matching_result_threshold_with_option_0200",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "boolean/bit operations",
+          "mask tests",
+          "reels"
+        ],
+        "observed": true,
+        "observed_sites": 7,
+        "sites": 7,
+        "callers": [
+          50579
+        ],
+        "callees": [
+          32068,
+          33822
+        ],
+        "native_calls": [
+          6819,
+          11243
+        ],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [],
+        "input_conditions": [],
+        "description": "native calls 1AA3,2BEB",
+        "is_shared_body": false,
+        "main_callers": [
+          50579
+        ]
+      }
+    ]
+  },
+  {
+    "feature": "Skill Cash",
+    "entry": 50977,
+    "observed": true,
+    "observed_sites": 34,
+    "total_sites": 34,
+    "description": "Two-byte frame starts with stage0 and level6. Three stages use successive timing values25,20,15; selected values reduce the level. Panel latch0080 at0090 and timer state exit the selection loop, with additional option/random overrides. Final level indexes75BD;47 is normalized to30 before award animation.",
+    "helpers": [
+      {
+        "entry": 50743,
+        "word_header": 50741,
+        "name": "skill_cash_initialize_selection_and_six_step_level",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "memory operations"
+        ],
+        "observed": true,
+        "observed_sites": 6,
+        "sites": 6,
+        "callers": [
+          50977
+        ],
+        "callees": [],
+        "native_calls": [],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [],
+        "input_conditions": [],
+        "description": "operations vm_push_inline_byte_literal, vm_push_local_frame_address, vm_store_byte, vm_push_local_frame_address",
+        "is_shared_body": false,
+        "main_callers": [
+          50977
+        ]
+      },
+      {
+        "entry": 50711,
+        "word_header": 50709,
+        "name": "skill_cash_lookup_compensated_chance_table",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "indexed memory"
+        ],
+        "observed": true,
+        "observed_sites": 5,
+        "sites": 5,
+        "callers": [
+          50794
+        ],
+        "callees": [
+          39281,
+          41232
+        ],
+        "native_calls": [],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [],
+        "input_conditions": [],
+        "description": "operations vm_push_word_body_byte, vm_push_word_body_byte, clip_compensation_index_difference_plus_four_to_zero_eight, read_indexed_byte_table_at_c60c",
+        "is_shared_body": false,
+        "main_callers": [
+          50794
+        ]
+      },
+      {
+        "entry": 50758,
+        "word_header": 50756,
+        "name": "skill_cash_apply_option_controlled_random_override",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "arithmetic",
+          "boolean/bit operations",
+          "control flow",
+          "mask tests",
+          "random selection",
+          "stack/cell helpers"
+        ],
+        "observed": true,
+        "observed_sites": 4,
+        "sites": 15,
+        "callers": [
+          50841
+        ],
+        "callees": [
+          33822,
+          39443,
+          40800
+        ],
+        "native_calls": [],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [],
+        "input_conditions": [],
+        "description": "operations test_mask_0200_at_719f, vm_duplicate_cell, vm_branch_forward8_if_zero, vm_swap_two_cells",
+        "is_shared_body": false,
+        "main_callers": [
+          50841
+        ]
+      },
+      {
+        "entry": 50794,
+        "word_header": 50792,
+        "name": "skill_cash_test_orange1_or_compensated_chance",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "boolean/bit operations"
+        ],
+        "observed": true,
+        "observed_sites": 5,
+        "sites": 5,
+        "callers": [
+          50806
+        ],
+        "callees": [
+          39443,
+          40800,
+          50711
+        ],
+        "native_calls": [],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [],
+        "input_conditions": [],
+        "description": "operations test_two_orange1_input_conditions, skill_cash_lookup_compensated_chance_table, random_percentage_test, vm_bitwise_or",
+        "is_shared_body": false,
+        "main_callers": [
+          50806
+        ]
+      },
+      {
+        "entry": 50806,
+        "word_header": 50804,
+        "name": "skill_cash_cancel_terminal_choice_under_random_gate",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "boolean/bit operations",
+          "control flow",
+          "random selection",
+          "stack/cell helpers"
+        ],
+        "observed": true,
+        "observed_sites": 13,
+        "sites": 15,
+        "callers": [
+          50841
+        ],
+        "callees": [
+          50794
+        ],
+        "native_calls": [],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [],
+        "input_conditions": [],
+        "description": "operations vm_duplicate_cell, vm_branch_forward8_if_zero, vm_copy_second_cell, vm_push_inline_byte_literal",
+        "is_shared_body": false,
+        "main_callers": [
+          50841
+        ]
+      },
+      {
+        "entry": 50731,
+        "word_header": 50729,
+        "name": "skill_cash_dispatch_selected_index_lamp_pattern",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "memory operations",
+          "table/dynamic dispatch"
+        ],
+        "observed": true,
+        "observed_sites": 5,
+        "sites": 5,
+        "callers": [
+          50841
+        ],
+        "callees": [
+          39329
+        ],
+        "native_calls": [],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [],
+        "input_conditions": [],
+        "description": "operations vm_push_word_body_byte, vm_push_local_frame_address, vm_fetch_unsigned_byte, dispatch_indexed_token_table_c623",
+        "is_shared_body": false,
+        "main_callers": [
+          50841
+        ]
+      },
+      {
+        "entry": 50841,
+        "word_header": 50839,
+        "name": "skill_cash_wait_selection_latch_or_timer_with_lamp_feedback",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "boolean/bit operations",
+          "control flow",
+          "lamps",
+          "mask/address records",
+          "sound/scheduler",
+          "stack/cell helpers"
+        ],
+        "observed": true,
+        "observed_sites": 26,
+        "sites": 26,
+        "callers": [
+          50977
+        ],
+        "callees": [
+          33860,
+          33914,
+          34155,
+          34179,
+          34195,
+          39490,
+          39504,
+          40101,
+          50731,
+          50758,
+          50806
+        ],
+        "native_calls": [
+          18827,
+          23415
+        ],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [],
+        "input_conditions": [],
+        "description": "native calls 498B,5B77",
+        "is_shared_body": false,
+        "main_callers": [
+          50977
+        ]
+      },
+      {
+        "entry": 50896,
+        "word_header": 50894,
+        "name": "skill_cash_animate_selected_level_lamps",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "arithmetic",
+          "lamps",
+          "memory operations",
+          "sound/scheduler"
+        ],
+        "observed": true,
+        "observed_sites": 21,
+        "sites": 21,
+        "callers": [
+          50940
+        ],
+        "callees": [
+          32084,
+          34155,
+          39643,
+          39704,
+          40117,
+          40256
+        ],
+        "native_calls": [
+          23755
+        ],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [],
+        "input_conditions": [],
+        "description": "native calls 5CCB",
+        "is_shared_body": false,
+        "main_callers": [
+          50940
+        ]
+      },
+      {
+        "entry": 50940,
+        "word_header": 50938,
+        "name": "skill_cash_commit_threshold_award_and_animate_win",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "accounting/NVRAM",
+          "arithmetic",
+          "award/balance operations",
+          "boolean/bit operations",
+          "control flow",
+          "memory operations",
+          "stack/cell helpers"
+        ],
+        "observed": true,
+        "observed_sites": 16,
+        "sites": 17,
+        "callers": [
+          50977
+        ],
+        "callees": [
+          40810,
+          41829,
+          44947,
+          50896
+        ],
+        "native_calls": [
+          28166
+        ],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [
+          186
+        ],
+        "input_conditions": [],
+        "description": "writes 00BA; native calls 6E06",
+        "is_shared_body": false,
+        "main_callers": [
+          50977
+        ]
+      }
+    ]
+  },
+  {
+    "feature": "Cash Attack",
+    "entry": 51228,
+    "observed": true,
+    "observed_sites": 28,
+    "total_sites": 28,
+    "description": "Initial working byteED=30 and a compensation-derived random gate precede the ATTACK selection flow. The chosen index addressesC7A8, its amount is displayed, stored in pendingBA, integrity-refreshed and animated into current win; working byteEC accumulates the result. Dynamic selection helperAD65 still deserves deeper branch-specific interpretation.",
+    "helpers": [
+      {
+        "entry": 51065,
+        "word_header": 51063,
+        "name": "cash_attack_lookup_compensated_chance_table",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "indexed memory"
+        ],
+        "observed": true,
+        "observed_sites": 5,
+        "sites": 5,
+        "callers": [
+          51077
+        ],
+        "callees": [
+          39281,
+          41232
+        ],
+        "native_calls": [],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [],
+        "input_conditions": [],
+        "description": "operations vm_push_word_body_byte, vm_push_word_body_byte, clip_compensation_index_difference_plus_four_to_zero_eight, read_indexed_byte_table_at_c76e",
+        "is_shared_body": false,
+        "main_callers": [
+          51077
+        ]
+      },
+      {
+        "entry": 51077,
+        "word_header": 51075,
+        "name": "cash_attack_test_compensated_chance",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "composition of script calls"
+        ],
+        "observed": true,
+        "observed_sites": 3,
+        "sites": 3,
+        "callers": [
+          51228
+        ],
+        "callees": [
+          39443,
+          51065
+        ],
+        "native_calls": [],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [],
+        "input_conditions": [],
+        "description": "operations cash_attack_lookup_compensated_chance_table, random_percentage_test, vm_return_to_caller_stream",
+        "is_shared_body": false,
+        "main_callers": [
+          51228
+        ]
+      },
+      {
+        "entry": 51085,
+        "word_header": 51083,
+        "name": "cash_attack_store_thirty_in_working_byte_ed",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "memory operations"
+        ],
+        "observed": true,
+        "observed_sites": 4,
+        "sites": 4,
+        "callers": [
+          51228
+        ],
+        "callees": [],
+        "native_calls": [],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [
+          237
+        ],
+        "input_conditions": [],
+        "description": "writes 00ED",
+        "is_shared_body": false,
+        "main_callers": [
+          51228
+        ]
+      },
+      {
+        "entry": 51172,
+        "word_header": 51170,
+        "name": "cash_attack_announce_select_and_commit_table_award",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "accounting/NVRAM",
+          "award/balance operations",
+          "display",
+          "indexed memory",
+          "lamps",
+          "memory operations",
+          "stack/cell helpers"
+        ],
+        "observed": true,
+        "observed_sites": 18,
+        "sites": 18,
+        "callers": [
+          51228
+        ],
+        "callees": [
+          39281,
+          39643,
+          41757,
+          44389,
+          44947
+        ],
+        "native_calls": [
+          15552,
+          15630,
+          28166
+        ],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [
+          186
+        ],
+        "input_conditions": [],
+        "description": "writes 00BA; native calls 3CC0,3D0E,6E06; display text '*** ATTACK ***'",
+        "is_shared_body": false,
+        "main_callers": [
+          51228
+        ]
+      },
+      {
+        "entry": 44389,
+        "word_header": null,
+        "name": "run_selection_engine_from_five_callback_record",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "boolean/bit operations",
+          "control flow",
+          "lamps",
+          "memory operations",
+          "sound/scheduler",
+          "stack/cell helpers"
+        ],
+        "observed": true,
+        "observed_sites": 35,
+        "sites": 35,
+        "callers": [
+          51172,
+          57895
+        ],
+        "callees": [
+          34171,
+          39302,
+          39504,
+          44138,
+          44161,
+          44192,
+          44224,
+          44354
+        ],
+        "native_calls": [
+          18818,
+          18827,
+          23415,
+          23755
+        ],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [],
+        "input_conditions": [],
+        "description": "native calls 4982,498B,5B77,5CCB",
+        "is_shared_body": true,
+        "main_callers": [
+          51172,
+          57895
+        ]
+      }
+    ]
+  },
+  {
+    "feature": "Super Stepper",
+    "entry": 51598,
+    "observed": true,
+    "observed_sites": 34,
+    "total_sites": 37,
+    "description": "Two-byte frame holds cumulative progress and a working limit30 or60. Bounded weighted increments use tablesC8B4/C8C4/C8D4. Step animation readsA12E into pendingBA, commits the award and clears the lamp trail. Continuation/final chances use separate compensation-indexed tables. Entry and award path observed; four accepted increments and four pending-award mappings independently checked. Other branches remain partly unverified.",
+    "helpers": [
+      {
+        "entry": 51320,
+        "word_header": 51318,
+        "name": "super_stepper_lookup_compensated_continue_chance",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "indexed memory"
+        ],
+        "observed": true,
+        "observed_sites": 5,
+        "sites": 5,
+        "callers": [
+          51598
+        ],
+        "callees": [
+          39281,
+          41232
+        ],
+        "native_calls": [],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [],
+        "input_conditions": [],
+        "description": "operations vm_push_word_body_byte, vm_push_word_body_byte, clip_compensation_index_difference_plus_four_to_zero_eight, read_indexed_byte_table_at_c862",
+        "is_shared_body": false,
+        "main_callers": [
+          51598
+        ]
+      },
+      {
+        "entry": 51332,
+        "word_header": 51330,
+        "name": "super_stepper_lookup_compensated_final_chance_clipped_fifty",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "indexed memory"
+        ],
+        "observed": true,
+        "observed_sites": 7,
+        "sites": 7,
+        "callers": [
+          51598
+        ],
+        "callees": [
+          39281,
+          41232
+        ],
+        "native_calls": [],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [],
+        "input_conditions": [],
+        "description": "operations vm_push_word_body_byte, vm_push_word_body_byte, clip_compensation_index_difference_plus_four_to_zero_eight, read_indexed_byte_table_at_c86d",
+        "is_shared_body": false,
+        "main_callers": [
+          51598
+        ]
+      },
+      {
+        "entry": 51349,
+        "word_header": 51347,
+        "name": "super_stepper_select_working_limit_thirty_or_sixty",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "boolean/bit operations",
+          "control flow",
+          "memory operations"
+        ],
+        "observed": true,
+        "observed_sites": 13,
+        "sites": 13,
+        "callers": [
+          51598
+        ],
+        "callees": [
+          39443,
+          40800
+        ],
+        "native_calls": [],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [],
+        "input_conditions": [],
+        "description": "operations vm_push_inline_byte_literal, random_percentage_test, test_two_orange1_input_conditions, vm_bitwise_or",
+        "is_shared_body": false,
+        "main_callers": [
+          51598
+        ]
+      },
+      {
+        "entry": 51428,
+        "word_header": 51426,
+        "name": "super_stepper_select_weighted_step_with_remaining_limit",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "arithmetic",
+          "control flow",
+          "indexed memory",
+          "memory operations",
+          "stack/cell helpers"
+        ],
+        "observed": true,
+        "observed_sites": 18,
+        "sites": 18,
+        "callers": [
+          51598
+        ],
+        "callees": [
+          32076,
+          39281,
+          39452
+        ],
+        "native_calls": [],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [],
+        "input_conditions": [],
+        "description": "operations vm_push_inline_byte_literal, vm_drop_cell, weighted_index_table_at_c8b4, vm_duplicate_cell",
+        "is_shared_body": false,
+        "main_callers": [
+          51598
+        ]
+      },
+      {
+        "entry": 51468,
+        "word_header": 51466,
+        "name": "super_stepper_animate_step_commit_award_and_clear_trail",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "accounting/NVRAM",
+          "arithmetic",
+          "award/balance operations",
+          "display",
+          "indexed memory",
+          "lamps",
+          "memory operations",
+          "sound/scheduler",
+          "stack/cell helpers"
+        ],
+        "observed": true,
+        "observed_sites": 53,
+        "sites": 53,
+        "callers": [
+          51598
+        ],
+        "callees": [
+          32240,
+          34155,
+          34171,
+          39281,
+          39343,
+          39643,
+          39704,
+          40792,
+          44947
+        ],
+        "native_calls": [
+          15552,
+          15607,
+          15630,
+          23415,
+          23755,
+          28166
+        ],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [
+          186
+        ],
+        "input_conditions": [],
+        "description": "writes 00BA; native calls 3CC0,3CF7,3D0E,5B77,5CCB,6E06; display text '*** STEPPING ***'",
+        "is_shared_body": false,
+        "main_callers": [
+          51598
+        ]
+      }
+    ]
+  },
+  {
+    "feature": "Cash Jackpot Restart",
+    "entry": 51700,
+    "observed": true,
+    "observed_sites": 25,
+    "total_sites": 25,
+    "description": "Top-level dispatch/display association and some execution are established. It composes the existing jackpot/selection and lamp helpers. Its broader restart semantics and all exits remain unresolved; the name is not a complete behavioral recovery.",
+    "helpers": [
+      {
+        "entry": 47945,
+        "word_header": 47943,
+        "name": null,
+        "confidence": "grouping only; purpose unresolved",
+        "groups": [
+          "memory operations"
+        ],
+        "observed": true,
+        "observed_sites": 16,
+        "sites": 16,
+        "callers": [
+          51700,
+          58275,
+          58831
+        ],
+        "callees": [
+          47430,
+          47833,
+          47862,
+          47916
+        ],
+        "native_calls": [],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [],
+        "input_conditions": [],
+        "description": "operations vm_push_inline_byte_literal, vm_allocate_local_frame, script_bb2a, vm_push_local_frame_address",
+        "is_shared_body": false,
+        "main_callers": [
+          58831,
+          51700,
+          58275
+        ]
+      },
+      {
+        "entry": 47430,
+        "word_header": 47428,
+        "name": "apply_reel_grid_lamp_pattern_at_row_times_six_plus_column",
+        "confidence": "reviewed token mechanics; see vm-batch-pass/script-name-evidence.json",
+        "groups": [
+          "arithmetic",
+          "lamps",
+          "reels/symbol tests",
+          "stack/cell helpers"
+        ],
+        "observed": true,
+        "observed_sites": 7,
+        "sites": 7,
+        "callers": [
+          47477,
+          47527,
+          47577,
+          47653,
+          47945
+        ],
+        "callees": [
+          32092,
+          32198,
+          39704
+        ],
+        "native_calls": [],
+        "direct_read_addresses": [],
+        "direct_write_addresses": [],
+        "input_conditions": [],
+        "description": "operations rotate_three_cells_twice, vm_push_inline_byte_literal, multiply_words_keep_low_cell, vm_add_words",
+        "is_shared_body": false,
+        "main_callers": [
+          47577,
+          47653,
+          47477,
+          47527,
+          47945
+        ]
+      }
+    ]
+  }
+]

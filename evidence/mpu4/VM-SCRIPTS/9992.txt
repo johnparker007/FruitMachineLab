@@ -1,0 +1,14 @@
+Purpose: execute_indexed_token_table_using_loop_index
+Confidence: reviewed token mechanics
+Groups: arithmetic, memory operations, table/dynamic dispatch
+Callers: D2BE, D501, B403, F509, F4F6
+
+Threaded script at 9992; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9992  7A1C  vm_push_loop_index  
+* 9994  78FD  vm_shift_left_one  
+* 9996  787E  vm_add_words  
+* 9998  790D  vm_fetch_word  
+* 999A  79D6  vm_execute_token_from_stack  
+* 999C  792F  vm_return_to_caller_stream  

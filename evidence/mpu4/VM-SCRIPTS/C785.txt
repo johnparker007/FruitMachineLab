@@ -1,0 +1,11 @@
+Purpose: cash_attack_test_compensated_chance
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: composition of script calls
+Callers: C81C
+
+Threaded script at C785; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C785  C777  cash_attack_lookup_compensated_chance_table  body=0xC779
+* C787  9A11  random_percentage_test  body=0x9A13
+* C789  792F  vm_return_to_caller_stream  

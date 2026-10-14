@@ -1,0 +1,21 @@
+Purpose: super_stepper_select_working_limit_thirty_or_sixty
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: boolean/bit operations, control flow, memory operations
+Callers: C98E
+
+Threaded script at C895; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C895  7963  vm_push_inline_byte_literal  inline_value=0x0046
+* C898  9A11  random_percentage_test  body=0x9A13
+* C89A  9F5E  test_two_orange1_input_conditions  body=0x9F60
+* C89C  7AA3  vm_bitwise_or  
+* C89E  7982  vm_branch_forward8_if_zero  branch=0xC8AA
+* C8A1  7F0D  vm_push_word_body_byte  value=0x001E
+* C8A3  C85D  vm_push_local_frame_address  value=0x0001
+* C8A5  7861  vm_store_byte  
+* C8A7  7979  vm_branch_unsigned_forward8  branch=0xC8B0
+* C8AA  7F07  vm_push_word_body_byte  value=0x003C
+* C8AC  C85D  vm_push_local_frame_address  value=0x0001
+* C8AE  7861  vm_store_byte  
+* C8B0  792F  vm_return_to_caller_stream  

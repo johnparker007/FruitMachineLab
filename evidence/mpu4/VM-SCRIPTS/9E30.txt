@@ -1,0 +1,12 @@
+Purpose: rotate_mask_0020_right_by_loop_index
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: boolean/bit operations
+Callers: D257, D0DB, D109
+
+Threaded script at 9E30; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9E30  81ED  vm_push_word_body_byte  value=0x0020
+* 9E32  7A1C  vm_push_loop_index  
+* 9E34  7AC3  vm_rotate_word_right_by_low_byte_count  
+* 9E36  792F  vm_return_to_caller_stream  

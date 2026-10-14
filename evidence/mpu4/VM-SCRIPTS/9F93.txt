@@ -1,0 +1,14 @@
+Purpose: mask_flagged_best_reel_result_by_signed_threshold_nine
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: boolean/bit operations, reels, reels/symbol tests, stack/cell helpers
+Callers: B2A8, B5ED, B91D, B458
+
+Threaded script at 9F93; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9F93  8080  call_enable_reel_search_flag_then_push_best_result  native=0x29EC
+* 9F95  7B51  vm_duplicate_cell  
+* 9F97  7963  vm_push_inline_byte_literal  inline_value=0x0009
+* 9F9A  7A79  vm_compare_top_lt_second_signed  
+* 9F9C  7A97  vm_bitwise_and  
+* 9F9E  792F  vm_return_to_caller_stream  

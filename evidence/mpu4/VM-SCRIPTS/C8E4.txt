@@ -1,0 +1,26 @@
+Purpose: super_stepper_select_weighted_step_with_remaining_limit
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: arithmetic, control flow, indexed memory, memory operations, stack/cell helpers
+Callers: C98E
+
+Threaded script at C8E4; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C8E4  7963  vm_push_inline_byte_literal  inline_value=0x0063
+* C8E7  7B3D  vm_drop_cell  
+* C8E9  C8B2  weighted_index_table_at_c8b4  body=0x9A1C, push_address=0xC8B4
+* C8EB  7B51  vm_duplicate_cell  
+* C8ED  C8C2  read_indexed_byte_table_at_c8c4  body=0x9971, push_address=0xC8C4
+* C8EF  C85A  vm_push_local_frame_address  value=0x0000
+* C8F1  786B  vm_fetch_unsigned_byte  
+* C8F3  787E  vm_add_words  
+* C8F5  C85D  vm_push_local_frame_address  value=0x0001
+* C8F7  786B  vm_fetch_unsigned_byte  
+* C8F9  7D4A  compare_top_ge_second_signed  body=0x7D4C
+* C8FB  79A6  vm_branch_backward8_if_zero  branch=0xC8E7
+* C8FE  7B51  vm_duplicate_cell  
+* C900  C8C2  read_indexed_byte_table_at_c8c4  body=0x9971, push_address=0xC8C4
+* C902  C85A  vm_push_local_frame_address  value=0x0000
+* C904  7894  vm_add_to_byte_memory  
+* C906  C8D2  read_indexed_byte_table_at_c8d4  body=0x9971, push_address=0xC8D4
+* C908  792F  vm_return_to_caller_stream  

@@ -1,0 +1,18 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: lamps, memory operations, stack/cell helpers
+Callers: BFCE, BFF3
+
+Threaded script at 9AE6; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  9AE6  7915  vm_fetch_two_words  
+  9AE8  7B7D  vm_swap_two_cells  
+  9AEA  79DC  vm_enter_loop_frame  
+  9AEC  7A1C  vm_push_loop_index  
+  9AEE  786B  vm_fetch_unsigned_byte  
+  9AF0  7B59  vm_copy_second_cell  
+  9AF2  7FC7  call_lamp_set_inhibit_bit_for_logical_id  native=0x492B
+  9AF4  7A00  vm_loop_increment_one  
+  9AF6  7B3D  vm_drop_cell  
+  9AF8  792F  vm_return_to_caller_stream  

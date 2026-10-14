@@ -1,0 +1,31 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, mask/address records, stack/cell helpers
+Callers: D199, D177
+
+Threaded script at D140; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* D140  849E  push_pair_0400_00a0  body=0x8417, push_address=0x84A0
+* D142  767F  vm_test_word_memory_mask  
+* D144  8016  call_push_nonzero_symbol_result_or_fallback_to_vm_stack  native=0x1AF1
+* D146  9FBA  reels_test_exactly_two_symbol_flag2  body=0x9FBC
+* D148  7AA3  vm_bitwise_or  
+* D14A  7A97  vm_bitwise_and  
+* D14C  7982  vm_branch_forward8_if_zero  branch=0xD153
+* D14F  78B5  vm_push_zero  
+* D151  7935  vm_unwind_loop_frames_to_return  
+* D153  78B5  vm_push_zero  
+* D155  9E85  reels_test_symbol_flag2_1_and_2  body=0x9E87
+* D157  7982  vm_branch_forward8_if_zero  branch=0xD15F
+* D15A  7963  vm_push_inline_byte_literal  inline_value=0x0030
+* D15D  7AA3  vm_bitwise_or  
+* D15F  9E9D  reels_test_symbol_flag2_1_and_3  body=0x9E9F
+* D161  7982  vm_branch_forward8_if_zero  branch=0xD169
+* D164  7963  vm_push_inline_byte_literal  inline_value=0x0028
+* D167  7AA3  vm_bitwise_or  
+* D169  9EB5  reels_test_symbol_flag2_2_and_3  body=0x9EB7
+* D16B  7982  vm_branch_forward8_if_zero  branch=0xD173
+* D16E  7963  vm_push_inline_byte_literal  inline_value=0x0018
+* D171  7AA3  vm_bitwise_or  
+* D173  792F  vm_return_to_caller_stream  

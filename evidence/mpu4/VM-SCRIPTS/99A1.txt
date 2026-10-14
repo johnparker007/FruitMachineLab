@@ -1,0 +1,14 @@
+Purpose: execute_indexed_token_table
+Confidence: reviewed token mechanics
+Groups: arithmetic, memory operations, stack/cell helpers, table/dynamic dispatch
+Callers: DFF6, DAC7, DB58, F64F, DA8C, E227, C2AC, E2E5
+
+Threaded script at 99A1; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 99A1  7B7D  vm_swap_two_cells  
+* 99A3  78FD  vm_shift_left_one  
+* 99A5  787E  vm_add_words  
+* 99A7  790D  vm_fetch_word  
+* 99A9  79D6  vm_execute_token_from_stack  
+* 99AB  792F  vm_return_to_caller_stream  

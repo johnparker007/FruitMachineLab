@@ -1,0 +1,35 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: arithmetic, boolean/bit operations, control flow, memory operations, reel records, reels, stack/cell helpers
+Callers: B271
+
+Threaded script at B1FD; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B1FD  7B51  vm_duplicate_cell  
+* B1FF  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* B201  7FAD  vm_push_word_body_word  value=0x0166
+* B203  786B  vm_fetch_unsigned_byte  
+* B205  7D52  duplicate_two_cells  body=0x7D54
+* B207  7D52  duplicate_two_cells  body=0x7D54
+* B209  7A65  vm_compare_top_gt_second_signed  
+* B20B  7982  vm_branch_forward8_if_zero  branch=0xB210
+* B20E  7B7D  vm_swap_two_cells  
+* B210  78A0  vm_subtract_top_from_second  
+* B212  7963  vm_push_inline_byte_literal  inline_value=0x0006
+* B215  7A79  vm_compare_top_lt_second_signed  
+* B217  7982  vm_branch_forward8_if_zero  branch=0xB229
+* B21A  7A79  vm_compare_top_lt_second_signed  
+* B21C  7982  vm_branch_forward8_if_zero  branch=0xB224
+* B21F  78C0  vm_push_one  
+* B221  7979  vm_branch_unsigned_forward8  branch=0xB226
+* B224  78AA  vm_push_true_minus_one  
+* B226  7979  vm_branch_unsigned_forward8  branch=0xB235
+* B229  7A79  vm_compare_top_lt_second_signed  
+* B22B  7982  vm_branch_forward8_if_zero  branch=0xB233
+* B22E  78AA  vm_push_true_minus_one  
+* B230  7979  vm_branch_unsigned_forward8  branch=0xB235
+* B233  78C0  vm_push_one  
+* B235  7B7D  vm_swap_two_cells  
+* B237  B1DF  script_b1df  body=0xB1E1
+* B239  792F  vm_return_to_caller_stream  

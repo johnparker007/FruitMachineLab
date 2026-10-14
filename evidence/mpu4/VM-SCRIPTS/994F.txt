@@ -1,0 +1,12 @@
+Purpose: test_mode_or_rom_option_0400
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: boolean/bit operations, mask tests
+Callers: CC40, DC34, F509, AC6A, 9A74
+
+Threaded script at 994F; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 994F  84F8  test_mask_0400_at_719f  body=0x841E, push_address=0x84FA
+* 9951  9945  test_normal_mode_byte_nonzero  body=0x9947
+* 9953  7AA3  vm_bitwise_or  
+* 9955  792F  vm_return_to_caller_stream  

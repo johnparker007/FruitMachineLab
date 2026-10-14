@@ -1,0 +1,29 @@
+Purpose: initialize_compensation_sequence_when_counters_empty
+Confidence: reviewed token mechanics; see lifecycle-pass/script-name-evidence.json
+Groups: boolean/bit operations, control flow, memory operations, stack/cell helpers
+Callers: A553
+
+Threaded script at A526; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* A526  8236  vm_push_word_body_word  value=0x03DD
+* A528  77F6  vm_fetch_byte_and_following_word  
+* A52A  7A46  vm_test_zero  
+* A52C  7B7D  vm_swap_two_cells  
+* A52E  7A46  vm_test_zero  
+* A530  7A97  vm_bitwise_and  
+* A532  7EBC  vm_push_word_body_word  value=0x0333
+* A534  786B  vm_fetch_unsigned_byte  
+* A536  7A46  vm_test_zero  
+* A538  7EB8  vm_push_word_body_word  value=0x0332
+* A53A  786B  vm_fetch_unsigned_byte  
+* A53C  7A46  vm_test_zero  
+* A53E  7A97  vm_bitwise_and  
+* A540  7EC0  vm_push_word_body_word  value=0x0334
+* A542  790D  vm_fetch_word  
+* A544  7A46  vm_test_zero  
+* A546  7A97  vm_bitwise_and  
+* A548  7AA3  vm_bitwise_or  
+* A54A  7982  vm_branch_forward8_if_zero  branch=0xA54F
+* A54D  A4FD  load_next_compensation_word_and_wrap_index_sixteen  body=0xA4FF
+* A54F  792F  vm_return_to_caller_stream  

@@ -1,0 +1,19 @@
+{
+  "sources": {
+    "a": {
+      "sha256": "A89D78B2D4F8DFB749B7FF6241F99057843FF1FA6DDCFDFBA3D4D99836CD3DE5",
+      "path": "C:\\Users\\John\\Documents\\Codex\\2026-10-13\\help-me-set-up-a-local\\outputs\\mpu4\\runs\\vm-batch-policy7-a\\debug.log",
+      "last_line": 5630396,
+      "first_line": 5577078
+    },
+    "b": {
+      "sha256": "A89D78B2D4F8DFB749B7FF6241F99057843FF1FA6DDCFDFBA3D4D99836CD3DE5",
+      "path": "C:\\Users\\John\\Documents\\Codex\\2026-10-13\\help-me-set-up-a-local\\outputs\\mpu4\\runs\\vm-batch-policy7-b\\debug.log",
+      "last_line": 5630396,
+      "first_line": 5577078
+    }
+  },
+  "scope": "First C721 entry through first C71D dispatch, inclusive. Not a full campaign.",
+  "excerpts_equal": true,
+  "excerpt_sha256": "EA3C71F00AB355B4B8A43245CD60A0CEA55C5F832DA4741E5F08BA83ABB986A0"
+}

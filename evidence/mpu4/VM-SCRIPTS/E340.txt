@@ -1,0 +1,21 @@
+Purpose: copy_reel_request_triplet_from_da_if_nonzero
+Confidence: reviewed token mechanics
+Groups: arithmetic, control flow, memory operations, reel records, reels/symbol tests
+Callers: E3A3
+
+Threaded script at E340; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* E340  7ED7  vm_push_word_body_byte  value=0x00DA
+* E342  786B  vm_fetch_unsigned_byte  
+* E344  7982  vm_branch_forward8_if_zero  branch=0xE359
+* E347  9D7A  push_three_reel_loop_bounds  body=0x9D7C
+* E349  79DC  vm_enter_loop_frame  
+* E34B  7A1C  vm_push_loop_index  
+* E34D  7ED7  vm_push_word_body_byte  value=0x00DA
+* E34F  787E  vm_add_words  
+* E351  786B  vm_fetch_unsigned_byte  
+* E353  9DAD  address_record_0169_loop_index  body=0x9D86, push_address=0x9DAF
+* E355  7861  vm_store_byte  
+* E357  7A00  vm_loop_increment_one  
+* E359  792F  vm_return_to_caller_stream  

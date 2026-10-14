@@ -1,0 +1,27 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow
+Callers: B1D0
+
+Threaded script at B1A1; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B1A1  A609  scaled_parameter_profile_at_a60b_counter_07d5  body=0xA5A5, push_address=0xA60B
+* B1A3  7B49  vm_duplicate_if_nonzero  
+* B1A5  7982  vm_branch_forward8_if_zero  branch=0xB1B7
+* B1A8  9A11  random_percentage_test  body=0x9A13
+* B1AA  7982  vm_branch_forward8_if_zero  branch=0xB1B2
+* B1AD  B142  script_b142  body=0xB144
+* B1AF  7979  vm_branch_unsigned_forward8  branch=0xB1B4
+* B1B2  B036  select_weighted_board_step_with_link_and_input_gates  body=0xB038
+* B1B4  7979  vm_branch_unsigned_forward8  branch=0xB1CC
+* B1B7  7963  vm_push_inline_byte_literal  inline_value=0x001E
+* B1BA  9A11  random_percentage_test  body=0x9A13
+* B1BC  9F5E  test_two_orange1_input_conditions  body=0x9F60
+* B1BE  7ABB  vm_bitwise_not  
+* B1C0  7A97  vm_bitwise_and  
+* B1C2  7982  vm_branch_forward8_if_zero  branch=0xB1CA
+* B1C5  B170  script_b170  body=0xB172
+* B1C7  7979  vm_branch_unsigned_forward8  branch=0xB1CC
+* B1CA  B036  select_weighted_board_step_with_link_and_input_gates  body=0xB038
+* B1CC  792F  vm_return_to_caller_stream  

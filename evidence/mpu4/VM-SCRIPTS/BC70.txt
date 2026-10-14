@@ -1,0 +1,61 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: arithmetic, boolean/bit operations, control flow, mask tests, mask/address records, sound/scheduler, stack/cell helpers
+Callers: BD99
+
+Threaded script at BC70; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* BC70  BC62  weighted_index_table_at_bc64  body=0x9A1C, push_address=0xBC64
+* BC72  7B51  vm_duplicate_cell  
+* BC74  78C0  vm_push_one  
+* BC76  79DC  vm_enter_loop_frame  
+* BC78  7A1C  vm_push_loop_index  
+* BC7A  BC14  display_fixed_width_cash_amount_record_and_store_e7  body=0xBC16
+* BC7C  8130  call_reset_sound_and_scheduler  native=0x5B77
+* BC7E  7A1C  vm_push_loop_index  
+* BC80  8579  write_byte_004d_857b  body=0x857B
+* BC82  87A8  queue_sound_stream_87aa  body=0x856B, push_address=0x87AA
+* BC84  7963  vm_push_inline_byte_literal  inline_value=0x0032
+* BC87  7A1C  vm_push_loop_index  
+* BC89  7963  vm_push_inline_byte_literal  inline_value=0x0005
+* BC8C  7DC4  multiply_words_keep_low_cell  body=0x7DC6
+* BC8E  78A0  vm_subtract_top_from_second  
+* BC90  99AD  wait_irq_ticks_or_abort_flag  body=0x99AF
+* BC92  84E0  test_mask_0200_at_719f  body=0x841E, push_address=0x84E2
+* BC94  7A1C  vm_push_loop_index  
+* BC96  7963  vm_push_inline_byte_literal  inline_value=0x0005
+* BC99  7A79  vm_compare_top_lt_second_signed  
+* BC9B  7A97  vm_bitwise_and  
+* BC9D  8466  push_pair_0080_0090  body=0x8444, push_address=0x8468
+* BC9F  767F  vm_test_word_memory_mask  
+* BCA1  9A40  test_irq_timer_positive_or_abort_flag  body=0x9A42
+* BCA3  7AA3  vm_bitwise_or  
+* BCA5  7AA3  vm_bitwise_or  
+* BCA7  7982  vm_branch_forward8_if_zero  branch=0xBCAE
+* BCAA  7B3D  vm_drop_cell  
+* BCAC  7935  vm_unwind_loop_frames_to_return  
+* BCAE  7A00  vm_loop_increment_one  
+* BCB0  78DE  vm_push_two  
+* BCB2  7B7D  vm_swap_two_cells  
+* BCB4  79DC  vm_enter_loop_frame  
+* BCB6  7A1C  vm_push_loop_index  
+* BCB8  BC14  display_fixed_width_cash_amount_record_and_store_e7  body=0xBC16
+* BCBA  8130  call_reset_sound_and_scheduler  native=0x5B77
+* BCBC  7A1C  vm_push_loop_index  
+* BCBE  8579  write_byte_004d_857b  body=0x857B
+* BCC0  87A8  queue_sound_stream_87aa  body=0x856B, push_address=0x87AA
+* BCC2  7963  vm_push_inline_byte_literal  inline_value=0x0032
+* BCC5  7A1C  vm_push_loop_index  
+* BCC7  7963  vm_push_inline_byte_literal  inline_value=0x0005
+* BCCA  7DC4  multiply_words_keep_low_cell  body=0x7DC6
+* BCCC  78A0  vm_subtract_top_from_second  
+* BCCE  99AD  wait_irq_ticks_or_abort_flag  body=0x99AF
+* BCD0  8466  push_pair_0080_0090  body=0x8444, push_address=0x8468
+* BCD2  767F  vm_test_word_memory_mask  
+* BCD4  9A40  test_irq_timer_positive_or_abort_flag  body=0x9A42
+* BCD6  7AA3  vm_bitwise_or  
+* BCD8  7574  vm_return_if_nonzero  
+* BCDA  78AA  vm_push_true_minus_one  
+* BCDC  79EB  vm_loop_add_variable_step  
+* BCDE  799A  vm_branch_backward8  branch=0xBC70

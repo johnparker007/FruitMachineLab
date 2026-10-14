@@ -1,0 +1,21 @@
+Purpose: service_ten_units_from_0302_as_five_two_unit_payouts
+Confidence: reviewed token mechanics; see payout-pass/script-name-evidence.json
+Groups: accounting/NVRAM, memory operations, stack/cell helpers
+Callers: AA2B
+
+Threaded script at AA04; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* AA04  7963  vm_push_inline_byte_literal  inline_value=0x0005
+* AA07  78B5  vm_push_zero  
+* AA09  79DC  vm_enter_loop_frame  
+* AA0B  795B  vm_push_inline_word_literal  inline_value=0xFFFE
+* AA0F  82D2  vm_push_word_body_word  value=0x0302
+* AA11  7888  vm_add_to_word_memory  
+* AA13  78DE  vm_push_two  
+* AA15  8226  vm_push_word_body_word  value=0x0300
+* AA17  7874  vm_store_word  
+* AA19  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* AA1B  80F4  call_service_token_payout_records_until_pending_balance_empty  native=0x4B8C
+* AA1D  7A00  vm_loop_increment_one  
+* AA1F  792F  vm_return_to_caller_stream  

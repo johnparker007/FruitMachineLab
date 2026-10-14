@@ -1,0 +1,29 @@
+Purpose: record_stake_accounting_unit
+Confidence: reviewed gameplay context
+Groups: accounting/NVRAM, boolean/bit operations, control flow, memory operations
+Callers: AB64
+
+Threaded script at AB33; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* AB33  823A  vm_push_word_body_word  value=0x03FE
+* AB35  8323  call_accounting_increment_u24_if_normal_mode  native=0x57DB
+* AB37  8236  vm_push_word_body_word  value=0x03DD
+* AB39  8323  call_accounting_increment_u24_if_normal_mode  native=0x57DB
+* AB3B  9945  test_normal_mode_byte_nonzero  body=0x9947
+* AB3D  7ABB  vm_bitwise_not  
+* AB3F  7982  vm_branch_forward8_if_zero  branch=0xAB50
+* AB42  9F39  test_negative_three_byte_counter_07cc  body=0x9F3B
+* AB44  7982  vm_branch_forward8_if_zero  branch=0xAB4C
+  AB47  8170  vm_push_word_body_byte  value=0x0001
+  AB49  7979  vm_branch_unsigned_forward8  branch=0xAB4E
+* AB4C  8167  vm_push_word_body_byte  value=0x0000
+* AB4E  80B8  call_accounting_subtract_configured_amount_from_u24  native=0x14EB
+* AB50  818D  vm_push_word_body_byte  value=0x00B7
+* AB52  786B  vm_fetch_unsigned_byte  
+* AB54  7963  vm_push_inline_byte_literal  inline_value=0x00FB
+* AB57  7A65  vm_compare_top_gt_second_signed  
+* AB59  7982  vm_branch_forward8_if_zero  branch=0xAB60
+* AB5C  818D  vm_push_word_body_byte  value=0x00B7
+* AB5E  7653  vm_increment_byte_memory  
+* AB60  792F  vm_return_to_caller_stream  

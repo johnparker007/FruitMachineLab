@@ -1,0 +1,33 @@
+Purpose: seed_zero_nudgepot_from_ca_table_or_random_gate_and_animate_digits
+Confidence: reviewed token mechanics/channel association; see prerequisite-pass/script-name-evidence.json
+Groups: arithmetic, boolean/bit operations, control flow, memory operations, nudges, random selection, sound/scheduler, stack/cell helpers
+Callers: EDD3
+
+Threaded script at B89F; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B89F  7EED  vm_push_word_body_byte  value=0x00BF
+* B8A1  786B  vm_fetch_unsigned_byte  
+* B8A3  7A46  vm_test_zero  
+* B8A5  7982  vm_branch_forward8_if_zero  branch=0xB8D1
+* B8A8  7EED  vm_push_word_body_byte  value=0x00BF
+* B8AA  7653  vm_increment_byte_memory  
+* B8AC  7EED  vm_push_word_body_byte  value=0x00BF
+* B8AE  786B  vm_fetch_unsigned_byte  
+* B8B0  7EEA  vm_push_word_body_byte  value=0x00CA
+* B8B2  787E  vm_add_words  
+* B8B4  786B  vm_fetch_unsigned_byte  
+* B8B6  7963  vm_push_inline_byte_literal  inline_value=0x0010
+* B8B9  7D42  compare_top_le_second_signed  body=0x7D44
+* B8BB  7963  vm_push_inline_byte_literal  inline_value=0x0032
+* B8BE  9A11  random_percentage_test  body=0x9A13
+* B8C0  7AA3  vm_bitwise_or  
+* B8C2  79A6  vm_branch_backward8_if_zero  branch=0xB8A8
+* B8C5  8E93  queue_sound_stream_8e95  body=0x856B, push_address=0x8E95
+* B8C7  78DE  vm_push_two  
+* B8C9  78B5  vm_push_zero  
+* B8CB  A82F  animate_rotating_segment_bits_across_digit_range_until_sound_idle  body=0xA831
+* B8CD  80F8  call_scheduler_wait_until_active_list_empty  native=0x5CCB
+* B8CF  8130  call_reset_sound_and_scheduler  native=0x5B77
+* B8D1  A8ED  display_nudgepot_byte_as_two_decimal_digits  body=0xA8EF
+* B8D3  792F  vm_return_to_caller_stream  

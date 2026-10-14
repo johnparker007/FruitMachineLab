@@ -1,0 +1,59 @@
+Purpose: map_result_b9_to_code_bc_and_reset_b9
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, control flow, memory operations, stack/cell helpers
+Callers: EDD3, EBDA
+
+Threaded script at EB3B; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* EB3B  8164  vm_push_word_body_byte  value=0x00B9
+* EB3D  786B  vm_fetch_unsigned_byte  
+* EB3F  7B51  vm_duplicate_cell  
+* EB41  7E85  vm_push_word_body_byte  value=0x0001
+* EB43  7A6F  vm_compare_equal  
+* EB45  798E  vm_branch_forward8_if_zero_else_drop  branch=0xEB4E
+  EB48  7E5E  vm_push_word_body_byte  value=0x0009
+  EB4A  79B7  vm_branch_absolute16  branch=0xEBAA
+* EB4E  7B51  vm_duplicate_cell  
+* EB50  7E79  vm_push_word_body_byte  value=0x0002
+* EB52  7A6F  vm_compare_equal  
+* EB54  798E  vm_branch_forward8_if_zero_else_drop  branch=0xEB5D
+* EB57  7E58  vm_push_word_body_byte  value=0x000A
+* EB59  79B7  vm_branch_absolute16  branch=0xEBAA
+* EB5D  7B51  vm_duplicate_cell  
+* EB5F  7E6A  vm_push_word_body_byte  value=0x0003
+* EB61  7A6F  vm_compare_equal  
+* EB63  798E  vm_branch_forward8_if_zero_else_drop  branch=0xEB6C
+* EB66  7E5B  vm_push_word_body_byte  value=0x000B
+* EB68  79B7  vm_branch_absolute16  branch=0xEBAA
+  EB6C  7B51  vm_duplicate_cell  
+  EB6E  7E61  vm_push_word_body_byte  value=0x0006
+  EB70  7A6F  vm_compare_equal  
+  EB72  798E  vm_branch_forward8_if_zero_else_drop  branch=0xEB7B
+  EB75  7E55  vm_push_word_body_byte  value=0x000C
+  EB77  79B7  vm_branch_absolute16  branch=0xEBAA
+  EB7B  7B51  vm_duplicate_cell  
+  EB7D  7E8B  vm_push_word_body_byte  value=0x0005
+  EB7F  7A6F  vm_compare_equal  
+  EB81  798E  vm_branch_forward8_if_zero_else_drop  branch=0xEB8A
+  EB84  7E55  vm_push_word_body_byte  value=0x000C
+  EB86  79B7  vm_branch_absolute16  branch=0xEBAA
+  EB8A  7B51  vm_duplicate_cell  
+  EB8C  7E76  vm_push_word_body_byte  value=0x0004
+  EB8E  7A6F  vm_compare_equal  
+  EB90  798E  vm_branch_forward8_if_zero_else_drop  branch=0xEB99
+  EB93  7E55  vm_push_word_body_byte  value=0x000C
+  EB95  79B7  vm_branch_absolute16  branch=0xEBAA
+  EB99  7B51  vm_duplicate_cell  
+  EB9B  7B51  vm_duplicate_cell  
+  EB9D  7A6F  vm_compare_equal  
+  EB9F  798E  vm_branch_forward8_if_zero_else_drop  branch=0xEBA8
+  EBA2  7E5E  vm_push_word_body_byte  value=0x0009
+  EBA4  79B7  vm_branch_absolute16  branch=0xEBAA
+  EBA8  7B3D  vm_drop_cell  
+* EBAA  82DA  vm_push_word_body_byte  value=0x00BC
+* EBAC  7861  vm_store_byte  
+* EBAE  7E6A  vm_push_word_body_byte  value=0x0003
+* EBB0  8164  vm_push_word_body_byte  value=0x00B9
+* EBB2  7861  vm_store_byte  
+* EBB4  792F  vm_return_to_caller_stream  

@@ -1,0 +1,29 @@
+Purpose: attract_sweep_auxiliary_then_reel_groups_reverse
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: lamps, reels/symbol tests, stack/cell helpers
+Callers: F9A5
+
+Threaded script at F975; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* F975  7963  vm_push_inline_byte_literal  inline_value=0x0006
+* F978  78B5  vm_push_zero  
+* F97A  79DC  vm_enter_loop_frame  
+* F97C  7A1C  vm_push_loop_index  
+* F97E  7B59  vm_copy_second_cell  
+* F980  9C34  apply_indexed_lamp_id_from_7257  body=0x9B18, push_address=0x9C36
+* F982  7963  vm_push_inline_byte_literal  inline_value=0x0014
+* F985  F574  wait_attract_ticks_or_restore_game_state_on_credit_or_service  body=0xF576
+* F987  7A00  vm_loop_increment_one  
+* F989  78B5  vm_push_zero  
+* F98B  7963  vm_push_inline_byte_literal  inline_value=0x0005
+* F98E  79DC  vm_enter_loop_frame  
+* F990  7A1C  vm_push_loop_index  
+* F992  7B59  vm_copy_second_cell  
+* F994  9CB3  apply_three_id_lamp_record  body=0x9CB5
+* F996  7963  vm_push_inline_byte_literal  inline_value=0x0014
+* F999  F574  wait_attract_ticks_or_restore_game_state_on_credit_or_service  body=0xF576
+* F99B  78AA  vm_push_true_minus_one  
+* F99D  79EB  vm_loop_add_variable_step  
+* F99F  7B3D  vm_drop_cell  
+* F9A1  792F  vm_return_to_caller_stream  

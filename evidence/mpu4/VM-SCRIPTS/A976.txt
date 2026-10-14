@@ -1,0 +1,13 @@
+Purpose: compute_bank_remainder_modulo_ten
+Confidence: reviewed token mechanics
+Groups: award/balance operations, memory operations
+Callers: AA2B
+
+Threaded script at A976; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* A976  82CE  vm_push_word_body_word  value=0x02FC
+* A978  790D  vm_fetch_word  
+* A97A  7963  vm_push_inline_byte_literal  inline_value=0x000A
+* A97D  7DF8  signed_cell_remainder  body=0x7DFA
+* A97F  792F  vm_return_to_caller_stream  

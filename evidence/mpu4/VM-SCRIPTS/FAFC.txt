@@ -1,0 +1,43 @@
+Purpose: clear_feature_lamps_flags_and_nudgepot_for_idle_or_play
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: lamps, mask/address records, memory operations, nudges, reels
+Callers: FC34, FCF0
+
+Threaded script at FAFC; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* FAFC  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* FAFF  802E  call_apply_zero_pattern_to_selected_reel_lamp_group  native=0x2C88
+* FB01  84CE  push_pair_0002_00a0  body=0x8417, push_address=0x84D0
+* FB03  7671  vm_clear_word_memory_bits  
+* FB05  84D4  push_pair_0001_00a0  body=0x8417, push_address=0x84D6
+* FB07  7671  vm_clear_word_memory_bits  
+* FB09  8248  vm_push_word_body_byte  value=0x0080
+* FB0B  9BEE  apply_lamp_range_731d_731e  body=0x9ADB, push_address=0x9BF0
+* FB0D  8248  vm_push_word_body_byte  value=0x0080
+* FB0F  9BC8  apply_lamp_range_724c_7256  body=0x9ADB, push_address=0x9BCA
+* FB11  8248  vm_push_word_body_byte  value=0x0080
+* FB13  9C28  apply_lamp_range_7286_728f  body=0x9ADB, push_address=0x9C2A
+* FB15  824E  vm_push_word_body_byte  value=0x008F
+* FB17  9B86  apply_lamp_range_728f_72bf  body=0x9ADB, push_address=0x9B88
+* FB19  824E  vm_push_word_body_byte  value=0x008F
+* FB1B  9C1E  apply_lamp_range_7256_7257  body=0x9ADB, push_address=0x9C20
+* FB1D  824E  vm_push_word_body_byte  value=0x008F
+* FB1F  9D3E  apply_lamp_range_record_9b7c  body=0x9D40
+* FB21  824E  vm_push_word_body_byte  value=0x008F
+* FB23  9C38  apply_lamp_range_7257_725d  body=0x9ADB, push_address=0x9C3A
+* FB25  8248  vm_push_word_body_byte  value=0x0080
+* FB27  9BB4  apply_lamp_range_7335_7338  body=0x9ADB, push_address=0x9BB6
+* FB29  9CA3  apply_lamp_range_constant_0080_record_9b8c_9ca5  body=0x9CA5
+* FB2B  824E  vm_push_word_body_byte  value=0x008F
+* FB2D  9D58  update_ic8_output_bit10_from_pattern  body=0x9D5A
+* FB2F  80D8  call_lamps_execute_initial_clear_stream  native=0x171D
+* FB31  9DE9  call_set_all_three_reel_group_lamps_pattern_8f_9deb  body=0x9DEB
+* FB33  8498  push_pair_0800_00a0  body=0x8417, push_address=0x849A
+* FB35  7671  vm_clear_word_memory_bits  
+* FB37  7EED  vm_push_word_body_byte  value=0x00BF
+* FB39  765F  vm_clear_byte_memory  
+* FB3B  A8ED  display_nudgepot_byte_as_two_decimal_digits  body=0xA8EF
+* FB3D  8248  vm_push_word_body_byte  value=0x0080
+* FB3F  9BBE  apply_lamp_range_7281_7286  body=0x9ADB, push_address=0x9BC0
+* FB41  792F  vm_return_to_caller_stream  

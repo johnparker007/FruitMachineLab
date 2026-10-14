@@ -1,0 +1,11 @@
+Purpose: clear_latched_panel_mask_008f
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: mask/address records
+Callers: C593, D547, C699, BD99, D1F5, FBA2, D403, FCBD
+
+Threaded script at 847A; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 847A  8472  push_pair_008f_0090  body=0x8444, push_address=0x8474
+* 847C  7671  vm_clear_word_memory_bits  
+* 847E  792F  vm_return_to_caller_stream  

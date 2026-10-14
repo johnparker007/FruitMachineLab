@@ -1,0 +1,32 @@
+Purpose: dispatch_current_or_pending_award
+Confidence: reviewed token mechanics
+Groups: arithmetic, award/balance operations, boolean/bit operations, control flow, input conditions, mask/address records, memory operations, stack/cell helpers
+Callers: FC34, FDBA, FCF0, FD8D
+
+Threaded script at AFF4; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* AFF4  82D6  vm_push_word_body_word  value=0x02FA
+* AFF6  790D  vm_fetch_word  
+* AFF8  8318  vm_push_word_body_byte  value=0x00BA
+* AFFA  790D  vm_fetch_word  
+* AFFC  787E  vm_add_words  
+* AFFE  7B51  vm_duplicate_cell  
+* B000  8164  vm_push_word_body_byte  value=0x00B9
+* B002  786B  vm_fetch_unsigned_byte  
+* B004  7AA3  vm_bitwise_or  
+* B006  7982  vm_branch_forward8_if_zero  branch=0xB016
+* B009  7B51  vm_duplicate_cell  
+* B00B  8164  vm_push_word_body_byte  value=0x00B9
+* B00D  786B  vm_fetch_unsigned_byte  
+* B00F  AE38  account_award_by_result_categories_and_selected_counter  body=0xAE3A
+* B011  AF29  round_token_award_even_and_commit_to_token_or_cash_bank  body=0xAF2B
+* B013  7979  vm_branch_unsigned_forward8  branch=0xB018
+* B016  7B3D  vm_drop_cell  
+* B018  83F3  vm_test_input_condition  value=0x0082
+* B01A  7982  vm_branch_forward8_if_zero  branch=0xB021
+* B01D  AA9F  handle_collect_input_and_automatic_balance_service_gates  body=0xAAA1
+* B01F  AA9F  handle_collect_input_and_automatic_balance_service_gates  body=0xAAA1
+* B021  84B6  push_pair_0040_00a0  body=0x8417, push_address=0x84B8
+* B023  7671  vm_clear_word_memory_bits  
+* B025  792F  vm_return_to_caller_stream  

@@ -1,0 +1,32 @@
+Purpose: animate_cash_result_character_then_flash_amount
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: arithmetic, display, memory operations, sound/scheduler, stack/cell helpers
+Callers: BD61, BEB9
+
+Threaded script at BD2A; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* BD2A  7B51  vm_duplicate_cell  
+* BD2C  8306  vm_push_word_body_word  value=0x0327
+* BD2E  7861  vm_store_byte  
+* BD30  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); cmd76(0327); cmd7A()]
+* BD37  BC11  vm_push_word_body_byte  value=0x007A
+* BD39  8306  vm_push_word_body_word  value=0x0327
+* BD3B  78C9  vm_increment_word  
+* BD3D  7861  vm_store_byte  
+* BD3F  BCEE  vm_push_word_body_byte  value=0x0009
+* BD41  78B5  vm_push_zero  
+* BD43  79DC  vm_enter_loop_frame  
+* BD45  7A1C  vm_push_loop_index  
+* BD47  BCE3  vm_push_word_body_address  value=0xBCE5
+* BD49  787E  vm_add_words  
+* BD4B  786B  vm_fetch_unsigned_byte  
+* BD4D  8306  vm_push_word_body_word  value=0x0327
+* BD4F  7861  vm_store_byte  
+* BD51  8306  vm_push_word_body_word  value=0x0327
+* BD53  831B  call_alpha_execute_stream_at_x  native=0x3CC0
+* BD55  8B8B  queue_sound_stream_8b8d  body=0x856B, push_address=0x8B8D
+* BD57  80F8  call_scheduler_wait_until_active_list_empty  native=0x5CCB
+* BD59  7A00  vm_loop_increment_one  
+* BD5B  BCF1  flash_cash_amount_display_from_doubled_result  body=0xBCF3
+* BD5D  792F  vm_return_to_caller_stream  

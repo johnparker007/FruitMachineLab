@@ -1,0 +1,22 @@
+Purpose: evaluate_feature_reel_result_into_pending_award
+Confidence: reviewed token mechanics
+Groups: accounting/NVRAM, award/balance operations, control flow, memory operations, reels, reels/symbol tests
+Callers: 99A1
+
+Threaded script at E247; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* E247  B91B  refresh_pending_award_after_nudge_result_gate  body=0xB91D
+* E249  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* E24B  9FA0  reels_test_all_three_symbol_flag2  body=0x9FA2
+* E24D  7982  vm_branch_forward8_if_zero  branch=0xE257
+  E250  78AA  vm_push_true_minus_one  
+  E252  CB1B  set_feature_destination_with_minus_one_reset  body=0xCB1D
+  E254  7979  vm_branch_unsigned_forward8  branch=0xE263
+* E257  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* E259  80C4  call_reels_push_matching_symbol_result  native=0x1AA3
+* E25B  9F68  normalize_award_47_to_30_with_optional_input_clamp  body=0x9F6A
+* E25D  8318  vm_push_word_body_byte  value=0x00BA
+* E25F  7874  vm_store_word  
+* E261  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* E263  792F  vm_return_to_caller_stream  

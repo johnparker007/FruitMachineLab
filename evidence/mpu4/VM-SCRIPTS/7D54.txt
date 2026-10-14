@@ -1,0 +1,11 @@
+Purpose: duplicate_two_cells
+Confidence: reviewed token mechanics
+Groups: primitive sequence
+Callers: AE3A, CBD1, B9D9, BA25, B1FD, ABC7, B975, B9A7
+
+Threaded script at 7D54; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 7D54  7B59  vm_copy_second_cell  
+* 7D56  7B59  vm_copy_second_cell  
+* 7D58  792F  vm_return_to_caller_stream  

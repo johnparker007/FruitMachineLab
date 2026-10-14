@@ -1,0 +1,14 @@
+Purpose: increment_cell_and_zero_if_ge_six_signed
+Confidence: reviewed token mechanics/channel association; see prerequisite-pass/script-name-evidence.json
+Groups: arithmetic, boolean/bit operations, stack/cell helpers
+Callers: A831
+
+Threaded script at A822; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* A822  78C9  vm_increment_word  
+* A824  7B51  vm_duplicate_cell  
+* A826  7963  vm_push_inline_byte_literal  inline_value=0x0006
+* A829  7A65  vm_compare_top_gt_second_signed  
+* A82B  7A97  vm_bitwise_and  
+* A82D  792F  vm_return_to_caller_stream  

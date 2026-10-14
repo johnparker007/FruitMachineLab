@@ -1,0 +1,52 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: arithmetic, boolean/bit operations, control flow, lamps, mask/address records, memory operations, reel records, stack/cell helpers
+Callers: D4AB
+
+Threaded script at D403; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* D403  8435  push_pair_0038_0085  body=0x8417, push_address=0x8437
+* D405  767F  vm_test_word_memory_mask  
+* D407  7982  vm_branch_forward8_if_zero  branch=0xD415
+* D40A  835A  vm_push_word_body_byte  value=0x0049
+* D40C  8060  call_lamp_set_frame_pattern_5  native=0x498B
+* D40E  8342  vm_push_word_body_byte  value=0x0018
+* D410  8060  call_lamp_set_frame_pattern_5  native=0x498B
+* D412  7979  vm_branch_unsigned_forward8  branch=0xD41D
+* D415  8342  vm_push_word_body_byte  value=0x0018
+* D417  8068  call_lamp_set_frame_pattern_0  native=0x4982
+* D419  835A  vm_push_word_body_byte  value=0x0049
+* D41B  8068  call_lamp_set_frame_pattern_0  native=0x4982
+* D41D  845A  push_pair_0001_0090  body=0x8444, push_address=0x845C
+* D41F  767F  vm_test_word_memory_mask  
+* D421  7982  vm_branch_forward8_if_zero  branch=0xD45C
+  D424  8478  clear_latched_panel_mask_008f  body=0x847A
+  D426  8435  push_pair_0038_0085  body=0x8417, push_address=0x8437
+  D428  7671  vm_clear_word_memory_bits  
+  D42A  7963  vm_push_inline_byte_literal  inline_value=0x0003
+  D42D  78B5  vm_push_zero  
+  D42F  79DC  vm_enter_loop_frame  
+  D431  D328  vm_push_local_frame_address  value=0x0006
+  D433  7A1C  vm_push_loop_index  
+  D435  787E  vm_add_words  
+  D437  786B  vm_fetch_unsigned_byte  
+  D439  7B59  vm_copy_second_cell  
+  D43B  7A5B  vm_compare_not_equal  
+  D43D  7982  vm_branch_forward8_if_zero  branch=0xD45A
+  D440  7B51  vm_duplicate_cell  
+  D442  D328  vm_push_local_frame_address  value=0x0006
+  D444  7A1C  vm_push_loop_index  
+  D446  787E  vm_add_words  
+  D448  786B  vm_fetch_unsigned_byte  
+  D44A  78A0  vm_subtract_top_from_second  
+  D44C  9DAD  address_record_0169_loop_index  body=0x9D86, push_address=0x9DAF
+  D44E  7861  vm_store_byte  
+  D450  7B51  vm_duplicate_cell  
+  D452  D328  vm_push_local_frame_address  value=0x0006
+  D454  7A1C  vm_push_loop_index  
+  D456  787E  vm_add_words  
+  D458  7861  vm_store_byte  
+  D45A  7A00  vm_loop_increment_one  
+* D45C  7B3D  vm_drop_cell  
+* D45E  792F  vm_return_to_caller_stream  

@@ -1,0 +1,18 @@
+Purpose: test_credit_available
+Confidence: reviewed gameplay context
+Groups: boolean/bit operations, control flow, credits, mask tests, memory operations
+Callers: FBA2, FCBD, FC07, FC23
+
+Threaded script at AB1B; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* AB1B  8190  vm_push_word_body_word  value=0x02F0
+* AB1D  786B  vm_fetch_unsigned_byte  
+* AB1F  7982  vm_branch_forward8_if_zero  branch=0xAB29
+* AB22  AAD5  return_credit_available_and_conditionally_clear_collect_lamp  body=0xAAD7
+* AB24  A875  compatibility_empty_script_return  body=0xA877
+* AB26  7979  vm_branch_unsigned_forward8  branch=0xAB2F
+* AB29  AAF0  service_collection_when_no_credit_and_optional_rom_credit_topup  body=0xAAF2
+* AB2B  84EC  test_mask_2000_at_719f  body=0x841E, push_address=0x84EE
+* AB2D  7AA3  vm_bitwise_or  
+* AB2F  792F  vm_return_to_caller_stream  

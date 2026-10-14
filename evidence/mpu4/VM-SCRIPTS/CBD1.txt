@@ -1,0 +1,46 @@
+Purpose: select_rattler_destination_with_eligibility_gates
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, control flow, indexed memory, memory operations, stack/cell helpers
+Callers: CC40
+
+Threaded script at CBD1; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* CBD1  A619  scaled_parameter_profile_at_a61b_counter_07d5  body=0xA5A5, push_address=0xA61B
+* CBD3  9A11  random_percentage_test  body=0x9A13
+* CBD5  9F5E  test_two_orange1_input_conditions  body=0x9F60
+* CBD7  7AA3  vm_bitwise_or  
+* CBD9  7982  vm_branch_forward8_if_zero  branch=0xCBE4
+* CBDC  78C0  vm_push_one  
+* CBDE  7963  vm_push_inline_byte_literal  inline_value=0x0013
+* CBE1  7979  vm_branch_unsigned_forward8  branch=0xCBE9
+* CBE4  78C0  vm_push_one  
+* CBE6  7963  vm_push_inline_byte_literal  inline_value=0x0030
+* CBE9  7963  vm_push_inline_byte_literal  inline_value=0x0063
+* CBEC  7B3D  vm_drop_cell  
+* CBEE  7D52  duplicate_two_cells  body=0x7D54
+* CBF0  99EC  random_scaled_range_selection  body=0x99EE
+* CBF2  7B51  vm_duplicate_cell  
+* CBF4  7F14  vm_push_word_body_byte  value=0x00C9
+* CBF6  786B  vm_fetch_unsigned_byte  
+* CBF8  7A5B  vm_compare_not_equal  
+* CBFA  7B59  vm_copy_second_cell  
+* CBFC  CBAB  script_cbab  body=0xCBAD
+* CBFE  7ABB  vm_bitwise_not  
+* CC00  7A97  vm_bitwise_and  
+* CC02  7B59  vm_copy_second_cell  
+* CC04  A12C  read_indexed_byte_table_at_a12e  body=0x9971, push_address=0xA12E
+* CC06  78C0  vm_push_one  
+* CC08  7A5B  vm_compare_not_equal  
+* CC0A  7EED  vm_push_word_body_byte  value=0x00BF
+* CC0C  786B  vm_fetch_unsigned_byte  
+* CC0E  9F82  mask_best_reel_result_by_signed_threshold_nine  body=0x9F84
+* CC10  7A53  vm_test_nonzero  
+* CC12  7AA3  vm_bitwise_or  
+* CC14  7A97  vm_bitwise_and  
+* CC16  79A6  vm_branch_backward8_if_zero  branch=0xCBEC
+* CC19  7B7D  vm_swap_two_cells  
+* CC1B  7B3D  vm_drop_cell  
+* CC1D  7B7D  vm_swap_two_cells  
+* CC1F  7B3D  vm_drop_cell  
+* CC21  792F  vm_return_to_caller_stream  

@@ -1,0 +1,34 @@
+Purpose: animate_rotating_segment_bits_across_digit_range_until_sound_idle
+Confidence: reviewed token mechanics/channel association; see prerequisite-pass/script-name-evidence.json
+Groups: arithmetic, boolean/bit operations, control flow, memory operations, stack/cell helpers
+Callers: B89F, DDE3
+
+Threaded script at A831; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* A831  78B5  vm_push_zero  
+* A833  7B51  vm_duplicate_cell  
+* A835  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* A838  7B61  vm_pick_cell_by_unsigned_word_index  
+* A83A  78B5  vm_push_zero  
+* A83C  79DC  vm_enter_loop_frame  
+* A83E  78C0  vm_push_one  
+* A840  7B59  vm_copy_second_cell  
+* A842  7ADA  vm_rotate_word_left_by_count  
+* A844  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* A847  7B61  vm_pick_cell_by_unsigned_word_index  
+* A849  7568  vm_add_loop_index_to_top  
+* A84B  81A6  vm_push_word_body_byte  value=0x001A
+* A84D  787E  vm_add_words  
+* A84F  7861  vm_store_byte  
+* A851  A820  increment_cell_and_zero_if_ge_six_signed  body=0xA822
+* A853  7A00  vm_loop_increment_one  
+* A855  7B3D  vm_drop_cell  
+* A857  7963  vm_push_inline_byte_literal  inline_value=0x0014
+* A85A  99AD  wait_irq_ticks_or_abort_flag  body=0x99AF
+* A85C  A820  increment_cell_and_zero_if_ge_six_signed  body=0xA822
+* A85E  856F  test_zero_read_word_0047_8571  body=0x8571
+* A860  79A6  vm_branch_backward8_if_zero  branch=0xA833
+* A863  7B3D  vm_drop_cell  
+* A865  7B43  vm_drop_two_cells  
+* A867  792F  vm_return_to_caller_stream  

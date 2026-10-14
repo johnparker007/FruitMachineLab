@@ -1,0 +1,13 @@
+Purpose: clear_collect_prompt_and_refresh_balance_display
+Confidence: reviewed token mechanics; see payout-pass/script-name-evidence.json
+Groups: award/balance operations, lamps, sound/scheduler
+Callers: AA2B
+
+Threaded script at A936; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* A936  8345  vm_push_word_body_byte  value=0x0018
+* A938  8068  call_lamp_set_frame_pattern_0  native=0x4982
+* A93A  8130  call_reset_sound_and_scheduler  native=0x5B77
+* A93C  A8F7  refresh_credit_and_bank_display_unless_suppressed  body=0xA8F9
+* A93E  792F  vm_return_to_caller_stream  

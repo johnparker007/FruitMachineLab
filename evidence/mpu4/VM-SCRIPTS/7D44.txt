@@ -1,0 +1,11 @@
+Purpose: compare_top_le_second_signed
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations
+Callers: CD29, B7F5, EAF3, B89F, C005, B09D, B038, CD89
+
+Threaded script at 7D44; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 7D44  7A65  vm_compare_top_gt_second_signed  
+* 7D46  7ABB  vm_bitwise_not  
+* 7D48  792F  vm_return_to_caller_stream  

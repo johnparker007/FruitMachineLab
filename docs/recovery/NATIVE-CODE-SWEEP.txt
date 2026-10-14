@@ -1,0 +1,15 @@
+Native-code sweep, 2026-10-13
+
+Saved project: project/MPU4.gpr, a6ls.p1
+Functions: 251 before, 396 after; 244 descriptive names. New functions retain neutral names where purpose is not established.
+Newly defined instruction bytes: 6442; previously defined instruction bytes reclassified: 7 (boundary repairs, including inline lamp patterns).
+
+Screenshot block 46BA..46D2 is now disassembled, including JSR59A4 at46CC, JSR48CF at46CF, and RTS at46D2.
+
+Two passes followed direct calls, known dispatch tables and established native-call records, and reviewed return-ending blocks. MAME independently matched 2,283 first-pass and 553 second-pass instruction starts and lengths, with no mismatches or illegal instructions. This is disassembler validation, not proof every block executes. Existing reproducible init/input traces remain in runs/deep-*; no new runtime transition coverage is claimed by this sweep.
+
+Lamp helper correction: 4982..49A8 are thirteen separate BSR-plus-inline-pattern stubs. 49B1 reads the pattern, discards its own return address, and returns to the outer caller. The inline byte is a frame pattern, not a lamp ID. Each stub has CALL_RETURN flow and typed payload data. Native entry76BF was restored after correcting the preceding embedded word76BD.
+
+Evidence: evidence/native-sweep/accepted-pass1.json, accepted-pass2.json, independent-decode-check*.json, final/, functions/. Remaining candidate ledgers record uncertain blocks; an RTS byte alone does not prove code or a function start. Undefined bytes can still be data, threaded streams, or missed native code. Decompiled pseudocode has limitations, particularly indirect calls and custom return-stack conventions.
+
+Backup before sweep: work/project-before-native-sweep. Project was saved offline before reopening.

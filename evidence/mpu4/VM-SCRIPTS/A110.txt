@@ -1,0 +1,18 @@
+Purpose: clip_compensation_index_difference_plus_four_to_zero_eight
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: arithmetic, stack/cell helpers
+Callers: C2AC, BE3B, BF6D, C884, C617, C779, C878
+
+Threaded script at A110; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  A110  A0DF  derive_half_rounded_ratio_from_six_byte_compensation_records  body=0xA0E1
+  A112  7B7D  vm_swap_two_cells  
+  A114  78A0  vm_subtract_top_from_second  
+  A116  7963  vm_push_inline_byte_literal  inline_value=0x0004
+  A119  787E  vm_add_words  
+  A11B  78B5  vm_push_zero  
+  A11D  7AE7  vm_max_signed  
+  A11F  7963  vm_push_inline_byte_literal  inline_value=0x0008
+  A122  7ADC  vm_min_signed  
+  A124  792F  vm_return_to_caller_stream  

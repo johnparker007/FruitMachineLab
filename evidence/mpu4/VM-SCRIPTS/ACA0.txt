@@ -1,0 +1,14 @@
+Purpose: fetch_selected_byte_from_local_selection_pool
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: arithmetic, memory operations
+Callers: ACC0, AD65
+
+Threaded script at ACA0; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* ACA0  AC78  vm_push_local_frame_address  value=0x0003
+* ACA2  AC7B  vm_push_local_frame_address  value=0x000F
+* ACA4  786B  vm_fetch_unsigned_byte  
+* ACA6  787E  vm_add_words  
+* ACA8  786B  vm_fetch_unsigned_byte  
+* ACAA  792F  vm_return_to_caller_stream  

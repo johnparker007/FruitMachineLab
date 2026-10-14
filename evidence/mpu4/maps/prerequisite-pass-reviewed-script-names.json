@@ -1,0 +1,9 @@
+{
+  "a822": "increment_cell_and_zero_if_ge_six_signed",
+  "a831": "animate_rotating_segment_bits_across_digit_range_until_sound_idle",
+  "b89f": "seed_zero_nudgepot_from_ca_table_or_random_gate_and_animate_digits",
+  "dde3": "play_nudgepot_sound_and_rotating_digit_animation",
+  "af67": "round_current_award_even_and_flash_balance_display_seven_times",
+  "adc0": "test_award_above_thirty_for_token_balance_route",
+  "af2b": "round_token_award_even_and_commit_to_token_or_cash_bank"
+}

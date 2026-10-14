@@ -1,0 +1,36 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, lamps, memory operations, reel records, reels, stack/cell helpers
+Callers: EA22
+
+Threaded script at E9E4; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* E9E4  7B51  vm_duplicate_cell  
+* E9E6  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* E9E8  824E  vm_push_word_body_byte  value=0x008F
+* E9EA  9BB4  apply_lamp_range_7335_7338  body=0x9ADB, push_address=0x9BB6
+* E9EC  7FAD  vm_push_word_body_word  value=0x0166
+* E9EE  786B  vm_fetch_unsigned_byte  
+* E9F0  7B51  vm_duplicate_cell  
+* E9F2  7963  vm_push_inline_byte_literal  inline_value=0x0004
+* E9F5  7A79  vm_compare_top_lt_second_signed  
+* E9F7  7B7D  vm_swap_two_cells  
+* E9F9  7963  vm_push_inline_byte_literal  inline_value=0x0009
+* E9FC  7A65  vm_compare_top_gt_second_signed  
+* E9FE  7A97  vm_bitwise_and  
+* EA00  A5E9  scaled_parameter_profile_at_a5eb_counter_07c9  body=0xA5A5, push_address=0xA5EB
+* EA02  9A11  random_percentage_test  body=0x9A13
+* EA04  7A97  vm_bitwise_and  
+* EA06  7982  vm_branch_forward8_if_zero  branch=0xEA0E
+  EA09  E95E  script_e95e  body=0xE960
+  EA0B  7979  vm_branch_unsigned_forward8  branch=0xEA10
+* EA0E  E99C  script_e99c  body=0xE99E
+* EA10  7FAD  vm_push_word_body_word  value=0x0166
+* EA12  786B  vm_fetch_unsigned_byte  
+* EA14  E465  vm_push_local_frame_address  value=0x0001
+* EA16  786B  vm_fetch_unsigned_byte  
+* EA18  7A65  vm_compare_top_gt_second_signed  
+* EA1A  7AAF  vm_bitwise_xor  
+* EA1C  9A72  merge_hold1_and_refill_gates_when_mode_or_option_enabled  body=0x9A74
+* EA1E  792F  vm_return_to_caller_stream  

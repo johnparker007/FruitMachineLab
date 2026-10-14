@@ -1,0 +1,81 @@
+Purpose: special_feature_snake_bite
+Confidence: reviewed dispatch/display association; complete gameplay unresolved
+Groups: accounting/NVRAM, boolean/bit operations, byte tests, control flow, display, input conditions, mask/address records, memory operations, sound/scheduler
+Callers: E227, 99A1
+
+Threaded script at D003; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* D003  7963  vm_push_inline_byte_literal  inline_value=0x0001
+* D006  76A9  vm_allocate_local_frame  
+* D008  8130  call_reset_sound_and_scheduler  native=0x5B77
+* D00A  9741  queue_sound_stream_9743  body=0x856B, push_address=0x9743
+* D00C  80F8  call_scheduler_wait_until_active_list_empty  native=0x5CCB
+* D00E  78AA  vm_push_true_minus_one  
+* D010  CB1B  set_feature_destination_with_minus_one_reset  body=0xCB1D
+* D012  9F5E  test_two_orange1_input_conditions  body=0x9F60
+* D014  8384  vm_test_input_condition  value=0x0001
+* D016  7AA3  vm_bitwise_or  
+* D018  8510  test_byte_zero_at_ff34  body=0x8427, push_address=0x8512
+* D01A  7AA3  vm_bitwise_or  
+* D01C  7982  vm_branch_forward8_if_zero  branch=0xD024
+  D01F  7E52  vm_push_word_body_byte  value=0x0017
+  D021  7979  vm_branch_unsigned_forward8  branch=0xD026
+* D024  7E91  vm_push_word_body_byte  value=0x0018
+* D026  82DD  vm_push_word_body_byte  value=0x00BD
+* D028  7861  vm_store_byte  
+* D02A  CFD8  weighted_index_table_at_cfda  body=0x9A1C, push_address=0xCFDA
+* D02C  CFD5  vm_push_local_frame_address  value=0x0000
+* D02E  7861  vm_store_byte  
+* D030  8226  vm_push_word_body_word  value=0x0300
+* D032  790D  vm_fetch_word  
+* D034  8222  vm_push_word_body_word  value=0x02FE
+* D036  790D  vm_fetch_word  
+* D038  CFE0  script_cfe0  body=0xCFE2
+* D03A  CFD5  vm_push_local_frame_address  value=0x0000
+* D03C  786B  vm_fetch_unsigned_byte  
+* D03E  78FD  vm_shift_left_one  
+* D040  8164  vm_push_word_body_byte  value=0x00B9
+* D042  786B  vm_fetch_unsigned_byte  
+* D044  AE38  account_award_by_result_categories_and_selected_counter  body=0xAE3A
+* D046  896B  queue_sound_stream_896d  body=0x856B, push_address=0x896D
+* D048  80F8  call_scheduler_wait_until_active_list_empty  native=0x5CCB
+* D04A  84D4  push_pair_0001_00a0  body=0x8417, push_address=0x84D6
+* D04C  7665  vm_or_word_memory  
+* D04E  CFD5  vm_push_local_frame_address  value=0x0000
+* D050  786B  vm_fetch_unsigned_byte  
+* D052  798C  vm_branch_forward8_if_zero  branch=0xD086
+* D055  809C  call_resume_alpha_stream_when_delay_expired  native=0x3CF7
+* D057  9F5E  test_two_orange1_input_conditions  body=0x9F60
+* D059  8384  vm_test_input_condition  value=0x0001
+* D05B  7AA3  vm_bitwise_or  
+* D05D  8510  test_byte_zero_at_ff34  body=0x8427, push_address=0x8512
+* D05F  7AA3  vm_bitwise_or  
+* D061  7982  vm_branch_forward8_if_zero  branch=0xD075
+  D064  78DE  vm_push_two  
+  D066  8222  vm_push_word_body_word  value=0x02FE
+  D068  7874  vm_store_word  
+  D06A  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+  D06C  CFD5  vm_push_local_frame_address  value=0x0000
+  D06E  7659  vm_decrement_byte_memory  
+  D070  80E4  call_select_and_service_payout_records_by_coin_handling_setting  native=0x4B39
+  D072  7979  vm_branch_unsigned_forward8  branch=0xD083
+* D075  78DE  vm_push_two  
+* D077  8226  vm_push_word_body_word  value=0x0300
+* D079  7874  vm_store_word  
+* D07B  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* D07D  CFD5  vm_push_local_frame_address  value=0x0000
+* D07F  7659  vm_decrement_byte_memory  
+* D081  80F4  call_service_token_payout_records_until_pending_balance_empty  native=0x4B8C
+* D083  79A4  vm_branch_backward8  branch=0xD04E
+* D086  84D4  push_pair_0001_00a0  body=0x8417, push_address=0x84D6
+* D088  7671  vm_clear_word_memory_bits  
+* D08A  80A0  call_alpha_reset_and_clear_display  native=0x3D0E
+* D08C  A8F7  refresh_credit_and_bank_display_unless_suppressed  body=0xA8F9
+* D08E  8222  vm_push_word_body_word  value=0x02FE
+* D090  7874  vm_store_word  
+* D092  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* D094  8226  vm_push_word_body_word  value=0x0300
+* D096  7874  vm_store_word  
+* D098  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* D09A  792F  vm_return_to_caller_stream  

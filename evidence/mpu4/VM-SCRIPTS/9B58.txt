@@ -1,0 +1,17 @@
+Purpose: restore_lamp_frames_from_vm_stack
+Confidence: reviewed token mechanics
+Groups: arithmetic
+Callers: F576, A365
+
+Threaded script at 9B58; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9B58  7B2B  vm_push_data_stack_pointer  
+* 9B5A  8218  vm_push_word_body_word  value=0x0100
+* 9B5C  7963  vm_push_inline_byte_literal  inline_value=0x0040
+* 9B5F  7B89  vm_move_bytes_overlap_safe  
+* 9B61  7B2B  vm_push_data_stack_pointer  
+* 9B63  7963  vm_push_inline_byte_literal  inline_value=0x0040
+* 9B66  787E  vm_add_words  
+* 9B68  7B25  vm_set_data_stack_pointer  
+* 9B6A  792F  vm_return_to_caller_stream  

@@ -1,0 +1,1250 @@
+first_frame,last_frame,port,mask,reason,display,credits,nudges
+2100,2103,:AUX2,128,short_coin,  000       0   ,0,0
+2220,2232,:BLACK2,128,start_probe,  000       5   ,5,0
+2400,2409,:BLACK2,8,hold_probe,  000       4   ,4,0
+2445,2457,:BLACK2,128,start_probe,  000       4   ,4,0
+2625,2637,:BLACK2,128,start_probe,  000       3   ,3,0
+2805,2808,:AUX2,128,short_coin,  000       2   ,2,0
+2925,2937,:BLACK2,128,start_probe,  000       7   ,7,0
+3105,3117,:BLACK2,128,start_probe,  000       6   ,6,0
+3285,3294,:BLACK2,4,hold_probe,  000       5   ,5,0
+3330,3342,:BLACK2,128,start_probe,  000       5   ,5,0
+3510,3519,:BLACK2,2,nudge,    2  NUDGES   ,4,2
+3600,3609,:BLACK2,4,nudge,    1  NUDGE    ,4,1
+3690,3702,:BLACK2,128,start_probe,  000       4   ,4,0
+3870,3882,:BLACK2,128,start_probe,  000       3   ,3,0
+4050,4053,:AUX2,128,short_coin,  000       2   ,2,0
+4170,4182,:BLACK2,128,start_probe,  000       7   ,7,0
+4350,4362,:BLACK2,128,start_probe,  000       6   ,6,0
+4530,4539,:BLACK2,4,nudge,    3  NUDGES   ,5,3
+4620,4629,:BLACK2,8,nudge,    2  NUDGES   ,5,2
+4710,4719,:BLACK2,2,nudge,    1  NUDGE    ,5,1
+4800,4809,:BLACK2,8,hold_probe,  000       5   ,5,0
+4845,4857,:BLACK2,128,start_probe,  000       5   ,5,0
+5025,5037,:BLACK2,128,start_probe,  000       4   ,4,0
+5205,5214,:BLACK2,2,hold_probe,  000       3   ,3,0
+5250,5262,:BLACK2,128,start_probe,  000       3   ,3,0
+5430,5433,:AUX2,128,short_coin,  000       2   ,2,0
+5550,5559,:BLACK2,4,hold_probe,  000       7   ,7,0
+5595,5607,:BLACK2,128,start_probe,  000       7   ,7,0
+5775,5787,:BLACK2,128,start_probe,  000       6   ,6,0
+5955,5967,:BLACK2,2,superhold_select_or_confirm,** SUPER HOLD **,5,0
+6045,6057,:BLACK2,4,superhold_select_or_confirm,** SUPER HOLD **,5,0
+6135,6147,:BLACK2,8,superhold_select_or_confirm,** SUPER HOLD **,5,0
+6225,6237,:BLACK2,128,superhold_select_or_confirm,** SUPER HOLD **,5,0
+6315,6327,:BLACK2,128,start_probe,  000       4   ,4,0
+6495,6507,:BLACK2,128,start_probe,  000       3   ,3,0
+6675,6678,:AUX2,128,short_coin,  000       2   ,2,0
+6795,6807,:BLACK2,128,start_probe,  000       7   ,7,0
+6975,6987,:BLACK2,128,start_probe,  000       6   ,6,0
+7155,7164,:BLACK2,4,nudge,    3  NUDGES   ,5,3
+7245,7254,:BLACK2,8,nudge,    2  NUDGES   ,5,2
+7335,7344,:BLACK2,2,nudge,    1  NUDGE    ,5,1
+7425,7434,:BLACK2,2,hold_probe,  000       5   ,5,0
+7470,7482,:BLACK2,128,start_probe,  000       5   ,5,0
+7650,7659,:BLACK2,2,nudge,    3  NUDGES   ,4,3
+7740,7749,:BLACK2,4,nudge,    2  NUDGES   ,4,2
+7830,7839,:BLACK2,8,nudge,    1  NUDGE    ,4,1
+7920,7932,:BLACK2,128,start_probe,  000       4   ,4,0
+8100,8109,:BLACK2,4,nudge,    2  NUDGES   ,3,2
+8190,8199,:BLACK2,8,nudge,    1  NUDGE    ,3,1
+8280,8292,:BLACK2,128,start_probe,  000       3   ,3,0
+8460,8469,:BLACK2,4,nudge,    1  NUDGE    ,2,1
+8550,8553,:AUX2,128,short_coin,  000       2   ,2,0
+8670,8682,:BLACK2,128,start_probe,  000       7   ,7,0
+8850,8859,:BLACK2,4,hold_probe,  000       6   ,6,0
+8895,8907,:BLACK2,128,start_probe,  000       6   ,6,0
+9075,9087,:BLACK2,128,start_probe,  000       5   ,5,0
+9255,9264,:BLACK2,8,hold_probe,  000       4   ,4,0
+9300,9312,:BLACK2,128,start_probe,  000       4   ,4,0
+9480,9492,:BLACK2,128,start_probe,  000       3   ,3,0
+9660,9663,:AUX2,128,short_coin,  000       2   ,2,0
+9780,9792,:BLACK2,128,start_probe,  000       7   ,7,0
+9960,9969,:BLACK2,2,nudge,    1  NUDGE    ,6,1
+10050,10059,:BLACK2,4,hold_probe,  000       6   ,6,0
+10095,10107,:BLACK2,128,start_probe,  000       6   ,6,0
+10275,10287,:BLACK2,128,start_probe,  000       5   ,5,0
+10455,10464,:BLACK2,4,nudge,    2  NUDGES   ,4,2
+10545,10554,:BLACK2,8,nudge,    1  NUDGE    ,4,1
+10635,10647,:BLACK2,128,start_probe,  000       4   ,4,0
+10815,10824,:BLACK2,2,hold_probe,  000       3   ,3,0
+10860,10872,:BLACK2,128,start_probe,  000       3   ,3,0
+11040,11043,:AUX2,128,short_coin,  000       2   ,2,0
+11160,11169,:BLACK2,4,hold_probe,  000       7   ,7,0
+11205,11217,:BLACK2,128,start_probe,  000       7   ,7,0
+11385,11397,:BLACK2,128,start_probe,  000       6   ,6,0
+11565,11574,:BLACK2,8,hold_probe,  000       5   ,5,0
+11610,11622,:BLACK2,128,start_probe,  000       5   ,5,0
+11790,11802,:BLACK2,128,start_probe,  000       4   ,4,0
+11970,11979,:BLACK2,2,hold_probe,  000       3   ,3,0
+12015,12027,:BLACK2,128,start_probe,  000       3   ,3,0
+12195,12198,:AUX2,128,short_coin,  000       2   ,2,0
+12315,12324,:BLACK2,4,hold_probe,  000       7   ,7,0
+12360,12372,:BLACK2,128,start_probe,  000       7   ,7,0
+12540,12549,:BLACK2,2,nudge,    3  NUDGES   ,6,3
+12630,12639,:BLACK2,4,nudge,    2  NUDGES   ,6,2
+12720,12729,:BLACK2,8,nudge,    1  NUDGE    ,6,1
+12810,12822,:BLACK2,128,start_probe,  000       6   ,6,0
+12990,12999,:BLACK2,2,hold_probe,  000       5   ,5,0
+13035,13047,:BLACK2,128,start_probe,  000       5   ,5,0
+13215,13227,:BLACK2,128,start_probe,  000       4   ,4,0
+13395,13404,:BLACK2,4,hold_probe,  000       3   ,3,0
+13440,13452,:BLACK2,128,start_probe,  000       3   ,3,0
+13620,13623,:AUX2,128,short_coin,  000       2   ,2,0
+13740,13749,:BLACK2,8,hold_probe,  000       7   ,7,0
+13785,13797,:BLACK2,128,start_probe,  000       7   ,7,0
+13965,13977,:BLACK2,128,start_probe,  000       6   ,6,0
+14145,14154,:BLACK2,2,hold_probe,  000       5   ,5,0
+14190,14202,:BLACK2,128,start_probe,  000       5   ,5,0
+14370,14382,:BLACK2,128,start_probe,  000       4   ,4,0
+14550,14559,:BLACK2,4,nudge,    1  NUDGE    ,3,1
+14640,14652,:BLACK2,128,start_probe,  000       3   ,3,0
+14820,14823,:AUX2,128,short_coin,  000       2   ,2,0
+14940,14949,:BLACK2,8,hold_probe,  000       7   ,7,0
+14985,14997,:BLACK2,128,start_probe,  000       7   ,7,0
+15165,15177,:BLACK2,128,start_probe,  000       6   ,6,0
+15345,15354,:BLACK2,2,hold_probe,  000       5   ,5,0
+15390,15402,:BLACK2,128,start_probe,  000       5   ,5,0
+15570,15582,:BLACK2,128,start_probe,  000       4   ,4,0
+15750,15759,:BLACK2,4,nudge,    1  NUDGE    ,3,1
+15840,15852,:BLACK2,128,start_probe,  000       3   ,3,0
+16020,16023,:AUX2,128,short_coin,  000       2   ,2,0
+16140,16149,:BLACK2,8,hold_probe,  000       7   ,7,0
+16185,16197,:BLACK2,128,start_probe,  000       7   ,7,0
+16365,16377,:BLACK2,128,start_probe,  000       6   ,6,0
+16545,16554,:BLACK2,2,hold_probe,  000       5   ,5,0
+16590,16602,:BLACK2,128,start_probe,  000       5   ,5,0
+16770,16782,:BLACK2,128,start_probe,  000       4   ,4,0
+16950,16959,:BLACK2,4,hold_probe,  000       3   ,3,0
+16995,17007,:BLACK2,128,start_probe,  000       3   ,3,0
+17175,17178,:AUX2,128,short_coin,  000       2   ,2,0
+17295,17304,:BLACK2,8,hold_probe,  000       7   ,7,0
+17340,17352,:BLACK2,128,start_probe,  000       7   ,7,0
+17520,17532,:BLACK2,128,start_probe,  000       6   ,6,0
+17700,17709,:BLACK2,2,hold_probe,  000       5   ,5,0
+17745,17757,:BLACK2,128,start_probe,  000       5   ,5,0
+17925,17937,:BLACK2,128,start_probe,  000       4   ,4,0
+18105,18114,:BLACK2,4,hold_probe,  000       3   ,3,0
+18150,18162,:BLACK2,128,start_probe,  000       3   ,3,0
+18330,18339,:BLACK2,2,nudge,    3  NUDGES   ,2,3
+18420,18429,:BLACK2,4,nudge,    2  NUDGES   ,2,2
+18510,18519,:BLACK2,8,nudge,    1  NUDGE    ,2,1
+18600,18603,:AUX2,128,short_coin,  000       2   ,2,0
+18720,18729,:BLACK2,2,hold_probe,  000       7   ,7,0
+18765,18777,:BLACK2,128,start_probe,  000       7   ,7,0
+18945,18957,:BLACK2,128,start_probe,  000       6   ,6,0
+19125,19134,:BLACK2,4,hold_probe,  000       5   ,5,0
+19170,19182,:BLACK2,128,start_probe,  000       5   ,5,0
+19350,19362,:BLACK2,128,start_probe,  000       4   ,4,0
+19530,19539,:BLACK2,8,hold_probe,  000       3   ,3,0
+19575,19587,:BLACK2,128,start_probe,  000       3   ,3,0
+19755,19764,:BLACK2,2,nudge,    2  NUDGES   ,2,2
+19845,19854,:BLACK2,4,nudge,    1  NUDGE    ,2,1
+19935,19944,:BLACK2,8,busy_choice_probe,                ,2,0
+19995,20004,:BLACK2,64,busy_choice_probe,                ,2,0
+20055,20064,:BLACK2,1,busy_choice_probe,                ,2,0
+20115,20124,:BLACK2,128,busy_choice_probe,                ,2,0
+20175,20184,:BLACK2,16,busy_choice_probe,                ,2,0
+20235,20244,:BLACK2,32,busy_choice_probe,                ,2,0
+20295,20304,:BLACK2,16,gamble_choice,  HIGH ---      ,2,0
+20415,20418,:AUX2,128,short_coin,  000       2   ,2,0
+20535,20544,:BLACK2,2,hold_probe,  000       7   ,7,0
+20580,20592,:BLACK2,128,start_probe,  000       7   ,7,0
+20760,20772,:BLACK2,128,start_probe,  000       6   ,6,0
+20940,20949,:BLACK2,4,hold_probe,  000       5   ,5,0
+20985,20997,:BLACK2,128,start_probe,  000       5   ,5,0
+21165,21177,:BLACK2,128,start_probe,  000       4   ,4,0
+21345,21354,:BLACK2,4,nudge,    2  NUDGES   ,3,2
+21435,21444,:BLACK2,8,nudge,    1  NUDGE    ,3,1
+21525,21537,:BLACK2,128,start_probe,  000       3   ,3,0
+21705,21708,:AUX2,128,short_coin,  000       2   ,2,0
+21825,21837,:BLACK2,128,start_probe,  000       7   ,7,0
+22005,22017,:BLACK2,128,start_probe,  000       6   ,6,0
+22185,22194,:BLACK2,4,hold_probe,  000       5   ,5,0
+22230,22242,:BLACK2,128,start_probe,  000       5   ,5,0
+22410,22422,:BLACK2,128,start_probe,  000       4   ,4,0
+22590,22599,:BLACK2,4,nudge,    1  NUDGE    ,3,1
+22680,22692,:BLACK2,128,start_probe,  000       3   ,3,0
+22860,22863,:AUX2,128,short_coin,  000       2   ,2,0
+22980,22989,:BLACK2,2,hold_probe,  000       7   ,7,0
+23025,23037,:BLACK2,128,start_probe,  000       7   ,7,0
+23205,23214,:BLACK2,2,nudge,    3  NUDGES   ,6,3
+23295,23304,:BLACK2,4,hold_probe,                ,6,0
+23340,23352,:BLACK2,128,start_probe,                ,6,0
+23520,23532,:BLACK2,128,feature_roll_or_take, ROLL THE DICE  ,6,0
+23640,23649,:BLACK2,8,hold_probe, UP THE LADDER  ,6,0
+23685,23697,:BLACK2,128,start_probe, UP THE LADDER  ,6,0
+23865,23877,:BLACK2,128,feature_roll_or_take, TAKE NUDGEPOT  ,6,0
+23985,23994,:BLACK2,2,hold_probe,                ,6,0
+24030,24042,:BLACK2,128,feature_roll_or_take,  OR ROLL DICE  ,6,0
+24150,24162,:BLACK2,128,feature_roll_or_take,   TAKE 260     ,6,0
+24270,24282,:BLACK2,1,feature_roll_or_take,   TAKE 320     ,6,0
+24390,24399,:BLACK2,4,busy_choice_probe,  020       6   ,6,0
+24450,24459,:BLACK2,8,busy_choice_probe,  090       6   ,6,0
+24510,24519,:BLACK2,64,busy_choice_probe,  150       6   ,6,0
+24570,24579,:BLACK2,1,busy_choice_probe,  220       6   ,6,0
+24630,24639,:BLACK2,128,busy_choice_probe,  290       6   ,6,0
+24690,24699,:BLACK2,16,busy_choice_probe,  320       6   ,6,0
+24750,24762,:BLACK2,128,start_probe,  320       6   ,6,0
+24930,24942,:BLACK2,128,start_probe,  320       5   ,5,0
+25110,25119,:BLACK2,4,hold_probe,  320       4   ,4,0
+25155,25167,:BLACK2,128,start_probe,  320       4   ,4,0
+25335,25347,:BLACK2,128,start_probe,  320       3   ,3,0
+25515,25518,:AUX2,128,short_coin,  320       2   ,2,0
+25635,25644,:BLACK2,128,busy_choice_probe,  320       2   ,7,0
+25695,25707,:BLACK2,128,feature_roll_or_take, ROLL THE DICE  ,7,0
+25815,25824,:BLACK2,2,hold_probe,                ,7,0
+25860,25872,:BLACK2,128,start_probe,                ,7,0
+26040,26052,:BLACK2,128,start_probe,   SNAKE BITE   ,7,0
+26220,26229,:BLACK2,4,hold_probe,          AMES  ,7,0
+26265,26277,:BLACK2,128,start_probe,  320       7   ,7,0
+26445,26454,:BLACK2,2,nudge,    2  NUDGES   ,6,2
+26535,26544,:BLACK2,4,nudge,    1  NUDGE    ,6,1
+26625,26637,:BLACK2,128,start_probe,  320       6   ,6,0
+26805,26817,:BLACK2,128,start_probe,  320       5   ,5,0
+26985,26994,:BLACK2,4,nudge,    1  NUDGE    ,4,1
+27075,27087,:BLACK2,128,start_probe,  320       4   ,4,0
+27255,27267,:BLACK2,128,start_probe,  320       3   ,3,0
+27435,27438,:AUX2,128,short_coin,  320       2   ,2,0
+27555,27567,:BLACK2,128,start_probe,  320       7   ,7,0
+27735,27747,:BLACK2,128,start_probe,  320       6   ,6,0
+27915,27924,:BLACK2,8,hold_probe,  320       5   ,5,0
+27960,27972,:BLACK2,128,start_probe,  320       5   ,5,0
+28140,28149,:BLACK2,2,nudge,    1  NUDGE    ,4,1
+28230,28239,:BLACK2,2,hold_probe,  320       4   ,4,0
+28275,28287,:BLACK2,128,start_probe,  320       4   ,4,0
+28455,28467,:BLACK2,128,start_probe,  320       3   ,3,0
+28635,28638,:AUX2,128,short_coin,  320       2   ,2,0
+28755,28767,:BLACK2,128,start_probe,  320       7   ,7,0
+28935,28947,:BLACK2,128,start_probe,  320       6   ,6,0
+29115,29124,:BLACK2,8,hold_probe,  320       5   ,5,0
+29160,29172,:BLACK2,128,start_probe,  320       5   ,5,0
+29340,29352,:BLACK2,128,start_probe,  320       4   ,4,0
+29520,29529,:BLACK2,2,hold_probe,  320       3   ,3,0
+29565,29577,:BLACK2,128,start_probe,  320       3   ,3,0
+29745,29748,:AUX2,128,short_coin,  320       2   ,2,0
+29865,29874,:BLACK2,4,hold_probe,  320       7   ,7,0
+29910,29922,:BLACK2,128,start_probe,  320       7   ,7,0
+30090,30102,:BLACK2,128,start_probe,  320       6   ,6,0
+30270,30282,:BLACK2,1,feature_roll_or_take, ROLL THE DICE  ,6,0
+30390,30402,:BLACK2,128,feature_roll_or_take, ROLL THE DICE  ,6,0
+30510,30522,:BLACK2,128,start_probe, UP THE LADDER  ,6,0
+30690,30702,:BLACK2,1,feature_roll_or_take, TAKE NUDGEPOT  ,6,0
+30810,30819,:BLACK2,8,nudge,    3  NUDGES   ,6,3
+30900,30909,:BLACK2,2,nudge,    2  NUDGES   ,6,2
+30990,30999,:BLACK2,16,busy_choice_probe,                ,6,0
+31050,31059,:BLACK2,32,busy_choice_probe,  350       6   ,6,0
+31110,31119,:BLACK2,2,busy_choice_probe,            6   ,6,0
+31170,31179,:BLACK2,8,hold_probe,  420       6   ,6,0
+31215,31227,:BLACK2,128,start_probe,  420       6   ,6,0
+31395,31407,:BLACK2,128,start_probe,  420       5   ,5,0
+31575,31584,:BLACK2,4,nudge,    2  NUDGES   ,4,2
+31665,31674,:BLACK2,8,nudge,    1  NUDGE    ,4,1
+31755,31764,:BLACK2,16,busy_choice_probe,                ,4,0
+31815,31824,:BLACK2,32,busy_choice_probe,                ,4,0
+31875,31884,:BLACK2,2,busy_choice_probe,                ,4,0
+31935,31944,:BLACK2,4,busy_choice_probe,                ,4,0
+31995,32004,:BLACK2,8,busy_choice_probe,                ,4,0
+32055,32064,:BLACK2,32,gamble_choice,       --- LOW  ,4,0
+32175,32187,:BLACK2,128,start_probe,  420       4   ,4,0
+32355,32364,:BLACK2,4,nudge,    2  NUDGES   ,3,2
+32445,32454,:BLACK2,8,nudge,    1  NUDGE    ,3,1
+32535,32547,:BLACK2,128,start_probe,  420       3   ,3,0
+32715,32718,:AUX2,128,short_coin,  420       2   ,2,0
+32835,32847,:BLACK2,128,start_probe,  420       7   ,7,0
+33015,33027,:BLACK2,128,start_probe,  420       6   ,6,0
+33195,33204,:BLACK2,4,nudge,    2  NUDGES   ,5,2
+33285,33294,:BLACK2,8,nudge,    1  NUDGE    ,5,1
+33375,33387,:BLACK2,128,start_probe,  420       5   ,5,0
+33555,33564,:BLACK2,2,hold_probe,  420       4   ,4,0
+33600,33612,:BLACK2,128,start_probe,  420       4   ,4,0
+33780,33792,:BLACK2,128,start_probe,  420       3   ,3,0
+33960,33963,:AUX2,128,short_coin,  420       2   ,2,0
+34080,34092,:BLACK2,128,start_probe,  420       7   ,7,0
+34260,34272,:BLACK2,128,start_probe,  420       6   ,6,0
+34440,34449,:BLACK2,8,hold_probe,  420       5   ,5,0
+34485,34497,:BLACK2,128,start_probe,  420       5   ,5,0
+34665,34677,:BLACK2,128,start_probe,  420       4   ,4,0
+34845,34854,:BLACK2,32,busy_choice_probe,  420       3   ,3,0
+34905,34914,:BLACK2,2,busy_choice_probe,  420       3   ,3,0
+34965,34974,:BLACK2,4,busy_choice_probe,  420       3   ,3,0
+35025,35034,:BLACK2,8,busy_choice_probe,  420       3   ,3,0
+35085,35094,:BLACK2,64,busy_choice_probe,  420       3   ,3,0
+35145,35154,:BLACK2,1,exchange_or_collect,    EXCHANGE    ,3,0
+35265,35274,:BLACK2,32,gamble_choice,  HIGH ---      ,3,0
+35385,35397,:BLACK2,128,start_probe,  420       3   ,3,0
+35565,35568,:AUX2,128,short_coin,  420       2   ,2,0
+35685,35694,:BLACK2,2,hold_probe,  420       7   ,7,0
+35730,35742,:BLACK2,128,start_probe,  420       7   ,7,0
+35910,35922,:BLACK2,128,start_probe,  420       6   ,6,0
+36090,36099,:BLACK2,4,nudge,    2  NUDGES   ,5,2
+36180,36189,:BLACK2,8,nudge,    1  NUDGE    ,5,1
+36270,36282,:BLACK2,128,start_probe,  420       5   ,5,0
+36450,36459,:BLACK2,16,busy_choice_probe,  420       4   ,4,0
+36510,36519,:BLACK2,32,busy_choice_probe,  420       4   ,4,0
+36570,36579,:BLACK2,2,busy_choice_probe,  420       4   ,4,0
+36630,36639,:BLACK2,4,busy_choice_probe,  420       4   ,4,0
+36690,36699,:BLACK2,8,busy_choice_probe,  420       4   ,4,0
+36750,36759,:BLACK2,32,gamble_choice,       --- LOW  ,4,0
+36870,36879,:BLACK2,4,hold_probe,  420       4   ,4,0
+36915,36927,:BLACK2,128,start_probe,  420       4   ,4,0
+37095,37107,:BLACK2,128,start_probe,  420       3   ,3,0
+37275,37278,:AUX2,128,short_coin,  420       2   ,2,0
+37395,37407,:BLACK2,128,start_probe,  420       7   ,7,0
+37575,37584,:BLACK2,2,nudge,    2  NUDGES   ,6,2
+37665,37674,:BLACK2,4,nudge,    1  NUDGE    ,6,1
+37755,37767,:BLACK2,128,start_probe,  420       6   ,6,0
+37935,37944,:BLACK2,1,busy_choice_probe,  420       5   ,5,0
+37995,38004,:BLACK2,128,busy_choice_probe,  420       5   ,5,0
+38055,38064,:BLACK2,16,busy_choice_probe,  420       5   ,5,0
+38115,38124,:BLACK2,32,busy_choice_probe,  420       5   ,5,0
+38175,38184,:BLACK2,2,busy_choice_probe,  420       5   ,5,0
+38235,38244,:BLACK2,32,gamble_choice,       --- LOW  ,5,0
+38355,38367,:BLACK2,128,start_probe,  420       5   ,5,0
+38535,38544,:BLACK2,4,nudge,    1  NUDGE    ,4,1
+38625,38637,:BLACK2,128,start_probe,  420       4   ,4,0
+38805,38817,:BLACK2,128,start_probe,  420       3   ,3,0
+38985,38997,:BLACK2,2,superhold_select_or_confirm,** SUPER HOLD **,2,0
+39075,39087,:BLACK2,4,superhold_select_or_confirm,** SUPER HOLD **,2,0
+39165,39177,:BLACK2,8,superhold_select_or_confirm,** SUPER HOLD **,2,0
+39255,39267,:BLACK2,128,superhold_select_or_confirm,** SUPER HOLD **,2,0
+39345,39348,:AUX2,128,short_coin,  420       1   ,1,0
+39465,39477,:BLACK2,128,start_probe,  420       6   ,6,0
+39645,39654,:BLACK2,2,hold_probe,  420       5   ,5,0
+39690,39702,:BLACK2,128,start_probe,  420       5   ,5,0
+39870,39882,:BLACK2,128,start_probe,  420       4   ,4,0
+40050,40062,:BLACK2,1,feature_roll_or_take, ROLL THE DICE  ,4,0
+40170,40182,:BLACK2,128,feature_roll_or_take, ROLL THE DICE  ,4,0
+40290,40302,:BLACK2,128,start_probe,                ,4,0
+40470,40479,:BLACK2,8,hold_probe,                ,4,0
+40515,40527,:BLACK2,128,start_probe,                ,4,0
+40695,40704,:BLACK2,1,busy_choice_probe,   ROLL EVEN    ,4,0
+40755,40764,:BLACK2,128,busy_choice_probe,   ROLL EVEN    ,4,0
+40815,40827,:BLACK2,128,start_probe, AN EVEN WINNER ,4,0
+40995,41007,:BLACK2,128,feature_roll_or_take,  OR ROLL DICE  ,4,0
+41115,41124,:BLACK2,4,hold_probe,                ,4,0
+41160,41172,:BLACK2,128,start_probe,                ,4,0
+41340,41352,:BLACK2,128,start_probe,   UP N OVER    ,4,0
+41520,41532,:BLACK2,1,feature_roll_or_take,   TAKE 200     ,4,0
+41640,41649,:BLACK2,1,busy_choice_probe,  440       4   ,4,0
+41700,41709,:BLACK2,128,busy_choice_probe,  510       4   ,4,0
+41760,41769,:BLACK2,16,busy_choice_probe,  570       4   ,4,0
+41820,41829,:BLACK2,32,busy_choice_probe,            4   ,4,0
+41880,41892,:BLACK2,128,start_probe,  620       4   ,4,0
+42060,42069,:BLACK2,4,nudge,    1  NUDGE    ,3,1
+42150,42162,:BLACK2,128,start_probe,  620       3   ,3,0
+42330,42333,:AUX2,128,short_coin,  620       2   ,2,0
+42450,42459,:BLACK2,1,busy_choice_probe,  620       2   ,7,0
+42510,42522,:BLACK2,128,feature_roll_or_take, ROLL THE DICE  ,7,0
+42630,42642,:BLACK2,128,start_probe,                ,7,0
+42810,42819,:BLACK2,2,hold_probe,                ,7,0
+42855,42867,:BLACK2,128,start_probe,                ,7,0
+43035,43044,:BLACK2,4,busy_choice_probe,   ROLL EVEN    ,7,0
+43095,43104,:BLACK2,8,busy_choice_probe,   ROLL EVEN    ,7,0
+43155,43164,:BLACK2,64,busy_choice_probe,   ROLL EVEN    ,7,0
+43215,43224,:BLACK2,1,busy_choice_probe,   ROLL EVEN    ,7,0
+43275,43284,:BLACK2,128,busy_choice_probe,   ROLL EVEN    ,7,0
+43335,43347,:BLACK2,128,start_probe, AN EVEN WINNER ,7,0
+43515,43527,:BLACK2,128,feature_roll_or_take,    TAKE 80P    ,7,0
+43635,43644,:BLACK2,2,hold_probe,                ,7,0
+43680,43692,:BLACK2,128,start_probe,                ,7,0
+43860,43869,:BLACK2,8,busy_choice_probe,   ROLL EVEN    ,7,0
+43920,43929,:BLACK2,64,busy_choice_probe,   ROLL EVEN    ,7,0
+43980,43989,:BLACK2,1,busy_choice_probe,   ROLL EVEN    ,7,0
+44040,44049,:BLACK2,128,busy_choice_probe,   ROLL EVEN    ,7,0
+44100,44109,:BLACK2,8,hold_probe, AN EVEN WINNER ,7,0
+44145,44157,:BLACK2,128,start_probe, AN EVEN WINNER ,7,0
+44325,44337,:BLACK2,128,feature_roll_or_take,   TAKE 200     ,7,0
+44445,44454,:BLACK2,2,hold_probe,                ,7,0
+44490,44502,:BLACK2,128,feature_roll_or_take,  OR ROLL DICE  ,7,0
+44610,44622,:BLACK2,128,feature_roll_or_take,  OR ROLL DICE  ,7,0
+44730,44739,:BLACK2,4,hold_probe,                ,7,0
+44775,44787,:BLACK2,128,start_probe,                ,7,0
+44955,44964,:BLACK2,16,busy_choice_probe,                ,7,0
+45015,45024,:BLACK2,32,busy_choice_probe,  630       7   ,7,0
+45075,45084,:BLACK2,2,busy_choice_probe,  690       7   ,7,0
+45135,45144,:BLACK2,4,busy_choice_probe,  700       7   ,7,0
+45195,45204,:BLACK2,2,hold_probe,  700       7   ,7,0
+45240,45252,:BLACK2,128,start_probe,  700       7   ,7,0
+45420,45429,:BLACK2,2,nudge,    2  NUDGES   ,6,2
+45510,45519,:BLACK2,4,nudge,    1  NUDGE    ,6,1
+45600,45612,:BLACK2,128,start_probe,  700       6   ,6,0
+45780,45792,:BLACK2,128,start_probe,  700       5   ,5,0
+45960,45969,:BLACK2,8,hold_probe,  700       4   ,4,0
+46005,46017,:BLACK2,128,start_probe,  700       4   ,4,0
+46185,46197,:BLACK2,128,feature_roll_or_take, ROLL THE DICE  ,4,0
+46305,46314,:BLACK2,2,hold_probe,                ,4,0
+46350,46362,:BLACK2,128,feature_roll_or_take,    TAKE 80P    ,4,0
+46470,46482,:BLACK2,128,feature_roll_or_take,   TAKE 100     ,4,0
+46590,46599,:BLACK2,4,hold_probe,                ,4,0
+46635,46647,:BLACK2,128,start_probe,                ,4,0
+46815,46824,:BLACK2,2,busy_choice_probe,  750       4   ,4,0
+46875,46884,:BLACK2,4,busy_choice_probe,  760       4   ,4,0
+46935,46947,:BLACK2,128,start_probe,  760       4   ,4,0
+47115,47127,:BLACK2,128,start_probe,  760       3   ,3,0
+47295,47304,:BLACK2,4,nudge,    1  NUDGE    ,2,1
+47385,47388,:AUX2,128,short_coin,  760       2   ,2,0
+47505,47517,:BLACK2,128,start_probe,  760       7   ,7,0
+47685,47694,:BLACK2,4,hold_probe,  760       6   ,6,0
+47730,47742,:BLACK2,128,start_probe,  760       6   ,6,0
+47910,47922,:BLACK2,128,start_probe,  760       5   ,5,0
+48090,48099,:BLACK2,8,hold_probe,  760       4   ,4,0
+48135,48147,:BLACK2,128,start_probe,  760       4   ,4,0
+48315,48324,:BLACK2,2,nudge,    3  NUDGES   ,3,3
+48405,48414,:BLACK2,4,nudge,    2  NUDGES   ,3,2
+48495,48504,:BLACK2,8,nudge,    1  NUDGE    ,3,1
+48585,48597,:BLACK2,128,start_probe,  760       3   ,3,0
+48765,48774,:BLACK2,4,nudge,    1  NUDGE    ,2,1
+48855,48858,:AUX2,128,short_coin,  760       2   ,2,0
+48975,48987,:BLACK2,128,start_probe,  760       7   ,7,0
+49155,49164,:BLACK2,64,busy_choice_probe,  760       6   ,6,0
+49215,49224,:BLACK2,1,busy_choice_probe,  760       6   ,6,0
+49275,49284,:BLACK2,128,busy_choice_probe,  760       6   ,6,0
+49335,49344,:BLACK2,16,busy_choice_probe,  760       6   ,6,0
+49395,49404,:BLACK2,32,busy_choice_probe,    E       6   ,6,0
+49455,49464,:BLACK2,16,gamble_choice,      LOSE      ,6,0
+49575,49584,:BLACK2,4,hold_probe,  760       6   ,6,0
+49620,49632,:BLACK2,128,start_probe,  760       6   ,6,0
+49800,49812,:BLACK2,128,start_probe,  760       5   ,5,0
+49980,49992,:BLACK2,1,feature_roll_or_take, ROLL THE DICE  ,5,0
+50100,50112,:BLACK2,128,feature_roll_or_take, ROLL THE DICE  ,5,0
+50220,50232,:BLACK2,128,start_probe,                ,5,0
+50400,50412,:BLACK2,1,feature_roll_or_take,  OR ROLL DICE  ,5,0
+50520,50532,:BLACK2,128,start_probe,1         X 20P ,5,0
+50700,50712,:BLACK2,128,start_probe, 1 X 20P =      ,5,0
+50880,50889,:BLACK2,4,hold_probe,  760       5   ,5,0
+50925,50937,:BLACK2,128,start_probe,  760       5   ,5,0
+51105,51114,:BLACK2,2,nudge,    1  NUDGE    ,4,1
+51195,51204,:BLACK2,8,hold_probe,  760       4   ,4,0
+51240,51252,:BLACK2,128,start_probe,  760       4   ,4,0
+51420,51432,:BLACK2,128,start_probe,  760       3   ,3,0
+51600,51603,:AUX2,128,short_coin,  760       2   ,2,0
+51720,51732,:BLACK2,128,start_probe,  760       7   ,7,0
+51900,51912,:BLACK2,128,start_probe,  760       6   ,6,0
+52080,52089,:BLACK2,4,nudge,    1  NUDGE    ,5,1
+52170,52182,:BLACK2,128,start_probe,  760       5   ,5,0
+52350,52359,:BLACK2,2,nudge,    1  NUDGE    ,4,1
+52440,52449,:BLACK2,8,hold_probe,  760       4   ,4,0
+52485,52497,:BLACK2,128,start_probe,  760       4   ,4,0
+52665,52677,:BLACK2,128,start_probe,  760       3   ,3,0
+52845,52848,:AUX2,128,short_coin,  760       2   ,2,0
+52965,52977,:BLACK2,128,start_probe,  760       7   ,7,0
+53145,53157,:BLACK2,128,start_probe,  760       6   ,6,0
+53325,53334,:BLACK2,4,nudge,    3  NUDGES   ,5,3
+53415,53424,:BLACK2,8,nudge,    2  NUDGES   ,5,2
+53505,53514,:BLACK2,2,nudge,    1  NUDGE    ,5,1
+53595,53604,:BLACK2,8,hold_probe,  760       5   ,5,0
+53640,53652,:BLACK2,128,start_probe,  760       5   ,5,0
+53820,53829,:BLACK2,4,busy_choice_probe,  760       4   ,4,0
+53880,53889,:BLACK2,8,busy_choice_probe,  760       4   ,4,0
+53940,53949,:BLACK2,64,busy_choice_probe,  760       4   ,4,0
+54000,54009,:BLACK2,1,busy_choice_probe,  760       4   ,4,0
+54060,54069,:BLACK2,32,gamble_choice,       --- LOW  ,4,0
+54180,54192,:BLACK2,128,start_probe,  760       4   ,4,0
+54360,54372,:BLACK2,128,start_probe,  760       3   ,3,0
+54540,54543,:AUX2,128,short_coin,  760       2   ,2,0
+54660,54672,:BLACK2,128,start_probe,  760       7   ,7,0
+54840,54852,:BLACK2,128,start_probe,  760       6   ,6,0
+55020,55032,:BLACK2,1,feature_roll_or_take, ROLL THE DICE  ,6,0
+55140,55152,:BLACK2,128,feature_roll_or_take, ROLL THE DICE  ,6,0
+55260,55272,:BLACK2,128,start_probe,                ,6,0
+55440,55449,:BLACK2,4,hold_probe,                ,6,0
+55485,55497,:BLACK2,128,start_probe,                ,6,0
+55665,55677,:BLACK2,128,start_probe,ADDERS  LADDERS ,6,0
+55845,55854,:BLACK2,8,hold_probe,ADDERS  LADDERS ,6,0
+55890,55902,:BLACK2,128,start_probe,ADDERS  LADDERS ,6,0
+56070,56079,:BLACK2,64,busy_choice_probe,  770       6   ,6,0
+56130,56139,:BLACK2,1,busy_choice_probe,            6   ,6,0
+56190,56202,:BLACK2,128,start_probe,  840       6   ,6,0
+56370,56382,:BLACK2,128,start_probe,  840       5   ,5,0
+56550,56559,:BLACK2,4,hold_probe,  840       4   ,4,0
+56595,56607,:BLACK2,128,start_probe,  840       4   ,4,0
+56775,56784,:BLACK2,2,nudge,    3  NUDGES   ,3,3
+56865,56874,:BLACK2,4,nudge,    2  NUDGES   ,3,2
+56955,56964,:BLACK2,8,nudge,    1  NUDGE    ,3,1
+57045,57057,:BLACK2,128,start_probe,  840       3   ,3,0
+57225,57234,:BLACK2,128,busy_choice_probe,  840       2   ,2,0
+57285,57294,:BLACK2,16,busy_choice_probe,  840       2   ,2,0
+57345,57354,:BLACK2,32,busy_choice_probe,  840       2   ,2,0
+57405,57414,:BLACK2,2,busy_choice_probe,  840       2   ,2,0
+57465,57474,:BLACK2,32,gamble_choice,  HIGH ---      ,2,0
+57585,57594,:BLACK2,8,busy_choice_probe,**** WINNER ****,2,0
+57645,57654,:BLACK2,32,gamble_choice,       --- LOW  ,2,0
+57765,57774,:BLACK2,16,gamble_choice,      LOSE      ,2,0
+57885,57888,:AUX2,128,short_coin,  840       2   ,2,0
+58005,58014,:BLACK2,2,hold_probe,  840       7   ,7,0
+58050,58062,:BLACK2,128,start_probe,  840       7   ,7,0
+58230,58242,:BLACK2,128,start_probe,  840       6   ,6,0
+58410,58419,:BLACK2,4,hold_probe,  840       5   ,5,0
+58455,58467,:BLACK2,128,start_probe,  840       5   ,5,0
+58635,58647,:BLACK2,128,start_probe,  840       4   ,4,0
+58815,58824,:BLACK2,8,hold_probe,  840       3   ,3,0
+58860,58872,:BLACK2,128,start_probe,  840       3   ,3,0
+59040,59043,:AUX2,128,short_coin,  840       2   ,2,0
+59160,59169,:BLACK2,2,hold_probe,  840       7   ,7,0
+59205,59217,:BLACK2,128,start_probe,  840       7   ,7,0
+59385,59394,:BLACK2,4,busy_choice_probe,  840       6   ,6,0
+59445,59454,:BLACK2,8,busy_choice_probe,  840       6   ,6,0
+59505,59514,:BLACK2,64,busy_choice_probe,  840       6   ,6,0
+59565,59574,:BLACK2,1,busy_choice_probe,  840       6   ,6,0
+59625,59634,:BLACK2,32,gamble_choice,       --- LOW  ,6,0
+59745,59754,:BLACK2,16,busy_choice_probe,**** WINNER ****,6,0
+59805,59814,:BLACK2,32,gamble_choice,       --- LOW  ,6,0
+59925,59934,:BLACK2,2,hold_probe,  840       6   ,6,0
+59970,59982,:BLACK2,128,start_probe,  840       6   ,6,0
+60150,60159,:BLACK2,2,nudge,    2  NUDGES   ,5,2
+60240,60249,:BLACK2,4,nudge,    1  NUDGE    ,5,1
+60330,60342,:BLACK2,128,start_probe,  840       5   ,5,0
+60510,60519,:BLACK2,2,nudge,    1  NUDGE    ,4,1
+60600,60609,:BLACK2,8,hold_probe,  840       4   ,4,0
+60645,60657,:BLACK2,128,start_probe,  840       4   ,4,0
+60825,60837,:BLACK2,128,start_probe,  840       3   ,3,0
+61005,61017,:BLACK2,1,feature_roll_or_take, ROLL THE DICE  ,3,0
+61125,61137,:BLACK2,128,feature_roll_or_take, ROLL THE DICE  ,3,0
+61245,61257,:BLACK2,128,start_probe,                ,3,0
+61425,61437,:BLACK2,1,feature_roll_or_take, TAKE NUDGEPOT  ,3,0
+61545,61554,:BLACK2,8,nudge,    4  NUDGES   ,3,4
+61635,61644,:BLACK2,2,nudge,    3  NUDGES   ,3,3
+61725,61734,:BLACK2,32,busy_choice_probe,I CAN DO BETTER ,3,4
+61785,61794,:BLACK2,16,gamble_choice,  LET ME THINK  ,3,4
+61905,61917,:BLACK2,128,start_probe,                ,3,2
+62085,62094,:BLACK2,8,busy_choice_probe,  880       3   ,3,0
+62145,62154,:BLACK2,64,busy_choice_probe,  950       3   ,3,0
+62205,62214,:BLACK2,1,busy_choice_probe, 1010       3   ,3,0
+62265,62274,:BLACK2,128,busy_choice_probe,            3   ,3,0
+62325,62337,:BLACK2,128,start_probe, 1040       3   ,3,0
+62505,62508,:AUX2,128,short_coin, 1040       2   ,2,0
+62625,62634,:BLACK2,8,hold_probe, 1040       7   ,7,0
+62670,62682,:BLACK2,128,start_probe, 1040       7   ,7,0
+62850,62862,:BLACK2,128,start_probe, 1040       6   ,6,0
+63030,63039,:BLACK2,2,hold_probe, 1040       5   ,5,0
+63075,63087,:BLACK2,128,start_probe, 1040       5   ,5,0
+63255,63267,:BLACK2,128,feature_roll_or_take, ROLL THE DICE  ,5,0
+63375,63384,:BLACK2,4,hold_probe,                ,5,0
+63420,63432,:BLACK2,128,start_probe,                ,5,0
+63600,63612,:BLACK2,128,start_probe, UP THE LADDER  ,5,0
+63780,63792,:BLACK2,1,feature_roll_or_take,  OR ROLL DICE  ,5,0
+63900,63909,:BLACK2,8,nudge,    4  NUDGES   ,5,4
+63990,63999,:BLACK2,2,nudge,    3  NUDGES   ,5,3
+64080,64089,:BLACK2,4,nudge,    2  NUDGES   ,5,2
+64170,64179,:BLACK2,8,nudge,    1  NUDGE    ,5,1
+64260,64269,:BLACK2,16,busy_choice_probe,I CAN DO BETTER ,5,4
+64320,64329,:BLACK2,4,hold_probe,I CAN DO BETTER ,5,4
+64365,64374,:BLACK2,16,gamble_choice,  LET ME THINK  ,5,4
+64485,64497,:BLACK2,128,start_probe,                ,5,2
+64665,64674,:BLACK2,8,busy_choice_probe, NEW 600 JACKPOT,5,0
+64725,64734,:BLACK2,64,busy_choice_probe, NEW 600 JACKPOT,5,0
+64785,64794,:BLACK2,1,busy_choice_probe, NEW 600 JACKPOT,5,0
+64845,64854,:BLACK2,128,busy_choice_probe, NEW 600 JACKPOT,5,0
+64905,64914,:BLACK2,16,busy_choice_probe, NEW 600 JACKPOT,5,0
+64965,64974,:BLACK2,32,busy_choice_probe, NEW 600 JACKPOT,5,0
+65025,65034,:BLACK2,2,busy_choice_probe, NEW 600 JACKPOT,5,0
+65085,65094,:BLACK2,4,busy_choice_probe, NEW 600 JACKPOT,5,0
+65145,65154,:BLACK2,8,busy_choice_probe, NEW 600 JACKPOT,5,0
+65205,65214,:BLACK2,64,busy_choice_probe,            KPOT,5,0
+65265,65274,:BLACK2,1,busy_choice_probe, 1100       5   ,5,0
+65325,65334,:BLACK2,128,busy_choice_probe, 1170       5   ,5,0
+65385,65394,:BLACK2,16,busy_choice_probe, 1230       5   ,5,0
+65445,65454,:BLACK2,32,busy_choice_probe, 1300       5   ,5,0
+65505,65514,:BLACK2,2,busy_choice_probe, 1360       5   ,5,0
+65565,65574,:BLACK2,4,busy_choice_probe, 1430       5   ,5,0
+65625,65634,:BLACK2,8,busy_choice_probe, 1500       5   ,5,0
+65685,65694,:BLACK2,64,busy_choice_probe, 1560       5   ,5,0
+65745,65754,:BLACK2,1,busy_choice_probe, 1630       5   ,5,0
+65805,65814,:BLACK2,128,busy_choice_probe,            5   ,5,0
+65865,65877,:BLACK2,128,start_probe, 1640       5   ,5,0
+66045,66054,:BLACK2,2,hold_probe, 1640       4   ,4,0
+66090,66102,:BLACK2,128,start_probe, 1640       4   ,4,0
+66270,66282,:BLACK2,128,start_probe, 1640       3   ,3,0
+66450,66459,:BLACK2,4,nudge,    2  NUDGES   ,2,2
+66540,66549,:BLACK2,8,nudge,    1  NUDGE    ,2,1
+66630,66633,:AUX2,128,short_coin, 1640       2   ,2,0
+66750,66759,:BLACK2,8,hold_probe, 1640       7   ,7,0
+66795,66807,:BLACK2,128,start_probe, 1640       7   ,7,0
+66975,66987,:BLACK2,128,start_probe, 1640       6   ,6,0
+67155,67164,:BLACK2,4,nudge,    2  NUDGES   ,5,2
+67245,67254,:BLACK2,8,nudge,    1  NUDGE    ,5,1
+67335,67347,:BLACK2,128,start_probe, 1640       5   ,5,0
+67515,67524,:BLACK2,4,hold_probe, 1640       4   ,4,0
+67560,67572,:BLACK2,128,start_probe, 1640       4   ,4,0
+67740,67752,:BLACK2,128,start_probe, 1640       3   ,3,0
+67920,67929,:BLACK2,4,nudge,    3  NUDGES   ,2,3
+68010,68019,:BLACK2,8,nudge,    2  NUDGES   ,2,2
+68100,68109,:BLACK2,2,nudge,    1  NUDGE    ,2,1
+68190,68193,:AUX2,128,short_coin, 1640       2   ,2,0
+68310,68322,:BLACK2,128,start_probe, 1640       7   ,7,0
+68490,68499,:BLACK2,64,busy_choice_probe, 1640       6   ,6,0
+68550,68559,:BLACK2,1,busy_choice_probe, 1640       6   ,6,0
+68610,68619,:BLACK2,128,busy_choice_probe, 1640       6   ,6,0
+68670,68679,:BLACK2,16,busy_choice_probe, 1640       6   ,6,0
+68730,68739,:BLACK2,32,busy_choice_probe,**** WINNER ****,6,0
+68790,68799,:BLACK2,2,busy_choice_probe,**** WINNER ****,6,0
+68850,68859,:BLACK2,32,gamble_choice,       --- LOW  ,6,0
+68970,68979,:BLACK2,2,hold_probe, 1640       6   ,6,0
+69015,69027,:BLACK2,128,start_probe, 1640       6   ,6,0
+69195,69207,:BLACK2,128,start_probe, 1640       5   ,5,0
+69375,69384,:BLACK2,4,nudge,    2  NUDGES   ,4,2
+69465,69474,:BLACK2,8,nudge,    1  NUDGE    ,4,1
+69555,69567,:BLACK2,128,start_probe, 1640       4   ,4,0
+69735,69744,:BLACK2,8,hold_probe, 1640       3   ,3,0
+69780,69792,:BLACK2,128,start_probe, 1640       3   ,3,0
+69960,69972,:BLACK2,128,feature_roll_or_take, ROLL THE DICE  ,3,0
+70080,70092,:BLACK2,1,feature_roll_or_take,    TAKE 60P    ,3,0
+70200,70209,:BLACK2,1,busy_choice_probe, 1660       3   ,3,0
+70260,70269,:BLACK2,128,busy_choice_probe,            3   ,3,0
+70320,70329,:BLACK2,4,hold_probe, 1700       3   ,3,0
+70365,70377,:BLACK2,128,start_probe, 1700       3   ,3,0
+70545,70548,:AUX2,128,short_coin, 1700       2   ,2,0
+70665,70674,:BLACK2,8,hold_probe, 1700       7   ,7,0
+70710,70722,:BLACK2,128,start_probe, 1700       7   ,7,0
+70890,70902,:BLACK2,128,start_probe, 1700       6   ,6,0
+71070,71079,:BLACK2,2,hold_probe, 1700       5   ,5,0
+71115,71127,:BLACK2,128,start_probe, 1700       5   ,5,0
+71295,71307,:BLACK2,128,start_probe, 1700       4   ,4,0
+71475,71484,:BLACK2,4,hold_probe, 1700       3   ,3,0
+71520,71532,:BLACK2,128,start_probe, 1700       3   ,3,0
+71700,71703,:AUX2,128,short_coin, 1700       2   ,2,0
+71820,71829,:BLACK2,8,hold_probe, 1700       7   ,7,0
+71865,71877,:BLACK2,128,start_probe, 1700       7   ,7,0
+72045,72057,:BLACK2,128,start_probe, 1700       6   ,6,0
+72225,72234,:BLACK2,2,hold_probe, 1700       5   ,5,0
+72270,72282,:BLACK2,128,start_probe, 1700       5   ,5,0
+72450,72459,:BLACK2,2,nudge,    2  NUDGES   ,4,2
+72540,72549,:BLACK2,4,nudge,    1  NUDGE    ,4,1
+72630,72642,:BLACK2,128,start_probe, 1700       4   ,4,0
+72810,72822,:BLACK2,2,superhold_select_or_confirm,** SUPER HOLD **,3,0
+72900,72912,:BLACK2,4,superhold_select_or_confirm,** SUPER HOLD **,3,0
+72990,73002,:BLACK2,8,superhold_select_or_confirm,** SUPER HOLD **,3,0
+73080,73092,:BLACK2,128,superhold_select_or_confirm,** SUPER HOLD **,3,0
+73170,73179,:BLACK2,4,nudge,    1  NUDGE    ,2,1
+73260,73263,:AUX2,128,short_coin, 1700       2   ,2,0
+73380,73392,:BLACK2,128,start_probe, 1700       7   ,7,0
+73560,73569,:BLACK2,4,hold_probe, 1700       6   ,6,0
+73605,73617,:BLACK2,128,start_probe, 1700       6   ,6,0
+73785,73794,:BLACK2,2,nudge,    1  NUDGE    ,5,1
+73875,73884,:BLACK2,8,hold_probe, 1700       5   ,5,0
+73920,73932,:BLACK2,128,start_probe, 1700       5   ,5,0
+74100,74112,:BLACK2,128,start_probe, 1700       4   ,4,0
+74280,74289,:BLACK2,2,hold_probe, 1700       3   ,3,0
+74325,74337,:BLACK2,128,start_probe, 1700       3   ,3,0
+74505,74508,:AUX2,128,short_coin, 1700       2   ,2,0
+74625,74634,:BLACK2,4,hold_probe, 1700       7   ,7,0
+74670,74682,:BLACK2,128,start_probe, 1700       7   ,7,0
+74850,74862,:BLACK2,128,start_probe, 1700       6   ,6,0
+75030,75042,:BLACK2,1,feature_roll_or_take, ROLL THE DICE  ,6,0
+75150,75162,:BLACK2,128,feature_roll_or_take, ROLL THE DICE  ,6,0
+75270,75282,:BLACK2,128,start_probe,                ,6,0
+75450,75459,:BLACK2,2,hold_probe,                ,6,0
+75495,75507,:BLACK2,128,start_probe,                ,6,0
+75675,75687,:BLACK2,128,feature_roll_or_take,    RATTLER     ,6,0
+75795,75807,:BLACK2,1,feature_roll_or_take,    RATTLER     ,6,0
+75915,75927,:BLACK2,128,feature_roll_or_take, ROLL THE DICE  ,6,0
+76035,76047,:BLACK2,128,start_probe,                ,6,0
+76215,76227,:BLACK2,1,feature_roll_or_take,  OR ROLL DICE  ,6,0
+76335,76344,:BLACK2,32,busy_choice_probe, 1720       6   ,6,0
+76395,76404,:BLACK2,2,busy_choice_probe, 1790       6   ,6,0
+76455,76464,:BLACK2,4,busy_choice_probe, 1850       6   ,6,0
+76515,76524,:BLACK2,8,busy_choice_probe, 1920       6   ,6,0
+76575,76584,:BLACK2,64,busy_choice_probe, 1980       6   ,6,0
+76635,76644,:BLACK2,1,busy_choice_probe, 2020       6   ,6,0
+76695,76707,:BLACK2,128,start_probe, 2020       6   ,6,0
+76875,76887,:BLACK2,128,start_probe, 2020       5   ,5,0
+77055,77064,:BLACK2,8,hold_probe, 2020       4   ,4,0
+77100,77112,:BLACK2,128,start_probe, 2020       4   ,4,0
+77280,77289,:BLACK2,2,nudge,    1  NUDGE    ,3,1
+77370,77379,:BLACK2,2,hold_probe,                ,3,0
+77415,77427,:BLACK2,128,start_probe,                ,3,0
+77595,77607,:BLACK2,128,feature_roll_or_take, ROLL THE DICE  ,3,0
+77715,77727,:BLACK2,1,feature_roll_or_take, TAKE NUDGEPOT  ,3,0
+77835,77844,:BLACK2,8,nudge,    3  NUDGES   ,3,3
+77925,77934,:BLACK2,2,nudge,    2  NUDGES   ,3,2
+78015,78024,:BLACK2,4,nudge,    1  NUDGE    ,3,1
+78105,78114,:BLACK2,4,busy_choice_probe,I CAN DO BETTER ,3,3
+78165,78174,:BLACK2,16,gamble_choice,  LET ME THINK  ,3,3
+78285,78294,:BLACK2,64,busy_choice_probe,                ,3,2
+78345,78354,:BLACK2,1,busy_choice_probe,                ,3,0
+78405,78414,:BLACK2,128,busy_choice_probe,                ,3,0
+78465,78474,:BLACK2,16,busy_choice_probe, 2060       3   ,3,0
+78525,78534,:BLACK2,32,busy_choice_probe, 2120       3   ,3,0
+78585,78594,:BLACK2,2,busy_choice_probe, 2190       3   ,3,0
+78645,78654,:BLACK2,4,busy_choice_probe,            3   ,3,0
+78705,78717,:BLACK2,128,start_probe, 2220       3   ,3,0
+78885,78888,:AUX2,128,short_coin, 2220       2   ,2,0
+79005,79014,:BLACK2,2,hold_probe, 2220       7   ,7,0
+79050,79062,:BLACK2,128,start_probe, 2220       7   ,7,0
+79230,79242,:BLACK2,128,start_probe, 2220       6   ,6,0
+79410,79419,:BLACK2,4,hold_probe, 2220       5   ,5,0
+79455,79467,:BLACK2,128,start_probe, 2220       5   ,5,0
+79635,79644,:BLACK2,2,nudge,    1  NUDGE    ,4,1
+79725,79734,:BLACK2,8,hold_probe, 2220       4   ,4,0
+79770,79782,:BLACK2,128,start_probe, 2220       4   ,4,0
+79950,79959,:BLACK2,2,nudge,    2  NUDGES   ,3,2
+80040,80049,:BLACK2,4,nudge,    1  NUDGE    ,3,1
+80130,80142,:BLACK2,128,start_probe, 2220       3   ,3,0
+80310,80313,:AUX2,128,short_coin, 2220       2   ,2,0
+80430,80439,:BLACK2,4,hold_probe, 2220       7   ,7,0
+80475,80487,:BLACK2,128,start_probe, 2220       7   ,7,0
+80655,80667,:BLACK2,128,start_probe, 2220       6   ,6,0
+80835,80844,:BLACK2,8,hold_probe, 2220       5   ,5,0
+80880,80892,:BLACK2,128,start_probe, 2220       5   ,5,0
+81060,81072,:BLACK2,128,start_probe, 2220       4   ,4,0
+81240,81249,:BLACK2,2,hold_probe, 2220       3   ,3,0
+81285,81297,:BLACK2,128,start_probe, 2220       3   ,3,0
+81465,81468,:AUX2,128,short_coin, 2220       2   ,2,0
+81585,81594,:BLACK2,4,hold_probe, 2220       7   ,7,0
+81630,81642,:BLACK2,128,start_probe, 2220       7   ,7,0
+81810,81822,:BLACK2,128,start_probe, 2220       6   ,6,0
+81990,81999,:BLACK2,8,hold_probe, 2220       5   ,5,0
+82035,82047,:BLACK2,128,start_probe, 2220       5   ,5,0
+82215,82227,:BLACK2,128,start_probe, 2220       4   ,4,0
+82395,82404,:BLACK2,2,hold_probe, 2220       3   ,3,0
+82440,82452,:BLACK2,128,start_probe, 2220       3   ,3,0
+82620,82632,:BLACK2,128,feature_roll_or_take, ROLL THE DICE  ,3,0
+82740,82749,:BLACK2,4,hold_probe, UP THE LADDER  ,3,0
+82785,82797,:BLACK2,128,start_probe, UP THE LADDER  ,3,0
+82965,82977,:BLACK2,128,feature_roll_or_take, TAKE NUDGEPOT  ,3,0
+83085,83094,:BLACK2,8,hold_probe,                ,3,0
+83130,83142,:BLACK2,128,feature_roll_or_take,  OR ROLL DICE  ,3,0
+83250,83262,:BLACK2,128,start_probe,                ,3,0
+83430,83439,:BLACK2,2,hold_probe,                ,3,0
+83475,83487,:BLACK2,128,start_probe,                ,3,0
+83655,83667,:BLACK2,128,feature_roll_or_take,    RATTLER     ,3,0
+83775,83787,:BLACK2,1,feature_roll_or_take,    RATTLER     ,3,0
+83895,83907,:BLACK2,128,feature_roll_or_take,  OR ROLL DICE  ,3,0
+84015,84027,:BLACK2,128,start_probe, UP THE LADDER  ,3,0
+84195,84207,:BLACK2,1,feature_roll_or_take,   TAKE 260     ,3,0
+84315,84324,:BLACK2,32,busy_choice_probe, 2240       3   ,3,0
+84375,84384,:BLACK2,2,busy_choice_probe, 2310       3   ,3,0
+84435,84444,:BLACK2,4,busy_choice_probe, 2370       3   ,3,0
+84495,84504,:BLACK2,8,busy_choice_probe, 2440       3   ,3,0
+84555,84564,:BLACK2,64,busy_choice_probe,            3   ,3,0
+84615,84624,:BLACK2,4,hold_probe, 2480       3   ,3,0
+84660,84672,:BLACK2,128,start_probe, 2480       3   ,3,0
+84840,84843,:AUX2,128,short_coin, 2480       2   ,2,0
+84960,84969,:BLACK2,8,hold_probe, 2480       7   ,7,0
+85005,85017,:BLACK2,128,start_probe, 2480       7   ,7,0
+85185,85197,:BLACK2,128,start_probe, 2480       6   ,6,0
+85365,85374,:BLACK2,2,hold_probe, 2480       5   ,5,0
+85410,85422,:BLACK2,128,start_probe, 2480       5   ,5,0
+85590,85602,:BLACK2,128,start_probe, 2480       4   ,4,0
+85770,85779,:BLACK2,4,hold_probe, 2480       3   ,3,0
+85815,85827,:BLACK2,128,start_probe, 2480       3   ,3,0
+85995,85998,:AUX2,128,short_coin, 2480       2   ,2,0
+86115,86124,:BLACK2,8,hold_probe, 2480       7   ,7,0
+86160,86172,:BLACK2,128,start_probe, 2480       7   ,7,0
+86340,86352,:BLACK2,128,start_probe, 2480       6   ,6,0
+86520,86529,:BLACK2,2,hold_probe, 2480       5   ,5,0
+86565,86577,:BLACK2,128,start_probe, 2480       5   ,5,0
+86745,86754,:BLACK2,2,nudge,    1  NUDGE    ,4,1
+86835,86844,:BLACK2,4,hold_probe, 2480       4   ,4,0
+86880,86892,:BLACK2,128,start_probe, 2480       4   ,4,0
+87060,87069,:BLACK2,2,busy_choice_probe, 2480       3   ,3,0
+87120,87129,:BLACK2,4,busy_choice_probe, 2480       3   ,3,0
+87180,87189,:BLACK2,8,busy_choice_probe, 2480       3   ,3,0
+87240,87249,:BLACK2,64,busy_choice_probe, 2480       3   ,3,0
+87300,87309,:BLACK2,16,gamble_choice,       --- LOW  ,3,0
+87420,87429,:BLACK2,32,gamble_choice,      LOSE      ,3,0
+87540,87552,:BLACK2,128,start_probe, 2480       3   ,3,0
+87720,87723,:AUX2,128,short_coin, 2480       2   ,2,0
+87840,87852,:BLACK2,128,start_probe, 2480       7   ,7,0
+88020,88029,:BLACK2,2,nudge,    1  NUDGE    ,6,1
+88110,88119,:BLACK2,8,hold_probe, 2480       6   ,6,0
+88155,88167,:BLACK2,128,start_probe, 2480       6   ,6,0
+88335,88344,:BLACK2,2,nudge,    1  NUDGE    ,5,1
+88425,88434,:BLACK2,2,hold_probe, 2480       5   ,5,0
+88470,88482,:BLACK2,128,start_probe, 2480       5   ,5,0
+88650,88662,:BLACK2,2,superhold_select_or_confirm,** SUPER HOLD **,4,0
+88740,88752,:BLACK2,4,superhold_select_or_confirm,** SUPER HOLD **,4,0
+88830,88842,:BLACK2,8,superhold_select_or_confirm,** SUPER HOLD **,4,0
+88920,88932,:BLACK2,128,superhold_select_or_confirm,** SUPER HOLD **,4,0
+89010,89019,:BLACK2,8,hold_probe, 2480       3   ,3,0
+89055,89067,:BLACK2,128,start_probe, 2480       3   ,3,0
+89235,89244,:BLACK2,2,nudge,    1  NUDGE    ,2,1
+89325,89328,:AUX2,128,short_coin, 2480       2   ,2,0
+89445,89457,:BLACK2,128,start_probe, 2480       7   ,7,0
+89625,89637,:BLACK2,128,start_probe, 2480       6   ,6,0
+89805,89814,:BLACK2,4,hold_probe, 2480       5   ,5,0
+89850,89862,:BLACK2,128,start_probe, 2480       5   ,5,0
+90030,90039,:BLACK2,2,nudge,    3  NUDGES   ,4,3
+90120,90129,:BLACK2,4,nudge,    2  NUDGES   ,4,2
+90210,90219,:BLACK2,8,nudge,    1  NUDGE    ,4,1
+90300,90312,:BLACK2,128,start_probe, 2480       4   ,4,0
+90480,90489,:BLACK2,2,hold_probe, 2480       3   ,3,0
+90525,90537,:BLACK2,128,start_probe, 2480       3   ,3,0
+90705,90708,:AUX2,128,short_coin, 2480       2   ,2,0
+90825,90834,:BLACK2,4,hold_probe, 2480       7   ,7,0
+90870,90882,:BLACK2,128,start_probe, 2480       7   ,7,0
+91050,91062,:BLACK2,128,start_probe, 2480       6   ,6,0
+91230,91239,:BLACK2,4,nudge,    2  NUDGES   ,5,2
+91320,91332,:BLACK2,128,start_probe,                ,5,0
+91500,91509,:BLACK2,32,busy_choice_probe,                ,5,0
+91560,91572,:BLACK2,1,feature_roll_or_take, ROLL THE DICE  ,5,0
+91680,91692,:BLACK2,128,feature_roll_or_take, ROLL THE DICE  ,5,0
+91800,91812,:BLACK2,128,start_probe,                ,5,0
+91980,91992,:BLACK2,1,feature_roll_or_take, TAKE NICE DICE ,5,0
+92100,92112,:BLACK2,128,feature_roll_or_take, STOP THE DICE  ,5,0
+92220,92232,:BLACK2,128,start_probe, 9 X 20P =      ,5,0
+92400,92409,:BLACK2,16,busy_choice_probe,                ,5,0
+92460,92469,:BLACK2,32,busy_choice_probe, 2490       5   ,5,0
+92520,92529,:BLACK2,2,busy_choice_probe, 2560       5   ,5,0
+92580,92589,:BLACK2,4,busy_choice_probe, 2620       5   ,5,0
+92640,92649,:BLACK2,8,busy_choice_probe,            5   ,5,0
+92700,92712,:BLACK2,128,start_probe, 2660       5   ,5,0
+92880,92889,:BLACK2,4,hold_probe, 2660       4   ,4,0
+92925,92937,:BLACK2,128,start_probe, 2660       4   ,4,0
+93105,93117,:BLACK2,128,start_probe, 2660       3   ,3,0
+93285,93294,:BLACK2,4,nudge,    2  NUDGES   ,2,2
+93375,93384,:BLACK2,8,nudge,    1  NUDGE    ,2,1
+93465,93468,:AUX2,128,short_coin, 2660       2   ,2,0
+93585,93594,:BLACK2,2,hold_probe, 2660       7   ,7,0
+93630,93642,:BLACK2,128,start_probe, 2660       7   ,7,0
+93810,93822,:BLACK2,128,start_probe, 2660       6   ,6,0
+93990,93999,:BLACK2,4,hold_probe, 2660       5   ,5,0
+94035,94047,:BLACK2,128,start_probe, 2660       5   ,5,0
+94215,94227,:BLACK2,128,start_probe, 2660       4   ,4,0
+94395,94404,:BLACK2,4,nudge,    2  NUDGES   ,3,2
+94485,94494,:BLACK2,8,nudge,    1  NUDGE    ,3,1
+94575,94587,:BLACK2,128,start_probe, 2660       3   ,3,0
+94755,94758,:AUX2,128,short_coin, 2660       2   ,2,0
+94875,94887,:BLACK2,128,start_probe, 2660       7   ,7,0
+95055,95067,:BLACK2,128,start_probe, 2660       6   ,6,0
+95235,95244,:BLACK2,4,hold_probe, 2660       5   ,5,0
+95280,95292,:BLACK2,128,start_probe, 2660       5   ,5,0
+95460,95472,:BLACK2,128,feature_roll_or_take, ROLL THE DICE  ,5,0
+95580,95589,:BLACK2,8,hold_probe,                ,5,0
+95625,95637,:BLACK2,128,start_probe,                ,5,0
+95805,95814,:BLACK2,64,busy_choice_probe,   ROLL EVEN    ,5,0
+95865,95874,:BLACK2,1,busy_choice_probe,   ROLL EVEN    ,5,0
+95925,95934,:BLACK2,128,busy_choice_probe,   ROLL EVEN    ,5,0
+95985,95994,:BLACK2,16,gamble_choice, ODD YOU LOSE   ,5,0
+96105,96114,:BLACK2,4,hold_probe, 2660       5   ,5,0
+96150,96162,:BLACK2,128,start_probe, 2660       5   ,5,0
+96330,96342,:BLACK2,128,start_probe, 2660       4   ,4,0
+96510,96519,:BLACK2,8,hold_probe, 2660       3   ,3,0
+96555,96567,:BLACK2,128,start_probe, 2660       3   ,3,0
+96735,96738,:AUX2,128,short_coin, 2660       2   ,2,0
+96855,96864,:BLACK2,2,hold_probe, 2660       7   ,7,0
+96900,96912,:BLACK2,128,start_probe, 2660       7   ,7,0
+97080,97089,:BLACK2,2,nudge,    2  NUDGES   ,6,2
+97170,97179,:BLACK2,4,nudge,    1  NUDGE    ,6,1
+97260,97272,:BLACK2,128,start_probe, 2660       6   ,6,0
+97440,97452,:BLACK2,128,start_probe, 2660       5   ,5,0
+97620,97629,:BLACK2,8,hold_probe, 2660       4   ,4,0
+97665,97677,:BLACK2,128,start_probe, 2660       4   ,4,0
+97845,97857,:BLACK2,128,start_probe, 2660       3   ,3,0
+98025,98028,:AUX2,128,short_coin, 2660       2   ,2,0
+98145,98157,:BLACK2,128,start_probe, 2660       7   ,7,0
+98325,98337,:BLACK2,128,start_probe, 2660       6   ,6,0
+98505,98514,:BLACK2,4,hold_probe, 2660       5   ,5,0
+98550,98562,:BLACK2,128,start_probe, 2660       5   ,5,0
+98730,98742,:BLACK2,128,start_probe, 2660       4   ,4,0
+98910,98919,:BLACK2,8,hold_probe, 2660       3   ,3,0
+98955,98967,:BLACK2,128,start_probe, 2660       3   ,3,0
+99135,99144,:BLACK2,2,nudge,    2  NUDGES   ,2,2
+99225,99234,:BLACK2,32,busy_choice_probe,                ,2,0
+99285,99294,:BLACK2,2,busy_choice_probe,                ,2,0
+99345,99354,:BLACK2,4,busy_choice_probe,                ,2,0
+99405,99414,:BLACK2,8,busy_choice_probe,                ,2,0
+99465,99474,:BLACK2,64,busy_choice_probe,                ,2,0
+99525,99534,:BLACK2,16,gamble_choice,  HIGH ---      ,2,0
+99645,99654,:BLACK2,128,busy_choice_probe,**** WINNER ****,2,0
+99705,99714,:BLACK2,16,gamble_choice,  HIGH ---      ,2,0
+99825,99828,:AUX2,128,short_coin, 2660       2   ,2,0
+99945,99954,:BLACK2,2,hold_probe, 2660       7   ,7,0
+99990,100002,:BLACK2,128,start_probe, 2660       7   ,7,0
+100170,100179,:BLACK2,2,nudge,    1  NUDGE    ,6,1
+100260,100269,:BLACK2,4,hold_probe, 2660       6   ,6,0
+100305,100317,:BLACK2,128,start_probe, 2660       6   ,6,0
+100485,100497,:BLACK2,128,start_probe, 2660       5   ,5,0
+100665,100674,:BLACK2,8,hold_probe, 2660       4   ,4,0
+100710,100722,:BLACK2,128,start_probe, 2660       4   ,4,0
+100890,100902,:BLACK2,128,feature_roll_or_take, ROLL THE DICE  ,4,0
+101010,101019,:BLACK2,2,hold_probe,                ,4,0
+101055,101067,:BLACK2,128,start_probe, UP THE LADDER  ,4,0
+101235,101247,:BLACK2,128,feature_roll_or_take,  OR ROLL DICE  ,4,0
+101355,101364,:BLACK2,4,hold_probe,                ,4,0
+101400,101412,:BLACK2,128,start_probe,                ,4,0
+101580,101592,:BLACK2,128,start_probe,                ,4,0
+101760,101769,:BLACK2,8,hold_probe,   SNAKE BITE   ,4,0
+101805,101817,:BLACK2,128,start_probe,   SNAKE BITE   ,4,0
+101985,101997,:BLACK2,128,start_probe, 4  FREE GAMES  ,4,0
+102165,102174,:BLACK2,2,hold_probe, 2660       4   ,4,0
+102210,102222,:BLACK2,128,start_probe, 2660       4   ,4,0
+102390,102402,:BLACK2,128,start_probe, 2660       3   ,3,0
+102570,102573,:AUX2,128,short_coin, 2660       2   ,2,0
+102690,102702,:BLACK2,128,start_probe, 2660       7   ,7,0
+102870,102882,:BLACK2,128,start_probe, 2660       6   ,6,0
+103050,103059,:BLACK2,8,hold_probe, 2660       5   ,5,0
+103095,103107,:BLACK2,128,start_probe, 2660       5   ,5,0
+103275,103287,:BLACK2,128,start_probe, 2660       4   ,4,0
+103455,103464,:BLACK2,4,nudge,    1  NUDGE    ,3,1
+103545,103557,:BLACK2,128,start_probe, 2660       3   ,3,0
+103725,103728,:AUX2,128,short_coin, 2660       2   ,2,0
+103845,103854,:BLACK2,4,hold_probe, 2660       7   ,7,0
+103890,103902,:BLACK2,128,start_probe, 2660       7   ,7,0
+104070,104079,:BLACK2,2,nudge,    1  NUDGE    ,6,1
+104160,104169,:BLACK2,8,hold_probe, 2660       6   ,6,0
+104205,104217,:BLACK2,128,start_probe, 2660       6   ,6,0
+104385,104397,:BLACK2,128,start_probe, 2660       5   ,5,0
+104565,104577,:BLACK2,1,feature_roll_or_take, ROLL THE DICE  ,5,0
+104685,104697,:BLACK2,128,feature_roll_or_take, ROLL THE DICE  ,5,0
+104805,104817,:BLACK2,128,feature_roll_or_take,  OR ROLL DICE  ,5,0
+104925,104934,:BLACK2,4,hold_probe,                ,5,0
+104970,104982,:BLACK2,128,start_probe, UP THE LADDER  ,5,0
+105150,105162,:BLACK2,128,feature_roll_or_take,   TAKE 260     ,5,0
+105270,105279,:BLACK2,8,hold_probe,                ,5,0
+105315,105327,:BLACK2,128,start_probe,                ,5,0
+105495,105504,:BLACK2,1,busy_choice_probe,                ,5,0
+105555,105564,:BLACK2,128,busy_choice_probe, 2670       5   ,5,0
+105615,105624,:BLACK2,16,busy_choice_probe, 2740       5   ,5,0
+105675,105684,:BLACK2,32,busy_choice_probe, 2740       5   ,5,0
+105735,105744,:BLACK2,4,hold_probe, 2740       5   ,5,0
+105780,105792,:BLACK2,128,start_probe, 2740       5   ,5,0
+105960,105972,:BLACK2,128,start_probe, 2740       4   ,4,0
+106140,106149,:BLACK2,8,hold_probe, 2740       3   ,3,0
+106185,106197,:BLACK2,128,start_probe, 2740       3   ,3,0
+106365,106368,:AUX2,128,short_coin, 2740       2   ,2,0
+106485,106494,:BLACK2,2,hold_probe, 2740       7   ,7,0
+106530,106542,:BLACK2,128,start_probe, 2740       7   ,7,0
+106710,106722,:BLACK2,128,start_probe, 2740       6   ,6,0
+106890,106899,:BLACK2,4,nudge,    1  NUDGE    ,5,1
+106980,106992,:BLACK2,128,start_probe, 2740       5   ,5,0
+107160,107169,:BLACK2,64,busy_choice_probe, 2740       4   ,4,0
+107220,107229,:BLACK2,1,busy_choice_probe, 2740       4   ,4,0
+107280,107289,:BLACK2,128,busy_choice_probe, 2740       4   ,4,0
+107340,107349,:BLACK2,16,busy_choice_probe, 2740       4   ,4,0
+107400,107409,:BLACK2,32,busy_choice_probe, 2740       4   ,4,0
+107460,107469,:BLACK2,16,gamble_choice,       --- LOW  ,4,0
+107580,107592,:BLACK2,128,start_probe,                ,4,0
+107760,107769,:BLACK2,4,nudge,    2  NUDGES   ,3,2
+107850,107859,:BLACK2,8,nudge,    1  NUDGE    ,3,1
+107940,107952,:BLACK2,128,start_probe, 2740       3   ,3,0
+108120,108129,:BLACK2,4,nudge,    2  NUDGES   ,2,2
+108210,108219,:BLACK2,8,nudge,    1  NUDGE    ,2,1
+108300,108303,:AUX2,128,short_coin, 2740       2   ,2,0
+108420,108429,:BLACK2,2,hold_probe, 2740       7   ,7,0
+108465,108477,:BLACK2,128,start_probe, 2740       7   ,7,0
+108645,108654,:BLACK2,2,nudge,    3  NUDGES   ,6,3
+108735,108744,:BLACK2,4,nudge,    2  NUDGES   ,6,2
+108825,108834,:BLACK2,8,nudge,    1  NUDGE    ,6,1
+108915,108927,:BLACK2,128,start_probe, 2740       6   ,6,0
+109095,109104,:BLACK2,8,hold_probe, 2740       5   ,5,0
+109140,109152,:BLACK2,128,start_probe, 2740       5   ,5,0
+109320,109332,:BLACK2,128,start_probe, 2740       4   ,4,0
+109500,109509,:BLACK2,4,nudge,    3  NUDGES   ,3,3
+109590,109599,:BLACK2,8,nudge,    2  NUDGES   ,3,2
+109680,109689,:BLACK2,2,nudge,    1  NUDGE    ,3,1
+109770,109779,:BLACK2,4,hold_probe, 2740       3   ,3,0
+109815,109827,:BLACK2,128,start_probe, 2740       3   ,3,0
+109995,110004,:BLACK2,2,nudge,    1  NUDGE    ,2,1
+110085,110088,:AUX2,128,short_coin, 2740       2   ,2,0
+110205,110217,:BLACK2,128,start_probe, 2740       7   ,7,0
+110385,110394,:BLACK2,2,nudge,    1  NUDGE    ,6,1
+110475,110484,:BLACK2,2,hold_probe, 2740       6   ,6,0
+110520,110532,:BLACK2,128,start_probe, 2740       6   ,6,0
+110700,110712,:BLACK2,128,start_probe, 2740       5   ,5,0
+110880,110889,:BLACK2,4,hold_probe, 2740       4   ,4,0
+110925,110937,:BLACK2,128,start_probe, 2740       4   ,4,0
+111105,111117,:BLACK2,128,start_probe, 2740       3   ,3,0
+111285,111288,:AUX2,128,short_coin, 2740       2   ,2,0
+111405,111417,:BLACK2,128,start_probe, 2740       7   ,7,0
+111585,111597,:BLACK2,128,start_probe, 2740       6   ,6,0
+111765,111774,:BLACK2,2,hold_probe, 2740       5   ,5,0
+111810,111822,:BLACK2,128,start_probe, 2740       5   ,5,0
+111990,111999,:BLACK2,128,busy_choice_probe, 2740       4   ,4,0
+112050,112059,:BLACK2,16,busy_choice_probe, 2740       4   ,4,0
+112110,112119,:BLACK2,32,busy_choice_probe, 2740       4   ,4,0
+112170,112179,:BLACK2,2,busy_choice_probe, 2740       4   ,4,0
+112230,112239,:BLACK2,4,busy_choice_probe, 2740       4   ,4,0
+112290,112299,:BLACK2,1,exchange_or_collect,    EXCHANGE    ,4,0
+112410,112419,:BLACK2,32,gamble_choice,  HIGH ---      ,4,0
+112530,112539,:BLACK2,1,busy_choice_probe,**** WINNER ****,4,0
+112590,112599,:BLACK2,128,busy_choice_probe,    E  HANGE    ,4,0
+112650,112659,:BLACK2,16,gamble_choice,  HIGH ---      ,4,0
+112770,112779,:BLACK2,32,busy_choice_probe,**** WINNER ****,4,0
+112830,112839,:BLACK2,1,exchange_or_collect,    EXCHANGE    ,4,0
+112950,112959,:BLACK2,4,busy_choice_probe, 2750       4   ,4,0
+113010,113019,:BLACK2,8,busy_choice_probe, 2820       4   ,4,0
+113070,113079,:BLACK2,64,busy_choice_probe, 2880       4   ,4,0
+113130,113139,:BLACK2,1,busy_choice_probe,            4   ,4,0
+113190,113199,:BLACK2,2,hold_probe, 2940       4   ,4,0
+113235,113247,:BLACK2,128,start_probe, 2940       4   ,4,0
+113415,113427,:BLACK2,128,start_probe, 2940       3   ,3,0
+113595,113598,:AUX2,128,short_coin, 2940       2   ,2,0
+113715,113727,:BLACK2,128,start_probe, 2940       7   ,7,0
+113895,113907,:BLACK2,128,start_probe, 2940       6   ,6,0
+114075,114084,:BLACK2,4,nudge,    1  NUDGE    ,5,1
+114165,114177,:BLACK2,128,start_probe, 2940       5   ,5,0
+114345,114354,:BLACK2,2,nudge,    1  NUDGE    ,4,1
+114435,114444,:BLACK2,2,hold_probe, 2940       4   ,4,0
+114480,114492,:BLACK2,128,start_probe, 2940       4   ,4,0
+114660,114672,:BLACK2,128,start_probe, 2940       3   ,3,0
+114840,114843,:AUX2,128,short_coin, 2940       2   ,2,0
+114960,114972,:BLACK2,128,start_probe, 2940       7   ,7,0
+115140,115152,:BLACK2,128,start_probe, 2940       6   ,6,0
+115320,115329,:BLACK2,4,nudge,    1  NUDGE    ,5,1
+115410,115422,:BLACK2,128,start_probe, 2940       5   ,5,0
+115590,115599,:BLACK2,16,busy_choice_probe, 2940       4   ,4,0
+115650,115659,:BLACK2,32,busy_choice_probe, 2940       4   ,4,0
+115710,115719,:BLACK2,2,busy_choice_probe, 2940       4   ,4,0
+115770,115779,:BLACK2,4,busy_choice_probe, 2940       4   ,4,0
+115830,115839,:BLACK2,16,gamble_choice,       --- LOW  ,4,0
+115950,115959,:BLACK2,64,busy_choice_probe,**** WINNER ****,4,0
+116010,116019,:BLACK2,16,gamble_choice,       --- LOW  ,4,0
+116130,116139,:BLACK2,128,busy_choice_probe,**** WINNER ****,4,0
+116190,116199,:BLACK2,1,exchange_or_collect,    EXCHANGE    ,4,0
+116310,116319,:BLACK2,32,busy_choice_probe, 2950       4   ,4,0
+116370,116379,:BLACK2,2,busy_choice_probe, 3020       4   ,4,0
+116430,116439,:BLACK2,4,busy_choice_probe, 3080       4   ,4,0
+116490,116499,:BLACK2,8,busy_choice_probe, 3150       4   ,4,0
+116550,116559,:BLACK2,64,busy_choice_probe,            4   ,4,0
+116610,116622,:BLACK2,128,start_probe, 3160       4   ,4,0
+116790,116799,:BLACK2,2,nudge,    1  NUDGE    ,3,1
+116880,116889,:BLACK2,8,hold_probe, 3160       3   ,3,0
+116925,116937,:BLACK2,128,start_probe, 3160       3   ,3,0
+117105,117108,:AUX2,128,short_coin, 3160       2   ,2,0
+117225,117234,:BLACK2,2,hold_probe, 3160       7   ,7,0
+117270,117282,:BLACK2,128,start_probe, 3160       7   ,7,0
+117450,117459,:BLACK2,2,nudge,    1  NUDGE    ,6,1
+117540,117549,:BLACK2,4,hold_probe, 3160       6   ,6,0
+117585,117597,:BLACK2,128,start_probe, 3160       6   ,6,0
+117765,117777,:BLACK2,128,start_probe, 3160       5   ,5,0
+117945,117954,:BLACK2,4,nudge,    2  NUDGES   ,4,2
+118035,118044,:BLACK2,8,nudge,    1  NUDGE    ,4,1
+118125,118137,:BLACK2,128,start_probe, 3160       4   ,4,0
+118305,118314,:BLACK2,2,hold_probe, 3160       3   ,3,0
+118350,118362,:BLACK2,128,start_probe, 3160       3   ,3,0
+118530,118533,:AUX2,128,short_coin, 3160       2   ,2,0
+118650,118659,:BLACK2,4,hold_probe, 3160       7   ,7,0
+118695,118707,:BLACK2,128,start_probe, 3160       7   ,7,0
+118875,118884,:BLACK2,2,nudge,    3  NUDGES   ,6,3
+118965,118974,:BLACK2,4,nudge,    2  NUDGES   ,6,2
+119055,119064,:BLACK2,8,nudge,    1  NUDGE    ,6,1
+119145,119157,:BLACK2,128,start_probe, 3160       6   ,6,0
+119325,119334,:BLACK2,2,hold_probe, 3160       5   ,5,0
+119370,119382,:BLACK2,128,start_probe, 3160       5   ,5,0
+119550,119562,:BLACK2,128,start_probe, 3160       4   ,4,0
+119730,119739,:BLACK2,4,hold_probe, 3160       3   ,3,0
+119775,119787,:BLACK2,128,start_probe, 3160       3   ,3,0
+119955,119958,:AUX2,128,short_coin, 3160       2   ,2,0
+120075,120084,:BLACK2,8,hold_probe, 3160       7   ,7,0
+120120,120132,:BLACK2,128,start_probe, 3160       7   ,7,0
+120300,120312,:BLACK2,128,start_probe, 3160       6   ,6,0
+120480,120489,:BLACK2,4,nudge,    2  NUDGES   ,5,2
+120570,120579,:BLACK2,8,nudge,    1  NUDGE    ,5,1
+120660,120672,:BLACK2,128,start_probe, 3160       5   ,5,0
+120840,120849,:BLACK2,4,hold_probe, 3160       4   ,4,0
+120885,120897,:BLACK2,128,start_probe, 3160       4   ,4,0
+121065,121077,:BLACK2,128,start_probe, 3160       3   ,3,0
+121245,121248,:AUX2,128,short_coin, 3160       2   ,2,0
+121365,121377,:BLACK2,128,start_probe, 3160       7   ,7,0
+121545,121557,:BLACK2,128,start_probe, 3160       6   ,6,0
+121725,121737,:BLACK2,1,feature_roll_or_take, ROLL THE DICE  ,6,0
+121845,121857,:BLACK2,128,feature_roll_or_take, ROLL THE DICE  ,6,0
+121965,121977,:BLACK2,128,feature_roll_or_take,  OR ROLL DICE  ,6,0
+122085,122094,:BLACK2,4,hold_probe,                ,6,0
+122130,122142,:BLACK2,128,feature_roll_or_take,  OR ROLL DICE  ,6,0
+122250,122262,:BLACK2,128,start_probe,                ,6,0
+122430,122442,:BLACK2,1,feature_roll_or_take,TAKE SKILL CASH ,6,0
+122550,122562,:BLACK2,128,start_probe,   SKILL CASH   ,6,0
+122730,122742,:BLACK2,128,start_probe,   SKILL CASH   ,6,0
+122910,122919,:BLACK2,2,hold_probe,   SKILL CASH   ,6,0
+122955,122967,:BLACK2,128,start_probe,   SKILL CASH   ,6,0
+123135,123144,:BLACK2,2,busy_choice_probe, 3220       6   ,6,0
+123195,123204,:BLACK2,4,busy_choice_probe,            6   ,6,0
+123255,123267,:BLACK2,128,start_probe, 3260       6   ,6,0
+123435,123447,:BLACK2,128,start_probe, 3260       5   ,5,0
+123615,123624,:BLACK2,4,nudge,    2  NUDGES   ,4,2
+123705,123714,:BLACK2,8,nudge,    1  NUDGE    ,4,1
+123795,123807,:BLACK2,128,start_probe, 3260       4   ,4,0
+123975,123984,:BLACK2,2,hold_probe, 3260       3   ,3,0
+124020,124032,:BLACK2,128,start_probe, 3260       3   ,3,0
+124200,124209,:BLACK2,2,nudge,    1  NUDGE    ,2,1
+124290,124293,:AUX2,128,short_coin, 3260       2   ,2,0
+124410,124422,:BLACK2,128,start_probe, 3260       7   ,7,0
+124590,124599,:BLACK2,2,nudge,    1  NUDGE    ,6,1
+124680,124689,:BLACK2,8,hold_probe, 3260       6   ,6,0
+124725,124737,:BLACK2,128,start_probe, 3260       6   ,6,0
+124905,124917,:BLACK2,128,start_probe, 3260       5   ,5,0
+125085,125094,:BLACK2,2,hold_probe, 3260       4   ,4,0
+125130,125142,:BLACK2,128,start_probe, 3260       4   ,4,0
+125310,125319,:BLACK2,2,nudge,    2  NUDGES   ,3,2
+125400,125409,:BLACK2,4,nudge,    1  NUDGE    ,3,1
+125490,125502,:BLACK2,128,start_probe, 3260       3   ,3,0
+125670,125673,:AUX2,128,short_coin, 3260       2   ,2,0
+125790,125799,:BLACK2,8,hold_probe, 3260       7   ,7,0
+125835,125847,:BLACK2,128,start_probe, 3260       7   ,7,0
+126015,126024,:BLACK2,2,nudge,    1  NUDGE    ,6,1
+126105,126114,:BLACK2,2,hold_probe, 3260       6   ,6,0
+126150,126162,:BLACK2,128,start_probe, 3260       6   ,6,0
+126330,126339,:BLACK2,2,nudge,    1  NUDGE    ,5,1
+126420,126429,:BLACK2,4,hold_probe, 3260       5   ,5,0
+126465,126477,:BLACK2,128,start_probe, 3260       5   ,5,0
+126645,126657,:BLACK2,128,start_probe, 3260       4   ,4,0
+126825,126834,:BLACK2,8,hold_probe, 3260       3   ,3,0
+126870,126882,:BLACK2,128,start_probe, 3260       3   ,3,0
+127050,127053,:AUX2,128,short_coin, 3260       2   ,2,0
+127170,127179,:BLACK2,2,hold_probe, 3260       7   ,7,0
+127215,127227,:BLACK2,128,start_probe, 3260       7   ,7,0
+127395,127404,:BLACK2,2,nudge,    1  NUDGE    ,6,1
+127485,127494,:BLACK2,4,hold_probe, 3260       6   ,6,0
+127530,127542,:BLACK2,128,start_probe, 3260       6   ,6,0
+127710,127719,:BLACK2,2,nudge,    1  NUDGE    ,5,1
+127800,127809,:BLACK2,8,hold_probe, 3260       5   ,5,0
+127845,127857,:BLACK2,128,start_probe, 3260       5   ,5,0
+128025,128037,:BLACK2,128,start_probe, 3260       4   ,4,0
+128205,128214,:BLACK2,2,hold_probe, 3260       3   ,3,0
+128250,128262,:BLACK2,128,start_probe, 3260       3   ,3,0
+128430,128433,:AUX2,128,short_coin, 3260       2   ,2,0
+128550,128559,:BLACK2,4,hold_probe, 3260       7   ,7,0
+128595,128607,:BLACK2,128,start_probe, 3260       7   ,7,0
+128775,128784,:BLACK2,2,nudge,    2  NUDGES   ,6,2
+128865,128874,:BLACK2,4,nudge,    1  NUDGE    ,6,1
+128955,128967,:BLACK2,128,start_probe, 3260       6   ,6,0
+129135,129144,:BLACK2,2,nudge,    3  NUDGES   ,5,3
+129225,129234,:BLACK2,4,nudge,    2  NUDGES   ,5,2
+129315,129324,:BLACK2,8,nudge,    1  NUDGE    ,5,1
+129405,129417,:BLACK2,128,start_probe, 3260       5   ,5,0
+129585,129594,:BLACK2,4,hold_probe, 3260       4   ,4,0
+129630,129642,:BLACK2,128,start_probe, 3260       4   ,4,0
+129810,129822,:BLACK2,128,start_probe, 3260       3   ,3,0
+129990,129993,:AUX2,128,short_coin, 3260       2   ,2,0
+130110,130119,:BLACK2,64,busy_choice_probe, 3260       2   ,7,0
+130170,130182,:BLACK2,128,feature_roll_or_take, ROLL THE DICE  ,7,0
+130290,130299,:BLACK2,2,hold_probe,                ,7,0
+130335,130347,:BLACK2,128,feature_roll_or_take,  OR ROLL DICE  ,7,0
+130455,130467,:BLACK2,128,feature_roll_or_take, TAKE NUDGEPOT  ,7,0
+130575,130584,:BLACK2,4,hold_probe,                ,7,0
+130620,130632,:BLACK2,128,start_probe,                ,7,0
+130800,130812,:BLACK2,128,start_probe,                ,7,0
+130980,130989,:BLACK2,8,hold_probe,                ,7,0
+131025,131037,:BLACK2,128,start_probe,                ,7,0
+131205,131214,:BLACK2,128,busy_choice_probe,   ROLL EVEN    ,7,0
+131265,131274,:BLACK2,16,gamble_choice, ODD YOU LOSE   ,7,0
+131385,131397,:BLACK2,128,start_probe, 3260       7   ,7,0
+131565,131574,:BLACK2,2,nudge,    1  NUDGE    ,6,1
+131655,131664,:BLACK2,4,hold_probe, 3260       6   ,6,0
+131700,131712,:BLACK2,128,start_probe, 3260       6   ,6,0
+131880,131892,:BLACK2,128,start_probe, 3260       5   ,5,0
+132060,132069,:BLACK2,8,hold_probe, 3260       4   ,4,0
+132105,132117,:BLACK2,128,start_probe, 3260       4   ,4,0
+132285,132297,:BLACK2,128,feature_roll_or_take, ROLL THE DICE  ,4,0
+132405,132414,:BLACK2,2,hold_probe,                ,4,0
+132450,132462,:BLACK2,128,start_probe,                ,4,0
+132630,132642,:BLACK2,128,feature_roll_or_take,  OR ROLL DICE  ,4,0
+132750,132759,:BLACK2,4,hold_probe, UP THE LADDER  ,4,0
+132795,132807,:BLACK2,128,start_probe, UP THE LADDER  ,4,0
+132975,132987,:BLACK2,128,feature_roll_or_take,TAKE SKILL CASH ,4,0
+133095,133104,:BLACK2,8,hold_probe,                ,4,0
+133140,133152,:BLACK2,128,feature_roll_or_take,  OR ROLL DICE  ,4,0
+133260,133272,:BLACK2,128,start_probe,                ,4,0
+133440,133449,:BLACK2,2,hold_probe,                ,4,0
+133485,133497,:BLACK2,128,start_probe,                ,4,0
+133665,133677,:BLACK2,128,start_probe,ADDERS  LADDERS ,4,0
+133845,133854,:BLACK2,4,hold_probe,ADDERS  LADDERS ,4,0
+133890,133902,:BLACK2,128,start_probe,ADDERS  LADDERS ,4,0
+134070,134079,:BLACK2,128,busy_choice_probe,   ROLL EVEN    ,4,0
+134130,134139,:BLACK2,8,hold_probe, AN EVEN WINNER ,4,0
+134175,134187,:BLACK2,128,start_probe, AN EVEN WINNER ,4,0
+134355,134367,:BLACK2,128,start_probe, AN EVEN WINNER ,4,0
+134535,134547,:BLACK2,1,feature_roll_or_take, TAKE NUDGE     ,4,0
+134655,134664,:BLACK2,8,nudge,    6  NUDGES   ,4,6
+134745,134754,:BLACK2,2,nudge,    5  NUDGES   ,4,5
+134835,134844,:BLACK2,4,nudge,    4  NUDGES   ,4,4
+134925,134934,:BLACK2,8,nudge,    3  NUDGES   ,4,3
+135015,135024,:BLACK2,2,nudge,    2  NUDGES   ,4,2
+135105,135114,:BLACK2,4,nudge,    1  NUDGE    ,4,1
+135195,135204,:BLACK2,2,busy_choice_probe,I CAN DO BETTER ,4,6
+135255,135264,:BLACK2,4,busy_choice_probe,I CAN DO BETTER ,4,6
+135315,135324,:BLACK2,16,gamble_choice,  LET ME THINK  ,4,6
+135435,135444,:BLACK2,64,busy_choice_probe,                ,4,5
+135495,135507,:BLACK2,128,start_probe,                ,4,2
+135675,135684,:BLACK2,128,busy_choice_probe, 3320       4   ,4,0
+135735,135744,:BLACK2,16,busy_choice_probe, 3390       4   ,4,0
+135795,135804,:BLACK2,32,busy_choice_probe, 3450       4   ,4,0
+135855,135864,:BLACK2,2,busy_choice_probe,            4   ,4,0
+135915,135927,:BLACK2,128,start_probe, 3460       4   ,4,0
+136095,136107,:BLACK2,128,start_probe, 3460       3   ,3,0
+136275,136284,:BLACK2,4,nudge,    1  NUDGE    ,2,1
+136365,136368,:AUX2,128,short_coin, 3460       2   ,2,0
+136485,136497,:BLACK2,128,start_probe, 3460       7   ,7,0
+136665,136674,:BLACK2,16,busy_choice_probe, 3460       6   ,6,0
+136725,136734,:BLACK2,32,busy_choice_probe, 3460       6   ,6,0
+136785,136794,:BLACK2,2,busy_choice_probe, 3460       6   ,6,0
+136845,136854,:BLACK2,4,busy_choice_probe, 3460       6   ,6,0
+136905,136914,:BLACK2,16,gamble_choice,  HIGH --- LOW  ,6,0
+137025,137037,:BLACK2,128,start_probe, 3460       6   ,6,0
+137205,137214,:BLACK2,2,hold_probe, 3460       5   ,5,0
+137250,137262,:BLACK2,128,start_probe, 3460       5   ,5,0
+137430,137439,:BLACK2,2,nudge,    3  NUDGES   ,4,3
+137520,137529,:BLACK2,4,nudge,    2  NUDGES   ,4,2
+137610,137619,:BLACK2,8,nudge,    1  NUDGE    ,4,1
+137700,137712,:BLACK2,128,start_probe, 3460       4   ,4,0
+137880,137889,:BLACK2,4,nudge,    2  NUDGES   ,3,2
+137970,137979,:BLACK2,8,nudge,    1  NUDGE    ,3,1
+138060,138069,:BLACK2,1,busy_choice_probe,                ,3,0
+138120,138129,:BLACK2,128,busy_choice_probe,                ,3,0
+138180,138189,:BLACK2,16,busy_choice_probe,                ,3,0
+138240,138249,:BLACK2,32,busy_choice_probe,                ,3,0
+138300,138309,:BLACK2,2,busy_choice_probe,                ,3,0
+138360,138369,:BLACK2,32,gamble_choice,  HIGH ---      ,3,0
+138480,138492,:BLACK2,128,start_probe, 3460       3   ,3,0
+138660,138663,:AUX2,128,short_coin, 3460       2   ,2,0
+138780,138792,:BLACK2,128,start_probe, 3460       7   ,7,0
+138960,138972,:BLACK2,128,start_probe, 3460       6   ,6,0
+139140,139149,:BLACK2,4,nudge,    3  NUDGES   ,5,3
+139230,139239,:BLACK2,8,nudge,    2  NUDGES   ,5,2
+139320,139329,:BLACK2,2,nudge,    1  NUDGE    ,5,1
+139410,139419,:BLACK2,4,hold_probe,                ,5,0
+139455,139467,:BLACK2,128,start_probe,                ,5,0
+139635,139647,:BLACK2,128,feature_roll_or_take, ROLL THE DICE  ,5,0
+139755,139764,:BLACK2,8,hold_probe,                ,5,0
+139800,139812,:BLACK2,128,feature_roll_or_take,    TAKE 80P    ,5,0
+139920,139932,:BLACK2,128,feature_roll_or_take,  OR ROLL DICE  ,5,0
+140040,140049,:BLACK2,2,hold_probe,                ,5,0
+140085,140097,:BLACK2,128,feature_roll_or_take,  OR ROLL DICE  ,5,0
+140205,140217,:BLACK2,128,start_probe,                ,5,0
+140385,140397,:BLACK2,1,feature_roll_or_take, TAKE NUDGEPOT  ,5,0
+140505,140514,:BLACK2,8,nudge,    6  NUDGES   ,5,6
+140595,140604,:BLACK2,2,nudge,    5  NUDGES   ,5,5
+140685,140694,:BLACK2,4,nudge,    4  NUDGES   ,5,4
+140775,140784,:BLACK2,8,nudge,    3  NUDGES   ,5,3
+140865,140874,:BLACK2,2,nudge,    2  NUDGES   ,5,2
+140955,140964,:BLACK2,4,nudge,    1  NUDGE    ,5,1
+141045,141054,:BLACK2,4,busy_choice_probe,I CAN DO BETTER ,5,6
+141105,141114,:BLACK2,8,busy_choice_probe,I CAN DO BETTER ,5,6
+141165,141174,:BLACK2,32,gamble_choice,  LET ME THINK  ,5,6
+141285,141294,:BLACK2,1,busy_choice_probe,                ,5,5
+141345,141354,:BLACK2,128,busy_choice_probe,                ,5,0
+141405,141414,:BLACK2,16,busy_choice_probe,                ,5,0
+141465,141474,:BLACK2,32,busy_choice_probe, NEW 600 JACKPOT,5,0
+141525,141534,:BLACK2,2,busy_choice_probe, NEW 600 JACKPOT,5,0
+141585,141594,:BLACK2,4,busy_choice_probe, NEW 600 JACKPOT,5,0
+141645,141654,:BLACK2,8,busy_choice_probe, NEW 600 JACKPOT,5,0
+141705,141714,:BLACK2,64,busy_choice_probe, NEW 600 JACKPOT,5,0
+141765,141774,:BLACK2,1,busy_choice_probe, NEW 600 JACKPOT,5,0
+141825,141834,:BLACK2,128,busy_choice_probe, NEW 600 JACKPOT,5,0
+141885,141894,:BLACK2,16,busy_choice_probe, NEW 600 JACKPOT,5,0
+141945,141954,:BLACK2,32,busy_choice_probe, NEW 600 JACKPOT,5,0
+142005,142014,:BLACK2,2,busy_choice_probe, NEW 600 JACKPOT,5,0
+142065,142074,:BLACK2,4,busy_choice_probe, 3490       5   ,5,0
+142125,142134,:BLACK2,8,busy_choice_probe, 3550       5   ,5,0
+142185,142194,:BLACK2,64,busy_choice_probe, 3620       5   ,5,0
+142245,142254,:BLACK2,1,busy_choice_probe, 3680       5   ,5,0
+142305,142314,:BLACK2,128,busy_choice_probe, 3750       5   ,5,0
+142365,142374,:BLACK2,16,busy_choice_probe, 3820       5   ,5,0
+142425,142434,:BLACK2,32,busy_choice_probe, 3880       5   ,5,0
+142485,142494,:BLACK2,2,busy_choice_probe, 3950       5   ,5,0
+142545,142554,:BLACK2,4,busy_choice_probe, 4010       5   ,5,0
+142605,142614,:BLACK2,8,busy_choice_probe,            5   ,5,0
+142665,142674,:BLACK2,2,hold_probe, 4060       5   ,5,0
+142710,142722,:BLACK2,128,start_probe, 4060       5   ,5,0
+142890,142899,:BLACK2,2,nudge,    1  NUDGE    ,4,1
+142980,142989,:BLACK2,4,hold_probe, 4060       4   ,4,0
+143025,143037,:BLACK2,128,start_probe, 4060       4   ,4,0
+143205,143217,:BLACK2,128,start_probe, 4060       3   ,3,0
+143385,143388,:AUX2,128,short_coin, 4060       2   ,2,0
+143505,143517,:BLACK2,128,start_probe, 4060       7   ,7,0
+143685,143697,:BLACK2,128,start_probe, 4060       6   ,6,0
+143865,143874,:BLACK2,4,nudge,    1  NUDGE    ,5,1
+143955,143967,:BLACK2,128,start_probe, 4060       5   ,5,0

@@ -1,0 +1,14 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: display, indexed memory, memory operations
+Callers: CE0C
+
+Threaded script at CDE2; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* CDE2  A12C  read_indexed_byte_table_at_a12e  body=0x9971, push_address=0xA12E
+* CDE4  8306  vm_push_word_body_word  value=0x0327
+* CDE6  7874  vm_store_word  
+* CDE8  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); 'ITS OVER WIN '; cmd70(0b); cmd79(2003270401); '0'; cmd7A()]
+* CE02  773C  vm_execute_alpha_stream  inline_stream=[cmd70(0b); 'N'; cmd7A()]
+* CE08  792F  vm_return_to_caller_stream  

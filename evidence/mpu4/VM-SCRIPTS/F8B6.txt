@@ -1,0 +1,22 @@
+Purpose: attract_clear_lamp_grid_rows_reverse
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: stack/cell helpers
+Callers: F8F1
+
+Threaded script at F8B6; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* F8B6  78B5  vm_push_zero  
+* F8B8  7963  vm_push_inline_byte_literal  inline_value=0x0005
+* F8BB  79DC  vm_enter_loop_frame  
+* F8BD  7963  vm_push_inline_byte_literal  inline_value=0x0008
+* F8C0  78B5  vm_push_zero  
+* F8C2  79DC  vm_enter_loop_frame  
+* F8C4  8248  vm_push_word_body_byte  value=0x0080
+* F8C6  9D2B  apply_lamp_id_from_nested_loop_indices  body=0x9D2D
+* F8C8  7A00  vm_loop_increment_one  
+* F8CA  7963  vm_push_inline_byte_literal  inline_value=0x0014
+* F8CD  F574  wait_attract_ticks_or_restore_game_state_on_credit_or_service  body=0xF576
+* F8CF  78AA  vm_push_true_minus_one  
+* F8D1  79EB  vm_loop_add_variable_step  
+* F8D3  792F  vm_return_to_caller_stream  

@@ -1,0 +1,43 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, lamps, memory operations, stack/cell helpers
+Callers: E71C, E6CD
+
+Threaded script at E529; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* E529  7963  vm_push_inline_byte_literal  inline_value=0x0005
+* E52C  78B5  vm_push_zero  
+* E52E  79DC  vm_enter_loop_frame  
+* E530  7A1C  vm_push_loop_index  
+* E532  E468  vm_push_local_frame_address  value=0x0002
+* E534  786B  vm_fetch_unsigned_byte  
+* E536  7A65  vm_compare_top_gt_second_signed  
+* E538  7A1C  vm_push_loop_index  
+* E53A  E462  vm_push_local_frame_address  value=0x0000
+* E53C  786B  vm_fetch_unsigned_byte  
+* E53E  7A65  vm_compare_top_gt_second_signed  
+* E540  7AA3  vm_bitwise_or  
+* E542  7982  vm_branch_forward8_if_zero  branch=0xE54A
+* E545  8248  vm_push_word_body_byte  value=0x0080
+* E547  7979  vm_branch_unsigned_forward8  branch=0xE55C
+* E54A  7A1C  vm_push_loop_index  
+* E54C  E468  vm_push_local_frame_address  value=0x0002
+* E54E  786B  vm_fetch_unsigned_byte  
+* E550  7A6F  vm_compare_equal  
+* E552  7982  vm_branch_forward8_if_zero  branch=0xE55A
+* E555  8212  vm_push_word_body_byte  value=0x0085
+* E557  7979  vm_branch_unsigned_forward8  branch=0xE55C
+* E55A  824E  vm_push_word_body_byte  value=0x008F
+* E55C  7A1C  vm_push_loop_index  
+* E55E  7B7D  vm_swap_two_cells  
+* E560  9BBA  apply_indexed_lamp_id_from_7281  body=0x9B18, push_address=0x9BBC
+* E562  7A00  vm_loop_increment_one  
+* E564  E462  vm_push_local_frame_address  value=0x0000
+* E566  786B  vm_fetch_unsigned_byte  
+* E568  E468  vm_push_local_frame_address  value=0x0002
+* E56A  786B  vm_fetch_unsigned_byte  
+* E56C  7AE7  vm_max_signed  
+* E56E  E462  vm_push_local_frame_address  value=0x0000
+* E570  7861  vm_store_byte  
+* E572  792F  vm_return_to_caller_stream  

@@ -1,0 +1,15 @@
+Purpose: pick_a_win_test_matching_result_threshold_with_option_0200
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: boolean/bit operations, mask tests, reels
+Callers: C593
+
+Threaded script at C55C; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C55C  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* C55E  80C4  call_reels_push_matching_symbol_result  native=0x1AA3
+* C560  7963  vm_push_inline_byte_literal  inline_value=0x0016
+* C563  7D42  compare_top_le_second_signed  body=0x7D44
+* C565  84E0  test_mask_0200_at_719f  body=0x841E, push_address=0x84E2
+* C567  7A97  vm_bitwise_and  
+* C569  792F  vm_return_to_caller_stream  

@@ -1,0 +1,17 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, memory operations, stack/cell helpers
+Callers: B5ED
+
+Threaded script at B5D7; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B5D7  7EB4  vm_push_word_body_word  value=0x0330
+* B5D9  786B  vm_fetch_unsigned_byte  
+* B5DB  78C0  vm_push_one  
+* B5DD  7A6F  vm_compare_equal  
+* B5DF  7982  vm_branch_forward8_if_zero  branch=0xB5E7
+  B5E2  B5CF  weighted_index_table_at_b5d1  body=0x9A1C, push_address=0xB5D1
+  B5E4  7979  vm_branch_unsigned_forward8  branch=0xB5E9
+* B5E7  B5C9  weighted_index_table_at_b5cb  body=0x9A1C, push_address=0xB5CB
+* B5E9  792F  vm_return_to_caller_stream  

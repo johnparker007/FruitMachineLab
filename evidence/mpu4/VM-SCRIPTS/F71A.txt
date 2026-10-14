@@ -1,0 +1,34 @@
+Purpose: attract_cycle_digit_segments_then_show_random_number
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: arithmetic, boolean/bit operations, memory operations, random selection, stack/cell helpers
+Callers: FA34
+
+Threaded script at F71A; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* F71A  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* F71D  78B5  vm_push_zero  
+* F71F  79DC  vm_enter_loop_frame  
+* F721  78C0  vm_push_one  
+* F723  7963  vm_push_inline_byte_literal  inline_value=0x0006
+* F726  78B5  vm_push_zero  
+* F728  79DC  vm_enter_loop_frame  
+* F72A  7B51  vm_duplicate_cell  
+* F72C  81A6  vm_push_word_body_byte  value=0x001A
+* F72E  7861  vm_store_byte  
+* F730  7B51  vm_duplicate_cell  
+* F732  81A6  vm_push_word_body_byte  value=0x001A
+* F734  78C9  vm_increment_word  
+* F736  7861  vm_store_byte  
+* F738  78C0  vm_push_one  
+* F73A  7ADA  vm_rotate_word_left_by_count  
+* F73C  7963  vm_push_inline_byte_literal  inline_value=0x0014
+* F73F  F574  wait_attract_ticks_or_restore_game_state_on_credit_or_service  body=0xF576
+* F741  7A00  vm_loop_increment_one  
+* F743  7B3D  vm_drop_cell  
+* F745  7A00  vm_loop_increment_one  
+* F747  78DE  vm_push_two  
+* F749  7963  vm_push_inline_byte_literal  inline_value=0x0011
+* F74C  99EC  random_scaled_range_selection  body=0x99EE
+* F74E  A8AB  display_two_decimal_digits_or_blank_zero  body=0xA8AD
+* F750  792F  vm_return_to_caller_stream  

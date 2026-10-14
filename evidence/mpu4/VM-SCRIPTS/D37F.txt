@@ -1,0 +1,46 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: control flow, memory operations, reel records, reels, stack/cell helpers
+Callers: D3CF
+
+Threaded script at D37F; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  D37F  78B5  vm_push_zero  
+  D381  D322  vm_push_local_frame_address  value=0x0003
+  D383  765F  vm_clear_byte_memory  
+  D385  78DE  vm_push_two  
+  D387  78AA  vm_push_true_minus_one  
+  D389  79DC  vm_enter_loop_frame  
+  D38B  7A1C  vm_push_loop_index  
+  D38D  78B5  vm_push_zero  
+  D38F  9DC1  address_record_0169_explicit_index  body=0x9D97, push_address=0x9DC3
+  D391  7861  vm_store_byte  
+  D393  78DE  vm_push_two  
+  D395  78AA  vm_push_true_minus_one  
+  D397  79DC  vm_enter_loop_frame  
+  D399  7A1C  vm_push_loop_index  
+  D39B  78C0  vm_push_one  
+  D39D  9DC1  address_record_0169_explicit_index  body=0x9D97, push_address=0x9DC3
+  D39F  7861  vm_store_byte  
+  D3A1  78DE  vm_push_two  
+  D3A3  78AA  vm_push_true_minus_one  
+  D3A5  79DC  vm_enter_loop_frame  
+  D3A7  7A1C  vm_push_loop_index  
+  D3A9  78DE  vm_push_two  
+  D3AB  9DC1  address_record_0169_explicit_index  body=0x9D97, push_address=0x9DC3
+  D3AD  7861  vm_store_byte  
+  D3AF  8114  call_reels_translate_positions_to_symbol_records  native=0x2C12
+  D3B1  D364  script_d364  body=0xD366
+  D3B3  7982  vm_branch_forward8_if_zero  branch=0xD3B8
+  D3B6  D32E  script_d32e  body=0xD330
+  D3B8  7A00  vm_loop_increment_one  
+  D3BA  7A00  vm_loop_increment_one  
+  D3BC  7A00  vm_loop_increment_one  
+  D3BE  7963  vm_push_inline_byte_literal  inline_value=0x0003
+  D3C1  78B5  vm_push_zero  
+  D3C3  79DC  vm_enter_loop_frame  
+  D3C5  9DAD  address_record_0169_loop_index  body=0x9D86, push_address=0x9DAF
+  D3C7  765F  vm_clear_byte_memory  
+  D3C9  7A00  vm_loop_increment_one  
+  D3CB  792F  vm_return_to_caller_stream  

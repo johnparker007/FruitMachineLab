@@ -1,0 +1,24 @@
+Purpose: run_dice_reel_motion_and_display
+Confidence: reviewed token mechanics
+Groups: display, lamps, reels, reels/symbol tests, sound/scheduler
+Callers: DD38
+
+Threaded script at B271; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B271  8248  vm_push_word_body_byte  value=0x0080
+* B273  9C28  apply_lamp_range_7286_728f  body=0x9ADB, push_address=0x9C2A
+* B275  8248  vm_push_word_body_byte  value=0x0080
+* B277  9BA8  apply_lamp_range_731c_731d  body=0x9ADB, push_address=0x9BAA
+* B279  B1CE  script_b1ce  body=0xB1D0
+* B27B  87A8  queue_sound_stream_87aa  body=0x856B, push_address=0x87AA
+* B27D  B1FB  script_b1fb  body=0xB1FD
+* B27F  B23B  vm_push_word_body_address  value=0xB23D
+* B281  831B  call_alpha_execute_stream_at_x  native=0x3CC0
+* B283  811C  call_reels_start_motion_without_sound_setup  native=0x61F6
+* B285  8130  call_reset_sound_and_scheduler  native=0x5B77
+* B287  959E  queue_sound_stream_95a0  body=0x856B, push_address=0x95A0
+* B289  B259  wait_reel_busy_bit_clear_and_refresh_symbols  body=0xB25B
+* B28B  80A0  call_alpha_reset_and_clear_display  native=0x3D0E
+* B28D  8130  call_reset_sound_and_scheduler  native=0x5B77
+* B28F  792F  vm_return_to_caller_stream  

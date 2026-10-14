@@ -1,0 +1,43 @@
+Purpose: run_selection_engine_from_five_callback_record
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: boolean/bit operations, control flow, lamps, memory operations, sound/scheduler, stack/cell helpers
+Callers: C7E4, E227
+
+Threaded script at AD65; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* AD65  7963  vm_push_inline_byte_literal  inline_value=0x0010
+* AD68  76A9  vm_allocate_local_frame  
+* AD6A  AC72  vm_push_local_frame_address  value=0x0000
+* AD6C  7874  vm_store_word  
+* AD6E  AC75  vm_push_local_frame_address  value=0x0002
+* AD70  765F  vm_clear_byte_memory  
+* AD72  AC8F  dispatch_selection_callback_byte_offset_00  body=0xAC81, push_address=0xAC91
+* AD74  AD40  shuffle_local_selection_bytes_with_twenty_random_swaps  body=0xAD42
+* AD76  8130  call_reset_sound_and_scheduler  native=0x5B77
+* AD78  9984  wait_for_all_panel_buttons_released  body=0x9986
+* AD7A  835A  vm_push_word_body_byte  value=0x0049
+* AD7C  8060  call_lamp_set_frame_pattern_5  native=0x498B
+* AD7E  9A4E  store_irq_timer_c568  body=0x9A50
+* AD80  ACBE  cycle_local_selection_index_with_lamps_until_choice_or_timer  body=0xACC0
+* AD82  AC9E  fetch_selected_byte_from_local_selection_pool  body=0xACA0
+* AD84  AC68  test_hold1_input_with_mode_or_mask0400_gate  body=0xAC6A
+* AD86  7ABB  vm_bitwise_not  
+* AD88  7982  vm_branch_forward8_if_zero  branch=0xAD91
+* AD8B  8248  vm_push_word_body_byte  value=0x0080
+* AD8D  AC92  dispatch_selection_callback_byte_offset_02  body=0xAC81, push_address=0xAC94
+* AD8F  AC9B  dispatch_selection_callback_byte_offset_08  body=0xAC81, push_address=0xAC9D
+* AD91  835A  vm_push_word_body_byte  value=0x0049
+* AD93  8068  call_lamp_set_frame_pattern_0  native=0x4982
+* AD95  7B51  vm_duplicate_cell  
+* AD97  8212  vm_push_word_body_byte  value=0x0085
+* AD99  AC92  dispatch_selection_callback_byte_offset_02  body=0xAC81, push_address=0xAC94
+* AD9B  7B51  vm_duplicate_cell  
+* AD9D  8579  write_byte_004d_857b  body=0x857B
+* AD9F  AC98  dispatch_selection_callback_byte_offset_06  body=0xAC81, push_address=0xAC9A
+* ADA1  80F8  call_scheduler_wait_until_active_list_empty  native=0x5CCB
+* ADA3  7B51  vm_duplicate_cell  
+* ADA5  824E  vm_push_word_body_byte  value=0x008F
+* ADA7  AC92  dispatch_selection_callback_byte_offset_02  body=0xAC81, push_address=0xAC94
+* ADA9  9984  wait_for_all_panel_buttons_released  body=0x9986
+* ADAB  792F  vm_return_to_caller_stream  

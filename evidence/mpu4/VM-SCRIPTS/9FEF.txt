@@ -1,0 +1,25 @@
+Purpose: lookup_first_award_threshold_index_in_75bd
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: arithmetic, award/balance operations, control flow, memory operations, stack/cell helpers
+Callers: ED06, C506, E4D3, EC97, EC6C
+
+Threaded script at 9FEF; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9FEF  7963  vm_push_inline_byte_literal  inline_value=0x0007
+* 9FF2  78B5  vm_push_zero  
+* 9FF4  79DC  vm_enter_loop_frame  
+* 9FF6  7A1C  vm_push_loop_index  
+* 9FF8  813C  vm_push_word_body_word  value=0x75BD
+* 9FFA  787E  vm_add_words  
+* 9FFC  786B  vm_fetch_unsigned_byte  
+* 9FFE  7B59  vm_copy_second_cell  
+* A000  7D42  compare_top_le_second_signed  body=0x7D44
+* A002  7982  vm_branch_forward8_if_zero  branch=0xA00B
+* A005  7B3D  vm_drop_cell  
+* A007  7A1C  vm_push_loop_index  
+* A009  7935  vm_unwind_loop_frames_to_return  
+* A00B  7A00  vm_loop_increment_one  
+  A00D  7B3D  vm_drop_cell  
+  A00F  78AA  vm_push_true_minus_one  
+  A011  792F  vm_return_to_caller_stream  

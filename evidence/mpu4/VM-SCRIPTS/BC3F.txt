@@ -1,0 +1,23 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: display, memory operations, sound/scheduler, stack/cell helpers
+Callers: BD99
+
+Threaded script at BC3F; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* BC3F  80F8  call_scheduler_wait_until_active_list_empty  native=0x5CCB
+* BC41  8EA6  queue_sound_stream_8ea8  body=0x856B, push_address=0x8EA8
+* BC43  7963  vm_push_inline_byte_literal  inline_value=0x0005
+* BC46  78B5  vm_push_zero  
+* BC48  79DC  vm_enter_loop_frame  
+* BC4A  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); cmd7A()]
+* BC4E  7963  vm_push_inline_byte_literal  inline_value=0x0032
+* BC51  99AD  wait_irq_ticks_or_abort_flag  body=0x99AF
+* BC53  7EFD  vm_push_word_body_byte  value=0x00E7
+* BC55  786B  vm_fetch_unsigned_byte  
+* BC57  BC14  display_fixed_width_cash_amount_record_and_store_e7  body=0xBC16
+* BC59  7963  vm_push_inline_byte_literal  inline_value=0x0032
+* BC5C  99AD  wait_irq_ticks_or_abort_flag  body=0x99AF
+* BC5E  7A00  vm_loop_increment_one  
+* BC60  792F  vm_return_to_caller_stream  

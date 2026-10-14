@@ -1,0 +1,16 @@
+Purpose: refresh_credit_display
+Confidence: reviewed gameplay context
+Groups: boolean/bit operations, control flow, display, memory operations
+Callers: A7DB
+
+Threaded script at A7AB; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* A7AB  81D9  vm_push_word_body_word  value=0x02F1
+* A7AD  786B  vm_fetch_unsigned_byte  
+* A7AF  7A46  vm_test_zero  
+* A7B1  7982  vm_branch_forward8_if_zero  branch=0xA7C7
+* A7B4  773C  vm_execute_alpha_stream  inline_stream=[cmd70(05); '      '; cmd76(02f0); '  '; cmd7A()]
+* A7C4  7979  vm_branch_unsigned_forward8  branch=0xA7D7
+  A7C7  773C  vm_execute_alpha_stream  inline_stream=[cmd70(05); '      '; cmd76(02f0); '.5'; cmd7A()]
+* A7D7  792F  vm_return_to_caller_stream  

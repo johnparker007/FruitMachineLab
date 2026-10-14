@@ -1,0 +1,14 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, memory operations
+Callers: E5A2
+
+Threaded script at E594; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* E594  7EED  vm_push_word_body_byte  value=0x00BF
+* E596  786B  vm_fetch_unsigned_byte  
+* E598  E474  vm_push_local_frame_address  value=0x0006
+* E59A  786B  vm_fetch_unsigned_byte  
+* E59C  7A79  vm_compare_top_lt_second_signed  
+* E59E  792F  vm_return_to_caller_stream  

@@ -1,0 +1,14 @@
+Purpose: apply_eight_id_lamp_pattern_table
+Confidence: reviewed token mechanics
+Groups: composition of script calls
+Callers: A365
+
+Threaded script at 9C87; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  9C87  9C56  execute_lamp_pattern_stream_9c58  body=0x9C58
+  9C89  7EE6  vm_push_word_body_word  value=0x7338
+  9C8B  7EE2  vm_push_word_body_word  value=0x7248
+  9C8D  7963  vm_push_inline_byte_literal  inline_value=0x0008
+  9C90  9C61  apply_rotating_patterns_to_lamp_ids  body=0x9C63
+  9C92  792F  vm_return_to_caller_stream  

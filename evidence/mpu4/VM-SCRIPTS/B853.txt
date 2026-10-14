@@ -1,0 +1,31 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: arithmetic, boolean/bit operations, control flow, memory operations
+Callers: B88C
+
+Threaded script at B853; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B853  7EED  vm_push_word_body_byte  value=0x00BF
+* B855  786B  vm_fetch_unsigned_byte  
+* B857  78C9  vm_increment_word  
+* B859  7963  vm_push_inline_byte_literal  inline_value=0x000F
+* B85C  7ADC  vm_min_signed  
+* B85E  7EEA  vm_push_word_body_byte  value=0x00CA
+* B860  787E  vm_add_words  
+* B862  786B  vm_fetch_unsigned_byte  
+* B864  B772  script_b772  body=0xB774
+* B866  7A79  vm_compare_top_lt_second_signed  
+* B868  7982  vm_branch_forward8_if_zero  branch=0xB883
+* B86B  7EED  vm_push_word_body_byte  value=0x00BF
+* B86D  786B  vm_fetch_unsigned_byte  
+* B86F  7963  vm_push_inline_byte_literal  inline_value=0x0004
+* B872  7A65  vm_compare_top_gt_second_signed  
+* B874  7982  vm_branch_forward8_if_zero  branch=0xB87D
+* B877  7963  vm_push_inline_byte_literal  inline_value=0x0028
+* B87A  7979  vm_branch_unsigned_forward8  branch=0xB880
+* B87D  7963  vm_push_inline_byte_literal  inline_value=0x000A
+* B880  7979  vm_branch_unsigned_forward8  branch=0xB886
+* B883  7963  vm_push_inline_byte_literal  inline_value=0x0046
+* B886  B7F3  script_b7f3  body=0xB7F5
+* B888  792F  vm_return_to_caller_stream  

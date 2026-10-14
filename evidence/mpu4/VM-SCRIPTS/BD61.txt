@@ -1,0 +1,34 @@
+Purpose: loot_shoot_account_and_service_repeated_two_unit_payouts
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: accounting/NVRAM, control flow, memory operations
+Callers: BD99
+
+Threaded script at BD61; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* BD61  7EFD  vm_push_word_body_byte  value=0x00E7
+* BD63  786B  vm_fetch_unsigned_byte  
+* BD65  BD28  animate_cash_result_character_then_flash_amount  body=0xBD2A
+* BD67  8222  vm_push_word_body_word  value=0x02FE
+* BD69  790D  vm_fetch_word  
+* BD6B  7EFD  vm_push_word_body_byte  value=0x00E7
+* BD6D  786B  vm_fetch_unsigned_byte  
+* BD6F  78FD  vm_shift_left_one  
+* BD71  8164  vm_push_word_body_byte  value=0x00B9
+* BD73  786B  vm_fetch_unsigned_byte  
+* BD75  AE38  account_award_by_result_categories_and_selected_counter  body=0xAE3A
+* BD77  7EFD  vm_push_word_body_byte  value=0x00E7
+* BD79  786B  vm_fetch_unsigned_byte  
+* BD7B  798C  vm_branch_forward8_if_zero  branch=0xBD8F
+* BD7E  78DE  vm_push_two  
+* BD80  8222  vm_push_word_body_word  value=0x02FE
+* BD82  7874  vm_store_word  
+* BD84  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* BD86  7EFD  vm_push_word_body_byte  value=0x00E7
+* BD88  7659  vm_decrement_byte_memory  
+* BD8A  80E4  call_select_and_service_payout_records_by_coin_handling_setting  native=0x4B39
+* BD8C  79A4  vm_branch_backward8  branch=0xBD77
+* BD8F  8222  vm_push_word_body_word  value=0x02FE
+* BD91  7874  vm_store_word  
+* BD93  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* BD95  792F  vm_return_to_caller_stream  

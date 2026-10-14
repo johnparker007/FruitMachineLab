@@ -1,0 +1,15 @@
+Purpose: test_orange1_conditions_and_local_mode_four
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: boolean/bit operations, memory operations
+Callers: EA22, E71C, E7E3, EA94, E75E
+
+Threaded script at E4AD; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* E4AD  9F5E  test_two_orange1_input_conditions  body=0x9F60
+* E4AF  E468  vm_push_local_frame_address  value=0x0002
+* E4B1  786B  vm_fetch_unsigned_byte  
+* E4B3  7963  vm_push_inline_byte_literal  inline_value=0x0004
+* E4B6  7A6F  vm_compare_equal  
+* E4B8  7A97  vm_bitwise_and  
+* E4BA  792F  vm_return_to_caller_stream  

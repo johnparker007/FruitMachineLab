@@ -1,0 +1,43 @@
+Purpose: special_feature_up_and_over
+Confidence: reviewed dispatch/display association; complete gameplay unresolved
+Groups: boolean/bit operations, control flow, input conditions, lamps, mask tests, sound/scheduler, stack/cell helpers
+Callers: E227
+
+Threaded script at CE31; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* CE31  78B3  vm_push_true_minus_one  
+* CE33  CD87  scan_neighbor_feature_type_thresholds  body=0xCD89
+* CE35  9A4E  store_irq_timer_c568  body=0x9A50
+* CE37  835A  vm_push_word_body_byte  value=0x0049
+* CE39  8060  call_lamp_set_frame_pattern_5  native=0x498B
+* CE3B  7B6D  vm_rotate_three_cells  
+* CE3D  7ABB  vm_bitwise_not  
+* CE3F  7D5A  rotate_three_cells_twice  body=0x7D5C
+* CE41  7B51  vm_duplicate_cell  
+* CE43  824E  vm_push_word_body_byte  value=0x008F
+* CE45  9B82  apply_indexed_lamp_id_from_728f  body=0x9B18, push_address=0x9B84
+* CE47  7B7D  vm_swap_two_cells  
+* CE49  7B51  vm_duplicate_cell  
+* CE4B  8248  vm_push_word_body_byte  value=0x0080
+* CE4D  9B82  apply_indexed_lamp_id_from_728f  body=0x9B18, push_address=0x9B84
+* CE4F  8130  call_reset_sound_and_scheduler  native=0x5B77
+* CE51  8B99  queue_sound_stream_8b9b  body=0x856B, push_address=0x8B9B
+* CE53  7963  vm_push_inline_byte_literal  inline_value=0x0032
+* CE56  99AD  wait_irq_ticks_or_abort_flag  body=0x99AF
+* CE58  83FC  vm_test_input_condition  value=0x0012
+* CE5A  9A40  test_irq_timer_positive_or_abort_flag  body=0x9A42
+* CE5C  7AA3  vm_bitwise_or  
+* CE5E  84E0  test_mask_0200_at_719f  body=0x841E, push_address=0x84E2
+* CE60  7AA3  vm_bitwise_or  
+* CE62  79A6  vm_branch_backward8_if_zero  branch=0xCE3B
+* CE65  9CA3  apply_lamp_range_constant_0080_record_9b8c_9ca5  body=0x9CA5
+* CE67  7B6D  vm_rotate_three_cells  
+* CE69  7963  vm_push_inline_byte_literal  inline_value=0x0032
+* CE6C  9A11  random_percentage_test  body=0x9A13
+* CE6E  9A72  merge_hold1_and_refill_gates_when_mode_or_option_enabled  body=0x9A74
+* CE70  7982  vm_branch_forward8_if_zero  branch=0xCE78
+* CE73  CDAF  announce_up_we_go_and_commit_destination  body=0xCDB1
+* CE75  7979  vm_branch_unsigned_forward8  branch=0xCE7A
+* CE78  CE0A  script_ce0a  body=0xCE0C
+* CE7A  792F  vm_return_to_caller_stream  

@@ -1,0 +1,28 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: arithmetic, boolean/bit operations, control flow, memory operations, stack/cell helpers
+Callers: B7C2
+
+Threaded script at B795; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B795  7963  vm_push_inline_byte_literal  inline_value=0x0010
+* B798  78B5  vm_push_zero  
+* B79A  79DC  vm_enter_loop_frame  
+* B79C  7A1C  vm_push_loop_index  
+* B79E  9F82  mask_best_reel_result_by_signed_threshold_nine  body=0x9F84
+* B7A0  9F68  normalize_award_47_to_30_with_optional_input_clamp  body=0x9F6A
+* B7A2  7B51  vm_duplicate_cell  
+* B7A4  7F0D  vm_push_word_body_byte  value=0x001E
+* B7A6  7A79  vm_compare_top_lt_second_signed  
+* B7A8  7982  vm_branch_forward8_if_zero  branch=0xB7B1
+* B7AB  7B3D  vm_drop_cell  
+* B7AD  7A1C  vm_push_loop_index  
+* B7AF  7935  vm_unwind_loop_frames_to_return  
+* B7B1  7A1C  vm_push_loop_index  
+* B7B3  7EEA  vm_push_word_body_byte  value=0x00CA
+* B7B5  787E  vm_add_words  
+* B7B7  7861  vm_store_byte  
+* B7B9  7A00  vm_loop_increment_one  
+* B7BB  7963  vm_push_inline_byte_literal  inline_value=0x0010
+* B7BE  792F  vm_return_to_caller_stream  

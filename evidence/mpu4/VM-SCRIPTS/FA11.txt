@@ -1,0 +1,24 @@
+Purpose: attract_flash_mirrored_grid_and_finish_column_sweep
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: lamps, stack/cell helpers
+Callers: FA34
+
+Threaded script at FA11; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* FA11  8248  vm_push_word_body_byte  value=0x0080
+* FA13  9B86  apply_lamp_range_728f_72bf  body=0x9ADB, push_address=0x9B88
+* FA15  78DE  vm_push_two  
+* FA17  78B5  vm_push_zero  
+* FA19  79DC  vm_enter_loop_frame  
+* FA1B  824E  vm_push_word_body_byte  value=0x008F
+* FA1D  F9B9  attract_render_mirrored_six_row_grid_patterns  body=0xF9BB
+* FA1F  8248  vm_push_word_body_byte  value=0x0080
+* FA21  F9B9  attract_render_mirrored_six_row_grid_patterns  body=0xF9BB
+* FA23  7A00  vm_loop_increment_one  
+* FA25  F8D5  attract_light_grid_columns_reverse  body=0xF8D7
+* FA27  824E  vm_push_word_body_byte  value=0x008F
+* FA29  9B86  apply_lamp_range_728f_72bf  body=0x9ADB, push_address=0x9B88
+* FA2B  7963  vm_push_inline_byte_literal  inline_value=0x0096
+* FA2E  F574  wait_attract_ticks_or_restore_game_state_on_credit_or_service  body=0xF576
+* FA30  792F  vm_return_to_caller_stream  

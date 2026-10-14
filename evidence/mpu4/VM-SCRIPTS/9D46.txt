@@ -1,0 +1,12 @@
+Purpose: apply_three_reel_and_auxiliary_indexed_lamp_pattern
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: lamps, reels/symbol tests
+Callers: E71C, EC2C, EC97, EC6C, C4B4, F947, E6CD
+
+Threaded script at 9D46; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9D46  7D52  duplicate_two_cells  body=0x7D54
+* 9D48  9CB3  apply_three_id_lamp_record  body=0x9CB5
+* 9D4A  9C34  apply_indexed_lamp_id_from_7257  body=0x9B18, push_address=0x9C36
+* 9D4C  792F  vm_return_to_caller_stream  

@@ -1,0 +1,16 @@
+Purpose: format_and_display_word_0327
+Confidence: reviewed gameplay context
+Groups: control flow, display, mask tests, memory operations, stack/cell helpers
+Callers: A86B
+
+Threaded script at A805; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* A805  84E0  test_mask_0200_at_719f  body=0x841E, push_address=0x84E2
+* A807  7982  vm_branch_forward8_if_zero  branch=0xA80E
+  A80A  7B3D  vm_drop_cell  
+  A80C  7935  vm_unwind_loop_frames_to_return  
+* A80E  8306  vm_push_word_body_word  value=0x0327
+* A810  7874  vm_store_word  
+* A812  773C  vm_execute_alpha_stream  inline_stream=[cmd70(00); cmd79(2003270401); '0'; cmd7A()]
+* A81E  792F  vm_return_to_caller_stream  

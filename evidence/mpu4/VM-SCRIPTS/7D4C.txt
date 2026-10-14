@@ -1,0 +1,11 @@
+Purpose: compare_top_ge_second_signed
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations
+Callers: B0CF, B8D7, C8E4, D9F1, EE98, C7B5, DD04, A3D0
+
+Threaded script at 7D4C; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 7D4C  7A79  vm_compare_top_lt_second_signed  
+* 7D4E  7ABB  vm_bitwise_not  
+* 7D50  792F  vm_return_to_caller_stream  

@@ -1,0 +1,13 @@
+Purpose: bias_word_signed_value_at_bit7
+Confidence: reviewed token mechanics
+Groups: arithmetic, boolean/bit operations
+Callers: EBB8, AC03, 9EFB, A553, 9F12
+
+Threaded script at 9ED9; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9ED9  795B  vm_push_inline_word_literal  inline_value=0xFF80
+* 9EDD  787E  vm_add_words  
+* 9EDF  795B  vm_push_inline_word_literal  inline_value=0xFF80
+* 9EE3  7AAF  vm_bitwise_xor  
+* 9EE5  792F  vm_return_to_caller_stream  

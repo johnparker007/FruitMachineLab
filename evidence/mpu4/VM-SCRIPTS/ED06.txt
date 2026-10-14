@@ -1,0 +1,75 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: arithmetic, boolean/bit operations, control flow, display, lamps, mask/address records, memory operations, reels, sound/scheduler
+Callers: EDB4
+
+Threaded script at ED06; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* ED06  8248  vm_push_word_body_byte  value=0x0080
+* ED08  9D4E  clear_selected_reel_lamp_record_and_auxiliary_range  body=0x9D50
+* ED0A  ECD4  script_ecd4  body=0xECD6
+* ED0C  7982  vm_branch_forward8_if_zero  branch=0xED58
+* ED0F  84C2  push_pair_0010_00a0  body=0x8417, push_address=0x84C4
+* ED11  767F  vm_test_word_memory_mask  
+* ED13  7ABB  vm_bitwise_not  
+* ED15  82DD  vm_push_word_body_byte  value=0x00BD
+* ED17  786B  vm_fetch_unsigned_byte  
+* ED19  7E82  vm_push_word_body_byte  value=0x0015
+* ED1B  7A6F  vm_compare_equal  
+* ED1D  7AA3  vm_bitwise_or  
+* ED1F  7982  vm_branch_forward8_if_zero  branch=0xED4B
+* ED22  80A0  call_alpha_reset_and_clear_display  native=0x3D0E
+* ED24  8318  vm_push_word_body_byte  value=0x00BA
+* ED26  790D  vm_fetch_word  
+* ED28  9FED  lookup_first_award_threshold_index_in_75bd  body=0x9FEF
+* ED2A  78D3  vm_decrement_word  
+* ED2C  8212  vm_push_word_body_byte  value=0x0085
+* ED2E  9C34  apply_indexed_lamp_id_from_7257  body=0x9B18, push_address=0x9C36
+* ED30  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* ED32  80C4  call_reels_push_matching_symbol_result  native=0x1AA3
+* ED34  9F68  normalize_award_47_to_30_with_optional_input_clamp  body=0x9F6A
+* ED36  8318  vm_push_word_body_byte  value=0x00BA
+* ED38  790D  vm_fetch_word  
+* ED3A  7A6F  vm_compare_equal  
+* ED3C  7982  vm_branch_forward8_if_zero  branch=0xED4B
+* ED3F  8318  vm_push_word_body_byte  value=0x00BA
+* ED41  790D  vm_fetch_word  
+* ED43  9FED  lookup_first_award_threshold_index_in_75bd  body=0x9FEF
+* ED45  78D3  vm_decrement_word  
+* ED47  8212  vm_push_word_body_byte  value=0x0085
+* ED49  9CB3  apply_three_id_lamp_record  body=0x9CB5
+* ED4B  8130  call_reset_sound_and_scheduler  native=0x5B77
+* ED4D  7963  vm_push_inline_byte_literal  inline_value=0x000D
+* ED50  8581  write_byte_004e_8583  body=0x8583
+* ED52  8B67  queue_sound_stream_8b69  body=0x856B, push_address=0x8B69
+* ED54  80F8  call_scheduler_wait_until_active_list_empty  native=0x5CCB
+* ED56  8130  call_reset_sound_and_scheduler  native=0x5B77
+* ED58  84C2  push_pair_0010_00a0  body=0x8417, push_address=0x84C4
+* ED5A  767F  vm_test_word_memory_mask  
+* ED5C  7ABB  vm_bitwise_not  
+* ED5E  82DD  vm_push_word_body_byte  value=0x00BD
+* ED60  786B  vm_fetch_unsigned_byte  
+* ED62  7E82  vm_push_word_body_byte  value=0x0015
+* ED64  7A6F  vm_compare_equal  
+* ED66  7AA3  vm_bitwise_or  
+* ED68  7982  vm_branch_forward8_if_zero  branch=0xED90
+* ED6B  8318  vm_push_word_body_byte  value=0x00BA
+* ED6D  790D  vm_fetch_word  
+* ED6F  9FED  lookup_first_award_threshold_index_in_75bd  body=0x9FEF
+* ED71  78D3  vm_decrement_word  
+* ED73  824E  vm_push_word_body_byte  value=0x008F
+* ED75  9C34  apply_indexed_lamp_id_from_7257  body=0x9B18, push_address=0x9C36
+* ED77  8318  vm_push_word_body_byte  value=0x00BA
+* ED79  790D  vm_fetch_word  
+* ED7B  80C4  call_reels_push_matching_symbol_result  native=0x1AA3
+* ED7D  9F68  normalize_award_47_to_30_with_optional_input_clamp  body=0x9F6A
+* ED7F  7A6F  vm_compare_equal  
+* ED81  7982  vm_branch_forward8_if_zero  branch=0xED90
+* ED84  8318  vm_push_word_body_byte  value=0x00BA
+* ED86  790D  vm_fetch_word  
+* ED88  9FED  lookup_first_award_threshold_index_in_75bd  body=0x9FEF
+* ED8A  78D3  vm_decrement_word  
+* ED8C  824E  vm_push_word_body_byte  value=0x008F
+* ED8E  9CB3  apply_three_id_lamp_record  body=0x9CB5
+* ED90  792F  vm_return_to_caller_stream  

@@ -1,0 +1,18 @@
+Purpose: fetch_fourth_reel_sector_value_from_763b
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: arithmetic, memory operations, reel records, reels/symbol tests
+Callers: CE99, BE91
+
+Threaded script at BE4C; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* BE4C  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* BE4F  9DC9  address_record_0168_explicit_index  body=0x9D97, push_address=0x9DCB
+* BE51  786B  vm_fetch_unsigned_byte  
+* BE53  7963  vm_push_inline_byte_literal  inline_value=0x0008
+* BE56  7DEE  signed_cell_quotient  body=0x7DF0
+* BE58  78FD  vm_shift_left_one  
+* BE5A  7F74  vm_push_word_body_word  value=0x763B
+* BE5C  787E  vm_add_words  
+* BE5E  786B  vm_fetch_unsigned_byte  
+* BE60  792F  vm_return_to_caller_stream  

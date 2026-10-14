@@ -1,0 +1,12 @@
+Purpose: set_sound_parameters_004e_004d_and_queue_stream_86f8
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: sound/scheduler
+Callers: F428
+
+Threaded script at 99CE; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  99CE  8581  write_byte_004e_8583  body=0x8583
+  99D0  8579  write_byte_004d_857b  body=0x857B
+  99D2  86F6  queue_sound_stream_86f8  body=0x856B, push_address=0x86F8
+  99D4  792F  vm_return_to_caller_stream  

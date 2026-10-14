@@ -1,0 +1,21 @@
+Purpose: compute_compensation_countdown_from_target_and_divisor
+Confidence: reviewed token mechanics; see lifecycle-pass/script-name-evidence.json
+Groups: memory operations
+Callers: A4FF
+
+Threaded script at A4E1; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* A4E1  7963  vm_push_inline_byte_literal  inline_value=0x000A
+* A4E4  7DC4  multiply_words_keep_low_cell  body=0x7DC6
+* A4E6  7F63  call_compute_half_target_permille_minus_capped_margin  native=0x4D9B
+* A4E8  7EB0  vm_push_word_body_word  value=0x0336
+* A4EA  790D  vm_fetch_word  
+* A4EC  7963  vm_push_inline_byte_literal  inline_value=0x000A
+* A4EF  7DEE  signed_cell_quotient  body=0x7DF0
+* A4F1  A47E  vm_push_word_body_byte  value=0x000A
+* A4F3  7ADC  vm_min_signed  
+* A4F5  A481  vm_push_word_body_byte  value=0x0002
+* A4F7  7AE7  vm_max_signed  
+* A4F9  7DEE  signed_cell_quotient  body=0x7DF0
+* A4FB  792F  vm_return_to_caller_stream  

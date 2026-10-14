@@ -1,0 +1,30 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, mask tests, memory operations, reel records, stack/cell helpers
+Callers: E812
+
+Threaded script at E7E3; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* E7E3  84FE  test_mask_0800_at_719f  body=0x841E, push_address=0x8500
+* E7E5  E70C  compare_local_feature_bytes_two_and_zero  body=0xE70E
+* E7E7  7A97  vm_bitwise_and  
+* E7E9  7FAD  vm_push_word_body_word  value=0x0166
+* E7EB  786B  vm_fetch_unsigned_byte  
+* E7ED  7B51  vm_duplicate_cell  
+* E7EF  78DE  vm_push_two  
+* E7F1  7A79  vm_compare_top_lt_second_signed  
+* E7F3  7B7D  vm_swap_two_cells  
+* E7F5  7963  vm_push_inline_byte_literal  inline_value=0x000B
+* E7F8  7A65  vm_compare_top_gt_second_signed  
+* E7FA  7A97  vm_bitwise_and  
+* E7FC  7A97  vm_bitwise_and  
+* E7FE  E4AB  test_orange1_conditions_and_local_mode_four  body=0xE4AD
+* E800  E46B  vm_push_local_frame_address  value=0x0003
+* E802  786B  vm_fetch_unsigned_byte  
+* E804  7A46  vm_test_zero  
+* E806  7A97  vm_bitwise_and  
+* E808  84E0  test_mask_0200_at_719f  body=0x841E, push_address=0x84E2
+* E80A  7A97  vm_bitwise_and  
+* E80C  7AA3  vm_bitwise_or  
+* E80E  792F  vm_return_to_caller_stream  

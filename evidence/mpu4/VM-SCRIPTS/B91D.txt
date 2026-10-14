@@ -1,0 +1,27 @@
+Purpose: refresh_pending_award_after_nudge_result_gate
+Confidence: reviewed token mechanics
+Groups: accounting/NVRAM, award/balance operations, control flow, lamps, memory operations, nudges, reels
+Callers: E247
+
+Threaded script at B91D; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B91D  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* B91F  7EED  vm_push_word_body_byte  value=0x00BF
+* B921  786B  vm_fetch_unsigned_byte  
+* B923  9F91  mask_flagged_best_reel_result_by_signed_threshold_nine  body=0x9F93
+* B925  7982  vm_branch_forward8_if_zero  branch=0xB942
+* B928  7E82  vm_push_word_body_byte  value=0x0015
+* B92A  82DD  vm_push_word_body_byte  value=0x00BD
+* B92C  7861  vm_store_byte  
+* B92E  824E  vm_push_word_body_byte  value=0x008F
+* B930  9C08  apply_lamp_range_732c_7335  body=0x9ADB, push_address=0x9C0A
+* B932  B72B  script_b72b  body=0xB72D
+* B934  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* B936  80C4  call_reels_push_matching_symbol_result  native=0x1AA3
+* B938  9F68  normalize_award_47_to_30_with_optional_input_clamp  body=0x9F6A
+* B93A  8318  vm_push_word_body_byte  value=0x00BA
+* B93C  7874  vm_store_word  
+* B93E  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* B940  A893  clear_display_mode_bytes_unless_option_0200  body=0xA895
+* B942  792F  vm_return_to_caller_stream  

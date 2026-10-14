@@ -1,0 +1,19 @@
+Purpose: money_trap_select_compensated_digit_stream_base
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: arithmetic, stack/cell helpers, table/dynamic dispatch
+Callers: C2C5
+
+Threaded script at C2AC; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C2AC  C12E  vm_push_word_body_byte  value=0x0010
+* C2AE  7E70  vm_push_word_body_byte  value=0x0010
+* C2B0  A10E  clip_compensation_index_difference_plus_four_to_zero_eight  body=0xA110
+* C2B2  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* C2B5  78A0  vm_subtract_top_from_second  
+* C2B7  78B5  vm_push_zero  
+* C2B9  7AE7  vm_max_signed  
+* C2BB  78DE  vm_push_two  
+* C2BD  7ADC  vm_min_signed  
+* C2BF  C2A2  dispatch_indexed_token_table_c2a4  body=0x99A1, push_address=0xC2A4
+* C2C1  792F  vm_return_to_caller_stream  

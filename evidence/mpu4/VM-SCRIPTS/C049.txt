@@ -1,0 +1,26 @@
+Purpose: cash_climber_store_selected_step_award_and_cleanup
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: accounting/NVRAM, award/balance operations, indexed memory, lamps, memory operations, sound/scheduler, stack/cell helpers
+Callers: C10B
+
+Threaded script at C049; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C049  BFF1  cash_climber_reset_shot_lamps_and_flag  body=0xBFF3
+* C04B  8248  vm_push_word_body_byte  value=0x0080
+* C04D  9B96  apply_lamp_range_72ef_72fd  body=0x9ADB, push_address=0x9B98
+* C04F  7B51  vm_duplicate_cell  
+* C051  824E  vm_push_word_body_byte  value=0x008F
+* C053  9B92  apply_indexed_lamp_id_from_72ef  body=0x9B18, push_address=0x9B94
+* C055  89DD  queue_sound_stream_89df  body=0x856B, push_address=0x89DF
+* C057  80F8  call_scheduler_wait_until_active_list_empty  native=0x5CCB
+* C059  7B51  vm_duplicate_cell  
+* C05B  824E  vm_push_word_body_byte  value=0x008F
+* C05D  9B92  apply_indexed_lamp_id_from_72ef  body=0x9B18, push_address=0x9B94
+* C05F  C037  read_indexed_byte_table_at_c039  body=0x9971, push_address=0xC039
+* C061  8318  vm_push_word_body_byte  value=0x00BA
+* C063  7874  vm_store_word  
+* C065  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* C067  824E  vm_push_word_body_byte  value=0x008F
+* C069  9B86  apply_lamp_range_728f_72bf  body=0x9ADB, push_address=0x9B88
+* C06B  792F  vm_return_to_caller_stream  

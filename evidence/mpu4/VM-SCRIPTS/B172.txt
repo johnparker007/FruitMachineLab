@@ -1,0 +1,29 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: arithmetic, boolean/bit operations, control flow, indexed memory, memory operations, stack/cell helpers
+Callers: B1A1
+
+Threaded script at B172; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B172  9F5E  test_two_orange1_input_conditions  body=0x9F60
+* B174  7982  vm_branch_forward8_if_zero  branch=0xB17C
+  B177  B036  select_weighted_board_step_with_link_and_input_gates  body=0xB038
+  B179  7979  vm_branch_unsigned_forward8  branch=0xB19D
+* B17C  78B5  vm_push_zero  
+* B17E  7B3D  vm_drop_cell  
+* B180  B036  select_weighted_board_step_with_link_and_input_gates  body=0xB038
+* B182  7B51  vm_duplicate_cell  
+* B184  7F14  vm_push_word_body_byte  value=0x00C9
+* B186  786B  vm_fetch_unsigned_byte  
+* B188  787E  vm_add_words  
+* B18A  7B51  vm_duplicate_cell  
+* B18C  A15E  read_indexed_byte_table_at_a160  body=0x9971, push_address=0xA160
+* B18E  7B51  vm_duplicate_cell  
+* B190  7A46  vm_test_zero  
+* B192  7B7D  vm_swap_two_cells  
+* B194  7B6D  vm_rotate_three_cells  
+* B196  7A79  vm_compare_top_lt_second_signed  
+* B198  7AA3  vm_bitwise_or  
+* B19A  79A6  vm_branch_backward8_if_zero  branch=0xB17E
+* B19D  792F  vm_return_to_caller_stream  

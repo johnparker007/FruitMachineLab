@@ -1,0 +1,59 @@
+Purpose: evaluate_fourth_reel_symbol_and_flags
+Confidence: reviewed token mechanics
+Groups: arithmetic, boolean/bit operations, control flow, mask/address records, memory operations, reel records, reels, reels/symbol tests, stack/cell helpers
+Callers: F384
+
+Threaded script at F30F; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* F30F  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* F311  7FAD  vm_push_word_body_word  value=0x0166
+* F313  786B  vm_fetch_unsigned_byte  
+* F315  7B51  vm_duplicate_cell  
+* F317  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* F31A  7A65  vm_compare_top_gt_second_signed  
+* F31C  7B7D  vm_swap_two_cells  
+* F31E  7963  vm_push_inline_byte_literal  inline_value=0x000A
+* F321  7A79  vm_compare_top_lt_second_signed  
+* F323  7AA3  vm_bitwise_or  
+* F325  8486  push_pair_4000_00a0  body=0x8417, push_address=0x8488
+* F327  767F  vm_test_word_memory_mask  
+* F329  7A97  vm_bitwise_and  
+* F32B  A295  count_selected_reel_mask_bits  body=0xA297
+* F32D  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* F330  7A6F  vm_compare_equal  
+* F332  7AA3  vm_bitwise_or  
+* F334  9F5E  test_two_orange1_input_conditions  body=0x9F60
+* F336  7ABB  vm_bitwise_not  
+* F338  7A97  vm_bitwise_and  
+* F33A  7982  vm_branch_forward8_if_zero  branch=0xF349
+* F33D  82E7  vm_push_word_body_word  value=0x0169
+* F33F  7963  vm_push_inline_byte_literal  inline_value=0x0006
+* F342  787E  vm_add_words  
+* F344  765F  vm_clear_byte_memory  
+* F346  7979  vm_branch_unsigned_forward8  branch=0xF380
+* F349  7963  vm_push_inline_byte_literal  inline_value=0x0004
+* F34C  7963  vm_push_inline_byte_literal  inline_value=0x0009
+* F34F  99EC  random_scaled_range_selection  body=0x99EE
+* F351  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* F354  9DC1  address_record_0169_explicit_index  body=0x9D97, push_address=0x9DC3
+* F356  7861  vm_store_byte  
+* F358  8114  call_reels_translate_positions_to_symbol_records  native=0x2C12
+* F35A  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* F35D  9DC1  address_record_0169_explicit_index  body=0x9D97, push_address=0x9DC3
+* F35F  7653  vm_increment_byte_memory  
+* F361  8114  call_reels_translate_positions_to_symbol_records  native=0x2C12
+* F363  7FAD  vm_push_word_body_word  value=0x0166
+* F365  786B  vm_fetch_unsigned_byte  
+* F367  7B51  vm_duplicate_cell  
+* F369  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* F36C  7A79  vm_compare_top_lt_second_signed  
+* F36E  7B7D  vm_swap_two_cells  
+* F370  7963  vm_push_inline_byte_literal  inline_value=0x000A
+* F373  7A65  vm_compare_top_gt_second_signed  
+* F375  7A97  vm_bitwise_and  
+* F377  9F5E  test_two_orange1_input_conditions  body=0x9F60
+* F379  7ABB  vm_bitwise_not  
+* F37B  7AA3  vm_bitwise_or  
+* F37D  79A6  vm_branch_backward8_if_zero  branch=0xF35A
+* F380  792F  vm_return_to_caller_stream  

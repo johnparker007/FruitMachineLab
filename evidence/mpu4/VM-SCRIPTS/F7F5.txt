@@ -1,0 +1,25 @@
+Purpose: attract_initialize_lamp_ranges
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: lamps
+Callers: FA34
+
+Threaded script at F7F5; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* F7F5  8248  vm_push_word_body_byte  value=0x0080
+* F7F7  9B8C  apply_lamp_range_7323_732c  body=0x9ADB, push_address=0x9B8E
+* F7F9  824E  vm_push_word_body_byte  value=0x008F
+* F7FB  9D3E  apply_lamp_range_record_9b7c  body=0x9D40
+* F7FD  824E  vm_push_word_body_byte  value=0x008F
+* F7FF  9C38  apply_lamp_range_7257_725d  body=0x9ADB, push_address=0x9C3A
+* F801  824E  vm_push_word_body_byte  value=0x008F
+* F803  9C08  apply_lamp_range_732c_7335  body=0x9ADB, push_address=0x9C0A
+* F805  824E  vm_push_word_body_byte  value=0x008F
+* F807  9BFE  apply_lamp_range_7249_724c  body=0x9ADB, push_address=0x9C00
+* F809  824E  vm_push_word_body_byte  value=0x008F
+* F80B  9D58  update_ic8_output_bit10_from_pattern  body=0x9D5A
+* F80D  824E  vm_push_word_body_byte  value=0x008F
+* F80F  9B86  apply_lamp_range_728f_72bf  body=0x9ADB, push_address=0x9B88
+* F811  8248  vm_push_word_body_byte  value=0x0080
+* F813  9C28  apply_lamp_range_7286_728f  body=0x9ADB, push_address=0x9C2A
+* F815  792F  vm_return_to_caller_stream  

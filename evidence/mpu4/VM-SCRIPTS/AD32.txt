@@ -1,0 +1,15 @@
+Purpose: random_address_within_local_byte_range
+Confidence: reviewed token mechanics
+Groups: arithmetic, memory operations, random selection, stack/cell helpers
+Callers: AD42
+
+Threaded script at AD32; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* AD32  78B5  vm_push_zero  
+* AD34  AC75  vm_push_local_frame_address  value=0x0002
+* AD36  786B  vm_fetch_unsigned_byte  
+* AD38  99EC  random_scaled_range_selection  body=0x99EE
+* AD3A  AC78  vm_push_local_frame_address  value=0x0003
+* AD3C  787E  vm_add_words  
+* AD3E  792F  vm_return_to_caller_stream  

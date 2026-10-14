@@ -1,0 +1,31 @@
+Purpose: cash_climber_test_progress_or_display_unlucky
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: boolean/bit operations, control flow, display, memory operations, sound/scheduler, stack/cell helpers
+Callers: C0AC
+
+Threaded script at BF8F; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* BF8F  BF6B  cash_climber_lookup_compensated_chance_divided_by_three  body=0xBF6D
+* BF91  9A11  random_percentage_test  body=0x9A13
+* BF93  BF5D  vm_push_local_frame_address  value=0x0000
+* BF95  786B  vm_fetch_unsigned_byte  
+* BF97  78C0  vm_push_one  
+* BF99  7A6F  vm_compare_equal  
+* BF9B  7A1C  vm_push_loop_index  
+* BF9D  7A46  vm_test_zero  
+* BF9F  7A97  vm_bitwise_and  
+* BFA1  7AA3  vm_bitwise_or  
+* BFA3  9A72  merge_hold1_and_refill_gates_when_mode_or_option_enabled  body=0x9A74
+* BFA5  7A1C  vm_push_loop_index  
+* BFA7  BF7C  cash_climber_choose_step_limit_from_orange1_inputs  body=0xBF7E
+* BFA9  7A6F  vm_compare_equal  
+* BFAB  7ABB  vm_bitwise_not  
+* BFAD  7A97  vm_bitwise_and  
+* BFAF  7B51  vm_duplicate_cell  
+* BFB1  7ABB  vm_bitwise_not  
+* BFB3  7982  vm_branch_forward8_if_zero  branch=0xBFCA
+* BFB6  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); '     UNLUCKY'; cmd7A()]
+* BFC6  8703  queue_sound_stream_8705  body=0x856B, push_address=0x8705
+* BFC8  80F8  call_scheduler_wait_until_active_list_empty  native=0x5CCB
+* BFCA  792F  vm_return_to_caller_stream  

@@ -1,0 +1,10 @@
+Purpose: push_alternate_word_body_two_cells
+Confidence: reviewed token mechanics
+Groups: primitive sequence
+Callers: DD38, BC70, C416, D2BE, CB60, D462, D501, D547
+
+Threaded script at 8444; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 8444  7915  vm_fetch_two_words  
+* 8446  792F  vm_return_to_caller_stream  

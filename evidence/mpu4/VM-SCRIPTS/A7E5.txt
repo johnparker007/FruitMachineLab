@@ -1,0 +1,23 @@
+Purpose: sum_five_bank_related_words
+Confidence: reviewed token mechanics
+Groups: arithmetic, award/balance operations, memory operations
+Callers: AAA1, FBA2, A86B
+
+Threaded script at A7E5; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* A7E5  82CE  vm_push_word_body_word  value=0x02FC
+* A7E7  790D  vm_fetch_word  
+* A7E9  82D6  vm_push_word_body_word  value=0x02FA
+* A7EB  790D  vm_fetch_word  
+* A7ED  787E  vm_add_words  
+* A7EF  8222  vm_push_word_body_word  value=0x02FE
+* A7F1  790D  vm_fetch_word  
+* A7F3  787E  vm_add_words  
+* A7F5  82D2  vm_push_word_body_word  value=0x0302
+* A7F7  790D  vm_fetch_word  
+* A7F9  787E  vm_add_words  
+* A7FB  8226  vm_push_word_body_word  value=0x0300
+* A7FD  790D  vm_fetch_word  
+* A7FF  787E  vm_add_words  
+* A801  792F  vm_return_to_caller_stream  

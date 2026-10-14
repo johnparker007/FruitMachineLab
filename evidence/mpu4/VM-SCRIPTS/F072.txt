@@ -1,0 +1,31 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: accounting/NVRAM, boolean/bit operations, control flow, memory operations, stack/cell helpers
+Callers: F384
+
+Threaded script at F072; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* F072  F050  script_f050  body=0xF052
+* F074  7B51  vm_duplicate_cell  
+* F076  7982  vm_branch_forward8_if_zero  branch=0xF07D
+* F079  7FFE  vm_push_word_body_word  value=0x04D3
+* F07B  8323  call_accounting_increment_u24_if_normal_mode  native=0x57DB
+* F07D  7B51  vm_duplicate_cell  
+* F07F  A295  count_selected_reel_mask_bits  body=0xA297
+* F081  7A53  vm_test_nonzero  
+* F083  7A97  vm_bitwise_and  
+* F085  7982  vm_branch_forward8_if_zero  branch=0xF08C
+  F088  8016  call_push_nonzero_symbol_result_or_fallback_to_vm_stack  native=0x1AF1
+  F08A  ABC5  account_result_into_u24_counters_07c9_and_07cf  body=0xABC7
+* F08C  A295  count_selected_reel_mask_bits  body=0xA297
+* F08E  7A46  vm_test_zero  
+* F090  7A97  vm_bitwise_and  
+* F092  7982  vm_branch_forward8_if_zero  branch=0xF0A1
+* F095  7E76  vm_push_word_body_byte  value=0x0004
+* F097  8164  vm_push_word_body_byte  value=0x00B9
+* F099  7861  vm_store_byte  
+* F09B  F040  script_f040  body=0xF042
+* F09D  8002  vm_push_word_body_word  value=0x04D6
+* F09F  8323  call_accounting_increment_u24_if_normal_mode  native=0x57DB
+* F0A1  792F  vm_return_to_caller_stream  

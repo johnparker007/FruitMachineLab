@@ -1,0 +1,15 @@
+Purpose: attract_wait_while_configuration_condition_83_active
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: control flow, input conditions, lamps
+Callers: FA7F
+
+Threaded script at FA6C; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* FA6C  83D8  vm_test_input_condition  value=0x0083
+* FA6E  7982  vm_branch_forward8_if_zero  branch=0xFA7B
+  FA71  801E  call_hyp_update_lamp_status_patterns  native=0x2CB3
+  FA73  7963  vm_push_inline_byte_literal  inline_value=0x000A
+  FA76  F574  wait_attract_ticks_or_restore_game_state_on_credit_or_service  body=0xF576
+  FA78  799A  vm_branch_backward8  branch=0xFA73
+* FA7B  792F  vm_return_to_caller_stream  

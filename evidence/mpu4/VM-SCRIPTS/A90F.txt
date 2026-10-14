@@ -1,0 +1,13 @@
+Purpose: return_zero_after_reading_credit_fraction_byte
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: boolean/bit operations, memory operations, stack/cell helpers
+Callers: AA2B, AAA1, FBA2
+
+Threaded script at A90F; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* A90F  81D9  vm_push_word_body_word  value=0x02F1
+* A911  786B  vm_fetch_unsigned_byte  
+* A913  78B5  vm_push_zero  
+* A915  7A97  vm_bitwise_and  
+* A917  792F  vm_return_to_caller_stream  

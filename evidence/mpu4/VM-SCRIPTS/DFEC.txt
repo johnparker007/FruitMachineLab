@@ -1,0 +1,12 @@
+Purpose: clear_nudgepot_and_refresh_amount_display
+Confidence: reviewed token mechanics
+Groups: memory operations, nudges
+Callers: DFF6, E2AA
+
+Threaded script at DFEC; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* DFEC  7EED  vm_push_word_body_byte  value=0x00BF
+* DFEE  765F  vm_clear_byte_memory  
+* DFF0  A8ED  display_nudgepot_byte_as_two_decimal_digits  body=0xA8EF
+* DFF2  792F  vm_return_to_caller_stream  

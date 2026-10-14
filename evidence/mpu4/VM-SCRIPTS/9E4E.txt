@@ -1,0 +1,14 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: sound/scheduler
+Callers: D231, D0C2
+
+Threaded script at 9E4E; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9E4E  7A1C  vm_push_loop_index  
+* 9E50  7963  vm_push_inline_byte_literal  inline_value=0x0006
+* 9E53  7DC4  multiply_words_keep_low_cell  body=0x7DC6
+* 9E55  8579  write_byte_004d_857b  body=0x857B
+* 9E57  9373  queue_sound_stream_9375  body=0x856B, push_address=0x9375
+* 9E59  792F  vm_return_to_caller_stream  

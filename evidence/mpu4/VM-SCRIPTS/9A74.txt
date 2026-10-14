@@ -1,0 +1,16 @@
+Purpose: merge_hold1_and_refill_gates_when_mode_or_option_enabled
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: boolean/bit operations, control flow, input conditions
+Callers: CE31, E9E4, BF8F, CE81, F428
+
+Threaded script at 9A74; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9A74  994D  test_mode_or_rom_option_0400  body=0x994F
+* 9A76  7982  vm_branch_forward8_if_zero  branch=0x9A83
+  9A79  83B1  vm_test_input_condition  value=0x001A
+  9A7B  7AA3  vm_bitwise_or  
+  9A7D  83C9  vm_test_input_condition  value=0x000F
+  9A7F  7ABB  vm_bitwise_not  
+  9A81  7A97  vm_bitwise_and  
+* 9A83  792F  vm_return_to_caller_stream  

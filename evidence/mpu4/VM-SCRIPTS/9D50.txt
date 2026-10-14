@@ -1,0 +1,12 @@
+Purpose: clear_selected_reel_lamp_record_and_auxiliary_range
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: lamps, reels/symbol tests, stack/cell helpers
+Callers: ED06, C506, EC97, EE34, C4B4
+
+Threaded script at 9D50; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9D50  7B51  vm_duplicate_cell  
+* 9D52  9D3E  apply_lamp_range_record_9b7c  body=0x9D40
+* 9D54  9C38  apply_lamp_range_7257_725d  body=0x9ADB, push_address=0x9C3A
+* 9D56  792F  vm_return_to_caller_stream  

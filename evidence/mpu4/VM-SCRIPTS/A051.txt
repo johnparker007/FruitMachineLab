@@ -1,0 +1,47 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, memory operations, reel records, reels, stack/cell helpers
+Callers: A0AD
+
+Threaded script at A051; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* A051  7B51  vm_duplicate_cell  
+* A053  7F04  vm_push_word_body_byte  value=0x0001
+* A055  7A6F  vm_compare_equal  
+* A057  798E  vm_branch_forward8_if_zero_else_drop  branch=0xA07B
+* A05A  7A1C  vm_push_loop_index  
+* A05C  78DE  vm_push_two  
+* A05E  7A6F  vm_compare_equal  
+* A060  7982  vm_branch_forward8_if_zero  branch=0xA06D
+* A063  80C4  call_reels_push_matching_symbol_result  native=0x1AA3
+* A065  7963  vm_push_inline_byte_literal  inline_value=0x000A
+* A068  7A5B  vm_compare_not_equal  
+* A06A  7979  vm_branch_unsigned_forward8  branch=0xA077
+* A06D  9DA9  address_record_0161_loop_index  body=0x9D86, push_address=0x9DAB
+* A06F  786B  vm_fetch_unsigned_byte  
+* A071  8039  vm_push_word_body_byte  value=0x0001
+* A073  7A97  vm_bitwise_and  
+* A075  7A46  vm_test_zero  
+* A077  79B7  vm_branch_absolute16  branch=0xA0A9
+* A07B  7B51  vm_duplicate_cell  
+* A07D  A037  vm_push_word_body_byte  value=0x0000
+* A07F  7A6F  vm_compare_equal  
+* A081  798E  vm_branch_forward8_if_zero_else_drop  branch=0xA092
+* A084  9DA9  address_record_0161_loop_index  body=0x9D86, push_address=0x9DAB
+* A086  786B  vm_fetch_unsigned_byte  
+* A088  8036  vm_push_word_body_byte  value=0x0002
+* A08A  7A97  vm_bitwise_and  
+* A08C  7A46  vm_test_zero  
+* A08E  79B7  vm_branch_absolute16  branch=0xA0A9
+  A092  7B51  vm_duplicate_cell  
+  A094  7B51  vm_duplicate_cell  
+  A096  7A6F  vm_compare_equal  
+  A098  798E  vm_branch_forward8_if_zero_else_drop  branch=0xA0A7
+  A09B  9DA5  address_record_0160_loop_index  body=0x9D86, push_address=0x9DA7
+  A09D  786B  vm_fetch_unsigned_byte  
+  A09F  7B59  vm_copy_second_cell  
+  A0A1  7A5B  vm_compare_not_equal  
+  A0A3  79B7  vm_branch_absolute16  branch=0xA0A9
+  A0A7  7B3D  vm_drop_cell  
+* A0A9  792F  vm_return_to_caller_stream  

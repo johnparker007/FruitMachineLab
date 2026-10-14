@@ -1,0 +1,290 @@
+[
+  {
+    "square": 0,
+    "type": 0,
+    "link": 0,
+    "display": "ROLL THE DICE"
+  },
+  {
+    "square": 1,
+    "type": 1,
+    "link": 0,
+    "display": "TAKE NUDGEPOT"
+  },
+  {
+    "square": 2,
+    "type": 0,
+    "link": 22,
+    "display": "UP THE LADDER"
+  },
+  {
+    "square": 3,
+    "type": 6,
+    "link": 0,
+    "display": "TAKE 60P"
+  },
+  {
+    "square": 4,
+    "type": 2,
+    "link": 0,
+    "display": "TAKE LOOT SHOOT"
+  },
+  {
+    "square": 5,
+    "type": 3,
+    "link": 0,
+    "display": "MYSTERY"
+  },
+  {
+    "square": 6,
+    "type": 0,
+    "link": 30,
+    "display": "UP THE LADDER"
+  },
+  {
+    "square": 7,
+    "type": 8,
+    "link": 0,
+    "display": "TAKE 80P"
+  },
+  {
+    "square": 8,
+    "type": 1,
+    "link": 0,
+    "display": "TAKE NUDGEPOT"
+  },
+  {
+    "square": 9,
+    "type": 2,
+    "link": 0,
+    "display": "TAKE NICE DICE"
+  },
+  {
+    "square": 10,
+    "type": 10,
+    "link": 0,
+    "display": "TAKE 1.00"
+  },
+  {
+    "square": 11,
+    "type": 3,
+    "link": 0,
+    "display": "MYSTERY"
+  },
+  {
+    "square": 12,
+    "type": 2,
+    "link": 0,
+    "display": "TAKE CASH CLIMB"
+  },
+  {
+    "square": 13,
+    "type": 3,
+    "link": 0,
+    "display": "MYSTERY"
+  },
+  {
+    "square": 14,
+    "type": 12,
+    "link": 0,
+    "display": "TAKE 1.20"
+  },
+  {
+    "square": 15,
+    "type": 0,
+    "link": 32,
+    "display": "UP THE LADDER"
+  },
+  {
+    "square": 16,
+    "type": 0,
+    "link": 3,
+    "display": "ARRRRRGGGGHHH"
+  },
+  {
+    "square": 17,
+    "type": 16,
+    "link": 0,
+    "display": "TAKE 1.60"
+  },
+  {
+    "square": 18,
+    "type": 1,
+    "link": 0,
+    "display": "TAKE NUDGEPOT"
+  },
+  {
+    "square": 19,
+    "type": 2,
+    "link": 0,
+    "display": "TAKE MONEY TRAP"
+  },
+  {
+    "square": 20,
+    "type": 18,
+    "link": 0,
+    "display": "TAKE 1.80"
+  },
+  {
+    "square": 21,
+    "type": 3,
+    "link": 0,
+    "display": "MYSTERY"
+  },
+  {
+    "square": 22,
+    "type": 1,
+    "link": 0,
+    "display": "TAKE NUDGEPOT"
+  },
+  {
+    "square": 23,
+    "type": 20,
+    "link": 0,
+    "display": "TAKE 2.00"
+  },
+  {
+    "square": 24,
+    "type": 0,
+    "link": 11,
+    "display": "ARRRRRGGGGHHH"
+  },
+  {
+    "square": 25,
+    "type": 22,
+    "link": 0,
+    "display": "TAKE 2.20"
+  },
+  {
+    "square": 26,
+    "type": 2,
+    "link": 0,
+    "display": "TAKE PICK A WIN"
+  },
+  {
+    "square": 27,
+    "type": 3,
+    "link": 0,
+    "display": "MYSTERY"
+  },
+  {
+    "square": 28,
+    "type": 24,
+    "link": 0,
+    "display": "TAKE 2.40"
+  },
+  {
+    "square": 29,
+    "type": 1,
+    "link": 0,
+    "display": "TAKE NUDGEPOT"
+  },
+  {
+    "square": 30,
+    "type": 26,
+    "link": 0,
+    "display": "TAKE 2.60"
+  },
+  {
+    "square": 31,
+    "type": 1,
+    "link": 0,
+    "display": "TAKE NUDGEPOT"
+  },
+  {
+    "square": 32,
+    "type": 2,
+    "link": 0,
+    "display": "TAKE SKILL CASH"
+  },
+  {
+    "square": 33,
+    "type": 30,
+    "link": 0,
+    "display": "TAKE 3.00"
+  },
+  {
+    "square": 34,
+    "type": 3,
+    "link": 0,
+    "display": "MYSTERY"
+  },
+  {
+    "square": 35,
+    "type": 0,
+    "link": 45,
+    "display": "UP THE LADDER"
+  },
+  {
+    "square": 36,
+    "type": 32,
+    "link": 0,
+    "display": "TAKE 3.20"
+  },
+  {
+    "square": 37,
+    "type": 2,
+    "link": 0,
+    "display": "TAKE CASH ATTACK"
+  },
+  {
+    "square": 38,
+    "type": 3,
+    "link": 0,
+    "display": "MYSTERY"
+  },
+  {
+    "square": 39,
+    "type": 36,
+    "link": 0,
+    "display": "TAKE 3.60"
+  },
+  {
+    "square": 40,
+    "type": 3,
+    "link": 0,
+    "display": "MYSTERY"
+  },
+  {
+    "square": 41,
+    "type": 0,
+    "link": 7,
+    "display": "ARRRRRGGGGHHH"
+  },
+  {
+    "square": 42,
+    "type": 2,
+    "link": 0,
+    "display": "TAKE SUPA STEPPA"
+  },
+  {
+    "square": 43,
+    "type": 40,
+    "link": 0,
+    "display": "TAKE 4.00"
+  },
+  {
+    "square": 44,
+    "type": 3,
+    "link": 0,
+    "display": "MYSTERY"
+  },
+  {
+    "square": 45,
+    "type": 60,
+    "link": 0,
+    "display": "TAKE JACKPOT"
+  },
+  {
+    "square": 46,
+    "type": 0,
+    "link": 9,
+    "display": "ARRRRRGGGGHHH"
+  },
+  {
+    "square": 47,
+    "type": 2,
+    "link": 0,
+    "display": "JACKPOT RESTART"
+  }
+]

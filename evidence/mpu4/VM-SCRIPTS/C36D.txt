@@ -1,0 +1,10 @@
+Purpose: execute_alpha_command_stream
+Confidence: exact helper pattern
+Groups: display
+Callers: C3BA
+
+Threaded script at C36D; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C36D  773C  vm_execute_alpha_stream  inline_stream=[cmd70(0c); '    '; cmd7A()]
+* C376  792F  vm_return_to_caller_stream  

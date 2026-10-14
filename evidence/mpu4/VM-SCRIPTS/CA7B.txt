@@ -1,0 +1,47 @@
+Purpose: animate_feature_position_toward_destination
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, control flow, lamps, memory operations, stack/cell helpers
+Callers: CB1D
+
+Threaded script at CA7B; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* CA7B  7F14  vm_push_word_body_byte  value=0x00C9
+* CA7D  786B  vm_fetch_unsigned_byte  
+* CA7F  7B51  vm_duplicate_cell  
+* CA81  9F56  apply_pattern_8f_to_indexed_lamp_record  body=0x9F58
+* CA83  7B59  vm_copy_second_cell  
+* CA85  7A79  vm_compare_top_lt_second_signed  
+* CA87  7982  vm_branch_forward8_if_zero  branch=0xCAA3
+* CA8A  7F14  vm_push_word_body_byte  value=0x00C9
+* CA8C  7659  vm_decrement_byte_memory  
+* CA8E  7B59  vm_copy_second_cell  
+* CA90  78AA  vm_push_true_minus_one  
+* CA92  7A6F  vm_compare_equal  
+* CA94  7982  vm_branch_forward8_if_zero  branch=0xCA9D
+* CA97  7963  vm_push_inline_byte_literal  inline_value=0x0014
+* CA9A  7979  vm_branch_unsigned_forward8  branch=0xCAA0
+* CA9D  7963  vm_push_inline_byte_literal  inline_value=0x0014
+* CAA0  7979  vm_branch_unsigned_forward8  branch=0xCAAA
+* CAA3  7F14  vm_push_word_body_byte  value=0x00C9
+* CAA5  7653  vm_increment_byte_memory  
+* CAA7  7963  vm_push_inline_byte_literal  inline_value=0x0014
+* CAAA  7F14  vm_push_word_body_byte  value=0x00C9
+* CAAC  786B  vm_fetch_unsigned_byte  
+* CAAE  9F56  apply_pattern_8f_to_indexed_lamp_record  body=0x9F58
+* CAB0  99AD  wait_irq_ticks_or_abort_flag  body=0x99AF
+* CAB2  7F14  vm_push_word_body_byte  value=0x00C9
+* CAB4  786B  vm_fetch_unsigned_byte  
+* CAB6  7B59  vm_copy_second_cell  
+* CAB8  7A6F  vm_compare_equal  
+* CABA  79A6  vm_branch_backward8_if_zero  branch=0xCA7B
+* CABD  7F14  vm_push_word_body_byte  value=0x00C9
+* CABF  786B  vm_fetch_unsigned_byte  
+* CAC1  7B49  vm_duplicate_if_nonzero  
+* CAC3  7A53  vm_test_nonzero  
+* CAC5  7982  vm_branch_forward8_if_zero  branch=0xCACC
+* CAC8  8212  vm_push_word_body_byte  value=0x0085
+* CACA  9B82  apply_indexed_lamp_id_from_728f  body=0x9B18, push_address=0x9B84
+* CACC  7963  vm_push_inline_byte_literal  inline_value=0x0064
+* CACF  99AD  wait_irq_ticks_or_abort_flag  body=0x99AF
+* CAD1  792F  vm_return_to_caller_stream  

@@ -1,0 +1,18 @@
+Purpose: attract_light_grid_columns_forward
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: stack/cell helpers
+Callers: FA34, F8F1
+
+Threaded script at F89E; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* F89E  7963  vm_push_inline_byte_literal  inline_value=0x0008
+* F8A1  78B5  vm_push_zero  
+* F8A3  79DC  vm_enter_loop_frame  
+* F8A5  7A1C  vm_push_loop_index  
+* F8A7  824E  vm_push_word_body_byte  value=0x008F
+* F8A9  9CD3  apply_six_id_lamp_record  body=0x9CD5
+* F8AB  7963  vm_push_inline_byte_literal  inline_value=0x0014
+* F8AE  F574  wait_attract_ticks_or_restore_game_state_on_credit_or_service  body=0xF576
+* F8B0  7A00  vm_loop_increment_one  
+* F8B2  792F  vm_return_to_caller_stream  

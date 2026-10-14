@@ -1,0 +1,31 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: arithmetic, boolean/bit operations, mask/address records, sound/scheduler, stack/cell helpers
+Callers: F47A
+
+Threaded script at F428; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  F428  7963  vm_push_inline_byte_literal  inline_value=0x0032
+  F42B  9A11  random_percentage_test  body=0x9A13
+  F42D  7B51  vm_duplicate_cell  
+  F42F  7963  vm_push_inline_byte_literal  inline_value=0x000A
+  F432  F403  script_f403  body=0xF405
+  F434  78B5  vm_push_zero  
+  F436  79DC  vm_enter_loop_frame  
+  F438  F3C7  script_f3c7  body=0xF3C9
+  F43A  78B5  vm_push_zero  
+  F43C  7A1C  vm_push_loop_index  
+  F43E  78C0  vm_push_one  
+  F440  787E  vm_add_words  
+  F442  7963  vm_push_inline_byte_literal  inline_value=0x0004
+  F445  7DC4  multiply_words_keep_low_cell  body=0x7DC6
+  F447  99CC  set_sound_parameters_004e_004d_and_queue_stream_86f8  body=0x99CE
+  F449  80F8  call_scheduler_wait_until_active_list_empty  native=0x5CCB
+  F44B  7A00  vm_loop_increment_one  
+  F44D  9A72  merge_hold1_and_refill_gates_when_mode_or_option_enabled  body=0x9A74
+  F44F  7B51  vm_duplicate_cell  
+  F451  7ABB  vm_bitwise_not  
+  F453  848C  push_pair_2000_00a0  body=0x8417, push_address=0x848E
+  F455  9A62  conditionally_set_or_clear_memory_mask  body=0x9A64
+  F457  792F  vm_return_to_caller_stream  

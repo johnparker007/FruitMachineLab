@@ -1,0 +1,26 @@
+Purpose: refresh_selected_feature_lamps_and_amount_display
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, control flow, indexed memory, lamps, memory operations, stack/cell helpers
+Callers: DD38, DC34
+
+Threaded script at DC0A; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* DC0A  7F14  vm_push_word_body_byte  value=0x00C9
+* DC0C  786B  vm_fetch_unsigned_byte  
+* DC0E  D901  read_indexed_byte_table_at_d903  body=0x9971, push_address=0xD903
+* DC10  7982  vm_branch_forward8_if_zero  branch=0xDC18
+* DC13  8212  vm_push_word_body_byte  value=0x0085
+* DC15  7979  vm_branch_unsigned_forward8  branch=0xDC1A
+* DC18  8248  vm_push_word_body_byte  value=0x0080
+* DC1A  9BA8  apply_lamp_range_731c_731d  body=0x9ADB, push_address=0x9BAA
+* DC1C  7F14  vm_push_word_body_byte  value=0x00C9
+* DC1E  786B  vm_fetch_unsigned_byte  
+* DC20  A12C  read_indexed_byte_table_at_a12e  body=0x9971, push_address=0xA12E
+* DC22  78C0  vm_push_one  
+* DC24  7A6F  vm_compare_equal  
+* DC26  7982  vm_branch_forward8_if_zero  branch=0xDC2E
+* DC29  A879  set_display_mode_bytes_02be_02bf_unless_suppressed  body=0xA87B
+* DC2B  7979  vm_branch_unsigned_forward8  branch=0xDC30
+* DC2E  A893  clear_display_mode_bytes_unless_option_0200  body=0xA895
+* DC30  792F  vm_return_to_caller_stream  

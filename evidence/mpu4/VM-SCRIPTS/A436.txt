@@ -1,0 +1,25 @@
+Purpose: select_local_reel_triplet_or_minus_one
+Confidence: reviewed token mechanics
+Groups: control flow, memory operations, reels/symbol tests, stack/cell helpers
+Callers: A45C
+
+Threaded script at A436; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  A436  A3A3  vm_push_local_frame_address  value=0x0003
+  A438  786B  vm_fetch_unsigned_byte  
+  A43A  8245  vm_push_word_body_byte  value=0x00BE
+  A43C  786B  vm_fetch_unsigned_byte  
+  A43E  7D4A  compare_top_ge_second_signed  body=0x7D4C
+  A440  7982  vm_branch_forward8_if_zero  branch=0xA452
+  A443  A3A0  vm_push_local_frame_address  value=0x0002
+  A445  786B  vm_fetch_unsigned_byte  
+  A447  A39D  vm_push_local_frame_address  value=0x0001
+  A449  786B  vm_fetch_unsigned_byte  
+  A44B  A39A  vm_push_local_frame_address  value=0x0000
+  A44D  786B  vm_fetch_unsigned_byte  
+  A44F  7979  vm_branch_unsigned_forward8  branch=0xA458
+  A452  78AA  vm_push_true_minus_one  
+  A454  7B51  vm_duplicate_cell  
+  A456  7B51  vm_duplicate_cell  
+  A458  792F  vm_return_to_caller_stream  

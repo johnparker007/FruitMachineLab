@@ -1,0 +1,45 @@
+Purpose: attract_render_six_by_eight_lamp_bitmap_from_token_table
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: arithmetic, boolean/bit operations, control flow, memory operations, stack/cell helpers, table/dynamic dispatch
+Callers: F6A0
+
+Threaded script at F64F; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* F64F  7963  vm_push_inline_byte_literal  inline_value=0x0006
+* F652  78B5  vm_push_zero  
+* F654  79DC  vm_enter_loop_frame  
+* F656  7A26  vm_push_outer_loop_index  
+* F658  7A1C  vm_push_loop_index  
+* F65A  787E  vm_add_words  
+* F65C  F5D2  vm_push_word_body_byte  value=0x0007
+* F65E  7DE2  signed_cell_divmod  body=0x7DE4
+* F660  F61D  dispatch_indexed_token_table_f61f  body=0x99A1, push_address=0xF61F
+* F662  7963  vm_push_inline_byte_literal  inline_value=0x0008
+* F665  78B5  vm_push_zero  
+* F667  79DC  vm_enter_loop_frame  
+* F669  7B51  vm_duplicate_cell  
+* F66B  F56E  vm_push_local_frame_address  value=0x0003
+* F66D  786B  vm_fetch_unsigned_byte  
+* F66F  7A97  vm_bitwise_and  
+* F671  7982  vm_branch_forward8_if_zero  branch=0xF67B
+* F674  824E  vm_push_word_body_byte  value=0x008F
+* F676  9D2B  apply_lamp_id_from_nested_loop_indices  body=0x9D2D
+* F678  7979  vm_branch_unsigned_forward8  branch=0xF67F
+* F67B  8248  vm_push_word_body_byte  value=0x0080
+* F67D  9D2B  apply_lamp_id_from_nested_loop_indices  body=0x9D2D
+* F67F  F56E  vm_push_local_frame_address  value=0x0003
+* F681  786B  vm_fetch_unsigned_byte  
+* F683  78C0  vm_push_one  
+* F685  7AC3  vm_rotate_word_right_by_low_byte_count  
+* F687  F56E  vm_push_local_frame_address  value=0x0003
+* F689  7861  vm_store_byte  
+* F68B  7A00  vm_loop_increment_one  
+* F68D  7B3D  vm_drop_cell  
+* F68F  7963  vm_push_inline_byte_literal  inline_value=0x0080
+* F692  F56E  vm_push_local_frame_address  value=0x0003
+* F694  7861  vm_store_byte  
+* F696  78C0  vm_push_one  
+* F698  F574  wait_attract_ticks_or_restore_game_state_on_credit_or_service  body=0xF576
+* F69A  7A00  vm_loop_increment_one  
+* F69C  792F  vm_return_to_caller_stream  

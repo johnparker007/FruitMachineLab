@@ -1,0 +1,15 @@
+Purpose: apply_reel_grid_lamp_pattern_at_row_times_six_plus_column
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: arithmetic, lamps, reels/symbol tests, stack/cell helpers
+Callers: B9D9, BA25, B975, B9A7, BB49
+
+Threaded script at B946; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B946  7D5A  rotate_three_cells_twice  body=0x7D5C
+* B948  7963  vm_push_inline_byte_literal  inline_value=0x0006
+* B94B  7DC4  multiply_words_keep_low_cell  body=0x7DC6
+* B94D  787E  vm_add_words  
+* B94F  7B7D  vm_swap_two_cells  
+* B951  9C44  apply_indexed_lamp_id_from_72bf  body=0x9B18, push_address=0x9C46
+* B953  792F  vm_return_to_caller_stream  

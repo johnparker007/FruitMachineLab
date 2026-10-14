@@ -1,0 +1,18 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, memory operations
+Callers: F47A
+
+Threaded script at F3EE; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  F3EE  8591  read_byte_004f_8593  body=0x8593
+  F3F0  F3B6  vm_push_local_frame_address  value=0x0001
+  F3F2  786B  vm_fetch_unsigned_byte  
+  F3F4  7A5B  vm_compare_not_equal  
+  F3F6  7982  vm_branch_forward8_if_zero  branch=0xF401
+  F3F9  8591  read_byte_004f_8593  body=0x8593
+  F3FB  F3B6  vm_push_local_frame_address  value=0x0001
+  F3FD  7861  vm_store_byte  
+  F3FF  F3C7  script_f3c7  body=0xF3C9
+  F401  792F  vm_return_to_caller_stream  

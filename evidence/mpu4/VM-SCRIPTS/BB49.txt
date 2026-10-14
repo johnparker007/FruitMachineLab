@@ -1,0 +1,24 @@
+Purpose: animate_shrinking_board_rectangle_to_selected_square
+Confidence: reviewed token mechanics; see lifecycle-pass/script-name-evidence.json
+Groups: memory operations
+Callers: E5CF, C9F4, E3A3
+
+Threaded script at BB49; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* BB49  7963  vm_push_inline_byte_literal  inline_value=0x000A
+* BB4C  76A9  vm_allocate_local_frame  
+* BB4E  BB2A  map_board_index_to_serpentine_grid_coordinates  body=0xBB2C
+* BB50  B970  vm_push_local_frame_address  value=0x0009
+* BB52  7861  vm_store_byte  
+* BB54  B96D  vm_push_local_frame_address  value=0x0008
+* BB56  7861  vm_store_byte  
+* BB58  BAF4  initialize_full_board_rectangle_bounds  body=0xBAF6
+* BB5A  BAD7  animate_board_rectangle_convergence  body=0xBAD9
+* BB5C  B96D  vm_push_local_frame_address  value=0x0008
+* BB5E  786B  vm_fetch_unsigned_byte  
+* BB60  B970  vm_push_local_frame_address  value=0x0009
+* BB62  786B  vm_fetch_unsigned_byte  
+* BB64  8212  vm_push_word_body_byte  value=0x0085
+* BB66  B944  apply_reel_grid_lamp_pattern_at_row_times_six_plus_column  body=0xB946
+* BB68  792F  vm_return_to_caller_stream  

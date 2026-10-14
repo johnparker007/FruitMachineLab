@@ -1,0 +1,31 @@
+Purpose: execute_requested_nudge_motion
+Confidence: reviewed gameplay context
+Groups: control flow, display, lamps, memory operations, nudges, reels, sound/scheduler, stack/cell helpers
+Callers: B352, B403, B398
+
+Threaded script at B31F; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B31F  78DE  vm_push_two  
+* B321  9DCD  fill_three_reel_record_bytes  body=0x9DCF
+* B323  8130  call_reset_sound_and_scheduler  native=0x5B77
+* B325  8B20  queue_sound_stream_8b22  body=0x856B, push_address=0x8B22
+* B327  80A0  call_alpha_reset_and_clear_display  native=0x3D0E
+* B329  833F  vm_push_word_body_byte  value=0x007F
+* B32B  8068  call_lamp_set_frame_pattern_0  native=0x4982
+* B32D  811C  call_reels_start_motion_without_sound_setup  native=0x61F6
+* B32F  B304  consume_nudge_and_refresh_lamps  body=0xB306
+* B331  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* B333  B2E6  refresh_nudge_count_lamps  body=0xB2E8
+* B335  8130  call_reset_sound_and_scheduler  native=0x5B77
+* B337  8703  queue_sound_stream_8705  body=0x856B, push_address=0x8705
+* B339  B297  vm_push_local_frame_address  value=0x0002
+* B33B  786B  vm_fetch_unsigned_byte  
+* B33D  7982  vm_branch_forward8_if_zero  branch=0xB348
+* B340  7963  vm_push_inline_byte_literal  inline_value=0x0032
+* B343  99AD  wait_irq_ticks_or_abort_flag  body=0x99AF
+* B345  7979  vm_branch_unsigned_forward8  branch=0xB34A
+* B348  80F8  call_scheduler_wait_until_active_list_empty  native=0x5CCB
+* B34A  78B5  vm_push_zero  
+* B34C  9DCD  fill_three_reel_record_bytes  body=0x9DCF
+* B34E  792F  vm_return_to_caller_stream  

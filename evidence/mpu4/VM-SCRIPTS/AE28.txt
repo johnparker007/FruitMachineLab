@@ -1,0 +1,16 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: accounting/NVRAM, arithmetic, memory operations, stack/cell helpers
+Callers: AE3A
+
+Threaded script at AE28; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* AE28  830A  vm_push_word_body_word  value=0x0306
+* AE2A  790D  vm_fetch_word  
+* AE2C  787E  vm_add_words  
+* AE2E  78B5  vm_push_zero  
+* AE30  830A  vm_push_word_body_word  value=0x0306
+* AE32  7874  vm_store_word  
+* AE34  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* AE36  792F  vm_return_to_caller_stream  

@@ -1,0 +1,31 @@
+Purpose: scan_nudge_buttons_and_request_reel_step
+Confidence: reviewed gameplay context
+Groups: control flow, lamps, memory operations, nudges, reel records, reels, reels/symbol tests, sound/scheduler, stack/cell helpers, table/dynamic dispatch
+Callers: B43D
+
+Threaded script at B403; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B403  78B5  vm_push_zero  
+* B405  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* B408  78B5  vm_push_zero  
+* B40A  79DC  vm_enter_loop_frame  
+* B40C  9E04  dispatch_loop_token_table_9e06  body=0x9992, push_address=0x9E06
+* B40E  7982  vm_branch_forward8_if_zero  branch=0xB431
+* B411  B294  vm_push_local_frame_address  value=0x0001
+* B413  765F  vm_clear_byte_memory  
+* B415  824E  vm_push_word_body_byte  value=0x008F
+* B417  9C38  apply_lamp_range_7257_725d  body=0x9ADB, push_address=0x9C3A
+* B419  824E  vm_push_word_body_byte  value=0x008F
+* B41B  9D3E  apply_lamp_range_record_9b7c  body=0x9D40
+* B41D  9CA3  apply_lamp_range_constant_0080_record_9b8c_9ca5  body=0x9CA5
+* B41F  8130  call_reset_sound_and_scheduler  native=0x5B77
+* B421  7B3D  vm_drop_cell  
+* B423  78AA  vm_push_true_minus_one  
+* B425  9DAD  address_record_0169_loop_index  body=0x9D86, push_address=0x9DAF
+* B427  7653  vm_increment_byte_memory  
+* B429  B31D  execute_requested_nudge_motion  body=0xB31F
+* B42B  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* B42D  7A15  vm_leave_loop_to_absolute_target  branch=0xB433
+* B431  7A00  vm_loop_increment_one  
+* B433  792F  vm_return_to_caller_stream  

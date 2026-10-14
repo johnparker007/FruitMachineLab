@@ -1,0 +1,22 @@
+Purpose: gate_state_bit0004_from_signed_counter_07cf
+Confidence: reviewed token mechanics; see lifecycle-pass/script-name-evidence.json
+Groups: boolean/bit operations, control flow, mask/address records
+Callers: AC25
+
+Threaded script at AC03; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* AC03  795B  vm_push_inline_word_literal  inline_value=0xC350
+* AC07  7963  vm_push_inline_byte_literal  inline_value=0x0000
+* AC0A  8181  vm_push_word_body_word  value=0x07CF
+* AC0C  77F6  vm_fetch_byte_and_following_word  
+* AC0E  9ED7  bias_word_signed_value_at_bit7  body=0x9ED9
+* AC10  7CB3  vm_negate_double_cell  
+* AC12  7C8C  vm_compare_double_cells  
+* AC14  9945  test_normal_mode_byte_nonzero  body=0x9947
+* AC16  7ABB  vm_bitwise_not  
+* AC18  7A97  vm_bitwise_and  
+* AC1A  7982  vm_branch_forward8_if_zero  branch=0xAC21
+  AC1D  84C8  push_pair_0004_00a0  body=0x8417, push_address=0x84CA
+  AC1F  7665  vm_or_word_memory  
+* AC21  792F  vm_return_to_caller_stream  

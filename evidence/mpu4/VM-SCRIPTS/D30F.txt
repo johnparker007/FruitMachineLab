@@ -1,0 +1,13 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: mask tests
+Callers: FC99
+
+Threaded script at D30F; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* D30F  D1F3  script_d1f3  body=0xD1F5
+* D311  84E0  test_mask_0200_at_719f  body=0x841E, push_address=0x84E2
+* D313  7574  vm_return_if_nonzero  
+* D315  D2BC  script_d2bc  body=0xD2BE
+* D317  792F  vm_return_to_caller_stream  

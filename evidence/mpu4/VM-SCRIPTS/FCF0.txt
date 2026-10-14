@@ -1,0 +1,29 @@
+Purpose: initialize_game_script_state
+Confidence: reviewed gameplay context
+Groups: arithmetic, boolean/bit operations, control flow, credits, mask/address records, memory operations
+Callers: FDF0
+
+Threaded script at FCF0; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* FCF0  8281  vm_push_word_body_word  value=0x71A1
+* FCF2  786B  vm_fetch_unsigned_byte  
+* FCF4  7963  vm_push_inline_byte_literal  inline_value=0x009F
+* FCF7  7A6F  vm_compare_equal  
+* FCF9  7982  vm_branch_forward8_if_zero  branch=0xFD03
+  FCFC  7963  vm_push_inline_byte_literal  inline_value=0x0008
+  FCFF  821C  vm_push_word_body_byte  value=0x00F1
+  FD01  7861  vm_store_byte  
+* FD03  80C0  call_door_startup_display_gate_with_refill_and_test_handling  native=0x1726
+* FD05  AC3E  invoke_optional_diagnostic_hook_if_selector_9f  body=0xAC40
+* FD07  AFF2  dispatch_current_or_pending_award  body=0xAFF4
+* FD09  843B  push_pair_0001_0085  body=0x8417, push_address=0x843D
+* FD0B  7665  vm_or_word_memory  
+* FD0D  FCE0  script_fce0  body=0xFCE2
+* FD0F  FAFA  clear_feature_lamps_flags_and_nudgepot_for_idle_or_play  body=0xFAFC
+* FD11  8190  vm_push_word_body_word  value=0x02F0
+* FD13  786B  vm_fetch_unsigned_byte  
+* FD15  78D3  vm_decrement_word  
+* FD17  7F7B  vm_push_word_body_byte  value=0x00B4
+* FD19  7861  vm_store_byte  
+* FD1B  792F  vm_return_to_caller_stream  

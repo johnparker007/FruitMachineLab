@@ -1,0 +1,42 @@
+Purpose: cash_feature_skill_cash
+Confidence: reviewed dispatch/display association; complete gameplay unresolved
+Groups: arithmetic, lamps, memory operations, stack/cell helpers
+Callers: DFF6
+
+Threaded script at C721; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C721  7963  vm_push_inline_byte_literal  inline_value=0x0002
+* C724  76A9  vm_allocate_local_frame  
+* C726  BB73  vm_push_word_body_byte  value=0x0004
+* C728  81C2  vm_push_word_body_byte  value=0x00B6
+* C72A  7861  vm_store_byte  
+* C72C  7E88  vm_push_word_body_byte  value=0x0012
+* C72E  82DD  vm_push_word_body_byte  value=0x00BD
+* C730  7861  vm_store_byte  
+* C732  C635  skill_cash_initialize_selection_and_six_step_level  body=0xC637
+* C734  8248  vm_push_word_body_byte  value=0x0080
+* C736  9D3E  apply_lamp_range_record_9b7c  body=0x9D40
+* C738  8248  vm_push_word_body_byte  value=0x0080
+* C73A  9C38  apply_lamp_range_7257_725d  body=0x9ADB, push_address=0x9C3A
+* C73C  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* C73F  78B5  vm_push_zero  
+* C741  79DC  vm_enter_loop_frame  
+* C743  7A1C  vm_push_loop_index  
+* C745  C601  vm_push_local_frame_address  value=0x0000
+* C747  7861  vm_store_byte  
+* C749  7963  vm_push_inline_byte_literal  inline_value=0x0019
+* C74C  7A1C  vm_push_loop_index  
+* C74E  7963  vm_push_inline_byte_literal  inline_value=0x0005
+* C751  7DC4  multiply_words_keep_low_cell  body=0x7DC6
+* C753  78A0  vm_subtract_top_from_second  
+* C755  C697  skill_cash_wait_selection_latch_or_timer_with_lamp_feedback  body=0xC699
+* C757  C604  vm_push_local_frame_address  value=0x0001
+* C759  786B  vm_fetch_unsigned_byte  
+* C75B  7ADC  vm_min_signed  
+* C75D  C604  vm_push_local_frame_address  value=0x0001
+* C75F  7861  vm_store_byte  
+* C761  9984  wait_for_all_panel_buttons_released  body=0x9986
+* C763  7A00  vm_loop_increment_one  
+* C765  C6FA  skill_cash_commit_threshold_award_and_animate_win  body=0xC6FC
+* C767  792F  vm_return_to_caller_stream  

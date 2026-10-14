@@ -1,0 +1,44 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: accounting/NVRAM, arithmetic, boolean/bit operations, control flow, input conditions, lamps, mask tests, memory operations, sound/scheduler, stack/cell helpers
+Callers: EAF3
+
+Threaded script at E796; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* E796  84F2  test_mask_4000_at_719f  body=0x841E, push_address=0x84F4
+* E798  7982  vm_branch_forward8_if_zero  branch=0xE7A0
+  E79B  E75C  script_e75c  body=0xE75E
+  E79D  7979  vm_branch_unsigned_forward8  branch=0xE7A6
+* E7A0  8393  vm_test_input_condition  value=0x001C
+* E7A2  9A40  test_irq_timer_positive_or_abort_flag  body=0x9A42
+* E7A4  7AA3  vm_bitwise_or  
+* E7A6  7B51  vm_duplicate_cell  
+* E7A8  E46B  vm_push_local_frame_address  value=0x0003
+* E7AA  7861  vm_store_byte  
+* E7AC  7B51  vm_duplicate_cell  
+* E7AE  7982  vm_branch_forward8_if_zero  branch=0xE7DF
+* E7B1  9CA3  apply_lamp_range_constant_0080_record_9b8c_9ca5  body=0x9CA5
+* E7B3  8130  call_reset_sound_and_scheduler  native=0x5B77
+* E7B5  8345  vm_push_word_body_byte  value=0x0018
+* E7B7  806C  call_lamp_set_frame_pattern_F  native=0x497F
+* E7B9  8248  vm_push_word_body_byte  value=0x0080
+* E7BB  9C38  apply_lamp_range_7257_725d  body=0x9ADB, push_address=0x9C3A
+* E7BD  8248  vm_push_word_body_byte  value=0x0080
+* E7BF  9D3E  apply_lamp_range_record_9b7c  body=0x9D40
+* E7C1  8248  vm_push_word_body_byte  value=0x0080
+* E7C3  9BBE  apply_lamp_range_7281_7286  body=0x9ADB, push_address=0x9BC0
+* E7C5  8248  vm_push_word_body_byte  value=0x0080
+* E7C7  9B86  apply_lamp_range_728f_72bf  body=0x9ADB, push_address=0x9B88
+* E7C9  8248  vm_push_word_body_byte  value=0x0080
+* E7CB  9BB4  apply_lamp_range_7335_7338  body=0x9ADB, push_address=0x9BB6
+* E7CD  E468  vm_push_local_frame_address  value=0x0002
+* E7CF  786B  vm_fetch_unsigned_byte  
+* E7D1  78C9  vm_increment_word  
+* E7D3  813C  vm_push_word_body_word  value=0x75BD
+* E7D5  787E  vm_add_words  
+* E7D7  786B  vm_fetch_unsigned_byte  
+* E7D9  8318  vm_push_word_body_byte  value=0x00BA
+* E7DB  7874  vm_store_word  
+* E7DD  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* E7DF  792F  vm_return_to_caller_stream  

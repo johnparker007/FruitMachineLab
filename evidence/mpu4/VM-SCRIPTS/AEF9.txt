@@ -1,0 +1,19 @@
+Purpose: service_combined_bank_until_at_or_below_limit
+Confidence: reviewed token mechanics; see payout-pass/script-name-evidence.json
+Groups: arithmetic, award/balance operations, boolean/bit operations, control flow, memory operations
+Callers: AF13
+
+Threaded script at AEF9; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* AEF9  82D2  vm_push_word_body_word  value=0x0302
+* AEFB  790D  vm_fetch_word  
+* AEFD  82CE  vm_push_word_body_word  value=0x02FC
+* AEFF  790D  vm_fetch_word  
+* AF01  787E  vm_add_words  
+* AF03  AEE4  select_combined_bank_limit_99_or_500_from_ff4a  body=0xAEE6
+* AF05  7A79  vm_compare_top_lt_second_signed  
+* AF07  798C  vm_branch_forward8_if_zero  branch=0xAF0F
+  AF0A  AA29  service_balances_through_prioritized_collection_routes  body=0xAA2B
+  AF0C  79A4  vm_branch_backward8  branch=0xAEF9
+* AF0F  792F  vm_return_to_caller_stream  

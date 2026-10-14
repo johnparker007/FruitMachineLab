@@ -1,0 +1,11 @@
+Purpose: signed_cell_remainder
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: stack/cell helpers
+Callers: ACC0, A9D5, A983, C4EB, A976, A9C8, F3C9, F405
+
+Threaded script at 7DFA; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 7DFA  7DE2  signed_cell_divmod  body=0x7DE4
+* 7DFC  7B3D  vm_drop_cell  
+* 7DFE  792F  vm_return_to_caller_stream  

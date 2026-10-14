@@ -1,0 +1,30 @@
+Purpose: money_trap_sum_four_display_digits
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: arithmetic, memory operations
+Callers: C3BA
+
+Threaded script at C37A; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C37A  8144  vm_push_word_body_byte  value=0x0058
+* C37C  786B  vm_fetch_unsigned_byte  
+* C37E  8144  vm_push_word_body_byte  value=0x0058
+* C380  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* C383  787E  vm_add_words  
+* C385  786B  vm_fetch_unsigned_byte  
+* C387  8144  vm_push_word_body_byte  value=0x0058
+* C389  7963  vm_push_inline_byte_literal  inline_value=0x0006
+* C38C  787E  vm_add_words  
+* C38E  786B  vm_fetch_unsigned_byte  
+* C390  8144  vm_push_word_body_byte  value=0x0058
+* C392  7963  vm_push_inline_byte_literal  inline_value=0x0009
+* C395  787E  vm_add_words  
+* C397  786B  vm_fetch_unsigned_byte  
+* C399  787E  vm_add_words  
+* C39B  787E  vm_add_words  
+* C39D  787E  vm_add_words  
+* C39F  7963  vm_push_inline_byte_literal  inline_value=0x0030
+* C3A2  7963  vm_push_inline_byte_literal  inline_value=0x0004
+* C3A5  7DC4  multiply_words_keep_low_cell  body=0x7DC6
+* C3A7  78A0  vm_subtract_top_from_second  
+* C3A9  792F  vm_return_to_caller_stream  

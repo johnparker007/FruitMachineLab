@@ -1,0 +1,17 @@
+Purpose: clear_unselected_reel_record_bytes
+Confidence: reviewed token mechanics
+Groups: control flow, memory operations, reel records, reels/symbol tests
+Callers: F384
+
+Threaded script at A03C; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* A03C  9D7A  push_three_reel_loop_bounds  body=0x9D7C
+* A03E  79DC  vm_enter_loop_frame  
+* A040  9E38  push_current_reel_selection_mask_and_address  body=0x9E3A
+* A042  767F  vm_test_word_memory_mask  
+* A044  7982  vm_branch_forward8_if_zero  branch=0xA04B
+* A047  9DAD  address_record_0169_loop_index  body=0x9D86, push_address=0x9DAF
+* A049  765F  vm_clear_byte_memory  
+* A04B  7A00  vm_loop_increment_one  
+* A04D  792F  vm_return_to_caller_stream  

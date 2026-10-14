@@ -1,0 +1,50 @@
+Purpose: service_balances_through_prioritized_collection_routes
+Confidence: reviewed token mechanics; see lifecycle-pass/script-name-evidence.json
+Groups: award/balance operations, boolean/bit operations, control flow, mask tests, memory operations
+Callers: AAA1, AEF9
+
+Threaded script at AA2B; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* AA2B  A934  clear_collect_prompt_and_refresh_balance_display  body=0xA936
+* AA2D  855E  test_two_indirect_zero_conditions  body=0x8560
+* AA2F  84E6  test_mask_1000_at_719f  body=0x841E, push_address=0x84E8
+* AA31  7AA3  vm_bitwise_or  
+* AA33  79B9  vm_branch_absolute16_if_zero  branch=0xAA3D
+  AA37  A940  transfer_and_service_both_award_balance_pairs  body=0xA942
+  AA39  79B0  vm_branch_absolute16  branch=0xAA99
+* AA3D  A9C6  remainder_of_balance_0302_modulo_ten  body=0xA9C8
+* AA3F  79B9  vm_branch_absolute16_if_zero  branch=0xAA49
+* AA43  A9D3  transfer_even_remainder_0302_to_0300_and_service_payout  body=0xA9D5
+* AA45  79B0  vm_branch_absolute16  branch=0xAA99
+* AA49  82D2  vm_push_word_body_word  value=0x0302
+* AA4B  790D  vm_fetch_word  
+* AA4D  79B9  vm_branch_absolute16_if_zero  branch=0xAA57
+* AA51  AA02  service_ten_units_from_0302_as_five_two_unit_payouts  body=0xAA04
+* AA53  79B0  vm_branch_absolute16  branch=0xAA99
+* AA57  8226  vm_push_word_body_word  value=0x0300
+* AA59  790D  vm_fetch_word  
+* AA5B  79B9  vm_branch_absolute16_if_zero  branch=0xAA65
+* AA5F  80F4  call_service_token_payout_records_until_pending_balance_empty  native=0x4B8C
+* AA61  79B0  vm_branch_absolute16  branch=0xAA99
+* AA65  A974  compute_bank_remainder_modulo_ten  body=0xA976
+* AA67  79B9  vm_branch_absolute16_if_zero  branch=0xAA71
+* AA6B  A981  transfer_bank_remainder_to_02fe  body=0xA983
+* AA6D  79B0  vm_branch_absolute16  branch=0xAA99
+* AA71  82CE  vm_push_word_body_word  value=0x02FC
+* AA73  790D  vm_fetch_word  
+* AA75  79B9  vm_branch_absolute16_if_zero  branch=0xAA7F
+* AA79  A99E  transfer_ten_or_twenty_bank_units_to_02fe_by_tens_parity  body=0xA9A0
+* AA7B  79B0  vm_branch_absolute16  branch=0xAA99
+* AA7F  8222  vm_push_word_body_word  value=0x02FE
+* AA81  790D  vm_fetch_word  
+* AA83  79B9  vm_branch_absolute16_if_zero  branch=0xAA8D
+* AA87  80E4  call_select_and_service_payout_records_by_coin_handling_setting  native=0x4B39
+* AA89  79B0  vm_branch_absolute16  branch=0xAA99
+  AA8D  A90D  return_zero_after_reading_credit_fraction_byte  body=0xA90F
+  AA8F  79B9  vm_branch_absolute16_if_zero  branch=0xAA99
+  AA93  AA21  invoke_disabled_credit_fraction_payout_stub_and_refresh_display  body=0xAA23
+  AA95  79B0  vm_branch_absolute16  branch=0xAA99
+* AA99  8173  vm_push_word_body_byte  value=0x002B
+* AA9B  765F  vm_clear_byte_memory  
+* AA9D  792F  vm_return_to_caller_stream  

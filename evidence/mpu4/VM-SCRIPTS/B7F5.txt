@@ -1,0 +1,51 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: arithmetic, boolean/bit operations, control flow, memory operations, stack/cell helpers
+Callers: B853
+
+Threaded script at B7F5; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B7F5  7EED  vm_push_word_body_byte  value=0x00BF
+* B7F7  786B  vm_fetch_unsigned_byte  
+* B7F9  78C9  vm_increment_word  
+* B7FB  7963  vm_push_inline_byte_literal  inline_value=0x000F
+* B7FE  7ADC  vm_min_signed  
+* B800  7EEA  vm_push_word_body_byte  value=0x00CA
+* B802  787E  vm_add_words  
+* B804  786B  vm_fetch_unsigned_byte  
+* B806  7F0D  vm_push_word_body_byte  value=0x001E
+* B808  7A79  vm_compare_top_lt_second_signed  
+* B80A  A649  scaled_parameter_profile_at_a64b_counter_07d5  body=0xA5A5, push_address=0xA64B
+* B80C  9A11  random_percentage_test  body=0x9A13
+* B80E  7A97  vm_bitwise_and  
+* B810  7982  vm_branch_forward8_if_zero  branch=0xB817
+* B813  7B3D  vm_drop_cell  
+* B815  78B5  vm_push_zero  
+* B817  7EED  vm_push_word_body_byte  value=0x00BF
+* B819  786B  vm_fetch_unsigned_byte  
+* B81B  7A46  vm_test_zero  
+* B81D  7963  vm_push_inline_byte_literal  inline_value=0x0064
+* B820  7A97  vm_bitwise_and  
+* B822  7AE7  vm_max_signed  
+* B824  7EED  vm_push_word_body_byte  value=0x00BF
+* B826  786B  vm_fetch_unsigned_byte  
+* B828  78C9  vm_increment_word  
+* B82A  7963  vm_push_inline_byte_literal  inline_value=0x000F
+* B82D  7ADC  vm_min_signed  
+* B82F  7EEA  vm_push_word_body_byte  value=0x00CA
+* B831  787E  vm_add_words  
+* B833  786B  vm_fetch_unsigned_byte  
+* B835  7F0D  vm_push_word_body_byte  value=0x001E
+* B837  7A79  vm_compare_top_lt_second_signed  
+* B839  9F5E  test_two_orange1_input_conditions  body=0x9F60
+* B83B  7A97  vm_bitwise_and  
+* B83D  7EED  vm_push_word_body_byte  value=0x00BF
+* B83F  786B  vm_fetch_unsigned_byte  
+* B841  7963  vm_push_inline_byte_literal  inline_value=0x0010
+* B844  7D42  compare_top_le_second_signed  body=0x7D44
+* B846  7AA3  vm_bitwise_or  
+* B848  7982  vm_branch_forward8_if_zero  branch=0xB84F
+* B84B  7B3D  vm_drop_cell  
+* B84D  78B5  vm_push_zero  
+* B84F  792F  vm_return_to_caller_stream  

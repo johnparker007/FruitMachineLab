@@ -1,0 +1,24 @@
+Purpose: announce_new_six_pound_jackpot_and_restore_lamps
+Confidence: reviewed token mechanics; see lifecycle-pass/script-name-evidence.json
+Groups: control flow, display, lamps, sound/scheduler
+Callers: C6FC, ED94
+
+Threaded script at A365; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  A365  9B3E  save_lamp_frames_on_vm_stack  body=0x9B40
+  A367  8094  call_apply_lamp_range_7248_to_733d  native=0x4AC0
+  A369  9C85  apply_eight_id_lamp_pattern_table  body=0x9C87
+  A36B  7963  vm_push_inline_byte_literal  inline_value=0x000E
+  A36E  8581  write_byte_004e_8583  body=0x8583
+  A370  98D8  queue_sound_stream_98da  body=0x856B, push_address=0x98DA
+  A372  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); ' NEW 6.00 JACKPOT'; cmd7A()]
+  A387  A30E  vm_push_word_body_address  value=0xA310
+  A389  831B  call_alpha_execute_stream_at_x  native=0x3CC0
+  A38B  809C  call_resume_alpha_stream_when_delay_expired  native=0x3CF7
+  A38D  856F  test_zero_read_word_0047_8571  body=0x8571
+  A38F  79A6  vm_branch_backward8_if_zero  branch=0xA38B
+  A392  8130  call_reset_sound_and_scheduler  native=0x5B77
+  A394  80A0  call_alpha_reset_and_clear_display  native=0x3D0E
+  A396  9B56  restore_lamp_frames_from_vm_stack  body=0x9B58
+  A398  792F  vm_return_to_caller_stream  

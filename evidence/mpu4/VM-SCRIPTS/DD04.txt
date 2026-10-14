@@ -1,0 +1,31 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, mask tests, mask/address records, memory operations, stack/cell helpers
+Callers: DD38
+
+Threaded script at DD04; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* DD04  84F2  test_mask_4000_at_719f  body=0x841E, push_address=0x84F4
+* DD06  7B51  vm_duplicate_cell  
+* DD08  7982  vm_branch_forward8_if_zero  branch=0xDD34
+  DD0B  7B3D  vm_drop_cell  
+  DD0D  7F14  vm_push_word_body_byte  value=0x00C9
+  DD0F  786B  vm_fetch_unsigned_byte  
+  DD11  7B51  vm_duplicate_cell  
+  DD13  7963  vm_push_inline_byte_literal  inline_value=0x0021
+  DD16  7D4A  compare_top_ge_second_signed  body=0x7D4C
+  DD18  7982  vm_branch_forward8_if_zero  branch=0xDD1D
+  DD1B  7905  vm_arithmetic_shift_right_one  
+  DD1D  7963  vm_push_inline_byte_literal  inline_value=0x0032
+  DD20  7ADC  vm_min_signed  
+  DD22  DCA8  script_dca8  body=0xDCAA
+  DD24  DCE0  script_dce0  body=0xDCE2
+  DD26  9A11  random_percentage_test  body=0x9A13
+  DD28  A1DB  test_selected_feature_available_with_bf_gate  body=0xA1DD
+  DD2A  7A97  vm_bitwise_and  
+  DD2C  7ABB  vm_bitwise_not  
+  DD2E  7B51  vm_duplicate_cell  
+  DD30  8466  push_pair_0080_0090  body=0x8444, push_address=0x8468
+  DD32  9A62  conditionally_set_or_clear_memory_mask  body=0x9A64
+* DD34  792F  vm_return_to_caller_stream  

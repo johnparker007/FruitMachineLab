@@ -1,0 +1,23 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, mask/address records, stack/cell helpers
+Callers: D199
+
+Threaded script at D177; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* D177  849E  push_pair_0400_00a0  body=0x8417, push_address=0x84A0
+* D179  767F  vm_test_word_memory_mask  
+* D17B  8016  call_push_nonzero_symbol_result_or_fallback_to_vm_stack  native=0x1AF1
+* D17D  9FBA  reels_test_exactly_two_symbol_flag2  body=0x9FBC
+* D17F  7AA3  vm_bitwise_or  
+* D181  7A97  vm_bitwise_and  
+* D183  7982  vm_branch_forward8_if_zero  branch=0xD18A
+* D186  78B5  vm_push_zero  
+* D188  7935  vm_unwind_loop_frames_to_return  
+* D18A  D11A  script_d11a  body=0xD11C
+* D18C  7B49  vm_duplicate_if_nonzero  
+* D18E  7A46  vm_test_zero  
+* D190  7982  vm_branch_forward8_if_zero  branch=0xD195
+* D193  D13E  script_d13e  body=0xD140
+* D195  792F  vm_return_to_caller_stream  

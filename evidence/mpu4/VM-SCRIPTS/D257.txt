@@ -1,0 +1,53 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, lamps, mask/address records, memory operations, reels, stack/cell helpers
+Callers: D2BE
+
+Threaded script at D257; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* D257  9E24  lookup_byte_7325_using_loop_index  body=0x9E26
+* D259  9E38  push_current_reel_selection_mask_and_address  body=0x9E3A
+* D25B  767F  vm_test_word_memory_mask  
+* D25D  7982  vm_branch_forward8_if_zero  branch=0xD269
+* D260  806C  call_lamp_set_frame_pattern_F  native=0x497F
+* D262  7A1C  vm_push_loop_index  
+* D264  D0B4  call_show_reel_group_lamp_candidate_d0b6  body=0xD0B6
+* D266  7979  vm_branch_unsigned_forward8  branch=0xD2BA
+* D269  8486  push_pair_4000_00a0  body=0x8417, push_address=0x8488
+* D26B  767F  vm_test_word_memory_mask  
+* D26D  80C4  call_reels_push_matching_symbol_result  native=0x1AA3
+* D26F  78B5  vm_push_zero  
+* D271  7A6F  vm_compare_equal  
+* D273  7A97  vm_bitwise_and  
+* D275  7982  vm_branch_forward8_if_zero  branch=0xD2AF
+* D278  8140  vm_push_word_body_word  value=0x0326
+* D27A  786B  vm_fetch_unsigned_byte  
+* D27C  9E2E  rotate_mask_0020_right_by_loop_index  body=0x9E30
+* D27E  7A97  vm_bitwise_and  
+* D280  7982  vm_branch_forward8_if_zero  branch=0xD28C
+  D283  7A1C  vm_push_loop_index  
+  D285  D0BA  call_lamps_select_and_update_reel_group_d0bc  body=0xD0BC
+  D287  8060  call_lamp_set_frame_pattern_5  native=0x498B
+  D289  7979  vm_branch_unsigned_forward8  branch=0xD2AC
+* D28C  8140  vm_push_word_body_word  value=0x0326
+* D28E  786B  vm_fetch_unsigned_byte  
+* D290  7A46  vm_test_zero  
+* D292  7982  vm_branch_forward8_if_zero  branch=0xD2A1
+* D295  9DDF  test_irq_timer_word_negative  body=0x9DE1
+* D297  7982  vm_branch_forward8_if_zero  branch=0xD29E
+* D29A  7A1C  vm_push_loop_index  
+* D29C  802A  call_apply_pattern_8f_to_selected_reel_lamp_group  native=0x2C71
+* D29E  7979  vm_branch_unsigned_forward8  branch=0xD2AA
+  D2A1  9DDF  test_irq_timer_word_negative  body=0x9DE1
+  D2A3  7982  vm_branch_forward8_if_zero  branch=0xD2AA
+  D2A6  7A1C  vm_push_loop_index  
+  D2A8  802A  call_apply_pattern_8f_to_selected_reel_lamp_group  native=0x2C71
+* D2AA  805C  call_lamp_set_frame_pattern_C  native=0x4988
+* D2AC  7979  vm_branch_unsigned_forward8  branch=0xD2BA
+* D2AF  8068  call_lamp_set_frame_pattern_0  native=0x4982
+* D2B1  9DDF  test_irq_timer_word_negative  body=0x9DE1
+* D2B3  7982  vm_branch_forward8_if_zero  branch=0xD2BA
+* D2B6  7A1C  vm_push_loop_index  
+* D2B8  802A  call_apply_pattern_8f_to_selected_reel_lamp_group  native=0x2C71
+* D2BA  792F  vm_return_to_caller_stream  

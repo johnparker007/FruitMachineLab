@@ -1,0 +1,26 @@
+Purpose: run_feature_board_until_exit_flag
+Confidence: reviewed token mechanics
+Groups: control flow, indexed memory, mask/address records, memory operations
+Callers: EDD3, EBDA, FD1F
+
+Threaded script at E43D; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* E43D  E35B  script_e35b  body=0xE35D
+* E43F  E377  clear_feature_flags_lamp_ranges_and_sound  body=0xE379
+* E441  E3A1  script_e3a1  body=0xE3A3
+* E443  DE73  advance_and_repeat_feature_selection_until_exit  body=0xDE75
+* E445  7F14  vm_push_word_body_byte  value=0x00C9
+* E447  786B  vm_fetch_unsigned_byte  
+* E449  A12C  read_indexed_byte_table_at_a12e  body=0x9971, push_address=0xA12E
+* E44B  E2FA  repeat_special_feature_while_selected_type_three  body=0xE2FC
+* E44D  84C2  push_pair_0010_00a0  body=0x8417, push_address=0x84C4
+* E44F  767F  vm_test_word_memory_mask  
+* E451  79A6  vm_branch_backward8_if_zero  branch=0xE443
+* E454  9CA3  apply_lamp_range_constant_0080_record_9b8c_9ca5  body=0x9CA5
+* E456  E3E0  display_token_or_cash_jackpot_for_selection  body=0xE3E2
+* E458  849E  push_pair_0400_00a0  body=0x8417, push_address=0x84A0
+* E45A  7671  vm_clear_word_memory_bits  
+* E45C  843B  push_pair_0001_0085  body=0x8417, push_address=0x843D
+* E45E  7665  vm_or_word_memory  
+* E460  792F  vm_return_to_caller_stream  

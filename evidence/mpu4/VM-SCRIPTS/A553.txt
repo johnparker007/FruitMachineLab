@@ -1,0 +1,32 @@
+Purpose: advance_compensation_table_and_decrement_active_counter
+Confidence: reviewed token mechanics
+Groups: accounting/NVRAM, arithmetic, boolean/bit operations, control flow, indexed memory, memory operations
+Callers: A588
+
+Threaded script at A553; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* A553  A524  initialize_compensation_sequence_when_counters_empty  body=0xA526
+* A555  7EC0  vm_push_word_body_word  value=0x0334
+* A557  790D  vm_fetch_word  
+* A559  7A46  vm_test_zero  
+* A55B  7982  vm_branch_forward8_if_zero  branch=0xA57E
+  A55E  817D  vm_push_word_body_word  value=0x07CC
+  A560  77F6  vm_fetch_byte_and_following_word  
+  A562  9ED7  bias_word_signed_value_at_bit7  body=0x9ED9
+  A564  7EB8  vm_push_word_body_word  value=0x0332
+  A566  786B  vm_fetch_unsigned_byte  
+  A568  A484  read_indexed_word_table_at_a486  body=0x997A, push_address=0xA486
+  A56A  795B  vm_push_inline_word_literal  inline_value=0x03E8
+  A56E  7BCC  vm_multiply_to_double_cell  
+  A570  7CB3  vm_negate_double_cell  
+  A572  7C78  vm_add_double_cells  
+  A574  817D  vm_push_word_body_word  value=0x07CC
+  A576  7803  vm_store_byte_and_following_word  
+  A578  7FF6  call_nvram_refresh_accounting_complements  native=0x6F57
+  A57A  A4FD  load_next_compensation_word_and_wrap_index_sixteen  body=0xA4FF
+  A57C  A4C4  advance_byte_0332_modulo_eleven  body=0xA4C6
+* A57E  78AA  vm_push_true_minus_one  
+* A580  7EC0  vm_push_word_body_word  value=0x0334
+* A582  7888  vm_add_to_word_memory  
+* A584  792F  vm_return_to_caller_stream  

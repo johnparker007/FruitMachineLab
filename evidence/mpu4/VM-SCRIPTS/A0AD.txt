@@ -1,0 +1,30 @@
+Purpose: prepare_reel_request_triplet_by_result_threshold_scan
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: arithmetic, control flow, memory operations, reel records, reels, reels/symbol tests, stack/cell helpers
+Callers: C506, F042, F1BB
+
+Threaded script at A0AD; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* A0AD  7963  vm_push_inline_byte_literal  inline_value=0x0004
+* A0B0  7963  vm_push_inline_byte_literal  inline_value=0x000A
+* A0B3  99EC  random_scaled_range_selection  body=0x99EE
+* A0B5  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* A0B8  78B5  vm_push_zero  
+* A0BA  79DC  vm_enter_loop_frame  
+* A0BC  9DAD  address_record_0169_loop_index  body=0x9D86, push_address=0x9DAF
+* A0BE  7861  vm_store_byte  
+* A0C0  8114  call_reels_translate_positions_to_symbol_records  native=0x2C12
+* A0C2  7B51  vm_duplicate_cell  
+* A0C4  A04F  script_a04f  body=0xA051
+* A0C6  798C  vm_branch_forward8_if_zero  branch=0xA0D0
+* A0C9  9DAD  address_record_0169_loop_index  body=0x9D86, push_address=0x9DAF
+* A0CB  7653  vm_increment_byte_memory  
+* A0CD  79A4  vm_branch_backward8  branch=0xA0C0
+* A0D0  9DAD  address_record_0169_loop_index  body=0x9D86, push_address=0x9DAF
+* A0D2  786B  vm_fetch_unsigned_byte  
+* A0D4  7963  vm_push_inline_byte_literal  inline_value=0x0004
+* A0D7  787E  vm_add_words  
+* A0D9  7A00  vm_loop_increment_one  
+* A0DB  7B43  vm_drop_two_cells  
+* A0DD  792F  vm_return_to_caller_stream  

@@ -1,0 +1,35 @@
+Purpose: display_selected_feature_from_fixed_width_table
+Confidence: reviewed token mechanics
+Groups: arithmetic, boolean/bit operations, control flow, display, lamps, memory operations, stack/cell helpers
+Callers: DD38, DC34
+
+Threaded script at D938; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* D938  773C  vm_execute_alpha_stream  inline_stream=[cmd70(00); cmd7A()]
+* D93D  A1DB  test_selected_feature_available_with_bf_gate  body=0xA1DD
+* D93F  7A46  vm_test_zero  
+* D941  7982  vm_branch_forward8_if_zero  branch=0xD94C
+* D944  7B3D  vm_drop_cell  
+* D946  78B5  vm_push_zero  
+* D948  8248  vm_push_word_body_byte  value=0x0080
+* D94A  9BA8  apply_lamp_range_731c_731d  body=0x9ADB, push_address=0x9BAA
+* D94C  7ED4  vm_push_word_body_byte  value=0x00EB
+* D94E  7861  vm_store_byte  
+* D950  D5CF  vm_push_word_body_address  value=0xD5D1
+* D952  7ED4  vm_push_word_body_byte  value=0x00EB
+* D954  786B  vm_fetch_unsigned_byte  
+* D956  D933  vm_push_word_body_byte  value=0x0011
+* D958  7DC4  multiply_words_keep_low_cell  body=0x7DC6
+* D95A  787E  vm_add_words  
+* D95C  831B  call_alpha_execute_stream_at_x  native=0x3CC0
+* D95E  7ED4  vm_push_word_body_byte  value=0x00EB
+* D960  786B  vm_fetch_unsigned_byte  
+* D962  7A46  vm_test_zero  
+* D964  A1DB  test_selected_feature_available_with_bf_gate  body=0xA1DD
+* D966  7A46  vm_test_zero  
+* D968  7AA3  vm_bitwise_or  
+* D96A  7982  vm_branch_forward8_if_zero  branch=0xD971
+* D96D  A30E  vm_push_word_body_address  value=0xA310
+* D96F  831B  call_alpha_execute_stream_at_x  native=0x3CC0
+* D971  792F  vm_return_to_caller_stream  

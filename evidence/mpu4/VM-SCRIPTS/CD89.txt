@@ -1,0 +1,26 @@
+Purpose: scan_neighbor_feature_type_thresholds
+Confidence: reviewed token mechanics
+Groups: arithmetic, control flow, indexed memory, memory operations, stack/cell helpers
+Callers: CE31
+
+Threaded script at CD89; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* CD89  78AA  vm_push_true_minus_one  
+* CD8B  78C0  vm_push_one  
+* CD8D  78DE  vm_push_two  
+* CD8F  78B5  vm_push_zero  
+* CD91  79DC  vm_enter_loop_frame  
+* CD93  7F14  vm_push_word_body_byte  value=0x00C9
+* CD95  786B  vm_fetch_unsigned_byte  
+* CD97  7B59  vm_copy_second_cell  
+* CD99  787E  vm_add_words  
+* CD9B  7B51  vm_duplicate_cell  
+* CD9D  A12C  read_indexed_byte_table_at_a12e  body=0x9971, push_address=0xA12E
+* CD9F  7963  vm_push_inline_byte_literal  inline_value=0x0006
+* CDA2  7D42  compare_top_le_second_signed  body=0x7D44
+* CDA4  79A6  vm_branch_backward8_if_zero  branch=0xCD97
+* CDA7  7D5A  rotate_three_cells_twice  body=0x7D5C
+* CDA9  7B3D  vm_drop_cell  
+* CDAB  7A00  vm_loop_increment_one  
+* CDAD  792F  vm_return_to_caller_stream  

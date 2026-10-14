@@ -1,0 +1,19 @@
+Purpose: reels_test_symbol_flag2_1_and_2
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, memory operations, reel records, reels/symbol tests
+Callers: D140
+
+Threaded script at 9E87; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9E87  7FB1  vm_push_word_body_word  value=0x0161
+* 9E89  786B  vm_fetch_unsigned_byte  
+* 9E8B  8036  vm_push_word_body_byte  value=0x0002
+* 9E8D  7A97  vm_bitwise_and  
+* 9E8F  7FB5  vm_push_word_body_word  value=0x0163
+* 9E91  786B  vm_fetch_unsigned_byte  
+* 9E93  8036  vm_push_word_body_byte  value=0x0002
+* 9E95  7A97  vm_bitwise_and  
+* 9E97  7A97  vm_bitwise_and  
+* 9E99  7A53  vm_test_nonzero  
+* 9E9B  792F  vm_return_to_caller_stream  

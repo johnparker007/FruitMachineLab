@@ -1,0 +1,16 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, stack/cell helpers, table/dynamic dispatch
+Callers: F509
+
+Threaded script at F4F6; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  F4F6  78B5  vm_push_zero  
+  F4F8  7963  vm_push_inline_byte_literal  inline_value=0x0003
+  F4FB  78B5  vm_push_zero  
+  F4FD  79DC  vm_enter_loop_frame  
+  F4FF  F4EC  dispatch_loop_token_table_f4ee  body=0x9992, push_address=0xF4EE
+  F501  7AA3  vm_bitwise_or  
+  F503  7A00  vm_loop_increment_one  
+  F505  792F  vm_return_to_caller_stream  

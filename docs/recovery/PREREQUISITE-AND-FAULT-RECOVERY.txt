@@ -1,0 +1,43 @@
+MPU4 prerequisite and fault recovery -14 October2026
+
+SAVED INVENTORY:485 named native functions (16 explicit hypotheses);528 decoded VM bodies,378 purpose-labelled,150 broader purposes unresolved;476 partly observed bodies.9327 VM token sites and1155 word headers remain typed and verified. Five further helper purposes were recovered and two bank-selection names refined. Channel names, input-level associations, branch prerequisites and fault qualifications are saved in Ghidra. Names describe evidence-backed mechanics or explicit inferences, not original source identifiers.
+
+PAYMENT BRANCH PREREQUISITES
+All six router arms whose gates are possible under the current ROM are now observed across the campaigns:0302 remainder,0302 bulk, direct0300 pending payout,bank remainder,bank chunk,and direct02FE pending payout. This is arm coverage, not full path/quantity/fault coverage. Two other arms are excluded here:AA37 requires ROM719F bit1000 or FF36/FF3A zero, but values are0000/FF/FF;AA93 requires a nonzero result from a helper explicitly returning zero.
+Door interrupted a naturally reached payout with2FE=10. Closing it restored mirrored persistent balances; later Collect enteredAA87. Refill interruption instead entered the ordinary refill display and did not leave the same residual route. Both physical fixtures replayed exactly.6EF7 closes by restoring inverted mirrors to2F0..308 and7C9..7D7, then nonlocally restarting the thread.
+
+RECORDED NVRAM RESTART
+Two1800s discovery policies did not reach the targeted stop; their negative results are retained. Reusing the known successful payout fixture and its original breakpoint addresses captured an alternate payout before debit. The first captured state still had0302=38, so it did not satisfy the direct-route prerequisite. Capturing the final alternate debit produced0300=2,0302=2FC=2FE=0.
+The2048-byte saved NVRAM exactly matched the interrupted RAM snapshot. Independent capture/replay matched; the isolated restart received an unchanged copy with SHA256f733cd4f52eab6cce8ed2a50dc368764198cfb2a0e9c47014681806dac0f264d. Cold boot retained the pending amount; normal Collect reachedAA5F and debited4AEC. This uses recorded battery-backed memory, not a save state, CPU-state restore, fabricated balance, or ROM patch. The debugger-controlled quit flushes NVRAM; it is not a full electrical power-loss simulation or a torn-write test.
+
+CHANNELS AND EXPOSED LEVEL INPUTS
+Local MAME source mpu4.cpp1222..1226 labels ORANGE1 bits01/02/04/08 as20p/100p/Token1/Token2 levels. m4addr includes those inputs. ROM condition records3/4/5/6 map bits08/04/02/01, respectively. These identify the four record channels; high/low effects are demonstrated without assigning unverified empty/full physical polarity.
+4ACA is the20p cash channel (debit2,queue036B);4ADB the100p cash channel (debit10,queue036D);4AEC Token1 (debit2,queue036F);4AFD Token2 (debit2,queue0371). Asserting the existing Token1-level input inhibited the first token record and reached4AFD from recorded pending0300=2. Queue0371 was consumed with mask08; PIA writes38 then30 enabled/cleared exactly that bit. All four records are now executed in replayed experiments. Actual physical coin/token delivery remains unverified.
+ROM dataflow plus these MAME-channel associations support names:2FC cash award bank,2FE pending cash payout,0300 pending token payout,0302 token award bank. AF2B routes awards above30 with ROMFF34 enabled into the token bank and rounds odd token awards up to even. These are reconstructed semantic associations, not original source names or proof of every game variant.
+
+APPROVED SCOTTISH COIN HANDLING COMPARISON
+DIL2 mask04 is condition82. With the approved isolated setting on,4B39 bypassed100p record4ADB and used20p record4ACA:21 captured pulses,none through4ADB. The off control used both cash channels and token payouts. Each600s fixture replayed exactly; the on pair also matched dip-settings.txt. Their different gameplay/RNG histories prevent a claim that the total amounts are directly comparable; the verified result is the guarded record selection. Existing MAME settings were preserved.
+
+SYNTHETIC METER-FAILURE CANDIDATE
+Normal Refill output-test control entered32FE with saved return2E81 atS=07A2; first meter read producedA=81,CC=E9. No333B store occurred, and the routine returned normally.
+Separate diagnostics substituted a zero read-result with matching flags, or cleared only feedback bit80 (81->01,output bit retained) with matching flags. No direct ROM/RAM patches were made. The ROM took333B STB,S withB=01: saved return2E81 became0181. At3375 RTS it fetchedRAM0181 and the diagnostic halted before executing that ordinary data. Both variants repeated exactly. One substituted read result was sufficient; later successful meter reads did not restore the return address.
+This demonstrates a fault-path control-flow problem under the surrogate missing-feedback condition. It is a candidate for a real ROM fault-path defect, not a confirmed naturally occurring ROM bug or emulator defect. The MAME source synthesizes meter sense from meter activity; physical missing-feedback validity and firmware intent still require a realistic device-level model or physical evidence. See METER-FEEDBACK-FAULT-CASE.txt.
+
+SYNTHETIC SERIAL FAILURES
+Normal service7 returnsPASS with response06. A separate compare-operand substitution06->07 reached33C7 promptly; a separate receive non-completion flag substitution reached33C7 at timer002D=03E8 (1000 ticks), then cleanup returned with0072=0. Memory03A7 remained06 because the diagnostics alter only a CPU operand/flags; these are not genuine bad peripheral replies. Controls and both fault fixtures replayed exactly.
+Static analysis also identifies33A9 TST0071/BNE33A9 and additional waits in692D without these local timeout checks. Thus the routine name is refined to preflight-and-receive timeouts; it is not uniformly protected by a ten-second deadline. No natural stuck-transmit fault is claimed.
+
+FIVE FURTHER VM HELPER PURPOSES
+A822 increments a signed cell and zeros it when the result is at least6; for normal phase values it wraps0..5.
+A831 rotates segment bits across a digit range until sound is idle.
+B89F initializes a zero nudgepot through the CA table/random gate and digit animation.
+DDE3 combines nudgepot sound,rotating digit animation and value display.
+AF67 rounds the current award even and flashes the balance display seven times.
+These narrow names come from reviewed token dataflow/callers; no new runtime verification is claimed solely by assigning a name.
+
+REPRODUCIBILITY AND STOPPING POINT
+13 exact pairs:door,Refill,Scottish on/off,meter control,two synthetic meter variants,serial control,two synthetic serial variants,final payout capture,recorded-NVRAM restart,andToken2 exposed-input route. Every pair matches state.csv,feature-state.csv,debug.log,input-levels.csv and its RAM capture; recorded-state pairs also match initial/saved NVRAM as applicable. No save states used. Synthetic CPU-result evidence is excluded from VM gameplay-coverage caches.
+The current batch is finished and analysis is stopped at the user's request. Remaining150 script purposes, unvisited fault prerequisites and full real-hardware fault validation remain open. No PC execution implementation has been started. A later PC VM runtime with recovered native helper implementations and these fixtures as an oracle is a plausible next project; it need not emulate every6809 instruction, but VM/native contracts and hardware effects still need implementation and validation.
+
+EVIDENCE
+evidence/prerequisite-pass/branch-prerequisites.json,physical-discovery-summary.json,recorded-state-verification.json,meter-diagnostics.json,serial-diagnostics.json,replay-verification.json,script-name-evidence.json and saved-prerequisite-verification.json. Each run preserves commands,inputs,configuration,initial-state metadata and hashes. Ghidra backup:work/project-before-prerequisite-pass.

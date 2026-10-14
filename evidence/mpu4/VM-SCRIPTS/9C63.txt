@@ -1,0 +1,24 @@
+Purpose: apply_rotating_patterns_to_lamp_ids
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, control flow, lamps, memory operations, stack/cell helpers
+Callers: 9C87
+
+Threaded script at 9C63; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  9C63  7D5A  rotate_three_cells_twice  body=0x7D5C
+  9C65  79DC  vm_enter_loop_frame  
+  9C67  7A1C  vm_push_loop_index  
+  9C69  786B  vm_fetch_unsigned_byte  
+  9C6B  7B59  vm_copy_second_cell  
+  9C6D  8050  call_lamp_set_four_frame_pattern  native=0x49C5
+  9C6F  78FD  vm_shift_left_one  
+  9C71  7B51  vm_duplicate_cell  
+  9C73  7963  vm_push_inline_byte_literal  inline_value=0x0010
+  9C76  7A6F  vm_compare_equal  
+  9C78  7982  vm_branch_forward8_if_zero  branch=0x9C7F
+  9C7B  7B3D  vm_drop_cell  
+  9C7D  78C0  vm_push_one  
+  9C7F  7A00  vm_loop_increment_one  
+  9C81  7B3D  vm_drop_cell  
+  9C83  792F  vm_return_to_caller_stream  

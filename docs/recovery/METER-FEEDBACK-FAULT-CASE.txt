@@ -1,0 +1,14 @@
+Meter-feedback fault-path candidate -m4addr/a6ls.p1
+
+Classification: synthetic read-result diagnostic; natural occurrence unverified.
+ROM SHA256:ebf580381aa6eb6ffb26e2acd40f30aa34b0311f71c6564607c6f48a53bca15c;CRC9f97f57b. MAME0.281. No save states or direct ROM/RAM patching.
+
+Control context:service menu6; Refill enables common output test32FE. After first meter read at332F,3332 tests its sign. At entry S=07A2 and saved return2E81. Original readA=81,CC=E9. Normal control returns2E81.
+Zero surrogate: at3332 setA=00 and flags to(E9&F1)|04=E5, then disable injection after one hit.
+Masked surrogate: at3332 setA=81&7F=01 and flagsE9&F1=E1. Output bit01 is preserved; only sense bit80 is removed. Again one hit.
+Observed in both:333B STB,S executes withB=01; word[S]2E81->0181;3375 RTS returns to0181,S=07A4. Capture at0181 contains ordinary RAM data, not a recovered function. The diagnostic saves RAM and quits before executing it.
+
+Repeat fixtures:prerequisite-meter-baseline-a/b,prerequisite-meter-injected-a/b,prerequisite-meter-masked-a/b. Commands and fixed physical inputs are copied inside each run; replay hashes are in prerequisite-pass/replay-verification.json. Use separate fresh isolated state for each fixture. Original ROM remains unchanged; CPU-result substitutions are explicit in debugger.cmd. Synthetic NVRAM is not used by the normal restart experiments.
+
+Supported conclusion: a single substituted missing-sense result reaches a saved-return overwrite and RAM fetch in this call context. Unsupported conclusion: that this necessarily occurs on a real MPU4 machine, is an observed MAME device failure, or was unintended firmware behavior. Establish those with realistic meter feedback/fault modelling or physical traces before classifying a real-world ROM bug.
+Debugger syntax source:https://docs.mamedev.org/debugger/general.html; compatibility confirmed by local0.281 runs. Meter-sense model source:localwork/downloads/mpu4.cpp,pia_ic7_portb_r around1110.

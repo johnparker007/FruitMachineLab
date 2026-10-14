@@ -1,0 +1,31 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, memory operations, stack/cell helpers
+Callers: DD04
+
+Threaded script at DCAA; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  DCAA  9F5E  test_two_orange1_input_conditions  body=0x9F60
+  DCAC  7982  vm_branch_forward8_if_zero  branch=0xDCDE
+  DCAF  7F14  vm_push_word_body_byte  value=0x00C9
+  DCB1  786B  vm_fetch_unsigned_byte  
+  DCB3  7B51  vm_duplicate_cell  
+  DCB5  7963  vm_push_inline_byte_literal  inline_value=0x001B
+  DCB8  7A79  vm_compare_top_lt_second_signed  
+  DCBA  7B7D  vm_swap_two_cells  
+  DCBC  7963  vm_push_inline_byte_literal  inline_value=0x0021
+  DCBF  7A65  vm_compare_top_gt_second_signed  
+  DCC1  7A97  vm_bitwise_and  
+  DCC3  7982  vm_branch_forward8_if_zero  branch=0xDCCD
+  DCC6  7B3D  vm_drop_cell  
+  DCC8  7963  vm_push_inline_byte_literal  inline_value=0x005A
+  DCCB  7935  vm_unwind_loop_frames_to_return  
+  DCCD  7F14  vm_push_word_body_byte  value=0x00C9
+  DCCF  786B  vm_fetch_unsigned_byte  
+  DCD1  7963  vm_push_inline_byte_literal  inline_value=0x0021
+  DCD4  7A79  vm_compare_top_lt_second_signed  
+  DCD6  7982  vm_branch_forward8_if_zero  branch=0xDCDE
+  DCD9  7B3D  vm_drop_cell  
+  DCDB  7963  vm_push_inline_byte_literal  inline_value=0x0005
+  DCDE  792F  vm_return_to_caller_stream  

@@ -1,0 +1,60 @@
+Purpose: cycle_local_selection_index_with_lamps_until_choice_or_timer
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: arithmetic, boolean/bit operations, control flow, display, input conditions, mask tests, memory operations, stack/cell helpers
+Callers: AD65
+
+Threaded script at ACC0; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* ACC0  78B5  vm_push_zero  
+* ACC2  AC75  vm_push_local_frame_address  value=0x0002
+* ACC4  786B  vm_fetch_unsigned_byte  
+* ACC6  99EC  random_scaled_range_selection  body=0x99EE
+* ACC8  AC7B  vm_push_local_frame_address  value=0x000F
+* ACCA  7861  vm_store_byte  
+* ACCC  AC9E  fetch_selected_byte_from_local_selection_pool  body=0xACA0
+* ACCE  7B51  vm_duplicate_cell  
+* ACD0  824E  vm_push_word_body_byte  value=0x008F
+* ACD2  AC92  dispatch_selection_callback_byte_offset_02  body=0xAC81, push_address=0xAC94
+* ACD4  8579  write_byte_004d_857b  body=0x857B
+* ACD6  AC95  dispatch_selection_callback_byte_offset_04  body=0xAC81, push_address=0xAC97
+* ACD8  795B  vm_push_inline_word_literal  inline_value=0xFE70
+* ACDC  82F5  vm_push_word_body_byte  value=0x002F
+* ACDE  7874  vm_store_word  
+* ACE0  809C  call_resume_alpha_stream_when_delay_expired  native=0x3CF7
+* ACE2  9A40  test_irq_timer_positive_or_abort_flag  body=0x9A42
+* ACE4  83FC  vm_test_input_condition  value=0x0012
+* ACE6  7AA3  vm_bitwise_or  
+* ACE8  84E0  test_mask_0200_at_719f  body=0x841E, push_address=0x84E2
+* ACEA  7AA3  vm_bitwise_or  
+* ACEC  7574  vm_return_if_nonzero  
+* ACEE  AC75  vm_push_local_frame_address  value=0x0002
+* ACF0  786B  vm_fetch_unsigned_byte  
+* ACF2  78C0  vm_push_one  
+* ACF4  7A6F  vm_compare_equal  
+* ACF6  8591  read_byte_004f_8593  body=0x8593
+* ACF8  7A97  vm_bitwise_and  
+* ACFA  7982  vm_branch_forward8_if_zero  branch=0xAD03
+  ACFD  AC9E  fetch_selected_byte_from_local_selection_pool  body=0xACA0
+  ACFF  8248  vm_push_word_body_byte  value=0x0080
+  AD01  AC92  dispatch_selection_callback_byte_offset_02  body=0xAC81, push_address=0xAC94
+* AD03  856F  test_zero_read_word_0047_8571  body=0x8571
+* AD05  AC68  test_hold1_input_with_mode_or_mask0400_gate  body=0xAC6A
+* AD07  7982  vm_branch_forward8_if_zero  branch=0xAD12
+  AD0A  7B3D  vm_drop_cell  
+  AD0C  82F5  vm_push_word_body_byte  value=0x002F
+  AD0E  790D  vm_fetch_word  
+  AD10  7A31  vm_test_greater_than_zero  
+* AD12  79A6  vm_branch_backward8_if_zero  branch=0xACE0
+* AD15  AC9E  fetch_selected_byte_from_local_selection_pool  body=0xACA0
+* AD17  8248  vm_push_word_body_byte  value=0x0080
+* AD19  AC92  dispatch_selection_callback_byte_offset_02  body=0xAC81, push_address=0xAC94
+* AD1B  AC7B  vm_push_local_frame_address  value=0x000F
+* AD1D  786B  vm_fetch_unsigned_byte  
+* AD1F  78C9  vm_increment_word  
+* AD21  AC75  vm_push_local_frame_address  value=0x0002
+* AD23  786B  vm_fetch_unsigned_byte  
+* AD25  7DF8  signed_cell_remainder  body=0x7DFA
+* AD27  AC7B  vm_push_local_frame_address  value=0x000F
+* AD29  7861  vm_store_byte  
+* AD2B  799A  vm_branch_backward8  branch=0xACCC

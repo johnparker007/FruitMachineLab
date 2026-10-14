@@ -1,0 +1,64 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, display, stack/cell helpers
+Callers: F19B
+
+Threaded script at F0EB; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* F0EB  7B51  vm_duplicate_cell  
+* F0ED  78B5  vm_push_zero  
+* F0EF  7A6F  vm_compare_equal  
+* F0F1  798E  vm_branch_forward8_if_zero_else_drop  branch=0xF0FA
+* F0F4  78B5  vm_push_zero  
+* F0F6  79B7  vm_branch_absolute16  branch=0xF182
+* F0FA  7B51  vm_duplicate_cell  
+* F0FC  7963  vm_push_inline_byte_literal  inline_value=0x000A
+* F0FF  7A6F  vm_compare_equal  
+* F101  798E  vm_branch_forward8_if_zero_else_drop  branch=0xF10A
+* F104  A6F9  scaled_parameter_profile_at_a6fb_counter_07c9  body=0xA5A5, push_address=0xA6FB
+* F106  79B7  vm_branch_absolute16  branch=0xF182
+* F10A  7B51  vm_duplicate_cell  
+* F10C  7963  vm_push_inline_byte_literal  inline_value=0x0010
+* F10F  7A6F  vm_compare_equal  
+* F111  798E  vm_branch_forward8_if_zero_else_drop  branch=0xF11A
+* F114  A6E9  scaled_parameter_profile_at_a6eb_counter_07c9  body=0xA5A5, push_address=0xA6EB
+* F116  79B7  vm_branch_absolute16  branch=0xF182
+  F11A  7B51  vm_duplicate_cell  
+  F11C  7963  vm_push_inline_byte_literal  inline_value=0x0014
+  F11F  7A6F  vm_compare_equal  
+  F121  798E  vm_branch_forward8_if_zero_else_drop  branch=0xF12A
+  F124  A6D9  scaled_parameter_profile_at_a6db_counter_07c9  body=0xA5A5, push_address=0xA6DB
+  F126  79B7  vm_branch_absolute16  branch=0xF182
+  F12A  7B51  vm_duplicate_cell  
+  F12C  7963  vm_push_inline_byte_literal  inline_value=0x0016
+  F12F  7A6F  vm_compare_equal  
+  F131  798E  vm_branch_forward8_if_zero_else_drop  branch=0xF13A
+  F134  A6C9  scaled_parameter_profile_at_a6cb_counter_07c9  body=0xA5A5, push_address=0xA6CB
+  F136  79B7  vm_branch_absolute16  branch=0xF182
+  F13A  7B51  vm_duplicate_cell  
+  F13C  7F0A  vm_push_word_body_byte  value=0x002F
+  F13E  7A6F  vm_compare_equal  
+  F140  798E  vm_branch_forward8_if_zero_else_drop  branch=0xF149
+  F143  A6B9  scaled_parameter_profile_at_a6bb_counter_07c9  body=0xA5A5, push_address=0xA6BB
+  F145  79B7  vm_branch_absolute16  branch=0xF182
+  F149  7B51  vm_duplicate_cell  
+  F14B  7F07  vm_push_word_body_byte  value=0x003C
+  F14D  7A6F  vm_compare_equal  
+  F14F  798E  vm_branch_forward8_if_zero_else_drop  branch=0xF161
+  F152  A6A9  scaled_parameter_profile_at_a6ab_counter_07c9  body=0xA5A5, push_address=0xA6AB
+  F154  9F5E  test_two_orange1_input_conditions  body=0x9F60
+  F156  7963  vm_push_inline_byte_literal  inline_value=0x0064
+  F159  7A97  vm_bitwise_and  
+  F15B  7AE7  vm_max_signed  
+  F15D  79B7  vm_branch_absolute16  branch=0xF182
+  F161  7B51  vm_duplicate_cell  
+  F163  7B51  vm_duplicate_cell  
+  F165  7A6F  vm_compare_equal  
+  F167  798E  vm_branch_forward8_if_zero_else_drop  branch=0xF180
+  F16A  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); 'GETWINREJ'; cmd7A()]
+  F177  ADAD  invoke_optional_hook_when_diagnostic_flag_and_mode_mask  body=0xADAF
+  F179  7963  vm_push_inline_byte_literal  inline_value=0x0064
+  F17C  79B7  vm_branch_absolute16  branch=0xF182
+  F180  7B3D  vm_drop_cell  
+* F182  792F  vm_return_to_caller_stream  

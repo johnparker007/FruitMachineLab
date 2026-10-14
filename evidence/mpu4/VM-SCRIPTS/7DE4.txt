@@ -1,0 +1,13 @@
+Purpose: signed_cell_divmod
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: arithmetic
+Callers: F64F, A8AD, BB2C, 7DF0, 7DFA
+
+Threaded script at 7DE4; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 7DE4  7AF4  vm_move_cell_to_return_stack  
+* 7DE6  7D62  duplicate_and_test_negative  body=0x7D64
+* 7DE8  7B04  vm_move_cell_from_return_stack  
+* 7DEA  7C06  vm_signed_double_divide  
+* 7DEC  792F  vm_return_to_caller_stream  

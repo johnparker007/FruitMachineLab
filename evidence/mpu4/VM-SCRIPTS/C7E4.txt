@@ -1,0 +1,26 @@
+Purpose: cash_attack_announce_select_and_commit_table_award
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: accounting/NVRAM, award/balance operations, display, indexed memory, lamps, memory operations, stack/cell helpers
+Callers: C81C
+
+Threaded script at C7E4; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C7E4  8248  vm_push_word_body_byte  value=0x0080
+* C7E6  9B86  apply_lamp_range_728f_72bf  body=0x9ADB, push_address=0x9B88
+* C7E8  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); ' *** ATTACK *** '; cmd7A()]
+* C7FC  A30E  vm_push_word_body_address  value=0xA310
+* C7FE  831B  call_alpha_execute_stream_at_x  native=0x3CC0
+* C800  C7D6  run_selection_callback_record_at_c7d8  body=0xAD65, push_address=0xC7D8
+* C802  80A0  call_alpha_reset_and_clear_display  native=0x3D0E
+* C804  C7A6  read_indexed_byte_table_at_c7a8  body=0x9971, push_address=0xC7A8
+* C806  7B51  vm_duplicate_cell  
+* C808  A31B  announce_and_flash_award_amount  body=0xA31D
+* C80A  7B51  vm_duplicate_cell  
+* C80C  8318  vm_push_word_body_byte  value=0x00BA
+* C80E  7874  vm_store_word  
+* C810  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* C812  AF91  animate_pending_award_into_current_win  body=0xAF93
+* C814  7ED1  vm_push_word_body_byte  value=0x00EC
+* C816  7894  vm_add_to_byte_memory  
+* C818  792F  vm_return_to_caller_stream  

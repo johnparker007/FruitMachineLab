@@ -1,0 +1,26 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, mask/address records
+Callers: AE3A
+
+Threaded script at ADF8; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* ADF8  84C8  push_pair_0004_00a0  body=0x8417, push_address=0x84CA
+* ADFA  767F  vm_test_word_memory_mask  
+* ADFC  84CE  push_pair_0002_00a0  body=0x8417, push_address=0x84D0
+* ADFE  767F  vm_test_word_memory_mask  
+* AE00  7AA3  vm_bitwise_or  
+* AE02  7982  vm_branch_forward8_if_zero  branch=0xAE0A
+  AE05  816A  vm_push_word_body_byte  value=0x0002
+  AE07  7979  vm_branch_unsigned_forward8  branch=0xAE24
+* AE0A  9F1E  test_three_byte_counter_07d2  body=0x9F20
+* AE0C  79B9  vm_branch_absolute16_if_zero  branch=0xAE16
+  AE10  8167  vm_push_word_body_byte  value=0x0000
+  AE12  79B0  vm_branch_absolute16  branch=0xAE24
+* AE16  9F39  test_negative_three_byte_counter_07cc  body=0x9F3B
+* AE18  79B9  vm_branch_absolute16_if_zero  branch=0xAE22
+  AE1C  8170  vm_push_word_body_byte  value=0x0001
+  AE1E  79B0  vm_branch_absolute16  branch=0xAE24
+* AE22  8167  vm_push_word_body_byte  value=0x0000
+* AE24  792F  vm_return_to_caller_stream  

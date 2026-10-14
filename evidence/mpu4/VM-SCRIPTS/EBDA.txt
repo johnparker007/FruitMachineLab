@@ -1,0 +1,38 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: accounting/NVRAM, boolean/bit operations, control flow, lamps, memory operations, reels, sound/scheduler, stack/cell helpers
+Callers: EE34
+
+Threaded script at EBDA; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* EBDA  8318  vm_push_word_body_byte  value=0x00BA
+* EBDC  790D  vm_fetch_word  
+* EBDE  7B51  vm_duplicate_cell  
+* EBE0  7F07  vm_push_word_body_byte  value=0x003C
+* EBE2  7A65  vm_compare_top_gt_second_signed  
+* EBE4  7A97  vm_bitwise_and  
+* EBE6  7982  vm_branch_forward8_if_zero  branch=0xEC14
+* EBE9  7963  vm_push_inline_byte_literal  inline_value=0x0008
+* EBEC  76A9  vm_allocate_local_frame  
+* EBEE  E4D1  script_e4d1  body=0xE4D3
+* EBF0  EAF1  script_eaf1  body=0xEAF3
+* EBF2  7982  vm_branch_forward8_if_zero  branch=0xEC0C
+  EBF5  EBB6  subtract_0305_scaled_by_500_from_counter_07d5  body=0xEBB8
+  EBF7  EB39  map_result_b9_to_code_bc_and_reset_b9  body=0xEB3B
+  EBF9  8130  call_reset_sound_and_scheduler  native=0x5B77
+  EBFB  78B5  vm_push_zero  
+  EBFD  8318  vm_push_word_body_byte  value=0x00BA
+  EBFF  7874  vm_store_word  
+  EC01  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+  EC03  8248  vm_push_word_body_byte  value=0x0080
+  EC05  9BCE  apply_lamp_range_731e_7320  body=0x9ADB, push_address=0x9BD0
+  EC07  E43B  run_feature_board_until_exit_flag  body=0xE43D
+  EC09  7979  vm_branch_unsigned_forward8  branch=0xEC14
+* EC0C  A013  clear_three_reel_record_bytes  body=0xA015
+* EC0E  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* EC10  7F14  vm_push_word_body_byte  value=0x00C9
+* EC12  765F  vm_clear_byte_memory  
+* EC14  8248  vm_push_word_body_byte  value=0x0080
+* EC16  9BCE  apply_lamp_range_731e_7320  body=0x9ADB, push_address=0x9BD0
+* EC18  792F  vm_return_to_caller_stream  

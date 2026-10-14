@@ -1,0 +1,12 @@
+Purpose: fetch_byte_and_keep_low_bit
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: boolean/bit operations, memory operations
+Callers: EFE1, EFE9, EFF1
+
+Threaded script at EFD7; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* EFD7  786B  vm_fetch_unsigned_byte  
+* EFD9  8039  vm_push_word_body_byte  value=0x0001
+* EFDB  7A97  vm_bitwise_and  
+* EFDD  792F  vm_return_to_caller_stream  

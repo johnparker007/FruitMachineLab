@@ -1,0 +1,20 @@
+Purpose: set_display_mode_bytes_02be_02bf_unless_suppressed
+Confidence: reviewed token mechanics
+Groups: arithmetic, mask tests, memory operations, stack/cell helpers
+Callers: E5CF, DC0A, B2E8
+
+Threaded script at A87B; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* A87B  84E0  test_mask_0200_at_719f  body=0x841E, push_address=0x84E2
+* A87D  7574  vm_return_if_nonzero  
+* A87F  78DE  vm_push_two  
+* A881  78B5  vm_push_zero  
+* A883  79DC  vm_enter_loop_frame  
+* A885  8212  vm_push_word_body_byte  value=0x0085
+* A887  7A1C  vm_push_loop_index  
+* A889  81C8  vm_push_word_body_word  value=0x02BE
+* A88B  787E  vm_add_words  
+* A88D  7861  vm_store_byte  
+* A88F  7A00  vm_loop_increment_one  
+* A891  792F  vm_return_to_caller_stream  

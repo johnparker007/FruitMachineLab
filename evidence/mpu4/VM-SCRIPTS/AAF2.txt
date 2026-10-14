@@ -1,0 +1,26 @@
+Purpose: service_collection_when_no_credit_and_optional_rom_credit_topup
+Confidence: reviewed token mechanics; see payout-pass/script-name-evidence.json
+Groups: accounting/NVRAM, control flow, credits, mask tests, memory operations, stack/cell helpers
+Callers: AB1B
+
+Threaded script at AAF2; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* AAF2  AA9F  handle_collect_input_and_automatic_balance_service_gates  body=0xAAA1
+* AAF4  84EC  test_mask_2000_at_719f  body=0x841E, push_address=0x84EE
+* AAF6  7982  vm_branch_forward8_if_zero  branch=0xAB15
+  AAF9  7963  vm_push_inline_byte_literal  inline_value=0x0005
+  AAFC  78B5  vm_push_zero  
+  AAFE  79DC  vm_enter_loop_frame  
+  AB00  80B0  call_credits_add_standard_coin_units  native=0x4646
+  AB02  80B0  call_credits_add_standard_coin_units  native=0x4646
+  AB04  7A00  vm_loop_increment_one  
+  AB06  78B3  vm_push_true_minus_one  
+  AB08  7EF6  vm_push_word_body_byte  value=0x00E0
+  AB0A  7861  vm_store_byte  
+  AB0C  7963  vm_push_inline_byte_literal  inline_value=0x0005
+  AB0F  7EF9  vm_push_word_body_word  value=0x0304
+  AB11  7861  vm_store_byte  
+  AB13  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* AB15  78BE  vm_push_zero  
+* AB17  792F  vm_return_to_caller_stream  

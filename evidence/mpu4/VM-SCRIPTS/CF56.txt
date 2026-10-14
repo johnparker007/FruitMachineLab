@@ -1,0 +1,18 @@
+Purpose: display_odd_you_lose_and_reset_feature_position
+Confidence: reviewed token mechanics
+Groups: display, lamps, sound/scheduler
+Callers: CF7B
+
+Threaded script at CF56; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* CF56  8212  vm_push_word_body_byte  value=0x0085
+* CF58  9BEE  apply_lamp_range_731d_731e  body=0x9ADB, push_address=0x9BF0
+* CF5A  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); ' ODD YOU LOSE'; cmd7A()]
+* CF6B  8833  queue_sound_stream_8835  body=0x856B, push_address=0x8835
+* CF6D  80F8  call_scheduler_wait_until_active_list_empty  native=0x5CCB
+* CF6F  824E  vm_push_word_body_byte  value=0x008F
+* CF71  9BEE  apply_lamp_range_731d_731e  body=0x9ADB, push_address=0x9BF0
+* CF73  78AA  vm_push_true_minus_one  
+* CF75  CB1B  set_feature_destination_with_minus_one_reset  body=0xCB1D
+* CF77  792F  vm_return_to_caller_stream  

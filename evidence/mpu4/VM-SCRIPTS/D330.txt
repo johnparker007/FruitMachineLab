@@ -1,0 +1,34 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, memory operations, reel records, reels, stack/cell helpers
+Callers: D37F
+
+Threaded script at D330; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  D330  8016  call_push_nonzero_symbol_result_or_fallback_to_vm_stack  native=0x1AF1
+  D332  D322  vm_push_local_frame_address  value=0x0003
+  D334  7861  vm_store_byte  
+  D336  78B5  vm_push_zero  
+  D338  9DC1  address_record_0169_explicit_index  body=0x9D97, push_address=0x9DC3
+  D33A  786B  vm_fetch_unsigned_byte  
+  D33C  D319  vm_push_local_frame_address  value=0x0000
+  D33E  7861  vm_store_byte  
+  D340  78C0  vm_push_one  
+  D342  9DC1  address_record_0169_explicit_index  body=0x9D97, push_address=0x9DC3
+  D344  786B  vm_fetch_unsigned_byte  
+  D346  D31C  vm_push_local_frame_address  value=0x0001
+  D348  7861  vm_store_byte  
+  D34A  78DE  vm_push_two  
+  D34C  9DC1  address_record_0169_explicit_index  body=0x9D97, push_address=0x9DC3
+  D34E  786B  vm_fetch_unsigned_byte  
+  D350  D31F  vm_push_local_frame_address  value=0x0002
+  D352  7861  vm_store_byte  
+  D354  7B3D  vm_drop_cell  
+  D356  80C4  call_reels_push_matching_symbol_result  native=0x1AA3
+  D358  9F68  normalize_award_47_to_30_with_optional_input_clamp  body=0x9F6A
+  D35A  9FA0  reels_test_all_three_symbol_flag2  body=0x9FA2
+  D35C  7ECB  vm_push_word_body_byte  value=0x0011
+  D35E  7A97  vm_bitwise_and  
+  D360  7AE7  vm_max_signed  
+  D362  792F  vm_return_to_caller_stream  

@@ -1,0 +1,15 @@
+Observed nudge path
+B4C5 -> B3C8 displays NUDGE -> B43D waits
+ -> B403 dispatches9E06 input-token table by reel index
+ -> B427 increments169/16B/16D -> B31F moves selected reel
+ -> B306 consumes one nudge -> B2E8 updates lamp feedback
+Repeated result: remaining3->2->1->0; credits unchanged.
+
+Observed award path
+Native1AA3 gives non-zero reel-result codes on the winning-path input fixture.
+AF93 transfers pending award unitsBA into current award02FA with display/sound.
+AF13 commits stack amount to selected balance and clears temporary award fields.
+Repeated result: current award0->...->10,then current0/bank02FC=10.
+These are ROM units;physical payout and currency interpretation remain unverified.
+
+See SCRIPT-CLASSIFICATION.txt,VM-SCRIPTS/INDEX.txt,and the full per-script listings.

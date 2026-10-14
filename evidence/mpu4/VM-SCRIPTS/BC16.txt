@@ -1,0 +1,24 @@
+Purpose: display_fixed_width_cash_amount_record_and_store_e7
+Confidence: reviewed token mechanics; see lifecycle-pass/script-name-evidence.json
+Groups: arithmetic, boolean/bit operations, control flow, display, memory operations, stack/cell helpers
+Callers: BC70, BC3F
+
+Threaded script at BC16; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* BC16  7B49  vm_duplicate_if_nonzero  
+* BC18  7A46  vm_test_zero  
+* BC1A  7982  vm_branch_forward8_if_zero  branch=0xBC23
+  BC1D  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); cmd7A()]
+  BC21  7935  vm_unwind_loop_frames_to_return  
+* BC23  773C  vm_execute_alpha_stream  inline_stream=[cmd70(00); cmd7A()]
+* BC28  7B51  vm_duplicate_cell  
+* BC2A  7EFD  vm_push_word_body_byte  value=0x00E7
+* BC2C  7861  vm_store_byte  
+* BC2E  78D3  vm_decrement_word  
+* BC30  7963  vm_push_inline_byte_literal  inline_value=0x0011
+* BC33  7DC4  multiply_words_keep_low_cell  body=0x7DC6
+* BC35  BB76  vm_push_word_body_address  value=0xBB78
+* BC37  787E  vm_add_words  
+* BC39  831B  call_alpha_execute_stream_at_x  native=0x3CC0
+* BC3B  792F  vm_return_to_caller_stream  

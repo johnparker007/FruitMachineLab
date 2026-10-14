@@ -1,0 +1,49 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: arithmetic, boolean/bit operations, indexed memory, memory operations, stack/cell helpers
+Callers: B1D0
+
+Threaded script at B0CF; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B0CF  7F14  vm_push_word_body_byte  value=0x00C9
+* B0D1  786B  vm_fetch_unsigned_byte  
+* B0D3  787E  vm_add_words  
+* B0D5  A129  vm_push_word_body_byte  value=0x002F
+* B0D7  7ADC  vm_min_signed  
+* B0D9  7B51  vm_duplicate_cell  
+* B0DB  7B51  vm_duplicate_cell  
+* B0DD  A12C  read_indexed_byte_table_at_a12e  body=0x9971, push_address=0xA12E
+* B0DF  7F0D  vm_push_word_body_byte  value=0x001E
+* B0E1  7D4A  compare_top_ge_second_signed  body=0x7D4C
+* B0E3  7B59  vm_copy_second_cell  
+* B0E5  A15E  read_indexed_byte_table_at_a160  body=0x9971, push_address=0xA160
+* B0E7  A12C  read_indexed_byte_table_at_a12e  body=0x9971, push_address=0xA12E
+* B0E9  7F0D  vm_push_word_body_byte  value=0x001E
+* B0EB  7D4A  compare_top_ge_second_signed  body=0x7D4C
+* B0ED  7A97  vm_bitwise_and  
+* B0EF  7B7D  vm_swap_two_cells  
+* B0F1  A12C  read_indexed_byte_table_at_a12e  body=0x9971, push_address=0xA12E
+* B0F3  78C0  vm_push_one  
+* B0F5  7A5B  vm_compare_not_equal  
+* B0F7  7EED  vm_push_word_body_byte  value=0x00BF
+* B0F9  786B  vm_fetch_unsigned_byte  
+* B0FB  7EEA  vm_push_word_body_byte  value=0x00CA
+* B0FD  787E  vm_add_words  
+* B0FF  786B  vm_fetch_unsigned_byte  
+* B101  9F68  normalize_award_47_to_30_with_optional_input_clamp  body=0x9F6A
+* B103  7F0D  vm_push_word_body_byte  value=0x001E
+* B105  7A65  vm_compare_top_gt_second_signed  
+* B107  7AA3  vm_bitwise_or  
+* B109  7A97  vm_bitwise_and  
+* B10B  9F5E  test_two_orange1_input_conditions  body=0x9F60
+* B10D  7ABB  vm_bitwise_not  
+* B10F  7AA3  vm_bitwise_or  
+* B111  7B7D  vm_swap_two_cells  
+* B113  7963  vm_push_inline_byte_literal  inline_value=0x0023
+* B116  7A5B  vm_compare_not_equal  
+* B118  78DE  vm_push_two  
+* B11A  9A11  random_percentage_test  body=0x9A13
+* B11C  7AA3  vm_bitwise_or  
+* B11E  7A97  vm_bitwise_and  
+* B120  792F  vm_return_to_caller_stream  

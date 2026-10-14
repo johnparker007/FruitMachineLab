@@ -1,0 +1,15 @@
+Purpose: initialize_cash_attack_selection_pool_with_eleven_indices
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: stack/cell helpers
+Callers: AC81
+
+Threaded script at C797; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C797  7963  vm_push_inline_byte_literal  inline_value=0x000B
+* C79A  78B5  vm_push_zero  
+* C79C  79DC  vm_enter_loop_frame  
+* C79E  7A1C  vm_push_loop_index  
+* C7A0  ACAC  append_byte_to_local_selection_pool  body=0xACAE
+* C7A2  7A00  vm_loop_increment_one  
+* C7A4  792F  vm_return_to_caller_stream  

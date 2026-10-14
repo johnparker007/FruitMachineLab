@@ -1,0 +1,20 @@
+Purpose: map_board_index_to_serpentine_grid_coordinates
+Confidence: reviewed token mechanics; see lifecycle-pass/script-name-evidence.json
+Groups: arithmetic, boolean/bit operations, control flow, stack/cell helpers
+Callers: BB49
+
+Threaded script at BB2C; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* BB2C  7963  vm_push_inline_byte_literal  inline_value=0x0006
+* BB2F  7DE2  signed_cell_divmod  body=0x7DE4
+* BB31  7B51  vm_duplicate_cell  
+* BB33  78C0  vm_push_one  
+* BB35  7A97  vm_bitwise_and  
+* BB37  7982  vm_branch_forward8_if_zero  branch=0xBB45
+* BB3A  7B7D  vm_swap_two_cells  
+* BB3C  7963  vm_push_inline_byte_literal  inline_value=0x0005
+* BB3F  7B7D  vm_swap_two_cells  
+* BB41  78A0  vm_subtract_top_from_second  
+* BB43  7B7D  vm_swap_two_cells  
+* BB45  792F  vm_return_to_caller_stream  

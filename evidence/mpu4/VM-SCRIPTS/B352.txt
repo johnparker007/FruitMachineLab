@@ -1,0 +1,31 @@
+Purpose: execute_selected_automatic_nudge_moves
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, control flow, memory operations, nudges, reel records, reels, sound/scheduler, stack/cell helpers
+Callers: B384
+
+Threaded script at B352; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B352  8703  queue_sound_stream_8705  body=0x856B, push_address=0x8705
+* B354  8245  vm_push_word_body_byte  value=0x00BE
+* B356  786B  vm_fetch_unsigned_byte  
+* B358  7963  vm_push_inline_byte_literal  inline_value=0x0027
+* B35B  7ADC  vm_min_signed  
+* B35D  8084  call_push_best_reel_search_movement_triplet_with_symbols_restored  native=0x2A2F
+* B35F  7B7D  vm_swap_two_cells  
+* B361  7B6D  vm_rotate_three_cells  
+* B363  8130  call_reset_sound_and_scheduler  native=0x5B77
+* B365  9D7A  push_three_reel_loop_bounds  body=0x9D7C
+* B367  79DC  vm_enter_loop_frame  
+* B369  7B49  vm_duplicate_if_nonzero  
+* B36B  7A53  vm_test_nonzero  
+* B36D  7982  vm_branch_forward8_if_zero  branch=0xB37E
+* B370  78B5  vm_push_zero  
+* B372  79DC  vm_enter_loop_frame  
+* B374  7A26  vm_push_outer_loop_index  
+* B376  9DC1  address_record_0169_explicit_index  body=0x9D97, push_address=0x9DC3
+* B378  7653  vm_increment_byte_memory  
+* B37A  B31D  execute_requested_nudge_motion  body=0xB31F
+* B37C  7A00  vm_loop_increment_one  
+* B37E  7A00  vm_loop_increment_one  
+* B380  792F  vm_return_to_caller_stream  

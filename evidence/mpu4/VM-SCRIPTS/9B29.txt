@@ -1,0 +1,15 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: arithmetic, lamps, memory operations, stack/cell helpers
+Callers: C005
+
+Threaded script at 9B29; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  9B29  790D  vm_fetch_word  
+  9B2B  7B6D  vm_rotate_three_cells  
+  9B2D  787E  vm_add_words  
+  9B2F  786B  vm_fetch_unsigned_byte  
+  9B31  7B7D  vm_swap_two_cells  
+  9B33  7FC7  call_lamp_set_inhibit_bit_for_logical_id  native=0x492B
+  9B35  792F  vm_return_to_caller_stream  

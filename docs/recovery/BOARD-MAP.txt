@@ -1,0 +1,52 @@
+Recovered board display/type/link association
+
+Display text establishes presentation association. Link semantics and every gameplay branch are not all verified. Type2 selects a cash-feature script; type3 selects a special feature.
+
+ 0 type= 0 link= 0 ROLL THE DICE
+ 1 type= 1 link= 0 TAKE NUDGEPOT
+ 2 type= 0 link=22 UP THE LADDER
+ 3 type= 6 link= 0 TAKE 60P
+ 4 type= 2 link= 0 TAKE LOOT SHOOT
+ 5 type= 3 link= 0 MYSTERY
+ 6 type= 0 link=30 UP THE LADDER
+ 7 type= 8 link= 0 TAKE 80P
+ 8 type= 1 link= 0 TAKE NUDGEPOT
+ 9 type= 2 link= 0 TAKE NICE DICE
+10 type=10 link= 0 TAKE 1.00
+11 type= 3 link= 0 MYSTERY
+12 type= 2 link= 0 TAKE CASH CLIMB
+13 type= 3 link= 0 MYSTERY
+14 type=12 link= 0 TAKE 1.20
+15 type= 0 link=32 UP THE LADDER
+16 type= 0 link= 3 ARRRRRGGGGHHH
+17 type=16 link= 0 TAKE 1.60
+18 type= 1 link= 0 TAKE NUDGEPOT
+19 type= 2 link= 0 TAKE MONEY TRAP
+20 type=18 link= 0 TAKE 1.80
+21 type= 3 link= 0 MYSTERY
+22 type= 1 link= 0 TAKE NUDGEPOT
+23 type=20 link= 0 TAKE 2.00
+24 type= 0 link=11 ARRRRRGGGGHHH
+25 type=22 link= 0 TAKE 2.20
+26 type= 2 link= 0 TAKE PICK A WIN
+27 type= 3 link= 0 MYSTERY
+28 type=24 link= 0 TAKE 2.40
+29 type= 1 link= 0 TAKE NUDGEPOT
+30 type=26 link= 0 TAKE 2.60
+31 type= 1 link= 0 TAKE NUDGEPOT
+32 type= 2 link= 0 TAKE SKILL CASH
+33 type=30 link= 0 TAKE 3.00
+34 type= 3 link= 0 MYSTERY
+35 type= 0 link=45 UP THE LADDER
+36 type=32 link= 0 TAKE 3.20
+37 type= 2 link= 0 TAKE CASH ATTACK
+38 type= 3 link= 0 MYSTERY
+39 type=36 link= 0 TAKE 3.60
+40 type= 3 link= 0 MYSTERY
+41 type= 0 link= 7 ARRRRRGGGGHHH
+42 type= 2 link= 0 TAKE SUPA STEPPA
+43 type=40 link= 0 TAKE 4.00
+44 type= 3 link= 0 MYSTERY
+45 type=60 link= 0 TAKE JACKPOT
+46 type= 0 link= 9 ARRRRRGGGGHHH
+47 type= 2 link= 0 JACKPOT RESTART

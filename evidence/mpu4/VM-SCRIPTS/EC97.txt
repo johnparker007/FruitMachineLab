@@ -1,0 +1,37 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: arithmetic, boolean/bit operations, control flow, lamps, mask/address records, reels, sound/scheduler
+Callers: EE34
+
+Threaded script at EC97; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* EC97  8248  vm_push_word_body_byte  value=0x0080
+* EC99  9D4E  clear_selected_reel_lamp_record_and_auxiliary_range  body=0x9D50
+* EC9B  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* EC9D  80C4  call_reels_push_matching_symbol_result  native=0x1AA3
+* EC9F  7982  vm_branch_forward8_if_zero  branch=0xECB7
+* ECA2  9CAB  apply_lamp_range_constant_0080_record_9c08_9cad  body=0x9CAD
+* ECA4  8212  vm_push_word_body_byte  value=0x0085
+* ECA6  9C3E  apply_lamp_range_7320_7323  body=0x9ADB, push_address=0x9C40
+* ECA8  855E  test_two_indirect_zero_conditions  body=0x8560
+* ECAA  7982  vm_branch_forward8_if_zero  branch=0xECB7
+  ECAD  80C4  call_reels_push_matching_symbol_result  native=0x1AA3
+  ECAF  9FED  lookup_first_award_threshold_index_in_75bd  body=0x9FEF
+  ECB1  78D3  vm_decrement_word  
+  ECB3  8212  vm_push_word_body_byte  value=0x0085
+  ECB5  9D44  apply_three_reel_and_auxiliary_indexed_lamp_pattern  body=0x9D46
+* ECB7  8114  call_reels_translate_positions_to_symbol_records  native=0x2C12
+* ECB9  8435  push_pair_0038_0085  body=0x8417, push_address=0x8437
+* ECBB  7671  vm_clear_word_memory_bits  
+* ECBD  A2A9  script_a2a9  body=0xA2AB
+* ECBF  A013  clear_three_reel_record_bytes  body=0xA015
+* ECC1  896B  queue_sound_stream_896d  body=0x856B, push_address=0x896D
+* ECC3  B7C0  script_b7c0  body=0xB7C2
+* ECC5  80F8  call_scheduler_wait_until_active_list_empty  native=0x5CCB
+* ECC7  855E  test_two_indirect_zero_conditions  body=0x8560
+* ECC9  7ABB  vm_bitwise_not  
+* ECCB  7982  vm_branch_forward8_if_zero  branch=0xECD0
+* ECCE  EC6A  script_ec6a  body=0xEC6C
+* ECD0  9DE9  call_set_all_three_reel_group_lamps_pattern_8f_9deb  body=0x9DEB
+* ECD2  792F  vm_return_to_caller_stream  

@@ -1,0 +1,39 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, lamps, memory operations, stack/cell helpers
+Callers: CB1D
+
+Threaded script at CAD5; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* CAD5  7F14  vm_push_word_body_byte  value=0x00C9
+* CAD7  786B  vm_fetch_unsigned_byte  
+* CAD9  7B51  vm_duplicate_cell  
+* CADB  8248  vm_push_word_body_byte  value=0x0080
+* CADD  9B82  apply_indexed_lamp_id_from_728f  body=0x9B18, push_address=0x9B84
+* CADF  7B59  vm_copy_second_cell  
+* CAE1  7A79  vm_compare_top_lt_second_signed  
+* CAE3  7982  vm_branch_forward8_if_zero  branch=0xCAFF
+* CAE6  7F14  vm_push_word_body_byte  value=0x00C9
+* CAE8  7659  vm_decrement_byte_memory  
+* CAEA  7B59  vm_copy_second_cell  
+* CAEC  78AA  vm_push_true_minus_one  
+* CAEE  7A6F  vm_compare_equal  
+* CAF0  7982  vm_branch_forward8_if_zero  branch=0xCAF9
+* CAF3  7963  vm_push_inline_byte_literal  inline_value=0x000A
+* CAF6  7979  vm_branch_unsigned_forward8  branch=0xCAFC
+* CAF9  7963  vm_push_inline_byte_literal  inline_value=0x000A
+* CAFC  7979  vm_branch_unsigned_forward8  branch=0xCB06
+* CAFF  7F14  vm_push_word_body_byte  value=0x00C9
+* CB01  7653  vm_increment_byte_memory  
+* CB03  7963  vm_push_inline_byte_literal  inline_value=0x000A
+* CB06  7F14  vm_push_word_body_byte  value=0x00C9
+* CB08  786B  vm_fetch_unsigned_byte  
+* CB0A  9F56  apply_pattern_8f_to_indexed_lamp_record  body=0x9F58
+* CB0C  99AD  wait_irq_ticks_or_abort_flag  body=0x99AF
+* CB0E  7F14  vm_push_word_body_byte  value=0x00C9
+* CB10  786B  vm_fetch_unsigned_byte  
+* CB12  7B59  vm_copy_second_cell  
+* CB14  7A6F  vm_compare_equal  
+* CB16  79A6  vm_branch_backward8_if_zero  branch=0xCAD5
+* CB19  792F  vm_return_to_caller_stream  

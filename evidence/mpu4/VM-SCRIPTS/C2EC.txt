@@ -1,0 +1,15 @@
+Purpose: money_trap_play_sound_and_display_local_terms
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: display, sound/scheduler
+Callers: C2FD
+
+Threaded script at C2EC; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C2EC  8130  call_reset_sound_and_scheduler  native=0x5B77
+* C2EE  8B99  queue_sound_stream_8b9b  body=0x856B, push_address=0x8B9B
+* C2F0  C12B  vm_push_local_frame_address  value=0x0002
+* C2F2  831B  call_alpha_execute_stream_at_x  native=0x3CC0
+* C2F4  7963  vm_push_inline_byte_literal  inline_value=0x0096
+* C2F7  99AD  wait_irq_ticks_or_abort_flag  body=0x99AF
+* C2F9  792F  vm_return_to_caller_stream  

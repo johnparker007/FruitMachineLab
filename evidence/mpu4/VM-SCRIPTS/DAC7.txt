@@ -1,0 +1,70 @@
+Purpose: animate_ladder_and_adjust_nudgepot_then_set_destination
+Confidence: reviewed token mechanics
+Groups: arithmetic, boolean/bit operations, control flow, display, indexed memory, lamps, memory operations, nudges, sound/scheduler, stack/cell helpers, table/dynamic dispatch
+Callers: DBC4
+
+Threaded script at DAC7; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* DAC7  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); ' UP THE LADDER'; cmd7A()]
+* DAD9  8EA6  queue_sound_stream_8ea8  body=0x856B, push_address=0x8EA8
+* DADB  80F8  call_scheduler_wait_until_active_list_empty  native=0x5CCB
+* DADD  8130  call_reset_sound_and_scheduler  native=0x5B77
+* DADF  8248  vm_push_word_body_byte  value=0x0080
+* DAE1  9B86  apply_lamp_range_728f_72bf  body=0x9ADB, push_address=0x9B88
+* DAE3  7F14  vm_push_word_body_byte  value=0x00C9
+* DAE5  786B  vm_fetch_unsigned_byte  
+* DAE7  7B51  vm_duplicate_cell  
+* DAE9  A1FC  map_ladder_or_snake_position_to_path_index  body=0xA1FE
+* DAEB  7B51  vm_duplicate_cell  
+* DAED  A190  read_indexed_word_table_at_a192  body=0x997A, push_address=0xA192
+* DAEF  7B59  vm_copy_second_cell  
+* DAF1  A19A  read_indexed_word_table_at_a19c  body=0x997A, push_address=0xA19C
+* DAF3  7B7D  vm_swap_two_cells  
+* DAF5  78A0  vm_subtract_top_from_second  
+* DAF7  78B5  vm_push_zero  
+* DAF9  79DC  vm_enter_loop_frame  
+* DAFB  7EED  vm_push_word_body_byte  value=0x00BF
+* DAFD  786B  vm_fetch_unsigned_byte  
+* DAFF  78C9  vm_increment_word  
+* DB01  7B51  vm_duplicate_cell  
+* DB03  7EEA  vm_push_word_body_byte  value=0x00CA
+* DB05  787E  vm_add_words  
+* DB07  786B  vm_fetch_unsigned_byte  
+* DB09  7F0D  vm_push_word_body_byte  value=0x001E
+* DB0B  7A65  vm_compare_top_gt_second_signed  
+* DB0D  7B7D  vm_swap_two_cells  
+* DB0F  7963  vm_push_inline_byte_literal  inline_value=0x0010
+* DB12  7A65  vm_compare_top_gt_second_signed  
+* DB14  7A97  vm_bitwise_and  
+* DB16  7982  vm_branch_forward8_if_zero  branch=0xDB26
+* DB19  7963  vm_push_inline_byte_literal  inline_value=0x0032
+* DB1C  9A11  random_percentage_test  body=0x9A13
+* DB1E  78C0  vm_push_one  
+* DB20  7A97  vm_bitwise_and  
+* DB22  7EED  vm_push_word_body_byte  value=0x00BF
+* DB24  7894  vm_add_to_byte_memory  
+* DB26  A8ED  display_nudgepot_byte_as_two_decimal_digits  body=0xA8EF
+* DB28  7A1C  vm_push_loop_index  
+* DB2A  824E  vm_push_word_body_byte  value=0x008F
+* DB2C  78DE  vm_push_two  
+* DB2E  7B61  vm_pick_cell_by_unsigned_word_index  
+* DB30  A1A4  dispatch_indexed_token_table_a1a6  body=0x99A1, push_address=0xA1A6
+* DB32  7A1C  vm_push_loop_index  
+* DB34  8579  write_byte_004d_857b  body=0x857B
+* DB36  9568  queue_sound_stream_956a  body=0x856B, push_address=0x956A
+* DB38  80F8  call_scheduler_wait_until_active_list_empty  native=0x5CCB
+* DB3A  8130  call_reset_sound_and_scheduler  native=0x5B77
+* DB3C  7A1C  vm_push_loop_index  
+* DB3E  8248  vm_push_word_body_byte  value=0x0080
+* DB40  78DE  vm_push_two  
+* DB42  7B61  vm_pick_cell_by_unsigned_word_index  
+* DB44  A1A4  dispatch_indexed_token_table_a1a6  body=0x99A1, push_address=0xA1A6
+* DB46  7A00  vm_loop_increment_one  
+* DB48  7B3D  vm_drop_cell  
+* DB4A  A15E  read_indexed_byte_table_at_a160  body=0x9971, push_address=0xA160
+* DB4C  7B51  vm_duplicate_cell  
+* DB4E  9F56  apply_pattern_8f_to_indexed_lamp_record  body=0x9F58
+* DB50  7F14  vm_push_word_body_byte  value=0x00C9
+* DB52  7861  vm_store_byte  
+* DB54  792F  vm_return_to_caller_stream  

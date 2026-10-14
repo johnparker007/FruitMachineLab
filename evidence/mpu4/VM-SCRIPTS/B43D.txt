@@ -1,0 +1,20 @@
+Purpose: wait_for_nudge_input_or_matching_result
+Confidence: reviewed gameplay context
+Groups: boolean/bit operations, control flow, display, memory operations, nudges, reels, stack/cell helpers
+Callers: B4C5
+
+Threaded script at B43D; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B43D  78B5  vm_push_zero  
+* B43F  82F5  vm_push_word_body_byte  value=0x002F
+* B441  7874  vm_store_word  
+* B443  809C  call_resume_alpha_stream_when_delay_expired  native=0x3CF7
+* B445  B401  scan_nudge_buttons_and_request_reel_step  body=0xB403
+* B447  B435  return_zero_nudge_exit_hook  body=0xB437
+* B449  7AA3  vm_bitwise_or  
+* B44B  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* B44D  80C4  call_reels_push_matching_symbol_result  native=0x1AA3
+* B44F  7AA3  vm_bitwise_or  
+* B451  79A6  vm_branch_backward8_if_zero  branch=0xB443
+* B454  792F  vm_return_to_caller_stream  

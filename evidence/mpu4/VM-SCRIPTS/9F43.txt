@@ -1,0 +1,17 @@
+Purpose: store_result_byte_b9_if_zero
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, control flow, memory operations, stack/cell helpers
+Callers: B72D, EDD3, EE34
+
+Threaded script at 9F43; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9F43  8164  vm_push_word_body_byte  value=0x00B9
+* 9F45  786B  vm_fetch_unsigned_byte  
+* 9F47  7A46  vm_test_zero  
+* 9F49  7982  vm_branch_forward8_if_zero  branch=0x9F52
+* 9F4C  7B51  vm_duplicate_cell  
+* 9F4E  8164  vm_push_word_body_byte  value=0x00B9
+* 9F50  7861  vm_store_byte  
+* 9F52  7B3D  vm_drop_cell  
+* 9F54  792F  vm_return_to_caller_stream  

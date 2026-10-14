@@ -1,0 +1,22 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, memory operations
+Callers: EAF3
+
+Threaded script at EA75; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* EA75  E46E  vm_push_local_frame_address  value=0x0004
+* EA77  786B  vm_fetch_unsigned_byte  
+* EA79  E46B  vm_push_local_frame_address  value=0x0003
+* EA7B  786B  vm_fetch_unsigned_byte  
+* EA7D  7AA3  vm_bitwise_or  
+* EA7F  E471  vm_push_local_frame_address  value=0x0005
+* EA81  786B  vm_fetch_unsigned_byte  
+* EA83  7AA3  vm_bitwise_or  
+* EA85  E468  vm_push_local_frame_address  value=0x0002
+* EA87  786B  vm_fetch_unsigned_byte  
+* EA89  7963  vm_push_inline_byte_literal  inline_value=0x0005
+* EA8C  7D42  compare_top_le_second_signed  body=0x7D44
+* EA8E  7AA3  vm_bitwise_or  
+* EA90  792F  vm_return_to_caller_stream  

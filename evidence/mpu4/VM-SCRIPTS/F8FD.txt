@@ -1,0 +1,19 @@
+Purpose: attract_sweep_three_auxiliary_lamps_with_pattern
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: lamps, stack/cell helpers
+Callers: F917
+
+Threaded script at F8FD; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* F8FD  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* F900  78B5  vm_push_zero  
+* F902  79DC  vm_enter_loop_frame  
+* F904  7A1C  vm_push_loop_index  
+* F906  7B59  vm_copy_second_cell  
+* F908  9BF4  apply_indexed_lamp_id_from_7249  body=0x9B18, push_address=0x9BF6
+* F90A  7963  vm_push_inline_byte_literal  inline_value=0x0019
+* F90D  F574  wait_attract_ticks_or_restore_game_state_on_credit_or_service  body=0xF576
+* F90F  7A00  vm_loop_increment_one  
+* F911  7B3D  vm_drop_cell  
+* F913  792F  vm_return_to_caller_stream  

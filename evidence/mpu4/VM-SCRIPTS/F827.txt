@@ -1,0 +1,19 @@
+Purpose: attract_set_ten_lamp_strip_pattern_and_wait
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: lamps, stack/cell helpers
+Callers: F860
+
+Threaded script at F827; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* F827  7963  vm_push_inline_byte_literal  inline_value=0x000A
+* F82A  78B5  vm_push_zero  
+* F82C  79DC  vm_enter_loop_frame  
+* F82E  7A1C  vm_push_loop_index  
+* F830  7B59  vm_copy_second_cell  
+* F832  9BC4  apply_indexed_lamp_id_from_724c  body=0x9B18, push_address=0x9BC6
+* F834  7A00  vm_loop_increment_one  
+* F836  7963  vm_push_inline_byte_literal  inline_value=0x0019
+* F839  F574  wait_attract_ticks_or_restore_game_state_on_credit_or_service  body=0xF576
+* F83B  7B3D  vm_drop_cell  
+* F83D  792F  vm_return_to_caller_stream  

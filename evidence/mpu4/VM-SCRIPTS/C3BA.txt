@@ -1,0 +1,30 @@
+Purpose: money_trap_sum_animate_and_commit_pending_award
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: accounting/NVRAM, award/balance operations, control flow, display, memory operations, sound/scheduler, stack/cell helpers
+Callers: C416
+
+Threaded script at C3BA; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C3BA  773C  vm_execute_alpha_stream  inline_stream=[cmd70(02); '+'; cmd7A()]
+* C3C0  C3AB  money_trap_sound_and_wait_between_terms  body=0xC3AD
+* C3C2  773C  vm_execute_alpha_stream  inline_stream=[cmd70(05); '+'; cmd7A()]
+* C3C8  C3AB  money_trap_sound_and_wait_between_terms  body=0xC3AD
+* C3CA  773C  vm_execute_alpha_stream  inline_stream=[cmd70(08); '+'; cmd7A()]
+* C3D0  C3AB  money_trap_sound_and_wait_between_terms  body=0xC3AD
+* C3D2  8130  call_reset_sound_and_scheduler  native=0x5B77
+* C3D4  896B  queue_sound_stream_896d  body=0x856B, push_address=0x896D
+* C3D6  C378  money_trap_sum_four_display_digits  body=0xC37A
+* C3D8  C36B  execute_alpha_command_stream_c36d  body=0xC36D
+* C3DA  7963  vm_push_inline_byte_literal  inline_value=0x0004
+* C3DD  99AD  wait_irq_ticks_or_abort_flag  body=0x99AF
+* C3DF  7B51  vm_duplicate_cell  
+* C3E1  C351  money_trap_display_amount_and_equals_sign  body=0xC353
+* C3E3  7963  vm_push_inline_byte_literal  inline_value=0x0004
+* C3E6  99AD  wait_irq_ticks_or_abort_flag  body=0x99AF
+* C3E8  856F  test_zero_read_word_0047_8571  body=0x8571
+* C3EA  79A6  vm_branch_backward8_if_zero  branch=0xC3D8
+* C3ED  8318  vm_push_word_body_byte  value=0x00BA
+* C3EF  7874  vm_store_word  
+* C3F1  8128  call_nvram_refresh_complement_checksum_if_game  native=0x6E06
+* C3F3  792F  vm_return_to_caller_stream  

@@ -1,0 +1,12 @@
+Purpose: run_refill_reporting_after_panel_release
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: lamps
+Callers: F576
+
+Threaded script at F560; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  F560  9984  wait_for_all_panel_buttons_released  body=0x9986
+  F562  8094  call_apply_lamp_range_7248_to_733d  native=0x4AC0
+  F564  80FC  call_stream_reporting_under_option_gates  native=0x4EAB
+  F566  792F  vm_return_to_caller_stream  

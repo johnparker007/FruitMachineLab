@@ -1,0 +1,64 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, display, indexed memory, lamps, mask tests, memory operations, sound/scheduler, stack/cell helpers
+Callers: E71C
+
+Threaded script at E5CF; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* E5CF  9CA3  apply_lamp_range_constant_0080_record_9b8c_9ca5  body=0x9CA5
+* E5D1  8357  vm_push_word_body_byte  value=0x0028
+* E5D3  8060  call_lamp_set_frame_pattern_5  native=0x498B
+* E5D5  8248  vm_push_word_body_byte  value=0x0080
+* E5D7  9BBE  apply_lamp_range_7281_7286  body=0x9ADB, push_address=0x9BC0
+* E5D9  8248  vm_push_word_body_byte  value=0x0080
+* E5DB  9D3E  apply_lamp_range_record_9b7c  body=0x9D40
+* E5DD  8248  vm_push_word_body_byte  value=0x0080
+* E5DF  9C38  apply_lamp_range_7257_725d  body=0x9ADB, push_address=0x9C3A
+* E5E1  E468  vm_push_local_frame_address  value=0x0002
+* E5E3  786B  vm_fetch_unsigned_byte  
+* E5E5  8212  vm_push_word_body_byte  value=0x0085
+* E5E7  9BBA  apply_indexed_lamp_id_from_7281  body=0x9B18, push_address=0x9BBC
+* E5E9  8130  call_reset_sound_and_scheduler  native=0x5B77
+* E5EB  E462  vm_push_local_frame_address  value=0x0000
+* E5ED  786B  vm_fetch_unsigned_byte  
+* E5EF  E5A0  script_e5a0  body=0xE5A2
+* E5F1  8248  vm_push_word_body_byte  value=0x0080
+* E5F3  9B86  apply_lamp_range_728f_72bf  body=0x9ADB, push_address=0x9B88
+* E5F5  7B51  vm_duplicate_cell  
+* E5F7  7F14  vm_push_word_body_byte  value=0x00C9
+* E5F9  7861  vm_store_byte  
+* E5FB  B904  script_b904  body=0xB906
+* E5FD  7EED  vm_push_word_body_byte  value=0x00BF
+* E5FF  786B  vm_fetch_unsigned_byte  
+* E601  E474  vm_push_local_frame_address  value=0x0006
+* E603  7861  vm_store_byte  
+* E605  7B51  vm_duplicate_cell  
+* E607  8212  vm_push_word_body_byte  value=0x0085
+* E609  9B82  apply_indexed_lamp_id_from_728f  body=0x9B18, push_address=0x9B84
+* E60B  7B51  vm_duplicate_cell  
+* E60D  A12C  read_indexed_byte_table_at_a12e  body=0x9971, push_address=0xA12E
+* E60F  78C0  vm_push_one  
+* E611  7A6F  vm_compare_equal  
+* E613  7982  vm_branch_forward8_if_zero  branch=0xE61B
+  E616  A879  set_display_mode_bytes_02be_02bf_unless_suppressed  body=0xA87B
+  E618  7979  vm_branch_unsigned_forward8  branch=0xE61D
+* E61B  A893  clear_display_mode_bytes_unless_option_0200  body=0xA895
+* E61D  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); '    EXCHANGE    '; cmd7A()]
+* E631  8130  call_reset_sound_and_scheduler  native=0x5B77
+* E633  8F5D  queue_sound_stream_8f5f  body=0x856B, push_address=0x8F5F
+* E635  84F2  test_mask_4000_at_719f  body=0x841E, push_address=0x84F4
+* E637  7ABB  vm_bitwise_not  
+* E639  7982  vm_branch_forward8_if_zero  branch=0xE644
+* E63C  7B51  vm_duplicate_cell  
+* E63E  BB47  animate_shrinking_board_rectangle_to_selected_square  body=0xBB49
+* E640  7B51  vm_duplicate_cell  
+* E642  BB47  animate_shrinking_board_rectangle_to_selected_square  body=0xBB49
+* E644  8130  call_reset_sound_and_scheduler  native=0x5B77
+* E646  824E  vm_push_word_body_byte  value=0x008F
+* E648  9B86  apply_lamp_range_728f_72bf  body=0x9ADB, push_address=0x9B88
+* E64A  820C  vm_push_word_body_byte  value=0x0083
+* E64C  9B82  apply_indexed_lamp_id_from_728f  body=0x9B18, push_address=0x9B84
+* E64E  A013  clear_three_reel_record_bytes  body=0xA015
+* E650  A8F7  refresh_credit_and_bank_display_unless_suppressed  body=0xA8F9
+* E652  792F  vm_return_to_caller_stream  

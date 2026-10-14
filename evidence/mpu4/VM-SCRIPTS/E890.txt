@@ -1,0 +1,13 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, memory operations, reel records
+Callers: E8A9
+
+Threaded script at E890; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  E890  7FAD  vm_push_word_body_word  value=0x0166
+  E892  786B  vm_fetch_unsigned_byte  
+  E894  7963  vm_push_inline_byte_literal  inline_value=0x0007
+  E897  7A65  vm_compare_top_gt_second_signed  
+  E899  792F  vm_return_to_caller_stream  

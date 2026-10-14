@@ -1,0 +1,28 @@
+Purpose: cash_climber_display_shot_count_or_previous_step_amount
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: arithmetic, boolean/bit operations, control flow, display, indexed memory, lamps, memory operations
+Callers: C0AC
+
+Threaded script at C06F; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C06F  BF5D  vm_push_local_frame_address  value=0x0000
+* C071  786B  vm_fetch_unsigned_byte  
+* C073  7A46  vm_test_zero  
+* C075  7982  vm_branch_forward8_if_zero  branch=0xC08D
+* C078  BFF1  cash_climber_reset_shot_lamps_and_flag  body=0xBFF3
+* C07A  7A1C  vm_push_loop_index  
+* C07C  78D3  vm_decrement_word  
+* C07E  8212  vm_push_word_body_byte  value=0x0085
+* C080  9B92  apply_indexed_lamp_id_from_72ef  body=0x9B18, push_address=0x9B94
+* C082  7A1C  vm_push_loop_index  
+* C084  78D3  vm_decrement_word  
+* C086  C037  read_indexed_byte_table_at_c039  body=0x9971, push_address=0xC039
+* C088  A31B  announce_and_flash_award_amount  body=0xA31D
+* C08A  7979  vm_branch_unsigned_forward8  branch=0xC0A8
+* C08D  BF5D  vm_push_local_frame_address  value=0x0000
+* C08F  786B  vm_fetch_unsigned_byte  
+* C091  8306  vm_push_word_body_word  value=0x0327
+* C093  7861  vm_store_byte  
+* C095  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); '    '; cmd76(0327); ' SHOT'; cmd69(0327); cmd7A()]
+* C0A8  792F  vm_return_to_caller_stream  

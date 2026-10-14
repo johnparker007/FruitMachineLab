@@ -1,0 +1,25 @@
+Purpose: cash_climber_initialize_timer_and_shot_state
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: lamps, memory operations, stack/cell helpers
+Callers: C10B
+
+Threaded script at BFCE; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* BFCE  7963  vm_push_inline_byte_literal  inline_value=0x0064
+* BFD1  81A2  vm_push_word_body_word  value=0x032D
+* BFD3  7874  vm_store_word  
+* BFD5  78C0  vm_push_one  
+* BFD7  7EF3  vm_push_word_body_byte  value=0x00EA
+* BFD9  7861  vm_store_byte  
+* BFDB  78DE  vm_push_two  
+* BFDD  7EF0  vm_push_word_body_byte  value=0x00E9
+* BFDF  7861  vm_store_byte  
+* BFE1  78AA  vm_push_true_minus_one  
+* BFE3  819F  vm_push_word_body_byte  value=0x00B3
+* BFE5  7861  vm_store_byte  
+* BFE7  78B5  vm_push_zero  
+* BFE9  9C48  word_9c48_shared_9ae6  body=0x9AE6, push_address=0x9C4A
+* BFEB  824E  vm_push_word_body_byte  value=0x008F
+* BFED  9B96  apply_lamp_range_72ef_72fd  body=0x9ADB, push_address=0x9B98
+* BFEF  792F  vm_return_to_caller_stream  

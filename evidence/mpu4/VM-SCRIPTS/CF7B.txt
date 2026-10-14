@@ -1,0 +1,41 @@
+Purpose: special_feature_roll_even
+Confidence: reviewed dispatch/display association; complete gameplay unresolved
+Groups: arithmetic, boolean/bit operations, control flow, display, lamps, mask tests, memory operations, reel records, sound/scheduler, stack/cell helpers
+Callers: E227, 99A1
+
+Threaded script at CF7B; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* CF7B  84E0  test_mask_0200_at_719f  body=0x841E, push_address=0x84E2
+* CF7D  7982  vm_branch_forward8_if_zero  branch=0xCF8F
+  CF80  CE7F  script_ce7f  body=0xCE81
+  CF82  7982  vm_branch_forward8_if_zero  branch=0xCF8A
+  CF85  78B5  vm_push_zero  
+  CF87  7979  vm_branch_unsigned_forward8  branch=0xCF8C
+  CF8A  78C0  vm_push_one  
+  CF8C  7979  vm_branch_unsigned_forward8  branch=0xCF91
+* CF8F  CED5  run_fourth_reel_even_roll_and_wait_for_start  body=0xCED7
+* CF91  78C0  vm_push_one  
+* CF93  7A97  vm_bitwise_and  
+* CF95  7982  vm_branch_forward8_if_zero  branch=0xCF9D
+* CF98  CF54  display_odd_you_lose_and_reset_feature_position  body=0xCF56
+* CF9A  7979  vm_branch_unsigned_forward8  branch=0xCFD3
+* CF9D  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); ' AN EVEN WINNER'; cmd7A()]
+* CFB0  8212  vm_push_word_body_byte  value=0x0085
+* CFB2  9BB4  apply_lamp_range_7335_7338  body=0x9ADB, push_address=0x9BB6
+* CFB4  896B  queue_sound_stream_896d  body=0x856B, push_address=0x896D
+* CFB6  80F8  call_scheduler_wait_until_active_list_empty  native=0x5CCB
+* CFB8  7FAD  vm_push_word_body_word  value=0x0166
+* CFBA  786B  vm_fetch_unsigned_byte  
+* CFBC  7F14  vm_push_word_body_byte  value=0x00C9
+* CFBE  786B  vm_fetch_unsigned_byte  
+* CFC0  787E  vm_add_words  
+* CFC2  7963  vm_push_inline_byte_literal  inline_value=0x002F
+* CFC5  7ADC  vm_min_signed  
+* CFC7  7B51  vm_duplicate_cell  
+* CFC9  CB1B  set_feature_destination_with_minus_one_reset  body=0xCB1D
+* CFCB  7F14  vm_push_word_body_byte  value=0x00C9
+* CFCD  7861  vm_store_byte  
+* CFCF  824E  vm_push_word_body_byte  value=0x008F
+* CFD1  9BB4  apply_lamp_range_7335_7338  body=0x9ADB, push_address=0x9BB6
+* CFD3  792F  vm_return_to_caller_stream  

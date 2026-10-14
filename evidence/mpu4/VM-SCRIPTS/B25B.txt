@@ -1,0 +1,17 @@
+Purpose: wait_reel_busy_bit_clear_and_refresh_symbols
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, control flow, display, memory operations, reels, reels/symbol tests
+Callers: B271
+
+Threaded script at B25B; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B25B  809C  call_resume_alpha_stream_when_delay_expired  native=0x3CF7
+* B25D  82AA  vm_push_word_body_byte  value=0x006B
+* B25F  786B  vm_fetch_unsigned_byte  
+* B261  7963  vm_push_inline_byte_literal  inline_value=0x0080
+* B264  7A97  vm_bitwise_and  
+* B266  7A46  vm_test_zero  
+* B268  79A6  vm_branch_backward8_if_zero  branch=0xB25B
+* B26B  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* B26D  792F  vm_return_to_caller_stream  

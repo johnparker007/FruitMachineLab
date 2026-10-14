@@ -1,0 +1,25 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, mask/address records, sound/scheduler
+Callers: D2BE
+
+Threaded script at D231; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* D231  9DEF  refresh_reel_lamps_when_irq_timer_nonnegative  body=0x9DF1
+* D233  8486  push_pair_4000_00a0  body=0x8417, push_address=0x8488
+* D235  767F  vm_test_word_memory_mask  
+* D237  9E38  push_current_reel_selection_mask_and_address  body=0x9E3A
+* D239  767F  vm_test_word_memory_mask  
+* D23B  7ABB  vm_bitwise_not  
+* D23D  7A97  vm_bitwise_and  
+* D23F  7982  vm_branch_forward8_if_zero  branch=0xD253
+* D242  9E38  push_current_reel_selection_mask_and_address  body=0x9E3A
+* D244  7665  vm_or_word_memory  
+* D246  7A1C  vm_push_loop_index  
+* D248  D0BA  call_lamps_select_and_update_reel_group_d0bc  body=0xD0BC
+* D24A  9E4C  script_9e4c  body=0x9E4E
+* D24C  7963  vm_push_inline_byte_literal  inline_value=0x008C
+* D24F  99AD  wait_irq_ticks_or_abort_flag  body=0x99AF
+* D251  8130  call_reset_sound_and_scheduler  native=0x5B77
+* D253  792F  vm_return_to_caller_stream  

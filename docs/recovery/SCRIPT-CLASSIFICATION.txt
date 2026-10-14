@@ -1,0 +1,81 @@
+MPU4 script classification and targeted game-path recovery
+14 October 2026
+
+RESULT
+All430 recovered script bodies now have index entries with a description,confidence,execution coverage,groups,main callers and callees.
+122 script bodies have reviewed purpose/mechanical names,up from15.108 are colon-word definitions;14 are shared-body helpers.308 complex bodies retain an unresolved purpose with evidence-backed local descriptions rather than invented game-role names.
+142 parameterized words have descriptive instance names,such as mask/address tests,lamp ranges,indexed tables and sound streams. These are separate from the430 script bodies.147 word-body parameter fields are typed and commented in Ghidra.
+250/430 script bodies have at least one observed dispatch site. An observed site does not prove that all branches or every state was exercised.
+Ghidra verification:7,298 typed token locations,983 word headers,zero missing typed items;438 native functions,387 named,24 explicit hypotheses. The four previously unresolved static token sites remain unresolved.
+VM decoder checks now cover3,113 distinct observed cursor locations and1,584,670 ordinary next-token transitions,with zero token/continuation mismatches. Native calls,returns,dynamic execution and loop/local frames are handled separately rather than counted as ordinary continuation checks.
+
+HOW TO USE THE INDEX
+VM-SCRIPTS/INDEX.txt lists each script's purpose or unresolved status,confidence,groups,observed-site fraction,up to eight main callers,and callees. The complete caller sets are in evidence/script-pass/script-classification.json. Parameterized word instances are listed separately at the end of INDEX.txt. Each individual script listing now carries its purpose,confidence,groups and callers above its decoded tokens.
+Exact helper-pattern names describe narrow mechanics. Reviewed token names derive from assembled handler semantics and decoded control flow. Reviewed gameplay-context names additionally use callers,display text and/or repeated state-transition evidence. Grouping-only descriptions are not asserted game-role names.
+The analyzer follows direct script calls and observed EXECUTE targets. EXECUTE bypasses FC for the dispatch itself; its target is recovered from the recorded top stack cell. This identified additional button-condition headers,including83B4 and83B7. Unobserved computed table entries remain a limitation of the caller graph.
+
+GHIDRA NAVIGATION
+Scripts are named data under Labels. PressG to inspect:
+ B403 scan_nudge_buttons_and_request_reel_step
+ B31F execute_requested_nudge_motion
+ B306 consume_nudge_and_refresh_lamps
+ B3C8 display_nudge_prompt_and_buttons
+ B43D wait_for_nudge_input_or_matching_result
+ B4C5 run_nudge_sequence
+ 9E06 vm_nudge_button_token_table
+ AF93 animate_pending_award_into_current_win
+ AF13 commit_current_award_to_selected_balance
+ AF4E round_current_award_up_to_even
+ 9FA2 test all three reel symbol flag2 bits
+ 9FBC test exactly two reel symbol flag2 bits
+ F19B reel-result/random gate
+Factories such as native entry8414 now carry mechanical names; their VM instances carry names like push_pair_XXXX_YYYY,test_mask_XXXX_at_YYYY,and apply_lamp_range_START_END. These describe recovered mechanics,not original identifiers.
+
+NUDGE PATH: VERIFIED
+scripts-nudge-a and scripts-nudge-b each run110 emulated seconds from absent NVRAM and isolated default settings. Four Coin4 pulses occur at35.0,35.3,35.6,35.9s. Start pulses occur every6s beginning37s. Hold/Nudge1/2/3 are pressed at60,62,64s respectively,each for200ms.
+Both runs match state.csv (1,101 rows),the entire focused debugger log,and final2KB RAM image byte-for-byte. The control run scripts-nudge-baseline uses the same focused debugger commands without the nudge pulses. All selected game/input/PRNG/reel/lamp/display/balance fields match for the first600 rows,before60s. A previous comparison against a differently instrumented full-dispatch run did not match;that comparison is retained as diagnostic information and is not the matched control.
+Observed selection:
+ BLACK2:02 -> loop index0 -> request byte0169 increments0->1
+ BLACK2:04 -> loop index1 -> request byte016B increments0->1
+ BLACK2:08 -> loop index2 -> request byte016D increments0->1
+After each selected movement,the remaining-nudge byteBE changes3->2->1->0. Credits stay16 (hex10) during these nudges. The watchpoint identifies handler765B invoked by VM tokenB308;post-write PC765D,Y=B30A. Both replays reproduce all three transitions.
+B403 dispatches the input token selected from9E06 using loop index,then increments the selected request byte and callsB31F. B31F starts native reel motion and waits through2BEB. B306 consumes one nudge. The label game_nudges_remaining and the three reel request-delta labels now reflect this evidence.
+
+WIN/EVALUATION PATH: VERIFIED WITH LIMITED SCOPE
+scripts-win-a and scripts-win-b use a fixed110s control sequence with coins,Start,Hi,the three Hold/Nudge buttons,and Collect/Take. The exact port masks and time windows are stored in each run's input-plan.txt. Neither run changes ROM or CPU RAM;all interventions are emulated input fields.
+Both runs match all1,101 sampled states,full VM dispatch logs,and final RAM byte-for-byte. Reel-match helper1AA3 returns non-zero codes,including16(decimal) atF19D and10 at several later sites. These are ROM result codes,not automatically currency amounts.
+At102.65s,current award word02FA first becomes1;it rises to10 at104.05s. At105.15s,02FA clears and bank-related word02FC becomes10. AF93 moves pending units fromBA into02FA while animating display/sound. AF13 adds the amount to a selected balance,clears the temporary award fields and refreshes NVRAM integrity. The repeated data confirms this path;no physical cash payout or independently verified denomination is claimed.
+The longer300s discovery run first found these paths and later displayed "100P LOCKED ALM" at275.25s. John identifies this as the normal held/stuck 100p coin-switch alarm. The alarm is excluded from the110s replay fixture. This explains the message; the old harness's effective coin-switch timing still needs measurement before attributing why that run triggered it.
+
+HOLD INTERPRETATION
+Pre-Start Hold1 campaigns produced different PRNG/control paths and later reel outcomes from the no-Hold campaign. That difference alone does not prove a particular reel was retained. The confirmed finding is the separately controlled nudge-button dispatch above. Hold-retention eligibility,automatic nudge selection,and unvisited feature outcomes need further state-specific tests.
+
+RECOVERED PSEUDOCODE (DESCRIPTIVE,NOT ORIGINAL SOURCE)
+Nudge scan B403:
+ for reel in0..2:
+   condition = execute ROM token at9E06+2*reel
+   if condition !=0:
+     byte[0169+2*reel] +=1
+     execute requested reel movement (B31F)
+     return accepted
+ return not_accepted
+Movement path B31F invokes B306,which decrements remaining nudges and refreshes lamp feedback.
+
+Award animation AF93,positive pending-amount branch:
+ while pending_units >0:
+   step =1 or2 according to two byte-condition tests
+   pending_units -=step
+   current_award_units +=step
+   refresh NVRAM integrity; update display/sound
+ clear pending_units
+Commit AF13:
+ selected_balance += amount_from_VM_stack
+ clear current_award and pending fields
+ refresh integrity and related state
+The scripts contain additional branches;see the full listings for exact stack effects and gates.
+
+REPRODUCTION AND EVIDENCE
+Use scripts/Run-DeepTrace.ps1 with a fresh RunName and isolated settings/NVRAM. Set process-local MPU4_SCENARIO tocampaign_nudge with trace-nudge-path.cmd and observe-script-pass.lua for the focused nudge test. Usecampaign_baseline with the same debugger command file for its control. Usecampaign_auto with observe-script-pass.cmd and observe-script-pass.lua for the110s winning-path fixture. These settings are process-local experiment choices,not global configuration changes. Each run captures input-plan.txt,script,arguments,resolved settings,debugger commands,console,outputs and hashes.
+Evidence files: script-classification.json,shared-word-records.json,shared-word-names.json,nudge-verification.json,win-verification.json,and saved-project-verification.json. Fixed input plans may include later events beyond the110s stop;those events do not execute.
+The original ROM and MAME0.281 executable remain unchanged. No installs or general configuration changes were made. No save states were used. The Ghidra project was saved offline with a backup at work/project-before-script-pass.
+Remaining work: reviewed purposes for the308 complex script bodies,full static/computed table recovery,hold-retention eligibility,feature-specific outcomes,and physical payout validation. Decompiled6809 pseudocode still cannot substitute for the VM listings or custom stack conventions.

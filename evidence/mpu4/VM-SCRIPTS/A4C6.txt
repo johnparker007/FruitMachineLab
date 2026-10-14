@@ -1,0 +1,20 @@
+Purpose: advance_byte_0332_modulo_eleven
+Confidence: reviewed token mechanics
+Groups: arithmetic, control flow, memory operations, stack/cell helpers
+Callers: A553
+
+Threaded script at A4C6; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+  A4C6  7EB8  vm_push_word_body_word  value=0x0332
+  A4C8  786B  vm_fetch_unsigned_byte  
+  A4CA  78C9  vm_increment_word  
+  A4CC  7B51  vm_duplicate_cell  
+  A4CE  A49C  vm_push_word_body_byte  value=0x000B
+  A4D0  7D42  compare_top_le_second_signed  body=0x7D44
+  A4D2  7982  vm_branch_forward8_if_zero  branch=0xA4D9
+  A4D5  A49C  vm_push_word_body_byte  value=0x000B
+  A4D7  78A0  vm_subtract_top_from_second  
+  A4D9  7EB8  vm_push_word_body_word  value=0x0332
+  A4DB  7861  vm_store_byte  
+  A4DD  792F  vm_return_to_caller_stream  

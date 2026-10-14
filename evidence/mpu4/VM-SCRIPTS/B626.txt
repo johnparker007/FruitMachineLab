@@ -1,0 +1,29 @@
+Purpose: prepare_nudge_selection_records
+Confidence: reviewed token mechanics
+Groups: arithmetic, memory operations, nudges, reel records, reels
+Callers: B72D
+
+Threaded script at B626; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B626  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* B628  8245  vm_push_word_body_byte  value=0x00BE
+* B62A  786B  vm_fetch_unsigned_byte  
+* B62C  9F82  mask_best_reel_result_by_signed_threshold_nine  body=0x9F84
+* B62E  9F68  normalize_award_47_to_30_with_optional_input_clamp  body=0x9F6A
+* B630  B2A0  vm_push_local_frame_address  value=0x0007
+* B632  7861  vm_store_byte  
+* B634  8245  vm_push_word_body_byte  value=0x00BE
+* B636  786B  vm_fetch_unsigned_byte  
+* B638  B2A3  vm_push_local_frame_address  value=0x0008
+* B63A  7861  vm_store_byte  
+* B63C  9D7A  push_three_reel_loop_bounds  body=0x9D7C
+* B63E  79DC  vm_enter_loop_frame  
+* B640  9DB5  address_record_0198_loop_index  body=0x9D86, push_address=0x9DB7
+* B642  786B  vm_fetch_unsigned_byte  
+* B644  B29D  vm_push_local_frame_address  value=0x0004
+* B646  7A1C  vm_push_loop_index  
+* B648  787E  vm_add_words  
+* B64A  7861  vm_store_byte  
+* B64C  7A00  vm_loop_increment_one  
+* B64E  792F  vm_return_to_caller_stream  

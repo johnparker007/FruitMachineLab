@@ -1,0 +1,16 @@
+Purpose: random_scaled_range_selection
+Confidence: reviewed token mechanics
+Groups: arithmetic, random selection, stack/cell helpers
+Callers: CED7, DB58, F30F, A2AB, ACC0, CBD1, F71A, E928
+
+Threaded script at 99EE; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 99EE  7B59  vm_copy_second_cell  
+* 99F0  78A0  vm_subtract_top_from_second  
+* 99F2  99D6  generate_random_word_from_seed_and_irq  body=0x99D8
+* 99F4  7BCC  vm_multiply_to_double_cell  
+* 99F6  7B7D  vm_swap_two_cells  
+* 99F8  7B3D  vm_drop_cell  
+* 99FA  787E  vm_add_words  
+* 99FC  792F  vm_return_to_caller_stream  

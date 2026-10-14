@@ -1,0 +1,63 @@
+Purpose: run_fourth_reel_even_roll_and_wait_for_start
+Confidence: reviewed token mechanics
+Groups: arithmetic, boolean/bit operations, control flow, input conditions, lamps, memory operations, reel records, reels, reels/symbol tests, sound/scheduler
+Callers: CF7B
+
+Threaded script at CED7; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* CED7  9984  wait_for_all_panel_buttons_released  body=0x9986
+* CED9  82BB  vm_push_word_body_word  value=0x0170
+* CEDB  7963  vm_push_inline_byte_literal  inline_value=0x0006
+* CEDE  787E  vm_add_words  
+* CEE0  786B  vm_fetch_unsigned_byte  
+* CEE2  78DE  vm_push_two  
+* CEE4  82BB  vm_push_word_body_word  value=0x0170
+* CEE6  7963  vm_push_inline_byte_literal  inline_value=0x0006
+* CEE9  787E  vm_add_words  
+* CEEB  7861  vm_store_byte  
+* CEED  7963  vm_push_inline_byte_literal  inline_value=0x0060
+* CEF0  7963  vm_push_inline_byte_literal  inline_value=0x0016
+* CEF3  7DC4  multiply_words_keep_low_cell  body=0x7DC6
+* CEF5  8194  vm_push_word_body_byte  value=0x00C2
+* CEF7  7861  vm_store_byte  
+* CEF9  7963  vm_push_inline_byte_literal  inline_value=0x000A
+* CEFC  82E7  vm_push_word_body_word  value=0x0169
+* CEFE  7963  vm_push_inline_byte_literal  inline_value=0x0006
+* CF01  787E  vm_add_words  
+* CF03  7861  vm_store_byte  
+* CF05  8118  call_reels_start_motion_async  native=0x61D5
+* CF07  8212  vm_push_word_body_byte  value=0x0085
+* CF09  9BB4  apply_lamp_range_7335_7338  body=0x9ADB, push_address=0x9BB6
+* CF0B  795B  vm_push_inline_word_literal  inline_value=0xE2B4
+* CF0F  82F2  vm_push_word_body_byte  value=0x002D
+* CF11  7874  vm_store_word  
+* CF13  835A  vm_push_word_body_byte  value=0x0049
+* CF15  8060  call_lamp_set_frame_pattern_5  native=0x498B
+* CF17  7963  vm_push_inline_byte_literal  inline_value=0x0009
+* CF1A  8581  write_byte_004e_8583  body=0x8583
+* CF1C  8DF8  queue_sound_stream_8dfa  body=0x856B, push_address=0x8DFA
+* CF1E  7963  vm_push_inline_byte_literal  inline_value=0x00B4
+* CF21  795B  vm_push_inline_word_literal  inline_value=0x012D
+* CF25  99EC  random_scaled_range_selection  body=0x99EE
+* CF27  99AD  wait_irq_ticks_or_abort_flag  body=0x99AF
+* CF29  83FC  vm_test_input_condition  value=0x0012
+* CF2B  9A40  test_irq_timer_positive_or_abort_flag  body=0x9A42
+* CF2D  7AA3  vm_bitwise_or  
+* CF2F  79A6  vm_branch_backward8_if_zero  branch=0xCF29
+* CF32  9CA3  apply_lamp_range_constant_0080_record_9b8c_9ca5  body=0x9CA5
+* CF34  824E  vm_push_word_body_byte  value=0x008F
+* CF36  9BB4  apply_lamp_range_7335_7338  body=0x9ADB, push_address=0x9BB6
+* CF38  8130  call_reset_sound_and_scheduler  native=0x5B77
+* CF3A  8703  queue_sound_stream_8705  body=0x856B, push_address=0x8705
+* CF3C  CE97  script_ce97  body=0xCE99
+* CF3E  7963  vm_push_inline_byte_literal  inline_value=0x0064
+* CF41  99AD  wait_irq_ticks_or_abort_flag  body=0x99AF
+* CF43  82BB  vm_push_word_body_word  value=0x0170
+* CF45  7963  vm_push_inline_byte_literal  inline_value=0x0006
+* CF48  787E  vm_add_words  
+* CF4A  7861  vm_store_byte  
+* CF4C  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* CF4E  7FAD  vm_push_word_body_word  value=0x0166
+* CF50  786B  vm_fetch_unsigned_byte  
+* CF52  792F  vm_return_to_caller_stream  

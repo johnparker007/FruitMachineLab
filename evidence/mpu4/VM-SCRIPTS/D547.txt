@@ -1,0 +1,35 @@
+Purpose: sweep_super_hold_reels_until_selected_and_start
+Confidence: reviewed token mechanics
+Groups: arithmetic, boolean/bit operations, control flow, mask/address records, memory operations, reels/symbol tests, sound/scheduler, stack/cell helpers
+Callers: D587
+
+Threaded script at D547; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* D547  9DEF  refresh_reel_lamps_when_irq_timer_nonnegative  body=0x9DF1
+* D549  8478  clear_latched_panel_mask_008f  body=0x847A
+* D54B  78C0  vm_push_one  
+* D54D  D325  vm_push_local_frame_address  value=0x0004
+* D54F  7874  vm_store_word  
+* D551  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* D554  78B5  vm_push_zero  
+* D556  79DC  vm_enter_loop_frame  
+* D558  7A1C  vm_push_loop_index  
+* D55A  D328  vm_push_local_frame_address  value=0x0006
+* D55C  787E  vm_add_words  
+* D55E  765F  vm_clear_byte_memory  
+* D560  7A00  vm_loop_increment_one  
+* D562  D32B  vm_push_local_frame_address  value=0x0009
+* D564  765F  vm_clear_byte_memory  
+* D566  D4A9  advance_unlocked_super_hold_reel_requests  body=0xD4AB
+* D568  D4FF  latch_super_hold_reels_from_hold_inputs  body=0xD501
+* D56A  8466  push_pair_0080_0090  body=0x8444, push_address=0x8468
+* D56C  767F  vm_test_word_memory_mask  
+* D56E  8435  push_pair_0038_0085  body=0x8417, push_address=0x8437
+* D570  767F  vm_test_word_memory_mask  
+* D572  7A97  vm_bitwise_and  
+* D574  79A6  vm_branch_backward8_if_zero  branch=0xD566
+* D577  8130  call_reset_sound_and_scheduler  native=0x5B77
+* D579  848C  push_pair_2000_00a0  body=0x8417, push_address=0x848E
+* D57B  7665  vm_or_word_memory  
+* D57D  792F  vm_return_to_caller_stream  

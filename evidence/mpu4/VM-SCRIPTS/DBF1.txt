@@ -1,0 +1,19 @@
+Purpose: set_feature_selection_start_and_index_lamps
+Confidence: reviewed token mechanics
+Groups: control flow, lamps, memory operations
+Callers: DD38
+
+Threaded script at DBF1; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* DBF1  A1DB  test_selected_feature_available_with_bf_gate  body=0xA1DD
+* DBF3  7982  vm_branch_forward8_if_zero  branch=0xDBFA
+* DBF6  8345  vm_push_word_body_byte  value=0x0018
+* DBF8  8058  call_lamp_set_frame_pattern_3  native=0x4985
+* DBFA  835A  vm_push_word_body_byte  value=0x0049
+* DBFC  805C  call_lamp_set_frame_pattern_C  native=0x4988
+* DBFE  7F14  vm_push_word_body_byte  value=0x00C9
+* DC00  786B  vm_fetch_unsigned_byte  
+* DC02  8212  vm_push_word_body_byte  value=0x0085
+* DC04  9B82  apply_indexed_lamp_id_from_728f  body=0x9B18, push_address=0x9B84
+* DC06  792F  vm_return_to_caller_stream  

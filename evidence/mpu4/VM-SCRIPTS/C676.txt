@@ -1,0 +1,23 @@
+Purpose: skill_cash_cancel_terminal_choice_under_random_gate
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: boolean/bit operations, control flow, random selection, stack/cell helpers
+Callers: C699
+
+Threaded script at C676; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C676  7B51  vm_duplicate_cell  
+* C678  7982  vm_branch_forward8_if_zero  branch=0xC695
+* C67B  7B59  vm_copy_second_cell  
+* C67D  7963  vm_push_inline_byte_literal  inline_value=0x0006
+* C680  7A6F  vm_compare_equal  
+* C682  7A1C  vm_push_loop_index  
+* C684  78DE  vm_push_two  
+* C686  7A6F  vm_compare_equal  
+* C688  7A97  vm_bitwise_and  
+* C68A  C668  skill_cash_test_orange1_or_compensated_chance  body=0xC66A
+* C68C  7A97  vm_bitwise_and  
+* C68E  7982  vm_branch_forward8_if_zero  branch=0xC695
+  C691  7B3D  vm_drop_cell  
+  C693  78BE  vm_push_zero  
+* C695  792F  vm_return_to_caller_stream  

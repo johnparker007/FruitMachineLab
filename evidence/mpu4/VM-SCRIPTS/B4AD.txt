@@ -1,0 +1,19 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, memory operations, reels
+Callers: B4C5
+
+Threaded script at B4AD; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B4AD  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* B4AF  8245  vm_push_word_body_byte  value=0x00BE
+* B4B1  786B  vm_fetch_unsigned_byte  
+* B4B3  7A53  vm_test_nonzero  
+* B4B5  80C4  call_reels_push_matching_symbol_result  native=0x1AA3
+* B4B7  7A46  vm_test_zero  
+* B4B9  7A97  vm_bitwise_and  
+* B4BB  9FA0  reels_test_all_three_symbol_flag2  body=0x9FA2
+* B4BD  7ABB  vm_bitwise_not  
+* B4BF  7A97  vm_bitwise_and  
+* B4C1  792F  vm_return_to_caller_stream  

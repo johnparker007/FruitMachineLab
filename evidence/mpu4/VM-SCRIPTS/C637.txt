@@ -1,0 +1,14 @@
+Purpose: skill_cash_initialize_selection_and_six_step_level
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: memory operations
+Callers: C721
+
+Threaded script at C637; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C637  7963  vm_push_inline_byte_literal  inline_value=0x0006
+* C63A  C604  vm_push_local_frame_address  value=0x0001
+* C63C  7861  vm_store_byte  
+* C63E  C601  vm_push_local_frame_address  value=0x0000
+* C640  765F  vm_clear_byte_memory  
+* C642  792F  vm_return_to_caller_stream  

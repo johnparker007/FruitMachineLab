@@ -1,0 +1,13 @@
+Purpose: skill_cash_lookup_compensated_chance_table
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: indexed memory
+Callers: C66A
+
+Threaded script at C617; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C617  C607  vm_push_word_body_byte  value=0x001C
+* C619  7E88  vm_push_word_body_byte  value=0x0012
+* C61B  A10E  clip_compensation_index_difference_plus_four_to_zero_eight  body=0xA110
+* C61D  C60A  read_indexed_byte_table_at_c60c  body=0x9971, push_address=0xC60C
+* C61F  792F  vm_return_to_caller_stream  

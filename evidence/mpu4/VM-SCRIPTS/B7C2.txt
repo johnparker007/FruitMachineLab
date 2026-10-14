@@ -1,0 +1,32 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: arithmetic, memory operations, reel records, reels, stack/cell helpers
+Callers: EDD3, EC97
+
+Threaded script at B7C2; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B7C2  9D7A  push_three_reel_loop_bounds  body=0x9D7C
+* B7C4  79DC  vm_enter_loop_frame  
+* B7C6  7A1C  vm_push_loop_index  
+* B7C8  7ED7  vm_push_word_body_byte  value=0x00DA
+* B7CA  787E  vm_add_words  
+* B7CC  786B  vm_fetch_unsigned_byte  
+* B7CE  9DAD  address_record_0169_loop_index  body=0x9D86, push_address=0x9DAF
+* B7D0  7861  vm_store_byte  
+* B7D2  7A00  vm_loop_increment_one  
+* B7D4  8114  call_reels_translate_positions_to_symbol_records  native=0x2C12
+* B7D6  B793  script_b793  body=0xB795
+* B7D8  7EEA  vm_push_word_body_byte  value=0x00CA
+* B7DA  787E  vm_add_words  
+* B7DC  7B51  vm_duplicate_cell  
+* B7DE  7EEA  vm_push_word_body_byte  value=0x00CA
+* B7E0  7963  vm_push_inline_byte_literal  inline_value=0x0010
+* B7E3  787E  vm_add_words  
+* B7E5  7B7D  vm_swap_two_cells  
+* B7E7  78A0  vm_subtract_top_from_second  
+* B7E9  7F07  vm_push_word_body_byte  value=0x003C
+* B7EB  7BB8  vm_fill_bytes  
+* B7ED  A013  clear_three_reel_record_bytes  body=0xA015
+* B7EF  8110  call_reels_wait_and_refresh_symbol_records  native=0x2BEB
+* B7F1  792F  vm_return_to_caller_stream  

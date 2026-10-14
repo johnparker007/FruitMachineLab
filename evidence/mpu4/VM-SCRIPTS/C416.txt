@@ -1,0 +1,49 @@
+Purpose: cash_feature_money_trap
+Confidence: reviewed dispatch/display association; complete gameplay unresolved
+Groups: boolean/bit operations, control flow, display, lamps, mask tests, mask/address records, memory operations, sound/scheduler
+Callers: DFF6
+
+Threaded script at C416; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* C416  7963  vm_push_inline_byte_literal  inline_value=0x0014
+* C419  76A9  vm_allocate_local_frame  
+* C41B  7E70  vm_push_word_body_byte  value=0x0010
+* C41D  82DD  vm_push_word_body_byte  value=0x00BD
+* C41F  7861  vm_store_byte  
+* C421  BB73  vm_push_word_body_byte  value=0x0004
+* C423  81C2  vm_push_word_body_byte  value=0x00B6
+* C425  7861  vm_store_byte  
+* C427  773C  vm_execute_alpha_stream  inline_stream=[cmd61(); cmd7A()]
+* C42B  7963  vm_push_inline_byte_literal  inline_value=0x0009
+* C42E  8581  write_byte_004e_8583  body=0x8583
+* C430  8DF8  queue_sound_stream_8dfa  body=0x856B, push_address=0x8DFA
+* C432  C3F5  money_trap_seed_offset_and_render_sixteen_display_steps  body=0xC3F7
+* C434  835A  vm_push_word_body_byte  value=0x0049
+* C436  8060  call_lamp_set_frame_pattern_5  native=0x498B
+* C438  8466  push_pair_0080_0090  body=0x8444, push_address=0x8468
+* C43A  7671  vm_clear_word_memory_bits  
+* C43C  9A4E  store_irq_timer_c568  body=0x9A50
+* C43E  C2C3  money_trap_render_next_stream_character_and_wrap_120  body=0xC2C5
+* C440  7963  vm_push_inline_byte_literal  inline_value=0x0019
+* C443  99AD  wait_irq_ticks_or_abort_flag  body=0x99AF
+* C445  8466  push_pair_0080_0090  body=0x8444, push_address=0x8468
+* C447  767F  vm_test_word_memory_mask  
+* C449  9A40  test_irq_timer_positive_or_abort_flag  body=0x9A42
+* C44B  7AA3  vm_bitwise_or  
+* C44D  84E0  test_mask_0200_at_719f  body=0x841E, push_address=0x84E2
+* C44F  7AA3  vm_bitwise_or  
+* C451  C128  vm_push_local_frame_address  value=0x0000
+* C453  790D  vm_fetch_word  
+* C455  7963  vm_push_inline_byte_literal  inline_value=0x0003
+* C458  7A97  vm_bitwise_and  
+* C45A  7A46  vm_test_zero  
+* C45C  7A97  vm_bitwise_and  
+* C45E  79A6  vm_branch_backward8_if_zero  branch=0xC43E
+* C461  9CA3  apply_lamp_range_constant_0080_record_9b8c_9ca5  body=0x9CA5
+* C463  8130  call_reset_sound_and_scheduler  native=0x5B77
+* C465  8703  queue_sound_stream_8705  body=0x856B, push_address=0x8705
+* C467  80F8  call_scheduler_wait_until_active_list_empty  native=0x5CCB
+* C469  C2FB  money_trap_copy_and_compact_four_display_terms  body=0xC2FD
+* C46B  C3B8  money_trap_sum_animate_and_commit_pending_award  body=0xC3BA
+* C46D  792F  vm_return_to_caller_stream  

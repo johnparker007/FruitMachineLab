@@ -1,0 +1,15 @@
+Purpose: apply_lamp_pattern_using_indexed_id
+Confidence: reviewed token mechanics
+Groups: arithmetic, lamps, memory operations, stack/cell helpers
+Callers: ED06, E0C3, DDF3, E5CF, C90C, CD29, C0AC, C506
+
+Threaded script at 9B18; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9B18  790D  vm_fetch_word  
+* 9B1A  7B6D  vm_rotate_three_cells  
+* 9B1C  787E  vm_add_words  
+* 9B1E  786B  vm_fetch_unsigned_byte  
+* 9B20  7B7D  vm_swap_two_cells  
+* 9B22  8050  call_lamp_set_four_frame_pattern  native=0x49C5
+* 9B24  792F  vm_return_to_caller_stream  

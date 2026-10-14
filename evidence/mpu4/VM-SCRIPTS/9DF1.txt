@@ -1,0 +1,16 @@
+Purpose: refresh_reel_lamps_when_irq_timer_nonnegative
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: boolean/bit operations, control flow, memory operations, reels/symbol tests
+Callers: FB45, D2BE, FA7F, D547, D231
+
+Threaded script at 9DF1; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9DF1  9DDF  test_irq_timer_word_negative  body=0x9DE1
+* 9DF3  7ABB  vm_bitwise_not  
+* 9DF5  7982  vm_branch_forward8_if_zero  branch=0x9E02
+* 9DF8  795B  vm_push_inline_word_literal  inline_value=0xFFE0
+* 9DFC  82F5  vm_push_word_body_byte  value=0x002F
+* 9DFE  7861  vm_store_byte  
+* 9E00  9DE9  call_set_all_three_reel_group_lamps_pattern_8f_9deb  body=0x9DEB
+* 9E02  792F  vm_return_to_caller_stream  

@@ -1,0 +1,11 @@
+Purpose: read_byte_004f
+Confidence: exact helper pattern
+Groups: memory operations
+Callers: ACC0, C699, E91C, F3EE
+
+Threaded script at 8593; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 8593  82EB  vm_push_word_body_byte  value=0x004F
+* 8595  786B  vm_fetch_unsigned_byte  
+* 8597  792F  vm_return_to_caller_stream  

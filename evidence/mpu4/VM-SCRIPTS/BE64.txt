@@ -1,0 +1,26 @@
+Purpose: nice_dice_start_fourth_reel_with_random_wait
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: arithmetic, lamps, memory operations, random selection, reels, reels/symbol tests
+Callers: BEE5
+
+Threaded script at BE64; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* BE64  8212  vm_push_word_body_byte  value=0x0085
+* BE66  9BB4  apply_lamp_range_7335_7338  body=0x9ADB, push_address=0x9BB6
+* BE68  7963  vm_push_inline_byte_literal  inline_value=0x0060
+* BE6B  7963  vm_push_inline_byte_literal  inline_value=0x0028
+* BE6E  7DC4  multiply_words_keep_low_cell  body=0x7DC6
+* BE70  8194  vm_push_word_body_byte  value=0x00C2
+* BE72  7874  vm_store_word  
+* BE74  7963  vm_push_inline_byte_literal  inline_value=0x000A
+* BE77  82E7  vm_push_word_body_word  value=0x0169
+* BE79  7963  vm_push_inline_byte_literal  inline_value=0x0006
+* BE7C  787E  vm_add_words  
+* BE7E  7861  vm_store_byte  
+* BE80  8118  call_reels_start_motion_async  native=0x61D5
+* BE82  7963  vm_push_inline_byte_literal  inline_value=0x00B4
+* BE85  795B  vm_push_inline_word_literal  inline_value=0x012D
+* BE89  99EC  random_scaled_range_selection  body=0x99EE
+* BE8B  99AD  wait_irq_ticks_or_abort_flag  body=0x99AF
+* BE8D  792F  vm_return_to_caller_stream  

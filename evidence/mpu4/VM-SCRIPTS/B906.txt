@@ -1,0 +1,18 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: control flow, memory operations
+Callers: E5CF, CC8F
+
+Threaded script at B906; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B906  B772  script_b772  body=0xB774
+* B908  9F5E  test_two_orange1_input_conditions  body=0x9F60
+* B90A  7982  vm_branch_forward8_if_zero  branch=0xB911
+  B90D  7F0D  vm_push_word_body_byte  value=0x001E
+  B90F  7ADC  vm_min_signed  
+* B911  B8D5  script_b8d5  body=0xB8D7
+* B913  7EED  vm_push_word_body_byte  value=0x00BF
+* B915  7861  vm_store_byte  
+* B917  A8ED  display_nudgepot_byte_as_two_decimal_digits  body=0xA8EF
+* B919  792F  vm_return_to_caller_stream  

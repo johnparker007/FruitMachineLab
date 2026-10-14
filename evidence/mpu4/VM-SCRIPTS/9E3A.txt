@@ -1,0 +1,12 @@
+Purpose: push_current_reel_selection_mask_and_address
+Confidence: reviewed token mechanics
+Groups: boolean/bit operations, mask/address records, reels/symbol tests
+Callers: D4AB, D257, D501, F1C3, D231, A03C, A297, F248
+
+Threaded script at 9E3A; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* 9E3A  842F  push_pair_0020_0085  body=0x8417, push_address=0x8431
+* 9E3C  7A1C  vm_push_loop_index  
+* 9E3E  7AC3  vm_rotate_word_right_by_low_byte_count  
+* 9E40  792F  vm_return_to_caller_stream  

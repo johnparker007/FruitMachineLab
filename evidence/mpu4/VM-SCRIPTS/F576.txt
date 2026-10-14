@@ -1,0 +1,52 @@
+Purpose: wait_attract_ticks_or_restore_game_state_on_credit_or_service
+Confidence: reviewed token mechanics; see vm-batch-pass/script-name-evidence.json
+Groups: boolean/bit operations, control flow, credits, display, input conditions, lamps, memory operations, stack/cell helpers
+Callers: F6C3, F9BB, F64F, FA7F, F71A, F975, FA11, F87B
+
+Threaded script at F576; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* F576  7CCD  vm_negate_cell  
+* F578  82F2  vm_push_word_body_byte  value=0x002D
+* F57A  7874  vm_store_word  
+* F57C  809C  call_resume_alpha_stream_when_delay_expired  native=0x3CF7
+* F57E  8190  vm_push_word_body_word  value=0x02F0
+* F580  786B  vm_fetch_unsigned_byte  
+* F582  83C9  vm_test_input_condition  value=0x000F
+* F584  7AA3  vm_bitwise_or  
+* F586  8405  vm_test_input_condition  value=0x0010
+* F588  7AA3  vm_bitwise_or  
+* F58A  7982  vm_branch_forward8_if_zero  branch=0xF5B0
+* F58D  83C9  vm_test_input_condition  value=0x000F
+* F58F  83FC  vm_test_input_condition  value=0x0012
+* F591  7A97  vm_bitwise_and  
+* F593  7982  vm_branch_forward8_if_zero  branch=0xF598
+  F596  F55E  run_refill_reporting_after_panel_release  body=0xF560
+* F598  F56B  vm_push_local_frame_address  value=0x0001
+* F59A  790D  vm_fetch_word  
+* F59C  7B25  vm_set_data_stack_pointer  
+* F59E  7B19  vm_set_return_stack_pointer  
+* F5A0  821F  vm_push_word_body_byte  value=0x00F6
+* F5A2  7874  vm_store_word  
+* F5A4  9B56  restore_lamp_frames_from_vm_stack  body=0x9B58
+* F5A6  80A0  call_alpha_reset_and_clear_display  native=0x3D0E
+* F5A8  A8F7  refresh_credit_and_bank_display_unless_suppressed  body=0xA8F9
+* F5AA  78B5  vm_push_zero  
+* F5AC  A8AB  display_two_decimal_digits_or_blank_zero  body=0xA8AD
+* F5AE  7935  vm_unwind_loop_frames_to_return  
+* F5B0  81D9  vm_push_word_body_word  value=0x02F1
+* F5B2  786B  vm_fetch_unsigned_byte  
+* F5B4  F571  vm_push_local_frame_address  value=0x0004
+* F5B6  786B  vm_fetch_unsigned_byte  
+* F5B8  7A46  vm_test_zero  
+* F5BA  7A97  vm_bitwise_and  
+* F5BC  7982  vm_branch_forward8_if_zero  branch=0xF5C9
+  F5BF  78B3  vm_push_true_minus_one  
+  F5C1  F571  vm_push_local_frame_address  value=0x0004
+  F5C3  7861  vm_store_byte  
+  F5C5  80A0  call_alpha_reset_and_clear_display  native=0x3D0E
+  F5C7  A7D9  refresh_credit_display_unless_suppressed  body=0xA7DB
+* F5C9  80CC  call_update_service_status_lamps_from_hardware_inputs  native=0x482F
+* F5CB  9A40  test_irq_timer_positive_or_abort_flag  body=0x9A42
+* F5CD  79A6  vm_branch_backward8_if_zero  branch=0xF57E
+* F5D0  792F  vm_return_to_caller_stream  

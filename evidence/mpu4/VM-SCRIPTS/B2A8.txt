@@ -1,0 +1,38 @@
+Purpose: unresolved
+Confidence: grouping only; purpose unresolved
+Groups: boolean/bit operations, control flow, lamps, memory operations, stack/cell helpers
+Callers: B72D
+
+Threaded script at B2A8; recovered listing, not original source.
+* = observed in MAME; other reachable branches are static deductions.
+
+* B2A8  82DD  vm_push_word_body_byte  value=0x00BD
+* B2AA  786B  vm_fetch_unsigned_byte  
+* B2AC  7E82  vm_push_word_body_byte  value=0x0015
+* B2AE  7A5B  vm_compare_not_equal  
+* B2B0  7982  vm_branch_forward8_if_zero  branch=0xB2C6
+* B2B3  8245  vm_push_word_body_byte  value=0x00BE
+* B2B5  786B  vm_fetch_unsigned_byte  
+* B2B7  9F91  mask_flagged_best_reel_result_by_signed_threshold_nine  body=0x9F93
+* B2B9  7B3D  vm_drop_cell  
+* B2BB  7EC8  vm_push_word_body_byte  value=0x00DE
+* B2BD  786B  vm_fetch_unsigned_byte  
+* B2BF  7982  vm_branch_forward8_if_zero  branch=0xB2C6
+* B2C2  8212  vm_push_word_body_byte  value=0x0085
+* B2C4  9C1E  apply_lamp_range_7256_7257  body=0x9ADB, push_address=0x9C20
+* B2C6  8245  vm_push_word_body_byte  value=0x00BE
+* B2C8  786B  vm_fetch_unsigned_byte  
+* B2CA  9F91  mask_flagged_best_reel_result_by_signed_threshold_nine  body=0x9F93
+* B2CC  7B51  vm_duplicate_cell  
+* B2CE  B291  vm_push_local_frame_address  value=0x0000
+* B2D0  7861  vm_store_byte  
+* B2D2  B29A  vm_push_local_frame_address  value=0x0003
+* B2D4  786B  vm_fetch_unsigned_byte  
+* B2D6  7AE7  vm_max_signed  
+* B2D8  B29A  vm_push_local_frame_address  value=0x0003
+* B2DA  7861  vm_store_byte  
+* B2DC  824E  vm_push_word_body_byte  value=0x008F
+* B2DE  9C38  apply_lamp_range_7257_725d  body=0x9ADB, push_address=0x9C3A
+* B2E0  B294  vm_push_local_frame_address  value=0x0001
+* B2E2  765F  vm_clear_byte_memory  
+* B2E4  792F  vm_return_to_caller_stream  

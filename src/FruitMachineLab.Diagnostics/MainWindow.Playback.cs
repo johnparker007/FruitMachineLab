@@ -45,13 +45,13 @@ public partial class MainWindow
         foreach(var lamp in result.Lamps)AddLamp(AllLamps,lamp,false);
         SetSpeed();StartPlayback();
     }
-    private void AddLamp(Panel panel,PlaybackLamp lamp,bool featured)
+    private void AddLamp(Panel panel,PlaybackLamp lamp,bool featured,List<(int Lamp,Border Tile)>? destination=null)
     {
         var label=new TextBlock{Text=$"{lamp.Caption}\n#{lamp.Number} / {lamp.LogicalId:X2}",TextWrapping=TextWrapping.Wrap,TextAlignment=TextAlignment.Center,
             Foreground=Brushes.White,FontSize=featured ? 14 : 11,Margin=new Thickness(4),VerticalAlignment=VerticalAlignment.Center};
         var tile=new Border{Child=label,CornerRadius=new CornerRadius(6),Background=lampPalette[0],Margin=new Thickness(3),MinHeight=featured ? 62 : 48,
             ToolTip=$"MAME lamp {lamp.Number}; ROM command {lamp.LogicalId:X2}. Caption from recovered mapping."};
-        panel.Children.Add(tile);lampTiles.Add((lamp.Number,tile));
+        panel.Children.Add(tile);(destination ?? lampTiles).Add((lamp.Number,tile));
     }
     private void AdvanceWallTime()
     {

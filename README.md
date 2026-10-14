@@ -22,13 +22,20 @@ It deliberately needs no NuGet test framework installation. Run from repository 
 or pass the absolute repository path to verification. The Windows viewer accepts that
 path separately. No SDK pin or machine configuration is changed.
 
-The diagnostics app now has a **Skill Cash playback** tab. Click **Load & play
-Skill Cash** to watch the recovered feature with labelled lamps and alpha output.
-The recorded path lasts 12.209 seconds at 1×; pause, restart, seek and speed controls
-are available. The layout is diagnostic; interactive play and audio remain future
-work. See [playback evidence and boundaries](docs/recovery/SKILL-CASH-PLAYBACK-PASS.md).
+The diagnostics app opens on **Live Skill Cash**. Click **Start feature**, then
+hold and release the physical **START** button to stop selections. Pause/Resume
+suspend the actual VM and virtual clock; Restart restores the feature-entry state.
+Outputs are generated during execution. Captured CPU/IRQ timing adapters remain
+explicitly unresolved. See [live scope and comparison](docs/recovery/SKILL-CASH-LIVE-PASS.md).
 
-Latest local verification: both solutions build without warnings or errors; 61
+The separate **Skill Cash playback** tab remains available. Click **Load verified
+playback / scrubber** to watch the recorded path with labelled lamps and alpha output.
+The recorded path lasts 12.209 seconds at 1×; pause, restart, seek and speed controls
+are available. This mode uses recorded inputs; use Live Skill Cash for the temporary
+player control. Audio remains future work. See
+[playback evidence and boundaries](docs/recovery/SKILL-CASH-PLAYBACK-PASS.md).
+
+Latest local verification: headless and isolated WPF builds succeed; 67
 verification groups pass. Continuous C721 execution matches 98,704 VM dispatches,
 selects 3, 2 and 1, and finishes with pending 0/current win 10. All 7,298 lamp frame
 updates and the complete sound timing protocol match recorded native observations.

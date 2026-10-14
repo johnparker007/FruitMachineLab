@@ -7,6 +7,77 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Live Start is active-high mux input with sticky ROM panel accumulation", () => {
+    var machine=new Machine();SkillCashData.LoadFeature(machine);var panel=new Mpu4PanelInput(machine);
+    panel.SetStart(true);Equal((byte)0x80,panel.PhysicalBlack2);Equal((byte)0,machine.Memory[3]);
+    panel.Sample(2);Equal((byte)0,machine.Memory[3]);panel.Sample(3);Equal((byte)0x80,machine.Memory[3]);Equal((ushort)0x80,machine.ReadWord(0x90));
+    Equal((ushort)1,Mpu4InputConditions.Evaluate(machine,0x1E));
+    panel.Release();panel.Sample(3);Equal((byte)0,machine.Memory[3]);Equal((ushort)0x80,machine.ReadWord(0x90));Equal((ushort)0,Mpu4InputConditions.Evaluate(machine,0x1E));
+});
+Check("Live pause suspends actual VM, memory and virtual clock", () => {
+    var live=new SkillCashLiveSession(evidence);Equal(0,live.Instructions);live.Resume();live.AdvanceCycles(50000);live.Pause();
+    var cycle=live.Cycle;int instructions=live.Instructions;var memory=live.Machine.Memory.ToArray();var stack=live.Machine.Data.ToArray();
+    live.Advance(TimeSpan.FromSeconds(1));Equal(cycle,live.Cycle);Equal(instructions,live.Instructions);Equal(true,memory.SequenceEqual(live.Machine.Memory));Equal(true,stack.SequenceEqual(live.Machine.Data));
+    live.Resume();live.AdvanceCycles(50000);Equal(true,live.Cycle>cycle);Equal(true,live.Instructions>instructions);
+});
+Check("Live held Start waits for actual sampled release before the next stage", () => {
+    var live=new SkillCashLiveSession(evidence);live.Resume();
+    for(int n=0;n<10000 && live.Machine.Memory[0x4F]!=3;n++)live.AdvanceCycles(512);
+    live.SetStart(true);
+    for(int n=0;n<10000 && live.Selections.Count==0;n++)live.AdvanceCycles(512);
+    Equal(1,live.Selections.Count);live.Advance(TimeSpan.FromMilliseconds(100));Equal(1,live.Selections.Count);Equal((byte)0x80,live.Machine.Memory[3]);
+    Equal(true,live.VmAddress is >=0x9986 and <=0x998D);
+    live.SetStart(false);live.Advance(TimeSpan.FromMilliseconds(30));Equal((byte)0,live.Machine.Memory[3]);Equal(false,live.Panel.StartPressed);
+    live.SetStart(true);live.Pause();Equal(false,live.Panel.StartPressed);Equal((byte)0,live.Panel.PhysicalBlack2);
+});
+Check("Live player timing can select a different recovered award", () => {
+    var live=new SkillCashLiveSession(evidence);live.Resume();bool pressed=false;int stage=0;
+    for(int n=0;n<200000 && !live.Completed;n++) {
+        if(stage<3 && !pressed && live.Machine.Memory[0x4F]==2){live.SetStart(true);pressed=true;}
+        live.AdvanceCycles(512);
+        if(pressed && live.Selections.Count>stage){live.SetStart(false);pressed=false;stage++;}
+    }
+    Equal(true,live.Completed);Equal("2,2,2",string.Join(',',live.Selections));Equal((ushort)16,live.Machine.ReadWord(0x2FA));Equal((ushort)0,live.Machine.ReadWord(0xBA));
+});
+Check("Live physical Start selections execute award accounting without recorded input events", () => {
+    var live=new SkillCashLiveSession(evidence);live.Resume();ushort[] targets=[3,2,1];bool pressed=false;int stage=0;
+    var texts=new List<string>();live.ObserveAlpha=state=>texts.Add(state.Text);
+    for(int n=0;n<200000 && !live.Completed;n++) {
+        if(stage<targets.Length && !pressed && live.Machine.Memory[0x4F]==targets[stage]){live.SetStart(true);pressed=true;}
+        live.AdvanceCycles(512);
+        if(pressed && live.Selections.Count>stage){live.SetStart(false);pressed=false;stage++;}
+    }
+    if(live.Fault is not null)throw new Exception(live.Fault);
+    Equal(true,live.Completed);Equal("3,2,1",string.Join(',',live.Selections));Equal((ushort)0,live.Machine.ReadWord(0xBA));Equal((ushort)10,live.Machine.ReadWord(0x2FA));
+    Equal((ushort)0xBEEF,live.Machine.Control!.ResumeCursor);Equal(false,live.Panel.StartPressed);
+    var reference=SkillCashFeatureReplay.Run(evidence);Equal(true,texts.SequenceEqual(reference.AlphaFrames.Select(x=>x.State.Text)));
+    Console.WriteLine($"  Live choices {string.Join(',',live.Selections)}, {live.Instructions} dispatches, {live.Cycle/SkillCashLiveSession.CyclesPerSecond:0.000} s; alpha sequence and final accounting match reference selections");
+});
+Check("Live run compares reference-time physical Start pulses without substituting captured latches", () => {
+    var timing=System.Text.Json.JsonSerializer.Deserialize<SharedTimingCapture>(File.ReadAllText(Path.Combine(evidence,"skill-cash","shared-timing.json")),new System.Text.Json.JsonSerializerOptions{PropertyNameCaseInsensitive=true})!;
+    double entry=timing.InitialCycle/SkillCashLiveSession.CyclesPerSecond;
+    var pulses=File.ReadLines(Path.Combine(evidence,"skill-cash","actions.csv")).Skip(1).Select(line=>line.Split(',')).Where(row=>row[2]==":BLACK2" && row[3]=="128")
+        .Select(row=>(Start:long.Parse(row[0])/60.0-entry,End:(long.Parse(row[1])+1)/60.0-entry)).Where(pulse=>pulse.End>=0 && pulse.Start<13).ToArray();
+    ushort[] sites=[0xC757,0xC761,0xC710,0xAFC2,0xC767];int[] fields=[0,1,2,3,4,5,6,7,8,9,10,15,17,18,20,21,22,23];
+    var referenceStates=new List<string>();var reference=SkillCashFeatureReplay.Run(evidence,observe:(_,signature)=>{if(sites.Contains(signature[0]))referenceStates.Add(string.Join(',',fields.Select(n=>signature[n])));});
+    var initial=System.Text.Json.JsonSerializer.Deserialize<FeatureCapture>(File.ReadAllText(Path.Combine(evidence,"skill-cash","feature-replay.json")),new System.Text.Json.JsonSerializerOptions{PropertyNameCaseInsensitive=true})!.Initial;
+    var liveStates=new List<string>();var live=new SkillCashLiveSession(evidence);live.Resume();var alpha=new List<AlphaState>();live.ObserveAlpha=alpha.Add;
+    live.ObserveDispatch=(instruction,m)=> {
+        if(!sites.Contains(instruction.Site))return;var cells=m.Data.ToArray();
+        ushort[] signature=[instruction.Site,instruction.Token,cells[0],cells[1],cells[2],cells[3],unchecked((ushort)(initial["u"]-2*(cells.Length-4))),
+            m.Control!.Pointer,m.LocalFrame,m.Control.LoopFrame,m.ReadWord(m.LocalFrame),m.ReadWord(0x2D),m.Memory[0x33],m.ReadWord(0x324),m.Memory[0x4F],m.Memory[0x4E],m.ReadWord(0x90),m.ReadWord(0xBA),m.ReadWord(0x2FA),m.Memory[0x2C],m.Memory[0x322],m.Memory[0x323],m.ReadWord(0x327),m.ReadWord(0xA0)];
+        liveStates.Add(string.Join(',',fields.Select(n=>signature[n])));
+    };
+    for(int n=0;n<50000 && !live.Completed;n++) {
+        double now=live.Cycle/SkillCashLiveSession.CyclesPerSecond;live.SetStart(pulses.Any(p=>now>=p.Start && now<=p.End));live.AdvanceCycles(512);
+    }
+    Equal(true,live.Completed);
+    Equal("3,2,1",string.Join(',',live.Selections));Equal((ushort)10,live.Machine.ReadWord(0x2FA));Equal((ushort)0,live.Machine.ReadWord(0xBA));
+    Equal(true,referenceStates.SequenceEqual(liveStates));Equal(true,reference.AlphaFrames.Select(x=>x.State).SequenceEqual(alpha));
+    byte[]? referenceFrames=null;SkillCashLampFrameVerification.Verify(evidence,(_,frames)=>referenceFrames=frames.ToArray());
+    Equal(Convert.ToHexString(referenceFrames!),Convert.ToHexString(live.Machine.Memory[0x100..0x140]));
+    Console.WriteLine($"  Reference-time pulses: {liveStates.Count} VM/frame/accounting checkpoints, 44 alpha states and final lamp frames match; {live.Instructions} dispatches, {live.Cycle/SkillCashLiveSession.CyclesPerSecond:0.000} s; full CPU state equality is not claimed");
+});
 Check("Verified playback exposes timed lamps, alpha and mapped captions", () => {
     var replay=SkillCashPlayback.Load(evidence);Equal(12207,replay.Output.LampFrameCount);Equal(45,replay.Output.AlphaFrameCount);Equal(128,replay.Lamps.Count);
     Equal("SKILL CASH",replay.Lamps[83].Caption);Equal((byte)0x6F,replay.Lamps[47].LogicalId);

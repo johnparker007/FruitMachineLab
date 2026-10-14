@@ -1,0 +1,199 @@
+using System.Text.Json;
+using FruitMachineLab.Runtime;
+namespace FruitMachineLab.Adders;
+
+public record LiveSkillCashState(ulong Cycle,int Instructions,ushort VmAddress,string Execution,byte PhysicalBlack2,byte SampledBlack2,ushort PanelLatch,
+    byte Choice,ushort Pending,ushort CurrentWin,string Alpha,double[] LampDuty,IReadOnlyList<ushort> Selections);
+
+// One live feature-entry session. No replay Inputs/Conditions/Anchors are applied
+// after initialization. Captured CPU pacing and IRQ service timestamps are
+// explicit unresolved hardware adapters; gameplay, inputs and outputs are live.
+public sealed class SkillCashLiveSession
+{
+    public const double CyclesPerSecond=OutputPlayback.CpuCyclesPerSecond;
+    private readonly ScriptExecutor executor;
+    private readonly Mpu4ChoiceStreamScheduler scheduler;
+    private readonly Mpu4Alpha alpha;
+    private readonly Mpu4OutputScan scan;
+    private readonly Dictionary<ushort,RecoveredScript> scripts=new();
+    private readonly string evidence;
+    private readonly Dictionary<string,ulong> siteCosts,tokenCosts;
+    private readonly List<(ulong Scan,ulong Callback)> services=new();
+    private readonly List<LampLatchFrame> latches=new();
+    private readonly List<ushort> selections=new();
+    private int serviceIndex;
+    private ulong serviceEpoch,nextVm,nextCallback=ulong.MaxValue;
+    private double fractionalCycles;
+    private bool waitingForScheduler,selectionLoop;
+    public Machine Machine {get;}=new();
+    public Mpu4PanelInput Panel {get;}
+    public ulong Cycle {get;private set;}
+    public int Instructions {get;private set;}
+    public int LampRequests {get;private set;}
+    public int AlphaOperations {get;private set;}
+    public int Scans {get;private set;}
+    public int Callbacks {get;private set;}
+    public IReadOnlyList<PlaybackLamp> Lamps {get;}
+    public bool Paused {get;private set;}=true;
+    public bool Completed=>executor.Completed;
+    public string? Fault {get;private set;}
+    public ushort VmAddress=>executor.NextInstruction?.Site ?? 0xC767;
+    public IReadOnlyList<ushort> Selections=>selections;
+    public Action<Instruction,Machine>? ObserveDispatch {get;set;}
+    public Action<AlphaState>? ObserveAlpha {get;set;}
+    public Action<LampRequest>? ObserveLamp {get;set;}
+    public SkillCashLiveSession(string evidenceDirectory)
+    {
+        evidence=evidenceDirectory;
+        Lamps=SkillCashPlayback.LoadLamps(evidence);
+        var options=new JsonSerializerOptions{PropertyNameCaseInsensitive=true};
+        var feature=JsonSerializer.Deserialize<FeatureCapture>(File.ReadAllText(Path.Combine(evidence,"skill-cash","feature-replay.json")),options)!;
+        var timing=JsonSerializer.Deserialize<SharedTimingCapture>(File.ReadAllText(Path.Combine(evidence,"skill-cash","shared-timing.json")),options)!;
+        using(var costs=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","live-cpu-timing.json")))) {
+            siteCosts=costs.RootElement.GetProperty("sites").EnumerateObject().ToDictionary(x=>x.Name,x=>x.Value.GetUInt64());
+            tokenCosts=costs.RootElement.GetProperty("tokens").EnumerateObject().ToDictionary(x=>x.Name,x=>x.Value.GetUInt64());
+        }
+        SeedFeature(feature);SeedScan(timing);
+        Panel=new(Machine);byte[] other=new byte[8];
+        // This feature-entry fixture has no Orange/Black service buttons held.
+        // DIL bits are fixed prerequisites, not player-event substitutions.
+        var condition=feature.Conditions[0];other[6]=(byte)condition[7];other[7]=(byte)condition[8];Panel.SeedOtherPorts(other);
+        for(int n=0;n<8;n++)Machine.Memory[n]=other[n];
+        Machine.Memory[0x91]&=0x7F;
+        alpha=new(Machine);scheduler=new(Machine,feature.Initial["clock"]);
+        var response=JsonSerializer.Deserialize<LampFrameCapture>(File.ReadAllText(Path.Combine(evidence,"skill-cash","lamp-frames.json")),options)!;
+        var frames=new Mpu4LampFrames(Machine,response.Responses.Select(x=>checked((byte)x)).ToArray());
+        var requests=new Mpu4LampRequests(Machine,request=>{frames.Apply(request.Id,request.Pattern);LampRequests++;ObserveLamp?.Invoke(request);});
+        scan=new(Machine,state=>Mpu4LampPulseSweep.Advance(state,_=>{}));
+        ulong offset=0,scanAt=0;
+        foreach(var row in timing.Events) {
+            offset=checked(offset+row[0]);
+            if(row[1]==4)scanAt=offset;
+            if(row[1]==7){if(scanAt==0 || offset<scanAt)throw new InvalidDataException("Missing live IRQ timing boundary");services.Add((scanAt,offset));scanAt=0;}
+        }
+        if(services.Count==0)throw new InvalidDataException("Missing IRQ service template");
+        // Repeat the observed service/jitter template at the source-backed
+        // timer-1 period (0D70+1). This is not IRQ instruction acceptance emulation.
+        servicePeriod=checked((ulong)services.Count*3441);
+        RecordLatch();
+        executor=new(Machine) {
+            ResolveScript=Resolve,ResolveWord=SkillCashData.ResolveWord,
+            InputConditionCell=value=>Mpu4InputConditions.Evaluate(Machine,(byte)value),
+            BeforeInstruction=(instruction,state)=> {
+                Instructions++;ObserveDispatch?.Invoke(instruction,state);
+                if(instruction.Site==0xC6AD)selectionLoop=true;
+                if(instruction.Site==0xC757){selections.Add(state.Data.Peek());selectionLoop=false;}
+            },
+            WordHandler=(instruction,state)=> {
+                if(requests.HandleWord(instruction))return true;
+                if(instruction.Native==0x5C18)return scheduler.Queue(state.Pop());
+                if(instruction.Native==0x5B77)return scheduler.Reset();
+                if(instruction.Native==0x5CCB){if(scheduler.Active)throw new InvalidOperationException("Native scheduler wait resumed too soon");return true;}
+                if(instruction.Native==0x3D0E || instruction.Operation=="vm_execute_alpha_stream") {
+                    if(instruction.Native==0x3D0E)alpha.Reset();else alpha.Execute(Cell.Add(instruction.Site,2));
+                    AlphaOperations++;ObserveAlpha?.Invoke(alpha.Snapshot());return true;
+                }
+                return false;
+            }
+        };
+        executor.Begin(Resolve(0xC721),10_000_000);
+    }
+    private readonly ulong servicePeriod;
+    private RecoveredScript Resolve(ushort address)
+    {
+        if(!scripts.TryGetValue(address,out var script)){script=new(Path.Combine(evidence,"VM-SCRIPTS",address.ToString("X4")+".txt"));scripts.Add(address,script);}return script;
+    }
+    private void SeedFeature(FeatureCapture capture)
+    {
+        var m=Machine;var first=capture.Initial;SkillCashData.LoadFeature(m);SkillCashData.LoadAlpha(m);
+        SkillCashAlphaVerification.Seed(m,SkillCashAlphaVerification.Load(evidence).Calls[0].Before);
+        var native=capture.Native[0].Before;
+        for(ushort at=0x2F0;at<0x322;at++)m.Memory[at]=(byte)native[(at<0x309 ? "source" : "copy")+at.ToString("X4")];
+        m.LocalFrame=first["f4"];m.WriteWord(m.LocalFrame,first["frame"]);m.Control=new(m,first["s"]){LoopFrame=first["f6"]};
+        m.WriteWord(first["s"],0xBEEF);m.WriteWord(Cell.Subtract(first["s"],4),capture.AllocatedFrame);
+        foreach(var pair in new[]{("tick",0x2D),("seed",0x324),("latch",0x90),("opt",0x719F),("abort",0x719B),("pending",0xBA),("win",0x2FA),("display",0x327),("suppress",0xA0)})m.WriteWord((ushort)pair.Item2,first[pair.Item1]);
+        foreach(var pair in new[]{("irq",0x33),("choice",0x4F),("rate",0x4E),("guard",0x2C),("checksum",0x322),("mode",0x323)})m.Memory[pair.Item2]=(byte)first[pair.Item1];
+        foreach(var name in new[]{"fourth","third","second","top"})m.Data.Push(first[name]);
+        var comp=SkillCashCompensationVerification.Load(evidence)[0];
+        foreach(ushort site in new ushort[]{0xA0F1,0xA102}) {
+            int at=Array.FindIndex(comp.Steps,x=>x["y"]==site);ushort address=comp.Steps[at]["top"];
+            m.Memory[address]=(byte)comp.Steps[at+1]["top"];m.WriteWord(Cell.Add(address,1),comp.Steps[at+1]["second"]);
+        }
+    }
+    private void SeedScan(SharedTimingCapture capture)
+    {
+        var m=Machine;SkillCashData.LoadScan(m);var initial=capture.InitialScan;
+        foreach(var pair in new[]{("phase",0x23),("count",0x24),("reload",0x25),("alternate",0x26),("alternate_reload",0x27),("suppress",0x8D),("decimal",0x22),("sweep",0xB3)})m.Memory[pair.Item2]=Convert.ToByte(initial[pair.Item1],16);
+        m.WriteWord(0x28,Convert.ToUInt16(initial["column"],16));
+        foreach(var pair in new[]{("sample",8),("digits",0x1A),("blink",0x2BE),("masks",0x140),("blank",0xAB)})Convert.FromHexString(initial[pair.Item1]).CopyTo(m.Memory,pair.Item2);
+        var pulse=Convert.FromHexString(initial["pulse"]);m.Memory[0xE8]=pulse[0];m.Memory[0xE9]=pulse[1];m.Memory[0xEA]=pulse[2];m.WriteWord(0x32D,(ushort)((pulse[3]<<8)|pulse[4]));
+        var ports=Convert.FromHexString(initial["ports"]);int[] addresses=[0xA00,0xA02,0xB00,0xE01,0xB01,0xF01];for(int n=0;n<6;n++)m.Memory[addresses[n]]=ports[n];
+        var options=new JsonSerializerOptions{PropertyNameCaseInsensitive=true};
+        var lamps=JsonSerializer.Deserialize<LampFrameCapture>(File.ReadAllText(Path.Combine(evidence,"skill-cash","lamp-frames.json")),options)!;
+        Convert.FromHexString(lamps.Initial).CopyTo(m.Memory,0x100);
+    }
+    public void Resume(){if(!Completed && Fault is null)Paused=false;}
+    public void Pause(){Paused=true;Panel.Release();}
+    public void SetStart(bool pressed){Panel.SetStart(pressed && !Paused && !Completed && Fault is null);}
+    public void Advance(TimeSpan elapsed)
+    {
+        if(elapsed<TimeSpan.Zero)throw new ArgumentOutOfRangeException(nameof(elapsed));
+        if(Paused || Completed || Fault is not null)return;
+        double ticks=elapsed.TotalSeconds*CyclesPerSecond+fractionalCycles;ulong delta=(ulong)Math.Floor(ticks);fractionalCycles=ticks-delta;AdvanceCycles(delta);
+    }
+    public void AdvanceCycles(ulong cycles)
+    {
+        if(Paused || Completed || Fault is not null)return;
+        ulong target=checked(Cycle+cycles);int budget=200_000;
+        try {
+            while(!Completed && Cycle<=target) {
+                ulong irq=checked(serviceEpoch+services[serviceIndex].Scan);
+                ulong next=Math.Min(nextVm,Math.Min(irq,nextCallback));if(next>target){Cycle=target;break;}Cycle=next;
+                if(nextCallback==next) {
+                    if(!Mpu4TimerCallbacks.DispatchTimer3(Machine,(address,m)=>{if(address!=0x48FD)throw new NotSupportedException("Unknown live timer callback");Mpu4LampInhibit.Apply(m);}))throw new InvalidOperationException("Missing live timer callback");
+                    nextCallback=ulong.MaxValue;Callbacks++;RecordLatch();
+                }
+                if(irq==next) {
+                    scan.Advance();Scans++;RecordLatch();
+                    if(Machine.ReadWord(0x32D)!=40)throw new NotSupportedException("Live timer pulse differs from captured latency template");
+                    nextCallback=checked(serviceEpoch+services[serviceIndex].Callback);
+                    // Input/counter/scheduler CPU phases are atomic at this explicit
+                    // IRQ-service adapter. Their ordering is recovered from FE70.
+                    Panel.Sample(checked((byte)Machine.ReadWord(0x28)));
+                    Machine.WriteWord(0x2D,Cell.Add(Machine.ReadWord(0x2D),1));Machine.WriteWord(0x2F,Cell.Add(Machine.ReadWord(0x2F),1));
+                    Machine.Memory[0x33]=unchecked((byte)(Machine.Memory[0x33]+1));
+                    scheduler.AdvanceTicks(1);Machine.Memory[0x2C]=0;
+                    if(++serviceIndex==services.Count){serviceIndex=0;serviceEpoch=checked(serviceEpoch+servicePeriod);}
+                }
+                if(nextVm==next) {
+                    if(--budget==0)throw new InvalidOperationException("Live dispatch budget exceeded");
+                    var instruction=executor.NextInstruction!;
+                    waitingForScheduler=instruction.Native==0x5CCB && scheduler.Active;
+                    if(waitingForScheduler){nextVm=checked(serviceEpoch+services[serviceIndex].Scan);continue;}
+                    ulong cost=instruction.Native==0x5CCB ? 0 : Cost(instruction);
+                    executor.Step();nextVm=checked(Cycle+cost);
+                    if(Completed){Paused=true;Panel.Release();break;}
+                }
+            }
+        } catch(Exception error){Fault=error.Message;Paused=true;Panel.Release();throw;}
+    }
+    private ulong Cost(Instruction instruction)
+    {
+        if(siteCosts.TryGetValue(instruction.Site.ToString("X4"),out var cost) || tokenCosts.TryGetValue(instruction.Token.ToString("X4"),out cost))return cost;
+        throw new NotSupportedException($"No captured CPU pacing boundary for {instruction.Site:X4}/{instruction.Token:X4}");
+    }
+    private void RecordLatch()
+    {
+        latches.Add(new(Cycle,checked((byte)Machine.ReadWord(0x28)),Machine.Memory[0xA00],Machine.Memory[0xA02]));
+        ulong start=Cycle>34_400 ? Cycle-34_400 : 0;
+        while(latches.Count>1 && latches[1].Cycle<start)latches.RemoveAt(0);
+    }
+    public LiveSkillCashState Snapshot()
+    {
+        var state=alpha.Snapshot();var history=latches.Select((frame,n)=>n==0 ? frame with{Cycle=0} : frame);
+        var display=new AlphaPlaybackFrame(0,state.Text,Machine.ReadWord(0xBA),Machine.ReadWord(0x2FA));
+        var duty=new OutputPlayback(Math.Max(Cycle,1),history,new[]{display}).Sample(Cycle).LampDuty;
+        string status=Fault is not null ? "Fault: "+Fault : Completed ? "Completed" : Paused ? "Paused" : waitingForScheduler ? "Waiting for native scheduler" : VmAddress is >=0x9986 and <=0x998D ? "Waiting for START release" : selectionLoop ? "Waiting for START · selection loop executing" : "Running";
+        return new(Cycle,Instructions,VmAddress,status,Panel.PhysicalBlack2,Machine.Memory[3],Machine.ReadWord(0x90),Machine.Memory[0x4F],Machine.ReadWord(0xBA),Machine.ReadWord(0x2FA),state.Text,duty,selections.ToArray());
+    }
+}

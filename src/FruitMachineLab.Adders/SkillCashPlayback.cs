@@ -27,10 +27,15 @@ public static class SkillCashPlayback
         // Native alpha completion lies inside a VM operation. Align completed
         // software shadow to the next dispatch; do not invent serial bit timing.
         foreach(var frame in verified.Feature.AlphaFrames)alpha.Add(new(dispatch[Math.Min(frame.Ordinal+1,dispatch.Length-1)],frame.State.Text,frame.Pending,frame.CurrentWin));
+        var captions=LoadLamps(evidenceDirectory);
+        return new(new(cycle,lamps,alpha),captions,verified);
+    }
+    public static IReadOnlyList<PlaybackLamp> LoadLamps(string evidenceDirectory)
+    {
         using var map=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidenceDirectory,"maps","deep-pass-lamp-map.json")));
         var captions=map.RootElement.GetProperty("lamp_rows").EnumerateArray().Select(row=>new PlaybackLamp(row.GetProperty("mame_lamp").GetInt32(),row.GetProperty("rom_command_id").GetByte(),
             string.Join(" / ",row.GetProperty("captions").EnumerateArray().Select(x=>string.IsNullOrWhiteSpace(x.GetString()) ? "?" : x.GetString())))).OrderBy(x=>x.Number).ToArray();
         if(captions.Length!=128 || captions.Where((lamp,index)=>lamp.Number!=index).Any())throw new InvalidDataException("Lamp caption map is not a complete permutation");
-        return new(new(cycle,lamps,alpha),captions,verified);
+        return captions;
     }
 }

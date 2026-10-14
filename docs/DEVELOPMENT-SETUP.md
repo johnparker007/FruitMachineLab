@@ -103,3 +103,11 @@ The diagnostics app now opens on a playback tab. Load & play Skill Cash verifies
 and plays the 12.209-second recorded path at 1×, with lamps, alpha and transport
 controls. 61 headless groups and an opt-in WPF smoke/render check pass. See
 recovery/SKILL-CASH-PLAYBACK-PASS.md for renderer boundaries and smoke instructions.
+
+## Live Skill Cash follow-up
+
+Live mode now incrementally executes one feature with a momentary physical Start
+control. Pause/Resume suspend the VM and virtual clock. Playback remains separate.
+67 headless groups and Live/playback WPF smoke checks pass. WPF was built in isolated
+temporary output because an existing app locked normal build DLLs. See
+recovery/SKILL-CASH-LIVE-PASS.md for exact comparisons and unresolved CPU/IRQ pacing.

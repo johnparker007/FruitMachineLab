@@ -44,10 +44,24 @@ public sealed class ScriptExecutor(Machine machine)
     // An unhandled word never becomes an implicit no-op.
     public Func<Instruction, Machine, bool>? WordHandler { get; init; }
     private int remaining;
+    private IEnumerator<Instruction>? continuation;
+    public Instruction? NextInstruction=>continuation?.Current;
+    public bool Completed=>continuation is null;
+    public void Begin(RecoveredScript script,int budget=1_000_000)
+    {
+        continuation?.Dispose();remaining=budget;continuation=Execute(script.Instructions,true).GetEnumerator();
+        if(!continuation.MoveNext()){continuation.Dispose();continuation=null;}
+    }
+    // Executes exactly the pending dispatch, retaining nested C# iterator frames
+    // and physical VM call/loop/local frames until the next dispatch boundary.
+    public void Step()
+    {
+        if(continuation is null)return;
+        if(!continuation.MoveNext()){continuation.Dispose();continuation=null;}
+    }
     public void Run(RecoveredScript script, int budget = 1000)
     {
-        remaining=budget;
-        Execute(script.Instructions, true);
+        Begin(script,budget);while(!Completed)Step();
     }
     public void RunRange(RecoveredScript script, ushort first, ushort last)
     {
@@ -56,15 +70,16 @@ public sealed class ScriptExecutor(Machine machine)
             throw new InvalidDataException("Requested script range boundaries are absent");
         remaining=1000;
         var following=script.Instructions.SkipWhile(i=>i.Site!=last).Skip(1).FirstOrDefault()?.Site;
-        Execute(items,false,following);
+        foreach(var _ in Execute(items,false,following)){}
     }
-    private void Execute(IReadOnlyList<Instruction> items, bool requireReturn,ushort? boundaryContinuation=null)
+    private IEnumerable<Instruction> Execute(IReadOnlyList<Instruction> items, bool requireReturn,ushort? boundaryContinuation=null)
     {
         var pc = 0;
         while (pc < items.Count)
         {
             if (--remaining < 0) throw new InvalidOperationException("VM instruction budget exhausted");
             var i = items[pc++];
+            yield return i;
             BeforeInstruction?.Invoke(i,machine);
             OperationBoundary?.Invoke(i,machine);
             ushort Value() => i.Value ?? throw new InvalidDataException($"Missing operand at {i.Site:X4}");
@@ -119,7 +134,7 @@ public sealed class ScriptExecutor(Machine machine)
                     ushort? next=machine.Control is not null ? Continuation() : null;
                     if(next is { } at)Control().EnterCall(at);
                     if(word.PushAddress is { } address)machine.Data.Push(address);
-                    Execute(ResolveScript(entry).Instructions,true);
+                    foreach(var nested in Execute(ResolveScript(entry).Instructions,true))yield return nested;
                     if(next is { } expected && Control().ResumeCursor!=expected)throw new NotSupportedException("Nonlocal dynamic VM continuation");
                     break;
                 }
@@ -181,8 +196,8 @@ public sealed class ScriptExecutor(Machine machine)
                     break;
                 case "vm_branch_unsigned_forward8":
                 case "vm_branch_backward8": Jump(i.Branch ?? throw new InvalidDataException("Missing branch target"));break;
-                case "vm_return_to_caller_stream": machine.Control?.Return();return;
-                case "vm_return_if_nonzero": if(machine.Pop()!=0) { machine.Control?.Return();return; }break;
+                case "vm_return_to_caller_stream": machine.Control?.Return();yield break;
+                case "vm_return_if_nonzero": if(machine.Pop()!=0) { machine.Control?.Return();yield break; }break;
                 default:
                     if(WordHandler?.Invoke(i,machine)==true) break;
                     if(i.Body is { } body && ResolveScript is not null)
@@ -190,7 +205,7 @@ public sealed class ScriptExecutor(Machine machine)
                         ushort? next=machine.Control is not null ? Continuation() : null;
                         if(next is { } cursor)machine.Control!.EnterCall(cursor);
                         if(i.PushAddress is { } address) machine.Data.Push(address);
-                        Execute(ResolveScript(body).Instructions,true);
+                        foreach(var nested in Execute(ResolveScript(body).Instructions,true))yield return nested;
                         if(next is { } expected && machine.Control!.ResumeCursor!=expected)
                             throw new NotSupportedException("Nonlocal VM continuation requires separate recovery");
                     }

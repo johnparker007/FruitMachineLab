@@ -100,6 +100,13 @@ deadlines, general scheduling and electrical effects are still unresolved.
 
 ## Provenance
 
+The [live Skill Cash slice](docs/recovery/SKILL-CASH-LIVE-PASS.md) executes the VM
+incrementally with physical Start sampling, generated lamp/alpha outputs and actual
+Pause/Resume. The original playback/scrubber remains separate. Reference-time Start
+pulses match 18 VM/frame/accounting checkpoints, 44 alpha states and final lamp frame
+memory; CPU dispatch count and completion timing differ. 67 groups and both WPF mode
+smoke checks pass. Captured CPU/IRQ pacing remains an explicit boundary.
+
 The [visual playback slice](docs/recovery/SKILL-CASH-PLAYBACK-PASS.md) presents the
 verified headless output in diagnostics at recorded real-time speed, with mapped
 lamps, alpha shadow, pause/restart/seek and speed controls. The path lasts 12.209 s.

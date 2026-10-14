@@ -2,12 +2,45 @@
  <DockPanel Margin="20">
   <StackPanel DockPanel.Dock="Top">
    <TextBlock FontSize="24" Text="Adders &amp; Ladders: Skill Cash" />
-   <TextBlock Margin="0,10" TextWrapping="Wrap" Text="Watch the recovered Skill Cash feature on its verified recorded path. Playback uses captured machine timing and inputs; audio and interactive play remain under development." />
+   <TextBlock Margin="0,10" TextWrapping="Wrap" Text="Live mode executes the recovered feature as you press START. Verified playback remains a separate diagnostic view. Audio and full machine startup are outside this slice." />
    <TextBlock Text="Repository folder" /><TextBox x:Name="RootPath" Margin="0,5" />
-   <Button x:Name="LoadReplay" Content="Load &amp; play Skill Cash" Click="Replay" HorizontalAlignment="Left" Padding="12,7" Margin="0,5" />
+   <Button x:Name="LoadReplay" Content="Load verified playback / scrubber" Click="Replay" HorizontalAlignment="Left" Padding="12,7" Margin="0,5" />
    <TextBlock x:Name="Status" Margin="0,10" TextWrapping="Wrap" />
   </StackPanel>
-  <TabControl x:Name="Views">
+  <TabControl x:Name="Views" SelectionChanged="ViewChanged">
+   <TabItem Header="Live Skill Cash">
+    <DockPanel Margin="12">
+     <StackPanel DockPanel.Dock="Top">
+      <WrapPanel>
+       <Button x:Name="BeginLiveButton" Content="Start feature" Click="BeginLive" Padding="14,7" />
+       <Button x:Name="PauseLiveButton" Content="Pause execution" Click="PauseLiveClick" IsEnabled="False" Padding="14,7" Margin="8,0" />
+       <Button x:Name="ResumeLiveButton" Content="Resume execution" Click="ResumeLiveClick" IsEnabled="False" Padding="14,7" />
+       <Button x:Name="RestartLiveButton" Content="Restart feature" Click="BeginLive" IsEnabled="False" Padding="14,7" Margin="8,0" />
+      </WrapPanel>
+      <TextBlock x:Name="SessionDiagnostic" Text="Start the feature, then hold and release the physical START button below." Margin="0,10" TextWrapping="Wrap" FontFamily="Consolas" />
+     </StackPanel>
+     <ScrollViewer VerticalScrollBarVisibility="Auto">
+      <StackPanel>
+       <TextBlock x:Name="SessionAlpha" Text="                " FontFamily="Consolas" FontSize="32" Background="#14221A" Foreground="#BCF6C9" Padding="12" />
+       <WrapPanel Margin="0,12">
+        <Button x:Name="PhysicalStart" Content="START" IsEnabled="False" Padding="32,15" FontSize="20" FontWeight="Bold"
+         PreviewMouseLeftButtonDown="PhysicalStartDown" PreviewMouseLeftButtonUp="PhysicalStartUp" LostMouseCapture="PhysicalStartCaptureLost"
+         PreviewKeyDown="PhysicalStartKeyDown" PreviewKeyUp="PhysicalStartKeyUp" LostKeyboardFocus="PhysicalStartFocusLost" />
+        <TextBlock Margin="16,0" VerticalAlignment="Center" TextWrapping="Wrap" Text="Physical player button • hold to press, release to let go&#10;BLACK2 bit 80 • Space/Enter also work while focused" />
+       </WrapPanel>
+       <TextBlock x:Name="SessionAccounting" Margin="0,0,0,10" Text="Pending 0 • current win 0 ROM units" />
+       <TextBlock Text="Selection feedback — recovered lamp groups" FontWeight="SemiBold" />
+       <UniformGrid x:Name="SessionSelectionLamps" Columns="6" Margin="0,8" />
+       <TextBlock Text="Skill Cash lamps — diagnostic arrangement" FontWeight="SemiBold" />
+       <UniformGrid x:Name="SessionFeatureLamps" Columns="8" Margin="0,8" />
+       <TextBlock Margin="0,0,0,10" TextWrapping="Wrap" Text="VM state, input sampling, lamps and alpha are live. CPU dispatch pacing and IRQ service latency still use captured timing adapters. Other panel inputs are idle; entry DIL/options are fixed prerequisites. Lamp persistence is a display aid." />
+       <Expander Header="All mapped lamps (MAME number / ROM command)">
+        <UniformGrid x:Name="SessionAllLamps" Columns="8" />
+       </Expander>
+      </StackPanel>
+     </ScrollViewer>
+    </DockPanel>
+   </TabItem>
    <TabItem Header="Skill Cash playback">
     <DockPanel Margin="12">
      <StackPanel DockPanel.Dock="Top">

@@ -105,6 +105,16 @@
     "sha256": "0091D6506FB092A8024C372E27BC8B8781C389D96BCF00E09A857FF0A1451A87"
   },
   {
+    "path": "docs/recovery/NUDGE-AVAILABILITY-PASS.md",
+    "bytes": 6534,
+    "sha256": "857180CDC45CC8BD8243B29AFAD847791F9025148D6FB3BF7A33100938B4F4BF"
+  },
+  {
+    "path": "docs/recovery/NUDGE-PREPARATION-PASS.md",
+    "bytes": 6423,
+    "sha256": "4FE8BD07A70B843F35CC72448730CADD29FEAC50CD8312B79A5E278F6A8A03C9"
+  },
+  {
     "path": "docs/recovery/PAYOUT-AND-SERVICE-RECOVERY.txt",
     "bytes": 7027,
     "sha256": "AD6B05EB3DB02331CB6E780241757CDC7398747E8DF32E6987A4A94955DAB0C4"
@@ -206,8 +216,8 @@
   },
   {
     "path": "evidence/mpu4/maps/board-availability-boundary.json",
-    "bytes": 2376,
-    "sha256": "AB93128B89F287A4A53B9B0D58474F0A2E8AE0D41A62F33A56E7A99B2BAC1821"
+    "bytes": 3658,
+    "sha256": "48DC78B6B59152752E25010189337648AE69AFA477531DE008C30557F8B25D5F"
   },
   {
     "path": "evidence/mpu4/maps/board-link-data.json",
@@ -253,6 +263,21 @@
     "path": "evidence/mpu4/maps/input-condition-tables.json",
     "bytes": 511,
     "sha256": "7DF98006E4EEAE794BB7983A8191A89A2167714DA4316E5B53EED215B40590F4"
+  },
+  {
+    "path": "evidence/mpu4/maps/nudge-availability-data.json",
+    "bytes": 247,
+    "sha256": "762612A5EC036AD0A1B1465F8403CD532C9797EB5314A517D0970049F4AC12A1"
+  },
+  {
+    "path": "evidence/mpu4/maps/nudge-preparation-data.json",
+    "bytes": 361,
+    "sha256": "99DF8EDFC50298F74B365D19539350689FCB55E88A10EF758D608B8433B51105"
+  },
+  {
+    "path": "evidence/mpu4/maps/nudge-preparation-semantics.json",
+    "bytes": 1978,
+    "sha256": "0FDF7F184E57E0E5E7469AB4CFF473A616C32132F78F1D0201760AA694E37C59"
   },
   {
     "path": "evidence/mpu4/maps/prerequisite-pass-branch-prerequisites.json",
@@ -355,6 +380,16 @@
     "sha256": "07044BF308F337E428C2C86DEA32DF3AE11712F0093B6BE3E701F11934C34137"
   },
   {
+    "path": "evidence/mpu4/native/1b63.json",
+    "bytes": 913,
+    "sha256": "ADEB35A42E33D0F6CB41DE55FABC2F590B5BE4FF57599C94FE24D6BD7532B5A9"
+  },
+  {
+    "path": "evidence/mpu4/native/1b7b.json",
+    "bytes": 939,
+    "sha256": "05EE3C8E7AA91331726FF21CD306B178A6DCA04C9D27461C9E17D6AC6EFA7309"
+  },
+  {
     "path": "evidence/mpu4/native/1b93.json",
     "bytes": 892,
     "sha256": "E34A6D3A687CA7A8F1F55844E5B32477FFCF0E803F741EFFED87EB54BFD5622C"
@@ -378,6 +413,11 @@
     "path": "evidence/mpu4/native/28fe.json",
     "bytes": 4353,
     "sha256": "B305CE0B2C482D42ADF9F2F6833876E8D8AA0C34D3A32ECD262ED3BD7439E176"
+  },
+  {
+    "path": "evidence/mpu4/native/29ec.json",
+    "bytes": 1594,
+    "sha256": "ADEC1E90316CC58831635D11153BB7F4B754C2F71E2A52A7F4EC1864718CABE3"
   },
   {
     "path": "evidence/mpu4/native/29f4.json",
@@ -1170,6 +1210,16 @@
     "sha256": "15B242D01A3BDF3D2FD0BD42B0D9E8E42DBC13A022C7EF25E0F2EF32C81EA6AD"
   },
   {
+    "path": "evidence/mpu4/skill-cash/availability-matrix-debugger.cmd",
+    "bytes": 4568,
+    "sha256": "65D793EF3B6CC284F8767CD6CAF8D517036B9FE68E20803A331109F810E3ED17"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/availability-matrix.json",
+    "bytes": 78532,
+    "sha256": "F15409F69C79B1B218180F785A5A97E73647DF842C61AB51DC548B1552B39AFB"
+  },
+  {
     "path": "evidence/mpu4/skill-cash/award-calls.json",
     "bytes": 174407,
     "sha256": "0C6205060695EC28E75AF7B327215A93B0E1577C6A861D2630CED9B60C1D6AF2"
@@ -1370,6 +1420,16 @@
     "sha256": "E180521379CC505775373651A769DA0CCE58B60ACCAFF9396C63B6E9E396FE15"
   },
   {
+    "path": "evidence/mpu4/skill-cash/flagged-availability-matrix-debugger.cmd",
+    "bytes": 4568,
+    "sha256": "4D6EFDC33CB1F37E9778BAB19C5F71E44580AFE4F3D7F2637DCE1BD12ABE239E"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/flagged-availability-matrix.json",
+    "bytes": 78629,
+    "sha256": "535D2DADE0911EC7FEB69916D3C81A8A6736320B9335BB27F0A11791B3FEA5A7"
+  },
+  {
     "path": "evidence/mpu4/skill-cash/focused-debugger.cmd",
     "bytes": 465,
     "sha256": "224B01233498972178EBD6445CAC66E72A85D7170075677FC2330D3161F2E5D7"
@@ -1413,6 +1473,21 @@
     "path": "evidence/mpu4/skill-cash/jackpot-probe.json",
     "bytes": 142169,
     "sha256": "F31DBF11377407DE4E59FD2204302A2B304DAEE716B1EA2B39A9D1B3C7726E91"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/ladder-availability-debugger.cmd",
+    "bytes": 5647,
+    "sha256": "BB21CB979A7E768710006894C0CF66218EF642EC2E842E3A0E15BF07007EAF8F"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/ladder-availability-verification.json",
+    "bytes": 1652,
+    "sha256": "45CAE2F4430241518C1DE26A1A51B62C93C82980705552F48C8701493B658DA3"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/ladder-availability.json",
+    "bytes": 63361,
+    "sha256": "AB1A64E4ADAEF77AD943362B5E21E159CFDD68B74F0685B0F198C22DBBD1CB87"
   },
   {
     "path": "evidence/mpu4/skill-cash/ladder-link-debugger.cmd",
@@ -1468,6 +1543,21 @@
     "path": "evidence/mpu4/skill-cash/live-cpu-timing.json",
     "bytes": 10405,
     "sha256": "D653B575C28F1095D9B3149DEA1F4406FB4D8C6C183434511C0CD2EFF8B01D35"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/nudge-entry-debugger.cmd",
+    "bytes": 5582,
+    "sha256": "0C2078DE9E56E18E1618E7A120393AE738ABE435EE03906B96525739877A02BB"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/nudge-entry-verification.json",
+    "bytes": 1637,
+    "sha256": "77BAD999A48A4D892A62C6B7036BD3CF0DA7F7A4CCEAD9A2BF1F07BE3101C397"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/nudge-entry.json",
+    "bytes": 28595,
+    "sha256": "710B0C33D87DCD2B0229185FF26900CB4F1DD5A9A721E30C9738C6C54F0F2A6D"
   },
   {
     "path": "evidence/mpu4/skill-cash/nudge-pot-probe-debugger.cmd",

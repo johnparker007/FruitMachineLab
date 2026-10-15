@@ -35,7 +35,7 @@
          PreviewKeyDown="PhysicalTakeKeyDown" PreviewKeyUp="PhysicalTakeKeyUp" />
         <TextBlock Margin="16,0" VerticalAlignment="Center" TextWrapping="Wrap" Text="Momentary buttons • mouse or Space/Enter while focused&#10;START: BLACK2 bit 80 • TAKE: BLACK2 bit 01" />
        </WrapPanel>
-       <TextBlock TextWrapping="Wrap" Margin="0,0,0,8" Text="Board selection: TAKE FEATURE chooses Skill Cash (BLACK2 bit 01). START rolls and advances. With continuation enabled, selection prompts can repeat; unsupported result routes stop explicitly. In Skill Cash, START stops each selection." />
+       <TextBlock TextWrapping="Wrap" Margin="0,0,0,8" Text="TAKE FEATURE selects the displayed available feature (BLACK2 bit 01); at square 32 this is Skill Cash. START rolls and advances. With continuation enabled, selection prompts can repeat; unsupported result routes stop explicitly. In Skill Cash, START stops each selection." />
        <TextBlock x:Name="SessionAccounting" Margin="0,0,0,10" Text="Pending 0 • current win 0 ROM units" />
        <TextBlock x:Name="SessionDice" Margin="0,0,0,8" TextWrapping="Wrap" />
        <TextBlock x:Name="SessionDiceFace" Margin="0,0,0,8" FontSize="28" FontFamily="Consolas" />

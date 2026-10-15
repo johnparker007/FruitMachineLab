@@ -23,6 +23,7 @@ public partial class MainWindow
         var args=Environment.GetCommandLineArgs();
         if(args.Length==3 && args[1]=="--live-smoke-test")Loaded+=async(_,_)=>await LiveSmokeTest(args[2]);
         if(args.Length==3 && args[1]=="--live-jackpot-smoke-test")Loaded+=async(_,_)=>await LiveSmokeTest(args[2],true);
+        if(args.Length==3 && args[1]=="--live-availability-smoke-test")Loaded+=async(_,_)=>await LiveAvailabilitySmokeTest(args[2]);
         if(args.Length==3 && args[1]=="--live-board-cycle-smoke-test")Loaded+=async(_,_)=>await LiveBoardCycleSmokeTest(args[2]);
         if(args.Length==3 && args[1]=="--live-link-smoke-test")Loaded+=async(_,_)=>await LiveLinkSmokeTest(args[2]);
         if(args.Length==3 && args[1]=="--live-roll-smoke-test")Loaded+=async(_,_)=>await LiveRollSmokeTest(args[2]);

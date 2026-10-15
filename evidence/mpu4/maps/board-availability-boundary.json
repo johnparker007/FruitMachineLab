@@ -1,5 +1,5 @@
 {
-  "classification": "Static dependency map for explicitly unrecovered nudge availability search; no inferred replacement result",
+  "classification": "Recovered nudge-availability native dependency map; natural prompt and synthetic native matrix verification; nudge play/result route still unrecovered",
   "entry": "29F4",
   "search": "2A7F",
   "result_lookup": "1AC3",
@@ -13,35 +13,58 @@
       "name": "push_best_reel_result_with_symbols_restored",
       "source": "C:\\Users\\John\\Documents\\Codex\\2026-10-13\\help-me-set-up-a-local\\outputs\\mpu4\\evidence\\prerequisite-pass\\saved-functions\\29f4.json",
       "sha256": "1B2AD1C5570F01229F7988B9683F3FAD51E06E141909DE824E5D93522A2EFF29",
-      "status": "static recovery only; not translated or invoked by Live"
+      "status": "translated from assembly and verified; exported pseudocode is not authoritative"
     },
     {
       "address": "2A7F",
       "name": "search_best_reel_result_within_movement_budget",
       "source": "C:\\Users\\John\\Documents\\Codex\\2026-10-13\\help-me-set-up-a-local\\outputs\\mpu4\\evidence\\prerequisite-pass\\saved-functions\\2a7f.json",
       "sha256": "59BAB994C486B9E6FFC05C64E59266052911540D3E15B2DA04520F7C6D55DDCB",
-      "status": "static recovery only; not translated or invoked by Live"
+      "status": "translated from assembly and verified; exported pseudocode is not authoritative"
     },
     {
       "address": "1AC3",
       "name": "reels_lookup_matching_symbol_result",
       "source": "C:\\Users\\John\\Documents\\Codex\\2026-10-13\\help-me-set-up-a-local\\outputs\\mpu4\\evidence\\prerequisite-pass\\saved-functions\\1ac3.json",
       "sha256": "07044BF308F337E428C2C86DEA32DF3AE11712F0093B6BE3E701F11934C34137",
-      "status": "static recovery only; not translated or invoked by Live"
+      "status": "translated from assembly and verified; exported pseudocode is not authoritative"
     },
     {
       "address": "6FA2",
       "name": "reserve_rom_checksum_scratch",
       "source": "C:\\Users\\John\\Documents\\Codex\\2026-10-13\\help-me-set-up-a-local\\outputs\\mpu4\\evidence\\prerequisite-pass\\saved-functions\\6fa2.json",
       "sha256": "E2A053CEFBCC41EA9611E73385BB5820BDA4A042F2B60807F5E04F1CFA0C0698",
-      "status": "static recovery only; not translated or invoked by Live"
+      "status": "fixed 17-byte frame use inlined and verified; generic overflow SWI2 unsupported"
     },
     {
       "address": "6FB8",
       "name": "vm_release_counted_byte_frame_native",
       "source": "C:\\Users\\John\\Documents\\Codex\\2026-10-13\\help-me-set-up-a-local\\outputs\\mpu4\\evidence\\prerequisite-pass\\saved-functions\\6fb8.json",
       "sha256": "6EEA9F8BF1CE4D30EE84A97E9AF76343471BA54A1D8E162CDBE5DA51C150940A",
-      "status": "static recovery only; not translated or invoked by Live"
+      "status": "fixed 17-byte frame use inlined and verified; generic overflow SWI2 unsupported"
+    },
+    {
+      "address": "1B63",
+      "name": "reels_test_common_symbol_flag_1",
+      "source": "C:\\Users\\John\\Documents\\Codex\\2026-10-13\\help-me-set-up-a-local\\outputs\\mpu4\\evidence\\prerequisite-pass\\saved-functions\\1b63.json",
+      "sha256": "ADEB35A42E33D0F6CB41DE55FABC2F590B5BE4FF57599C94FE24D6BD7532B5A9",
+      "status": "translated from assembly and verified; exported pseudocode is not authoritative"
+    },
+    {
+      "address": "1B7B",
+      "name": "reels_test_common_symbol_flag_2",
+      "source": "C:\\Users\\John\\Documents\\Codex\\2026-10-13\\help-me-set-up-a-local\\outputs\\mpu4\\evidence\\prerequisite-pass\\saved-functions\\1b7b.json",
+      "sha256": "05EE3C8E7AA91331726FF21CD306B178A6DCA04C9D27461C9E17D6AC6EFA7309",
+      "status": "translated from assembly and verified; exported pseudocode is not authoritative"
     }
+  ],
+  "implementation": "src/FruitMachineLab.Adders/AddersNudgeAvailability.cs",
+  "flag_helpers": [
+    "1B63",
+    "1B7B"
+  ],
+  "verification": [
+    "skill-cash/ladder-availability.json",
+    "skill-cash/availability-matrix.json"
   ]
 }

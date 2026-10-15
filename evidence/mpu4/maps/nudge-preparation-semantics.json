@@ -1,0 +1,63 @@
+{
+  "classification": "Trace-backed type-1 preparation with static next-interaction map; not completed nudge play",
+  "entry": "E247",
+  "terminal": "B4C5",
+  "native": {
+    "entry": "29EC",
+    "effects": [
+      "DD=FF",
+      "DE=00",
+      "fall through 29F4; clears DD on return"
+    ],
+    "source": "C:\\Users\\John\\Documents\\Codex\\2026-10-13\\help-me-set-up-a-local\\outputs\\mpu4\\evidence\\prerequisite-pass\\saved-functions\\29ec.json",
+    "source_sha256": "ADEC1E90316CC58831635D11153BB7F4B754C2F71E2A52A7F4EC1864718CABE3"
+  },
+  "flow": [
+    {
+      "address": "E247",
+      "role": "B91D nudge gate"
+    },
+    {
+      "address": "B923",
+      "role": "flagged best result and signed threshold"
+    },
+    {
+      "address": "B92C",
+      "role": "sets BD=15hex"
+    },
+    {
+      "address": "B5FA",
+      "role": "copies pot BF to remaining BE for BD=15hex"
+    },
+    {
+      "address": "B626",
+      "role": "saves achievable result, count and reel indices into local frame"
+    },
+    {
+      "address": "B2A8",
+      "role": "updates best-result local and lamps"
+    },
+    {
+      "address": "B2E8",
+      "role": "refreshes nudge pot display"
+    },
+    {
+      "address": "B4C5",
+      "role": "next boundary: nudge sequence"
+    }
+  ],
+  "uninitialized_local_word": {
+    "allocation": "B730",
+    "first_high_byte_write": "B2D0",
+    "first_low_byte_write": "B2E2",
+    "comparison": "ordinal masks derived independently from writes; raw VM digest retained"
+  },
+  "next_static_dependencies": [
+    "B4AD / native1AA3 matching-result gate",
+    "9FA2 flag2 test / indexed reel record 9DA9",
+    "B3C8 prompt and sound930B",
+    "B403 button scan / token table9E06",
+    "B31F main-reel motion and nudge consumption"
+  ],
+  "scope": "Natural preparation matched; flagged helper independently matched synthetic native matrix; no main-reel stepping or player nudge button control yet"
+}

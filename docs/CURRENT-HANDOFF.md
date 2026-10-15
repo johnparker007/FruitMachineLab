@@ -10,7 +10,7 @@ batch, including its verification.
 - Live Skill Cash: incremental VM, retained state, physical momentary Start input,
   actual Pause/Resume, generated lamp/alpha outputs and diagnostic state display.
 - Separate verified playback/scrubber; original MAME-backed verification retained.
-- Last development batch: 113 headless groups passed. Headless and isolated WPF
+- Last development batch: 118 headless groups passed. Headless and isolated WPF
   builds passed; Live/playback WPF smoke checks and rendered layouts were checked.
 - John subsequently reported that the live feature works well.
 
@@ -34,7 +34,7 @@ enables continuation by default; disable that option for the earlier one-advance
 DE96/DD38 boundary. Restart restores the selected entry.
 Nonzero links now execute recovered ladder/snake animations. Two new natural DBC4
 entry modes expose ladder 2→22/pot3 and snake 41→7/pot1. With continuation disabled
-they stop at DE81; enabled, they stop at the explicit availability/result helpers
+they stop at DE81; enabled, they continue subject to the explicit result boundaries
 described below. Requested symbol/offset stay
 separate from the changing position and displayed face. Board square, nudge pot,
 raw ROM type/link and visited squares are visible.
@@ -71,7 +71,38 @@ scope and preserved earlier timing qualifications.
 
 ## Next development work
 
-Latest continuation batch: default GUI checkbox now enables repeat selection and
+Latest batch: 29EC flagged search translated and independently matched against a
+17-case synthetic native matrix. Natural physical TAKE at square22 now captures
+E247→B4C5: 229 VM observations, 24 lamps, three native calls, zero sound/alpha in
+this narrow segment. Live type1 dispatch prepares BE=3, BD=15hex and stops before
+main-reel nudge interaction at B4C5. Type2 Skill Cash and other boundaries remain.
+See recovery/NUDGE-PREPARATION-PASS.md and nudge-preparation-semantics.json.
+
+Nine-byte local-frame allocation exposes undefined CPU-stack residue. The new
+fixture masks its first word for 141 observations, enabling high/low bytes only
+after B2D0/B2E2 writes; raw digest retained. Verifier derives these ordinal masks
+independently. Do not weaken earlier references or seed those bytes as game logic.
+118 headless groups and seven GUI smoke modes pass. No commit/push/install/config.
+
+Next: capture B4AD/1AA3 matching-result gate, 9FA2 flag test and B3C8 prompt through
+B403 input scan. Determine 9E06 selectors/MAME input mapping before adding nudge
+controls; verify B31F main-reel motion separately from the existing dice motor.
+Nudge play, result accounting and whole-machine play remain incomplete.
+
+The previous availability batch resolved the 29F4 stop after a ladder. Live now
+reaches square22/pot3 TAKE NUDGEPOT, computes best result 0010 and accepts START
+for another generated roll or TAKE to the type-1 result boundary. See
+recovery/NUDGE-AVAILABILITY-PASS.md. Recovered 29F4/2A7F/1AC3/1B63/1B7B preserve
+candidate order, byte wrap, scratch writes, symbol restoration and DD/DE effects.
+The 17-byte counted-frame use is inlined; generic SWI2 overflow is unsupported.
+Natural proof: 5,544 VM observations, 65 lamps, 420 sounds, 1,631 alpha bytes and
+52 native calls. Synthetic matrix: 17 cases with every RAM byte below0700 matched,
+excluding native S-stack residue above it. Live pacing still uses budget-3 costs.
+That batch passed 116 headless groups and seven WPF smoke modes, including
+--live-availability-smoke-test. E247/B91D/29EC preparation now executes as above;
+continue B4C5 and main-reel interaction next. Availability is not playable nudges.
+
+Earlier continuation batch: default GUI checkbox now enables repeat selection and
 retained-state next rolls. 32→36 returns to an interactive DD38 prompt and accepts
 another physical START, preserving all memory/motor/accounting. Disable the option
 to reproduce earlier one-advance/link boundaries. The headless `continueBoard`
@@ -81,10 +112,10 @@ See recovery/BOARD-CONTINUATION-PASS.md for scope and six GUI smoke modes.
 Natural extended references match 620 ladder observations through DD38, 22,902
 snake observations through E2FC/type8 and 12,363 normal movement observations
 through E2FC/type3. Complete prior prefixes and all VM/output hashes match. Live
-stops at unsupported E2FC types and at 29F4 nudge-availability search after ladder
-arrival. The repeated 32→36→next roll is synthetic player timing, not a complete
-natural MAME reference. Recover 29F4/2A7F/1AC3 using the newly curated static
-dependency map; do not assume availability or substitute a search result.
+stops at unsupported E2FC types. The earlier 29F4 stop is now resolved as described
+above. The repeated 32→36→next roll is synthetic player timing, not a complete
+natural MAME reference. The updated dependency map links assembly translations
+and verification; do not assume nudge-result/play semantics are also recovered.
 
 Natural nonzero-link DBC4 paths now match 571 ladder and 22,887 snake VM
 observations, with exact reference lamps/sound/alpha. Live matches ordered lamp

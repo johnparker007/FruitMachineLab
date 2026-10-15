@@ -34,6 +34,8 @@ public static class SkillCashData
     }
     public static Instruction ResolveWord(ushort token)=>token switch {
         0x9BDE or 0x9BE2 or 0x9BE6 or 0x9BEA or 0x9C0E or 0x9C12 or 0x9C16 or 0x9C1A=>new(0,token,"indexed_link_lamp",null,null,0x9B18,Cell.Add(token,2)),
+        0xE245=>new(0,token,"evaluate_feature_reel_result_into_pending_award",null,null,0xE247),
+        0x825A=>new(0,token,"vm_push_word_body_word",0x0198,null),
         0x82E7=>new(0,token,"vm_push_word_body_word",0x0169,null),
         0xC71F=>new(0,token,"skill_cash_feature",null,null,0xC721),
         0xDFF4=>new(0,token,"dispatch_named_cash_feature_from_board_position",null,null,0xDFF6),

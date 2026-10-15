@@ -216,5 +216,24 @@ physical START and retains machine state. Three natural extended captures match
 Nudge-availability search 29F4 and unsupported result types remain explicit stops.
 113 headless groups and six WPF smoke modes pass. See
 docs/recovery/BOARD-CONTINUATION-PASS.md for evidence and timing qualifications.
+
+## Nudge availability — 15 October 2026
+
+29F4/2A7F/1AC3/1B63/1B7B now execute from assembly translations. The natural ladder
+prompt matches 5,544 VM observations, 52 native calls and all lamp/sound/alpha
+outputs. A separately classified 17-case synthetic MAME matrix matches all RAM
+below0700, including scratch state and restored symbols. Live reaches TAKE
+NUDGEPOT after the ladder and accepts START for another roll or TAKE to the
+type-1 result boundary; nudge play remains open. 116 headless groups and seven
+GUI smoke modes pass. See docs/recovery/NUDGE-AVAILABILITY-PASS.md.
+
+## Type-1 nudge preparation — 15 October 2026
+
+Flagged 29EC search is translated and independently matches a 17-case native
+matrix. Natural E247→B4C5 preparation matches 229 VM observations, 24 lamp requests
+and three native calls, with explicit uninitialized-local masks until ROM writes.
+Live TAKE now prepares three nudges and stops before main-reel interaction.
+118 headless groups and seven GUI smoke modes pass. See
+docs/recovery/NUDGE-PREPARATION-PASS.md for exact evidence and next boundaries.
 One advance is supported; complete board/game play and the earlier alpha brightness
 timing discrepancy remain open. No installations or configuration changes occurred.

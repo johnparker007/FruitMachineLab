@@ -5,10 +5,11 @@ Local clone: C:\projects\GitRepos\FruitMachineLab
 
 ## Current status
 
-Latest batch: natural board continuations and retained-state repeated Live
-selection. See recovery/BOARD-CONTINUATION-PASS.md for captures and missing-helper
-boundaries. 113 headless groups and six GUI smoke modes pass;
---live-board-cycle-smoke-test checks returned input and a second roll. No installation or configuration
+Latest batch: flagged native search and type-1 nudge preparation. See
+recovery/NUDGE-PREPARATION-PASS.md for natural evidence, synthetic matrix and
+uninitialized-local masks. 118 headless groups and seven GUI smoke modes pass;
+--live-availability-smoke-test now checks TAKE through three-nudge preparation.
+No installation or configuration
 change, commit/push or cloud setup was performed.
 
 For current priorities and continuation context, read [PROJECT-ROADMAP.md](PROJECT-ROADMAP.md)

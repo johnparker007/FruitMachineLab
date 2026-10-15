@@ -36,7 +36,7 @@ are available. This mode uses recorded inputs; use Live Skill Cash for the tempo
 player control. Audio remains future work. See
 [playback evidence and boundaries](docs/recovery/SKILL-CASH-PLAYBACK-PASS.md).
 
-Latest local verification: headless and isolated WPF builds succeed; 113
+Latest local verification: headless and isolated WPF builds succeed; 118
 verification groups pass. Continuous C721 execution matches 98,704 VM dispatches,
 selects 3, 2 and 1, and finishes with pending 0/current win 10. All 7,298 lamp frame
 updates and the complete sound timing protocol match recorded native observations.
@@ -94,5 +94,12 @@ Pause/Resume and Restart, stopping before the following board result.
 The new [board continuation option](docs/recovery/BOARD-CONTINUATION-PASS.md),
 enabled by default, allows recovered selection prompts to repeat without resetting
 machine state. A 32→36 roll returns to a usable prompt and accepts another START.
-Unsupported result types and nudge-availability search stop explicitly. Disable
+Unsupported result types stop explicitly. Disable
 continuation to retain the earlier bounded animation modes.
+
+The [nudge-availability pass](docs/recovery/NUDGE-AVAILABILITY-PASS.md) removes the
+ladder's native search stop. With continuation enabled, select Ladder entry and
+Start feature to reach TAKE NUDGEPOT. START rolls again; TAKE now executes
+[type-1 preparation](docs/recovery/NUDGE-PREPARATION-PASS.md), preparing three nudges
+before stopping at the main-reel interaction boundary. Availability is computed
+from the actual reels; playable nudge motion remains the next recovery work.

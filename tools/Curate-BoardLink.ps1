@@ -1,19 +1,22 @@
-param([Parameter(Mandatory=$true)][string]$RunDirectory,[Parameter(Mandatory=$true)][ValidateSet('ladder','snake')][string]$LinkKind,[switch]$Continuation)
-$ErrorActionPreference='Stop';$root=Split-Path $PSScriptRoot -Parent;$target=Join-Path $root 'evidence/mpu4/skill-cash';$stem=$LinkKind+'-link'+$(if($Continuation){'-next'}else{''});$classification='Natural '+$LinkKind+' dispatch from DBC4 '+$(if($Continuation){'to DD38/E2FC continuation'}else{'to DE81'})+'; unchanged physical input campaign; no RAM/register injection'
+param([Parameter(Mandatory=$true)][string]$RunDirectory,[Parameter(Mandatory=$true)][ValidateSet('ladder','snake')][string]$LinkKind,[switch]$Continuation,[switch]$Availability,[switch]$NudgeEntry)
+$ErrorActionPreference='Stop';$root=Split-Path $PSScriptRoot -Parent;$target=Join-Path $root 'evidence/mpu4/skill-cash';$stem=if($NudgeEntry){'nudge-entry'}elseif($Availability){'ladder-availability'}else{$LinkKind+'-link'+$(if($Continuation){'-next'}else{''})};$classification='Natural '+$LinkKind+' dispatch from DBC4 '+$(if($Continuation){'to DD38/E2FC continuation'}else{'to DE81'})+'; unchanged physical input campaign; no RAM/register injection'
+if($Availability){if(!$Continuation -or $LinkKind -ne 'ladder'){throw 'Availability requires ladder continuation'};$classification='Natural ladder through next selection decision DD7E/DD98, including native availability search; unchanged physical inputs; no RAM/register injection'}
+if($NudgeEntry){$classification='Natural type-1 nudge preparation E247 to B4C5, with physical TAKE at naturally reached square22; no RAM/register injection'}
 $prefix=$null;$prefixCount=0;$prefixHash=[Security.Cryptography.IncrementalHash]::CreateHash([Security.Cryptography.HashAlgorithmName]::SHA256)
-if($Continuation){$prefix=Get-Content (Join-Path $target (($LinkKind+'-link')+'.json')) -Raw|ConvertFrom-Json}
+if($Continuation -and !$NudgeEntry){$prefix=Get-Content (Join-Path $target (($LinkKind+'-link'+$(if($Availability){'-next'}else{''}))+'.json')) -Raw|ConvertFrom-Json}
 $keys=@('y','token','top','second','third','fourth','u','s','f4','f6','frame','tick','irq','seed','choice','rate','latch','pending','win','guard','checksum','mode','display','suppress','clock','board','pot')
 $vm=[Security.Cryptography.IncrementalHash]::CreateHash([Security.Cryptography.HashAlgorithmName]::SHA256)
 $rawVm=[Security.Cryptography.IncrementalHash]::CreateHash([Security.Cryptography.HashAlgorithmName]::SHA256);$rawCount=0;$lifted=0
 $lamp=[Security.Cryptography.IncrementalHash]::CreateHash([Security.Cryptography.HashAlgorithmName]::SHA256);$sound=[Security.Cryptography.IncrementalHash]::CreateHash([Security.Cryptography.HashAlgorithmName]::SHA256)
 $schedule=[Collections.Generic.List[object]]::new();$anchors=[Collections.Generic.List[object]]::new();$conditions=[Collections.Generic.List[object]]::new();$beforeReads=[Collections.Generic.List[object]]::new();$serial=[Collections.Generic.List[byte]]::new()
-$byteReads=[Collections.Generic.List[object]]::new();$native=[Collections.Generic.List[object]]::new();$soundObservations=[Collections.Generic.List[object]]::new()
-$frameMasks=[ordered]@{}
+$byteReads=[Collections.Generic.List[object]]::new();$native=[Collections.Generic.List[object]]::new();$soundObservations=[Collections.Generic.List[object]]::new();$availabilityRows=[Collections.Generic.List[object]]::new();$availabilityEntry=$null
+$frameMasks=[ordered]@{};$ordinalFrameMasks=[Collections.Generic.List[object]]::new();$nudgeFrameMask=65535;$lastNudgeSite=''
 $initial=$null;$last=$null;$count=0;$inputKey='';$lamps=0;$sounds=0;$previous=$null;$sites=@{};$tokens=@{};$busy=0UL;$outer=0UL;$irq=[Collections.Generic.Stack[object]]::new()
 function AppendWords($hash,$values){$bytes=[byte[]]::new($values.Count*2);for($n=0;$n -lt $values.Count;$n++){$bytes[2*$n]=[byte]($values[$n] -shr 8);$bytes[2*$n+1]=[byte]($values[$n] -band 255)};$hash.AppendData($bytes)}
 foreach($line in [IO.File]::ReadLines((Join-Path $RunDirectory 'debug.log'))) {
- if($line -notmatch '^(SC|LF|AB|SN|PI|IE|IX|QE|WC) '){continue};$kind=$Matches[1];$f=[ordered]@{}
+ if($line -notmatch '^(SC|LF|AB|SN|PI|IE|IX|QE|WC|AV) '){continue};$kind=$Matches[1];$f=[ordered]@{}
  foreach($match in [regex]::Matches($line,'(\w+)=([0-9A-F]+)')){$f[$match.Groups[1].Value]=$match.Groups[2].Value}
+ if($kind -eq 'AV'){if($line -match '^AV enter '){$availabilityEntry=@{ordinal=($count-1);fields=$f}}else{if($null -eq $availabilityEntry){throw 'Availability exit without entry'};$e=$availabilityEntry.fields;$availabilityRows.Add([int[]]@($availabilityEntry.ordinal,[Convert]::ToUInt16($e.u,16),[Convert]::ToUInt16($e.budget,16),[Convert]::ToUInt16($f.result,16),[Convert]::ToUInt16($f.best,16),[Convert]::ToUInt16($f.a8,16),[Convert]::ToUInt16($f.dd,16),[Convert]::ToUInt16($f.de,16),[Convert]::ToUInt16($f.symbols.Substring(0,4),16),[Convert]::ToUInt16($f.symbols.Substring(4,4),16),[Convert]::ToUInt16($f.symbols.Substring(8,4),16)));$availabilityEntry=$null};continue}
  if($kind -eq 'IE'){if($irq.Count -eq 0){$outer=[Convert]::ToUInt64($f.cycle,16)};$irq.Push($f);continue}
  if($kind -eq 'IX'){if($irq.Count -eq 0 -or $irq.Pop().s -ne $f.s){throw 'IRQ nesting differs'};if($irq.Count -eq 0){$busy+=[Convert]::ToUInt64($f.cycle,16)-$outer};continue}
  if($kind -eq 'SC') {
@@ -27,6 +30,13 @@ foreach($line in [IO.File]::ReadLines((Join-Path $RunDirectory 'debug.log'))) {
   if($null -ne $previous -and $previous.token -eq '786B' -and $previous.top -eq '0033' -and $f.top -ne ('00'+$previous.irq)){$byteReads.Add([int[]]@(($count-1),(([Convert]::ToUInt16($f.top,16)-[Convert]::ToUInt16($previous.irq,16)+256)%256)))}
   $previous=@{cycle=$cycle;busy=$busy;y=$f.y;token=$f.token;top=$f.top;tick=$f.tick;irq=$f.irq}
   $values=[int[]]@($keys | ForEach-Object {[Convert]::ToUInt16($f[$_],16)})
+  if($NudgeEntry){
+   if($lastNudgeSite -eq 'B730'){$nudgeFrameMask=0}
+   if($lastNudgeSite -eq 'B2D0'){$nudgeFrameMask=$nudgeFrameMask -bor 65280}
+   if($lastNudgeSite -eq 'B2E2'){$nudgeFrameMask=$nudgeFrameMask -bor 255}
+   if($nudgeFrameMask -ne 65535){$ordinalFrameMasks.Add([int[]]@($count,$nudgeFrameMask));$values[10]=$values[10] -band $nudgeFrameMask}
+   $lastNudgeSite=$f.y
+  }
   # Local-release 76BD is lifted inside the shared physical stack return helper.
   if($f.y -eq '76BD'){continue}
   if($frameMasks.Contains($f.y)){$values[10]=$values[10] -band $frameMasks[$f.y]};AppendWords $vm $values;if($null -ne $prefix -and $prefixCount -lt $prefix.instructions){AppendWords $prefixHash $values;$prefixCount++}
@@ -40,12 +50,13 @@ foreach($line in [IO.File]::ReadLines((Join-Path $RunDirectory 'debug.log'))) {
  elseif($kind -eq 'AB'){$serial.Add([Convert]::ToByte($f.value,16))}
 }
 
-if($initial.y -ne 'DBC4' -or (!$Continuation -and $last.y -ne 'DE81') -or ($Continuation -and $last.y -notin @('DD38','E2FC'))){throw 'Incomplete natural link reference'}
+if(!$NudgeEntry -and ($initial.y -ne 'DBC4' -or (!$Availability -and !$Continuation -and $last.y -ne 'DE81') -or (!$Availability -and $Continuation -and $last.y -notin @('DD38','E2FC')) -or ($Availability -and $last.y -notin @('DD7E','DD98')))){throw 'Incomplete natural link reference'}
 
-if($Continuation -and ($prefixCount -ne $prefix.instructions -or [Convert]::ToHexString($prefixHash.GetHashAndReset()) -cne $prefix.expected_vm_sha256)){throw 'Continuation changed the independently captured prefix'}
+if($NudgeEntry -and ($initial.y -ne 'E247' -or $last.y -ne 'B4C5')){throw 'Incomplete nudge preparation reference'}
+if($Continuation -and !$NudgeEntry -and ($prefixCount -ne $prefix.instructions -or [Convert]::ToHexString($prefixHash.GetHashAndReset()) -cne $prefix.expected_vm_sha256)){throw 'Continuation changed the independently captured prefix'}
 $prefixHash.Dispose()
 $orderedSites=[ordered]@{};foreach($key in ($sites.Keys|Sort-Object)){$orderedSites[$key]=$sites[$key]};$orderedTokens=[ordered]@{};foreach($key in ($tokens.Keys|Sort-Object)){$orderedTokens[$key]=$tokens[$key]}
-[ordered]@{classification=$classification;raw_instructions=$rawCount;raw_vm_sha256=[Convert]::ToHexString($rawVm.GetHashAndReset());lifted_dispatches=$lifted;undefined_frame_masks=$frameMasks;initial=$initial;terminal=$last;ram_hex=[Convert]::ToHexString([IO.File]::ReadAllBytes((Join-Path $RunDirectory 'boundary-ram.bin')));instructions=$count;expected_vm_sha256=[Convert]::ToHexString($vm.GetHashAndReset());inputs=@($schedule.ToArray());conditions=@($conditions.ToArray());before_reads=@($beforeReads.ToArray());byte_reads=@($byteReads.ToArray());native=@($native.ToArray());anchors=@($anchors.ToArray());lamp_requests=$lamps;expected_lamp_sha256=[Convert]::ToHexString($lamp.GetHashAndReset());sound_commands=$sounds;sound_observations=@($soundObservations.ToArray());expected_sound_sha256=[Convert]::ToHexString($sound.GetHashAndReset());serial_hex=[Convert]::ToHexString($serial.ToArray());sites=$orderedSites;tokens=$orderedTokens} | ConvertTo-Json -Depth 7 -Compress | Set-Content (Join-Path $target ($stem+'.json'))
-[ordered]@{run_directory=$RunDirectory;raw_sha256=(Get-FileHash (Join-Path $RunDirectory 'debug.log')).Hash;ram_sha256=(Get-FileHash (Join-Path $RunDirectory 'boundary-ram.bin')).Hash;classification=$classification;prefix_instructions=$(if($Continuation){$prefix.instructions}else{0});prefix_vm_sha256=$(if($Continuation){$prefix.expected_vm_sha256}else{$null});capture=(Get-Content (Join-Path $RunDirectory 'provenance.json') -Raw|ConvertFrom-Json)} | ConvertTo-Json -Depth 5 | Set-Content (Join-Path $target ($stem+'-verification.json'))
+[ordered]@{classification=$classification;availability=@($availabilityRows.ToArray());raw_instructions=$rawCount;raw_vm_sha256=[Convert]::ToHexString($rawVm.GetHashAndReset());lifted_dispatches=$lifted;undefined_frame_masks=$frameMasks;ordinal_frame_masks=@($ordinalFrameMasks.ToArray());initial=$initial;terminal=$last;ram_hex=[Convert]::ToHexString([IO.File]::ReadAllBytes((Join-Path $RunDirectory 'boundary-ram.bin')));instructions=$count;expected_vm_sha256=[Convert]::ToHexString($vm.GetHashAndReset());inputs=@($schedule.ToArray());conditions=@($conditions.ToArray());before_reads=@($beforeReads.ToArray());byte_reads=@($byteReads.ToArray());native=@($native.ToArray());anchors=@($anchors.ToArray());lamp_requests=$lamps;expected_lamp_sha256=[Convert]::ToHexString($lamp.GetHashAndReset());sound_commands=$sounds;sound_observations=@($soundObservations.ToArray());expected_sound_sha256=[Convert]::ToHexString($sound.GetHashAndReset());serial_hex=[Convert]::ToHexString($serial.ToArray());sites=$orderedSites;tokens=$orderedTokens} | ConvertTo-Json -Depth 7 -Compress | Set-Content (Join-Path $target ($stem+'.json'))
+[ordered]@{run_directory=$RunDirectory;raw_sha256=(Get-FileHash (Join-Path $RunDirectory 'debug.log')).Hash;ram_sha256=(Get-FileHash (Join-Path $RunDirectory 'boundary-ram.bin')).Hash;classification=$classification;prefix_instructions=$(if($Continuation -and !$NudgeEntry){$prefix.instructions}else{0});prefix_vm_sha256=$(if($Continuation -and !$NudgeEntry){$prefix.expected_vm_sha256}else{$null});capture=(Get-Content (Join-Path $RunDirectory 'provenance.json') -Raw|ConvertFrom-Json)} | ConvertTo-Json -Depth 5 | Set-Content (Join-Path $target ($stem+'-verification.json'))
 Copy-Item (Join-Path $RunDirectory 'debugger.cmd') (Join-Path $target ($stem+'-debugger.cmd'))
 foreach($hash in @($vm,$rawVm,$lamp,$sound)){$hash.Dispose()}

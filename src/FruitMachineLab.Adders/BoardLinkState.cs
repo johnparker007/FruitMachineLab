@@ -17,14 +17,18 @@ public static class BoardLinkState
     }
     public static void LoadData(Machine machine,string evidence)
     {
+        using var nudge=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"maps","nudge-preparation-data.json")));
+        foreach(var range in nudge.RootElement.GetProperty("ranges").EnumerateObject())Convert.FromHexString(range.Value.GetString()!).CopyTo(machine.Memory,Convert.ToUInt16(range.Name,16));
+        using var availability=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"maps","nudge-availability-data.json")));
+        foreach(var range in availability.RootElement.GetProperty("ranges").EnumerateObject())Convert.FromHexString(range.Value.GetString()!).CopyTo(machine.Memory,Convert.ToUInt16(range.Name,16));
         using var data=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"maps","board-link-data.json")));
         foreach(var range in data.RootElement.GetProperty("ranges").EnumerateObject())Convert.FromHexString(range.Value.GetString()!).CopyTo(machine.Memory,Convert.ToUInt16(range.Name,16));
     }
-    public static ushort Apply(Machine machine,string evidence,string kind,bool continuation=false)
+    public static ushort Apply(Machine machine,string evidence,string kind,bool continuation=false,bool availability=false,bool nudgeEntry=false)
     {
         if(kind is not ("ladder" or "snake"))throw new ArgumentException("Unknown board link kind",nameof(kind));
         BoardMovementState.Apply(machine,evidence);LoadData(machine,evidence);
-        using var data=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",kind+"-link"+(continuation ? "-next" : "")+".json")));var root=data.RootElement;
+        using var data=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",nudgeEntry ? "nudge-entry.json" : availability ? "ladder-availability.json" : kind+"-link"+(continuation ? "-next" : "")+".json")));var root=data.RootElement;
         Convert.FromHexString(root.GetProperty("ram_hex").GetString()!).CopyTo(machine.Memory,0);
         ushort First(string key)=>Convert.ToUInt16(root.GetProperty("initial").GetProperty(key).GetString(),16);
         machine.Control=new(machine,First("s"));machine.DataStackBase=Cell.Add(First("u"),8);machine.SetDataPointer(First("u"));

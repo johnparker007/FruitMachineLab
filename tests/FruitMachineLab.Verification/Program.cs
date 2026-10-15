@@ -7,6 +7,35 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Natural type-1 nudge preparation matches MAME before reel interaction", () => {
+    var result=BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeEntry:true);
+    Console.WriteLine($"  {result.Instructions} nudge preparation observations, {result.Lamps} lamps, {result.Sounds} sounds, {result.AlphaBytes} alpha bytes");
+});
+Check("Flagged native search matches MAME low RAM including DD/DE reset", () => {
+    using var matrix=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","flagged-availability-matrix.json")));
+    foreach(var row in matrix.RootElement.GetProperty("cases").EnumerateArray()) {
+        var m=new SkillCashLiveSession(evidence,boardSelection:true).Machine;Convert.FromHexString(row.GetProperty("before_hex").GetString()!).CopyTo(m.Memory,0);
+        if(row.GetProperty("kind").GetString()=="flagged-search") {
+            m.DataStackBase=0x668;m.SetDataPointer(0x660);AddersNudgeAvailability.ExecuteFlagged(m);m.SyncDataToMemory();Equal((ushort)0x660,m.DataPointer);Equal(row.GetProperty("exit").GetProperty("result").GetUInt16(),m.Data.Peek());
+        }else Equal(row.GetProperty("exit").GetProperty("b").GetByte(),AddersNudgeAvailability.Lookup(m));
+        Equal(row.GetProperty("expected_low_ram_sha256").GetString(),Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(m.Memory.AsSpan(0,0x700))));
+    }
+});
+Check("Synthetic native search and lookup matrix preserves complete low RAM", () => {
+    using var matrix=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","availability-matrix.json")));
+    foreach(var row in matrix.RootElement.GetProperty("cases").EnumerateArray()) {
+        var m=new SkillCashLiveSession(evidence,boardSelection:true).Machine;Convert.FromHexString(row.GetProperty("before_hex").GetString()!).CopyTo(m.Memory,0);
+        if(row.GetProperty("kind").GetString()=="search") {
+            m.DataStackBase=0x668;m.SetDataPointer(0x660);AddersNudgeAvailability.Execute(m);m.SyncDataToMemory();Equal((ushort)0x660,m.DataPointer);Equal(row.GetProperty("exit").GetProperty("result").GetUInt16(),m.Data.Peek());
+        }else Equal(row.GetProperty("exit").GetProperty("b").GetByte(),AddersNudgeAvailability.Lookup(m));
+        string hash=Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(m.Memory.AsSpan(0,0x700)));
+        if(hash!=row.GetProperty("expected_low_ram_sha256").GetString())throw new Exception("Native matrix RAM differs: "+row.GetProperty("id").GetString());
+    }
+});
+Check("Natural nudge availability and following prompt match MAME", () => {
+    var result=BoardSelectionVerification.Verify(evidence,boardLink:"ladder",continuation:true,availability:true);
+    Console.WriteLine($"  {result.Instructions} observations, {result.Lamps} lamps, {result.Sounds} sounds, {result.AlphaBytes} alpha bytes");
+});
 Check("Natural board continuations preserve VM and all reference outputs", () => {
     foreach(string kind in new[]{"ladder","snake","movement"}) {
         var result=BoardSelectionVerification.Verify(evidence,boardMovement:kind=="movement",boardLink:kind=="movement" ? null : kind,continuation:true);
@@ -28,13 +57,24 @@ Check("Live continuation returns to a board prompt with retained state and accep
     catch(NotSupportedException error){if(!error.Message.StartsWith("BOARD result type") && !error.Message.StartsWith("BOARD nudge availability search"))throw;}
     Equal(true,nextMotor);Equal(false,session.Panel.StartPressed);Equal(true,session.Snapshot().Board!.Visited.Count>visited);
 });
-Check("Live link continuation stops explicitly at unrecovered availability/result helpers", () => {
-    foreach(string kind in new[]{"ladder","snake"}) {
-        var live=new SkillCashLiveSession(evidence,boardLink:kind,continueBoard:true);live.Resume();
-        try{for(int n=0;n<60000 && live.Fault is null;n++)live.AdvanceCycles(512);}catch(NotSupportedException){}
-        Equal(true,live.Fault?.StartsWith(kind=="ladder" ? "BOARD nudge availability search" : "BOARD result type")==true);
-        Equal((byte)(kind=="ladder" ? 22 : 7),live.Machine.Memory[0xC9]);Equal(false,live.Panel.StartPressed);
+Check("Live ladder initializes genuine nudge availability and accepts START or TAKE", () => {
+    foreach(bool take in new[]{false,true}) {
+        var live=new SkillCashLiveSession(evidence,boardLink:"ladder",continueBoard:true);ushort[] symbols=[live.Machine.ReadWord(0x160),live.Machine.ReadWord(0x162),live.Machine.ReadWord(0x164)];live.Resume();
+        for(int n=0;n<30000 && !live.AwaitingBoardSelection;n++)live.AdvanceCycles(512);
+        Equal(true,live.AwaitingBoardSelection);Equal((byte)22,live.Machine.Memory[0xC9]);Equal((byte)3,live.Machine.Memory[0xBF]);Equal((byte)16,live.Machine.Memory[0xC8]);
+        for(int n=0;n<3;n++)Equal(symbols[n],live.Machine.ReadWord((ushort)(0x160+2*n)));
+        live.Pause();ulong cycle=live.Cycle;var memory=live.Machine.Memory.ToArray();live.AdvanceCycles(1_000_000);Equal(cycle,live.Cycle);Equal(true,memory.SequenceEqual(live.Machine.Memory));live.Resume();
+        if(take)live.SetTake(true);else live.SetStart(true);bool motor=false;
+        try{for(int n=0;n<60000 && live.BoardPrompts<2;n++){live.AdvanceCycles(512);motor|=live.Snapshot().DiceRequest?.Busy==true;if(motor)live.SetStart(false);}}
+        catch(NotSupportedException error){if(!error.Message.StartsWith("BOARD result type") && !error.Message.StartsWith("BOARD nudge preparation complete"))throw;}
+        if(take){Equal(true,live.Fault?.StartsWith("BOARD nudge preparation complete")==true);Equal(false,motor);Equal((byte)22,live.Machine.Memory[0xC9]);Equal((byte)3,live.Machine.Memory[0xBE]);Equal((byte)0x15,live.Machine.Memory[0xBD]);}else{Equal(true,motor);Equal(true,live.Snapshot().Board!.Visited.Count>2);}
+        Equal((ushort)0,live.Machine.ReadWord(0xBA));Equal((ushort)0,live.Machine.ReadWord(0x2FA));live.Pause();Equal(false,live.Panel.StartPressed);Equal(false,live.Panel.TakePressed);
     }
+});
+Check("Live snake retains its explicit unrecovered result boundary", () => {
+    var live=new SkillCashLiveSession(evidence,boardLink:"snake",continueBoard:true);live.Resume();
+    try{for(int n=0;n<60000 && live.Fault is null;n++)live.AdvanceCycles(512);}catch(NotSupportedException){}
+    Equal(true,live.Fault?.StartsWith("BOARD result type 8")==true);Equal((byte)7,live.Machine.Memory[0xC9]);Equal(false,live.Panel.StartPressed);
 });
 Check("Natural ladder VM, destination, pot and output path matches MAME", () => {
     var result=BoardSelectionVerification.Verify(evidence,boardLink:"ladder");Console.WriteLine($"  {result.Instructions} ladder dispatches, {result.Lamps} lamps, {result.Sounds} sound commands, {result.AlphaBytes} alpha bytes");

@@ -7,12 +7,12 @@ namespace FruitMachineLab.Adders;
 public record BoardSelectionVerificationResult(int Instructions,int Lamps,int Sounds,int AlphaBytes,int Conditions,bool AlphaExact=true,int ReferenceAlphaBytes=0,string LampSequence="",string AlphaShadow="");
 public static class BoardSelectionVerification
 {
-    public static BoardSelectionVerificationResult Verify(string evidence,bool diceRequests=false,bool diceMotion=false,bool boardMovement=false,bool nudgePotProbe=false,string? boardLink=null,bool continuation=false)
+    public static BoardSelectionVerificationResult Verify(string evidence,bool diceRequests=false,bool diceMotion=false,bool boardMovement=false,bool nudgePotProbe=false,string? boardLink=null,bool continuation=false,bool availability=false,bool nudgeEntry=false)
     {
         if(diceMotion)diceRequests=true;
         if(nudgePotProbe)boardMovement=true;
         if(boardLink is not null)boardMovement=true;
-        using var capture=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",boardLink is not null ? boardLink+"-link"+(continuation ? "-next" : "")+".json" : nudgePotProbe ? "nudge-pot-probe.json" : boardMovement ? (continuation ? "board-movement-next.json" : "board-movement.json") : diceMotion ? "dice-motion-vm.json" : diceRequests ? "dice-requests.json" : "board-selection.json")));var root=capture.RootElement;
+        using var capture=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",nudgeEntry ? "nudge-entry.json" : availability ? "ladder-availability.json" : boardLink is not null ? boardLink+"-link"+(continuation ? "-next" : "")+".json" : nudgePotProbe ? "nudge-pot-probe.json" : boardMovement ? (continuation ? "board-movement-next.json" : "board-movement.json") : diceMotion ? "dice-motion-vm.json" : diceRequests ? "dice-requests.json" : "board-selection.json")));var root=capture.RootElement;
         if(boardMovement) {
             int lifted=root.GetProperty("lifted_dispatches").GetInt32();
             if(lifted!=(nudgePotProbe ? 48 : 0) || root.GetProperty("raw_instructions").GetInt32()!=root.GetProperty("instructions").GetInt32()+lifted)throw new InvalidDataException("Unexpected board/probe dispatch normalization");
@@ -24,7 +24,8 @@ public static class BoardSelectionVerification
         if(diceRequests || boardMovement)frameMasks.Clear();
         var declared=root.GetProperty("undefined_frame_masks").EnumerateObject().ToArray();
         if(declared.Length!=frameMasks.Count || declared.Any(item=>!frameMasks.TryGetValue(item.Name,out int mask) || item.Value.GetInt32()!=mask))throw new InvalidDataException("Invalid uninitialized-frame comparison exclusions");
-        var m=new SkillCashLiveSession(evidence).Machine;ushort clock=boardLink is not null ? BoardLinkState.Apply(m,evidence,boardLink,continuation) : boardMovement ? BoardMovementState.Apply(m,evidence,nudgePotProbe,continuation) : BoardSelectionState.Apply(m,evidence,diceRequests);
+        var ordinalMasks=nudgeEntry ? root.GetProperty("ordinal_frame_masks").EnumerateArray().ToDictionary(r=>r[0].GetInt32(),r=>r[1].GetInt32()) : new Dictionary<int,int>();int nudgeMask=65535;ushort lastNudgeSite=0;
+        var m=new SkillCashLiveSession(evidence).Machine;ushort clock=boardLink is not null ? BoardLinkState.Apply(m,evidence,boardLink,continuation,availability,nudgeEntry) : boardMovement ? BoardMovementState.Apply(m,evidence,nudgePotProbe,continuation) : BoardSelectionState.Apply(m,evidence,diceRequests);
         var motion=diceMotion ? new DiceMotionReference(m,evidence) : null;
         using var vmHash=IncrementalHash.CreateHash(HashAlgorithmName.SHA256);using var lampHash=IncrementalHash.CreateHash(HashAlgorithmName.SHA256);using var soundHash=IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
         static void Hash(IncrementalHash hash,ReadOnlySpan<ushort> values){Span<byte> bytes=stackalloc byte[values.Length*2];for(int n=0;n<values.Length;n++)BinaryPrimitives.WriteUInt16BigEndian(bytes.Slice(n*2,2),values[n]);hash.AppendData(bytes);}
@@ -45,6 +46,7 @@ public static class BoardSelectionVerification
         int[][] Rows(string name)=>root.GetProperty(name).EnumerateArray().Select(row=>row.EnumerateArray().Select(x=>x.GetInt32()).ToArray()).ToArray();
         var inputs=Rows("inputs");var conditions=Rows("conditions");var reads=Rows("before_reads");var anchors=Rows("anchors").ToDictionary(row=>row[0]);int point=0,condition=0,phase=0,ordinal=0;
         var native=Rows("native");int nativePoint=0;
+        var availabilityRows=availability || nudgeEntry ? Rows("availability") : [];int availabilityPoint=0;
         var byteReads=boardMovement ? Rows("byte_reads") : [];int byteReadPoint=0;
         var catalog=new RecoveredScriptCatalog(Path.Combine(evidence,"VM-SCRIPTS"));
         RecoveredScript Resolve(ushort at)=>catalog.Owner(at);
@@ -70,7 +72,14 @@ public static class BoardSelectionVerification
                 if(diceMotion && i.Native==0x61F6)return true; // Native phases applied before the following dispatch.
                 if(i.Native is 0x5C18 or 0x5B77){if(nativePoint>=native.Length)throw new InvalidDataException("Extra native scheduler call");var row=native[nativePoint++];if(row[0]!=ordinal || row[1]!=(i.Native==0x5C18 ? 1 : 2) || (i.Native==0x5C18 && row[3]!=state.Data.Peek()))throw new InvalidDataException($"Native board scheduler phase differs at {ordinal}/{i.Site:X4}, expected {row[0]}/{row[1]} stream {row[3]:X4}, stack {(state.Data.Count>0 ? state.Data.Peek() : 0):X4}");Advance((ushort)row[2]);}
                 if(i.Native==0x5CCB){if(point>=inputs.Length || inputs[point][0]!=ordinal+1)throw new InvalidDataException("Missing board scheduler wait boundary");Advance((ushort)inputs[point][4]);}
-                return AddersNativeWords.Handle(i,state,requests,scheduler,alpha);
+                int[]? av=null;
+                if(i.Native is 0x29F4 or 0x29EC && (availability || nudgeEntry)){
+                    if(availabilityPoint>=availabilityRows.Length)throw new InvalidDataException("Extra native availability call");av=availabilityRows[availabilityPoint++];
+                    if(av[0]!=ordinal || av[1]!=state.DataPointer || av[2]!=state.Data.Peek())throw new InvalidDataException("Native availability entry differs");
+                }
+                bool handled=AddersNativeWords.Handle(i,state,requests,scheduler,alpha);
+                if(av is not null){ushort[] values=[state.Data.Peek(),state.Memory[0xC8],state.Memory[0xA8],state.Memory[0xDD],state.Memory[0xDE],state.ReadWord(0x160),state.ReadWord(0x162),state.ReadWord(0x164)];for(int n=0;n<values.Length;n++)if(values[n]!=av[n+3])throw new InvalidDataException($"Native availability call {availabilityPoint} field {n} differs: {values[n]:X4} != {av[n+3]:X4}");}
+                return handled;
             }
         };
         ushort entry=diceRequests || boardMovement ? Convert.ToUInt16(root.GetProperty("initial").GetProperty("y").GetString(),16) : (ushort)0xDD38;
@@ -81,6 +90,13 @@ public static class BoardSelectionVerification
             var i=executor.NextInstruction!;var cells=m.Data.ToArray();
             ushort[] signature=[i.Site,i.Token,cells[0],cells[1],cells[2],cells[3],m.DataPointer,m.Control!.Pointer,m.LocalFrame,m.Control.LoopFrame,m.ReadWord(m.LocalFrame),m.ReadWord(0x2D),m.Memory[0x33],m.ReadWord(0x324),m.Memory[0x4F],m.Memory[0x4E],m.ReadWord(0x90),m.ReadWord(0xBA),m.ReadWord(0x2FA),m.Memory[0x2C],m.Memory[0x322],m.Memory[0x323],m.ReadWord(0x327),m.ReadWord(0xA0),scheduler.Clock];
             if(boardMovement)signature=[..signature,m.Memory[0xC9],m.Memory[0xBF]];
+            if(nudgeEntry){
+                if(lastNudgeSite==0xB730)nudgeMask=0;
+                if(lastNudgeSite==0xB2D0)nudgeMask|=0xFF00;
+                if(lastNudgeSite==0xB2E2)nudgeMask|=0xFF;
+                if(nudgeMask!=65535){if(!ordinalMasks.TryGetValue(ordinal,out int ordinalMask) || ordinalMask!=nudgeMask)throw new InvalidDataException("Uninitialized nudge frame mask differs");signature[10]&=(ushort)nudgeMask;ordinalMasks.Remove(ordinal);}
+                lastNudgeSite=i.Site;
+            }
             if(frameMasks.TryGetValue(i.Site.ToString("X4"),out int mask))signature[10]&=(ushort)mask;
             if(anchors.TryGetValue(ordinal,out var expected))for(int n=0;n<signature.Length;n++)if(signature[n]!=expected[n+1])throw new InvalidDataException($"Board ordinal {ordinal}, {i.Site:X4}, field {n}: {signature[n]:X4} != {expected[n+1]:X4}");
             Hash(vmHash,signature);if((diceRequests && i.Site==(diceMotion ? 0xB28F : 0xB283)) || (boardMovement && i.Site==Convert.ToUInt16(root.GetProperty("terminal").GetProperty("y").GetString(),16))){ordinal++;break;}executor.Step();ordinal++;
@@ -99,6 +115,8 @@ public static class BoardSelectionVerification
         }
         if(ordinal!=root.GetProperty("instructions").GetInt32() || lamps!=root.GetProperty("lamp_requests").GetInt32() || sounds!=root.GetProperty("sound_commands").GetInt32() || condition!=conditions.Length || point!=inputs.Length || phase!=reads.Length || nativePoint!=native.Length)throw new InvalidDataException("Incomplete board selection replay");
         if(motion is not null && !motion.Complete)throw new InvalidDataException("Incomplete full-VM motion phases");
+        if(ordinalMasks.Count!=0)throw new InvalidDataException("Unused nudge local masks");
+        if(availabilityPoint!=availabilityRows.Length)throw new InvalidDataException("Incomplete availability observations");
         if(byteReadPoint!=byteReads.Length)throw new InvalidDataException("Incomplete board IRQ-byte phases");
         return new(ordinal,lamps,sounds,serial.Count,condition,alphaExact,expectedAlpha.Length/2,Convert.ToHexString(logicalLamps.ToArray()),alpha.Snapshot().Shadow);
     }

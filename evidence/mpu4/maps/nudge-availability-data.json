@@ -1,0 +1,7 @@
+{
+  "classification": "Static triple/pair result tables for native reel search; outcomes computed by recovered loops",
+  "rom_sha1": "402D1518BB78FDC489B06C2AABC771E5CE151847",
+  "ranges": {
+    "75BD": "000A1014162F3C00010203040506"
+  }
+}

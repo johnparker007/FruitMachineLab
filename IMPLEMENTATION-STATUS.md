@@ -185,3 +185,17 @@ states. The combined reference matches 7,103 VM observations, 15 lamp requests a
 differs; text/cursor/reset match. Exact native alpha/IRQ timing remains unresolved.
 The small MAME-derived Barcrest motor model has BSD-3-Clause attribution. This is
 not homing, whole-board movement, machine startup or persistent whole-game play.
+
+## Incremental board movement
+
+See docs/recovery/BOARD-MOVEMENT-PASS.md. Live START continues the motor roll into
+DDF3 board movement and zero-link DBC4 dispatch, then stops before the next result
+or selection. Nonzero-link animation remains an explicit boundary. Board square,
+pot, raw type/link and visited squares are exposed independently of WPF. The natural
+7→11 reference matches 12,355 VM observations, 11 lamp requests and 60 sound
+commands. A separate synthetic DDE3 probe checks the digit animation and 36 sound
+commands over 9,565 lifted observations (9,613 raw; 48 inner typed-list observations
+excluded). New native arithmetic and memory primitives retain wrap and signed
+rounding. 106 groups and all four GUI modes pass, including actual mid-board pause.
+One advance is supported; complete board/game play and the earlier alpha brightness
+timing discrepancy remain open. No installations or configuration changes occurred.

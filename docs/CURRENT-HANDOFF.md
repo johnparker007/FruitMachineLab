@@ -10,7 +10,7 @@ batch, including its verification.
 - Live Skill Cash: incremental VM, retained state, physical momentary Start input,
   actual Pause/Resume, generated lamp/alpha outputs and diagnostic state display.
 - Separate verified playback/scrubber; original MAME-backed verification retained.
-- Last development batch: 99 headless groups passed. Headless and isolated WPF
+- Last development batch: 106 headless groups passed. Headless and isolated WPF
   builds passed; Live/playback WPF smoke checks and rendered layouts were checked.
 - John subsequently reported that the live feature works well.
 
@@ -29,8 +29,11 @@ DDAF/DE75/E43D frames to E460. The entry selector retains C721 and E2FC modes.
 All six default award levels complete through all three modes. START at the board
 prompt now runs one incremental dice roll with ROLLING, changing face/position,
 native busy-loop completion and symbol refresh. Pause/Resume also suspend the motor.
-It stops before B28F returns to board movement; Restart is available. The requested
-symbol/offset stay separate from the changing position and displayed face.
+It now continues through one incremental board advance and zero-link dispatch,
+stopping before the next DE96 result return or DD38 selection; Restart is available.
+Nonzero links stop before ladder/snake animation. Requested symbol/offset stay
+separate from the changing position and displayed face. Board square, nudge pot,
+raw ROM type/link and visited squares are visible.
 The natural selection reference checks 99,843 exposed VM observations (with explicit
 uninitialized-local masks), 7,331 lamp requests, 6,099 sound commands, 1,107 alpha
 bytes and 868 input-condition reads. Its full original C721 source digest remains
@@ -53,11 +56,22 @@ and feature-entry phase seeds. The combined path matches 7,103 VM observations,
 restoration difference (83/84 bytes); text/cursor/reset agree. It is not an exact
 alpha-timing match. See recovery/DICE-MOTION-PASS.md and THIRD-PARTY-NOTICES.md.
 
+The new natural movement reference checks 12,355 VM observations, including board
+and pot, 11 lamp requests and 60 sound commands, from square 7 to 11 with pot 4.
+A separate explicitly synthetic DDE3 helper probe checks 9,565 lifted observations
+and 36 sound commands (9,613 raw observations; 48 typed-list inner observations
+excluded). It is not a natural nudge-animation path. Live timing variations run
+32→34/36/38, with per-square lamp steps and pot logic executed by the actual VM.
+See recovery/BOARD-MOVEMENT-PASS.md for arithmetic, IRQ-byte read phases, synthetic
+scope and preserved earlier timing qualifications.
+
 ## Next development work
 
-Capture the natural continuation after B28F through DD8D/DDAB and DE75, then
-translate/verify DDF3 board movement and DBC4 ladder/snake dispatch. Normal dice
-motor preparation, service, generated optics, completion and symbol refresh now run;
+Capture nonzero-link DBC4 paths and translate/verify ladder/snake animation,
+destination setting and pot adjustments. DDF3 movement and zero-link DBC4 dispatch
+now execute and are reference-checked. Continue the following board result or
+selection after that; the current live scope deliberately stops after one advance.
+Normal dice motor preparation, service, generated optics, completion and symbol refresh now run;
 homing, motor-disabled shortcuts and complete alarm handling remain outside this
 feature-entry milestone. The earlier ladder, startup, credits and whole-game play
 remain open. Resolve the new alpha brightness timing discrepancy with native/IRQ
@@ -84,8 +98,8 @@ capture/focus release. The jackpot driver remains accelerated. Replay uses captu
 input-port/native scheduling phases; Live never substitutes recorded player events.
 Raw boundary capture and temporary diagnostic comparison files remain outside Git.
 --live-roll-smoke-test <fresh-output-directory> checks real-time physical Start,
-changing position/face, actual mid-motion pause/resume, completed native result,
-explicit B28F board boundary, released controls and clean restart.
+changing position/face, actual mid-motion and mid-board pause/resume, completed
+roll/advance, next-dispatch boundary, released controls and clean restart.
 
 No agent commit, push, installation, configuration change or cloud setup was
 performed. Inspect git status before the next batch; do not infer commit state

@@ -139,6 +139,7 @@ public sealed class ScriptExecutor(Machine machine)
                 case "vm_add_to_word_memory": { var address=machine.Pop();machine.WriteWord(address,Cell.Add(machine.ReadWord(address),machine.Pop()));break; }
                 case "vm_add_to_byte_memory": {var address=machine.Pop();machine.Memory[address]=unchecked((byte)(machine.Memory[address]+machine.Pop()));break;}
                 case "vm_clear_byte_memory": machine.Memory[machine.Pop()] = 0; break;
+                case "vm_increment_byte_memory": {var address=machine.Pop();machine.Memory[address]=unchecked((byte)(machine.Memory[address]+1));break;}
                 case "vm_clear_word_memory_bits": {var mask=machine.Pop();var address=machine.Pop();machine.WriteWord(address,(ushort)(machine.ReadWord(address)&~mask));break;}
                 case "vm_or_word_memory": {var mask=machine.Pop();var address=machine.Pop();machine.WriteWord(address,(ushort)(machine.ReadWord(address)|mask));break;}
                 case "vm_fetch_unsigned_byte": machine.Data.Push(machine.Memory[machine.Pop()]); break;
@@ -174,6 +175,9 @@ public sealed class ScriptExecutor(Machine machine)
                     break;
                 }
                 case "vm_copy_second_cell": { var b=machine.Pop(); var a=machine.Pop(); machine.Data.Push(a); machine.Data.Push(b); machine.Data.Push(a); break; }
+                case "vm_pick_cell_by_unsigned_word_index": {machine.SyncDataToMemory();var index=machine.Pop();machine.Data.Push(machine.ReadWord(Cell.Add(machine.DataPointer,unchecked((ushort)(2*index)))));break;}
+                case "vm_add_loop_index_to_top": machine.Data.Push(Cell.Add(machine.Pop(),Control().LoopIndex));break;
+                case "vm_rotate_word_left_by_count": {int count=machine.Pop()&15;ushort value=machine.Pop();machine.Data.Push(unchecked((ushort)((value<<count)|(value>>((16-count)&15)))));break;}
                 case "vm_rotate_three_cells": {
                     var c=machine.Pop(); var b=machine.Pop(); var a=machine.Pop(); machine.Data.Push(b); machine.Data.Push(c); machine.Data.Push(a); break;
                 }
@@ -185,6 +189,11 @@ public sealed class ScriptExecutor(Machine machine)
                     var divisor=machine.Pop(); var high=machine.Pop(); var low=machine.Pop();
                     var result=Mpu4Arithmetic.DivideDouble(low,high,divisor);
                     machine.Data.Push(result.Remainder); machine.Data.Push(result.Quotient); break;
+                }
+                case "vm_signed_double_divide": {
+                    var divisor=machine.Pop();var high=machine.Pop();var low=machine.Pop();
+                    var result=Mpu4Arithmetic.SignedDivideDouble(low,high,divisor);
+                    machine.Data.Push(result.Remainder);machine.Data.Push(result.Quotient);break;
                 }
                 case "vm_add_words": Binary(Cell.Add); break;
                 case "vm_add_double_cells": {

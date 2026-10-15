@@ -7,6 +7,60 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Natural post-roll movement preserves VM, board, nudge pot and outputs", () => {
+    var result=BoardSelectionVerification.Verify(evidence,boardMovement:true);Console.WriteLine($"  {result.Instructions} movement dispatches, {result.Lamps} lamp requests, {result.Sounds} sound commands, {result.AlphaBytes} alpha bytes");
+});
+Check("Native signed cell divide retains floor, magnitude remainder, zero and overflow behavior", () => {
+    Equal(((ushort)3,(ushort)1),Mpu4Arithmetic.SignedDivideDouble(7,0,2));
+    Equal(((ushort)0xFFFC,(ushort)1),Mpu4Arithmetic.SignedDivideDouble(0xFFF9,0xFFFF,2));
+    Equal(((ushort)0xFFFC,(ushort)1),Mpu4Arithmetic.SignedDivideDouble(7,0,0xFFFE));
+    Equal(((ushort)0xFFFE,(ushort)1),Mpu4Arithmetic.SignedDivideDouble(7,0,0xFFFC));
+    Equal(((ushort)3,(ushort)1),Mpu4Arithmetic.SignedDivideDouble(0xFFF9,0xFFFF,0xFFFE));
+    Equal(((ushort)0xFFFC,(ushort)0),Mpu4Arithmetic.SignedDivideDouble(0xFFF8,0xFFFF,2));
+    Equal(((ushort)0x8000,(ushort)0),Mpu4Arithmetic.SignedDivideDouble(0x8000,0xFFFF,0xFFFF));
+    Equal(((ushort)0xFFFF,(ushort)7),Mpu4Arithmetic.SignedDivideDouble(7,0,0));
+});
+Check("Recovered PICK retains cell indexing and wrapped access to the popped index", () => {
+    var script=new RecoveredScript(Path.Combine(evidence,"VM-SCRIPTS","A831.txt"));
+    foreach(ushort index in new ushort[]{0,2,65535}) {
+        var m=new Machine{DataStackBase=0x680};m.Data.Push(0x1111);m.Data.Push(0x2222);m.Data.Push(0x3333);m.Data.Push(index);
+        new ScriptExecutor(m).RunRange(script,0xA838,0xA838);Equal(index==0 ? (ushort)0x3333 : index==2 ? (ushort)0x1111 : ushort.MaxValue,m.Data.Peek());
+    }
+});
+Check("Digit rotation masks the count and loop-index addition wraps as native cells", () => {
+    var script=new RecoveredScript(Path.Combine(evidence,"VM-SCRIPTS","A831.txt"));
+    foreach(var pair in new[]{(0,0x8001),(1,3),(16,0x8001),(65535,0xC000)}) {
+        var m=new Machine();m.Data.Push(0x8001);m.Data.Push((ushort)pair.Item1);new ScriptExecutor(m).RunRange(script,0xA842,0xA842);Equal((ushort)pair.Item2,m.Data.Peek());
+    }
+    var loop=new Machine();loop.Control=new(loop,0x700);loop.Control.EnterLoop(3,5,0xBEEF);loop.Data.Push(0xFFFE);
+    new ScriptExecutor(loop).RunRange(script,0xA849,0xA849);Equal((ushort)1,loop.Data.Peek());
+});
+Check("Synthetic native nudge-pot animation preserves VM and sound protocol", () => {
+    var result=BoardSelectionVerification.Verify(evidence,nudgePotProbe:true);Console.WriteLine($"  {result.Instructions} synthetic DDE3 dispatches, {result.Sounds} sound commands; not a natural feature path");
+});
+Check("Live board advance visits each square over virtual time and pauses during movement", () => {
+    var live=new SkillCashLiveSession(evidence,boardSelection:true);live.Resume();bool paused=false,finished=false;var steps=new List<(ulong Cycle,byte Square)>();
+    live.ObserveDispatch=(_,m)=>{if(steps.Count==0 || steps[^1].Square!=m.Memory[0xC9])steps.Add((live.Cycle,m.Memory[0xC9]));};
+    try {
+        for(int n=0;n<50000;n++) {
+            if(live.Instructions>250 && live.Snapshot().DiceRequest is null)live.SetStart(true);else live.SetStart(false);
+            live.AdvanceCycles(256);
+            if(!paused && live.Machine.Memory[0xC9]>32) {
+                live.Pause();var memory=live.Machine.Memory.ToArray();var visited=live.Snapshot().Board!.Visited.ToArray();ulong cycle=live.Cycle;int instructions=live.Instructions;
+                live.Advance(TimeSpan.FromSeconds(2));Equal(cycle,live.Cycle);Equal(instructions,live.Instructions);Equal(true,memory.SequenceEqual(live.Machine.Memory));Equal(true,visited.SequenceEqual(live.Snapshot().Board!.Visited));
+                live.Resume();paused=true;
+            }
+        }
+    }catch(NotSupportedException error){if(!error.Message.StartsWith("BOARD advance completed"))throw;finished=true;}
+    Equal(true,paused);Equal(true,finished);var result=live.Snapshot();int target=32+result.DiceRequest!.Symbol;
+    Equal((byte)target,result.Board!.Square);Equal(string.Join(',',Enumerable.Range(32,target-31)),string.Join(',',result.Board.Visited));
+    Equal(target-31,steps.Count);for(int n=2;n<steps.Count;n++)Equal(true,steps[n].Cycle-steps[n-1].Cycle>50000);
+});
+Check("Recovered byte increment consumes its address and wraps FF to zero", () => {
+    var m=new Machine();m.Memory[0xFFFF]=255;m.Data.Push(0x1234);m.Data.Push(0xFFFF);
+    new ScriptExecutor(m).RunRange(new RecoveredScript(Path.Combine(evidence,"VM-SCRIPTS","B88C.txt")),0xB895,0xB895);
+    Equal((byte)0,m.Memory[0xFFFF]);Equal((ushort)0x1234,m.Data.Peek());Equal(1,m.Data.Count);
+});
 Check("Native dice motion matches each MAME service and optic read", () => {
     var result=DiceMotionVerification.Verify(evidence);Console.WriteLine($"  {result.Services} services, {result.OpticReads} optic/update operations, position {result.InitialPosition} -> {result.FinalPosition}");
 });
@@ -46,9 +100,9 @@ Check("Pausing mid-roll freezes VM, motor state and virtual time, then resumes t
                 Equal(false,live.Panel.StartPressed);live.Resume();paused=true;
             }
         }
-    }catch(NotSupportedException error){if(!error.Message.StartsWith("ROLL completed"))throw;finished=true;}
+    }catch(NotSupportedException error){if(!error.Message.StartsWith("BOARD advance completed"))throw;finished=true;}
     Equal(true,paused);Equal(true,finished);var request=live.Snapshot().DiceRequest!;Equal(false,request.Busy);Equal(request.Symbol,request.DisplayedSymbol);
-    Equal((byte)32,live.Machine.Memory[0xC9]);Equal((ushort)0,live.Machine.ReadWord(0xBA));Equal((ushort)0,live.Machine.ReadWord(0x2FA));
+    Equal((byte)(32+request.Symbol),live.Machine.Memory[0xC9]);Equal((ushort)0,live.Machine.ReadWord(0xBA));Equal((ushort)0,live.Machine.ReadWord(0x2FA));
 });
 Check("Synthetic stuck-optic input reaches the native alignment fault instead of a fabricated completion", () => {
     var m=new SkillCashLiveSession(evidence,boardSelection:true).Machine;var motion=new AddersReelMotion(m);
@@ -98,17 +152,17 @@ Check("Physical Take and Start are independent sampled active-high panel inputs"
 Check("Board Start follows the recovered roll branch to an explicit dice boundary", () => {
     var live=new SkillCashLiveSession(evidence,boardSelection:true);byte position=live.Machine.Memory[0x16E];live.Resume();bool stopped=false;
     try {for(int n=0;n<10000 && !live.Completed;n++){if(live.Instructions>250)live.SetStart(true);live.AdvanceCycles(512);}}
-    catch(NotSupportedException error){stopped=error.Message.StartsWith("ROLL completed");if(!stopped)throw;}
+    catch(NotSupportedException error){stopped=error.Message.StartsWith("BOARD advance completed");if(!stopped)throw;}
     Equal(true,stopped);Equal(true,live.Paused);Equal(false,live.Completed);Equal(false,live.Panel.StartPressed);Equal(false,live.Panel.TakePressed);Equal(0,live.Selections.Count);
-    Equal(false,(live.Machine.Memory[0x6B]&0x80)!=0);var request=live.Snapshot().DiceRequest!;Equal(true,request.Symbol is >=1 and <=12);Equal(false,position==request.PhysicalPosition);Equal(request.Symbol,request.DisplayedSymbol);Equal((ushort)0xB28F,live.VmAddress);
+    Equal(false,(live.Machine.Memory[0x6B]&0x80)!=0);var request=live.Snapshot().DiceRequest!;Equal(true,request.Symbol is >=1 and <=12);Equal(false,position==request.PhysicalPosition);Equal(request.Symbol,request.DisplayedSymbol);Equal((ushort)(live.Snapshot().Board!.Type==3 ? 0xDE96 : 0xDD38),live.VmAddress);
 });
 Check("Varied live roll timing generates requests without substituting outcomes", () => {
     var results=new HashSet<byte>();
     foreach(int delay in new[]{0,50,100,200,400,800,1200,2000}) {
         var live=new SkillCashLiveSession(evidence,boardSelection:true);live.Resume();bool stopped=false;
         try{for(int n=0;n<20000;n++){if(live.Instructions>250+delay)live.SetStart(true);live.AdvanceCycles(512);}}
-        catch(NotSupportedException error){if(!error.Message.StartsWith("ROLL completed"))throw;stopped=true;}
-        Equal(true,stopped);var request=live.Snapshot().DiceRequest!;Equal(true,request.Symbol is >=1 and <=12);results.Add(request.Symbol);
+        catch(NotSupportedException error){if(!error.Message.StartsWith("BOARD advance completed"))throw;stopped=true;}
+        Equal(true,stopped);var request=live.Snapshot().DiceRequest!;Equal(true,request.Symbol is >=1 and <=12);results.Add(request.Symbol);var board=live.Snapshot().Board!;Equal((byte)(32+request.Symbol),board.Square);Equal(string.Join(',',Enumerable.Range(32,request.Symbol+1)),string.Join(',',board.Visited));
     }
     Equal(true,results.Count>1);Console.WriteLine("  Live requested dice symbols: "+string.Join(',',results.Order()));
 });

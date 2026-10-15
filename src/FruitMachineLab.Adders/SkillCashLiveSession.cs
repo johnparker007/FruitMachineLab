@@ -3,8 +3,9 @@ using FruitMachineLab.Runtime;
 namespace FruitMachineLab.Adders;
 
 public record DiceRequestState(byte Symbol,sbyte StopOffset,byte PhysicalPosition,bool Busy=false,byte DisplayedSymbol=0);
+public record BoardState(byte Square,byte NudgePot,byte Type,byte Link,IReadOnlyList<byte> Visited);
 public record LiveSkillCashState(ulong Cycle,int Instructions,ushort VmAddress,string Execution,byte PhysicalBlack2,byte SampledBlack2,ushort PanelLatch,
-    byte Choice,ushort Pending,ushort CurrentWin,string Alpha,double[] LampDuty,IReadOnlyList<ushort> Selections,DiceRequestState? DiceRequest);
+    byte Choice,ushort Pending,ushort CurrentWin,string Alpha,double[] LampDuty,IReadOnlyList<ushort> Selections,DiceRequestState? DiceRequest,BoardState? Board=null);
 
 // One live feature-entry session. No replay Inputs/Conditions/Anchors are applied
 // after initialization. Captured CPU pacing and IRQ service timestamps are
@@ -33,6 +34,8 @@ public sealed class SkillCashLiveSession
     private double fractionalCycles;
     private bool waitingForScheduler,selectionLoop,boardChoiceCompleted;
     private DiceRequestState? diceRequest;
+    private readonly List<byte> boardVisited=new();
+    private bool boardAdvancing;
     public bool IncludesCaller {get;}
     public bool StartsAtBoardSelection {get;}
     public bool AwaitingBoardSelection=>StartsAtBoardSelection && !boardChoiceCompleted && diceRequest is null;
@@ -82,6 +85,7 @@ public sealed class SkillCashLiveSession
         if(boardSelection) {
             initialClock=BoardSelectionState.Apply(Machine,evidence);
             BoardSelectionState.LoadDiceData(Machine,evidence);
+            BoardMovementState.LoadData(Machine,evidence);boardVisited.Add(Machine.Memory[0xC9]);
             using var motionData=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"maps","dice-motion-data.json")));
             foreach(var range in motionData.RootElement.GetProperty("ranges").EnumerateObject())Convert.FromHexString(range.Value.GetString()!).CopyTo(Machine.Memory,Convert.ToUInt16(range.Name,16));
             reelMotion=new(Machine);reelHardware=new(Machine);
@@ -97,6 +101,14 @@ public sealed class SkillCashLiveSession
             using var motionCosts=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","dice-motion-vm.json")));
             foreach(var item in motionCosts.RootElement.GetProperty("sites").EnumerateObject())siteCosts.TryAdd(item.Name,item.Value.GetUInt64());
             foreach(var item in motionCosts.RootElement.GetProperty("tokens").EnumerateObject())tokenCosts.TryAdd(item.Name,item.Value.GetUInt64());
+            using var movementCosts=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","board-movement.json")));
+            foreach(var item in movementCosts.RootElement.GetProperty("sites").EnumerateObject())siteCosts.TryAdd(item.Name,item.Value.GetUInt64());
+            foreach(var item in movementCosts.RootElement.GetProperty("tokens").EnumerateObject())tokenCosts.TryAdd(item.Name,item.Value.GetUInt64());
+            using var nudgeCosts=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","nudge-pot-probe.json")));
+            foreach(var item in nudgeCosts.RootElement.GetProperty("sites").EnumerateObject())siteCosts.TryAdd(item.Name,item.Value.GetUInt64());
+            foreach(var item in nudgeCosts.RootElement.GetProperty("tokens").EnumerateObject())tokenCosts.TryAdd(item.Name,item.Value.GetUInt64());
+            using var movementData=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"maps","board-movement-data.json")));
+            foreach(var alias in movementData.RootElement.GetProperty("equivalent_timing_tokens").EnumerateObject())tokenCosts.TryAdd(alias.Name,tokenCosts[alias.Value.GetString()!]);
         }
         Panel=new(Machine);byte[] other=new byte[8];
         // This feature-entry fixture has no Orange/Black service buttons held.
@@ -128,6 +140,8 @@ public sealed class SkillCashLiveSession
             InputConditionCell=value=>Mpu4InputConditions.Evaluate(Machine,(byte)value),
             BeforeInstruction=(instruction,state)=> {
                 Instructions++;ObserveDispatch?.Invoke(instruction,state);
+                if(StartsAtBoardSelection && boardVisited[^1]!=state.Memory[0xC9])boardVisited.Add(state.Memory[0xC9]);
+                if(instruction.Site==0xDDF3 && diceRequest is not null)boardAdvancing=true;
                 if(instruction.Site==0xDDAB)boardChoiceCompleted=true;
                 if(instruction.Site==0xC6AD)selectionLoop=true;
                 if(instruction.Site==0xC757){selections.Add(state.Data.Peek());selectionLoop=false;}
@@ -223,7 +237,8 @@ public sealed class SkillCashLiveSession
                 if(nextVm==next) {
                     if(--budget==0)throw new InvalidOperationException("Live dispatch budget exceeded");
                     var instruction=executor.NextInstruction!;
-                    if(StartsAtBoardSelection && instruction.Site==0xB28F)throw new NotSupportedException($"ROLL completed at dice symbol {Machine.Memory[0x166]}; board movement is the next recovery boundary. Restart to play again.");
+                    if(boardAdvancing && instruction.Site is 0xDE96 or 0xDD38)throw new NotSupportedException($"BOARD advance completed at square {Machine.Memory[0xC9]} (type {Machine.Memory[0xA12E+Machine.Memory[0xC9]]}, nudge pot {Machine.Memory[0xBF]}); the next board result/selection is the recovery boundary. Restart to play again.");
+                    if(boardAdvancing && instruction.Site is 0xDAC7 or 0xDB58)throw new NotSupportedException($"BOARD reached a {(instruction.Site==0xDAC7 ? "ladder" : "snake")} at square {Machine.Memory[0xC9]}; link animation is the next recovery boundary.");
                     if(StartsAtBoardSelection && instruction.Native==0x61F6 && !motionNativeReady) {
                         if(!motionInitializing){diceRequest=new(Machine.Memory[0x166],unchecked((sbyte)Machine.Memory[0x16F]),Machine.Memory[0x16E]);reelMotion!.Prepare(value=>Mpu4InputConditions.Evaluate(Machine,value));reelMotion.Enable();motionInitializing=true;}
                         nextVm=checked(serviceEpoch+services[serviceIndex].Scan);continue;
@@ -256,7 +271,7 @@ public sealed class SkillCashLiveSession
         var state=alpha.Snapshot();var history=latches.Select((frame,n)=>n==0 ? frame with{Cycle=0} : frame);
         var display=new AlphaPlaybackFrame(0,state.Text,Machine.ReadWord(0xBA),Machine.ReadWord(0x2FA));
         var duty=new OutputPlayback(Math.Max(Cycle,1),history,new[]{display}).Sample(Cycle).LampDuty;
-        string status=Fault is not null ? "Fault: "+Fault : Completed ? "Completed" : Paused ? "Paused" : waitingForScheduler ? "Waiting for native scheduler" : VmAddress is >=0x9986 and <=0x998D ? "Waiting for panel release" : selectionLoop ? "Waiting for START · selection loop executing" : reelMotion?.Busy==true ? "Dice motor running · VM waiting for completion" : motionInitializing ? "Waiting for reel service" : AwaitingBoardSelection ? "Waiting for TAKE / START · board selection executing" : "Running";
-        return new(Cycle,Instructions,VmAddress,status,Panel.PhysicalBlack2,Machine.Memory[3],Machine.ReadWord(0x90),Machine.Memory[0x4F],Machine.ReadWord(0xBA),Machine.ReadWord(0x2FA),state.Text,duty,selections.ToArray(),diceRequest is null ? null : diceRequest with {PhysicalPosition=Machine.Memory[0x16E],Busy=reelMotion!.Busy,DisplayedSymbol=AddersReelSymbols.CurrentSymbol(Machine,3)});
+        string status=Fault is not null ? "Fault: "+Fault : Completed ? "Completed" : Paused ? "Paused" : waitingForScheduler ? "Waiting for native scheduler" : VmAddress is >=0x9986 and <=0x998D ? "Waiting for panel release" : selectionLoop ? "Waiting for START · selection loop executing" : boardAdvancing ? "Board movement executing" : reelMotion?.Busy==true ? "Dice motor running · VM waiting for completion" : motionInitializing ? "Waiting for reel service" : AwaitingBoardSelection ? "Waiting for TAKE / START · board selection executing" : "Running";
+        return new(Cycle,Instructions,VmAddress,status,Panel.PhysicalBlack2,Machine.Memory[3],Machine.ReadWord(0x90),Machine.Memory[0x4F],Machine.ReadWord(0xBA),Machine.ReadWord(0x2FA),state.Text,duty,selections.ToArray(),diceRequest is null ? null : diceRequest with {PhysicalPosition=Machine.Memory[0x16E],Busy=reelMotion!.Busy,DisplayedSymbol=AddersReelSymbols.CurrentSymbol(Machine,3)},StartsAtBoardSelection ? new(Machine.Memory[0xC9],Machine.Memory[0xBF],Machine.Memory[0xA12E+Machine.Memory[0xC9]],Machine.Memory[0xA160+Machine.Memory[0xC9]],boardVisited.ToArray()) : null);
     }
 }

@@ -5,6 +5,11 @@
     "sha256": "084C06D5944804C09CA80B040E3BB5FF4C19AB70D619F0401DDA943F2B255132"
   },
   {
+    "path": "docs/recovery/BOARD-MOVEMENT-PASS.md",
+    "bytes": 7968,
+    "sha256": "C79F145A6AFB07EF5C5718F37BA71C30482029092D20BDA333871FC062350E27"
+  },
+  {
     "path": "docs/recovery/BOARD-SELECTION-TAKE-PASS.md",
     "bytes": 6579,
     "sha256": "FBD8F356E48F0ED3833CD6866C06B290C82CC463D4093BFAF59C403967CA63A2"
@@ -188,6 +193,11 @@
     "path": "docs/recovery/VM-BATCH-RECOVERY.txt",
     "bytes": 7591,
     "sha256": "5239BF49F35DDC956133AC033318187688F8A4AA2E900FB339008926568A956B"
+  },
+  {
+    "path": "evidence/mpu4/maps/board-movement-data.json",
+    "bytes": 644,
+    "sha256": "9FF5EF1B96334BD2E6676525234D037B0BE29E06840980C156AFC94487AF4AA7"
   },
   {
     "path": "evidence/mpu4/maps/board-selection-data.json",
@@ -705,6 +715,11 @@
     "sha256": "703B0EB30D7E5556926C00707BDD76F80A0238730824A66E1128C4F244B695FD"
   },
   {
+    "path": "evidence/mpu4/native/756a.json",
+    "bytes": 895,
+    "sha256": "663902AB0F4515E1A1A0AD7162591850C14C22B274EEDA774BF7B40128B98D08"
+  },
+  {
     "path": "evidence/mpu4/native/7576.json",
     "bytes": 1257,
     "sha256": "24A7EF36AC83F3A62DFC57785A8B0AA397C9BEDA851F54D18717CC45F23819BA"
@@ -713,6 +728,11 @@
     "path": "evidence/mpu4/native/7580.json",
     "bytes": 788,
     "sha256": "9BD8E5ABE8B9FD3FD49482B7FDB70F1970344D2D3A60028098EF239063B54608"
+  },
+  {
+    "path": "evidence/mpu4/native/7655.json",
+    "bytes": 782,
+    "sha256": "5318576BA727F1D02DCC12D1B166D16AB80D50FC180B0C7AB45DE78C4A0AF3C3"
   },
   {
     "path": "evidence/mpu4/native/7661.json",
@@ -920,6 +940,11 @@
     "sha256": "3B249D97FD6472E95068F3E060A9B49463AF9F1D96EC5246C4CA6F3F416876F0"
   },
   {
+    "path": "evidence/mpu4/native/7ac5.json",
+    "bytes": 1671,
+    "sha256": "C302F7AA02990E7C047E12D15B18752E5A4D6262A4F2A59F68A41C6B0715678B"
+  },
+  {
     "path": "evidence/mpu4/native/7ade.json",
     "bytes": 1102,
     "sha256": "EA991E551333E7B65DF68667956A5354BC57D1F2EC3928DA4A428108A21E1774"
@@ -973,6 +998,11 @@
     "path": "evidence/mpu4/native/7b5b.json",
     "bytes": 854,
     "sha256": "262889C1A843837848CC945117B61F6B47F9B4D28FF870828441B048BDC8FE56"
+  },
+  {
+    "path": "evidence/mpu4/native/7b63.json",
+    "bytes": 967,
+    "sha256": "F5EB7E996242F0E65426C8FBC9D45003AD3D97D48D2115728AA944359FA733D9"
   },
   {
     "path": "evidence/mpu4/native/7b6f.json",
@@ -1098,6 +1128,21 @@
     "path": "evidence/mpu4/skill-cash/award-verification.json",
     "bytes": 1239,
     "sha256": "F8F7310DCF7829EE4EB307364986F16F80EFF59E95BE6F2F9027595BB941F871"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/board-movement-debugger.cmd",
+    "bytes": 5258,
+    "sha256": "2928B581285909B334BFF50CD20ABC17E443C17E4365885828265F27D3BEB363"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/board-movement-verification.json",
+    "bytes": 417,
+    "sha256": "B78B89F9DE80F96D58874D5B98181A4ED89B906D63EB0BD7A8A4D02A6ACDFB30"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/board-movement.json",
+    "bytes": 42885,
+    "sha256": "8D946BFE456A0CA24E14B5580C99DDB1FFD4E3F36477B7489E4D7C298CB79C48"
   },
   {
     "path": "evidence/mpu4/skill-cash/board-result-debugger.cmd",
@@ -1323,6 +1368,21 @@
     "path": "evidence/mpu4/skill-cash/live-cpu-timing.json",
     "bytes": 10405,
     "sha256": "D653B575C28F1095D9B3149DEA1F4406FB4D8C6C183434511C0CD2EFF8B01D35"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/nudge-pot-probe-debugger.cmd",
+    "bytes": 5254,
+    "sha256": "CFE02D06BB72E5074F52C8B6C2534CEDBB871B84FCFF3B0837BB8A11D4785E05"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/nudge-pot-probe-verification.json",
+    "bytes": 449,
+    "sha256": "84F52221B0CB356B6CF67C10E66B43B59DF202C98B29ED9B93C725E50C0F2EF2"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/nudge-pot-probe.json",
+    "bytes": 43476,
+    "sha256": "A20C2629B57FC8854F45C7F31CABE942E66DF537595DCB83C8F840BBAF6F7875"
   },
   {
     "path": "evidence/mpu4/skill-cash/output-scan-debugger.cmd",

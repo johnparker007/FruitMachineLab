@@ -2,6 +2,17 @@ namespace FruitMachineLab.Runtime;
 
 public static class Mpu4Arithmetic
 {
+    // 7C08: sign magnitudes, native unsigned divider, then complement quotient
+    // on opposite signs with a remainder (floor rather than host truncation).
+    public static (ushort Quotient,ushort Remainder) SignedDivideDouble(ushort low,ushort high,ushort divisor)
+    {
+        bool opposite=((high^divisor)&0x8000)!=0;
+        uint numerator=((uint)high<<16)|low;if((high&0x8000)!=0)numerator=unchecked(0u-numerator);
+        ushort magnitude=(divisor&0x8000)!=0 ? Cell.Subtract(0,divisor) : divisor;
+        var result=DivideDouble((ushort)numerator,(ushort)(numerator>>16),magnitude);
+        if(!opposite)return result;
+        return result.Remainder==0 ? (Cell.Subtract(0,result.Quotient),(ushort)0) : ((ushort)~result.Quotient,Cell.Subtract(magnitude,result.Remainder));
+    }
     // 1BA7 signs both 32-bit operands, calls 1C00, then negates the quotient
     // when signs differ. 1B93 discards the remainder. A zero divisor returns zero.
     public static uint SignedDoubleQuotient(uint numerator,uint divisor)

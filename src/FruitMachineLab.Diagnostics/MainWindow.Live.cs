@@ -38,7 +38,7 @@ public partial class MainWindow
             foreach(int number in new[]{47,39,31,23,15,7,83,41})AddLamp(SessionFeatureLamps,liveSession.Lamps[number],true,liveTiles);
             foreach(var lamp in liveSession.Lamps)AddLamp(SessionAllLamps,lamp,false,liveTiles);
             Views.SelectedIndex=0;if(startExecution)ResumeLive();else RenderLive();
-            Status.Text=liveSession.StartsAtBoardSelection ? "Board square 32: TAKE FEATURE enters Skill Cash; START runs one dice roll and stops before board movement. Pause/Resume also suspend and resume the motor." : "Live feature running. Press and release START to stop each selection. No recorded player events are applied.";return true;
+            Status.Text=liveSession.StartsAtBoardSelection ? "Board square 32: TAKE FEATURE enters Skill Cash; START runs one dice roll and board advance, then stops at the next result/selection. Pause/Resume also suspend and resume the motor." : "Live feature running. Press and release START to stop each selection. No recorded player events are applied.";return true;
         } catch(Exception error){Status.Text=error.Message;SessionDiagnostic.Text="Live feature unavailable: "+error.Message;liveSession=null;return false;}
         finally {BeginLiveButton.IsEnabled=LoadReplay.IsEnabled=true;RestartLiveButton.IsEnabled=liveSession is not null;}
     }
@@ -99,6 +99,7 @@ public partial class MainWindow
         SessionAccounting.Text=$"Pending {state.Pending} • current win {state.CurrentWin} ROM units • accepted selections {string.Join(", ",state.Selections)}";
         SessionDice.Text=state.DiceRequest is { } dice ? $"Dice request {dice.Symbol} · signed stop offset {dice.StopOffset} · ROM position {dice.PhysicalPosition}/96 · {(dice.Busy ? "motor running" : "motor idle")}" : "";
         SessionDiceFace.Text=state.DiceRequest is { } face ? $"DICE {face.DisplayedSymbol,2}" : "";
+        SessionBoard.Text=state.Board is { } board ? $"Board square {board.Square} · nudge pot {board.NudgePot} · ROM type {board.Type} · link {board.Link}\nVisited: {string.Join(" → ",board.Visited)}" : "";
         foreach(var tile in liveTiles) {
             int intensity=(int)Math.Round(Math.Clamp(state.LampDuty[tile.Lamp]*8,0,1)*100);tile.Tile.Background=lampPalette[intensity];((TextBlock)tile.Tile.Child).Foreground=intensity>=35 ? Brushes.Black : Brushes.White;
         }

@@ -1,0 +1,13 @@
+{
+  "classification": "Selected static ROM sound and profile data for board advance; not a recorded movement outcome. 8E93/96E8 share the identical 8568 parameter gateway entry cost with 8EE2; bodies still execute",
+  "rom_sha1": "402D1518BB78FDC489B06C2AABC771E5CE151847",
+  "ranges": {
+    "8E6D": "CA0BCE467C147F1483147D1481147814CE32C08568CA0E841ECE0A841E862888289028CE32C08568D8C5E0C28E6DC510C28E82C5A0C18E82C0",
+    "971F": "D8CA0FC6970AC29714C19714C079570F240007F050050A85689C20CE02A820CE02C0",
+    "A64B": "07D5646464646464640000051E32A5A2"
+  },
+  "equivalent_timing_tokens": {
+    "8E93": "8EE2",
+    "96E8": "8EE2"
+  }
+}

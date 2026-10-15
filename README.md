@@ -36,7 +36,7 @@ are available. This mode uses recorded inputs; use Live Skill Cash for the tempo
 player control. Audio remains future work. See
 [playback evidence and boundaries](docs/recovery/SKILL-CASH-PLAYBACK-PASS.md).
 
-Latest local verification: headless and isolated WPF builds succeed; 99
+Latest local verification: headless and isolated WPF builds succeed; 106
 verification groups pass. Continuous C721 execution matches 98,704 VM dispatches,
 selects 3, 2 and 1, and finishes with pending 0/current win 10. All 7,298 lamp frame
 updates and the complete sound timing protocol match recorded native observations.
@@ -74,10 +74,14 @@ Live now starts at the square-32 board prompt: press and release **TAKE FEATURE*
 then use **START** for Skill Cash's three selections. The entry selector retains
 direct C721 and taken-result E2FC modes. START at the board prompt now runs one
 incremental dice roll with ROLLING and a changing text face/position. Pause/Resume
-also suspend the motor. It stops before board movement; Restart restores the entry.
+also suspend the motor. It advances through the board one square at a time, then
+stops at the next result/selection boundary; Restart restores entry. Board square,
+pot and history are shown.
 See the [board selection report](docs/recovery/BOARD-SELECTION-TAKE-PASS.md) for
 reference comparisons, restored call frames and uninitialized-local exclusions.
 The [dice request report](docs/recovery/DICE-REQUEST-PASS.md) records native
 profile/symbol recovery. The [dice motion report](docs/recovery/DICE-MOTION-PASS.md)
 records the verified motor service/optic model and the remaining board boundary,
-including the explicit one-byte alpha brightness timing difference.
+including the explicit one-byte alpha brightness timing difference. The
+[board movement report](docs/recovery/BOARD-MOVEMENT-PASS.md) records the next
+incremental advance, natural reference and separately labelled nudge-animation probe.

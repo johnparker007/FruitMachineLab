@@ -154,3 +154,13 @@ checks motion, pause/resume and completion. See recovery/DICE-MOTION-PASS.md for
 7,103-dispatch comparison and explicit 83/84-byte alpha brightness qualification.
 No tools or dependencies were installed; the small MAME-derived motor model carries
 BSD-3-Clause attribution in THIRD-PARTY-NOTICES.md. Build commands are unchanged.
+
+## Board movement follow-up
+
+106 groups pass. Live START now continues the roll into one incremental board
+advance, with square/pot/history diagnostics and actual mid-movement Pause/Resume.
+It stops at the following result/selection, or before a ladder/snake animation.
+The roll smoke switch covers both motor and board pauses. See
+recovery/BOARD-MOVEMENT-PASS.md for the natural 12,355-dispatch proof, separately
+classified synthetic nudge probe, arithmetic edges and unresolved timing. Build
+commands and dependencies are unchanged. No installation or system setup occurred.

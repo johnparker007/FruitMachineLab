@@ -8,6 +8,9 @@ public static class AddersNativeWords
     public static bool Handle(Instruction instruction,Machine state,Mpu4LampRequests lamps,Mpu4ChoiceStreamScheduler scheduler,Mpu4Alpha alpha,Action? alphaChanged=null)
     {
         if(lamps.HandleWord(instruction))return true;
+        // Native5429's idle branch is exactly TST7D; LBEQ53AD (RTS).
+        // Busy serial processing has hardware/timing effects not yet translated.
+        if(instruction.Native==0x5429){if(state.Memory[0x7D]!=0)throw new NotSupportedException("Native5429 busy serial transfer requires hardware recovery");return true;}
         if(instruction.Native is 0x1622 or 0x166D){AddersAwardStatistics.Execute(state,instruction.Native==0x1622);return true;}
         if(instruction.Native==0x151F){ushort selector=state.Pop();AddersAwardStatistics.AddScaled(state,state.Pop(),selector);return true;}
         if(instruction.Native==0x6F57){AddersAwardStatistics.RefreshAccounting(state);return true;}

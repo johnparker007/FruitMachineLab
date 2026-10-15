@@ -34,12 +34,16 @@ param(
     [switch]$NudgeWinTransfer,
     [switch]$NudgeTail,
     [switch]$NudgeAccounting,
+    [switch]$NudgeBankReturn,
+    [switch]$NudgeCycleInit,
     [switch]$TailWindow,
     [switch]$NoMotorItems,
     [ValidateSet('Ladder','Snake')][string]$BoardLink
 )
 $ErrorActionPreference='Stop'
 if($NudgeStack -and !$NudgeMotion){throw 'NudgeStack requires NudgeMotion'}
+if($NudgeCycleInit -and !$NudgeBankReturn){throw 'NudgeCycleInit requires NudgeBankReturn'}
+if($NudgeBankReturn -and !$NudgeAccounting){throw 'NudgeBankReturn requires NudgeAccounting'}
 if($NudgeAccounting -and (!$TailWindow -or !$NudgeTail)){throw 'NudgeAccounting requires TailWindow/NudgeTail'}
 if($TailWindow -and !$NudgeTail){throw 'TailWindow requires NudgeTail'}
 if($NudgeTail -and !$NudgeWinTransfer){throw 'NudgeTail requires NudgeWinTransfer'}
@@ -214,8 +218,8 @@ if($NudgeStack) {
 }
 # The terminal observer owns stopping; regular dispatch logging must remain active
 # at earlier occurrences of the same site (for example AFC2 for each meter unit).
-if($NudgeResult){$end=if($NudgeAccounting){'0xaf25'}elseif($NudgeTail){'0xaff0'}elseif($NudgeWinTransfer){'0xafc2'}elseif($NudgeExit){'0xe460'}else{'0xe263'};$extra+=('bpset 0xfc,temp0==1 && y=='+$end+$(if($NudgeWinTransfer -and !$NudgeTail){' && w@0xba==0 && w@0x2fa==0x10'}else{''})+',{printf "'+$format+'",'+$values+';save result-ram.bin,0,800;temp0=0;quit}')}
-if($TailWindow){$extra+=('bpset 0xfc,temp0==1 && temp3==0 && y=='+$(if($NudgeAccounting){'0xaff0'}else{'0xafc2 && w@0xba==0 && w@0x2fa==0x10'})+',{printf "'+$format+'",'+$values+';save tail-entry-ram.bin,0,800;temp3=1;go}')}
+if($NudgeResult){$end=if($NudgeCycleInit){'0xfaf0'}elseif($NudgeBankReturn){'0xfe1f'}elseif($NudgeAccounting){'0xaf25'}elseif($NudgeTail){'0xaff0'}elseif($NudgeWinTransfer){'0xafc2'}elseif($NudgeExit){'0xe460'}else{'0xe263'};$extra+=('bpset 0xfc,temp0==1 && y=='+$end+$(if($NudgeWinTransfer -and !$NudgeTail){' && w@0xba==0 && w@0x2fa==0x10'}else{''})+',{printf "'+$format+'",'+$values+';save result-ram.bin,0,800;temp0=0;quit}')}
+if($TailWindow){$extra+=('bpset 0xfc,temp0==1 && temp3==0 && y=='+$(if($NudgeCycleInit){'0xfe1f'}elseif($NudgeBankReturn){'0xaf25'}elseif($NudgeAccounting){'0xaff0'}else{'0xafc2 && w@0xba==0 && w@0x2fa==0x10'})+',{printf "'+$format+'",'+$values+';save tail-entry-ram.bin,0,800;temp3=1;go}')}
 if($extra.Count -gt 0) {
  # Debugger setup invokes paused frame callbacks. Ignore precisely the added
  # setup callbacks in this copied observer, preserving the original physical times.
@@ -269,7 +273,7 @@ $arguments=@('m4addr','-noreadconfig','-rompath',$RomDirectory,
 $arguments | ConvertTo-Json | Set-Content "$run/arguments.json"
 @{mame_sha256=(Get-FileHash -LiteralPath $MameExecutable).Hash;replay_sha256=(Get-FileHash "$run/replay-actions.csv").Hash;
  native_sound_capture=[bool]$NativeSound;native_nvram_capture=[bool]$NativeNvram;full_feature_capture=[bool]$FullFeature;native_input_capture=[bool]$NativeInput;native_lamp_frames=[bool]$NativeLampFrames;native_alpha_capture=[bool]$NativeAlpha;native_scan_capture=[bool]$NativeScan;shared_timing=[bool]$SharedTiming;paused_setup_callbacks_skipped=$extra.Count;
- timer_deadlines=[bool]$TimerDeadlines;cpu_interrupts=[bool]$CpuInterrupts;synthetic_jackpot_probe=[bool]$JackpotProbe;cash_feature_caller=[bool]$CashFeatureCaller;board_result_caller=[bool]$BoardResultCaller;board_selection=[bool]$BoardSelection;dice_requests=[bool]$DiceRequests;dice_motion=[bool]$DiceMotion;board_movement=[bool]$BoardMovement;synthetic_nudge_pot_probe=[bool]$NudgePotProbe;board_link=$BoardLink;continue_board=[bool]$ContinueBoard;availability=[bool]$Availability;nudge_entry=[bool]$NudgeEntry;nudge_prompt=[bool]$NudgePrompt;nudge_request=[bool]$NudgeRequest;nudge_motion=[bool]$NudgeMotion;nudge_stack=[bool]$NudgeStack;nudge_return=[bool]$NudgeReturn;nudge_sequence=[bool]$NudgeSequence;nudge_result=[bool]$NudgeResult;nudge_exit=[bool]$NudgeExit;nudge_win_transfer=[bool]$NudgeWinTransfer;nudge_tail=[bool]$NudgeTail;nudge_accounting=[bool]$NudgeAccounting;tail_window=[bool]$TailWindow;motor_items_observer_disabled=[bool]$NoMotorItems;additional_physical_take_at_square22=[bool]$NudgeEntry;
+ timer_deadlines=[bool]$TimerDeadlines;cpu_interrupts=[bool]$CpuInterrupts;synthetic_jackpot_probe=[bool]$JackpotProbe;cash_feature_caller=[bool]$CashFeatureCaller;board_result_caller=[bool]$BoardResultCaller;board_selection=[bool]$BoardSelection;dice_requests=[bool]$DiceRequests;dice_motion=[bool]$DiceMotion;board_movement=[bool]$BoardMovement;synthetic_nudge_pot_probe=[bool]$NudgePotProbe;board_link=$BoardLink;continue_board=[bool]$ContinueBoard;availability=[bool]$Availability;nudge_entry=[bool]$NudgeEntry;nudge_prompt=[bool]$NudgePrompt;nudge_request=[bool]$NudgeRequest;nudge_motion=[bool]$NudgeMotion;nudge_stack=[bool]$NudgeStack;nudge_return=[bool]$NudgeReturn;nudge_sequence=[bool]$NudgeSequence;nudge_result=[bool]$NudgeResult;nudge_exit=[bool]$NudgeExit;nudge_win_transfer=[bool]$NudgeWinTransfer;nudge_tail=[bool]$NudgeTail;nudge_accounting=[bool]$NudgeAccounting;nudge_bank_return=[bool]$NudgeBankReturn;nudge_cycle_init=[bool]$NudgeCycleInit;tail_window=[bool]$TailWindow;motor_items_observer_disabled=[bool]$NoMotorItems;additional_physical_take_at_square22=[bool]$NudgeEntry;
  initial_state=$(if($NudgePotProbe){'Fresh isolated physical campaign; explicit synthetic Y=DDE3 redirection at B28F; no RAM/ROM injection'}elseif($JackpotProbe){'Fresh isolated physical campaign; explicit synthetic jackpot VM-entry redirection; no RAM/ROM injection'}else{'Fresh isolated default configuration and absent NVRAM; physical-input fixture only; no RAM/ROM injection.'})} |
  ConvertTo-Json | Set-Content "$run/provenance.json"
 $previousReplay=$env:MPU4_REPLAY
@@ -283,7 +287,7 @@ try {
 } finally { $env:MPU4_REPLAY=$previousReplay; $env:MPU4_POLICY=$previousPolicy }
 if((Get-Content -LiteralPath "$run/exit-code.txt") -ne '0'){throw "MAME exited unsuccessfully; do not curate an incomplete capture: $run"}
 if(Select-String -LiteralPath "$run/debug.log" -Pattern '^Error in expression:' -Quiet){throw "Debugger expression error: $run"}
-$completion=if($NudgeAccounting){'^SC y=AF25 '}elseif($NudgeTail){'^SC y=AFF0 '}elseif($NudgeWinTransfer){'^SC y=AFC2 .*pending=0000 win=0010 '}elseif($NudgeExit){'^SC y=E460 '}elseif($NudgeResult){'^SC y=E263 '}elseif($NudgeSequence){'^SC y=B749 '}elseif($NudgeReturn){'^SC y=B403 '}elseif($NudgeMotion){'^SC y=B34E '}elseif($NudgeRequest){'^SC y=B31F '}elseif($NudgePrompt){'^SC y=B403 '}elseif($NudgeEntry){'^SC y=B4C5 '}elseif($Availability){'^SC y=(DD7E|DD98) '}elseif($ContinueBoard){'^SC y=(DD38|E2FC) '}elseif($BoardLink){'^SC y=DE81 '}elseif($NudgePotProbe){'^SC y=DDEF '}elseif($BoardMovement){'^SC y=(DD38|DE96) '}elseif($DiceMotion){'^SC y=B28F '}elseif($DiceRequests){'^SC y=B283 '}else{'^SC y=C71D '}
+$completion=if($NudgeCycleInit){'^SC y=FAF0 '}elseif($NudgeBankReturn){'^SC y=FE1F '}elseif($NudgeAccounting){'^SC y=AF25 '}elseif($NudgeTail){'^SC y=AFF0 '}elseif($NudgeWinTransfer){'^SC y=AFC2 .*pending=0000 win=0010 '}elseif($NudgeExit){'^SC y=E460 '}elseif($NudgeResult){'^SC y=E263 '}elseif($NudgeSequence){'^SC y=B749 '}elseif($NudgeReturn){'^SC y=B403 '}elseif($NudgeMotion){'^SC y=B34E '}elseif($NudgeRequest){'^SC y=B31F '}elseif($NudgePrompt){'^SC y=B403 '}elseif($NudgeEntry){'^SC y=B4C5 '}elseif($Availability){'^SC y=(DD7E|DD98) '}elseif($ContinueBoard){'^SC y=(DD38|E2FC) '}elseif($BoardLink){'^SC y=DE81 '}elseif($NudgePotProbe){'^SC y=DDEF '}elseif($BoardMovement){'^SC y=(DD38|DE96) '}elseif($DiceMotion){'^SC y=B28F '}elseif($DiceRequests){'^SC y=B283 '}else{'^SC y=C71D '}
 if(!(Select-String -LiteralPath "$run/debug.log" -Pattern $completion -Quiet)){throw "Requested completion was not captured; inspect $run"}
 Get-ChildItem $run -File | Get-FileHash | Select-Object Path,Hash | ConvertTo-Json | Set-Content "$run/hashes.json"
 Write-Output $run

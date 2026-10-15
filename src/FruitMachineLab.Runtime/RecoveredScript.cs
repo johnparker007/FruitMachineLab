@@ -118,6 +118,7 @@ public sealed class ScriptExecutor(Machine machine)
                 case "vm_push_word_body_word": machine.Data.Push(Value()); break;
                 case "vm_push_word_body_address": machine.Data.Push(Value());break;
                 case "vm_push_data_stack_pointer": machine.Data.Push(machine.DataPointer);break;
+                case "vm_push_saved_entry_x": machine.Data.Push(machine.ReadWord(Cell.Add(machine.ReadWord(0xF2),4)));break;
                 case "vm_set_data_stack_pointer": {
                     machine.SyncDataToMemory();ushort pointer=machine.Pop();machine.SetDataPointer(pointer);break;
                 }

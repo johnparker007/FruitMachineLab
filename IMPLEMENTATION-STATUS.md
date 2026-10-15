@@ -1,5 +1,10 @@
 # Implementation and evidence boundaries
 
+Newest: [nudge cycle return](docs/recovery/NUDGE-CYCLE-RETURN-PASS.md). Live now
+passes bank-limit service and the real outer callers/stack check, then refreshes
+the next cycle's credit/bank display. FAF0 IC8/background-service boundary remains.
+Cash bank16/token bank0/credits6; collection and consecutive games remain future work.
+
 Latest continuation: [nudge award statistics](docs/recovery/NUDGE-AWARD-STATISTICS-PASS.md).
 Live runs through the outer award caller, statistics/scaled counters and AF13
 cash-bank commit, then stops at AF25 before bank-limit service. Natural226-dispatch,

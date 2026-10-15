@@ -5,7 +5,11 @@ Local clone: C:\projects\GitRepos\FruitMachineLab
 
 ## Current status
 
-Newest continuation: Live reaches AF25 after outer award statistics, scaled
+Latest: Live completes bank-limit service/outer-cycle return and the next credit/
+bank display refresh through FAF0.147 headless groups/eight WPF smoke modes pass.
+See recovery/NUDGE-CYCLE-RETURN-PASS.md; next recover IC8/background service paths.
+
+Previous continuation: Live reaches AF25 after outer award statistics, scaled
 counters and cash-bank commit.142 headless groups/eight WPF smoke modes pass.
 See recovery/NUDGE-AWARD-STATISTICS-PASS.md for proof and bank-service boundary.
 

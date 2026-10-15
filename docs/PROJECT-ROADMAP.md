@@ -12,9 +12,10 @@ is not authority for which changes John has committed or pushed.
 
 ## Priority order
 
-Current accounting checkpoint: recovered outer caller reaches AF25 after
-statistics, scaled counters and cash-bank commit. Next follow bank-limit service
-and collection routing. See recovery/NUDGE-AWARD-STATISTICS-PASS.md.
+Current checkpoint: bank-limit service and the outer cycle return now execute;
+next-cycle credit/bank display refresh reaches FAF0. Next recover IC8 output and
+background services to reach the genuine paid-game input loop. Collection remains
+subject to its real prerequisites. See recovery/NUDGE-CYCLE-RETURN-PASS.md.
 This remains gameplay recovery; the symbolic editing/rebuild toolchain stays deferred.
 
 The primary milestone is a complete playable Adders & Ladders machine on PC.
@@ -42,11 +43,11 @@ renderers should use the same backend inputs/outputs, with no gameplay in UI cod
 
 ## Current recovery frontier
 
-Live completes board exit, pending16/current-win0→0/16 transfer and seven-flash tail,
-stopping at AFF0 before the outer award/bank/collection route. The successful
-natural tail window supplies terminal accounting RAM; older prefix/full-logging
-crash qualifications remain. Continue the actual outer caller from AFF0. See
-recovery/NUDGE-ANIMATION-TAIL-PASS.md; preserve playable-machine priority.
+Live completes board exit, award animation, statistics/scaled counters, cash-bank
+commit, bank-limit check and real outer-cycle return. It begins the next cycle
+and stops before the IC8 output update at FAF0. Successful narrow natural windows
+retain accounting RAM and exact comparisons; older prefix/full-logging crash
+qualifications remain. See recovery/NUDGE-CYCLE-RETURN-PASS.md.
 Full machine startup and consecutive complete games remain future milestones.
 
 ## Longer-term aims

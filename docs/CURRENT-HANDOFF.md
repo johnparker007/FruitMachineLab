@@ -6,6 +6,15 @@ batch, including its verification.
 
 ## Working implementation
 
+Newest continuation: recovery/NUDGE-CYCLE-RETURN-PASS.md. Live passes bank-limit
+service and the actual outer caller, verifies9ABE stack balance, then executes
+next-cycle initialization/display through FAF0. Cash bank16/token bank0/credits6,
+pending/current-win0. New131- and88-dispatch natural windows match MAME, including
+one lamp update and35 alpha bytes. Next recover IC8 port0F02 at9D5A, then background
+services and the genuine paid-game input loop. Native5429 supports only its exact
+idle7D==0 return; busy serial remains explicit.147 groups/eight GUI smoke modes pass.
+The prior accounting checkpoint below remains the preserved prefix.
+
 Latest continuation: see recovery/NUDGE-AWARD-STATISTICS-PASS.md. Live passes AFF0
 through the outer caller, native1622 statistics,151F/6F57 scaled counters and
 AF2B/AF13 cash-bank commit, stopping at AF25 before bank-limit service.
@@ -22,7 +31,7 @@ The old75A9 keep-negative label is corrected to native sign normalization in
 - Live Skill Cash: incremental VM, retained state, physical momentary Start input,
   actual Pause/Resume, generated lamp/alpha outputs and diagnostic state display.
 - Separate verified playback/scrubber; original MAME-backed verification retained.
-- Last development batch:142 headless groups passed. Headless and isolated WPF
+- Last development batch:147 headless groups passed. Headless and isolated WPF
   builds passed; Live/playback WPF smoke checks and rendered layouts were checked.
 - John subsequently reported that the live feature works well.
 
@@ -83,11 +92,12 @@ scope and preserved earlier timing qualifications.
 
 ## Next development work
 
-Continue from AF25 into AEF9's combined-bank limit check, then AFF4's input82
-collect gate and actual collection/payout service. Current natural cash bank16
-has completed statistics, both scaled-counter updates and protected refresh.
-Retain the narrow successful capture convention and independent window-entry
-comparison.142 groups/all8 GUI smoke modes pass, including accounting Pause.
+Continue from FAF0 into9D5A IC8 output update, then the background services and
+paid-game input loop. Current natural cash bank16 has completed the bank-limit
+check and real outer-cycle return. Credits6 bypass the no-credit collection route;
+input82 is an option condition, not the physical Collect control. Retain narrow
+successful capture windows and independent entry comparisons.147 groups/all8 GUI
+smoke modes pass, including accounting Pause. See NUDGE-CYCLE-RETURN-PASS.md.
 
 Previous batch completed meter display/wait and AF67 seven-flash tail through
 AFF0. See recovery/NUDGE-ANIMATION-TAIL-PASS.md for that retained reference.

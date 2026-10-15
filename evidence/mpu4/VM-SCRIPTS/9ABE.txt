@@ -13,7 +13,10 @@ Threaded script at 9ABE; recovered listing, not original source.
   9AC7  795B  vm_push_inline_word_literal  inline_value=0x719A
   9ACB  786B  vm_fetch_unsigned_byte  
   9ACD  7982  vm_branch_forward8_if_zero  branch=0x9AD2
-  9AD0  0000  unknown token 338a  
+  9AD0  338A  unknown token 338a
   9AD2  830E  vm_push_word_body_byte  value=0x000A
   9AD4  8070  call_raise_software_error_swi3  native=0xFE63
 * 9AD6  792F  vm_return_to_caller_stream  
+
+Preservation check 15 October 2026: raw token at9AD0 is338A, not the old
+0000 placeholder. This unexecuted error-hook region remains unresolved.

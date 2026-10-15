@@ -1,0 +1,26 @@
+{
+  "classification": "Read-only MAME device state at matching natural idle square22 positions; phase/position seed, not machine startup",
+  "source_sha256": "04178C295535FA01B922F195B4A387B31B8EBC7406CB4DC3AF828E5DE94F8184",
+  "items_sha256": "E8BA1B2F8DD434B8E249937C01B263A8629074602792C99F34F4152CF05FC902",
+  "seed": {
+    "t": "395.45",
+    "square": "22",
+    "busy": "0",
+    "native0": "12",
+    "native1": "0",
+    "native2": "42",
+    "native3": "56",
+    "position0": "86",
+    "position1": "2",
+    "position2": "56",
+    "position3": "42",
+    "phase0": "4",
+    "phase1": "0",
+    "phase2": "2",
+    "phase3": "0",
+    "pattern0": "6",
+    "pattern1": "9",
+    "pattern2": "12",
+    "pattern3": "9"
+  }
+}

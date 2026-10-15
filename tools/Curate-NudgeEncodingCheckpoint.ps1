@@ -1,0 +1,40 @@
+param([Parameter(Mandatory=$true)][string]$RomPath,[Parameter(Mandatory=$true)][string]$DisassemblyDirectory)
+$ErrorActionPreference='Stop';$root=Split-Path $PSScriptRoot -Parent
+$sha1=(Get-FileHash -LiteralPath $RomPath -Algorithm SHA1).Hash
+if($sha1 -ne '402D1518BB78FDC489B06C2AABC771E5CE151847'){throw 'Unexpected ROM'}
+$rom=[IO.File]::ReadAllBytes($RomPath);$native=[Collections.Generic.List[object]]::new();$scripts=[Collections.Generic.List[object]]::new()
+foreach($name in @('nudge-motor-native.txt','nudge-result-native.txt','nudge-decrement-native.txt')) {
+ $source=Join-Path $DisassemblyDirectory $name;$rows=[Collections.Generic.List[object]]::new()
+ foreach($line in [IO.File]::ReadLines($source)) {
+  if($line -notmatch '^([0-9A-F]{4}):\s+((?:[0-9A-F]{2}\s+)+)(.*)$'){if($line.Trim()){throw "Unexpected disassembly line: $line"};continue}
+  $at=[Convert]::ToInt32($Matches[1],16);$hex=($Matches[2] -replace '\s','');$text=$Matches[3];$bytes=[Convert]::FromHexString($hex)
+  if([Convert]::ToHexString([byte[]]$rom[$at..($at+$bytes.Length-1)]) -cne $hex){throw ('Disassembly bytes differ at '+$at.ToString('X4'))}
+  $rows.Add([ordered]@{address=$at.ToString('X4');bytes=$hex;decoded=$text})
+ }
+ $native.Add([ordered]@{source=$name;source_sha256=(Get-FileHash -LiteralPath $source).Hash;classification='Byte-checked MAME linear disassembly; code/data typing, reachability and all function boundaries are not established by this decode';instructions=@($rows.ToArray())})
+}
+foreach($name in @('B31F','B306','B403','B43D','B3C8','9DCF','B4C5')) {
+ $path=Join-Path $root ('evidence/mpu4/VM-SCRIPTS/'+$name+'.txt');$rows=[Collections.Generic.List[object]]::new()
+ foreach($line in [IO.File]::ReadLines($path)) {
+  if($line -match '^\*?\s*([0-9A-F]{4})\s+([0-9A-F]{4})\s+(.*)$'){
+   $at=[Convert]::ToInt32($Matches[1],16);$token=$Matches[2];$annotation=$Matches[3]
+   if([Convert]::ToHexString([byte[]]$rom[$at..($at+1)]) -cne $token){throw "VM token differs at $at"}
+   $rows.Add([ordered]@{address=$at;token=$token;annotation=$annotation})
+  }
+ }
+ if($rows.Count -eq 0){throw "No script rows: $name"}
+ $first=$rows[0].address;$end=$rows[$rows.Count-1].address+2
+ for($n=0;$n -lt $rows.Count;$n++) {
+  $at=$rows[$n].address;$next=if($n+1 -lt $rows.Count){$rows[$n+1].address}else{$end}
+  if($next -le $at){throw 'Non-monotonic VM listing'}
+  $rows[$n].bytes_through_next_listed_site=[Convert]::ToHexString([byte[]]$rom[$at..($next-1)])
+  $rows[$n].address=$at.ToString('X4')
+ }
+ $scripts.Add([ordered]@{listing=('VM-SCRIPTS/'+$name+'.txt');listing_sha256=(Get-FileHash -LiteralPath $path).Hash;start=$first.ToString('X4');end_exclusive=$end.ToString('X4');span_hex=[Convert]::ToHexString([byte[]]$rom[$first..($end-1)]);classification='Exact selected ROM span and checked listed tokens; gaps/operands/embedded data preserved verbatim. Span partition does not prove each decoded operand or relocation semantics. Last return token span ends after two bytes.';sites=@($rows.ToArray())})
+}
+$functions=[Collections.Generic.List[object]]::new()
+foreach($address in @('61f6','6287','6403','649d','656b')) {
+ $relative='native/'+$address+'.json';$path=Join-Path $root ('evidence/mpu4/'+$relative)
+ if(Test-Path -LiteralPath $path){$record=Get-Content -LiteralPath $path -Raw|ConvertFrom-Json;$functions.Add([ordered]@{entry=$address.ToUpper();label=$record.name;existing_export=$relative;export_sha256=(Get-FileHash -LiteralPath $path).Hash;exported_body_size=$record.body_size;qualification='Ghidra recovered function body size is retained, not assumed to be a contiguous extent or complete calling convention'})}
+}
+[ordered]@{rom_sha1=$sha1;functions=@($functions.ToArray());calling_conventions=[ordered]@{native_motion="61F6 accepts requests at0169+2*reel, caller VM U/Y retained; motor service is IRQ-driven; synchronous bit08 path remains unsupported";service="6403 mutates reel records0150..019F and phase/drive state, reads optics via656B; cleanup649D updates positions and NVRAM complements/checksum";vm="B31F runs within B72D nine-byte local frame and B403 loop frame; B306 consumes BE and BF when BD=15hex; stops before local+2 read"};scope='Selected current nudge recovery checkpoint, not a lossless full-ROM listing or rebuild';native=@($native.ToArray());vm=@($scripts.ToArray());dictionary_records=@([ordered]@{address='82BB';bytes=[Convert]::ToHexString([byte[]]$rom[0x82BB..0x82BE]);header='794F';value='0170';stack_effect='( -- 0170 )';effects='Word literal used by 9DCD indexed reel mode-byte writes'},[ordered]@{address='7659';bytes=[Convert]::ToHexString([byte[]]$rom[0x7659..0x765E]);header='765B';native='765B';stack_effect='( byte-address -- )';effects='DEC [,U++]; 8-bit wrap, address cell consumed; JMP direct FC threaded NEXT'});related_maps=@('nudge-inputs.json','nudge-preparation-semantics.json','nudge-preparation-data.json','dice-motion-data.json');implementation=@('src/FruitMachineLab.Adders/AddersReelMotion.cs','src/FruitMachineLab.Adders/AddersReelHardware.cs','src/FruitMachineLab.Adders/SkillCashLiveSession.cs');verification=@('skill-cash/nudge-request.json','skill-cash/dice-motion.json','skill-cash/nudge-motion-native.json','skill-cash/nudge-motion-vm.json');layout_constraints=@('16-bit big-endian cells and absolute pointers remain address-bound','VM dictionary headers and native gateways must retain their original entry addresses unless every reference is relocated','Branch/inline token bytes and embedded alpha operands remain preserved at current addresses');unresolved=@('B339/B33B local-frame byte +2 reads native CPU-stack residue after motion; Live stops before the read, no value is invented','Full ROM coverage, symbolic operand recovery and data/code typing','Portable Ghidra comments, symbol namespaces, data definitions and complete cross-reference export: no live Ghidra API exposed in this session','Reassembly, relocation and byte-identical baseline rebuild have not been implemented')}|ConvertTo-Json -Depth 9|Set-Content (Join-Path $root 'evidence/mpu4/maps/nudge-encoding-checkpoint.json')

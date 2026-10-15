@@ -12,6 +12,10 @@ is not authority for which changes John has committed or pushed.
 
 ## Priority order
 
+The primary milestone is a complete playable Adders & Ladders machine on PC.
+Preservation work below supports that recovery; symbolic toolchain construction
+waits until playable-machine coverage is established.
+
 1. Complete the live Adders & Ladders Skill Cash slice, including unsupported paths
    and better CPU/IRQ timing. Preserve verified playback as a separate mode.
 2. Expand into normal Adders & Ladders machine play: feature entry/exit, startup,
@@ -32,6 +36,35 @@ tools, but do not build a polished temporary cabinet. Diagnostic and graphical
 renderers should use the same backend inputs/outputs, with no gameplay in UI code.
 
 ## Longer-term aims
+
+- After complete playable-machine recovery, pursue a reconstructed development
+  kit: byte-identical baseline ROM rebuild, then editable symbolic native/VM
+  source capable of producing ROMs for hardware tests. This is reconstructed
+  source/tooling, not the original authors' source or tools. Defer the full
+  symbolic 6809 assembler/reassembler, compiler, editor and relocation system.
+
+## Preservation during gameplay recovery
+
+Preserve facts found during current recovery using the existing native exports,
+VM listings, maps, provenance sidecars and dated recovery reports. Do not create
+a parallel documentation system or investigate unrelated routines for coverage.
+For newly recovered/revised code and data, retain exact ROM bytes and addresses
+where checked, token/operand/embedded-data encodings, labels/constants/RAM roles,
+boundaries/entry and calling conventions, stack/frame effects and side effects.
+Record references, pointer/dictionary/header structures, branch targets and layout
+constraints relevant to later reconstruction. Keep unresolved regions, suspected
+bugs and assumptions explicit; preserve original behaviour. Link ROM locations,
+listings, C# code and verification artifacts, distinguishing static deductions,
+natural traces, hypotheses and synthetic experiments.
+
+Use reproducible read-only Ghidra exports for symbols/comments/data definitions
+at meaningful checkpoints when access permits. Keep source exports portable;
+document unavailable access and missing fields rather than implying completeness.
+Decoded listings are not lossless source unless their byte coverage is checked.
+ROM binaries and bulky traces remain outside tracked files. This proportional
+preservation work supports gameplay recovery and must not postpone it.
+
+## Other longer-term aims
 
 - Linked VM/script listings, execution highlighting and evidence-linked structured
   reconstructions. Build debugging features when they help game recovery.

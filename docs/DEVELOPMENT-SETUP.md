@@ -5,10 +5,10 @@ Local clone: C:\projects\GitRepos\FruitMachineLab
 
 ## Current status
 
-Latest batch: nudge prompt and sampled NUDGE1/2/3 request controls. See
-recovery/NUDGE-INPUT-PASS.md for natural references, native result/alpha recovery
-and input mappings. 124 headless groups and eight GUI smoke modes pass;
---live-nudge-smoke-test checks all three controls up to the main-reel boundary.
+Latest batch: one completed main-reel nudge, count consumption and a proportional
+ROM-reconstruction preservation audit/checkpoint. See recovery/NUDGE-MOTION-PASS.md.
+127 headless groups and eight GUI smoke modes pass; --live-nudge-smoke-test checks
+all three controls, actual motor pause/resume and the new B339 residue boundary.
 No installation or configuration
 change, commit/push or cloud setup was performed.
 

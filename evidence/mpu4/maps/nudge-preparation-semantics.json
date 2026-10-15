@@ -59,10 +59,22 @@
     "B403 button scan / token table9E06",
     "B31F main-reel motion and nudge consumption"
   ],
-  "scope": "Natural preparation, prompt and first request matched; Live input scan for all three buttons; main-reel stepping, nudge consumption and awards remain bounded at B31F",
+  "scope": "Natural preparation, prompt, first request and completed Nudge1 movement match through B339; Live tests cover all three controls, six-position movement and BE/BF 3->2. Further nudges and result awards remain unresolved.",
   "next_verified_segments": {
     "prompt": "skill-cash/nudge-prompt.json",
     "request": "skill-cash/nudge-request.json",
-    "input_map": "maps/nudge-inputs.json"
+    "input_map": "maps/nudge-inputs.json",
+    "motion": "skill-cash/nudge-motion-vm.json",
+    "native_motion": "skill-cash/nudge-motion-native.json",
+    "encoding_checkpoint": "maps/nudge-encoding-checkpoint.json"
+  },
+  "post_motion_boundary": {
+    "site": "B339",
+    "read": "B33B",
+    "branch": "B33D",
+    "meaning": "Local-frame offset 2 is not initialized on this path; native S-stack residue differs (MAME 8F, runtime 0B), affecting the branch and later timing. Stop before the read; do not mask or seed it.",
+    "classification": "Trace-backed value difference and static read/write analysis; complete residue producer not recovered",
+    "implementation": "src/FruitMachineLab.Adders/SkillCashLiveSession.cs",
+    "report": "docs/recovery/NUDGE-MOTION-PASS.md"
   }
 }

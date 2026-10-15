@@ -33,13 +33,13 @@ public partial class MainWindow
                 }
                 timeout.Restart();bool motor=false;
                 while(liveSession.Fault is null && liveSession.BoardPrompts<2 && timeout.Elapsed.TotalSeconds<10){motor|=liveSession.Snapshot().DiceRequest?.Busy==true;await Task.Delay(10);}
-                if(liveSession.Panel.StartPressed || liveSession.Panel.TakePressed || (liveSession.Fault is not null && !liveSession.Fault.StartsWith("BOARD result type") && !liveSession.Fault.StartsWith("BOARD nudge request accepted")))throw new InvalidOperationException("Unexpected availability exit: "+Status.Text);
-                if(take && (liveSession.Fault?.StartsWith("BOARD nudge request accepted")!=true || motor || liveSession.Machine.Memory[0xC9]!=22 || liveSession.Machine.Memory[0xBE]!=3))throw new InvalidOperationException("TAKE bypassed the verified nudge request boundary");
+                if(liveSession.Panel.StartPressed || liveSession.Panel.TakePressed || (liveSession.Fault is not null && !liveSession.Fault.StartsWith("BOARD result type") && !liveSession.Fault.StartsWith("BOARD nudge motion completed")))throw new InvalidOperationException("Unexpected availability exit: "+Status.Text);
+                if(take && (liveSession.Fault?.StartsWith("BOARD nudge motion completed")!=true || motor || liveSession.Machine.Memory[0xC9]!=22 || liveSession.Machine.Memory[0xBE]!=2))throw new InvalidOperationException("TAKE bypassed the verified nudge completion boundary");
                 if(!take && (!motor || liveSession.Snapshot().Board!.Visited.Count<3))throw new InvalidOperationException("START failed to roll from the nudge prompt");
                 PauseLive();RenderLive();await Dispatcher.InvokeAsync(()=>{},DispatcherPriority.ApplicationIdle);SaveWindowImage(Path.Combine(directory,take ? "take-boundary.png" : "start-advance.png"));
             }
             if(!await LoadLive(startExecution:false) || liveSession!.Instructions!=0 || liveSession.Fault is not null)throw new InvalidOperationException("Restart retained availability state");
-            File.WriteAllText(Path.Combine(directory,"result.txt"),"PASS: real-time ladder to computed nudge availability; actual pause/resume; mouse START generated a new roll/advance; mouse TAKE reached verified first-nudge request boundary without invented nudges; released inputs, rendered output and restart.\n");Application.Current.Shutdown(0);
+            File.WriteAllText(Path.Combine(directory,"result.txt"),"PASS: real-time ladder to computed nudge availability; actual pause/resume; mouse START generated a new roll/advance; mouse TAKE reached verified first-nudge completion boundary without invented nudges; released inputs, rendered output and restart.\n");Application.Current.Shutdown(0);
         }catch(Exception error){File.WriteAllText(Path.Combine(directory,"result.txt"),error.ToString());Application.Current.Shutdown(1);}
     }
 }

@@ -10,7 +10,7 @@ batch, including its verification.
 - Live Skill Cash: incremental VM, retained state, physical momentary Start input,
   actual Pause/Resume, generated lamp/alpha outputs and diagnostic state display.
 - Separate verified playback/scrubber; original MAME-backed verification retained.
-- Last development batch: 124 headless groups passed. Headless and isolated WPF
+- Last development batch: 127 headless groups passed. Headless and isolated WPF
   builds passed; Live/playback WPF smoke checks and rendered layouts were checked.
 - John subsequently reported that the live feature works well.
 
@@ -71,7 +71,37 @@ scope and preserved earlier timing qualifications.
 
 ## Next development work
 
-Latest batch: Live TAKE at22 now reaches3 NUDGES and accepts NUDGE1/2/3 through
+Latest batch: one completed main-reel nudge runs Live on all3 controls, selected
+position changes by-6 modulo96, requests clear, remaining/pot3→2 and awards0.
+Separate main-reel text positions/symbols/motor state; actual mid-motion pause.
+Natural Nudge1 proof:135 native observations,60 services/eight optic reads,
+device seeds and generated optics match. Connected safe prefix:750 VM,63 lamps,
+144 sounds,65 alpha bytes. 127 groups/eight WPF smokes pass. See
+recovery/NUDGE-MOTION-PASS.md. Dice references remain unchanged.
+
+New boundary B339: subsequent B33B reads uninitialized local byte+2, MAME8F
+versus runtime0B native S-stack residue. Both comparison and Live stop before
+the read. Do not seed a constant, add a mask, normalize the branch or invent
+timing. Raw source continues through B34E; native cleanup is already complete.
+Next recover native stack writes feeding this byte, then the actual returned
+nudge prompt/result and accounting. Native2BEB wait now suspends VM while busy.
+
+Preservation policy: complete playable PC machine first; full symbolic6809
+assembly/reassembly, editor/compiler/relocation toolchain deferred. Eventual
+reconstructed kit aims for byte-identical baseline then editable native/VM ROM
+source for hardware testing, not original author source/tools. Extend existing
+native JSON, VM listings, maps, provenance and reports with discovered exact bytes,
+labels/RAM meanings/frames/side effects/references/layout constraints and C#/test
+links. No unrelated coverage work. No lossless/full-rebuild claim without checks.
+New nudge-encoding-checkpoint.json checks627 native disassembly rows/seven VM
+spans against ROM bytes, links five existing exports and preserves7659/82BB
+dictionary records. Tool Curate-NudgeEncodingCheckpoint.ps1 consumes existing
+Export-MameDisassembly.ps1 -NudgeCheckpoint output. Linear code/data typing and
+complete source coverage remain unresolved. No live Ghidra API is exposed;
+portable full symbols/comments/data-definition export is an explicit gap.
+Preserve original projects; export read-only at checkpoints when access permits.
+
+Previous input batch: Live TAKE at22 reaches3 NUDGES and accepts NUDGE1/2/3 through
 actual sampled BLACK2 bits02/04/08 (selectors1A/18/16, table9E06). Only the chosen
 requested offset increments; stop before B31F, BE remains3 and awards remain0.
 Controls release on pause, capture/focus loss, window deactivation and stop.

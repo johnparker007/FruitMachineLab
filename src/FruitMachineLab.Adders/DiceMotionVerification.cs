@@ -6,9 +6,9 @@ namespace FruitMachineLab.Adders;
 public record DiceMotionVerificationResult(int Services,int OpticReads,byte InitialPosition,byte FinalPosition);
 public static class DiceMotionVerification
 {
-    public static DiceMotionVerificationResult Verify(string evidence,bool generatedOptics=false)
+    public static DiceMotionVerificationResult Verify(string evidence,bool generatedOptics=false,bool nudge=false)
     {
-        using var document=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","dice-motion.json")));
+        using var document=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",nudge ? "nudge-motion-native.json" : "dice-motion.json")));
         var root=document.RootElement;var m=new SkillCashLiveSession(evidence).Machine;BoardSelectionState.LoadDiceData(m,evidence);
         Convert.FromHexString(root.GetProperty("ram_hex").GetString()!).CopyTo(m.Memory,0);
         foreach(var range in root.GetProperty("ranges").EnumerateObject())Convert.FromHexString(range.Value.GetString()!).CopyTo(m.Memory,Convert.ToUInt16(range.Name,16));
@@ -26,8 +26,14 @@ public static class DiceMotionVerification
         foreach(var item in new[]{("records",0x150),("flags",0x6A),("drive",0x6D),("nvram",0x2F2),("checksum",0x322)})Bytes(initial,item.Item1).CopyTo(m.Memory,item.Item2);
         if(initial.TryGetProperty("phases",out var initialPhases))Convert.FromHexString(initialPhases.GetString()!).CopyTo(m.Memory,0x6F);
         m.WriteWord(0xC2,Word(initial,"c2"));m.WriteWord(0x719B,Word(initial,"abort"));
-        byte position=m.Memory[0x16E];var motion=new AddersReelMotion(m);motion.Prepare(value=>Mpu4InputConditions.Evaluate(m,value));
+        int positionAddress=nudge ? 0x168 : 0x16E;byte position=m.Memory[positionAddress];var motion=new AddersReelMotion(m);motion.Prepare(value=>Mpu4InputConditions.Evaluate(m,value));
         var hardware=new AddersReelHardware(m);
+        if(nudge){
+            using var seeds=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","nudge-motor-seed.json")));var seed=seeds.RootElement.GetProperty("seed");
+            for(int reel=0;reel<4;reel++){
+                if(int.Parse(seed.GetProperty("native"+reel).GetString()!)!=m.Memory[0x168+2*reel] || int.Parse(seed.GetProperty("position"+reel).GetString()!)!=hardware.Motors[reel].Position || int.Parse(seed.GetProperty("phase"+reel).GetString()!)!=hardware.Motors[reel].Phase || int.Parse(seed.GetProperty("pattern"+reel).GetString()!)!=hardware.Motors[reel].Pattern)throw new InvalidDataException("Nudge seed differs from MAME device state");
+            }
+        }
         bool enabled=false,activated=false;int services=0,steps=0;
         for(int index=1;index<events.Length;index++) {
             var row=events[index];string pc=row.GetProperty("pc").GetString()!;
@@ -52,6 +58,6 @@ public static class DiceMotionVerification
         }
         if(motion.Busy || services==0 || steps==0)throw new InvalidDataException("Motion did not complete");
         AddersReelSymbols.RefreshWithoutRequests(m);
-        return new(services,steps,position,m.Memory[0x16E]);
+        return new(services,steps,position,m.Memory[positionAddress]);
     }
 }

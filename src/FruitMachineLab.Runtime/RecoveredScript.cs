@@ -139,6 +139,7 @@ public sealed class ScriptExecutor(Machine machine)
                 case "vm_add_to_word_memory": { var address=machine.Pop();machine.WriteWord(address,Cell.Add(machine.ReadWord(address),machine.Pop()));break; }
                 case "vm_add_to_byte_memory": {var address=machine.Pop();machine.Memory[address]=unchecked((byte)(machine.Memory[address]+machine.Pop()));break;}
                 case "vm_clear_byte_memory": machine.Memory[machine.Pop()] = 0; break;
+                case "vm_decrement_byte_memory": {var address=machine.Pop();machine.Memory[address]=unchecked((byte)(machine.Memory[address]-1));break;}
                 case "vm_increment_byte_memory": {var address=machine.Pop();machine.Memory[address]=unchecked((byte)(machine.Memory[address]+1));break;}
                 case "vm_clear_word_memory_bits": {var mask=machine.Pop();var address=machine.Pop();machine.WriteWord(address,(ushort)(machine.ReadWord(address)&~mask));break;}
                 case "vm_or_word_memory": {var mask=machine.Pop();var address=machine.Pop();machine.WriteWord(address,(ushort)(machine.ReadWord(address)|mask));break;}

@@ -25,10 +25,12 @@ param(
     [switch]$NudgeEntry,
     [switch]$NudgePrompt,
     [switch]$NudgeRequest,
+    [switch]$NudgeMotion,
     [ValidateSet('Ladder','Snake')][string]$BoardLink
 )
 $ErrorActionPreference='Stop'
 if($ContinueBoard -and (!$BoardMovement -and !$BoardLink -or $NudgePotProbe)){throw 'ContinueBoard requires a natural BoardMovement or BoardLink capture'}
+if($NudgeMotion -and !$NudgeRequest){throw 'NudgeMotion requires NudgeRequest'}
 if($NudgeRequest -and !$NudgePrompt){throw 'NudgeRequest requires NudgePrompt'}
 if($NudgePrompt -and !$NudgeEntry){throw 'NudgePrompt requires NudgeEntry'}
 if($NudgeEntry -and (!$Availability -or !$ContinueBoard -or $BoardLink -ne 'Ladder')){throw 'NudgeEntry requires Ladder/ContinueBoard/Availability'}
@@ -133,7 +135,7 @@ if($BoardLink){
 if($BoardMovement){if(!$FullFeature -or !$CpuInterrupts -or !$NativeSound -or $BoardSelection -or $DiceRequests -or $DiceMotion -or $JackpotProbe){throw 'Board movement requires FullFeature, CPU interrupts and native sound, excluding other boundary modes'};$probeEntry=if($NudgePotProbe){'y=0xdde3;'}else{''};$extra+=@("bpset 0xfc,temp0==0 && temp2==0 && y==0xb28f && b@0xc9==7,{$probeEntry$print;save boundary-ram.bin,0,800;temp0=1;temp2=1;go}")}
 if($BoardSelection){if(!$FullFeature -or $JackpotProbe -or !$CpuInterrupts -or !$NativeSound){throw 'Board selection requires full feature, CPU interrupts and native sound'};$extra+=@("bpset 0xfc,temp0==0 && temp2==0 && y==0xdd38 && b@0xc9==0x20,{$print;save boundary-ram.bin,0,800;temp0=1;temp2=1;go}")}
 if($DiceRequests -or $DiceMotion){if(!$FullFeature -or $BoardSelection -or $JackpotProbe){throw 'Dice capture requires FullFeature and excludes other boundary experiments'};$extra+=@("bpset 0xfc,temp0==0 && temp2==0 && y==0xdd7e && b@0xc9==7,{$print;save boundary-ram.bin,0,800;temp0=1;temp2=1;go}")}
-if($DiceMotion) {
+if($DiceMotion -or $NudgeMotion) {
  $motionFormat='RM pc=%04X cycle=%016X flags=%04X%02X drive=%04X optic=%02X c2=%04X abort=%04X records='
  $motionValues='pc,totalcycles,w@0x6a,b@0x6c,w@0x6d,b@0xb02,w@0xc2,w@0x719b'
  for($address=0x150;$address -lt 0x1A0;$address+=2){$motionFormat+='%04X';$motionValues+=',w@0x'+$address.ToString('X4')}
@@ -206,6 +208,7 @@ if($Availability){$dispatchAction="temp0=(y!=0xdd7e && y!=0xdd98);$print;go"}
 if($NudgeEntry){$dispatchAction="temp0=(y!=0xb4c5);$print;go"}
 if($NudgePrompt){$dispatchAction="temp0=(y!=0xb403);$print;go"}
 if($NudgeRequest){$dispatchAction="temp0=(y!=0xb31f);$print;go"}
+if($NudgeMotion){$dispatchAction="temp0=(y!=0xb34e);$print;go"}
 if($JackpotProbe) {
  if(!$FullFeature){throw 'Jackpot probe requires -FullFeature'}
  # Synthetic helper experiment: enter A365 at the real C721 return boundary.
@@ -231,7 +234,7 @@ $arguments=@('m4addr','-noreadconfig','-rompath',$RomDirectory,
 $arguments | ConvertTo-Json | Set-Content "$run/arguments.json"
 @{mame_sha256=(Get-FileHash -LiteralPath $MameExecutable).Hash;replay_sha256=(Get-FileHash "$run/replay-actions.csv").Hash;
  native_sound_capture=[bool]$NativeSound;native_nvram_capture=[bool]$NativeNvram;full_feature_capture=[bool]$FullFeature;native_input_capture=[bool]$NativeInput;native_lamp_frames=[bool]$NativeLampFrames;native_alpha_capture=[bool]$NativeAlpha;native_scan_capture=[bool]$NativeScan;shared_timing=[bool]$SharedTiming;paused_setup_callbacks_skipped=$extra.Count;
- timer_deadlines=[bool]$TimerDeadlines;cpu_interrupts=[bool]$CpuInterrupts;synthetic_jackpot_probe=[bool]$JackpotProbe;cash_feature_caller=[bool]$CashFeatureCaller;board_result_caller=[bool]$BoardResultCaller;board_selection=[bool]$BoardSelection;dice_requests=[bool]$DiceRequests;dice_motion=[bool]$DiceMotion;board_movement=[bool]$BoardMovement;synthetic_nudge_pot_probe=[bool]$NudgePotProbe;board_link=$BoardLink;continue_board=[bool]$ContinueBoard;availability=[bool]$Availability;nudge_entry=[bool]$NudgeEntry;nudge_prompt=[bool]$NudgePrompt;nudge_request=[bool]$NudgeRequest;additional_physical_take_at_square22=[bool]$NudgeEntry;
+ timer_deadlines=[bool]$TimerDeadlines;cpu_interrupts=[bool]$CpuInterrupts;synthetic_jackpot_probe=[bool]$JackpotProbe;cash_feature_caller=[bool]$CashFeatureCaller;board_result_caller=[bool]$BoardResultCaller;board_selection=[bool]$BoardSelection;dice_requests=[bool]$DiceRequests;dice_motion=[bool]$DiceMotion;board_movement=[bool]$BoardMovement;synthetic_nudge_pot_probe=[bool]$NudgePotProbe;board_link=$BoardLink;continue_board=[bool]$ContinueBoard;availability=[bool]$Availability;nudge_entry=[bool]$NudgeEntry;nudge_prompt=[bool]$NudgePrompt;nudge_request=[bool]$NudgeRequest;nudge_motion=[bool]$NudgeMotion;additional_physical_take_at_square22=[bool]$NudgeEntry;
  initial_state=$(if($NudgePotProbe){'Fresh isolated physical campaign; explicit synthetic Y=DDE3 redirection at B28F; no RAM/ROM injection'}elseif($JackpotProbe){'Fresh isolated physical campaign; explicit synthetic jackpot VM-entry redirection; no RAM/ROM injection'}else{'Fresh isolated default configuration and absent NVRAM; physical-input fixture only; no RAM/ROM injection.'})} |
  ConvertTo-Json | Set-Content "$run/provenance.json"
 $previousReplay=$env:MPU4_REPLAY
@@ -243,7 +246,7 @@ try {
  try { & $MameExecutable @arguments *> "$run/console.txt"; $LASTEXITCODE | Set-Content "$run/exit-code.txt" }
  finally { Pop-Location }
 } finally { $env:MPU4_REPLAY=$previousReplay; $env:MPU4_POLICY=$previousPolicy }
-$completion=if($NudgeRequest){'^SC y=B31F '}elseif($NudgePrompt){'^SC y=B403 '}elseif($NudgeEntry){'^SC y=B4C5 '}elseif($Availability){'^SC y=(DD7E|DD98) '}elseif($ContinueBoard){'^SC y=(DD38|E2FC) '}elseif($BoardLink){'^SC y=DE81 '}elseif($NudgePotProbe){'^SC y=DDEF '}elseif($BoardMovement){'^SC y=(DD38|DE96) '}elseif($DiceMotion){'^SC y=B28F '}elseif($DiceRequests){'^SC y=B283 '}else{'^SC y=C71D '}
+$completion=if($NudgeMotion){'^SC y=B34E '}elseif($NudgeRequest){'^SC y=B31F '}elseif($NudgePrompt){'^SC y=B403 '}elseif($NudgeEntry){'^SC y=B4C5 '}elseif($Availability){'^SC y=(DD7E|DD98) '}elseif($ContinueBoard){'^SC y=(DD38|E2FC) '}elseif($BoardLink){'^SC y=DE81 '}elseif($NudgePotProbe){'^SC y=DDEF '}elseif($BoardMovement){'^SC y=(DD38|DE96) '}elseif($DiceMotion){'^SC y=B28F '}elseif($DiceRequests){'^SC y=B283 '}else{'^SC y=C71D '}
 if(!(Select-String -LiteralPath "$run/debug.log" -Pattern $completion -Quiet)){throw "Requested completion was not captured; inspect $run"}
 Get-ChildItem $run -File | Get-FileHash | Select-Object Path,Hash | ConvertTo-Json | Set-Content "$run/hashes.json"
 Write-Output $run

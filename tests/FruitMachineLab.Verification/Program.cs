@@ -7,24 +7,41 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Recovered byte decrement consumes the address and wraps zero to FF", () => {
+    foreach(byte value in new byte[]{0,1,255}) {
+        var m=new Machine();m.Memory[0x410]=value;m.Data.Push(0x1234);m.Data.Push(0x410);
+        var script=new RecoveredScript(Path.Combine(evidence,"VM-SCRIPTS","B306.txt"));new ScriptExecutor(m).RunRange(script,0xB308,0xB308);
+        Equal(unchecked((byte)(value-1)),m.Memory[0x410]);Equal((ushort)0x1234,m.Data.Peek());Equal(1,m.Data.Count);
+    }
+});
+Check("Natural main-reel nudge service and optics match MAME", () => {
+    var result=DiceMotionVerification.Verify(evidence,generatedOptics:true,nudge:true);Equal((byte)12,result.InitialPosition);Equal((byte)6,result.FinalPosition);Console.WriteLine($"  {result.Services} services, {result.OpticReads} optic reads, main reel {result.InitialPosition}->{result.FinalPosition}");
+});
+Check("Natural main-reel nudge VM and outputs match MAME through safe post-motion boundary", () => {
+    var result=BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeMotion:true);Console.WriteLine($"  {result.Instructions} VM observations, {result.Lamps} lamps, {result.Sounds} sounds, {result.AlphaBytes} alpha bytes");
+});
 Check("Alpha plural suffix uses a space only for count one and advances its operand", () => {
     foreach(byte value in new byte[]{0,1,2,255}) {
         var m=new Machine();m.Memory[0x400]=value;new byte[]{0x61,0x69,0x04,0x00,0x7A}.CopyTo(m.Memory,0x5000);var alpha=new Mpu4Alpha(m);alpha.Execute(0x5000);
         Equal(value==1 ? ' ' : 'S',alpha.Snapshot().Text[0]);Equal((byte)1,m.Memory[0x54]);Equal((ushort)0x5005,m.ReadWord(0x52));
     }
 });
-Check("Live three nudge buttons drive recovered scan and only the selected request", () => {
+Check("Live three nudge controls complete only the selected motor and consume one nudge", () => {
     foreach(int reel in new[]{0,1,2}) {
         var live=new SkillCashLiveSession(evidence,boardLink:"ladder",continueBoard:true);live.Resume();
         for(int n=0;n<30000 && !live.AwaitingNudgeInput;n++){if(live.AwaitingBoardSelection)live.SetTake(true);live.AdvanceCycles(512);}
-        Equal(true,live.AwaitingNudgeInput);live.SetTake(false);Equal(true,live.Snapshot().Alpha.Contains("NUDGES"));byte[] before=[live.Machine.Memory[0x169],live.Machine.Memory[0x16B],live.Machine.Memory[0x16D]];
+        Equal(true,live.AwaitingNudgeInput);live.SetTake(false);Equal(true,live.Snapshot().Alpha.Contains("NUDGES"));byte[] positions=[live.Machine.Memory[0x168],live.Machine.Memory[0x16A],live.Machine.Memory[0x16C]];bool pausedMotor=false;
         live.SetNudge(reel,true);Equal((byte)(2<<reel),live.Panel.PhysicalBlack2);live.Pause();Equal((byte)0,live.Panel.PhysicalBlack2);
         var memory=live.Machine.Memory.ToArray();ulong cycle=live.Cycle;live.AdvanceCycles(100000);Equal(cycle,live.Cycle);Equal(true,memory.SequenceEqual(live.Machine.Memory));
         live.Resume();live.SetNudge(reel,true);
-        try{for(int n=0;n<10000 && live.Fault is null;n++)live.AdvanceCycles(512);}catch(NotSupportedException error){if(!error.Message.StartsWith("BOARD nudge request accepted"))throw;}
-        Equal(true,live.Fault?.StartsWith("BOARD nudge request accepted")==true);
-        for(int n=0;n<3;n++)Equal(unchecked((byte)(before[n]+(n==reel ? 1 : 0))),live.Machine.Memory[0x169+2*n]);
-        Equal((byte)3,live.Machine.Memory[0xBE]);Equal((ushort)0,live.Machine.ReadWord(0xBA));Equal((ushort)0,live.Machine.ReadWord(0x2FA));Equal((byte)0,live.Panel.PhysicalBlack2);
+        try{for(int n=0;n<10000 && live.Fault is null;n++){
+            live.AdvanceCycles(512);
+            if(!pausedMotor && live.MotorBusy && live.Machine.Memory[0x168+2*reel]!=positions[reel]){live.Pause();var frozen=live.Machine.Memory.ToArray();ulong at=live.Cycle;live.AdvanceCycles(1000000);Equal(at,live.Cycle);Equal(true,frozen.SequenceEqual(live.Machine.Memory));live.Resume();pausedMotor=true;}
+        }}catch(NotSupportedException error){if(!error.Message.StartsWith("BOARD nudge motion completed"))throw;}
+        Equal(true,live.Fault?.StartsWith("BOARD nudge motion completed")==true);
+        Equal(true,pausedMotor);Equal(false,live.MotorBusy);
+        for(int n=0;n<3;n++){Equal((byte)0,live.Machine.Memory[0x169+2*n]);Equal((byte)((positions[n]+(n==reel ? 90 : 0))%96),live.Machine.Memory[0x168+2*n]);}
+        Equal((byte)2,live.Machine.Memory[0xBE]);Equal((byte)2,live.Machine.Memory[0xBF]);Equal((ushort)0,live.Machine.ReadWord(0xBA));Equal((ushort)0,live.Machine.ReadWord(0x2FA));Equal((byte)0,live.Panel.PhysicalBlack2);
     }
 });
 Check("Natural physical nudge request matches MAME up to motion entry", () => {
@@ -108,8 +125,8 @@ Check("Live ladder initializes genuine nudge availability and accepts START or T
         live.Pause();ulong cycle=live.Cycle;var memory=live.Machine.Memory.ToArray();live.AdvanceCycles(1_000_000);Equal(cycle,live.Cycle);Equal(true,memory.SequenceEqual(live.Machine.Memory));live.Resume();
         if(take)live.SetTake(true);else live.SetStart(true);bool motor=false;
         try{for(int n=0;n<60000 && live.BoardPrompts<2;n++){live.AdvanceCycles(512);motor|=live.Snapshot().DiceRequest?.Busy==true;if(motor)live.SetStart(false);if(take && live.AwaitingNudgeInput){live.SetTake(false);live.SetNudge(0,true);}}}
-        catch(NotSupportedException error){if(!error.Message.StartsWith("BOARD result type") && !error.Message.StartsWith("BOARD nudge request accepted"))throw;}
-        if(take){Equal(true,live.Fault?.StartsWith("BOARD nudge request accepted")==true);Equal(false,motor);Equal((byte)22,live.Machine.Memory[0xC9]);Equal((byte)3,live.Machine.Memory[0xBE]);Equal((byte)0x15,live.Machine.Memory[0xBD]);}else{Equal(true,motor);Equal(true,live.Snapshot().Board!.Visited.Count>2);}
+        catch(NotSupportedException error){if(!error.Message.StartsWith("BOARD result type") && !error.Message.StartsWith("BOARD nudge motion completed"))throw;}
+        if(take){Equal(true,live.Fault?.StartsWith("BOARD nudge motion completed")==true);Equal(false,motor);Equal((byte)22,live.Machine.Memory[0xC9]);Equal((byte)2,live.Machine.Memory[0xBE]);Equal((byte)0x15,live.Machine.Memory[0xBD]);}else{Equal(true,motor);Equal(true,live.Snapshot().Board!.Visited.Count>2);}
         Equal((ushort)0,live.Machine.ReadWord(0xBA));Equal((ushort)0,live.Machine.ReadWord(0x2FA));live.Pause();Equal(false,live.Panel.StartPressed);Equal(false,live.Panel.TakePressed);
     }
 });

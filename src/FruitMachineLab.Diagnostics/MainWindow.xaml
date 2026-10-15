@@ -44,6 +44,7 @@
        <TextBlock x:Name="SessionAccounting" Margin="0,0,0,10" Text="Pending 0 • current win 0 ROM units" />
        <TextBlock x:Name="SessionDice" Margin="0,0,0,8" TextWrapping="Wrap" />
        <TextBlock x:Name="SessionDiceFace" Margin="0,0,0,8" FontSize="28" FontFamily="Consolas" />
+       <TextBlock x:Name="SessionNudge" Margin="0,0,0,8" FontFamily="Consolas" TextWrapping="Wrap" />
        <TextBlock x:Name="SessionBoard" Margin="0,0,0,8" TextWrapping="Wrap" />
        <TextBlock Text="Selection feedback — recovered lamp groups" FontWeight="SemiBold" />
        <UniformGrid x:Name="SessionSelectionLamps" Columns="6" Margin="0,8" />

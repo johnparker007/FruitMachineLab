@@ -36,7 +36,7 @@ are available. This mode uses recorded inputs; use Live Skill Cash for the tempo
 player control. Audio remains future work. See
 [playback evidence and boundaries](docs/recovery/SKILL-CASH-PLAYBACK-PASS.md).
 
-Latest local verification: headless and isolated WPF builds succeed; 124
+Latest local verification: headless and isolated WPF builds succeed; 127
 verification groups pass. Continuous C721 execution matches 98,704 VM dispatches,
 selects 3, 2 and 1, and finishes with pending 0/current win 10. All 7,298 lamp frame
 updates and the complete sound timing protocol match recorded native observations.
@@ -103,5 +103,6 @@ Start feature to reach TAKE NUDGEPOT. START rolls again; TAKE now executes
 [type-1 preparation](docs/recovery/NUDGE-PREPARATION-PASS.md), preparing three nudges
 and displaying the [nudge prompt](docs/recovery/NUDGE-INPUT-PASS.md). Temporary
 NUDGE1/2/3 controls use the recovered input ports and accept one reel request,
-then stop before main-reel movement. Availability is computed from actual reels;
-playable nudge motion remains the next recovery work.
+and now [complete one main-reel movement](docs/recovery/NUDGE-MOTION-PASS.md), with
+changing text positions/symbols and counts3→2. Execution stops before an unresolved
+native-stack-residue read; returning to the next nudge/result remains open.

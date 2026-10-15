@@ -245,5 +245,16 @@ sampled BLACK2 input and actual VM scanning. Live stops before B31F motor motion
 with only the selected request incremented and no count/award change. 124 headless
 groups and eight GUI smoke modes pass; mouse-held nudge acceptance itself is not
 automated. See docs/recovery/NUDGE-INPUT-PASS.md for exact evidence/limitations.
+
+## Main-reel nudge / preservation — 15 October 2026
+
+Live completes one selected main-reel nudge and consumes remaining/pot3→2. Natural
+Nudge1 matches135 native observations and generated optics; connected safe prefix
+matches750 VM observations and complete outputs. Stop before B33B's uninitialized
+local-byte/native-stack-residue dependency; no value/mask is invented. 127 groups
+and eight GUI smoke modes pass. A selected ROM-byte checkpoint extends existing
+export/maps conventions; full symbolic toolchain is deferred until playable PC
+coverage. Ghidra full metadata export remains an access gap. See
+docs/recovery/NUDGE-MOTION-PASS.md and docs/PROJECT-ROADMAP.md.
 One advance is supported; complete board/game play and the earlier alpha brightness
 timing discrepancy remain open. No installations or configuration changes occurred.

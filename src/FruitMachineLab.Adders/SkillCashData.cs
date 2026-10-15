@@ -37,6 +37,7 @@ public static class SkillCashData
         0x83B1=>new(0,token,"vm_test_input_condition",0x1A,null),
         0x83B4=>new(0,token,"vm_test_input_condition",0x18,null),
         0x83B7=>new(0,token,"vm_test_input_condition",0x16,null),
+        0x82BB=>new(0,token,"vm_push_word_body_word",0x0170,null),
         0x7FB1=>new(0,token,"vm_push_word_body_word",0x0161,null),
         0xE245=>new(0,token,"evaluate_feature_reel_result_into_pending_award",null,null,0xE247),
         0x825A=>new(0,token,"vm_push_word_body_word",0x0198,null),

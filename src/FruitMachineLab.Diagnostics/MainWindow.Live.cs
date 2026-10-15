@@ -103,6 +103,7 @@ public partial class MainWindow
         SessionAccounting.Text=$"Pending {state.Pending} • current win {state.CurrentWin} ROM units • accepted selections {string.Join(", ",state.Selections)}";
         SessionDice.Text=state.DiceRequest is { } dice ? $"Dice request {dice.Symbol} · signed stop offset {dice.StopOffset} · ROM position {dice.PhysicalPosition}/96 · {(dice.Busy ? "motor running" : "motor idle")}" : "";
         SessionDiceFace.Text=state.DiceRequest is { } face ? $"DICE {face.DisplayedSymbol,2}" : "";
+        SessionNudge.Text=state.Nudge is { } nudge ? $"Nudges {nudge.Remaining} - pot {nudge.Pot} - {(nudge.Busy ? "motor running" : "motor idle")}\nMain reel positions: {string.Join(", ",nudge.Positions)} /96 - symbols: {string.Join(", ",nudge.Symbols)}" : "";
         SessionBoard.Text=state.Board is { } board ? $"Board square {board.Square} · nudge pot {board.NudgePot} · ROM type {board.Type} · link {board.Link}\nVisited: {string.Join(" → ",board.Visited)}" : "";
         foreach(var tile in liveTiles) {
             int intensity=(int)Math.Round(Math.Clamp(state.LampDuty[tile.Lamp]*8,0,1)*100);tile.Tile.Background=lampPalette[intensity];((TextBlock)tile.Tile.Child).Foreground=intensity>=35 ? Brushes.Black : Brushes.White;

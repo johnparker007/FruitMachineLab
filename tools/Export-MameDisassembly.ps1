@@ -1,16 +1,19 @@
 param(
  [Parameter(Mandatory=$true)][string]$MameExecutable,
  [Parameter(Mandatory=$true)][string]$RomDirectory,
- [Parameter(Mandatory=$true)][string]$RunDirectory
+ [Parameter(Mandatory=$true)][string]$RunDirectory,
+ [switch]$NudgeCheckpoint
 )
 $ErrorActionPreference='Stop'
 $run=[System.IO.Path]::GetFullPath($RunDirectory)
 if(Test-Path -LiteralPath $run){throw 'Use a fresh output directory'}
 New-Item -ItemType Directory -Path $run | Out-Null
 foreach($name in @('cfg','nvram','inp','snap','comments','state','diff')){New-Item -ItemType Directory (Join-Path $run $name) | Out-Null}
-@('dasm sound-native.txt,5c18,495,1','dasm lamp-native.txt,497f,126,1',
+$commands=@('dasm sound-native.txt,5c18,495,1','dasm lamp-native.txt,497f,126,1',
  'dasm vm-bridges.txt,776f,8c,1','dasm alpha-native-a.txt,3cc0,29c,1',
- 'dasm alpha-native-b.txt,3f74,102,1','dasm timer-native.txt,707e,92,1','symlist','quit') | Set-Content "$run/debugger.cmd"
+ 'dasm alpha-native-b.txt,3f74,102,1','dasm timer-native.txt,707e,92,1','symlist')
+if($NudgeCheckpoint){$commands+=@('dasm nudge-motor-native.txt,61f6,485,1','dasm nudge-result-native.txt,1aa3,100,1','dasm nudge-decrement-native.txt,765b,4,1')}
+$commands+=@('quit');$commands | Set-Content "$run/debugger.cmd"
 $arguments=@('m4addr','-noreadconfig','-rompath',$RomDirectory,'-cfg_directory',"$run/cfg",'-nvram_directory',"$run/nvram",
  '-input_directory',"$run/inp",'-snapshot_directory',"$run/snap",'-comment_directory',"$run/comments",'-state_directory',"$run/state",'-diff_directory',"$run/diff",
  '-debug','-debugger','windows','-debugscript',"$run/debugger.cmd",'-debuglog','-video','none','-sound','none','-window','-skip_gameinfo','-nothrottle','-seconds_to_run','2')

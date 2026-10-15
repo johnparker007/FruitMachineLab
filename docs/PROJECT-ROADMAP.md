@@ -12,6 +12,11 @@ is not authority for which changes John has committed or pushed.
 
 ## Priority order
 
+Current accounting checkpoint: recovered outer caller reaches AF25 after
+statistics, scaled counters and cash-bank commit. Next follow bank-limit service
+and collection routing. See recovery/NUDGE-AWARD-STATISTICS-PASS.md.
+This remains gameplay recovery; the symbolic editing/rebuild toolchain stays deferred.
+
 The primary milestone is a complete playable Adders & Ladders machine on PC.
 Preservation work below supports that recovery; symbolic toolchain construction
 waits until playable-machine coverage is established.

@@ -254,10 +254,10 @@ Shared bodies have no colon header at entry-2.
   operations vm_move_cell_to_return_stack, duplicate_and_test_negative, vm_copy_return_stack_cell, vm_fetch_byte_and_following_word
 9EFB.txt | purpose unresolved | grouping only; purpose unresolved | observed (10/10 sites)
   Groups: boolean/bit operations, control flow, stack/cell helpers; main callers: 9F20 (test_three_byte_counter_07d2); calls: 9ED9
-  operations vm_fetch_byte_and_following_word, bias_word_signed_value_at_bit7, vm_keep_negative_else_zero, vm_branch_forward8_if_zero
+  operations vm_fetch_byte_and_following_word, bias_word_signed_value_at_bit7, vm_test_negative, vm_branch_forward8_if_zero
 9F12.txt | purpose unresolved | grouping only; purpose unresolved | observed (6/6 sites)
   Groups: stack/cell helpers; main callers: 9F3B (test_negative_three_byte_counter_07cc); calls: 9ED9
-  operations vm_fetch_byte_and_following_word, bias_word_signed_value_at_bit7, vm_keep_negative_else_zero, vm_swap_two_cells
+  operations vm_fetch_byte_and_following_word, bias_word_signed_value_at_bit7, vm_test_negative, vm_swap_two_cells
 9F20.txt | test_three_byte_counter_07d2 | reviewed token mechanics | observed (3/3 sites)
   Groups: composition of script calls; main callers: ADF8 (unresolved), 9F28 (conditionally_decrement_u24_counter_07d2_by_500); calls: 9EFB
   operations vm_push_word_body_word, script_9ef9, vm_return_to_caller_stream

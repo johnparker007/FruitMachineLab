@@ -1,5 +1,11 @@
 # Implementation and evidence boundaries
 
+Latest continuation: [nudge award statistics](docs/recovery/NUDGE-AWARD-STATISTICS-PASS.md).
+Live runs through the outer award caller, statistics/scaled counters and AF13
+cash-bank commit, then stops at AF25 before bank-limit service. Natural226-dispatch,
+22-case statistics and12-case scaled-counter comparisons pass. Cash bank16,
+token bank0, pending/current-win0; collection has not executed.
+
 ## Initial import and runtime baseline (historical)
 
 - Imported all top-level recovery reports and the current 528 decoded VM body listings.

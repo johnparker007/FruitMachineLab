@@ -6,11 +6,23 @@ batch, including its verification.
 
 ## Working implementation
 
+Latest continuation: see recovery/NUDGE-AWARD-STATISTICS-PASS.md. Live passes AFF0
+through the outer caller, native1622 statistics,151F/6F57 scaled counters and
+AF2B/AF13 cash-bank commit, stopping at AF25 before bank-limit service.
+The natural226-dispatch window,22-case statistics and12-case scaled-counter
+matrices match MAME. Cash bank16/token bank0, pending/current-win0. Next recover
+AF25/AEF9, then AFF4 collect gating and collection/payout.142 headless groups and
+eight WPF smoke modes pass. The existing checkpoint includes selected native
+bytes and VM spans; AC5F's false0000 placeholder is corrected to raw3647 with the
+unexecuted hook still unresolved. Gameplay-first preservation policy is unchanged.
+The old75A9 keep-negative label is corrected to native sign normalization in
+9EFB/9F12. Unknown SWI3 alarms remain explicit; overflow clamps before stopping.
+
 - C# headless runtime/Adders projects and separate WPF diagnostics app.
 - Live Skill Cash: incremental VM, retained state, physical momentary Start input,
   actual Pause/Resume, generated lamp/alpha outputs and diagnostic state display.
 - Separate verified playback/scrubber; original MAME-backed verification retained.
-- Last development batch: 139 headless groups passed. Headless and isolated WPF
+- Last development batch:142 headless groups passed. Headless and isolated WPF
   builds passed; Live/playback WPF smoke checks and rendered layouts were checked.
 - John subsequently reported that the live feature works well.
 
@@ -71,12 +83,15 @@ scope and preserved earlier timing qualifications.
 
 ## Next development work
 
-Latest batch: Live completes the meter display/wait and AF67 seven-flash tail,
-including AF4E even rounding and NVRAM refresh, then stops at AFF0. Pending0/
-current-win16, final display refreshed. Next follow AFF0 through EDB4/EE11 and
-its real caller before implementing bank commit, collection or payout. See
-recovery/NUDGE-ANIMATION-TAIL-PASS.md.139 groups/all8 GUI smoke modes pass.
-Headless checks pause during the flash loop as well as rewind/meter transfer.
+Continue from AF25 into AEF9's combined-bank limit check, then AFF4's input82
+collect gate and actual collection/payout service. Current natural cash bank16
+has completed statistics, both scaled-counter updates and protected refresh.
+Retain the narrow successful capture convention and independent window-entry
+comparison.142 groups/all8 GUI smoke modes pass, including accounting Pause.
+
+Previous batch completed meter display/wait and AF67 seven-flash tail through
+AFF0. See recovery/NUDGE-ANIMATION-TAIL-PASS.md for that retained reference.
+Headless checks also pause during flashing, rewind and meter transfer.
 
 New nudge-tail fixture: successful natural TailWindow capture from final AFC2
 through AFF0, saved entry/terminal RAM, exit0.13469 VM observations, no lifted

@@ -8,7 +8,10 @@ Threaded script at 9F12; recovered listing, not original source.
 
 * 9F12  77F6  vm_fetch_byte_and_following_word  
 * 9F14  9ED7  bias_word_signed_value_at_bit7  body=0x9ED9
-* 9F16  75A9  vm_keep_negative_else_zero  
+* 9F16  75A9  vm_test_negative
 * 9F18  7B7D  vm_swap_two_cells  
 * 9F1A  7B3D  vm_drop_cell  
 * 9F1C  792F  vm_return_to_caller_stream  
+
+Byte-check 15 October 2026: token75A9/native75AB normalizes to FFFF/0000
+from the input sign; the earlier keep-negative name was inaccurate.

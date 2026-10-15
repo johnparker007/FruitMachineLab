@@ -115,6 +115,11 @@
     "sha256": "857180CDC45CC8BD8243B29AFAD847791F9025148D6FB3BF7A33100938B4F4BF"
   },
   {
+    "path": "docs/recovery/NUDGE-AWARD-STATISTICS-PASS.md",
+    "bytes": 7086,
+    "sha256": "7D090046A12E9B50BD8E3C151B579A00A54B01BA14D198291BE91D82916E3C10"
+  },
+  {
     "path": "docs/recovery/NUDGE-IMPROVEMENT-PASS.md",
     "bytes": 9703,
     "sha256": "5DC18E8F76A2219CC9B6FECA91015BFE124FD293168B9102E5F4D9ED46C595F9"
@@ -301,8 +306,8 @@
   },
   {
     "path": "evidence/mpu4/maps/nudge-encoding-checkpoint.json",
-    "bytes": 270462,
-    "sha256": "3ED7158FD7626FE9363746149AE3BEA8C3D35B9AC170F50D7821325FFF7654C1"
+    "bytes": 347445,
+    "sha256": "CFCE6B299550187C84BEAC3F5F80F3005A76A3480EBDEDCDD1E9130DC2AD18EE"
   },
   {
     "path": "evidence/mpu4/maps/nudge-inputs.json",
@@ -311,8 +316,8 @@
   },
   {
     "path": "evidence/mpu4/maps/nudge-preparation-data.json",
-    "bytes": 1607,
-    "sha256": "C044ADD2542B09E13F94AC12784B8F802181979877079B8EAFD771714650D594"
+    "bytes": 1828,
+    "sha256": "B6621D6A77750E1F75BF2C411855AFF5E5E9C18DE8635F48F1DCE83426EC4631"
   },
   {
     "path": "evidence/mpu4/maps/nudge-preparation-semantics.json",
@@ -1280,6 +1285,16 @@
     "sha256": "C1168130704A22C7C53582B30CDABF40E733DF8ED0DFFA6B10083510131EB0EA"
   },
   {
+    "path": "evidence/mpu4/skill-cash/award-statistics-matrix-debugger.cmd",
+    "bytes": 7412,
+    "sha256": "329ECB40184550B5B82218A693158E44ABF3C45CECFA8F292E17CCBA0C82610C"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/award-statistics-matrix.json",
+    "bytes": 96477,
+    "sha256": "38349C01AD2BF7726FC7C1FF97A639A474BB2E12CA3395E0F81BB131CA99B6A1"
+  },
+  {
     "path": "evidence/mpu4/skill-cash/award-verification.json",
     "bytes": 1239,
     "sha256": "F8F7310DCF7829EE4EB307364986F16F80EFF59E95BE6F2F9027595BB941F871"
@@ -1605,6 +1620,21 @@
     "sha256": "28CC1177734ADBA8D7B9FAA3E33C48818D6CC99DE1C0185FF85D5502CEDE8D69"
   },
   {
+    "path": "evidence/mpu4/skill-cash/nudge-accounting-debugger.cmd",
+    "bytes": 13448,
+    "sha256": "31C8195BC027C071ADF77F0732061616E63939ECE793EE329F57D71A134CA284"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/nudge-accounting-verification.json",
+    "bytes": 2128,
+    "sha256": "C7A214A09B6B58D5C33F57DFF5C311AB5A426D55E46E5A133907CBF249389002"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/nudge-accounting.json",
+    "bytes": 36098,
+    "sha256": "52B3809DCBAC96EC5E04F1153984ABE2F9E24AB4546D44DAB2EE81D4CEB957EF"
+  },
+  {
     "path": "evidence/mpu4/skill-cash/nudge-entry-debugger.cmd",
     "bytes": 5582,
     "sha256": "0C2078DE9E56E18E1618E7A120393AE738ABE435EE03906B96525739877A02BB"
@@ -1828,6 +1858,16 @@
     "path": "evidence/mpu4/skill-cash/output-scan.json",
     "bytes": 646482,
     "sha256": "6B632A9DF1BE6BE732D8D45C4AF6DB59AB361AAFE0EB85549687C3F4B1AB942B"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/scaled-accounting-matrix-debugger.cmd",
+    "bytes": 2976,
+    "sha256": "55CF24D0490BCAA756A8B6F30DBBBBA55A5DAEEBAC6619283901E3B8D24A2DE4"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/scaled-accounting-matrix.json",
+    "bytes": 54701,
+    "sha256": "357E9F0E1D0F32D290B8E7BF50E8D1681CF5DE6A7DD4CD2077C4DF1BA3B581A8"
   },
   {
     "path": "evidence/mpu4/skill-cash/selection-decisions.json",
@@ -2331,13 +2371,13 @@
   },
   {
     "path": "evidence/mpu4/VM-SCRIPTS/9EFB.txt",
-    "bytes": 721,
-    "sha256": "969AB8E2AA8D788425275EE52BEA5C2A5E67651A8DCC18925799EFE1069E8C70"
+    "bytes": 854,
+    "sha256": "A356CA5386F3E9888EE83FDC98C610DC962AE68814FAD6F9F09A8DE1233E307B"
   },
   {
     "path": "evidence/mpu4/VM-SCRIPTS/9F12.txt",
-    "bytes": 514,
-    "sha256": "3207140108C26BC914243F8F3C785D18C9F8CC7532F87F4F8BE1629B599A0023"
+    "bytes": 647,
+    "sha256": "63DCF1FC3C60A6B9043EE78909D382444BB835E0BEB7A0C50D0029CB2C4AD126"
   },
   {
     "path": "evidence/mpu4/VM-SCRIPTS/9F20.txt",
@@ -2726,8 +2766,8 @@
   },
   {
     "path": "evidence/mpu4/VM-SCRIPTS/AC58.txt",
-    "bytes": 576,
-    "sha256": "315548E8ACAAFD11FB64E5537270ABB4303772E9810442EAE8C47A6CA76E6E78"
+    "bytes": 805,
+    "sha256": "1A2A3480368E5260138950EEC20C418157EE40F1609A15CC34A15522DF761E1F"
   },
   {
     "path": "evidence/mpu4/VM-SCRIPTS/AC6A.txt",
@@ -4556,7 +4596,7 @@
   },
   {
     "path": "evidence/mpu4/VM-SCRIPTS/INDEX.txt",
-    "bytes": 215197,
-    "sha256": "AF33D3A15B90E87EA37C77825454E9ECC7CE00FB6AC9325794C241035DA1471C"
+    "bytes": 215177,
+    "sha256": "C4B85FFD74D67512E71AA6D78BF87998E98B896671620BB8EE0AF8BE4F27078F"
   }
 ]

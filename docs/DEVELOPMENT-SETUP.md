@@ -5,9 +5,13 @@ Local clone: C:\projects\GitRepos\FruitMachineLab
 
 ## Current status
 
-Latest batch: completed meter display/wait and seven-flash tail. See
+Newest continuation: Live reaches AF25 after outer award statistics, scaled
+counters and cash-bank commit.142 headless groups/eight WPF smoke modes pass.
+See recovery/NUDGE-AWARD-STATISTICS-PASS.md for proof and bank-service boundary.
+
+Previous batch: completed meter display/wait and seven-flash tail. See
 recovery/NUDGE-ANIMATION-TAIL-PASS.md.139 headless groups/eight GUI smoke modes pass.
-Live stops at AFF0 with pending0/current-win16 and refreshed display, before outer
+That checkpoint stopped at AFF0 with pending0/current-win16 and refreshed display, before outer
 award/bank/collection routing. A successful AFC2→AFF0 natural window now supplies
 terminal accounting RAM. Older failed-later prefix/full-logging crash limits remain.
 No installation or configuration

@@ -37,10 +37,11 @@ renderers should use the same backend inputs/outputs, with no gameplay in UI cod
 
 ## Current recovery frontier
 
-Live now continues through the ROM's automatic nudge improvement to pending16,
-current-win0 at E263. Continue the result caller, award handling and feature return
-from there; see recovery/NUDGE-IMPROVEMENT-PASS.md. The natural three-Nudge1 path
-and equivalent Live actions are verified, including final protected accounting bytes.
+Live now exits the board and animates pending16/current-win0 to pending0/current-win16,
+stopping at final AFC2 before the remaining display/wait and bank/collection route.
+See recovery/NUDGE-WIN-TRANSFER-PASS.md for the successful board-exit reference and
+explicit failed-later transfer-prefix qualification. Next resolve clean transfer
+capture/tail and continue the actual outer award route; preserve gameplay priority.
 Full machine startup and consecutive complete games remain future milestones.
 
 ## Longer-term aims

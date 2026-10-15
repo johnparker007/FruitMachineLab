@@ -291,3 +291,17 @@ at the saved result boundary; actual pause/resume during automatic movement pass
 135 headless groups/eight WPF smoke modes pass. Existing encoding checkpoint now
 checks700 native rows/17 VM spans and links new dictionary/data/implementation
 facts. Full symbolic toolchain remains deferred. See docs/recovery/NUDGE-IMPROVEMENT-PASS.md.
+
+## Board exit and current win transfer — 15 October 2026
+
+Live returns through E263/E460 and runs EDB4/AF93 meter transfer16/0→0/16.
+It stops at final AFC2 after native refresh, before display/wait tail, bank commit
+or collection. Successful E460 reference checks66412 VM/171 lamps/1005 sounds/
+424 alpha bytes and terminal RAM. The transfer reference checks95391 VM/203 lamps/
+1341 sounds/987 alpha bytes from an explicitly selected prefix whose source process
+failed later; no terminal transfer RAM/full-campaign claim. Its whole successful
+exit prefix matches. Live ordered lamps/final alpha, conservation16 and intermediate
+meter steps match; pause/resume during rewind and mid-meter freezes actual state.
+137 headless groups/all8 WPF smoke modes pass.38 VM spans/700 native rows checked
+against ROM, new sound children retained; symbolic toolchain still deferred and
+fresh Ghidra metadata access unavailable. See docs/recovery/NUDGE-WIN-TRANSFER-PASS.md.

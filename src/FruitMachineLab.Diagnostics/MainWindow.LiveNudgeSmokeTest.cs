@@ -48,25 +48,26 @@ public partial class MainWindow
                 for(int n=0;n<3;n++)if(liveSession.Machine.Memory[0x168+2*n]!=(byte)((before[n]+(n==reel ? 90 : 0))%96))throw new InvalidOperationException("Wrong reel request changed");
                 RenderLive();await Dispatcher.InvokeAsync(()=>{},DispatcherPriority.ApplicationIdle);SaveWindowImage(Path.Combine(directory,$"nudge-{reel+1}-accepted.png"));
                 if(reel==0) {
-                    bool pausedImprovement=false;
+                    bool pausedImprovement=false,pausedTransfer=false;
                     for(int remaining=2;remaining>0;remaining--) {
                         Nudge1.Focus();NudgeSmokeKey(Nudge1,true);await Task.Delay(25);NudgeSmokeKey(Nudge1,false);timeout.Restart();
-                        while(liveSession.Fault is null && !(liveSession.AwaitingNudgeInput && liveSession.Machine.Memory[0xBE]==remaining-1 && !liveSession.NudgeMoving) && timeout.Elapsed.TotalSeconds<(remaining==1 ? 30 : 5)){
+                        while(liveSession.Fault is null && !(liveSession.AwaitingNudgeInput && liveSession.Machine.Memory[0xBE]==remaining-1 && !liveSession.NudgeMoving) && timeout.Elapsed.TotalSeconds<(remaining==1 ? 45 : 5)){
                             if(remaining==1 && !pausedImprovement && liveSession.Machine.Memory[0xBE]==3 && liveSession.MotorBusy){
                                 PauseLive();var frozen=liveSession.Machine.Memory.ToArray();ulong at=liveSession.Cycle;await Task.Delay(100);
                                 if(at!=liveSession.Cycle || !frozen.SequenceEqual(liveSession.Machine.Memory))throw new InvalidOperationException("Automatic improvement advanced while paused");
                                 RenderLive();await Dispatcher.InvokeAsync(()=>{},DispatcherPriority.ApplicationIdle);SaveWindowImage(Path.Combine(directory,"improvement-paused.png"));ResumeLive();pausedImprovement=true;
                             }
+                            if(remaining==1 && !pausedTransfer && liveSession.Machine.ReadWord(0xBA) is >0 and <16 && liveSession.Machine.ReadWord(0x2FA)>0){PauseLive();var frozen=liveSession.Machine.Memory.ToArray();ulong at=liveSession.Cycle;await Task.Delay(100);if(at!=liveSession.Cycle || !frozen.SequenceEqual(liveSession.Machine.Memory))throw new InvalidOperationException("Meter transfer advanced while paused");RenderLive();await Dispatcher.InvokeAsync(()=>{},DispatcherPriority.ApplicationIdle);SaveWindowImage(Path.Combine(directory,"meter-transfer-paused.png"));ResumeLive();pausedTransfer=true;}
                             await Task.Delay(10);
                         }
                         if(remaining==2 && (liveSession.Fault is not null || liveSession.Machine.Memory[0xBE]!=1))throw new InvalidOperationException("Second nudge failed: "+Status.Text);
                     }
-                    if(liveSession.Fault?.StartsWith("BOARD nudge result ready")!=true || liveSession.Machine.Memory[0xBE]!=0 || liveSession.Machine.Memory[0xBF]!=0 || liveSession.Machine.ReadWord(0xBA)!=16 || liveSession.Machine.ReadWord(0x2FA)!=0 || !pausedImprovement || liveSession.Panel.PhysicalBlack2!=0)throw new InvalidOperationException("Sequence did not exhaust cleanly: "+Status.Text);
+                    if(liveSession.Fault?.StartsWith("BOARD nudge win transfer completed")!=true || liveSession.Machine.Memory[0xBE]!=0 || liveSession.Machine.Memory[0xBF]!=0 || liveSession.Machine.ReadWord(0xBA)!=0 || liveSession.Machine.ReadWord(0x2FA)!=16 || !pausedImprovement || !pausedTransfer || liveSession.Panel.PhysicalBlack2!=0)throw new InvalidOperationException("Sequence did not exhaust cleanly: "+Status.Text);
                     RenderLive();await Dispatcher.InvokeAsync(()=>{},DispatcherPriority.ApplicationIdle);SaveWindowImage(Path.Combine(directory,"nudge-improvement-result.png"));
                 }
             }
             if(!await LoadLive(startExecution:false) || liveSession!.Instructions!=0 || liveSession.Fault is not null)throw new InvalidOperationException("Restart retained nudge state");
-            File.WriteAllText(Path.Combine(directory,"result.txt"),"PASS: all three momentary nudge keyboard handlers; actual recovered input scan, only selected main reel moved six positions and remaining/pot became two, mouse-capture failure/loss release, VM/memory/time pause, native cleanup and unchanged award accounting, rendered prompt/request boundaries and clean restart. Returns to the next prompt with preserved lamp-native save bytes; repeated Nudge1 exhausts the pot; recovered automatic improvement executes, actual auto-motor pause/resume freezes execution, pending award becomes16 with current win0, and result caller routing remains explicit.\n");Application.Current.Shutdown(0);
+            File.WriteAllText(Path.Combine(directory,"result.txt"),"PASS: all three momentary nudge keyboard handlers; actual recovered input scan, only selected main reel moved six positions and remaining/pot became two, mouse-capture failure/loss release, VM/memory/time pause, native cleanup and unchanged award accounting, rendered prompt/request boundaries and clean restart. Returns to the next prompt with preserved lamp-native save bytes; repeated Nudge1 exhausts the pot; recovered automatic improvement executes, actual auto-motor pause/resume freezes execution, board-exit return and pending-to-current-win animation execute, pending0/current-win16 at the bounded final increment; bank/collection routing remains explicit.\n");Application.Current.Shutdown(0);
         }catch(Exception error){File.WriteAllText(Path.Combine(directory,"result.txt"),error.ToString());Application.Current.Shutdown(1);}
     }
 }

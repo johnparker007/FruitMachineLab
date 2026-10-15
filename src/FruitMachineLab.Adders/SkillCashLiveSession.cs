@@ -99,7 +99,7 @@ public sealed class SkillCashLiveSession
             BoardMovementState.LoadData(Machine,evidence);BoardLinkState.LoadData(Machine,evidence);
             if(boardLink is not null)initialClock=BoardLinkState.Apply(Machine,evidence,boardLink);
             boardVisited.Add(Machine.Memory[0xC9]);
-            foreach(string file in new[]{"ladder-link.json","snake-link.json","ladder-link-next.json","snake-link-next.json","board-movement-next.json","ladder-availability.json","nudge-entry.json","nudge-prompt.json","nudge-request.json","nudge-motion-vm.json","nudge-return.json","nudge-sequence.json","nudge-result.json"}) {
+            foreach(string file in new[]{"ladder-link.json","snake-link.json","ladder-link-next.json","snake-link-next.json","board-movement-next.json","ladder-availability.json","nudge-entry.json","nudge-prompt.json","nudge-request.json","nudge-motion-vm.json","nudge-return.json","nudge-sequence.json","nudge-result.json","nudge-exit.json","nudge-win-transfer.json"}) {
                 using var linkCosts=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",file)));
                 foreach(var item in linkCosts.RootElement.GetProperty("sites").EnumerateObject())siteCosts.TryAdd(item.Name,item.Value.GetUInt64());
                 foreach(var item in linkCosts.RootElement.GetProperty("tokens").EnumerateObject())tokenCosts.TryAdd(item.Name,item.Value.GetUInt64());
@@ -265,11 +265,11 @@ public sealed class SkillCashLiveSession
                 if(nextVm==next) {
                     if(--budget==0)throw new InvalidOperationException("Live dispatch budget exceeded");
                     var instruction=executor.NextInstruction!;
-                    if(ContinueBoard && nudgeAttempted && instruction.Site==0xE263)throw new NotSupportedException($"BOARD nudge result ready; pending award {Machine.ReadWord(0xBA)}, current win {Machine.ReadWord(0x2FA)}. Result caller and award routing is the next recovery boundary.");
                     if(!ContinueBoard && boardAdvancing && instruction.Site is 0xDE96 or 0xDD38)throw new NotSupportedException($"BOARD advance completed at square {Machine.Memory[0xC9]} (type {Machine.Memory[0xA12E+Machine.Memory[0xC9]]}, nudge pot {Machine.Memory[0xBF]}); the next board result/selection is the recovery boundary. Restart to play again.");
                     if(!ContinueBoard && BoardLinkEntry is not null && instruction.Site==0xDE81)throw new NotSupportedException($"BOARD {BoardLinkEntry} completed at square {Machine.Memory[0xC9]} (nudge pot {Machine.Memory[0xBF]}); following board result/selection remains the recovery boundary. Restart to watch again.");
                     if(ContinueBoard && instruction.Site==0xE2FC && Machine.Data.Peek() is not (1 or 2))throw new NotSupportedException($"BOARD result type {Machine.Data.Peek()} at square {Machine.Memory[0xC9]}; this result route is the next recovery boundary.");
-                    if(ContinueBoard && BoardLinkEntry is not null && instruction.Site==0xE460)throw new NotSupportedException("BOARD feature exit reached; outer machine caller remains outside the live entry.");
+                    if(ContinueBoard && nudgeAttempted && instruction.Site==0xAFC2 && Machine.ReadWord(0xBA)==0 )throw new NotSupportedException($"BOARD nudge win transfer completed; pending 0, current win {Machine.ReadWord(0x2FA)}. Subsequent animation, bank commit and collection remain outside this entry.");
+                    if(ContinueBoard && BoardLinkEntry is not null && !nudgeAttempted && instruction.Site==0xE460)throw new NotSupportedException("BOARD feature exit reached; outer machine caller remains outside the live entry.");
                     if(ContinueBoard && instruction.Native==0x2BEB && reelMotion?.Busy==true){nextVm=checked(serviceEpoch+services[serviceIndex].Scan);continue;}
                     if(ContinueBoard && instruction.Site==0xE227)throw new NotSupportedException($"BOARD special feature at square {Machine.Memory[0xC9]} (type {Machine.Memory[0xA12E+Machine.Memory[0xC9]]}); announcement/feature routing is the next recovery boundary.");
                     if(ContinueBoard && instruction.Site==0xE2E5 && (Machine.ReadWord(0xA0)&0x10)!=0 && Machine.Data.Peek() is not (1 or 2))throw new NotSupportedException($"BOARD taken result type {Machine.Data.Peek()} at square {Machine.Memory[0xC9]}; this result helper remains outside the verified routes.");

@@ -10,7 +10,7 @@ batch, including its verification.
 - Live Skill Cash: incremental VM, retained state, physical momentary Start input,
   actual Pause/Resume, generated lamp/alpha outputs and diagnostic state display.
 - Separate verified playback/scrubber; original MAME-backed verification retained.
-- Last development batch: 135 headless groups passed. Headless and isolated WPF
+- Last development batch: 137 headless groups passed. Headless and isolated WPF
   builds passed; Live/playback WPF smoke checks and rendered layouts were checked.
 - John subsequently reported that the live feature works well.
 
@@ -71,12 +71,45 @@ scope and preserved earlier timing qualifications.
 
 ## Next development work
 
-Latest batch: the exhausted Nudge1 sequence now runs the ROM's automatic
+Latest batch: Live now returns through E263's indexed dispatcher and E460 board
+exit, then executes EDD3/EE11/EDB4/AF93 pending-to-current-win animation. It stops
+at final AFC2 after6E06 with pending0/current-win16, before the following display/
+wait and rounding/blink tail. Bank commit, collection and payout are not recovered.
+See recovery/NUDGE-WIN-TRANSFER-PASS.md.137 groups/all8 GUI smoke modes pass;
+actual pause/resume during rewind and mid-meter transfer freezes memory/time.
+
+Successful nudge-exit capture:66412 canonical VM observations/171 lamp-frame
+requests/1005 sound commands/424 alpha bytes, prefix66368 independently retained,
+saved terminal RAM at E460, exit0. Selected nudge-win-transfer prefix:95391 VM/
+203 lamps/1341 sounds/987 alpha bytes through AFC2 pending0/win0010. That source
+process FAILED LATER; ObservedPrefix=true and unsuccessful exit code retained in
+sidecar. No terminal transfer RAM snapshot, later-campaign or full stability claim.
+Verifier requires explicit prefix provenance and exact selected boundary. All
+canonical signatures/output hashes match; raw101588 and6197 exclusions retained.
+The previous successful exit prefix independently matches in full.
+
+Live matches ordered lamps/final alpha to the transfer prefix, final reels to
+the saved exit state, each intermediate AFC2 meter step1..15 and conserved total16.
+Final step16 stops before execution. NVRAM complements are checked internally;
+complete terminal RAM equality is not asserted without a snapshot. Earlier strict
+result/exit snapshot comparisons remain unchanged. No recorded input events in Live.
+
+Next obtain clean transfer snapshot/diagnose repeatable external MAME capture
+crash, then recover AFC2 display/wait and AF67 tail and actual outer award route.
+Do not simply jump to FC76: EE11 calls EDB4 before that return cursor is reached.
+Capture switch -NudgeExit stops E460; -NudgeWinTransfer targets final AFC2.
+The latter observer must keep ordinary logging active at earlier AFC2 iterations.
+Curator -ObservedPrefix is deliberately explicit and only allowed for this target;
+ordinary curation rejects unsuccessful processes. Failed exploratory runs are not
+successful campaign proof.38 selected VM spans/700 native rows are byte-checked;
+new8B41 sound children and inline alpha bytes retained in existing data map.
+
+Previous improvement batch: the exhausted Nudge1 sequence runs the ROM's automatic
 improvement. B712/B652 compare the current result with the saved target; B666
 rewinds through actual motor steps, B6DB/B384/B352 compute/execute the plan, and
 B72D/B91D/E247 return pending BA=0010 (16 ROM units), current win02FA=0000.
-Final positions6,90,42 and symbols2,2,2; BE/BF0. Live stops at E263 before its
-result caller. Next recover result presentation, award handling and feature return.
+Final positions6,90,42 and symbols2,2,2; BE/BF0. At that checkpoint Live stopped
+at E263; the newer boundary and verification scope are described above.
 See recovery/NUDGE-IMPROVEMENT-PASS.md. 135 groups/eight WPF smoke modes pass.
 
 Natural reference:66368 canonical VM observations,162 lamps/frame results,1005

@@ -59,7 +59,7 @@
     "B403 button scan / token table9E06",
     "B31F main-reel motion and nudge consumption"
   ],
-  "scope": "Natural three-Nudge1 sequence, automatic rewind/improvement and pending-award return match through E263. Live follows the same selected route with exact ordered lamp requests, final alpha, reel and protected accounting bytes; CPU/IRQ timing remains provisional.",
+  "scope": "Successful natural board-exit capture through E460 and explicitly observed transfer prefix through final AFC2 from a source process that failed later. Live executes selected board exit and pending-to-current-win transfer; no bank/collection/payout route or terminal transfer RAM snapshot claim.",
   "next_verified_segments": {
     "prompt": "skill-cash/nudge-prompt.json",
     "request": "skill-cash/nudge-request.json",
@@ -72,14 +72,17 @@
     "sequence_native": "skill-cash/nudge-sequence-native.json",
     "improvement_result": "skill-cash/nudge-result.json",
     "improvement_native": "skill-cash/nudge-result-native.json",
-    "plan_matrix": "skill-cash/nudge-plan-matrix.json"
+    "plan_matrix": "skill-cash/nudge-plan-matrix.json",
+    "board_exit": "skill-cash/nudge-exit.json",
+    "transfer_observed_prefix": "skill-cash/nudge-win-transfer.json"
   },
   "post_motion_boundary": {
-    "site": "E263",
-    "meaning": "Pending award BA=0010, current win02FA=0000, pot/remaining=0. Result caller and award routing remain the next recovery boundary.",
-    "previous_boundary": "B749 sequence return now continues via B712/B652, B666 rewind, B6DB/B384/B352 automatic plan and B72D/B91D/E247 cleanup.",
-    "classification": "Natural physical-input VM/native reference; Live equivalent-input path, not complete CPU timing equivalence",
-    "report": "docs/recovery/NUDGE-IMPROVEMENT-PASS.md"
+    "site": "AFC2 with pending=0000/current-win=0010",
+    "meaning": "Final AF93 increment and native6E06 refresh completed. Display/wait tail, AF67 rounding/blink and actual outer award path remain open.",
+    "successful_previous_boundary": "E460 nudge-exit.json includes terminal RAM and exit0",
+    "transfer_evidence": "nudge-win-transfer.json is a complete selected prefix from an unsuccessful later process, explicitly ObservedPrefix; terminal_ram_hex is null",
+    "classification": "Natural observed-prefix VM/output proof plus synthetic/Live checks; full machine stability unresolved",
+    "report": "docs/recovery/NUDGE-WIN-TRANSFER-PASS.md"
   },
   "post_sequence_improvement": {
     "type": "BD=15hex",
@@ -114,5 +117,11 @@
       "nvram_source_and_complements": "terminal_ram_hex2F0..322 in skill-cash/nudge-result.json"
     },
     "evidence_class": "Natural traced default type15 path; other options, startup and payout not established"
+  },
+  "pending_to_current_win": {
+    "caller": "E263 ->99AB/E2F3/E33C/E44D ->E460 ->EE0D/EE29 ->EE2C/EDB4",
+    "mechanics": "AF93 selects decrement from8560 indirect-zero tests; AFB8 adds decrement to BA, AFBA negates, AFBE adds to02FA, AFC0 refreshes NVRAM. Recorded configuration selects minus1.",
+    "invariants": "Live observes AFC2 steps1..15 with BA+02FA=16; final step16 stops before AFC2 executes. Alternate two-unit odd-underflow reference behaviour preserved.",
+    "uncertain": "No clean terminal transfer RAM snapshot; later external MAME crashes not diagnosed; no cash-bank credit or payout established."
   }
 }

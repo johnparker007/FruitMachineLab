@@ -5,11 +5,12 @@ Local clone: C:\projects\GitRepos\FruitMachineLab
 
 ## Current status
 
-Latest batch: automatic nudge improvement and pending16/current-win0 result.
-See recovery/NUDGE-IMPROVEMENT-PASS.md. 135 headless groups and eight GUI smoke
-modes pass; --live-nudge-smoke-test checks all three controls, returned prompts,
-exhaustion, automatic improvement, actual auto-motor pause/resume and pending result.
-The next explicit recovery stop is E263 before result-caller/award routing.
+Latest batch: board exit and pending-to-current-win meter animation,16/0→0/16.
+See recovery/NUDGE-WIN-TRANSFER-PASS.md.137 headless groups/eight GUI smoke modes
+pass, including actual mid-meter pause/resume. Live stops at final AFC2 after
+native refresh, before display/wait tail and bank/collection. The transfer reference
+is an explicitly selected prefix from a process that failed later, without a terminal
+RAM snapshot; the preceding board-exit reference completed successfully.
 No installation or configuration
 change, commit/push or cloud setup was performed.
 

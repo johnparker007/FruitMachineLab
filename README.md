@@ -36,7 +36,7 @@ are available. This mode uses recorded inputs; use Live Skill Cash for the tempo
 player control. Audio remains future work. See
 [playback evidence and boundaries](docs/recovery/SKILL-CASH-PLAYBACK-PASS.md).
 
-Latest local verification: headless and isolated WPF builds succeed; 87
+Latest local verification: headless and isolated WPF builds succeed; 92
 verification groups pass. Continuous C721 execution matches 98,704 VM dispatches,
 selects 3, 2 and 1, and finishes with pending 0/current win 10. All 7,298 lamp frame
 updates and the complete sound timing protocol match recorded native observations.
@@ -72,7 +72,10 @@ Normal machine play remains the next milestone; captured timing remains provisio
 
 Live now starts at the square-32 board prompt: press and release **TAKE FEATURE**,
 then use **START** for Skill Cash's three selections. The entry selector retains
-direct C721 and taken-result E2FC modes. START at the board prompt stops at the
-explicit dice-motion boundary; rolling and full machine play are still ahead.
+direct C721 and taken-result E2FC modes. START at the board prompt now prepares a
+dice request and displays ROLLING, then stops before motor motion. The requested
+symbol/offset and unchanged physical position are visible in diagnostics.
 See the [board selection report](docs/recovery/BOARD-SELECTION-TAKE-PASS.md) for
 reference comparisons, restored call frames and uninitialized-local exclusions.
+The [dice request report](docs/recovery/DICE-REQUEST-PASS.md) records native
+profile/symbol recovery and the remaining physical motion boundary.

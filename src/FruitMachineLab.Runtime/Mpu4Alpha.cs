@@ -97,6 +97,15 @@ public sealed class Mpu4Alpha(Machine machine,Action<byte>? serialOutput=null)
                 case 0x68:machine.WriteWord(0x35,FetchWord());return;
                 case 0x6A:machine.WriteWord(0x52,FetchWord());break;
                 case 0x70:SelectCursor(Fetch());break;
+                case 0x72: {
+                    byte depth=machine.Memory[0x51];if(depth>59)throw new NotSupportedException("Alpha loop stack capacity exceeded");
+                    byte count=Fetch();ushort at=(ushort)(0x4E5+depth);machine.Memory[at]=count;machine.WriteWord(Cell.Add(at,1),machine.ReadWord(0x52));machine.Memory[0x51]=(byte)(depth+3);break;
+                }
+                case 0x75: {
+                    byte depth=unchecked((byte)(machine.Memory[0x51]-3));if(depth>59)throw new NotSupportedException("Alpha loop stack underflow");
+                    ushort at=(ushort)(0x4E5+depth);machine.Memory[at]=unchecked((byte)(machine.Memory[at]-1));
+                    if(machine.Memory[at]!=0)machine.WriteWord(0x52,machine.ReadWord(Cell.Add(at,1)));else machine.Memory[0x51]=depth;break;
+                }
                 case 0x76: {
                     byte value=machine.Memory[FetchWord()];
                     byte bcd=unchecked((byte)((value/10)*16+value%10));

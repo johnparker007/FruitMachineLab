@@ -15,7 +15,8 @@ param(
     [switch]$JackpotProbe,
     [switch]$CashFeatureCaller,
     [switch]$BoardResultCaller,
-    [switch]$BoardSelection
+    [switch]$BoardSelection,
+    [switch]$DiceRequests
 )
 $ErrorActionPreference='Stop'
 $root=Split-Path $PSScriptRoot -Parent
@@ -109,6 +110,7 @@ if($CpuInterrupts) {
 }
 $print='printf "'+$format+'",'+$values
 if($BoardSelection){if(!$FullFeature -or $JackpotProbe -or !$CpuInterrupts -or !$NativeSound){throw 'Board selection requires full feature, CPU interrupts and native sound'};$extra+=@("bpset 0xfc,temp0==0 && temp2==0 && y==0xdd38 && b@0xc9==0x20,{$print;save boundary-ram.bin,0,800;temp0=1;temp2=1;go}")}
+if($DiceRequests){if(!$FullFeature -or $BoardSelection -or $JackpotProbe){throw 'Dice requests require FullFeature and exclude other boundary experiments'};$extra+=@("bpset 0xfc,temp0==0 && temp2==0 && y==0xdd7e && b@0xc9==7,{$print;save boundary-ram.bin,0,800;temp0=1;temp2=1;go}")}
 if($extra.Count -gt 0) {
  # Debugger setup invokes paused frame callbacks. Ignore precisely the added
  # setup callbacks in this copied observer, preserving the original physical times.
@@ -122,6 +124,7 @@ $stop=if($FullFeature){'0xc767'}else{'0xc71d'}
 if($CashFeatureCaller){if(!$FullFeature -or $JackpotProbe){throw 'Caller capture requires FullFeature and excludes synthetic JackpotProbe'};$stop='0xe0bf'}
 if($BoardResultCaller){if(!$CashFeatureCaller){throw 'Board result capture requires CashFeatureCaller'};$stop='0xe33c'}
 if($BoardSelection){$stop='0xe460'}
+if($DiceRequests){$stop='0xb283'}
 $dispatchAction="temp0=(y!=$stop);$print;go"
 if($JackpotProbe) {
  if(!$FullFeature){throw 'Jackpot probe requires -FullFeature'}
@@ -133,7 +136,7 @@ $commands=@(
  # Keep the original fixture's one-breakpoint startup command count. Each debugger
  # setup command triggers a paused frame callback in this harness; extra commands
  # change frame-number-based physical input timing. temp0 starts at zero in MAME.
- $(if($BoardSelection){"bpset 0xfc,temp0==1,{$dispatchAction}"}elseif($BoardResultCaller){"bpset 0xfc,(y==0xe2fc && w@u==2 && b@0xc9==0x20) || temp0==1,{$dispatchAction}"}elseif($CashFeatureCaller){"bpset 0xfc,(y==0xdff6 && b@0xc9==0x20) || temp0==1,{$dispatchAction}"}else{"bpset 0xfc,y==0xc721 || temp0==1,{$dispatchAction}"})
+ $(if($BoardSelection -or $DiceRequests){"bpset 0xfc,temp0==1,{$dispatchAction}"}elseif($BoardResultCaller){"bpset 0xfc,(y==0xe2fc && w@u==2 && b@0xc9==0x20) || temp0==1,{$dispatchAction}"}elseif($CashFeatureCaller){"bpset 0xfc,(y==0xdff6 && b@0xc9==0x20) || temp0==1,{$dispatchAction}"}else{"bpset 0xfc,y==0xc721 || temp0==1,{$dispatchAction}"})
 )+$extra+@(
  'gtime #2400000',
  'save ram-final.bin,0,800',
@@ -148,7 +151,7 @@ $arguments=@('m4addr','-noreadconfig','-rompath',$RomDirectory,
 $arguments | ConvertTo-Json | Set-Content "$run/arguments.json"
 @{mame_sha256=(Get-FileHash -LiteralPath $MameExecutable).Hash;replay_sha256=(Get-FileHash "$run/replay-actions.csv").Hash;
  native_sound_capture=[bool]$NativeSound;native_nvram_capture=[bool]$NativeNvram;full_feature_capture=[bool]$FullFeature;native_input_capture=[bool]$NativeInput;native_lamp_frames=[bool]$NativeLampFrames;native_alpha_capture=[bool]$NativeAlpha;native_scan_capture=[bool]$NativeScan;shared_timing=[bool]$SharedTiming;paused_setup_callbacks_skipped=$extra.Count;
- timer_deadlines=[bool]$TimerDeadlines;cpu_interrupts=[bool]$CpuInterrupts;synthetic_jackpot_probe=[bool]$JackpotProbe;cash_feature_caller=[bool]$CashFeatureCaller;board_result_caller=[bool]$BoardResultCaller;board_selection=[bool]$BoardSelection;
+ timer_deadlines=[bool]$TimerDeadlines;cpu_interrupts=[bool]$CpuInterrupts;synthetic_jackpot_probe=[bool]$JackpotProbe;cash_feature_caller=[bool]$CashFeatureCaller;board_result_caller=[bool]$BoardResultCaller;board_selection=[bool]$BoardSelection;dice_requests=[bool]$DiceRequests;
  initial_state='Fresh isolated default configuration and absent NVRAM; physical-input fixture only; no RAM/ROM injection.'} |
  ConvertTo-Json | Set-Content "$run/provenance.json"
 $previousReplay=$env:MPU4_REPLAY
@@ -160,6 +163,7 @@ try {
  try { & $MameExecutable @arguments *> "$run/console.txt"; $LASTEXITCODE | Set-Content "$run/exit-code.txt" }
  finally { Pop-Location }
 } finally { $env:MPU4_REPLAY=$previousReplay; $env:MPU4_POLICY=$previousPolicy }
-if(!(Select-String -LiteralPath "$run/debug.log" -Pattern '^SC y=C71D ' -Quiet)){throw "Skill Cash completion was not captured; inspect $run"}
+$completion=if($DiceRequests){'^SC y=B283 '}else{'^SC y=C71D '}
+if(!(Select-String -LiteralPath "$run/debug.log" -Pattern $completion -Quiet)){throw "Requested completion was not captured; inspect $run"}
 Get-ChildItem $run -File | Get-FileHash | Select-Object Path,Hash | ConvertTo-Json | Set-Content "$run/hashes.json"
 Write-Output $run

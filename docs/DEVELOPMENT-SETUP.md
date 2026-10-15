@@ -136,3 +136,11 @@ then use START for Skill Cash. The entry selector also retains C721 and E2FC mod
 START on the board reaches an explicit dice-motion boundary; Restart recovers from
 that stop. See recovery/BOARD-SELECTION-TAKE-PASS.md for natural reference evidence,
 physical-input mapping and comparison exclusions. Build/smoke commands are unchanged.
+
+## Dice request follow-up
+
+92 groups pass. START at the default board prompt now calculates a native dice
+request and renders ROLLING, stopping before 61F6 physical motion. The Take route
+and playback remain intact. --live-roll-smoke-test <fresh-output-directory> adds
+a real-time Start/request/boundary/restart UI check. See recovery/DICE-REQUEST-PASS.md
+for natural capture comparisons and static edge tests. No dependencies changed.

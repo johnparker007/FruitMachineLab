@@ -7,16 +7,17 @@ namespace FruitMachineLab.Adders;
 public record BoardSelectionVerificationResult(int Instructions,int Lamps,int Sounds,int AlphaBytes,int Conditions);
 public static class BoardSelectionVerification
 {
-    public static BoardSelectionVerificationResult Verify(string evidence)
+    public static BoardSelectionVerificationResult Verify(string evidence,bool diceRequests=false)
     {
-        using var capture=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","board-selection.json")));var root=capture.RootElement;
+        using var capture=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",diceRequests ? "dice-requests.json" : "board-selection.json")));var root=capture.RootElement;
         // C63C writes the low byte; C640 clears the high byte. Only bytes
         // preceding those first writes may be excluded as undefined residue.
         string[] undefinedWords=["C726","C728","C72A","C72C","C72E","C730","C732","C637","C63A","C63C"];
         var frameMasks=undefinedWords.ToDictionary(site=>site,_=>0);frameMasks.Add("C63E",255);frameMasks.Add("C640",255);
+        if(diceRequests)frameMasks.Clear();
         var declared=root.GetProperty("undefined_frame_masks").EnumerateObject().ToArray();
         if(declared.Length!=frameMasks.Count || declared.Any(item=>!frameMasks.TryGetValue(item.Name,out int mask) || item.Value.GetInt32()!=mask))throw new InvalidDataException("Invalid uninitialized-frame comparison exclusions");
-        var m=new SkillCashLiveSession(evidence).Machine;ushort clock=BoardSelectionState.Apply(m,evidence);
+        var m=new SkillCashLiveSession(evidence).Machine;ushort clock=BoardSelectionState.Apply(m,evidence,diceRequests);
         using var vmHash=IncrementalHash.CreateHash(HashAlgorithmName.SHA256);using var lampHash=IncrementalHash.CreateHash(HashAlgorithmName.SHA256);using var soundHash=IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
         static void Hash(IncrementalHash hash,ReadOnlySpan<ushort> values){Span<byte> bytes=stackalloc byte[values.Length*2];for(int n=0;n<values.Length;n++)BinaryPrimitives.WriteUInt16BigEndian(bytes.Slice(n*2,2),values[n]);hash.AppendData(bytes);}
         var serial=new List<byte>();var alpha=new Mpu4Alpha(m,serial.Add);int lamps=0,sounds=0;
@@ -45,14 +46,15 @@ public static class BoardSelectionVerification
                 return AddersNativeWords.Handle(i,state,requests,scheduler,alpha);
             }
         };
-        executor.BeginResumed(Resolve(0xDD38),0xDD38,catalog.Owner,0xBEEF,root.GetProperty("instructions").GetInt32()+1);
+        ushort entry=diceRequests ? Convert.ToUInt16(root.GetProperty("initial").GetProperty("y").GetString(),16) : (ushort)0xDD38;
+        executor.BeginResumed(Resolve(entry),entry,catalog.Owner,0xBEEF,root.GetProperty("instructions").GetInt32()+1);
         while(!executor.Completed) {
             if(point<inputs.Length && inputs[point][0]==ordinal){var row=inputs[point++];m.WriteWord(0x2D,(ushort)row[1]);m.Memory[0x33]=(byte)row[2];m.WriteWord(0x90,(ushort)row[3]);Advance((ushort)row[4]);}
             var i=executor.NextInstruction!;var cells=m.Data.ToArray();
             ushort[] signature=[i.Site,i.Token,cells[0],cells[1],cells[2],cells[3],m.DataPointer,m.Control!.Pointer,m.LocalFrame,m.Control.LoopFrame,m.ReadWord(m.LocalFrame),m.ReadWord(0x2D),m.Memory[0x33],m.ReadWord(0x324),m.Memory[0x4F],m.Memory[0x4E],m.ReadWord(0x90),m.ReadWord(0xBA),m.ReadWord(0x2FA),m.Memory[0x2C],m.Memory[0x322],m.Memory[0x323],m.ReadWord(0x327),m.ReadWord(0xA0),scheduler.Clock];
             if(frameMasks.TryGetValue(i.Site.ToString("X4"),out int mask))signature[10]&=(ushort)mask;
             if(anchors.TryGetValue(ordinal,out var expected))for(int n=0;n<signature.Length;n++)if(signature[n]!=expected[n+1])throw new InvalidDataException($"Board ordinal {ordinal}, {i.Site:X4}, field {n}: {signature[n]:X4} != {expected[n+1]:X4}");
-            Hash(vmHash,signature);executor.Step();ordinal++;
+            Hash(vmHash,signature);if(diceRequests && i.Site==0xB283){ordinal++;break;}executor.Step();ordinal++;
         }
         void Match(string key,string actual){if(root.GetProperty(key).GetString()!=actual)throw new InvalidDataException($"Board {key} differs: {actual}");}
         Match("expected_vm_sha256",Convert.ToHexString(vmHash.GetHashAndReset()));Match("expected_lamp_sha256",Convert.ToHexString(lampHash.GetHashAndReset()));Match("expected_sound_sha256",Convert.ToHexString(soundHash.GetHashAndReset()));Match("serial_hex",Convert.ToHexString(serial.ToArray()));

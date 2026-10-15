@@ -36,6 +36,7 @@
        </WrapPanel>
        <TextBlock TextWrapping="Wrap" Margin="0,0,0,8" Text="Board selection: TAKE FEATURE chooses Skill Cash (BLACK2 bit 01). START rolls; dice motion is the next recovery boundary. In Skill Cash, START stops each selection." />
        <TextBlock x:Name="SessionAccounting" Margin="0,0,0,10" Text="Pending 0 • current win 0 ROM units" />
+       <TextBlock x:Name="SessionDice" Margin="0,0,0,8" TextWrapping="Wrap" />
        <TextBlock Text="Selection feedback — recovered lamp groups" FontWeight="SemiBold" />
        <UniformGrid x:Name="SessionSelectionLamps" Columns="6" Margin="0,8" />
        <TextBlock Text="Skill Cash lamps — diagnostic arrangement" FontWeight="SemiBold" />

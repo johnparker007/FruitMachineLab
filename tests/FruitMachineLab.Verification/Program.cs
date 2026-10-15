@@ -7,6 +7,27 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Natural dice request computation matches MAME before physical motion", () => {
+    var result=BoardSelectionVerification.Verify(evidence,true);Console.WriteLine($"  {result.Instructions} dice request dispatches, {result.Lamps} lamp requests, {result.AlphaBytes} alpha bytes; physical motion not substituted");
+});
+Check("Parameter profile scaling preserves native signed product boundary", () => {
+    var m=new Machine();m.Memory[0x323]=128;ushort profile=0x500;m.Memory[profile+9]=255;m.Memory[profile+8]=255;
+    Equal((byte)1,AddersParameterProfiles.Compute(m,profile));m.Memory[profile+9]=160;m.Memory[profile+8]=160;Equal((byte)0,AddersParameterProfiles.Compute(m,profile));
+    m.Memory[profile+9]=10;m.Memory[profile+8]=100;Equal((byte)10,AddersParameterProfiles.Compute(m,profile));
+});
+Check("Reel symbol projection retains requests, byte wrap and busy gating", () => {
+    var m=new SkillCashLiveSession(evidence).Machine;BoardSelectionState.LoadDiceData(m,evidence);
+    for(int reel=0;reel<4;reel++){m.Memory[0x168+2*reel]=0;m.Memory[0x169+2*reel]=0;}
+    AddersReelSymbols.Refresh(m);Equal((byte)9,m.Memory[0x166]);m.Memory[0x16F]=128;AddersReelSymbols.Refresh(m);Equal((byte)5,m.Memory[0x166]);
+    AddersReelSymbols.RefreshWithoutRequests(m);Equal((byte)9,m.Memory[0x166]);Equal((byte)128,m.Memory[0x16F]);
+    var before=m.Memory.ToArray();m.Memory[0x6B]=128;bool rejected=false;try{AddersReelSymbols.RefreshWithoutRequests(m);}catch(NotSupportedException){rejected=true;}
+    Equal(true,rejected);Equal((byte)128,m.Memory[0x16F]);Equal(true,before[0x160..0x170].SequenceEqual(m.Memory[0x160..0x170]));
+});
+Check("Delayed alpha repeat preserves loop state across actual continuation", () => {
+    var m=new Machine();byte[] program=[0x72,2,0x41,0x68,0,1,0x75,0x7A];program.CopyTo(m.Memory,0x5000);var alpha=new Mpu4Alpha(m);
+    alpha.Execute(0x5000);Equal((byte)3,m.Memory[0x51]);Equal((ushort)1,m.ReadWord(0x35));Equal(false,alpha.Resume());
+    m.WriteWord(0x35,0);Equal(true,alpha.Resume());Equal((byte)3,m.Memory[0x51]);m.WriteWord(0x35,0);Equal(true,alpha.Resume());Equal((byte)0,m.Memory[0x51]);Equal("AA",alpha.Snapshot().Text[..2]);
+});
 Check("Live physical Take selects Skill Cash and returns to the board-loop caller", () => {
     var live=new SkillCashLiveSession(evidence,boardSelection:true);live.Resume();int stage=0;bool took=false,held=false,returned=false;
     live.ObserveDispatch=(i,_)=>returned|=i.Site==0xE460;
@@ -25,10 +46,21 @@ Check("Physical Take and Start are independent sampled active-high panel inputs"
     live.SetTake(true);live.Pause();Equal((byte)0,live.Panel.PhysicalBlack2);Equal(false,live.Panel.TakePressed);Equal(false,live.Panel.StartPressed);
 });
 Check("Board Start follows the recovered roll branch to an explicit dice boundary", () => {
-    var live=new SkillCashLiveSession(evidence,boardSelection:true);live.Resume();bool stopped=false;
+    var live=new SkillCashLiveSession(evidence,boardSelection:true);byte position=live.Machine.Memory[0x16E];live.Resume();bool stopped=false;
     try {for(int n=0;n<10000 && !live.Completed;n++){if(live.Instructions>250)live.SetStart(true);live.AdvanceCycles(512);}}
-    catch(NotSupportedException error){stopped=error.Message.StartsWith("ROLL reached");if(!stopped)throw;}
+    catch(NotSupportedException error){stopped=error.Message.StartsWith("ROLL requested");if(!stopped)throw;}
     Equal(true,stopped);Equal(true,live.Paused);Equal(false,live.Completed);Equal(false,live.Panel.StartPressed);Equal(false,live.Panel.TakePressed);Equal(0,live.Selections.Count);
+    Equal(true,live.Snapshot().Alpha.Contains("ROLLING"));var request=live.Snapshot().DiceRequest!;Equal(true,request.Symbol is >=1 and <=12);Equal(position,request.PhysicalPosition);Equal((ushort)0xB283,live.VmAddress);
+});
+Check("Varied live roll timing generates requests without substituting outcomes", () => {
+    var results=new HashSet<byte>();
+    foreach(int delay in new[]{0,50,100,200,400,800,1200,2000}) {
+        var live=new SkillCashLiveSession(evidence,boardSelection:true);live.Resume();bool stopped=false;
+        try{for(int n=0;n<20000;n++){if(live.Instructions>250+delay)live.SetStart(true);live.AdvanceCycles(512);}}
+        catch(NotSupportedException error){if(!error.Message.StartsWith("ROLL requested"))throw;stopped=true;}
+        Equal(true,stopped);var request=live.Snapshot().DiceRequest!;Equal(true,request.Symbol is >=1 and <=12);results.Add(request.Symbol);
+    }
+    Equal(true,results.Count>1);Console.WriteLine("  Live requested dice symbols: "+string.Join(',',results.Order()));
 });
 Check("Captured scheduler restore rejects unknown continuation shapes", () => {
     var m=new Machine();m.WriteWord(0x47,0x1A0);m.WriteWord(0x1A4,0x1234);var scheduler=new Mpu4ChoiceStreamScheduler(m,0);bool rejected=false;

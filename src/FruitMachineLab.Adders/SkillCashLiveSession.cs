@@ -2,8 +2,9 @@ using System.Text.Json;
 using FruitMachineLab.Runtime;
 namespace FruitMachineLab.Adders;
 
+public record DiceRequestState(byte Symbol,sbyte StopOffset,byte PhysicalPosition);
 public record LiveSkillCashState(ulong Cycle,int Instructions,ushort VmAddress,string Execution,byte PhysicalBlack2,byte SampledBlack2,ushort PanelLatch,
-    byte Choice,ushort Pending,ushort CurrentWin,string Alpha,double[] LampDuty,IReadOnlyList<ushort> Selections);
+    byte Choice,ushort Pending,ushort CurrentWin,string Alpha,double[] LampDuty,IReadOnlyList<ushort> Selections,DiceRequestState? DiceRequest);
 
 // One live feature-entry session. No replay Inputs/Conditions/Anchors are applied
 // after initialization. Captured CPU pacing and IRQ service timestamps are
@@ -18,6 +19,7 @@ public sealed class SkillCashLiveSession
     private readonly Dictionary<ushort,RecoveredScript> scripts=new();
     private readonly string evidence;
     private readonly Dictionary<string,ulong> siteCosts,tokenCosts;
+    private readonly HashSet<ushort> threadedCallTokens=new();
     private readonly CapturedInterruptOccupancy occupancy;
     private readonly List<(ulong Scan,ulong Callback)> services=new();
     private readonly List<LampLatchFrame> latches=new();
@@ -25,7 +27,7 @@ public sealed class SkillCashLiveSession
     private int serviceIndex;
     private ulong serviceEpoch,nextVm,nextCallback=ulong.MaxValue;
     private double fractionalCycles;
-    private bool waitingForScheduler,selectionLoop,boardChoiceCompleted;
+    private bool waitingForScheduler,selectionLoop,boardChoiceCompleted,diceRequestPrepared;
     public bool IncludesCaller {get;}
     public bool StartsAtBoardSelection {get;}
     public bool AwaitingBoardSelection=>StartsAtBoardSelection && !boardChoiceCompleted;
@@ -74,9 +76,16 @@ public sealed class SkillCashLiveSession
         }
         if(boardSelection) {
             initialClock=BoardSelectionState.Apply(Machine,evidence);
+            BoardSelectionState.LoadDiceData(Machine,evidence);
+            using var diceData=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"maps","dice-request-data.json")));
+            foreach(var token in diceData.RootElement.GetProperty("threaded_call_pacing").GetProperty("tokens").EnumerateArray())threadedCallTokens.Add(Convert.ToUInt16(token.GetString(),16));
+            foreach(var alias in diceData.RootElement.GetProperty("equivalent_timing_tokens").EnumerateObject())tokenCosts.TryAdd(alias.Name,tokenCosts[alias.Value.GetString()!]);
             using var selection=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","board-selection.json")));
             foreach(var item in selection.RootElement.GetProperty("sites").EnumerateObject())siteCosts.TryAdd(item.Name,item.Value.GetUInt64());
             foreach(var item in selection.RootElement.GetProperty("tokens").EnumerateObject())tokenCosts.TryAdd(item.Name,item.Value.GetUInt64());
+            using var dice=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","dice-requests.json")));
+            foreach(var item in dice.RootElement.GetProperty("sites").EnumerateObject())siteCosts.TryAdd(item.Name,item.Value.GetUInt64());
+            foreach(var item in dice.RootElement.GetProperty("tokens").EnumerateObject())tokenCosts.TryAdd(item.Name,item.Value.GetUInt64());
         }
         Panel=new(Machine);byte[] other=new byte[8];
         // This feature-entry fixture has no Orange/Black service buttons held.
@@ -197,7 +206,7 @@ public sealed class SkillCashLiveSession
                 if(nextVm==next) {
                     if(--budget==0)throw new InvalidOperationException("Live dispatch budget exceeded");
                     var instruction=executor.NextInstruction!;
-                    if(StartsAtBoardSelection && instruction.Native==0x2C71)throw new NotSupportedException("ROLL reached the unrecovered dice-motion boundary. Restart and use TAKE FEATURE for the supported Skill Cash route.");
+                    if(StartsAtBoardSelection && instruction.Native==0x61F6){diceRequestPrepared=true;throw new NotSupportedException($"ROLL requested dice symbol {Machine.Memory[0x166]} with stop offset {unchecked((sbyte)Machine.Memory[0x16F])}; physical reel motion is the next unresolved boundary. Restart to play the TAKE FEATURE route.");}
                     waitingForScheduler=instruction.Native==0x5CCB && scheduler.Active;
                     if(waitingForScheduler){nextVm=checked(serviceEpoch+services[serviceIndex].Scan);continue;}
                     ulong cost=instruction.Native==0x5CCB ? 0 : Cost(instruction);
@@ -210,6 +219,9 @@ public sealed class SkillCashLiveSession
     private ulong Cost(Instruction instruction)
     {
         if(siteCosts.TryGetValue(instruction.Site.ToString("X4"),out var cost) || tokenCosts.TryGetValue(instruction.Token.ToString("X4"),out cost))return cost;
+        // Identical validated ROM gateway 00F8; only entry cost is shared.
+        // The called body must still execute and every helper must be translated.
+        if(instruction.Body is not null && instruction.PushAddress is null && threadedCallTokens.Contains(instruction.Token))return tokenCosts["9B3E"];
         throw new NotSupportedException($"No captured CPU pacing boundary for {instruction.Site:X4}/{instruction.Token:X4}");
     }
     private void RecordLatch()
@@ -224,6 +236,6 @@ public sealed class SkillCashLiveSession
         var display=new AlphaPlaybackFrame(0,state.Text,Machine.ReadWord(0xBA),Machine.ReadWord(0x2FA));
         var duty=new OutputPlayback(Math.Max(Cycle,1),history,new[]{display}).Sample(Cycle).LampDuty;
         string status=Fault is not null ? "Fault: "+Fault : Completed ? "Completed" : Paused ? "Paused" : waitingForScheduler ? "Waiting for native scheduler" : VmAddress is >=0x9986 and <=0x998D ? "Waiting for panel release" : selectionLoop ? "Waiting for START · selection loop executing" : AwaitingBoardSelection ? "Waiting for TAKE / START · board selection executing" : "Running";
-        return new(Cycle,Instructions,VmAddress,status,Panel.PhysicalBlack2,Machine.Memory[3],Machine.ReadWord(0x90),Machine.Memory[0x4F],Machine.ReadWord(0xBA),Machine.ReadWord(0x2FA),state.Text,duty,selections.ToArray());
+        return new(Cycle,Instructions,VmAddress,status,Panel.PhysicalBlack2,Machine.Memory[3],Machine.ReadWord(0x90),Machine.Memory[0x4F],Machine.ReadWord(0xBA),Machine.ReadWord(0x2FA),state.Text,duty,selections.ToArray(),diceRequestPrepared ? new(Machine.Memory[0x166],unchecked((sbyte)Machine.Memory[0x16F]),Machine.Memory[0x16E]) : null);
     }
 }

@@ -23,6 +23,7 @@ public partial class MainWindow
         var args=Environment.GetCommandLineArgs();
         if(args.Length==3 && args[1]=="--live-smoke-test")Loaded+=async(_,_)=>await LiveSmokeTest(args[2]);
         if(args.Length==3 && args[1]=="--live-jackpot-smoke-test")Loaded+=async(_,_)=>await LiveSmokeTest(args[2],true);
+        if(args.Length==3 && args[1]=="--live-roll-smoke-test")Loaded+=async(_,_)=>await LiveRollSmokeTest(args[2]);
     }
     private async void BeginLive(object sender,RoutedEventArgs args)=>await LoadLive();
     private async Task<bool> LoadLive(bool startExecution=true)
@@ -96,6 +97,7 @@ public partial class MainWindow
         SessionAlpha.Text=state.Alpha;
         SessionDiagnostic.Text=$"{state.Execution}\nVirtual {state.Cycle/SkillCashLiveSession.CyclesPerSecond:0.000} s · VM {state.VmAddress:X4} · dispatches {state.Instructions:N0}\nBLACK2 physical {state.PhysicalBlack2:X2} / sampled {state.SampledBlack2:X2} · latch {state.PanelLatch:X4} · choice {state.Choice}";
         SessionAccounting.Text=$"Pending {state.Pending} • current win {state.CurrentWin} ROM units • accepted selections {string.Join(", ",state.Selections)}";
+        SessionDice.Text=state.DiceRequest is { } dice ? $"Prepared dice request: symbol {dice.Symbol}, stop offset {dice.StopOffset}, physical position {dice.PhysicalPosition}. Motor motion has not started." : "";
         foreach(var tile in liveTiles) {
             int intensity=(int)Math.Round(Math.Clamp(state.LampDuty[tile.Lamp]*8,0,1)*100);tile.Tile.Background=lampPalette[intensity];((TextBlock)tile.Tile.Child).Foreground=intensity>=35 ? Brushes.Black : Brushes.White;
         }

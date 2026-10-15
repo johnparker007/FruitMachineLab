@@ -137,6 +137,7 @@ public sealed class ScriptExecutor(Machine machine)
                 case "vm_store_byte": { var address = machine.Pop(); machine.Memory[address] = (byte)machine.Pop(); break; }
                 case "vm_store_word": { var address = machine.Pop(); machine.WriteWord(address, machine.Pop()); break; }
                 case "vm_add_to_word_memory": { var address=machine.Pop();machine.WriteWord(address,Cell.Add(machine.ReadWord(address),machine.Pop()));break; }
+                case "vm_add_to_byte_memory": {var address=machine.Pop();machine.Memory[address]=unchecked((byte)(machine.Memory[address]+machine.Pop()));break;}
                 case "vm_clear_byte_memory": machine.Memory[machine.Pop()] = 0; break;
                 case "vm_clear_word_memory_bits": {var mask=machine.Pop();var address=machine.Pop();machine.WriteWord(address,(ushort)(machine.ReadWord(address)&~mask));break;}
                 case "vm_or_word_memory": {var mask=machine.Pop();var address=machine.Pop();machine.WriteWord(address,(ushort)(machine.ReadWord(address)|mask));break;}
@@ -161,6 +162,9 @@ public sealed class ScriptExecutor(Machine machine)
                 case "vm_execute_token_from_stack": {
                     var token=machine.Pop();
                     var word=(ResolveWord ?? throw new NotSupportedException("Dynamic word resolver required"))(token);
+                    if(word.Operation is "vm_push_word_body_byte" or "vm_push_word_body_word" or "vm_push_word_body_address") {
+                        machine.Data.Push(word.Value ?? throw new InvalidDataException("Dynamic literal has no value"));break;
+                    }
                     if(word.Body is not { } entry || ResolveScript is null)throw new NotSupportedException($"Untranslated EXECUTE word {token:X4}");
                     ushort? next=machine.Control is not null ? Continuation() : null;
                     if(next is { } at)Control().EnterCall(at);
@@ -203,6 +207,8 @@ public sealed class ScriptExecutor(Machine machine)
                 case "vm_min_signed": Binary(Cell.Min); break;
                 case "vm_max_signed": Binary((a,b)=>(short)a>(short)b ? a : b);break;
                 case "vm_compare_equal": Binary((a,b) => Cell.Flag(a == b)); break;
+                case "vm_compare_not_equal": Binary((a,b)=>Cell.Flag(a!=b));break;
+                case "vm_test_negative": machine.Data.Push(Cell.Flag((short)machine.Pop()<0));break;
                 case "vm_compare_top_lt_second_signed": Binary((a,b)=>Cell.Flag((short)b<(short)a)); break;
                 case "vm_compare_top_gt_second_signed": Binary((a,b)=>Cell.Flag((short)b>(short)a));break;
                 case "vm_compare_top_gt_second_unsigned": Binary((a,b)=>Cell.Flag(b>a)); break;

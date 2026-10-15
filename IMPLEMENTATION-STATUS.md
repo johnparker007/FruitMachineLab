@@ -161,3 +161,13 @@ VM frames resume via decoded address ownership. The natural broader replay check
 uninitialized frame bytes are explicitly excluded until the ROM initializes them.
 87 groups pass, including all six awards through all three entry modes. Roll/dice
 motion is the next explicit unsupported boundary; no whole-game claim is made.
+
+## Dice selection and request preparation
+
+See docs/recovery/DICE-REQUEST-PASS.md. Live Start executes the recovered selection,
+profile scaling and signed reel-offset logic, emits ROLLING and stops before native
+61F6. A natural request capture matches 485 dispatches plus lamp/sound/alpha effects;
+the 478-dispatch inner body agrees with an independent capture. 92 groups pass,
+including varied live timing and native edge tests. Motor scheduling, completion
+and board movement remain unimplemented. Game-specific reel/profile tables stay
+in the Adders layer until reuse is demonstrated.

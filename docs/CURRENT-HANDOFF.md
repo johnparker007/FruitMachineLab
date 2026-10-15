@@ -10,7 +10,7 @@ batch, including its verification.
 - Live Skill Cash: incremental VM, retained state, physical momentary Start input,
   actual Pause/Resume, generated lamp/alpha outputs and diagnostic state display.
 - Separate verified playback/scrubber; original MAME-backed verification retained.
-- Last development batch: 87 headless groups passed. Headless and isolated WPF
+- Last development batch: 92 headless groups passed. Headless and isolated WPF
   builds passed; Live/playback WPF smoke checks and rendered layouts were checked.
 - John subsequently reported that the live feature works well.
 
@@ -27,18 +27,28 @@ Live now defaults to DD38 at board square 32. TAKE FEATURE is physical BLACK2 bi
 01; START remains bit 80. Take enters Skill Cash and returns through the restored
 DDAF/DE75/E43D frames to E460. The entry selector retains C721 and E2FC modes.
 All six default award levels complete through all three modes. START at the board
-prompt reaches an explicit unrecovered dice-motion boundary; Restart is available.
+prompt now computes a dice request, displays ROLLING, and stops before physical
+motion at B283/native 61F6; Restart is available. The requested symbol/offset and
+unchanged physical position are shown separately from any motor movement.
 The natural selection reference checks 99,843 exposed VM observations (with explicit
 uninitialized-local masks), 7,331 lamp requests, 6,099 sound commands, 1,107 alpha
 bytes and 868 input-condition reads. Its full original C721 source digest remains
 unchanged. See recovery/BOARD-SELECTION-TAKE-PASS.md for exact qualifications.
 
+The new natural square-7 request reference checks 485 VM observations, 15 lamp
+requests/frame results, 16 sound commands, 50 alpha bytes and five input conditions.
+Its 478-dispatch body independently matches a narrower capture. Eight live timing
+variations at square 32 request symbols 2,4,6 without moving the physical position.
+See recovery/DICE-REQUEST-PASS.md for native profile, symbol and alpha-loop recovery,
+static entry-cost equivalences and the distinction between the two board contexts.
+
 ## Next development work
 
-Recover B271/B1D0/B1FD and the native dice/reel request, motion and symbol path, then
-DDF3 movement and DBC4 ladder/snake dispatch. DD38 take selection through E460 is
-implemented for square 32. The earlier ladder is not executed; rolling still stops
-at DD81/native 2C71. Startup, credits, general reels and whole-game play remain open.
+Capture and translate native 61F6/6287 motion initialization, periodic stepper
+service, position updates, completion and symbol refresh. B271/B1D0/B1FD now prepare
+the request; 2C12/2BEB symbol projection is translated with explicit busy gating.
+Continue through B28F to DDF3 movement and DBC4 ladder/snake dispatch only after
+motion is verified. The earlier ladder, startup, credits and whole-game play remain open.
 Improve timing and remaining Skill Cash option coverage. Prioritize playable coverage,
 not script editing. Bring layout integration into normal-play development using
 John's existing importer/renderers when their locations and assets are available.
@@ -60,6 +70,8 @@ The default Live/jackpot smoke exercises physical Take before Start, plus Take
 capture/focus release. The jackpot driver remains accelerated. Replay uses captured
 input-port/native scheduling phases; Live never substitutes recorded player events.
 Raw boundary capture and temporary diagnostic comparison files remain outside Git.
+--live-roll-smoke-test <fresh-output-directory> checks a real-time physical Start,
+prepared request output, explicit 61F6 stop, released controls and clean restart.
 
 No agent commit, push, installation, configuration change or cloud setup was
 performed. Inspect git status before the next batch; do not infer commit state

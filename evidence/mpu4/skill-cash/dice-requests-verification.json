@@ -1,0 +1,8 @@
+{
+  "run_directory": "C:/Users/John/AppData/Local/Temp/FruitMachineLab-dice-branch-963728ce0cd4457891c4fbc4e3443e6f",
+  "raw_sha256": "D43D5EC950462B9D9A388DFD3C37B753A907F1EF8305132A750ADAB08D8E2719",
+  "ram_sha256": "73023C401DB66BBAF64B280FF2123413E9C1F60680004A70E9B9D685C0F4A931",
+  "classification": "Natural dice request boundary; no memory/register injection",
+  "independent_body_dispatches": 478,
+  "independent_body_sha256": "B62D2EC34427614B45E25BEECBDC6846021BBD0B753C1066ECEDF3955DFED6D3"
+}

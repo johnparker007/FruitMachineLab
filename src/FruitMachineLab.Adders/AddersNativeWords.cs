@@ -8,6 +8,9 @@ public static class AddersNativeWords
     public static bool Handle(Instruction instruction,Machine state,Mpu4LampRequests lamps,Mpu4ChoiceStreamScheduler scheduler,Mpu4Alpha alpha,Action? alphaChanged=null)
     {
         if(lamps.HandleWord(instruction))return true;
+        if(instruction.Native==0x169B){state.Data.Push(AddersParameterProfiles.Compute(state,state.Pop()));return true;}
+        if(instruction.Native==0x2C12){AddersReelSymbols.Refresh(state);return true;}
+        if(instruction.Native==0x2BEB){AddersReelSymbols.RefreshWithoutRequests(state);return true;}
         if(instruction.Operation=="vm_execute_lamp_stream"){lamps.ExecuteStream(Cell.Add(instruction.Site,2));return true;}
         if(instruction.Token==0x856F){state.Data.Push(Cell.Flag(!scheduler.Active));return true;}
         if(instruction.Native==0x5C18)return scheduler.Queue(state.Pop());

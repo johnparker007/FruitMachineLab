@@ -35,7 +35,7 @@ are available. This mode uses recorded inputs; use Live Skill Cash for the tempo
 player control. Audio remains future work. See
 [playback evidence and boundaries](docs/recovery/SKILL-CASH-PLAYBACK-PASS.md).
 
-Latest local verification: headless and isolated WPF builds succeed; 77
+Latest local verification: headless and isolated WPF builds succeed; 81
 verification groups pass. Continuous C721 execution matches 98,704 VM dispatches,
 selects 3, 2 and 1, and finishes with pending 0/current win 10. All 7,298 lamp frame
 updates and the complete sound timing protocol match recorded native observations.
@@ -68,3 +68,8 @@ removal of between-scan frame injection and the remaining deadline-generation bo
 The [award coverage and IRQ occupancy pass](docs/recovery/SKILL-CASH-EXTENSION-PASS.md)
 adds live jackpot announcement support and tests all six default award levels.
 Normal machine play remains the next milestone; captured timing remains provisional.
+
+Live now includes the recovered board take/feature entry and exit by default,
+including the SKILL CASH announcement. Uncheck that option to start directly at
+C721. See the [board entry report](docs/recovery/SKILL-CASH-BOARD-ENTRY-PASS.md)
+for natural MAME comparisons and the boundary before full machine play.

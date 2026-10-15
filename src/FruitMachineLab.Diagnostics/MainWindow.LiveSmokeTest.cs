@@ -10,14 +10,17 @@ public partial class MainWindow
     {
         Directory.CreateDirectory(directory);
         try {
-            if(!await LoadLive())throw new InvalidOperationException(Status.Text);
+            if(!await LoadLive(startExecution:false))throw new InvalidOperationException(Status.Text);
             if(liveSession!.Instructions!=0 || liveSession.AlphaOperations!=0)throw new InvalidOperationException("Live load pre-executed the feature");
+            ResumeLive();
             await Task.Delay(200);PauseLive();
             ulong cycle=liveSession.Cycle;int instructions=liveSession.Instructions;var memory=liveSession.Machine.Memory.ToArray();
             await Task.Delay(100);
             if(liveSession.Cycle!=cycle || liveSession.Instructions!=instructions || !memory.SequenceEqual(liveSession.Machine.Memory))throw new InvalidOperationException("Paused live VM advanced");
             ResumeLive();await Task.Delay(50);
-            if(liveSession.Cycle<=cycle || liveSession.Instructions<=instructions)throw new InvalidOperationException("Resume did not continue live execution");
+            // The board announcement can be waiting on sound tasks here. IRQ
+            // state and virtual time must resume even without a new VM dispatch.
+            if(liveSession.Cycle<=cycle || (liveSession.Instructions<=instructions && memory.SequenceEqual(liveSession.Machine.Memory)))throw new InvalidOperationException("Resume did not continue live execution");
             PhysicalStartDown(PhysicalStart,new MouseButtonEventArgs(Mouse.PrimaryDevice,Environment.TickCount,MouseButton.Left){RoutedEvent=UIElement.PreviewMouseLeftButtonDownEvent});
             if(!liveSession.Panel.StartPressed)throw new InvalidOperationException("Physical mouse-down did not press Start");
             PhysicalStartCaptureLost(PhysicalStart,new MouseEventArgs(Mouse.PrimaryDevice,Environment.TickCount));
@@ -28,8 +31,9 @@ public partial class MainWindow
             // run supplies only physical Start events while the actual timer runs.
             if(!await LoadLive())throw new InvalidOperationException(Status.Text);
             ushort[] choices=jackpot ? [6,6,6] : [3,2,1];int stage=0;bool pressed=false;
-            bool announced=false;
-            if(jackpot){liveTimer!.Stop();liveSession!.ObserveAlpha=state=>announced|=state.Text.Contains("JACKPOT");}
+            bool announced=false,title=false;
+            liveSession!.ObserveAlpha=state=>{announced|=state.Text.Contains("JACKPOT");title|=state.Text.Contains("SKILL CASH");};
+            if(jackpot)liveTimer!.Stop();
             var timeout=System.Diagnostics.Stopwatch.StartNew();
             while(!liveSession!.Completed && liveSession.Fault is null && timeout.Elapsed.TotalSeconds<45) {
                 if(stage<choices.Length && !pressed && liveSession.Machine.Memory[0x4F]==choices[stage]) {
@@ -47,16 +51,17 @@ public partial class MainWindow
                     Width=1100;Height=850;
                 }
                 if(jackpot && announced && !File.Exists(Path.Combine(directory,"jackpot.png"))){RenderLive();SaveWindowImage(Path.Combine(directory,"jackpot.png"));}
+                if(title && stage==0 && !File.Exists(Path.Combine(directory,"board-entry.png"))){RenderLive();SaveWindowImage(Path.Combine(directory,"board-entry.png"));}
                 if(!jackpot)await Task.Delay(5);
             }
             // Windows dispatch latency can move a real-time press into the next
             // selection. Exact player timing/awards are checked headlessly; this
             // smoke verifies physical input, completed accounting and rendering.
             ushort win=liveSession.Machine.ReadWord(0x2FA);
-            if(!liveSession.Completed || liveSession.Fault is not null || liveSession.Selections.Count!=3 || win==0 || (jackpot && win!=60) || liveSession.Panel.StartPressed)
+            if(!liveSession.Completed || liveSession.Fault is not null || liveSession.Selections.Count!=3 || win==0 || liveSession.Machine.ReadWord(0xBA)!=0 || (jackpot && win!=60) || liveSession.Panel.StartPressed || (liveSession.IncludesCaller && !title))
                 throw new InvalidOperationException("Live WPF run failed: "+liveSession.Snapshot().Execution+" choices "+string.Join(',',liveSession.Selections));
             RenderLive();await Dispatcher.InvokeAsync(()=>{},DispatcherPriority.ApplicationIdle);SaveWindowImage(Path.Combine(directory,"live-completed.png"));
-            if(!await LoadLive() || liveSession!.Instructions!=0)throw new InvalidOperationException("Restart did not restore feature-entry state");
+            if(!await LoadLive(startExecution:false) || liveSession!.Instructions!=0)throw new InvalidOperationException("Restart did not restore feature-entry state");
             PauseLive();File.WriteAllText(Path.Combine(directory,"result.txt"),jackpot ? "PASS: accelerated physical-input jackpot driver, generated announcement/lamp rendering, 60-unit award completion and restart. Real-time mouse path is a separate smoke mode.\n" : "PASS: no precomputed execution, actual pause/resume, physical mouse press/release, capture-loss release, live player selections, award completion, restart, WPF renders.\n");
             Application.Current.Shutdown(0);
         } catch(Exception error){File.WriteAllText(Path.Combine(directory,"result.txt"),error.ToString());Application.Current.Shutdown(1);}

@@ -25,18 +25,18 @@ public partial class MainWindow
         if(args.Length==3 && args[1]=="--live-jackpot-smoke-test")Loaded+=async(_,_)=>await LiveSmokeTest(args[2],true);
     }
     private async void BeginLive(object sender,RoutedEventArgs args)=>await LoadLive();
-    private async Task<bool> LoadLive()
+    private async Task<bool> LoadLive(bool startExecution=true)
     {
         PauseLive();transport?.Pause();playbackTimer?.Stop();
-        BeginLiveButton.IsEnabled=RestartLiveButton.IsEnabled=LoadReplay.IsEnabled=false;string path=RootPath.Text;
+        BeginLiveButton.IsEnabled=RestartLiveButton.IsEnabled=LoadReplay.IsEnabled=false;string path=RootPath.Text;bool includeCaller=IncludeCaller.IsChecked==true;
         try {
             Status.Text="Loading feature-entry state and recovered scripts…";
-            liveSession=await Task.Run(()=>new SkillCashLiveSession(Path.Combine(path,"evidence","mpu4")));
+            liveSession=await Task.Run(()=>new SkillCashLiveSession(Path.Combine(path,"evidence","mpu4"),includeCaller));
             liveTiles.Clear();SessionFeatureLamps.Children.Clear();SessionAllLamps.Children.Clear();SessionSelectionLamps.Children.Clear();
             foreach(byte id in liveSession.Machine.Memory[0x726F..0x7281])AddLamp(SessionSelectionLamps,liveSession.Lamps.Single(lamp=>lamp.LogicalId==id),false,liveTiles);
             foreach(int number in new[]{47,39,31,23,15,7,83,41})AddLamp(SessionFeatureLamps,liveSession.Lamps[number],true,liveTiles);
             foreach(var lamp in liveSession.Lamps)AddLamp(SessionAllLamps,lamp,false,liveTiles);
-            Views.SelectedIndex=0;ResumeLive();
+            Views.SelectedIndex=0;if(startExecution)ResumeLive();else RenderLive();
             Status.Text="Live feature running. Press and release the physical START button to stop each selection. No recorded player events are applied.";return true;
         } catch(Exception error){Status.Text=error.Message;SessionDiagnostic.Text="Live feature unavailable: "+error.Message;liveSession=null;return false;}
         finally {BeginLiveButton.IsEnabled=LoadReplay.IsEnabled=true;RestartLiveButton.IsEnabled=liveSession is not null;}

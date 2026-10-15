@@ -17,6 +17,7 @@
        <Button x:Name="ResumeLiveButton" Content="Resume execution" Click="ResumeLiveClick" IsEnabled="False" Padding="14,7" />
        <Button x:Name="RestartLiveButton" Content="Restart feature" Click="BeginLive" IsEnabled="False" Padding="14,7" Margin="8,0" />
       </WrapPanel>
+      <CheckBox x:Name="IncludeCaller" Content="Include recovered board take, feature entry and exit (position 32)" ToolTip="Applied on Start feature or Restart. Starts at the captured board-result boundary, before the Skill Cash announcement; full machine startup is not included." IsChecked="True" Margin="0,8,0,0" />
       <TextBlock x:Name="SessionDiagnostic" Text="Start the feature, then hold and release the physical START button below." Margin="0,10" TextWrapping="Wrap" FontFamily="Consolas" />
      </StackPanel>
      <ScrollViewer VerticalScrollBarVisibility="Auto">

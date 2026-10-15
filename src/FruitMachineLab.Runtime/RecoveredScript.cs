@@ -129,6 +129,7 @@ public sealed class ScriptExecutor(Machine machine)
                     var address=machine.Pop(); machine.Data.Push(machine.ReadWord(Cell.Add(address,2))); machine.Data.Push(machine.ReadWord(address)); break;
                 }
                 case "vm_duplicate_cell": { var v = machine.Pop(); machine.Data.Push(v); machine.Data.Push(v); break; }
+                case "vm_duplicate_if_nonzero": if(machine.Data.Peek()!=0)machine.Data.Push(machine.Data.Peek());break;
                 case "vm_drop_cell": machine.Pop(); break;
                 case "vm_drop_two_cells": machine.Pop();machine.Pop();break;
                 case "vm_swap_two_cells": { var b=machine.Pop(); var a=machine.Pop(); machine.Data.Push(b); machine.Data.Push(a); break; }
@@ -211,6 +212,7 @@ public sealed class ScriptExecutor(Machine machine)
                 case "vm_branch_forward8_if_zero_else_drop":
                     if(machine.Pop()==0)Jump(i.Branch ?? throw new InvalidDataException("Missing branch target"));else machine.Pop();break;
                 case "vm_return_to_caller_stream": machine.Control?.Return();yield break;
+                case "vm_unwind_loop_frames_to_return": Control().Return();yield break;
                 case "vm_return_if_nonzero": if(machine.Pop()!=0) { machine.Control?.Return();yield break; }break;
                 default:
                     if(WordHandler?.Invoke(i,machine)==true) break;

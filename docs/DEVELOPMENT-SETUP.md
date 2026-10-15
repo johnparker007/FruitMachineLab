@@ -121,3 +121,10 @@ all six default live award levels, jackpot announcement support and captured IRQ
 occupancy pacing. Build commands and dependencies are unchanged. The optional
 --live-jackpot-smoke-test <fresh-output-directory> is an accelerated physical-input
 and render check, separate from the real-time Live smoke mode.
+
+## Board entry follow-up
+
+81 groups now pass. Live defaults to the recovered E2FC board-result entry for
+type 2/position 32, including take gating, announcement, cash-feature table dispatch
+and the return to E33C. The checkbox retains the earlier C721-only diagnostic entry.
+See recovery/SKILL-CASH-BOARD-ENTRY-PASS.md. Build/smoke commands are unchanged.

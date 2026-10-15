@@ -10,7 +10,7 @@ batch, including its verification.
 - Live Skill Cash: incremental VM, retained state, physical momentary Start input,
   actual Pause/Resume, generated lamp/alpha outputs and diagnostic state display.
 - Separate verified playback/scrubber; original MAME-backed verification retained.
-- Last development batch: 77 headless groups passed. Headless and isolated WPF
+- Last development batch: 81 headless groups passed. Headless and isolated WPF
   builds passed; Live/playback WPF smoke checks and rendered layouts were checked.
 - John subsequently reported that the live feature works well.
 
@@ -23,12 +23,20 @@ The jackpot announcement now runs live, and all six default award levels complet
 See recovery/SKILL-CASH-EXTENSION-PASS.md for the synthetic helper proof, captured
 IRQ occupancy adapter and exact limitations.
 
+Live now defaults to the captured E2FC board-result boundary (type 2, position 32),
+executes the take flag/type dispatch and DFF6 announcement, runs C721, and returns
+through the real dispatcher frames to E33C. The checkbox can retain C721-only entry.
+Two natural MAME captures reproduce the original feature digest; 100/124 prelude
+dispatches, announcement sound/alpha and lamp frames are checked separately.
+All six default award levels complete through both entry modes. See
+recovery/SKILL-CASH-BOARD-ENTRY-PASS.md for fixture and scheduling qualifications.
+
 ## Next development work
 
-Extend the recovered normal cash-feature selector (position 32 selects C71F/C721)
-into surrounding entry/exit and the retained machine lifecycle. Improve timing
-and remaining Skill Cash option coverage while establishing the route
-into/out of the feature from normal machine play. Prioritize playable coverage,
+Continue outward into E43D/DE75 board movement, destination changes, take/continue
+inputs and retained entry/exit state. E2FC..E33C is implemented for the selected
+cash-feature route, but startup, credits, reels and whole-game play remain open.
+Improve timing and remaining Skill Cash option coverage. Prioritize playable coverage,
 not script editing. Bring layout integration into normal-play development using
 John's existing importer/renderers when their locations and assets are available.
 Work not dependent on those references can proceed independently.

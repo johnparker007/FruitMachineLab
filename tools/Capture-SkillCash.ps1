@@ -12,7 +12,9 @@ param(
     [switch]$SharedTiming,
     [switch]$TimerDeadlines,
     [switch]$CpuInterrupts,
-    [switch]$JackpotProbe
+    [switch]$JackpotProbe,
+    [switch]$CashFeatureCaller,
+    [switch]$BoardResultCaller
 )
 $ErrorActionPreference='Stop'
 $root=Split-Path $PSScriptRoot -Parent
@@ -114,6 +116,8 @@ if($extra.Count -gt 0) {
 }
 $print='printf "'+$format+'",'+$values
 $stop=if($FullFeature){'0xc767'}else{'0xc71d'}
+if($CashFeatureCaller){if(!$FullFeature -or $JackpotProbe){throw 'Caller capture requires FullFeature and excludes synthetic JackpotProbe'};$stop='0xe0bf'}
+if($BoardResultCaller){if(!$CashFeatureCaller){throw 'Board result capture requires CashFeatureCaller'};$stop='0xe33c'}
 $dispatchAction="temp0=(y!=$stop);$print;go"
 if($JackpotProbe) {
  if(!$FullFeature){throw 'Jackpot probe requires -FullFeature'}
@@ -125,7 +129,7 @@ $commands=@(
  # Keep the original fixture's one-breakpoint startup command count. Each debugger
  # setup command triggers a paused frame callback in this harness; extra commands
  # change frame-number-based physical input timing. temp0 starts at zero in MAME.
- "bpset 0xfc,y==0xc721 || temp0==1,{$dispatchAction}"
+ $(if($BoardResultCaller){"bpset 0xfc,(y==0xe2fc && w@u==2 && b@0xc9==0x20) || temp0==1,{$dispatchAction}"}elseif($CashFeatureCaller){"bpset 0xfc,(y==0xdff6 && b@0xc9==0x20) || temp0==1,{$dispatchAction}"}else{"bpset 0xfc,y==0xc721 || temp0==1,{$dispatchAction}"})
 )+$extra+@(
  'gtime #2400000',
  'save ram-final.bin,0,800',
@@ -140,7 +144,7 @@ $arguments=@('m4addr','-noreadconfig','-rompath',$RomDirectory,
 $arguments | ConvertTo-Json | Set-Content "$run/arguments.json"
 @{mame_sha256=(Get-FileHash -LiteralPath $MameExecutable).Hash;replay_sha256=(Get-FileHash "$run/replay-actions.csv").Hash;
  native_sound_capture=[bool]$NativeSound;native_nvram_capture=[bool]$NativeNvram;full_feature_capture=[bool]$FullFeature;native_input_capture=[bool]$NativeInput;native_lamp_frames=[bool]$NativeLampFrames;native_alpha_capture=[bool]$NativeAlpha;native_scan_capture=[bool]$NativeScan;shared_timing=[bool]$SharedTiming;paused_setup_callbacks_skipped=$extra.Count;
- timer_deadlines=[bool]$TimerDeadlines;cpu_interrupts=[bool]$CpuInterrupts;synthetic_jackpot_probe=[bool]$JackpotProbe;
+ timer_deadlines=[bool]$TimerDeadlines;cpu_interrupts=[bool]$CpuInterrupts;synthetic_jackpot_probe=[bool]$JackpotProbe;cash_feature_caller=[bool]$CashFeatureCaller;board_result_caller=[bool]$BoardResultCaller;
  initial_state='Fresh isolated default configuration and absent NVRAM; physical-input fixture only; no RAM/ROM injection.'} |
  ConvertTo-Json | Set-Content "$run/provenance.json"
 $previousReplay=$env:MPU4_REPLAY

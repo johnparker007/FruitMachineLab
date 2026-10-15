@@ -26,6 +26,7 @@ public sealed class SkillCashLiveSession
     private ulong serviceEpoch,nextVm,nextCallback=ulong.MaxValue;
     private double fractionalCycles;
     private bool waitingForScheduler,selectionLoop;
+    public bool IncludesCaller {get;}
     public Machine Machine {get;}=new();
     public Mpu4PanelInput Panel {get;}
     public ulong Cycle {get;private set;}
@@ -38,13 +39,14 @@ public sealed class SkillCashLiveSession
     public bool Paused {get;private set;}=true;
     public bool Completed=>executor.Completed;
     public string? Fault {get;private set;}
-    public ushort VmAddress=>executor.NextInstruction?.Site ?? 0xC767;
+    public ushort VmAddress=>executor.NextInstruction?.Site ?? (IncludesCaller ? (ushort)0xE33C : (ushort)0xC767);
     public IReadOnlyList<ushort> Selections=>selections;
     public Action<Instruction,Machine>? ObserveDispatch {get;set;}
     public Action<AlphaState>? ObserveAlpha {get;set;}
     public Action<LampRequest>? ObserveLamp {get;set;}
-    public SkillCashLiveSession(string evidenceDirectory)
+    public SkillCashLiveSession(string evidenceDirectory,bool includeCaller=false)
     {
+        IncludesCaller=includeCaller;
         evidence=evidenceDirectory;
         Lamps=SkillCashPlayback.LoadLamps(evidence);
         var options=new JsonSerializerOptions{PropertyNameCaseInsensitive=true};
@@ -61,13 +63,20 @@ public sealed class SkillCashLiveSession
         using(var data=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"maps","skill-cash-extension-data.json"))))
             foreach(var alias in data.RootElement.GetProperty("equivalent_timing_tokens").EnumerateObject())tokenCosts.Add(alias.Name,tokenCosts[alias.Value.GetString()!]);
         SeedFeature(feature);SeedScan(timing);SkillCashData.LoadExtensions(Machine,evidence);
+        ushort initialClock=feature.Initial["clock"];
+        if(includeCaller) {
+            initialClock=SkillCashCallerState.Apply(Machine,evidence,true);
+            using var caller=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","board-result.json")));
+            foreach(var item in caller.RootElement.GetProperty("sites").EnumerateObject())siteCosts.TryAdd(item.Name,item.Value.GetUInt64());
+            foreach(var item in caller.RootElement.GetProperty("tokens").EnumerateObject())tokenCosts.TryAdd(item.Name,item.Value.GetUInt64());
+        }
         Panel=new(Machine);byte[] other=new byte[8];
         // This feature-entry fixture has no Orange/Black service buttons held.
         // DIL bits are fixed prerequisites, not player-event substitutions.
         var condition=feature.Conditions[0];other[6]=(byte)condition[7];other[7]=(byte)condition[8];Panel.SeedOtherPorts(other);
         for(int n=0;n<8;n++)Machine.Memory[n]=other[n];
         Machine.Memory[0x91]&=0x7F;
-        alpha=new(Machine);scheduler=new(Machine,feature.Initial["clock"]);
+        alpha=new(Machine);scheduler=new(Machine,initialClock);
         var response=JsonSerializer.Deserialize<LampFrameCapture>(File.ReadAllText(Path.Combine(evidence,"skill-cash","lamp-frames.json")),options)!;
         var frames=new Mpu4LampFrames(Machine,response.Responses.Select(x=>checked((byte)x)).ToArray());
         var requests=new Mpu4LampRequests(Machine,request=>{frames.Apply(request.Id,request.Pattern);LampRequests++;ObserveLamp?.Invoke(request);});
@@ -97,7 +106,7 @@ public sealed class SkillCashLiveSession
                 return AddersNativeWords.Handle(instruction,state,requests,scheduler,alpha,()=>{AlphaOperations++;ObserveAlpha?.Invoke(alpha.Snapshot());});
             }
         };
-        executor.Begin(Resolve(0xC721),10_000_000);
+        executor.Begin(Resolve(includeCaller ? (ushort)0xE2FC : (ushort)0xC721),10_000_000);
     }
     private readonly ulong servicePeriod;
     private RecoveredScript Resolve(ushort address)

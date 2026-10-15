@@ -7,6 +7,42 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Natural cash-feature caller entry matches MAME before Skill Cash", () => {
+    var result=SkillCashCallerVerification.Verify(evidence);
+    Console.WriteLine($"  {result.EntryInstructions} caller entry dispatches, {result.AlphaBytes} alpha bytes, {result.SoundCommands} sound commands; {result.ExitInstructions} captured exit dispatches retained");
+});
+Check("Natural board-result wrapper matches MAME and routes the taken cash feature", () => {
+    var result=SkillCashCallerVerification.Verify(evidence,true);
+    Console.WriteLine($"  {result.EntryInstructions} board/caller entry dispatches, {result.AlphaBytes} alpha bytes and {result.SoundCommands} sound commands checked");
+});
+Check("Live board dispatcher announces Skill Cash and returns through its actual caller", () => {
+    var live=new SkillCashLiveSession(evidence,true);live.Resume();int stage=0;bool held=false,announced=false,sawReturn=false,returning=false;int exits=0;
+    using var capture=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","board-result.json")));
+    var exitRows=capture.RootElement.GetProperty("rows").EnumerateArray().SkipWhile(row=>row[0].GetInt32()!=0x76BD).Where(row=>row[0].GetInt32()!=0x76BD).ToArray();
+    live.ObserveAlpha=state=>announced|=state.Text.Contains("SKILL CASH");
+    live.ObserveDispatch=(i,m)=>{
+        sawReturn|=i.Site==0xE0BF;
+        if(i.Site==0xC767){returning=true;return;}
+        if(!returning)return;
+        var expected=exitRows[exits++];var cells=m.Data.ToArray();
+        ushort[] actual=[i.Site,i.Token,cells[0],cells[1],cells[2],cells[3],m.DataPointer,m.Control!.Pointer,m.LocalFrame,m.Control.LoopFrame,m.ReadWord(m.LocalFrame)];
+        for(int n=0;n<actual.Length;n++)Equal(expected[n].GetInt32(),(int)actual[n]);
+        Equal(expected[17].GetInt32(),(int)m.ReadWord(0xBA));Equal(expected[18].GetInt32(),(int)m.ReadWord(0x2FA));
+        Equal(expected[22].GetInt32(),(int)m.ReadWord(0x327));Equal(expected[23].GetInt32(),(int)m.ReadWord(0xA0));
+    };
+    for(int n=0;n<250000 && !live.Completed;n++) {
+        if(stage<3 && !held && live.Machine.Memory[0x4F]==3-stage){live.SetStart(true);held=true;}
+        live.AdvanceCycles(512);if(held && live.Selections.Count>stage){live.SetStart(false);held=false;stage++;}
+    }
+    Equal(true,live.Completed);Equal(true,announced);Equal(true,sawReturn);Equal("3,2,1",string.Join(',',live.Selections));
+    Equal((ushort)10,live.Machine.ReadWord(0x2FA));Equal((ushort)0,live.Machine.ReadWord(0xBA));Equal(4,live.Machine.Data.Count);Equal((ushort)0xBEEF,live.Machine.Control!.ResumeCursor);
+    Equal(exitRows.Length,exits);
+});
+Check("Recovered board take flag can suppress cash-feature execution", () => {
+    var live=new SkillCashLiveSession(evidence,true);live.Machine.WriteWord(0xA0,(ushort)(live.Machine.ReadWord(0xA0)&~0x10));live.Resume();
+    for(int n=0;n<10000 && !live.Completed;n++)live.AdvanceCycles(512);
+    Equal(true,live.Completed);Equal(0,live.Selections.Count);Equal((ushort)0,live.Machine.ReadWord(0x2FA));Equal(4,live.Machine.Data.Count);Equal((ushort)0xBEEF,live.Machine.Control!.ResumeCursor);
+});
 Check("Synthetic MAME jackpot announcement matches VM, lamp, sound and alpha evidence", () => {
     var result=SkillCashJackpotProbeVerification.Verify(evidence);
     Console.WriteLine($"  {result.Instructions} lifted VM dispatches, {result.LampRequests} lamp requests, {result.SoundCommands} sound commands and {result.SerialBytes} alpha bytes checked; synthetic invocation, not a reached jackpot award");
@@ -30,8 +66,9 @@ Check("Live six-pound Skill Cash executes the recovered jackpot announcement", (
 });
 Check("Live player inputs cover every default Skill Cash award level", () => {
     ushort[] awards=[0,10,16,20,22,30,60];
+    foreach(bool caller in new[]{false,true})
     for(byte level=1;level<=6;level++) {
-        var live=new SkillCashLiveSession(evidence);live.Resume();int stage=0;bool held=false;
+        var live=new SkillCashLiveSession(evidence,caller);live.Resume();int stage=0;bool held=false;
         for(int n=0;n<200000 && !live.Completed;n++) {
             if(stage<3 && !held && live.Machine.Memory[0x4F]==level){live.SetStart(true);held=true;}
             live.AdvanceCycles(512);if(held && live.Selections.Count>stage){live.SetStart(false);held=false;stage++;}

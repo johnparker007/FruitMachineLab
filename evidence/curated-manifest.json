@@ -110,6 +110,11 @@
     "sha256": "1B931603746624A59F5CD24FEB94836C4706D2A2D1193724CB837E6444266131"
   },
   {
+    "path": "docs/recovery/SKILL-CASH-BOARD-ENTRY-PASS.md",
+    "bytes": 5367,
+    "sha256": "50E6827F47EA43BF74E55C3BDA3F3785360E78347DFA4A00C78B9371AF25E5AA"
+  },
+  {
     "path": "docs/recovery/SKILL-CASH-COMPENSATION-PASS.md",
     "bytes": 4766,
     "sha256": "A4B4AB17DADFBC37F90475273444F01CC34187E8903B09E53B3BAF9E38282D74"
@@ -216,8 +221,8 @@
   },
   {
     "path": "evidence/mpu4/maps/skill-cash-extension-data.json",
-    "bytes": 1926,
-    "sha256": "0EE6A21AD9F9CA19B05B93AFE9B87A986BCA0EDE91240D076626BBAE6BD564BF"
+    "bytes": 2807,
+    "sha256": "5C46AD0803C8D72E48A118E481DC71E9131C0AB004B0856CACC52D78D1D5527D"
   },
   {
     "path": "evidence/mpu4/maps/skill-cash-feature-data.json",
@@ -398,6 +403,11 @@
     "path": "evidence/mpu4/native/4917.json",
     "bytes": 845,
     "sha256": "C7EFB50CFDBEF8F504B30ABCF9CF0CCDA31448A4B437A0E5682C573D01AD6192"
+  },
+  {
+    "path": "evidence/mpu4/native/4982.json",
+    "bytes": 513,
+    "sha256": "62C42F44237E2EB054713539418D9CF023165D2D93BE495072462CCBC2A9BCC8"
   },
   {
     "path": "evidence/mpu4/native/498b.json",
@@ -760,6 +770,11 @@
     "sha256": "857FEDA5D7889C093291D70AE64F33790FFDA7D79C455E6BDBFF21D2331228B9"
   },
   {
+    "path": "evidence/mpu4/native/7b4b.json",
+    "bytes": 1131,
+    "sha256": "F84DBE4734B7C72A8C5CB87567FEAA4310CD05A3E3A4B7CAAB4F4A11F21F19B4"
+  },
+  {
     "path": "evidence/mpu4/native/7b53.json",
     "bytes": 818,
     "sha256": "4D36B5FA1E3533C91DAB2CC425F15BC707F3856295C9C465295D9C15991DD64B"
@@ -893,6 +908,36 @@
     "path": "evidence/mpu4/skill-cash/award-verification.json",
     "bytes": 1239,
     "sha256": "F8F7310DCF7829EE4EB307364986F16F80EFF59E95BE6F2F9027595BB941F871"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/board-result-debugger.cmd",
+    "bytes": 4458,
+    "sha256": "61A01F73D5E0B0784D94B4CF3A8249322ABA19B49958601465A782BCA3E2888A"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/board-result-verification.json",
+    "bytes": 368,
+    "sha256": "861B5A4034D5E38FAAB6EDAE239868ED025CCDFA1E7AC35F4C7E0B1F067C32A4"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/board-result.json",
+    "bytes": 64189,
+    "sha256": "61948A4DCF225DE286BCBE0F7D1FF8F8E15135E04F11FBCD344AB7D53F86B4AB"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/caller-debugger.cmd",
+    "bytes": 4463,
+    "sha256": "4AB2DBB98A8FED4F484B8BF5A793BFE2F1AF18454A66B2A965C01BB60E67FB02"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/caller-verification.json",
+    "bytes": 362,
+    "sha256": "C04A4158FF5CA7A90CC544EE27D7A7787320413349BB532DC7F5CFC7E4FCAC6E"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/caller.json",
+    "bytes": 52978,
+    "sha256": "92B8D229B72EE87EED80408412686CE1352CE736D8E776537F52F316DEC1AF8D"
   },
   {
     "path": "evidence/mpu4/skill-cash/compensation-calls.json",

@@ -143,3 +143,11 @@ the jackpot announcement execute live; 77 verification groups pass. A synthetic
 MAME helper probe independently checks VM/lamp/sound/alpha effects. Captured IRQ
 occupancy improves pacing but does not resolve general scheduling. The recovered
 normal cash-feature selector is executable; full machine play remains future work.
+
+## Normal board-result entry and return
+
+See docs/recovery/SKILL-CASH-BOARD-ENTRY-PASS.md. Live can execute E2FC..E33C for
+the selected type-2/position-32 route, including take gating, announcement and nested
+table dispatch. Natural MAME captures independently preserve the original feature
+digest; both entry modes complete all six default awards. 81 groups pass. This is
+a captured board-result boundary, not startup or persistent whole-machine play.

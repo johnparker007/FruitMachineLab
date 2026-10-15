@@ -1,0 +1,12 @@
+{
+  "classification": "Source-backed device mechanics; game-specific R4/RT1 configuration from preserved MAME driver, validated by separate device-state capture",
+  "stepper_source": "https://github.com/mamedev/mame/blob/mame0281/src/devices/machine/steppers.cpp",
+  "stepper_sha256": "ADABD633EA3D1BC7DD7FF8E8923702060BDF52F31C0D5862A57C86C2FBF6F0E8",
+  "license": "BSD-3-Clause",
+  "copyright_holder": "James Wallace",
+  "cached_driver_path": "C:/Users/John/Documents/Codex/2026-10-13/help-me-set-up-a-local/work/downloads/mpu4.cpp",
+  "cached_driver_sha256": "8EFB9B50E48E49E274F60D3A63FE8611DE74E96D316FE54C0B8AD0E3BF996D0F",
+  "cached_game_driver_sha256": "7A3249FBDE3E35490653C1A3568332988FF01E4A6019A8C44F2D437C49E36AC9",
+  "configuration": "m4addr R4/RT1; BARCREST_48STEP_REEL; half steps 96; index (1,3); index pattern 00; init phase 2",
+  "seed_evidence": "evidence/mpu4/skill-cash/dice-motor-seeds.json"
+}

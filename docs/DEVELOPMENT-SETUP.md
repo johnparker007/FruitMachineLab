@@ -144,3 +144,13 @@ request and renders ROLLING, stopping before 61F6 physical motion. The Take rout
 and playback remain intact. --live-roll-smoke-test <fresh-output-directory> adds
 a real-time Start/request/boundary/restart UI check. See recovery/DICE-REQUEST-PASS.md
 for natural capture comparisons and static edge tests. No dependencies changed.
+
+## Dice motion follow-up
+
+99 groups pass. START at the board prompt now runs one incremental motor roll,
+with generated optic feedback, changing text face and real motor/VM Pause/Resume.
+It stops before B28F returns to board movement. The existing roll smoke switch now
+checks motion, pause/resume and completion. See recovery/DICE-MOTION-PASS.md for the
+7,103-dispatch comparison and explicit 83/84-byte alpha brightness qualification.
+No tools or dependencies were installed; the small MAME-derived motor model carries
+BSD-3-Clause attribution in THIRD-PARTY-NOTICES.md. Build commands are unchanged.

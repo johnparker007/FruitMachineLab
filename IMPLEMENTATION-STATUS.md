@@ -171,3 +171,17 @@ the 478-dispatch inner body agrees with an independent capture. 92 groups pass,
 including varied live timing and native edge tests. Motor scheduling, completion
 and board movement remain unimplemented. Game-specific reel/profile tables stay
 in the Adders layer until reuse is demonstrated.
+
+## Incremental dice motor
+
+See docs/recovery/DICE-MOTION-PASS.md. Live START now completes a recovered roll
+through native profile setup, periodic service, generated motor optics, busy-loop
+exit, NVRAM cleanup and symbol refresh, stopping before B28F board continuation.
+The text face/position change during execution; Pause/Resume retain motor state.
+99 groups and four GUI smoke modes pass. Native verification checks 386 services
+and 96 updates against 875 observations; two independent captures agree on core
+states. The combined reference matches 7,103 VM observations, 15 lamp requests and
+167 sound commands. Alpha is explicitly 83/84 bytes: one brightness restoration
+differs; text/cursor/reset match. Exact native alpha/IRQ timing remains unresolved.
+The small MAME-derived Barcrest motor model has BSD-3-Clause attribution. This is
+not homing, whole-board movement, machine startup or persistent whole-game play.

@@ -1,0 +1,50 @@
+{
+  "classification": "Read-only MAME device saved-item observations at matching idle feature-entry positions. Establishes motor coordinate/phase seed, not full startup",
+  "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-dice-hardware-26db19c8105948209c8f24b97abd6167",
+  "source_sha256": "C873BABF1E0F3842F73C16455C97F11C8D984F8E3E0D728C854ACC2776C2EEDC",
+  "items_sha256": "122D14A70606AF57B0FD9B3E9D6D0AF1CCB640A724E0C00722B5E526D1F5372F",
+  "seeds": [
+    {
+      "t": "723.4",
+      "square": "7",
+      "busy": "0",
+      "native0": "24",
+      "native1": "90",
+      "native2": "6",
+      "native3": "56",
+      "position0": "74",
+      "position1": "8",
+      "position2": "92",
+      "position3": "42",
+      "phase0": "0",
+      "phase1": "2",
+      "phase2": "6",
+      "phase3": "0",
+      "pattern0": "9",
+      "pattern1": "12",
+      "pattern2": "3",
+      "pattern3": "9"
+    },
+    {
+      "t": "2040.1333333333",
+      "square": "32",
+      "busy": "0",
+      "native0": "54",
+      "native1": "36",
+      "native2": "78",
+      "native3": "8",
+      "position0": "44",
+      "position1": "62",
+      "position2": "20",
+      "position3": "90",
+      "phase0": "6",
+      "phase1": "4",
+      "phase2": "6",
+      "phase3": "0",
+      "pattern0": "0",
+      "pattern1": "0",
+      "pattern2": "0",
+      "pattern3": "0"
+    }
+  ]
+}

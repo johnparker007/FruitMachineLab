@@ -25,6 +25,11 @@
     "sha256": "94193AE9A6ECCD694AA46A1CF3EB780B8B5D530C1DC526EA485407874A9223A1"
   },
   {
+    "path": "docs/recovery/DICE-MOTION-PASS.md",
+    "bytes": 8652,
+    "sha256": "F10B4CD35408C70073E32AC7447FAC93CAF5D60356EBB4490A9B08DB3DAD5FEB"
+  },
+  {
     "path": "docs/recovery/DICE-REQUEST-PASS.md",
     "bytes": 6304,
     "sha256": "465ACF4F29B0D7BE693BFF8E579B6EDBE9C81672094252189B95C436DFFC15DA"
@@ -195,6 +200,16 @@
     "sha256": "68A4A9C41D5923F4017C99D95B007F75785C5C5C6E84CE2A3D9E0073AA48CD1E"
   },
   {
+    "path": "evidence/mpu4/maps/dice-hardware-source.json",
+    "bytes": 929,
+    "sha256": "BFE9CABE2F0509B41C0A276546260463BBE1A5D581EF281449BEB694931E5987"
+  },
+  {
+    "path": "evidence/mpu4/maps/dice-motion-data.json",
+    "bytes": 1061,
+    "sha256": "B10B4393213220A421A1CAC3B00B180C39CC60F0280AECBB1B82776654C74C7E"
+  },
+  {
     "path": "evidence/mpu4/maps/dice-request-data.json",
     "bytes": 9232,
     "sha256": "10ECB035E21A439EC17F8703980629B15C03A647B81ECB929082A6A705CC3878"
@@ -273,6 +288,11 @@
     "path": "evidence/mpu4/maps/vm-batch-pass-replay-verification.json",
     "bytes": 1871,
     "sha256": "8C5A12BF3A198063A0F7F82A4206290F8BFCCD1CE703DABDC869FCE07F6142F4"
+  },
+  {
+    "path": "evidence/mpu4/native/1421.json",
+    "bytes": 1946,
+    "sha256": "C54833F7354FABDDEC37467F26F3BE5AC3146BB477233839241EA84EDE966AD6"
   },
   {
     "path": "evidence/mpu4/native/169b.json",
@@ -595,14 +615,49 @@
     "sha256": "9798CBF3C5F2808C1D98AC6C1C868DF625DE40458227EA7E9AD9DD97E0A6324C"
   },
   {
+    "path": "evidence/mpu4/native/6342.json",
+    "bytes": 1128,
+    "sha256": "883A3442460F0F97FC71A6A2F1FE492457E8E77F1F384F2D12094797E21EBE71"
+  },
+  {
+    "path": "evidence/mpu4/native/6350.json",
+    "bytes": 1167,
+    "sha256": "E4387BA9B097565A6A8D651F35366E3C2A45EB8684BC7C264DC999C8FB025882"
+  },
+  {
+    "path": "evidence/mpu4/native/6403.json",
+    "bytes": 6629,
+    "sha256": "17D718FD00545C97CE3BF2E10B3FE8BF2B15ADD0E6B1B5C908B3554F8382BAAB"
+  },
+  {
     "path": "evidence/mpu4/native/649d.json",
     "bytes": 2508,
     "sha256": "10BDFA121B18DE597BD2FD5F703466F90A7939720D729B73B74825F776870CD6"
   },
   {
+    "path": "evidence/mpu4/native/656b.json",
+    "bytes": 3989,
+    "sha256": "E44F0FF770B6139D99930A18A1499B0BE4071106AED64B8AA8D1486D67650078"
+  },
+  {
+    "path": "evidence/mpu4/native/65cb.json",
+    "bytes": 789,
+    "sha256": "962180C72FA030A804F596EE81A09C5726A06F1187FA2BC1C9DF063749D58C48"
+  },
+  {
+    "path": "evidence/mpu4/native/65d8.json",
+    "bytes": 1620,
+    "sha256": "3EC72358AEBBB6E0CBA8F54A0EA821655BA5F1FC42B782F3EAA6D4EE81222E3B"
+  },
+  {
     "path": "evidence/mpu4/native/6616.json",
     "bytes": 835,
     "sha256": "70D20886DE0E56328F90EEF66D815C07329703A40A385861575873365B0B123C"
+  },
+  {
+    "path": "evidence/mpu4/native/667b.json",
+    "bytes": 1176,
+    "sha256": "3846F96F195DB55DF7D2BED6DB7BF9EC499421D6022FE11DD1C5FD1D0505C6D1"
   },
   {
     "path": "evidence/mpu4/native/67e2.json",
@@ -1118,6 +1173,36 @@
     "path": "evidence/mpu4/skill-cash/debugger.cmd",
     "bytes": 181,
     "sha256": "7CBF0817329F28A027AF20D8753F81F4FA857FAABC0BBD044CB6213CA12DABA6"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/dice-motion-debugger.cmd",
+    "bytes": 11793,
+    "sha256": "105CF034AA1D10F0E587367F0E99233742C39F97F5950EA5545BAF244B4CCF50"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/dice-motion-vm-debugger.cmd",
+    "bytes": 11793,
+    "sha256": "105CF034AA1D10F0E587367F0E99233742C39F97F5950EA5545BAF244B4CCF50"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/dice-motion-vm-verification.json",
+    "bytes": 602,
+    "sha256": "8F58A61FCADC24501EF15C70D3434F3C5C2B0B997F78B75E041D0DFC97C79848"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/dice-motion-vm.json",
+    "bytes": 43491,
+    "sha256": "487BEDFA15DD11CD4F3FBDB70F0B5B16A6982C1121E8E0312B27685CBC2A56A0"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/dice-motion.json",
+    "bytes": 346764,
+    "sha256": "B7CF15B4560EF924A2B756149500FDBF2A7F9D433289AA5CD614EA3ADDF4ADA5"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/dice-motor-seeds.json",
+    "bytes": 1422,
+    "sha256": "CF9C419F6817A388F2C0E9832C14E55017FB2DF34732B0B4B5D8CBD43D1D1B41"
   },
   {
     "path": "evidence/mpu4/skill-cash/dice-request-body.json",

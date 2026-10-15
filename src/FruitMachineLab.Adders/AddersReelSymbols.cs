@@ -5,6 +5,13 @@ namespace FruitMachineLab.Adders;
 // This neither moves a stepper nor invents a reel completion time.
 public static class AddersReelSymbols
 {
+    public static byte CurrentSymbol(Machine machine,int reel)
+    {
+        if(reel is <0 or >3)throw new ArgumentOutOfRangeException(nameof(reel));
+        ushort table=0x75DB;for(int n=0;n<reel;n++)table=Cell.Add(table,(ushort)(2*machine.Memory[0x75CB+2*n]));
+        byte steps=machine.Memory[0x75CC+2*reel];if(steps==0)throw new InvalidDataException("Zero reel step size");
+        return machine.Memory[Cell.Add(table,(ushort)(2*(machine.Memory[0x168+2*reel]/steps)))];
+    }
     public static void Refresh(Machine machine)
     {
         ushort table=0x75DB;

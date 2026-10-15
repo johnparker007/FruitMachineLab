@@ -7,6 +7,56 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Native dice motion matches each MAME service and optic read", () => {
+    var result=DiceMotionVerification.Verify(evidence);Console.WriteLine($"  {result.Services} services, {result.OpticReads} optic/update operations, position {result.InitialPosition} -> {result.FinalPosition}");
+});
+Check("Full roll VM/lamp/sound path matches; alpha blink timing difference remains explicit", () => {
+    var result=BoardSelectionVerification.Verify(evidence,diceMotion:true);Equal(false,result.AlphaExact);Equal(1,result.ReferenceAlphaBytes-result.AlphaBytes);
+    Console.WriteLine($"  {result.Instructions} roll dispatches, {result.Lamps} lamp requests, {result.Sounds} sound commands; alpha {result.AlphaBytes}/{result.ReferenceAlphaBytes} bytes (one brightness restoration differs; text/cursor/reset match)");
+});
+Check("Driven motor model independently generates the MAME optic inputs", () => {
+    DiceMotionVerification.Verify(evidence,true);
+});
+Check("Motor seeds agree with independently observed MAME device state", () => {
+    using var capture=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","dice-motor-seeds.json")));
+    var m=new SkillCashLiveSession(evidence,boardSelection:true).Machine;
+    foreach(var row in capture.RootElement.GetProperty("seeds").EnumerateArray()) {
+        for(int reel=0;reel<4;reel++)m.Memory[0x168+2*reel]=byte.Parse(row.GetProperty("native"+reel).GetString()!);
+        var hardware=new AddersReelHardware(m);
+        for(int reel=0;reel<4;reel++) {
+            Equal(int.Parse(row.GetProperty("position"+reel).GetString()!),hardware.Motors[reel].Position);
+            Equal(int.Parse(row.GetProperty("phase"+reel).GetString()!),hardware.Motors[reel].Phase);
+        }
+    }
+});
+Check("Motor phase direction, unpowered hold and optic boundaries preserve device mechanics", () => {
+    var motor=new BarcrestStepper(0,0,9,1,3);motor.Drive(8);Equal(95,motor.Position);motor.Drive(0);Equal(95,motor.Position);
+    motor.Drive(9);Equal(0,motor.Position);motor.Drive(1);Equal(1,motor.Position);Equal(false,motor.Optic);
+    motor.Drive(3);Equal(2,motor.Position);Equal(true,motor.Optic);motor.Drive(2);Equal(3,motor.Position);Equal(false,motor.Optic);
+    var wrapped=new BarcrestStepper(0,0,9,94,3);Equal(true,wrapped.Optic);
+});
+Check("Pausing mid-roll freezes VM, motor state and virtual time, then resumes to the same request", () => {
+    var live=new SkillCashLiveSession(evidence,boardSelection:true);byte position=live.Machine.Memory[0x16E];live.Resume();bool paused=false,finished=false;
+    try {
+        for(int n=0;n<20000;n++) {
+            if(live.Instructions>250)live.SetStart(true);live.AdvanceCycles(512);
+            if(!paused && live.Snapshot().DiceRequest is {Busy:true} && live.Machine.Memory[0x16E]!=position) {
+                live.Pause();var frozen=live.Machine.Memory.ToArray();ulong cycle=live.Cycle;int instructions=live.Instructions;
+                live.AdvanceCycles(10_000_000);Equal(cycle,live.Cycle);Equal(instructions,live.Instructions);Equal(true,frozen.SequenceEqual(live.Machine.Memory));
+                Equal(false,live.Panel.StartPressed);live.Resume();paused=true;
+            }
+        }
+    }catch(NotSupportedException error){if(!error.Message.StartsWith("ROLL completed"))throw;finished=true;}
+    Equal(true,paused);Equal(true,finished);var request=live.Snapshot().DiceRequest!;Equal(false,request.Busy);Equal(request.Symbol,request.DisplayedSymbol);
+    Equal((byte)32,live.Machine.Memory[0xC9]);Equal((ushort)0,live.Machine.ReadWord(0xBA));Equal((ushort)0,live.Machine.ReadWord(0x2FA));
+});
+Check("Synthetic stuck-optic input reaches the native alignment fault instead of a fabricated completion", () => {
+    var m=new SkillCashLiveSession(evidence,boardSelection:true).Machine;var motion=new AddersReelMotion(m);
+    m.Memory[0x16F]=246;m.Memory[0x6A]&=0xFD;motion.Prepare(value=>Mpu4InputConditions.Evaluate(m,value));motion.Enable();motion.Activate();bool fault=false;
+    try{for(int n=0;n<2000 && motion.Busy;n++){m.Memory[0x6E]++;motion.Service((_,mask)=>mask);}}
+    catch(NotSupportedException error){fault=error.Message.StartsWith("Native reel alignment fault");if(!fault)throw;}
+    Equal(true,fault);Equal(true,motion.Busy);
+});
 Check("Natural dice request computation matches MAME before physical motion", () => {
     var result=BoardSelectionVerification.Verify(evidence,true);Console.WriteLine($"  {result.Instructions} dice request dispatches, {result.Lamps} lamp requests, {result.AlphaBytes} alpha bytes; physical motion not substituted");
 });
@@ -48,16 +98,16 @@ Check("Physical Take and Start are independent sampled active-high panel inputs"
 Check("Board Start follows the recovered roll branch to an explicit dice boundary", () => {
     var live=new SkillCashLiveSession(evidence,boardSelection:true);byte position=live.Machine.Memory[0x16E];live.Resume();bool stopped=false;
     try {for(int n=0;n<10000 && !live.Completed;n++){if(live.Instructions>250)live.SetStart(true);live.AdvanceCycles(512);}}
-    catch(NotSupportedException error){stopped=error.Message.StartsWith("ROLL requested");if(!stopped)throw;}
+    catch(NotSupportedException error){stopped=error.Message.StartsWith("ROLL completed");if(!stopped)throw;}
     Equal(true,stopped);Equal(true,live.Paused);Equal(false,live.Completed);Equal(false,live.Panel.StartPressed);Equal(false,live.Panel.TakePressed);Equal(0,live.Selections.Count);
-    Equal(true,live.Snapshot().Alpha.Contains("ROLLING"));var request=live.Snapshot().DiceRequest!;Equal(true,request.Symbol is >=1 and <=12);Equal(position,request.PhysicalPosition);Equal((ushort)0xB283,live.VmAddress);
+    Equal(false,(live.Machine.Memory[0x6B]&0x80)!=0);var request=live.Snapshot().DiceRequest!;Equal(true,request.Symbol is >=1 and <=12);Equal(false,position==request.PhysicalPosition);Equal(request.Symbol,request.DisplayedSymbol);Equal((ushort)0xB28F,live.VmAddress);
 });
 Check("Varied live roll timing generates requests without substituting outcomes", () => {
     var results=new HashSet<byte>();
     foreach(int delay in new[]{0,50,100,200,400,800,1200,2000}) {
         var live=new SkillCashLiveSession(evidence,boardSelection:true);live.Resume();bool stopped=false;
         try{for(int n=0;n<20000;n++){if(live.Instructions>250+delay)live.SetStart(true);live.AdvanceCycles(512);}}
-        catch(NotSupportedException error){if(!error.Message.StartsWith("ROLL requested"))throw;stopped=true;}
+        catch(NotSupportedException error){if(!error.Message.StartsWith("ROLL completed"))throw;stopped=true;}
         Equal(true,stopped);var request=live.Snapshot().DiceRequest!;Equal(true,request.Symbol is >=1 and <=12);results.Add(request.Symbol);
     }
     Equal(true,results.Count>1);Console.WriteLine("  Live requested dice symbols: "+string.Join(',',results.Order()));

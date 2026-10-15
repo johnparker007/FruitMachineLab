@@ -16,7 +16,8 @@ param(
     [switch]$CashFeatureCaller,
     [switch]$BoardResultCaller,
     [switch]$BoardSelection,
-    [switch]$DiceRequests
+    [switch]$DiceRequests,
+    [switch]$DiceMotion
 )
 $ErrorActionPreference='Stop'
 $root=Split-Path $PSScriptRoot -Parent
@@ -110,7 +111,38 @@ if($CpuInterrupts) {
 }
 $print='printf "'+$format+'",'+$values
 if($BoardSelection){if(!$FullFeature -or $JackpotProbe -or !$CpuInterrupts -or !$NativeSound){throw 'Board selection requires full feature, CPU interrupts and native sound'};$extra+=@("bpset 0xfc,temp0==0 && temp2==0 && y==0xdd38 && b@0xc9==0x20,{$print;save boundary-ram.bin,0,800;temp0=1;temp2=1;go}")}
-if($DiceRequests){if(!$FullFeature -or $BoardSelection -or $JackpotProbe){throw 'Dice requests require FullFeature and exclude other boundary experiments'};$extra+=@("bpset 0xfc,temp0==0 && temp2==0 && y==0xdd7e && b@0xc9==7,{$print;save boundary-ram.bin,0,800;temp0=1;temp2=1;go}")}
+if($DiceRequests -or $DiceMotion){if(!$FullFeature -or $BoardSelection -or $JackpotProbe){throw 'Dice capture requires FullFeature and excludes other boundary experiments'};$extra+=@("bpset 0xfc,temp0==0 && temp2==0 && y==0xdd7e && b@0xc9==7,{$print;save boundary-ram.bin,0,800;temp0=1;temp2=1;go}")}
+if($DiceMotion) {
+ $motionFormat='RM pc=%04X cycle=%016X flags=%04X%02X drive=%04X optic=%02X c2=%04X abort=%04X records='
+ $motionValues='pc,totalcycles,w@0x6a,b@0x6c,w@0x6d,b@0xb02,w@0xc2,w@0x719b'
+ for($address=0x150;$address -lt 0x1A0;$address+=2){$motionFormat+='%04X';$motionValues+=',w@0x'+$address.ToString('X4')}
+ $motionFormat+=' nvram=%04X%04X checksum=%02X x=%04X mask=%02X phases=%04X control=%02X\n';$motionValues+=',w@0x2f2,w@0x2f4,b@0x322,x,b@(s+2),w@0x6f,b@0xb03'
+ foreach($address in @('61f6','6228','623a','6248','6403','649b','64f0','656b')) {
+  $extra+=('bpset 0x'+$address+',temp0==1,{printf "'+$motionFormat+'",'+$motionValues+';go}')
+ }
+ $motorLua=@'
+local motor_items=assert(io.open('motor-items.txt','w'))
+for tag,device in pairs(m.devices) do
+ if tag:find('reel') then
+  for name,id in pairs(device.items) do motor_items:write(tag,' ',name,' ',tostring(id),'\n') end
+ end
+end
+motor_items:close()
+local motor_states=assert(io.open('motor-states.csv','w'))
+motor_states:write('t,square,busy,native0,native1,native2,native3,position0,position1,position2,position3,phase0,phase1,phase2,phase3,pattern0,pattern1,pattern2,pattern3\n')
+local function observe_motors()
+ local values={m.time:as_double(),mem:read_u8(0xc9),mem:read_u8(0x6b)}
+ for reel=0,3 do table.insert(values,mem:read_u8(0x168+2*reel)) end
+ for _,item in ipairs({'m_step_pos','m_phase','m_pattern'}) do
+  for reel=0,3 do local device=m.devices[':reel'..reel];table.insert(values,emu.item(device.items['0/'..item]):read(0)) end
+ end
+ motor_states:write(table.concat(values,','),'\n')
+end
+'@
+ $lua=[IO.File]::ReadAllText("$run/input.lua").Replace('local frame=0',$motorLua+"`nlocal frame=0")
+ $lua=$lua.Replace('frame=frame+1',"frame=frame+1`n observe_motors()")
+ [IO.File]::WriteAllText("$run/input.lua",$lua)
+}
 if($extra.Count -gt 0) {
  # Debugger setup invokes paused frame callbacks. Ignore precisely the added
  # setup callbacks in this copied observer, preserving the original physical times.
@@ -125,6 +157,7 @@ if($CashFeatureCaller){if(!$FullFeature -or $JackpotProbe){throw 'Caller capture
 if($BoardResultCaller){if(!$CashFeatureCaller){throw 'Board result capture requires CashFeatureCaller'};$stop='0xe33c'}
 if($BoardSelection){$stop='0xe460'}
 if($DiceRequests){$stop='0xb283'}
+if($DiceMotion){$stop='0xb28f'}
 $dispatchAction="temp0=(y!=$stop);$print;go"
 if($JackpotProbe) {
  if(!$FullFeature){throw 'Jackpot probe requires -FullFeature'}
@@ -136,7 +169,7 @@ $commands=@(
  # Keep the original fixture's one-breakpoint startup command count. Each debugger
  # setup command triggers a paused frame callback in this harness; extra commands
  # change frame-number-based physical input timing. temp0 starts at zero in MAME.
- $(if($BoardSelection -or $DiceRequests){"bpset 0xfc,temp0==1,{$dispatchAction}"}elseif($BoardResultCaller){"bpset 0xfc,(y==0xe2fc && w@u==2 && b@0xc9==0x20) || temp0==1,{$dispatchAction}"}elseif($CashFeatureCaller){"bpset 0xfc,(y==0xdff6 && b@0xc9==0x20) || temp0==1,{$dispatchAction}"}else{"bpset 0xfc,y==0xc721 || temp0==1,{$dispatchAction}"})
+ $(if($BoardSelection -or $DiceRequests -or $DiceMotion){"bpset 0xfc,temp0==1,{$dispatchAction}"}elseif($BoardResultCaller){"bpset 0xfc,(y==0xe2fc && w@u==2 && b@0xc9==0x20) || temp0==1,{$dispatchAction}"}elseif($CashFeatureCaller){"bpset 0xfc,(y==0xdff6 && b@0xc9==0x20) || temp0==1,{$dispatchAction}"}else{"bpset 0xfc,y==0xc721 || temp0==1,{$dispatchAction}"})
 )+$extra+@(
  'gtime #2400000',
  'save ram-final.bin,0,800',
@@ -151,7 +184,7 @@ $arguments=@('m4addr','-noreadconfig','-rompath',$RomDirectory,
 $arguments | ConvertTo-Json | Set-Content "$run/arguments.json"
 @{mame_sha256=(Get-FileHash -LiteralPath $MameExecutable).Hash;replay_sha256=(Get-FileHash "$run/replay-actions.csv").Hash;
  native_sound_capture=[bool]$NativeSound;native_nvram_capture=[bool]$NativeNvram;full_feature_capture=[bool]$FullFeature;native_input_capture=[bool]$NativeInput;native_lamp_frames=[bool]$NativeLampFrames;native_alpha_capture=[bool]$NativeAlpha;native_scan_capture=[bool]$NativeScan;shared_timing=[bool]$SharedTiming;paused_setup_callbacks_skipped=$extra.Count;
- timer_deadlines=[bool]$TimerDeadlines;cpu_interrupts=[bool]$CpuInterrupts;synthetic_jackpot_probe=[bool]$JackpotProbe;cash_feature_caller=[bool]$CashFeatureCaller;board_result_caller=[bool]$BoardResultCaller;board_selection=[bool]$BoardSelection;dice_requests=[bool]$DiceRequests;
+ timer_deadlines=[bool]$TimerDeadlines;cpu_interrupts=[bool]$CpuInterrupts;synthetic_jackpot_probe=[bool]$JackpotProbe;cash_feature_caller=[bool]$CashFeatureCaller;board_result_caller=[bool]$BoardResultCaller;board_selection=[bool]$BoardSelection;dice_requests=[bool]$DiceRequests;dice_motion=[bool]$DiceMotion;
  initial_state='Fresh isolated default configuration and absent NVRAM; physical-input fixture only; no RAM/ROM injection.'} |
  ConvertTo-Json | Set-Content "$run/provenance.json"
 $previousReplay=$env:MPU4_REPLAY
@@ -163,7 +196,7 @@ try {
  try { & $MameExecutable @arguments *> "$run/console.txt"; $LASTEXITCODE | Set-Content "$run/exit-code.txt" }
  finally { Pop-Location }
 } finally { $env:MPU4_REPLAY=$previousReplay; $env:MPU4_POLICY=$previousPolicy }
-$completion=if($DiceRequests){'^SC y=B283 '}else{'^SC y=C71D '}
+$completion=if($DiceMotion){'^SC y=B28F '}elseif($DiceRequests){'^SC y=B283 '}else{'^SC y=C71D '}
 if(!(Select-String -LiteralPath "$run/debug.log" -Pattern $completion -Quiet)){throw "Requested completion was not captured; inspect $run"}
 Get-ChildItem $run -File | Get-FileHash | Select-Object Path,Hash | ConvertTo-Json | Set-Content "$run/hashes.json"
 Write-Output $run

@@ -8940,6 +8940,7 @@
     "skill-cash/nudge-result.json",
     "skill-cash/nudge-exit.json",
     "skill-cash/nudge-win-transfer.json",
+    "skill-cash/nudge-tail.json",
     "skill-cash/nudge-result-native.json",
     "skill-cash/nudge-plan-matrix.json"
   ],

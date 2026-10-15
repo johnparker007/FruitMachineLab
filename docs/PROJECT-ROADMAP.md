@@ -37,11 +37,11 @@ renderers should use the same backend inputs/outputs, with no gameplay in UI cod
 
 ## Current recovery frontier
 
-Live now exits the board and animates pending16/current-win0 to pending0/current-win16,
-stopping at final AFC2 before the remaining display/wait and bank/collection route.
-See recovery/NUDGE-WIN-TRANSFER-PASS.md for the successful board-exit reference and
-explicit failed-later transfer-prefix qualification. Next resolve clean transfer
-capture/tail and continue the actual outer award route; preserve gameplay priority.
+Live completes board exit, pending16/current-win0→0/16 transfer and seven-flash tail,
+stopping at AFF0 before the outer award/bank/collection route. The successful
+natural tail window supplies terminal accounting RAM; older prefix/full-logging
+crash qualifications remain. Continue the actual outer caller from AFF0. See
+recovery/NUDGE-ANIMATION-TAIL-PASS.md; preserve playable-machine priority.
 Full machine startup and consecutive complete games remain future milestones.
 
 ## Longer-term aims

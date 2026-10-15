@@ -5,12 +5,11 @@ Local clone: C:\projects\GitRepos\FruitMachineLab
 
 ## Current status
 
-Latest batch: board exit and pending-to-current-win meter animation,16/0→0/16.
-See recovery/NUDGE-WIN-TRANSFER-PASS.md.137 headless groups/eight GUI smoke modes
-pass, including actual mid-meter pause/resume. Live stops at final AFC2 after
-native refresh, before display/wait tail and bank/collection. The transfer reference
-is an explicitly selected prefix from a process that failed later, without a terminal
-RAM snapshot; the preceding board-exit reference completed successfully.
+Latest batch: completed meter display/wait and seven-flash tail. See
+recovery/NUDGE-ANIMATION-TAIL-PASS.md.139 headless groups/eight GUI smoke modes pass.
+Live stops at AFF0 with pending0/current-win16 and refreshed display, before outer
+award/bank/collection routing. A successful AFC2→AFF0 natural window now supplies
+terminal accounting RAM. Older failed-later prefix/full-logging crash limits remain.
 No installation or configuration
 change, commit/push or cloud setup was performed.
 

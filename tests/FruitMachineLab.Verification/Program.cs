@@ -7,6 +7,18 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Current-win even rounding preserves native wrap and NVRAM complements", () => {
+    foreach(ushort value in new ushort[]{0,1,16,17,65534,65535}) {
+        var m=new Machine();m.WriteWord(0x2FA,value);
+        new ScriptExecutor(m).Run(new RecoveredScript(Path.Combine(evidence,"VM-SCRIPTS","AF4E.txt")));
+        Equal(unchecked((ushort)(value+(value&1))),m.ReadWord(0x2FA));
+        for(int n=0;n<25;n++)Equal(unchecked((byte)~m.Memory[0x2F0+n]),m.Memory[0x309+n]);
+    }
+});
+Check("Natural captured tail window matches MAME and the verified transfer boundary", () => {
+    var r=BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeTail:true);
+    Console.WriteLine($"  {r.Instructions} tail observations, {r.Lamps} lamps, {r.Sounds} sounds, {r.AlphaBytes} alpha bytes");
+});
 Check("Observed natural transfer prefix matches; source process failed later", () => {
     var r=BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeWinTransfer:true);
     Console.WriteLine($"  {r.Instructions} transfer-prefix observations, {r.Lamps} lamps, {r.Sounds} sounds, {r.AlphaBytes} alpha bytes");
@@ -37,8 +49,8 @@ Check("Natural three-nudge sequence matches VM, motor phases and all outputs", (
     Console.WriteLine($"  {result.Instructions} sequence observations, {result.Lamps} lamps, {result.Sounds} sounds, {result.AlphaBytes} alpha bytes");
 });
 Check("Live nudge result exits the board and transfers pending into current win", () => {
-    var live=new SkillCashLiveSession(evidence,boardLink:"ladder",continueBoard:true);bool returned=false,improving=false,pausedImprovement=false,pausedTransfer=false;int next=3,pressed=0;var meterSteps=new List<ushort>();
-    var lamps=new List<byte>();var announcements=new List<string>();live.ObserveDispatch=(i,m)=>{if(i.Site==0xE247)lamps.Clear();if(i.Site==0xB666)improving=true;if(i.Site==0xAFC2){Equal((ushort)16,Cell.Add(m.ReadWord(0xBA),m.ReadWord(0x2FA)));meterSteps.Add(m.ReadWord(0x2FA));}};live.ObserveLamp=r=>{lamps.Add(r.Id);lamps.Add((byte)(r.Pattern&15));};live.ObserveAlpha=a=>announcements.Add(a.Text);
+    var live=new SkillCashLiveSession(evidence,boardLink:"ladder",continueBoard:true);bool returned=false,improving=false,pausedImprovement=false,pausedTransfer=false,pausedFlash=false;int next=3,pressed=0,flashes=0;var meterSteps=new List<ushort>();
+    var lamps=new List<byte>();var announcements=new List<string>();live.ObserveDispatch=(i,m)=>{if(i.Site==0xAF76)flashes++;if(i.Site==0xE247)lamps.Clear();if(i.Site==0xB666)improving=true;if(i.Site==0xAFC2){Equal((ushort)16,Cell.Add(m.ReadWord(0xBA),m.ReadWord(0x2FA)));meterSteps.Add(m.ReadWord(0x2FA));}};live.ObserveLamp=r=>{lamps.Add(r.Id);lamps.Add((byte)(r.Pattern&15));};live.ObserveAlpha=a=>announcements.Add(a.Text);
     live.Resume();
     for(int n=0;n<180000 && !returned;n++) {
         if(live.AwaitingBoardSelection)live.SetTake(true);
@@ -46,13 +58,14 @@ Check("Live nudge result exits the board and transfers pending into current win"
         if(live.NudgeMoving)live.SetNudge(0,false);
         if(improving && live.MotorBusy && !pausedImprovement){live.Pause();var frozen=live.Machine.Memory.ToArray();ulong at=live.Cycle;live.AdvanceCycles(1000000);Equal(at,live.Cycle);Equal(true,frozen.SequenceEqual(live.Machine.Memory));live.Resume();pausedImprovement=true;}
         if(!pausedTransfer && live.Machine.ReadWord(0xBA) is >0 and <16 && live.Machine.ReadWord(0x2FA)>0){live.Pause();var frozen=live.Machine.Memory.ToArray();ulong at=live.Cycle;live.AdvanceCycles(1000000);Equal(at,live.Cycle);Equal(true,frozen.SequenceEqual(live.Machine.Memory));live.Resume();pausedTransfer=true;}
-        try{live.AdvanceCycles(512);}catch(NotSupportedException e){if(!e.Message.StartsWith("BOARD nudge win transfer completed"))throw;returned=true;}
+        if(!pausedFlash && flashes>0){live.Pause();var frozen=live.Machine.Memory.ToArray();ulong at=live.Cycle;live.AdvanceCycles(1000000);Equal(at,live.Cycle);Equal(true,frozen.SequenceEqual(live.Machine.Memory));live.Resume();pausedFlash=true;}
+        try{live.AdvanceCycles(512);}catch(NotSupportedException e){if(!e.Message.StartsWith("BOARD nudge win animation completed"))throw;returned=true;}
     }
-    Equal(true,returned);Equal(3,pressed);Equal((byte)0,live.Machine.Memory[0xBE]);Equal((byte)0,live.Machine.Memory[0xBF]);Equal((ushort)0,live.Machine.ReadWord(0xBA));Equal((ushort)16,live.Machine.ReadWord(0x2FA));Equal(true,live.Fault?.StartsWith("BOARD nudge win transfer completed")==true);
-    Equal(true,pausedTransfer);Equal(true,meterSteps.SequenceEqual(Enumerable.Range(1,15).Select(n=>(ushort)n)));Equal(true,pausedImprovement);Equal(true,announcements.Any(x=>x.Contains("I CAN DO BETTER")));Equal(true,announcements.Any(x=>x.Contains("LET ME THINK")));Equal(true,announcements.Any(x=>x.Contains("HERE I GO")));
-    var reference=BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeWinTransfer:true);Equal(reference.LampSequence,Convert.ToHexString(lamps.ToArray()));Equal(reference.AlphaShadow,new Mpu4Alpha(live.Machine).Snapshot().Shadow);
-    using var captured=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","nudge-exit.json")));var terminal=Convert.FromHexString(captured.RootElement.GetProperty("terminal_ram_hex").GetString()!);
-    Equal(true,live.Machine.Memory.AsSpan(0x160,14).SequenceEqual(terminal.AsSpan(0x160,14)));
+    Equal(true,returned);Equal(3,pressed);Equal((byte)0,live.Machine.Memory[0xBE]);Equal((byte)0,live.Machine.Memory[0xBF]);Equal((ushort)0,live.Machine.ReadWord(0xBA));Equal((ushort)16,live.Machine.ReadWord(0x2FA));Equal(true,live.Fault?.StartsWith("BOARD nudge win animation completed")==true);
+    Equal(7,flashes);Equal(true,pausedFlash);Equal(true,pausedTransfer);Equal(true,meterSteps.SequenceEqual(Enumerable.Range(1,16).Select(n=>(ushort)n)));Equal(true,pausedImprovement);Equal(true,announcements.Any(x=>x.Contains("I CAN DO BETTER")));Equal(true,announcements.Any(x=>x.Contains("LET ME THINK")));Equal(true,announcements.Any(x=>x.Contains("HERE I GO")));
+    var reference=BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeTail:true);Equal(BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeWinTransfer:true).LampSequence+reference.LampSequence,Convert.ToHexString(lamps.ToArray()));Equal(reference.AlphaShadow,new Mpu4Alpha(live.Machine).Snapshot().Shadow);
+    using var captured=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","nudge-tail.json")));var terminal=Convert.FromHexString(captured.RootElement.GetProperty("terminal_ram_hex").GetString()!);
+    Equal(true,live.Machine.Memory.AsSpan(0x160,14).SequenceEqual(terminal.AsSpan(0x160,14)));Equal(true,live.Machine.Memory.AsSpan(0x2F0,0x33).SequenceEqual(terminal.AsSpan(0x2F0,0x33)));
     for(int n=0;n<25;n++)Equal(unchecked((byte)~live.Machine.Memory[0x2F0+n]),live.Machine.Memory[0x309+n]);
 });
 Check("Explicit loop leave removes only the current frame and retains the target", () => {

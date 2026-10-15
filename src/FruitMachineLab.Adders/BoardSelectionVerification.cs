@@ -7,8 +7,9 @@ namespace FruitMachineLab.Adders;
 public record BoardSelectionVerificationResult(int Instructions,int Lamps,int Sounds,int AlphaBytes,int Conditions,bool AlphaExact=true,int ReferenceAlphaBytes=0,string LampSequence="",string AlphaShadow="");
 public static class BoardSelectionVerification
 {
-    public static BoardSelectionVerificationResult Verify(string evidence,bool diceRequests=false,bool diceMotion=false,bool boardMovement=false,bool nudgePotProbe=false,string? boardLink=null,bool continuation=false,bool availability=false,bool nudgeEntry=false,bool nudgePrompt=false,bool nudgeRequest=false,bool nudgeMotion=false,bool nudgeReturn=false,bool nudgeSequence=false,bool nudgeResult=false,bool nudgeExit=false,bool nudgeWinTransfer=false)
+    public static BoardSelectionVerificationResult Verify(string evidence,bool diceRequests=false,bool diceMotion=false,bool boardMovement=false,bool nudgePotProbe=false,string? boardLink=null,bool continuation=false,bool availability=false,bool nudgeEntry=false,bool nudgePrompt=false,bool nudgeRequest=false,bool nudgeMotion=false,bool nudgeReturn=false,bool nudgeSequence=false,bool nudgeResult=false,bool nudgeExit=false,bool nudgeWinTransfer=false,bool nudgeTail=false)
     {
+        if(nudgeTail)nudgeWinTransfer=true;
         if(nudgeWinTransfer)nudgeExit=true;
         if(nudgeExit)nudgeResult=true;
         if(nudgeResult)nudgeSequence=true;
@@ -20,8 +21,14 @@ public static class BoardSelectionVerification
         if(diceMotion)diceRequests=true;
         if(nudgePotProbe)boardMovement=true;
         if(boardLink is not null)boardMovement=true;
-        using var capture=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",nudgeWinTransfer ? "nudge-win-transfer.json" : nudgeExit ? "nudge-exit.json" : nudgeResult ? "nudge-result.json" : nudgeSequence ? "nudge-sequence.json" : nudgeReturn ? "nudge-return.json" : nudgeMotion ? "nudge-motion-vm.json" : nudgeRequest ? "nudge-request.json" : nudgePrompt ? "nudge-prompt.json" : nudgeEntry ? "nudge-entry.json" : availability ? "ladder-availability.json" : boardLink is not null ? boardLink+"-link"+(continuation ? "-next" : "")+".json" : nudgePotProbe ? "nudge-pot-probe.json" : boardMovement ? (continuation ? "board-movement-next.json" : "board-movement.json") : diceMotion ? "dice-motion-vm.json" : diceRequests ? "dice-requests.json" : "board-selection.json")));var root=capture.RootElement;
-        if(nudgeWinTransfer){
+        using var capture=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",nudgeTail ? "nudge-tail.json" : nudgeWinTransfer ? "nudge-win-transfer.json" : nudgeExit ? "nudge-exit.json" : nudgeResult ? "nudge-result.json" : nudgeSequence ? "nudge-sequence.json" : nudgeReturn ? "nudge-return.json" : nudgeMotion ? "nudge-motion-vm.json" : nudgeRequest ? "nudge-request.json" : nudgePrompt ? "nudge-prompt.json" : nudgeEntry ? "nudge-entry.json" : availability ? "ladder-availability.json" : boardLink is not null ? boardLink+"-link"+(continuation ? "-next" : "")+".json" : nudgePotProbe ? "nudge-pot-probe.json" : boardMovement ? (continuation ? "board-movement-next.json" : "board-movement.json") : diceMotion ? "dice-motion-vm.json" : diceRequests ? "dice-requests.json" : "board-selection.json")));var root=capture.RootElement;
+        if(nudgeTail){
+            using var entryReference=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","nudge-win-transfer.json")));
+            using var sidecar=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","nudge-tail-verification.json")));
+            foreach(var field in root.GetProperty("initial").EnumerateObject())if(field.Name!="cycle" && entryReference.RootElement.GetProperty("terminal").GetProperty(field.Name).GetString()!=field.Value.GetString())throw new InvalidDataException("Tail entry differs from verified transfer boundary");
+            if(!sidecar.RootElement.GetProperty("tail_window").GetBoolean() || sidecar.RootElement.GetProperty("process_exit_code").GetString()!.Trim()!="0")throw new InvalidDataException("Incomplete tail campaign");
+        }
+        if(nudgeWinTransfer && !nudgeTail){
             using var provenance=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","nudge-win-transfer-verification.json")));
             var terminal=root.GetProperty("terminal");
             if(!provenance.RootElement.GetProperty("observed_prefix").GetBoolean() || root.GetProperty("terminal_ram_hex").ValueKind!=JsonValueKind.Null || terminal.GetProperty("y").GetString()!="AFC2" || terminal.GetProperty("pending").GetString()!="0000" || terminal.GetProperty("win").GetString()!="0010")throw new InvalidDataException("Transfer prefix provenance/boundary differs");
@@ -38,8 +45,8 @@ public static class BoardSelectionVerification
         var declared=root.GetProperty("undefined_frame_masks").EnumerateObject().ToArray();
         if(declared.Length!=frameMasks.Count || declared.Any(item=>!frameMasks.TryGetValue(item.Name,out int mask) || item.Value.GetInt32()!=mask))throw new InvalidDataException("Invalid uninitialized-frame comparison exclusions");
         var ordinalMasks=nudgeEntry ? root.GetProperty("ordinal_frame_masks").EnumerateArray().ToDictionary(r=>r[0].GetInt32(),r=>r[1].GetInt32()) : new Dictionary<int,int>();int nudgeMask=65535;ushort lastNudgeSite=0;
-        var m=new SkillCashLiveSession(evidence).Machine;ushort clock=boardLink is not null ? BoardLinkState.Apply(m,evidence,boardLink,continuation,availability,nudgeEntry,nudgePrompt,nudgeRequest,nudgeMotion,nudgeReturn,nudgeSequence,nudgeResult,nudgeExit,nudgeWinTransfer) : boardMovement ? BoardMovementState.Apply(m,evidence,nudgePotProbe,continuation) : BoardSelectionState.Apply(m,evidence,diceRequests);
-        var motion=diceMotion || nudgeMotion ? new DiceMotionReference(m,evidence,nudgeMotion,nudgeSequence,nudgeResult) : null;
+        var m=new SkillCashLiveSession(evidence).Machine;ushort clock=boardLink is not null ? BoardLinkState.Apply(m,evidence,boardLink,continuation,availability,nudgeEntry,nudgePrompt,nudgeRequest,nudgeMotion,nudgeReturn,nudgeSequence,nudgeResult,nudgeExit,nudgeWinTransfer,nudgeTail) : boardMovement ? BoardMovementState.Apply(m,evidence,nudgePotProbe,continuation) : BoardSelectionState.Apply(m,evidence,diceRequests);
+        var motion=!nudgeTail && (diceMotion || nudgeMotion) ? new DiceMotionReference(m,evidence,nudgeMotion,nudgeSequence,nudgeResult) : null;
         using var vmHash=IncrementalHash.CreateHash(HashAlgorithmName.SHA256);using var lampHash=IncrementalHash.CreateHash(HashAlgorithmName.SHA256);using var soundHash=IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
         static void Hash(IncrementalHash hash,ReadOnlySpan<ushort> values){Span<byte> bytes=stackalloc byte[values.Length*2];for(int n=0;n<values.Length;n++)BinaryPrimitives.WriteUInt16BigEndian(bytes.Slice(n*2,2),values[n]);hash.AppendData(bytes);}
         var logicalLamps=new List<byte>();var serial=new List<byte>();var alpha=new Mpu4Alpha(m,serial.Add);int lamps=0,sounds=0;
@@ -131,7 +138,7 @@ public static class BoardSelectionVerification
             if(!diceMotion || expectedAlpha.Length-actualAlpha.Length!=2 || restore<0 || actualAlpha.Insert(restore+2,"FF")!=expectedAlpha)Match("serial_hex",actualAlpha);
         }
         if(ordinal!=root.GetProperty("instructions").GetInt32() || lamps!=root.GetProperty("lamp_requests").GetInt32() || sounds!=root.GetProperty("sound_commands").GetInt32() || condition!=conditions.Length || point!=inputs.Length || phase!=reads.Length || nativePoint!=native.Length)throw new InvalidDataException("Incomplete board selection replay");
-        if(nudgeResult && !nudgeWinTransfer){
+        if(nudgeResult && (!nudgeWinTransfer || nudgeTail)){
             byte[] terminal=Convert.FromHexString(root.GetProperty("terminal_ram_hex").GetString()!);
             if(terminal.Length!=0x800 || !m.Memory.AsSpan(0x2F0,0x33).SequenceEqual(terminal.AsSpan(0x2F0,0x33)) || m.ReadWord(0xBA)!=(ushort)((terminal[0xBA]<<8)|terminal[0xBB]) || m.ReadWord(0x2FA)!=(ushort)((terminal[0x2FA]<<8)|terminal[0x2FB]))throw new InvalidDataException("Pending award/NVRAM boundary bytes differ");
         }

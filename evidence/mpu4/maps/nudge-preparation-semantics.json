@@ -59,7 +59,7 @@
     "B403 button scan / token table9E06",
     "B31F main-reel motion and nudge consumption"
   ],
-  "scope": "Successful natural board-exit capture through E460 and explicitly observed transfer prefix through final AFC2 from a source process that failed later. Live executes selected board exit and pending-to-current-win transfer; no bank/collection/payout route or terminal transfer RAM snapshot claim.",
+  "scope": "Linked natural transfer-prefix and successful AFC2-to-AFF0 window verification. Live runs seven-flash tail and matches final protected accounting RAM; full earlier-dispatch campaign/crash and bank/collection remain unresolved.",
   "next_verified_segments": {
     "prompt": "skill-cash/nudge-prompt.json",
     "request": "skill-cash/nudge-request.json",
@@ -74,15 +74,15 @@
     "improvement_native": "skill-cash/nudge-result-native.json",
     "plan_matrix": "skill-cash/nudge-plan-matrix.json",
     "board_exit": "skill-cash/nudge-exit.json",
-    "transfer_observed_prefix": "skill-cash/nudge-win-transfer.json"
+    "transfer_observed_prefix": "skill-cash/nudge-win-transfer.json",
+    "animation_tail": "skill-cash/nudge-tail.json"
   },
   "post_motion_boundary": {
-    "site": "AFC2 with pending=0000/current-win=0010",
-    "meaning": "Final AF93 increment and native6E06 refresh completed. Display/wait tail, AF67 rounding/blink and actual outer award path remain open.",
-    "successful_previous_boundary": "E460 nudge-exit.json includes terminal RAM and exit0",
-    "transfer_evidence": "nudge-win-transfer.json is a complete selected prefix from an unsuccessful later process, explicitly ObservedPrefix; terminal_ram_hex is null",
-    "classification": "Natural observed-prefix VM/output proof plus synthetic/Live checks; full machine stability unresolved",
-    "report": "docs/recovery/NUDGE-WIN-TRANSFER-PASS.md"
+    "site": "AFF0",
+    "meaning": "AF93 completed remaining meter wait, pending clear/NVRAM, AF4E rounding and AF67 seven flashes. Pending0/current-win16 and display16. Outer award/bank/collection route not implemented.",
+    "evidence": "skill-cash/nudge-tail.json: successful natural window, entry/terminal RAM, process exit0; entry signature independently matches older transfer prefix terminal",
+    "classification": "Trace-backed narrow window and linked-prefix proof; no clean full earlier-dispatch campaign claim",
+    "report": "docs/recovery/NUDGE-ANIMATION-TAIL-PASS.md"
   },
   "post_sequence_improvement": {
     "type": "BD=15hex",
@@ -123,5 +123,16 @@
     "mechanics": "AF93 selects decrement from8560 indirect-zero tests; AFB8 adds decrement to BA, AFBA negates, AFBE adds to02FA, AFC0 refreshes NVRAM. Recorded configuration selects minus1.",
     "invariants": "Live observes AFC2 steps1..15 with BA+02FA=16; final step16 stops before AFC2 executes. Alternate two-unit odd-underflow reference behaviour preserved.",
     "uncertain": "No clean terminal transfer RAM snapshot; later external MAME crashes not diagnosed; no cash-bank credit or payout established."
+  },
+  "animation_tail": {
+    "entry": "Final AFC2",
+    "root": "AF93",
+    "rounding": "AF4E adds low bit with16-bit wrap; FFFF->0000 retained",
+    "flash": "AF67 loops7 times; AF76 clears six-character region, waits20, refreshes balance, waits20",
+    "terminal": "AFF0 before return",
+    "data": "8714 dictionary header /8716 sound stream; AF76 inline alpha bytes",
+    "implementation": "RecoveredScript plus Mpu4Alpha/Mpu4ChoiceStreamScheduler; no UI accounting logic",
+    "verification": "139 groups incl canonical tail VM/sound/alpha, protected RAM, round-wrap, Live seven flashes and pause",
+    "capture_limits": "Narrow window succeeds; full-dispatch external crash root cause unknown. NoMotorItems alone did not prevent crash. Invalid-expression attempt rejected."
   }
 }

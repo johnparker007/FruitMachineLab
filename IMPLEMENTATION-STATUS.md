@@ -305,3 +305,18 @@ meter steps match; pause/resume during rewind and mid-meter freezes actual state
 137 headless groups/all8 WPF smoke modes pass.38 VM spans/700 native rows checked
 against ROM, new sound children retained; symbolic toolchain still deferred and
 fresh Ghidra metadata access unavailable. See docs/recovery/NUDGE-WIN-TRANSFER-PASS.md.
+
+## Completed current win animation tail — 15 October 2026
+
+Live now executes the remaining display/wait, AF4E even rounding and AF67 seven
+flashes, then stops at AFF0 with pending0/current-win16 and refreshed display.
+A successful natural AFC2→AFF0 capture window saves entry/terminal RAM and matches
+13469 VM observations,63 sound commands,406 alpha bytes and protected accounting
+bytes. All entry signature fields match the older observed-prefix boundary;
+that earlier process-failure qualification remains. No single complete earlier-
+dispatch campaign claim. Capture/curator now reject debugger expression errors.
+Full-logging external crash remains unresolved; narrow-window capture succeeds.
+139 headless groups/all8 GUI smoke modes pass, including seven flashes, native
+wraparound rounding and pause during the flash loop. Existing38 byte-checked VM
+spans/700 native rows and8714 sound bytes retained. Next recover AFF0's real outer
+caller before bank commit, collection or payout. See docs/recovery/NUDGE-ANIMATION-TAIL-PASS.md.

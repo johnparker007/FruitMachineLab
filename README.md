@@ -36,7 +36,7 @@ are available. This mode uses recorded inputs; use Live Skill Cash for the tempo
 player control. Audio remains future work. See
 [playback evidence and boundaries](docs/recovery/SKILL-CASH-PLAYBACK-PASS.md).
 
-Latest local verification: headless and isolated WPF builds succeed; 137
+Latest local verification: headless and isolated WPF builds succeed; 139
 verification groups pass. Continuous C721 execution matches 98,704 VM dispatches,
 selects 3, 2 and 1, and finishes with pending 0/current win 10. All 7,298 lamp frame
 updates and the complete sound timing protocol match recorded native observations.
@@ -109,5 +109,6 @@ native-stack dependency is preserved through its actual lamp save-area effect.
 The [automatic improvement](docs/recovery/NUDGE-IMPROVEMENT-PASS.md) now runs after
 that sequence, including rewind, announcements and computed automatic nudges.
 It then [exits the board and animates the meter](docs/recovery/NUDGE-WIN-TRANSFER-PASS.md)
-from pending16/current-win0 to pending0/current-win16. Live stops at the final
-increment before the remaining display/wait, bank commit or collection route.
+from pending16/current-win0 to pending0/current-win16. The subsequent
+[display refresh and seven flashes](docs/recovery/NUDGE-ANIMATION-TAIL-PASS.md)
+also execute. Live stops at AFF0 before outer award, bank commit or collection.

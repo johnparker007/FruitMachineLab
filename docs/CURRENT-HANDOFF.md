@@ -10,7 +10,7 @@ batch, including its verification.
 - Live Skill Cash: incremental VM, retained state, physical momentary Start input,
   actual Pause/Resume, generated lamp/alpha outputs and diagnostic state display.
 - Separate verified playback/scrubber; original MAME-backed verification retained.
-- Last development batch: 137 headless groups passed. Headless and isolated WPF
+- Last development batch: 139 headless groups passed. Headless and isolated WPF
   builds passed; Live/playback WPF smoke checks and rendered layouts were checked.
 - John subsequently reported that the live feature works well.
 
@@ -71,10 +71,34 @@ scope and preserved earlier timing qualifications.
 
 ## Next development work
 
-Latest batch: Live now returns through E263's indexed dispatcher and E460 board
-exit, then executes EDD3/EE11/EDB4/AF93 pending-to-current-win animation. It stops
-at final AFC2 after6E06 with pending0/current-win16, before the following display/
-wait and rounding/blink tail. Bank commit, collection and payout are not recovered.
+Latest batch: Live completes the meter display/wait and AF67 seven-flash tail,
+including AF4E even rounding and NVRAM refresh, then stops at AFF0. Pending0/
+current-win16, final display refreshed. Next follow AFF0 through EDB4/EE11 and
+its real caller before implementing bank commit, collection or payout. See
+recovery/NUDGE-ANIMATION-TAIL-PASS.md.139 groups/all8 GUI smoke modes pass.
+Headless checks pause during the flash loop as well as rewind/meter transfer.
+
+New nudge-tail fixture: successful natural TailWindow capture from final AFC2
+through AFF0, saved entry/terminal RAM, exit0.13469 VM observations, no lifted
+dispatches/masks, zero lamps,63 sound commands,406 alpha bytes. Entry signatures
+match the old verified transfer prefix's terminal fields; verifier requires window
+provenance/success. Terminal protected51-byte vector/pending/win match exactly,
+including in Live. Earlier failed-later prefix stays qualified; this is linked-
+window proof, not a new full earlier-dispatch campaign.
+
+Removing the motor saved-item reader alone did NOT prevent the full-dispatch
+crash. A run with rejected !(...) syntax logged only entry/terminal and was
+rejected by prefix comparison. Capture/curator now reject expression errors.
+Corrected narrow logging succeeds; root cause of full-logging crash remains open.
+-TailWindow enables VM logging at final AFC2 and seeds tail-entry-ram.bin.
+-NoMotorItems omits only a read-only temporary Lua observer; original settings
+are unchanged and native motor/optic logs remain. Preserve these qualifications.
+Data map now includes8714/8716 sound bytes;38 exact VM spans/700 native rows
+retained. Full symbolic tooling deferred; fresh Ghidra metadata export unavailable.
+
+Previous transfer batch: Live returned through E263's indexed dispatcher and E460 board
+exit and EDD3/EE11/EDB4/AF93 transfer. Its old stop was final AFC2; the new AFF0
+boundary is above. Bank commit, collection and payout remain unrecovered.
 See recovery/NUDGE-WIN-TRANSFER-PASS.md.137 groups/all8 GUI smoke modes pass;
 actual pause/resume during rewind and mid-meter transfer freezes memory/time.
 

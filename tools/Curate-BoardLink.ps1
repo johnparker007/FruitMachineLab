@@ -1,12 +1,14 @@
-param([Parameter(Mandatory=$true)][string]$RunDirectory,[Parameter(Mandatory=$true)][ValidateSet('ladder','snake')][string]$LinkKind,[switch]$Continuation,[switch]$Availability,[switch]$NudgeEntry,[switch]$NudgePrompt,[switch]$NudgeRequest,[switch]$NudgeMotion)
-$ErrorActionPreference='Stop';$root=Split-Path $PSScriptRoot -Parent;$target=Join-Path $root 'evidence/mpu4/skill-cash';$stem=if($NudgeMotion){'nudge-motion-vm'}elseif($NudgeRequest){'nudge-request'}elseif($NudgePrompt){'nudge-prompt'}elseif($NudgeEntry){'nudge-entry'}elseif($Availability){'ladder-availability'}else{$LinkKind+'-link'+$(if($Continuation){'-next'}else{''})};$classification='Natural '+$LinkKind+' dispatch from DBC4 '+$(if($Continuation){'to DD38/E2FC continuation'}else{'to DE81'})+'; unchanged physical input campaign; no RAM/register injection'
+param([Parameter(Mandatory=$true)][string]$RunDirectory,[Parameter(Mandatory=$true)][ValidateSet('ladder','snake')][string]$LinkKind,[switch]$Continuation,[switch]$Availability,[switch]$NudgeEntry,[switch]$NudgePrompt,[switch]$NudgeRequest,[switch]$NudgeMotion,[switch]$NudgeReturn,[switch]$NudgeSequence)
+$ErrorActionPreference='Stop';$root=Split-Path $PSScriptRoot -Parent;$target=Join-Path $root 'evidence/mpu4/skill-cash';$stem=if($NudgeSequence){'nudge-sequence'}elseif($NudgeReturn){'nudge-return'}elseif($NudgeMotion){'nudge-motion-vm'}elseif($NudgeRequest){'nudge-request'}elseif($NudgePrompt){'nudge-prompt'}elseif($NudgeEntry){'nudge-entry'}elseif($Availability){'ladder-availability'}else{$LinkKind+'-link'+$(if($Continuation){'-next'}else{''})};$classification='Natural '+$LinkKind+' dispatch from DBC4 '+$(if($Continuation){'to DD38/E2FC continuation'}else{'to DE81'})+'; unchanged physical input campaign; no RAM/register injection'
 if($Availability){if(!$Continuation -or $LinkKind -ne 'ladder'){throw 'Availability requires ladder continuation'};$classification='Natural ladder through next selection decision DD7E/DD98, including native availability search; unchanged physical inputs; no RAM/register injection'}
 if($NudgeEntry){$classification='Natural type-1 nudge preparation E247 to B4C5, with physical TAKE at naturally reached square22; no RAM/register injection'}
 if($NudgePrompt){if(!$NudgeEntry){throw 'NudgePrompt requires NudgeEntry'};$classification='Natural type-1 E247 through first B403 scan; physical TAKE at square22, no state injection'}
 if($NudgeRequest){$classification='Natural type-1 request: physical TAKE and physical Nudge1; stop before main-reel motion'}
 if($NudgeMotion){$classification='Natural type-1 through completed Nudge1 motion to B339; bounded before unresolved local+2 residue read; raw capture continues through B34E'}
+if($NudgeReturn){if(!$NudgeMotion){throw 'NudgeReturn requires NudgeMotion'};$classification='Natural first Nudge1 completes and returns to the next B403 prompt; native lamp save-area dependency preserved'}
+if($NudgeSequence){if(!$NudgeReturn){throw 'NudgeSequence requires NudgeReturn'};$classification='Natural repeated physical Nudge1 requests through the B749 sequence return; no state injection'}
 $prefix=$null;$prefixCount=0;$prefixHash=[Security.Cryptography.IncrementalHash]::CreateHash([Security.Cryptography.HashAlgorithmName]::SHA256)
-if($NudgePrompt){$prefix=Get-Content (Join-Path $target $(if($NudgeMotion){'nudge-request.json'}else{'nudge-entry.json'})) -Raw|ConvertFrom-Json}
+if($NudgePrompt){$prefix=Get-Content (Join-Path $target $(if($NudgeSequence){'nudge-return.json'}elseif($NudgeReturn){'nudge-motion-vm.json'}elseif($NudgeMotion){'nudge-request.json'}else{'nudge-entry.json'})) -Raw|ConvertFrom-Json}
 if($Continuation -and !$NudgeEntry){$prefix=Get-Content (Join-Path $target (($LinkKind+'-link'+$(if($Availability){'-next'}else{''}))+'.json')) -Raw|ConvertFrom-Json}
 $keys=@('y','token','top','second','third','fourth','u','s','f4','f6','frame','tick','irq','seed','choice','rate','latch','pending','win','guard','checksum','mode','display','suppress','clock','board','pot')
 $vm=[Security.Cryptography.IncrementalHash]::CreateHash([Security.Cryptography.HashAlgorithmName]::SHA256)
@@ -46,7 +48,7 @@ foreach($line in [IO.File]::ReadLines((Join-Path $RunDirectory 'debug.log'))) {
   if($frameMasks.Contains($f.y)){$values[10]=$values[10] -band $frameMasks[$f.y]};AppendWords $vm $values;if($null -ne $prefix -and $prefixCount -lt $prefix.instructions){AppendWords $prefixHash $values;$prefixCount++}
   if($NudgePrompt -or $count -lt 180 -or $count%1024 -eq 0 -or $f.y -in @('DE11','DE13','DE30','DE42','DE7F','DBC4','DBED','DE96','DD38','DDEF','A838','A842','A849','A84F','A863')){$anchors.Add([int[]](@($count)+$values))}
   $inputs=[int[]]@(@('tick','irq','latch','clock') | ForEach-Object {[Convert]::ToUInt16($f[$_],16)});$key=$inputs -join ','
-  if($key -ne $inputKey){$schedule.Add([int[]](@($count)+$inputs));$inputKey=$key};$count++;if($NudgeMotion -and $f.y -eq 'B339'){break}
+  if($key -ne $inputKey){$schedule.Add([int[]](@($count)+$inputs));$inputKey=$key};$count++;if($NudgeMotion -and !$NudgeReturn -and $f.y -eq 'B339'){break}
  }elseif($kind -eq 'QE' -or ($kind -eq 'WC' -and $f.pc -eq '5B80')){$tag=if($kind -eq 'QE'){1}else{2};$stream=if($kind -eq 'QE'){[Convert]::ToUInt16($f.stream,16)}else{0};$native.Add([int[]]@(($count-1),$tag,[Convert]::ToUInt16($f.clock,16),$stream))}
  elseif($kind -eq 'PI'){$conditions.Add([int[]](@($count-1)+@(@('selector','p0','p1','p2','p3','p6','p7') | ForEach-Object {[Convert]::ToUInt16($f[$_],16)})))}
  elseif($kind -eq 'LF'){$lamp.AppendData([byte[]]@([Convert]::ToByte($f.id,16),([Convert]::ToByte($f.pattern,16) -band 15),[Convert]::ToByte($f.column,16)));$lamp.AppendData([Convert]::FromHexString($f.frames));$lamps++}
@@ -56,7 +58,9 @@ foreach($line in [IO.File]::ReadLines((Join-Path $RunDirectory 'debug.log'))) {
 
 if(!$NudgeEntry -and ($initial.y -ne 'DBC4' -or (!$Availability -and !$Continuation -and $last.y -ne 'DE81') -or (!$Availability -and $Continuation -and $last.y -notin @('DD38','E2FC')) -or ($Availability -and $last.y -notin @('DD7E','DD98')))){throw 'Incomplete natural link reference'}
 
-if($NudgeEntry -and ($initial.y -ne 'E247' -or $last.y -ne $(if($NudgeMotion){'B339'}elseif($NudgeRequest){'B31F'}elseif($NudgePrompt){'B403'}else{'B4C5'}))){throw 'Incomplete nudge preparation reference'}
+if($NudgeEntry -and ($initial.y -ne 'E247' -or $last.y -ne $(if($NudgeSequence){'B749'}elseif($NudgeReturn){'B403'}elseif($NudgeMotion){'B339'}elseif($NudgeRequest){'B31F'}elseif($NudgePrompt){'B403'}else{'B4C5'}))){throw 'Incomplete nudge preparation reference'}
+if($NudgeReturn -and !$NudgeSequence -and $last.pot -ne '02'){throw 'Return did not retain two nudges'}
+if($NudgeSequence -and $last.pot -ne '00'){throw 'Sequence did not exhaust the pot'}
 if($null -ne $prefix -and ($prefixCount -ne $prefix.instructions -or [Convert]::ToHexString($prefixHash.GetHashAndReset()) -cne $prefix.expected_vm_sha256)){throw 'Continuation changed the independently captured prefix'}
 $prefixHash.Dispose()
 $orderedSites=[ordered]@{};foreach($key in ($sites.Keys|Sort-Object)){$orderedSites[$key]=$sites[$key]};$orderedTokens=[ordered]@{};foreach($key in ($tokens.Keys|Sort-Object)){$orderedTokens[$key]=$tokens[$key]}

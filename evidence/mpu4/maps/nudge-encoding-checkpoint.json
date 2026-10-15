@@ -1,5 +1,574 @@
 {
   "rom_sha1": "402D1518BB78FDC489B06C2AABC771E5CE151847",
+  "native_stack_evidence": {
+    "classification": "Natural read-only nine-byte watchpoint capture; address-specific proof for this entry shape, not a general CPU-stack model",
+    "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-nudge-return-255e1e27ded14f3b94160a27a14e2f1a",
+    "raw_sha256": "E3ADBBE568EA1373ACF33C05EC67EF8AE5BB0325666A35C4C5C20E36D60BDD9F",
+    "writes": [
+      {
+        "pc": "2BED",
+        "address": "0793",
+        "value": "12",
+        "s": "0793",
+        "y": "B91F",
+        "f4": "07B4",
+        "cycle": "00000000288E95AD"
+      },
+      {
+        "pc": "2BED",
+        "address": "0792",
+        "value": "81",
+        "s": "0792",
+        "y": "B91F",
+        "f4": "07B4",
+        "cycle": "00000000288E95AD"
+      },
+      {
+        "pc": "2BED",
+        "address": "0791",
+        "value": "00",
+        "s": "0791",
+        "y": "B91F",
+        "f4": "07B4",
+        "cycle": "00000000288E95AD"
+      },
+      {
+        "pc": "2BF0",
+        "address": "0790",
+        "value": "F0",
+        "s": "0790",
+        "y": "B91F",
+        "f4": "07B4",
+        "cycle": "00000000288E95B5"
+      },
+      {
+        "pc": "2BF0",
+        "address": "078F",
+        "value": "2B",
+        "s": "078F",
+        "y": "B91F",
+        "f4": "07B4",
+        "cycle": "00000000288E95B5"
+      },
+      {
+        "pc": "2BF8",
+        "address": "0790",
+        "value": "00",
+        "s": "0790",
+        "y": "B91F",
+        "f4": "07B4",
+        "cycle": "00000000288E95D1"
+      },
+      {
+        "pc": "2BF8",
+        "address": "078F",
+        "value": "00",
+        "s": "078F",
+        "y": "B91F",
+        "f4": "07B4",
+        "cycle": "00000000288E95EF"
+      },
+      {
+        "pc": "2BF8",
+        "address": "078E",
+        "value": "00",
+        "s": "078E",
+        "y": "B91F",
+        "f4": "07B4",
+        "cycle": "00000000288E960D"
+      },
+      {
+        "pc": "2BF8",
+        "address": "078D",
+        "value": "00",
+        "s": "078D",
+        "y": "B91F",
+        "f4": "07B4",
+        "cycle": "00000000288E962B"
+      },
+      {
+        "pc": "2C04",
+        "address": "078C",
+        "value": "04",
+        "s": "078C",
+        "y": "B91F",
+        "f4": "07B4",
+        "cycle": "00000000288E9644"
+      },
+      {
+        "pc": "2C04",
+        "address": "078B",
+        "value": "2C",
+        "s": "078B",
+        "y": "B91F",
+        "f4": "07B4",
+        "cycle": "00000000288E9644"
+      },
+      {
+        "pc": "777E",
+        "address": "0793",
+        "value": "7E",
+        "s": "0793",
+        "y": "9F95",
+        "f4": "07B4",
+        "cycle": "00000000288E99D7"
+      },
+      {
+        "pc": "777E",
+        "address": "0792",
+        "value": "77",
+        "s": "0792",
+        "y": "9F95",
+        "f4": "07B4",
+        "cycle": "00000000288E99D7"
+      },
+      {
+        "pc": "29F9",
+        "address": "0791",
+        "value": "00",
+        "s": "0791",
+        "y": "9F95",
+        "f4": "07B4",
+        "cycle": "00000000288E99F5"
+      },
+      {
+        "pc": "29F9",
+        "address": "0790",
+        "value": "03",
+        "s": "0790",
+        "y": "9F95",
+        "f4": "07B4",
+        "cycle": "00000000288E99F5"
+      },
+      {
+        "pc": "29FE",
+        "address": "078F",
+        "value": "01",
+        "s": "078F",
+        "y": "9F95",
+        "f4": "07B4",
+        "cycle": "00000000288E9A02"
+      },
+      {
+        "pc": "29FE",
+        "address": "078E",
+        "value": "06",
+        "s": "078E",
+        "y": "9F95",
+        "f4": "07B4",
+        "cycle": "00000000288E9A02"
+      },
+      {
+        "pc": "2A03",
+        "address": "078D",
+        "value": "00",
+        "s": "078D",
+        "y": "9F95",
+        "f4": "07B4",
+        "cycle": "00000000288E9A0F"
+      },
+      {
+        "pc": "2A03",
+        "address": "078C",
+        "value": "02",
+        "s": "078C",
+        "y": "9F95",
+        "f4": "07B4",
+        "cycle": "00000000288E9A0F"
+      },
+      {
+        "pc": "2A07",
+        "address": "078B",
+        "value": "03",
+        "s": "078B",
+        "y": "9F95",
+        "f4": "07B4",
+        "cycle": "00000000288E9A1D"
+      },
+      {
+        "pc": "2A13",
+        "address": "078B",
+        "value": "13",
+        "s": "078B",
+        "y": "9F95",
+        "f4": "07B4",
+        "cycle": "00000000288E9A62"
+      },
+      {
+        "pc": "2A13",
+        "address": "078B",
+        "value": "13",
+        "s": "078B",
+        "y": "9F95",
+        "f4": "07B4",
+        "cycle": "00000000288ED0A8"
+      },
+      {
+        "pc": "2A16",
+        "address": "078B",
+        "value": "16",
+        "s": "078B",
+        "y": "9F95",
+        "f4": "07B4",
+        "cycle": "00000000288EDB96"
+      },
+      {
+        "pc": "77AA",
+        "address": "0793",
+        "value": "6E",
+        "s": "0793",
+        "y": "9AE1",
+        "f4": "07B4",
+        "cycle": "00000000288EDE1A"
+      },
+      {
+        "pc": "77AA",
+        "address": "0792",
+        "value": "06",
+        "s": "0792",
+        "y": "9AE1",
+        "f4": "07B4",
+        "cycle": "00000000288EDE1A"
+      },
+      {
+        "pc": "77AA",
+        "address": "0791",
+        "value": "E1",
+        "s": "0791",
+        "y": "9AE1",
+        "f4": "07B4",
+        "cycle": "00000000288EDE1A"
+      },
+      {
+        "pc": "77AA",
+        "address": "0790",
+        "value": "9A",
+        "s": "0790",
+        "y": "9AE1",
+        "f4": "07B4",
+        "cycle": "00000000288EDE1A"
+      },
+      {
+        "pc": "77AA",
+        "address": "078F",
+        "value": "2D",
+        "s": "078F",
+        "y": "9AE1",
+        "f4": "07B4",
+        "cycle": "00000000288EDE1A"
+      },
+      {
+        "pc": "77AA",
+        "address": "078E",
+        "value": "83",
+        "s": "078E",
+        "y": "9AE1",
+        "f4": "07B4",
+        "cycle": "00000000288EDE1A"
+      },
+      {
+        "pc": "77AA",
+        "address": "078D",
+        "value": "00",
+        "s": "078D",
+        "y": "9AE1",
+        "f4": "07B4",
+        "cycle": "00000000288EDE1A"
+      },
+      {
+        "pc": "77AA",
+        "address": "078C",
+        "value": "8F",
+        "s": "078C",
+        "y": "9AE1",
+        "f4": "07B4",
+        "cycle": "00000000288EDE1A"
+      },
+      {
+        "pc": "77AA",
+        "address": "078B",
+        "value": "00",
+        "s": "078B",
+        "y": "9AE1",
+        "f4": "07B4",
+        "cycle": "00000000288EDE1A"
+      },
+      {
+        "pc": "77B9",
+        "address": "0793",
+        "value": "8C",
+        "s": "0793",
+        "y": "9AE1",
+        "f4": "07B4",
+        "cycle": "00000000288EE4BB"
+      },
+      {
+        "pc": "77B9",
+        "address": "0792",
+        "value": "4A",
+        "s": "0792",
+        "y": "9AE1",
+        "f4": "07B4",
+        "cycle": "00000000288EE4BB"
+      },
+      {
+        "pc": "77BF",
+        "address": "0793",
+        "value": "BF",
+        "s": "0793",
+        "y": "7335",
+        "f4": "07B4",
+        "cycle": "00000000288EE4D2"
+      },
+      {
+        "pc": "77BF",
+        "address": "0792",
+        "value": "77",
+        "s": "0792",
+        "y": "7335",
+        "f4": "07B4",
+        "cycle": "00000000288EE4D2"
+      },
+      {
+        "pc": "4A8E",
+        "address": "0791",
+        "value": "8E",
+        "s": "0791",
+        "y": "7335",
+        "f4": "07B4",
+        "cycle": "00000000288EE4DF"
+      },
+      {
+        "pc": "4A8E",
+        "address": "0790",
+        "value": "4A",
+        "s": "0790",
+        "y": "7335",
+        "f4": "07B4",
+        "cycle": "00000000288EE4DF"
+      },
+      {
+        "pc": "4A8E",
+        "address": "078F",
+        "value": "35",
+        "s": "078F",
+        "y": "7335",
+        "f4": "07B4",
+        "cycle": "00000000288EE4DF"
+      },
+      {
+        "pc": "4A8E",
+        "address": "078E",
+        "value": "73",
+        "s": "078E",
+        "y": "7335",
+        "f4": "07B4",
+        "cycle": "00000000288EE4DF"
+      },
+      {
+        "pc": "4A8E",
+        "address": "078D",
+        "value": "8F",
+        "s": "078D",
+        "y": "7335",
+        "f4": "07B4",
+        "cycle": "00000000288EE4DF"
+      },
+      {
+        "pc": "4A8E",
+        "address": "078C",
+        "value": "00",
+        "s": "078C",
+        "y": "7335",
+        "f4": "07B4",
+        "cycle": "00000000288EE4DF"
+      },
+      {
+        "pc": "4A9E",
+        "address": "078B",
+        "value": "9E",
+        "s": "078B",
+        "y": "7335",
+        "f4": "07B4",
+        "cycle": "00000000288EE4FD"
+      },
+      {
+        "pc": "4A9E",
+        "address": "078B",
+        "value": "9E",
+        "s": "078B",
+        "y": "7335",
+        "f4": "07B4",
+        "cycle": "00000000288EE5D3"
+      },
+      {
+        "pc": "4A9E",
+        "address": "078B",
+        "value": "9E",
+        "s": "078B",
+        "y": "7335",
+        "f4": "07B4",
+        "cycle": "00000000288EE6A9"
+      },
+      {
+        "pc": "4A9E",
+        "address": "078B",
+        "value": "9E",
+        "s": "078B",
+        "y": "7335",
+        "f4": "07B4",
+        "cycle": "00000000288EE77F"
+      },
+      {
+        "pc": "4A9E",
+        "address": "078B",
+        "value": "9E",
+        "s": "078B",
+        "y": "7335",
+        "f4": "07B4",
+        "cycle": "00000000288EE855"
+      },
+      {
+        "pc": "4A9E",
+        "address": "078B",
+        "value": "9E",
+        "s": "078B",
+        "y": "7335",
+        "f4": "07B4",
+        "cycle": "00000000288EE92B"
+      },
+      {
+        "pc": "4A9E",
+        "address": "078B",
+        "value": "9E",
+        "s": "078B",
+        "y": "7335",
+        "f4": "07B4",
+        "cycle": "00000000288EEA01"
+      },
+      {
+        "pc": "4A9E",
+        "address": "078B",
+        "value": "9E",
+        "s": "078B",
+        "y": "7335",
+        "f4": "07B4",
+        "cycle": "00000000288EEAD7"
+      },
+      {
+        "pc": "4A9E",
+        "address": "078B",
+        "value": "9E",
+        "s": "078B",
+        "y": "7335",
+        "f4": "07B4",
+        "cycle": "00000000288EF241"
+      },
+      {
+        "pc": "7663",
+        "address": "078E",
+        "value": "00",
+        "s": "0787",
+        "y": "B736",
+        "f4": "078B",
+        "cycle": "00000000288EF411"
+      },
+      {
+        "pc": "7869",
+        "address": "0792",
+        "value": "10",
+        "s": "0785",
+        "y": "B634",
+        "f4": "078B",
+        "cycle": "00000000288F5319"
+      },
+      {
+        "pc": "7869",
+        "address": "0793",
+        "value": "03",
+        "s": "0785",
+        "y": "B63C",
+        "f4": "078B",
+        "cycle": "00000000288F53A9"
+      },
+      {
+        "pc": "7869",
+        "address": "078F",
+        "value": "02",
+        "s": "077D",
+        "y": "B64C",
+        "f4": "078B",
+        "cycle": "00000000288F5713"
+      },
+      {
+        "pc": "7869",
+        "address": "0790",
+        "value": "00",
+        "s": "077D",
+        "y": "B64C",
+        "f4": "078B",
+        "cycle": "00000000288F6092"
+      },
+      {
+        "pc": "7869",
+        "address": "0791",
+        "value": "07",
+        "s": "077D",
+        "y": "B64C",
+        "f4": "078B",
+        "cycle": "00000000288F637D"
+      },
+      {
+        "pc": "7869",
+        "address": "078B",
+        "value": "10",
+        "s": "0785",
+        "y": "B2D2",
+        "f4": "078B",
+        "cycle": "00000000288FA524"
+      },
+      {
+        "pc": "7869",
+        "address": "078E",
+        "value": "10",
+        "s": "0785",
+        "y": "B2DC",
+        "f4": "078B",
+        "cycle": "00000000288FA5DF"
+      },
+      {
+        "pc": "7663",
+        "address": "078C",
+        "value": "00",
+        "s": "0785",
+        "y": "B2E4",
+        "f4": "078B",
+        "cycle": "00000000288FBDF2"
+      },
+      {
+        "pc": "7663",
+        "address": "078C",
+        "value": "00",
+        "s": "0779",
+        "y": "B415",
+        "f4": "078B",
+        "cycle": "000000002891CE90"
+      }
+    ],
+    "last_local2_write": {
+      "pc": "4A8E",
+      "address": "078D",
+      "value": "8F",
+      "s": "078D",
+      "y": "7335",
+      "f4": "07B4",
+      "cycle": "00000000288EE4DF"
+    },
+    "producer": "Native4A8C PSHS PC,Y,D after gateway77A8. VM S0796 -> saved D at078C, its low pattern byte078D later becomes frame078B+2.",
+    "consumer": "B339/B33B reads local+2; B33D tests it. No initialization is inserted.",
+    "implementation": "src/FruitMachineLab.Runtime/Mpu4LampRequests.cs",
+    "verification": "Natural nudge-return canonical VM digest plus focused save-area/frame-reuse test"
+  },
   "functions": [
     {
       "entry": "61F6",
@@ -40,12 +609,44 @@
       "export_sha256": "E44F0FF770B6139D99930A18A1499B0BE4071106AED64B8AA8D1486D67650078",
       "exported_body_size": 96,
       "qualification": "Ghidra recovered function body size is retained, not assumed to be a contiguous extent or complete calling convention"
+    },
+    {
+      "entry": "77A8",
+      "label": "vm_call_native_pop_d_x_y",
+      "existing_export": "native/77a8.json",
+      "export_sha256": "8B6F3B762B6FA8C624B84FE7E4F8BB968C0635D678435D1D11C5FAC35AA002AD",
+      "exported_body_size": 25,
+      "qualification": "Ghidra recovered function body size is retained, not assumed to be a contiguous extent or complete calling convention"
+    },
+    {
+      "entry": "4A8C",
+      "label": "lamp_frame_range_helper_with_synthetic_return",
+      "existing_export": "native/4a8c.json",
+      "export_sha256": "18B7154219544001068B63DB69883A4CA82AF7090A59AD7307C26E4696763140",
+      "exported_body_size": 4,
+      "qualification": "Ghidra recovered function body size is retained, not assumed to be a contiguous extent or complete calling convention"
+    },
+    {
+      "entry": "4A90",
+      "label": "lamps_apply_command_range",
+      "existing_export": "native/4a90.json",
+      "export_sha256": "DBF07882AEDEB47C4BDCCF59D3780B96C97FF20B6A8A8DC6D8023E4F4782ED63",
+      "exported_body_size": 21,
+      "qualification": "Ghidra recovered function body size is retained, not assumed to be a contiguous extent or complete calling convention"
+    },
+    {
+      "entry": "7A02",
+      "label": "vm_loop_increment_one",
+      "existing_export": "native/7a02.json",
+      "export_sha256": "3219624F4817FD612EBF8330712A4CCC5493C7CC7BAB39244618C4600755AEDD",
+      "exported_body_size": 19,
+      "qualification": "Ghidra recovered function body size is retained, not assumed to be a contiguous extent or complete calling convention"
     }
   ],
   "calling_conventions": {
     "native_motion": "61F6 accepts requests at0169+2*reel, caller VM U/Y retained; motor service is IRQ-driven; synchronous bit08 path remains unsupported",
     "service": "6403 mutates reel records0150..019F and phase/drive state, reads optics via656B; cleanup649D updates positions and NVRAM complements/checksum",
-    "vm": "B31F runs within B72D nine-byte local frame and B403 loop frame; B306 consumes BE and BF when BD=15hex; stops before local+2 read"
+    "vm": "B31F runs within B72D nine-byte local frame and B403 loop frame; B306 consumes BE and BF when BD=15hex; preserves local+2 lamp-pattern residue before reading it"
   },
   "scope": "Selected current nudge recovery checkpoint, not a lossless full-ROM listing or rebuild",
   "native": [
@@ -3204,6 +3805,184 @@
           "decoded": "JMP    <$FC"
         }
       ]
+    },
+    {
+      "source": "nudge-stack-bridge.txt",
+      "source_sha256": "97557119F27B1FB30AA9CE822AAA3ED7820AF257023C02F390C55793671ECD9B",
+      "classification": "Byte-checked MAME linear disassembly; code/data typing, reachability and all function boundaries are not established by this decode",
+      "instructions": [
+        {
+          "address": "77A8",
+          "bytes": "3706",
+          "decoded": "PULU   D"
+        },
+        {
+          "address": "77AA",
+          "bytes": "96F1",
+          "decoded": "LDA    <$F1"
+        },
+        {
+          "address": "77AC",
+          "bytes": "2707",
+          "decoded": "BEQ    $77B5"
+        },
+        {
+          "address": "77AE",
+          "bytes": "8A01",
+          "decoded": "ORA    #$01"
+        },
+        {
+          "address": "77B0",
+          "bytes": "97F1",
+          "decoded": "STA    <$F1"
+        },
+        {
+          "address": "77B2",
+          "bytes": "B7080C",
+          "decoded": "STA    $080C"
+        },
+        {
+          "address": "77B5",
+          "bytes": "AE84",
+          "decoded": "LDX    ,X"
+        },
+        {
+          "address": "77B7",
+          "bytes": "3430",
+          "decoded": "PSHS   Y,X"
+        },
+        {
+          "address": "77B9",
+          "bytes": "3720",
+          "decoded": "PULU   Y"
+        },
+        {
+          "address": "77BB",
+          "bytes": "3710",
+          "decoded": "PULU   X"
+        },
+        {
+          "address": "77BD",
+          "bytes": "ADF1",
+          "decoded": "JSR    [,S++]"
+        },
+        {
+          "address": "77BF",
+          "bytes": "20BD",
+          "decoded": "BRA    $777E"
+        }
+      ]
+    },
+    {
+      "source": "nudge-stack-save.txt",
+      "source_sha256": "8202CF79908B97884B9BF8C356F1430CED2D1B5CC0AAB305DC65010F36FA8E58",
+      "classification": "Byte-checked MAME linear disassembly; code/data typing, reachability and all function boundaries are not established by this decode",
+      "instructions": [
+        {
+          "address": "4A8C",
+          "bytes": "34A6",
+          "decoded": "PSHS   PC,Y,D"
+        },
+        {
+          "address": "4A8E",
+          "bytes": "2005",
+          "decoded": "BRA    $4A95"
+        },
+        {
+          "address": "4A90",
+          "bytes": "3426",
+          "decoded": "PSHS   Y,D"
+        },
+        {
+          "address": "4A92",
+          "bytes": "E6F804",
+          "decoded": "LDB    [$04,S]"
+        },
+        {
+          "address": "4A95",
+          "bytes": "AC62",
+          "decoded": "CMPX   $2,S"
+        },
+        {
+          "address": "4A97",
+          "bytes": "2407",
+          "decoded": "BCC    $4AA0"
+        },
+        {
+          "address": "4A99",
+          "bytes": "A680",
+          "decoded": "LDA    ,X+"
+        },
+        {
+          "address": "4A9B",
+          "bytes": "BD49C5",
+          "decoded": "JSR    $49C5"
+        },
+        {
+          "address": "4A9E",
+          "bytes": "20F5",
+          "decoded": "BRA    $4A95"
+        },
+        {
+          "address": "4AA0",
+          "bytes": "3506",
+          "decoded": "PULS   D"
+        },
+        {
+          "address": "4AA2",
+          "bytes": "3264",
+          "decoded": "LEAS   $4,S"
+        },
+        {
+          "address": "4AA4",
+          "bytes": "39",
+          "decoded": "RTS"
+        }
+      ]
+    },
+    {
+      "source": "nudge-loop-leave.txt",
+      "source_sha256": "AE3260936CCCB22B1663A3318B028978372F1094C83858489A26E8FFA1852334",
+      "classification": "Byte-checked MAME linear disassembly; code/data typing, reachability and all function boundaries are not established by this decode",
+      "instructions": [
+        {
+          "address": "7A17",
+          "bytes": "10AEA4",
+          "decoded": "LDY    ,Y"
+        },
+        {
+          "address": "7A1A",
+          "bytes": "20F1",
+          "decoded": "BRA    $7A0D"
+        }
+      ]
+    },
+    {
+      "source": "nudge-loop-cleanup.txt",
+      "source_sha256": "3F588B1FD2ECAA2C4739F72628FE97181EFF9870158C8236E11817FFF3B2DB60",
+      "classification": "Byte-checked MAME linear disassembly; code/data typing, reachability and all function boundaries are not established by this decode",
+      "instructions": [
+        {
+          "address": "7A0D",
+          "bytes": "AE66",
+          "decoded": "LDX    $6,S"
+        },
+        {
+          "address": "7A0F",
+          "bytes": "9FF6",
+          "decoded": "STX    <$F6"
+        },
+        {
+          "address": "7A11",
+          "bytes": "3268",
+          "decoded": "LEAS   $8,S"
+        },
+        {
+          "address": "7A13",
+          "bytes": "0EFC",
+          "decoded": "JMP    <$FC"
+        }
+      ]
     }
   ],
   "vm": [
@@ -3425,6 +4204,248 @@
         },
         {
           "address": "B31B",
+          "token": "792F",
+          "annotation": "vm_return_to_caller_stream  ",
+          "bytes_through_next_listed_site": "792F"
+        }
+      ]
+    },
+    {
+      "listing": "VM-SCRIPTS/B72D.txt",
+      "listing_sha256": "47591277AC05ED9115C0DBB315F0E8AFDE9592E1FEE190EE01D280BF9BCFE847",
+      "start": "B72D",
+      "end_exclusive": "B772",
+      "span_hex": "79630976A9B29A765FB5EB7982309CA3B62484357671B2A6B2E6B4C382489BFEB710811080C47A539FA07AA37982057E799F417FF2765F7EED765F99848245765FB2E6792F",
+      "classification": "Exact selected ROM span and checked listed tokens; gaps/operands/embedded data preserved verbatim. Span partition does not prove each decoded operand or relocation semantics. Last return token span ends after two bytes.",
+      "sites": [
+        {
+          "address": "B72D",
+          "token": "7963",
+          "annotation": "vm_push_inline_byte_literal  inline_value=0x0009",
+          "bytes_through_next_listed_site": "796309"
+        },
+        {
+          "address": "B730",
+          "token": "76A9",
+          "annotation": "vm_allocate_local_frame  ",
+          "bytes_through_next_listed_site": "76A9"
+        },
+        {
+          "address": "B732",
+          "token": "B29A",
+          "annotation": "vm_push_local_frame_address  value=0x0003",
+          "bytes_through_next_listed_site": "B29A"
+        },
+        {
+          "address": "B734",
+          "token": "765F",
+          "annotation": "vm_clear_byte_memory  ",
+          "bytes_through_next_listed_site": "765F"
+        },
+        {
+          "address": "B736",
+          "token": "B5EB",
+          "annotation": "script_b5eb  body=0xB5ED",
+          "bytes_through_next_listed_site": "B5EB"
+        },
+        {
+          "address": "B738",
+          "token": "7982",
+          "annotation": "vm_branch_forward8_if_zero  branch=0xB76A",
+          "bytes_through_next_listed_site": "798230"
+        },
+        {
+          "address": "B73B",
+          "token": "9CA3",
+          "annotation": "apply_lamp_range_constant_0080_record_9b8c_9ca5  body=0x9CA5",
+          "bytes_through_next_listed_site": "9CA3"
+        },
+        {
+          "address": "B73D",
+          "token": "B624",
+          "annotation": "prepare_nudge_selection_records  body=0xB626",
+          "bytes_through_next_listed_site": "B624"
+        },
+        {
+          "address": "B73F",
+          "token": "8435",
+          "annotation": "push_pair_0038_0085  body=0x8417, push_address=0x8437",
+          "bytes_through_next_listed_site": "8435"
+        },
+        {
+          "address": "B741",
+          "token": "7671",
+          "annotation": "vm_clear_word_memory_bits  ",
+          "bytes_through_next_listed_site": "7671"
+        },
+        {
+          "address": "B743",
+          "token": "B2A6",
+          "annotation": "script_b2a6  body=0xB2A8",
+          "bytes_through_next_listed_site": "B2A6"
+        },
+        {
+          "address": "B745",
+          "token": "B2E6",
+          "annotation": "refresh_nudge_count_lamps  body=0xB2E8",
+          "bytes_through_next_listed_site": "B2E6"
+        },
+        {
+          "address": "B747",
+          "token": "B4C3",
+          "annotation": "run_nudge_sequence  body=0xB4C5",
+          "bytes_through_next_listed_site": "B4C3"
+        },
+        {
+          "address": "B749",
+          "token": "8248",
+          "annotation": "vm_push_word_body_byte  value=0x0080",
+          "bytes_through_next_listed_site": "8248"
+        },
+        {
+          "address": "B74B",
+          "token": "9BFE",
+          "annotation": "apply_lamp_range_7249_724c  body=0x9ADB, push_address=0x9C00",
+          "bytes_through_next_listed_site": "9BFE"
+        },
+        {
+          "address": "B74D",
+          "token": "B710",
+          "annotation": "script_b710  body=0xB712",
+          "bytes_through_next_listed_site": "B710"
+        },
+        {
+          "address": "B74F",
+          "token": "8110",
+          "annotation": "call_reels_wait_and_refresh_symbol_records  native=0x2BEB",
+          "bytes_through_next_listed_site": "8110"
+        },
+        {
+          "address": "B751",
+          "token": "80C4",
+          "annotation": "call_reels_push_matching_symbol_result  native=0x1AA3",
+          "bytes_through_next_listed_site": "80C4"
+        },
+        {
+          "address": "B753",
+          "token": "7A53",
+          "annotation": "vm_test_nonzero  ",
+          "bytes_through_next_listed_site": "7A53"
+        },
+        {
+          "address": "B755",
+          "token": "9FA0",
+          "annotation": "reels_test_all_three_symbol_flag2  body=0x9FA2",
+          "bytes_through_next_listed_site": "9FA0"
+        },
+        {
+          "address": "B757",
+          "token": "7AA3",
+          "annotation": "vm_bitwise_or  ",
+          "bytes_through_next_listed_site": "7AA3"
+        },
+        {
+          "address": "B759",
+          "token": "7982",
+          "annotation": "vm_branch_forward8_if_zero  branch=0xB760",
+          "bytes_through_next_listed_site": "798205"
+        },
+        {
+          "address": "B75C",
+          "token": "7E79",
+          "annotation": "vm_push_word_body_byte  value=0x0002",
+          "bytes_through_next_listed_site": "7E79"
+        },
+        {
+          "address": "B75E",
+          "token": "9F41",
+          "annotation": "store_result_byte_b9_if_zero  body=0x9F43",
+          "bytes_through_next_listed_site": "9F41"
+        },
+        {
+          "address": "B760",
+          "token": "7FF2",
+          "annotation": "vm_push_word_body_word  value=0x02C6",
+          "bytes_through_next_listed_site": "7FF2"
+        },
+        {
+          "address": "B762",
+          "token": "765F",
+          "annotation": "vm_clear_byte_memory  ",
+          "bytes_through_next_listed_site": "765F"
+        },
+        {
+          "address": "B764",
+          "token": "7EED",
+          "annotation": "vm_push_word_body_byte  value=0x00BF",
+          "bytes_through_next_listed_site": "7EED"
+        },
+        {
+          "address": "B766",
+          "token": "765F",
+          "annotation": "vm_clear_byte_memory  ",
+          "bytes_through_next_listed_site": "765F"
+        },
+        {
+          "address": "B768",
+          "token": "9984",
+          "annotation": "wait_for_all_panel_buttons_released  body=0x9986",
+          "bytes_through_next_listed_site": "9984"
+        },
+        {
+          "address": "B76A",
+          "token": "8245",
+          "annotation": "vm_push_word_body_byte  value=0x00BE",
+          "bytes_through_next_listed_site": "8245"
+        },
+        {
+          "address": "B76C",
+          "token": "765F",
+          "annotation": "vm_clear_byte_memory  ",
+          "bytes_through_next_listed_site": "765F"
+        },
+        {
+          "address": "B76E",
+          "token": "B2E6",
+          "annotation": "refresh_nudge_count_lamps  body=0xB2E8",
+          "bytes_through_next_listed_site": "B2E6"
+        },
+        {
+          "address": "B770",
+          "token": "792F",
+          "annotation": "vm_return_to_caller_stream  ",
+          "bytes_through_next_listed_site": "792F"
+        }
+      ]
+    },
+    {
+      "listing": "VM-SCRIPTS/9ADB.txt",
+      "listing_sha256": "B1EA267D4348FC8CB34FA74B5BD71057A4A62C67E7CD8B5952CAF0CAE5B0265D",
+      "start": "9ADB",
+      "end_exclusive": "9AE3",
+      "span_hex": "79157B6D832B792F",
+      "classification": "Exact selected ROM span and checked listed tokens; gaps/operands/embedded data preserved verbatim. Span partition does not prove each decoded operand or relocation semantics. Last return token span ends after two bytes.",
+      "sites": [
+        {
+          "address": "9ADB",
+          "token": "7915",
+          "annotation": "vm_fetch_two_words  ",
+          "bytes_through_next_listed_site": "7915"
+        },
+        {
+          "address": "9ADD",
+          "token": "7B6D",
+          "annotation": "vm_rotate_three_cells  ",
+          "bytes_through_next_listed_site": "7B6D"
+        },
+        {
+          "address": "9ADF",
+          "token": "832B",
+          "annotation": "call_lamp_frame_range_helper_with_synthetic_return  native=0x4A8C",
+          "bytes_through_next_listed_site": "832B"
+        },
+        {
+          "address": "9AE1",
           "token": "792F",
           "annotation": "vm_return_to_caller_stream  ",
           "bytes_through_next_listed_site": "792F"
@@ -4006,6 +5027,14 @@
   ],
   "dictionary_records": [
     {
+      "address": "7A15",
+      "bytes": "7A1710AEA420F1",
+      "header": "7A17",
+      "native": "7A17",
+      "stack_effect": "Data stack unchanged; removes current eight-byte loop frame at S, restores F6 from S+6",
+      "effects": "LDY ,Y reads absolute inline target; BRA 7A0D performs loop removal and NEXT; B42D operand B433 is byte-checked in the B403 VM span"
+    },
+    {
       "address": "82BB",
       "bytes": "794F0170",
       "header": "794F",
@@ -4031,13 +5060,17 @@
   "implementation": [
     "src/FruitMachineLab.Adders/AddersReelMotion.cs",
     "src/FruitMachineLab.Adders/AddersReelHardware.cs",
-    "src/FruitMachineLab.Adders/SkillCashLiveSession.cs"
+    "src/FruitMachineLab.Adders/SkillCashLiveSession.cs",
+    "src/FruitMachineLab.Runtime/Mpu4LampRequests.cs",
+    "src/FruitMachineLab.Runtime/VmControlStack.cs",
+    "src/FruitMachineLab.Runtime/RecoveredScript.cs"
   ],
   "verification": [
     "skill-cash/nudge-request.json",
     "skill-cash/dice-motion.json",
     "skill-cash/nudge-motion-native.json",
-    "skill-cash/nudge-motion-vm.json"
+    "skill-cash/nudge-motion-vm.json",
+    "skill-cash/nudge-return.json"
   ],
   "layout_constraints": [
     "16-bit big-endian cells and absolute pointers remain address-bound",
@@ -4045,7 +5078,7 @@
     "Branch/inline token bytes and embedded alpha operands remain preserved at current addresses"
   ],
   "unresolved": [
-    "B339/B33B local-frame byte +2 reads native CPU-stack residue after motion; Live stops before the read, no value is invented",
+    "B339/B33B local+2 reads a reused lamp save-area byte: 4A8C saved D at VM S-10 via gateway77A8; translated selected save area now retained. Full native CPU-stack footprints remain incomplete",
     "Full ROM coverage, symbolic operand recovery and data/code typing",
     "Portable Ghidra comments, symbol namespaces, data definitions and complete cross-reference export: no live Ghidra API exposed in this session",
     "Reassembly, relocation and byte-identical baseline rebuild have not been implemented"

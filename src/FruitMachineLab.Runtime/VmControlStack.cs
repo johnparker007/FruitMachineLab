@@ -30,6 +30,11 @@ public sealed class VmControlStack(Machine machine,ushort pointer)
         RemoveLoop();return null;
     }
     private void RemoveLoop() { LoopFrame=machine.ReadWord(Cell.Add(Pointer,6));Pointer=Cell.Add(Pointer,8); }
+    public void LeaveLoop()
+    {
+        if(Pointer!=LoopFrame)throw new NotSupportedException("Loop leave requires the current physical frame at S");
+        RemoveLoop();
+    }
     public ushort Return()
     {
         while(Pointer==LoopFrame)RemoveLoop();

@@ -258,3 +258,20 @@ coverage. Ghidra full metadata export remains an access gap. See
 docs/recovery/NUDGE-MOTION-PASS.md and docs/PROJECT-ROADMAP.md.
 One advance is supported; complete board/game play and the earlier alpha brightness
 timing discrepancy remain open. No installations or configuration changes occurred.
+
+## Returned prompts and three-nudge sequence — 15 October 2026
+
+Live now returns to an interactive nudge prompt and supports repeated input.
+Three Nudge1 presses consume BE/BF 3→0 and move reel1 12→6→0→90. The previous
+local+2 dependency is resolved by retaining the actual native4A8C lamp save area,
+not injecting a reference value. Token7A15 loop leave is translated and verified.
+Natural connected references cover 2817 returned-prompt and 7785 sequence VM
+observations with matching lamp/frame, sound and alpha outputs. Active motor
+phases and independently generated optics cover all three movements. Live stops
+at B749 before improvement/result routing; post-nudge awards remain unrecovered.
+132 headless groups/eight GUI smoke modes pass, including all three controls,
+returned prompts, three-press exhaustion and actual mid-motor pause/resume.
+The encoding checkpoint now preserves 657 byte-checked native rows, nine VM
+spans, 7A15 encodings and 61 natural stack writes with implementation/evidence
+links. Full symbolic toolchain and fresh Ghidra metadata export remain deferred/
+unavailable respectively. See docs/recovery/NUDGE-RETURN-PASS.md.

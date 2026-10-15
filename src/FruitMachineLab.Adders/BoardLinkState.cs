@@ -24,11 +24,11 @@ public static class BoardLinkState
         using var data=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"maps","board-link-data.json")));
         foreach(var range in data.RootElement.GetProperty("ranges").EnumerateObject())Convert.FromHexString(range.Value.GetString()!).CopyTo(machine.Memory,Convert.ToUInt16(range.Name,16));
     }
-    public static ushort Apply(Machine machine,string evidence,string kind,bool continuation=false,bool availability=false,bool nudgeEntry=false,bool nudgePrompt=false,bool nudgeRequest=false,bool nudgeMotion=false)
+    public static ushort Apply(Machine machine,string evidence,string kind,bool continuation=false,bool availability=false,bool nudgeEntry=false,bool nudgePrompt=false,bool nudgeRequest=false,bool nudgeMotion=false,bool nudgeReturn=false,bool nudgeSequence=false)
     {
         if(kind is not ("ladder" or "snake"))throw new ArgumentException("Unknown board link kind",nameof(kind));
         BoardMovementState.Apply(machine,evidence);LoadData(machine,evidence);
-        using var data=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",nudgeMotion ? "nudge-motion-vm.json" : nudgeRequest ? "nudge-request.json" : nudgePrompt ? "nudge-prompt.json" : nudgeEntry ? "nudge-entry.json" : availability ? "ladder-availability.json" : kind+"-link"+(continuation ? "-next" : "")+".json")));var root=data.RootElement;
+        using var data=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",nudgeSequence ? "nudge-sequence.json" : nudgeReturn ? "nudge-return.json" : nudgeMotion ? "nudge-motion-vm.json" : nudgeRequest ? "nudge-request.json" : nudgePrompt ? "nudge-prompt.json" : nudgeEntry ? "nudge-entry.json" : availability ? "ladder-availability.json" : kind+"-link"+(continuation ? "-next" : "")+".json")));var root=data.RootElement;
         Convert.FromHexString(root.GetProperty("ram_hex").GetString()!).CopyTo(machine.Memory,0);
         ushort First(string key)=>Convert.ToUInt16(root.GetProperty("initial").GetProperty(key).GetString(),16);
         machine.Control=new(machine,First("s"));machine.DataStackBase=Cell.Add(First("u"),8);machine.SetDataPointer(First("u"));

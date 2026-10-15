@@ -254,6 +254,7 @@ public sealed class ScriptExecutor(Machine machine)
                 case "vm_branch_forward8_if_zero_else_drop":
                     if(machine.Pop()==0)Jump(i.Branch ?? throw new InvalidDataException("Missing branch target"));else machine.Pop();break;
                 case "vm_return_to_caller_stream": machine.Control?.Return();yield break;
+                case "vm_leave_loop_to_absolute_target": Control().LeaveLoop();Jump(i.Branch ?? throw new InvalidDataException("Missing loop leave target"));break;
                 case "vm_unwind_loop_frames_to_return": Control().Return();yield break;
                 case "vm_return_if_nonzero": if(machine.Pop()!=0) { machine.Control?.Return();yield break; }break;
                 default:

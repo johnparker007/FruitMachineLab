@@ -12,10 +12,10 @@ internal sealed class DiceMotionReference
     private AddersReelHardware? hardware;
     private int point;
     public bool Complete=>point==events.Length;
-    public DiceMotionReference(Machine machine,string evidence,bool nudge=false)
+    public DiceMotionReference(Machine machine,string evidence,bool nudge=false,bool sequence=false)
     {
         m=machine;motion=new(m);
-        using var doc=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",nudge ? "nudge-motion-native.json" : "dice-motion.json")));
+        using var doc=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",sequence ? "nudge-sequence-native.json" : nudge ? "nudge-motion-native.json" : "dice-motion.json")));
         events=doc.RootElement.GetProperty("events").EnumerateArray().Select(row=>row.Clone()).ToArray();
         foreach(var range in doc.RootElement.GetProperty("ranges").EnumerateObject())Convert.FromHexString(range.Value.GetString()!).CopyTo(m.Memory,Convert.ToUInt16(range.Name,16));
     }

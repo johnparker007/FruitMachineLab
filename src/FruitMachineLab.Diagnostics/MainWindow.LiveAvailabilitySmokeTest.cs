@@ -32,9 +32,9 @@ public partial class MainWindow
                     NudgeSmokeKey(Nudge1,true);await Task.Delay(100);NudgeSmokeKey(Nudge1,false);
                 }
                 timeout.Restart();bool motor=false;
-                while(liveSession.Fault is null && liveSession.BoardPrompts<2 && timeout.Elapsed.TotalSeconds<10){motor|=liveSession.Snapshot().DiceRequest?.Busy==true;await Task.Delay(10);}
+                while(liveSession.Fault is null && liveSession.BoardPrompts<2 && !(take && liveSession.AwaitingNudgeInput && liveSession.Machine.Memory[0xBE]==2 && !liveSession.NudgeMoving) && timeout.Elapsed.TotalSeconds<10){motor|=liveSession.Snapshot().DiceRequest?.Busy==true;await Task.Delay(10);}
                 if(liveSession.Panel.StartPressed || liveSession.Panel.TakePressed || (liveSession.Fault is not null && !liveSession.Fault.StartsWith("BOARD result type") && !liveSession.Fault.StartsWith("BOARD nudge motion completed")))throw new InvalidOperationException("Unexpected availability exit: "+Status.Text);
-                if(take && (liveSession.Fault?.StartsWith("BOARD nudge motion completed")!=true || motor || liveSession.Machine.Memory[0xC9]!=22 || liveSession.Machine.Memory[0xBE]!=2))throw new InvalidOperationException("TAKE bypassed the verified nudge completion boundary");
+                if(take && ((liveSession.Fault is not null || !liveSession.AwaitingNudgeInput) || motor || liveSession.Machine.Memory[0xC9]!=22 || liveSession.Machine.Memory[0xBE]!=2))throw new InvalidOperationException("TAKE bypassed the verified nudge completion boundary");
                 if(!take && (!motor || liveSession.Snapshot().Board!.Visited.Count<3))throw new InvalidOperationException("START failed to roll from the nudge prompt");
                 PauseLive();RenderLive();await Dispatcher.InvokeAsync(()=>{},DispatcherPriority.ApplicationIdle);SaveWindowImage(Path.Combine(directory,take ? "take-boundary.png" : "start-advance.png"));
             }

@@ -36,7 +36,7 @@ public partial class MainWindow
                 byte[] before=[liveSession.Machine.Memory[0x168],liveSession.Machine.Memory[0x16A],liveSession.Machine.Memory[0x16C]];
                 ResumeLive();buttons[reel].Focus();await Dispatcher.InvokeAsync(()=>{},DispatcherPriority.ApplicationIdle);NudgeSmokeKey(buttons[reel],true);await Task.Delay(25);NudgeSmokeKey(buttons[reel],false);
                 timeout.Restart();bool pausedMotor=false;
-                while(liveSession.Fault is null && timeout.Elapsed.TotalSeconds<5){
+                while(liveSession.Fault is null && !(liveSession.AwaitingNudgeInput && liveSession.Machine.Memory[0xBE]==2 && !liveSession.NudgeMoving) && timeout.Elapsed.TotalSeconds<5){
                     if(!pausedMotor && liveSession.MotorBusy){
                         PauseLive();var frozen=liveSession.Machine.Memory.ToArray();ulong at=liveSession.Cycle;await Task.Delay(100);
                         if(at!=liveSession.Cycle || !frozen.SequenceEqual(liveSession.Machine.Memory))throw new InvalidOperationException("Nudge motor advanced during pause");
@@ -44,12 +44,21 @@ public partial class MainWindow
                     }
                     await Task.Delay(10);
                 }
-                if(liveSession.Fault?.StartsWith("BOARD nudge motion completed")!=true || liveSession.Panel.PhysicalBlack2!=0 || liveSession.Machine.Memory[0xBE]!=2 || liveSession.Machine.Memory[0xBF]!=2 || liveSession.MotorBusy || !pausedMotor)throw new InvalidOperationException($"Nudge request boundary failed: {Status.Text}; vm={liveSession.VmAddress:X4}, physical={liveSession.Panel.PhysicalBlack2:X2}, sampled={liveSession.Machine.Memory[3]:X2}, fault={liveSession.Fault}, ready={liveSession.AwaitingNudgeInput}");
+                if((liveSession.Fault is not null || !liveSession.AwaitingNudgeInput) || liveSession.Panel.PhysicalBlack2!=0 || liveSession.Machine.Memory[0xBE]!=2 || liveSession.Machine.Memory[0xBF]!=2 || liveSession.MotorBusy || !pausedMotor)throw new InvalidOperationException($"Nudge request boundary failed: {Status.Text}; vm={liveSession.VmAddress:X4}, physical={liveSession.Panel.PhysicalBlack2:X2}, sampled={liveSession.Machine.Memory[3]:X2}, fault={liveSession.Fault}, ready={liveSession.AwaitingNudgeInput}");
                 for(int n=0;n<3;n++)if(liveSession.Machine.Memory[0x168+2*n]!=(byte)((before[n]+(n==reel ? 90 : 0))%96))throw new InvalidOperationException("Wrong reel request changed");
                 RenderLive();await Dispatcher.InvokeAsync(()=>{},DispatcherPriority.ApplicationIdle);SaveWindowImage(Path.Combine(directory,$"nudge-{reel+1}-accepted.png"));
+                if(reel==0) {
+                    for(int remaining=2;remaining>0;remaining--) {
+                        Nudge1.Focus();NudgeSmokeKey(Nudge1,true);await Task.Delay(25);NudgeSmokeKey(Nudge1,false);timeout.Restart();
+                        while(liveSession.Fault is null && !(liveSession.AwaitingNudgeInput && liveSession.Machine.Memory[0xBE]==remaining-1 && !liveSession.NudgeMoving) && timeout.Elapsed.TotalSeconds<5)await Task.Delay(10);
+                        if(remaining==2 && (liveSession.Fault is not null || liveSession.Machine.Memory[0xBE]!=1))throw new InvalidOperationException("Second nudge failed: "+Status.Text);
+                    }
+                    if(liveSession.Fault?.StartsWith("BOARD nudge sequence completed")!=true || liveSession.Machine.Memory[0xBE]!=0 || liveSession.Machine.Memory[0xBF]!=0 || liveSession.Machine.Memory[0x168]!=90 || liveSession.Panel.PhysicalBlack2!=0)throw new InvalidOperationException("Sequence did not exhaust cleanly: "+Status.Text);
+                    RenderLive();await Dispatcher.InvokeAsync(()=>{},DispatcherPriority.ApplicationIdle);SaveWindowImage(Path.Combine(directory,"three-nudge-sequence.png"));
+                }
             }
             if(!await LoadLive(startExecution:false) || liveSession!.Instructions!=0 || liveSession.Fault is not null)throw new InvalidOperationException("Restart retained nudge state");
-            File.WriteAllText(Path.Combine(directory,"result.txt"),"PASS: all three momentary nudge keyboard handlers; actual recovered input scan, only selected main reel moved six positions and remaining/pot became two, mouse-capture failure/loss release, VM/memory/time pause, native cleanup and unchanged award accounting, rendered prompt/request boundaries and clean restart. Stops before unresolved local-frame residue read; following prompt/result remains bounded.\n");Application.Current.Shutdown(0);
+            File.WriteAllText(Path.Combine(directory,"result.txt"),"PASS: all three momentary nudge keyboard handlers; actual recovered input scan, only selected main reel moved six positions and remaining/pot became two, mouse-capture failure/loss release, VM/memory/time pause, native cleanup and unchanged award accounting, rendered prompt/request boundaries and clean restart. Returns to the next prompt with preserved lamp-native save bytes; repeated Nudge1 exhausts all three nudges and stops before post-nudge result recovery.\n");Application.Current.Shutdown(0);
         }catch(Exception error){File.WriteAllText(Path.Combine(directory,"result.txt"),error.ToString());Application.Current.Shutdown(1);}
     }
 }

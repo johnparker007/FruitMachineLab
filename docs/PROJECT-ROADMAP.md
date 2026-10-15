@@ -35,6 +35,13 @@ Minimal diagnostic lamps, buttons and text/symbol reels are useful development
 tools, but do not build a polished temporary cabinet. Diagnostic and graphical
 renderers should use the same backend inputs/outputs, with no gameplay in UI code.
 
+## Current recovery frontier
+
+Live nudge prompts now repeat with retained reel/count state. A natural three-press
+Nudge1 sequence is verified through B749 and pot exhaustion. Continue post-nudge
+improvement/result routing and accounting from there; see recovery/NUDGE-RETURN-PASS.md.
+Full machine startup and consecutive complete games remain future milestones.
+
 ## Longer-term aims
 
 - After complete playable-machine recovery, pursue a reconstructed development

@@ -5,7 +5,7 @@
   "mux_column": 3,
   "polarity": "active-high",
   "sampling": "B403 executes the indexed condition token; selectors read sampled port3 levels through existing 27D2/19B8/1A87 acquisition. No new edge detector is substituted.",
-  "motion_boundary": "B339 before B33B reads an uninitialized local byte influenced by native CPU-stack residue; first motor movement and count consumption complete",
+  "motion_boundary": "B749 after repeated physical nudges return from B4C5; post-nudge improvement and result routing remains unrecovered",
   "entries": [
     {
       "reel": 1,
@@ -34,6 +34,6 @@
   ],
   "input_inventory_sha256": "EEF9A5870E45D171978A90D1BEBC139758B3A3426593DB100A74E380C39382CE",
   "rom_sha1": "402D1518BB78FDC489B06C2AABC771E5CE151847",
-  "motion_evidence": "skill-cash/nudge-motion-vm.json",
+  "motion_evidence": "skill-cash/nudge-sequence.json",
   "encoding_checkpoint": "maps/nudge-encoding-checkpoint.json"
 }

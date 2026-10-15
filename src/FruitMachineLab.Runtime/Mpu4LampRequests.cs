@@ -18,7 +18,20 @@ public sealed class Mpu4LampRequests(Machine machine,Action<LampRequest> output)
         {
             case 0x4AC0:Range(0x7248,0x733D,0x80,0x4AC0);return true;
             case 0x4A83: {var end=machine.Pop();var start=machine.Pop();Range(start,end,0x80,0x4A83);return true;}
-            case 0x4A8C: {var pattern=(byte)machine.Pop();var end=machine.Pop();var start=machine.Pop();Range(start,end,pattern,0x4A8C);return true;}
+            case 0x4A8C: {
+                var pattern=(byte)machine.Pop();var end=machine.Pop();var start=machine.Pop();
+                if(machine.Control is { } control) {
+                    // 77A8/77B7/77BD gateway, then 4A8C PSHS PC,Y,D.
+                    // Preserve this observed save area: a later local frame can
+                    // reuse it. This is not a complete native CPU-stack model.
+                    ushort saved=Cell.Subtract(control.Pointer,10);
+                    byte a=machine.Memory[0xF1];if(a!=0)a|=1;
+                    machine.WriteWord(saved,(ushort)((a<<8)|pattern));
+                    machine.WriteWord(Cell.Add(saved,2),end);
+                    machine.WriteWord(Cell.Add(saved,4),0x4A8E);
+                }
+                Range(start,end,pattern,0x4A8C);return true;
+            }
             case 0x498B: Set((byte)machine.Pop(),5,0x498B);return true;
             case 0x4982: Set((byte)machine.Pop(),0x80,0x4982);return true;
             case 0x497F: Set((byte)machine.Pop(),0x8F,0x497F);return true;

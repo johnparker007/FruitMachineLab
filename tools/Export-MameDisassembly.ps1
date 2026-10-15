@@ -12,7 +12,7 @@ foreach($name in @('cfg','nvram','inp','snap','comments','state','diff')){New-It
 $commands=@('dasm sound-native.txt,5c18,495,1','dasm lamp-native.txt,497f,126,1',
  'dasm vm-bridges.txt,776f,8c,1','dasm alpha-native-a.txt,3cc0,29c,1',
  'dasm alpha-native-b.txt,3f74,102,1','dasm timer-native.txt,707e,92,1','symlist')
-if($NudgeCheckpoint){$commands+=@('dasm nudge-motor-native.txt,61f6,485,1','dasm nudge-result-native.txt,1aa3,100,1','dasm nudge-decrement-native.txt,765b,4,1')}
+if($NudgeCheckpoint){$commands+=@('dasm nudge-motor-native.txt,61f6,485,1','dasm nudge-result-native.txt,1aa3,100,1','dasm nudge-decrement-native.txt,765b,4,1','dasm nudge-stack-bridge.txt,77a8,19,1','dasm nudge-stack-save.txt,4a8c,19,1','dasm nudge-loop-leave.txt,7a17,5,1','dasm nudge-loop-cleanup.txt,7a0d,8,1')}
 $commands+=@('quit');$commands | Set-Content "$run/debugger.cmd"
 $arguments=@('m4addr','-noreadconfig','-rompath',$RomDirectory,'-cfg_directory',"$run/cfg",'-nvram_directory',"$run/nvram",
  '-input_directory',"$run/inp",'-snapshot_directory',"$run/snap",'-comment_directory',"$run/comments",'-state_directory',"$run/state",'-diff_directory',"$run/diff",

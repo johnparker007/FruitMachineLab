@@ -5,6 +5,10 @@ Local clone: C:\projects\GitRepos\FruitMachineLab
 
 ## Current status
 
+For current priorities and continuation context, read [PROJECT-ROADMAP.md](PROJECT-ROADMAP.md)
+and [CURRENT-HANDOFF.md](CURRENT-HANDOFF.md). The dated sections below retain the
+history of setup and implementation batches.
+
 The local clone points to the expected GitHub remote. Installed .NET SDKs observed on
 2026-10-14: 5.0.404, 7.0.304, 8.0.407 and 9.0.313. The initial solution uses installed SDK 9.0.313 and net8.0 targeting packs. No SDK was installed or pinned. FruitMachineLab.sln includes WPF; FruitMachineLab.Headless.sln builds independently.
 

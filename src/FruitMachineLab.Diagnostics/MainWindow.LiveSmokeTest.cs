@@ -10,6 +10,7 @@ public partial class MainWindow
     {
         Directory.CreateDirectory(directory);
         try {
+            int requestedEntry=LiveEntryMode.SelectedIndex;LiveEntryMode.SelectedIndex=0;
             if(!await LoadLive(startExecution:false))throw new InvalidOperationException(Status.Text);
             if(liveSession!.Instructions!=0 || liveSession.AlphaOperations!=0)throw new InvalidOperationException("Live load pre-executed the feature");
             ResumeLive();
@@ -27,15 +28,31 @@ public partial class MainWindow
             if(liveSession.Panel.StartPressed)throw new InvalidOperationException("Lost capture left Start held");
             PressPhysicalStart();PhysicalStartFocusLost(PhysicalStart,new KeyboardFocusChangedEventArgs(Keyboard.PrimaryDevice,Environment.TickCount,PhysicalStart,null));
             if(liveSession.Panel.StartPressed)throw new InvalidOperationException("Lost keyboard focus left Start held");
+            LiveEntryMode.SelectedIndex=requestedEntry;
+            if(requestedEntry==2) {
+                if(!await LoadLive())throw new InvalidOperationException(Status.Text);
+                PhysicalTakeDown(PhysicalTake,new MouseButtonEventArgs(Mouse.PrimaryDevice,Environment.TickCount,MouseButton.Left){RoutedEvent=UIElement.PreviewMouseLeftButtonDownEvent});
+                if(!liveSession!.Panel.TakePressed)throw new InvalidOperationException("Take mouse-down did not press");
+                PhysicalTakeCaptureLost(PhysicalTake,new MouseEventArgs(Mouse.PrimaryDevice,Environment.TickCount));
+                if(liveSession.Panel.TakePressed)throw new InvalidOperationException("Take capture loss left input held");
+                PressPhysicalTake();PhysicalTakeFocusLost(PhysicalTake,new KeyboardFocusChangedEventArgs(Keyboard.PrimaryDevice,Environment.TickCount,PhysicalTake,null));
+                if(liveSession.Panel.TakePressed)throw new InvalidOperationException("Take focus loss left input held");
+            }
             // Restart after this synthetic focus/capture exercise. The remaining
             // run supplies only physical Start events while the actual timer runs.
             if(!await LoadLive())throw new InvalidOperationException(Status.Text);
             ushort[] choices=jackpot ? [6,6,6] : [3,2,1];int stage=0;bool pressed=false;
             bool announced=false,title=false;
+            bool took=!liveSession!.StartsAtBoardSelection,takeHeld=false;
             liveSession!.ObserveAlpha=state=>{announced|=state.Text.Contains("JACKPOT");title|=state.Text.Contains("SKILL CASH");};
             if(jackpot)liveTimer!.Stop();
             var timeout=System.Diagnostics.Stopwatch.StartNew();
             while(!liveSession!.Completed && liveSession.Fault is null && timeout.Elapsed.TotalSeconds<45) {
+                if(!took && liveSession.Instructions>250) {
+                    RenderLive();SaveWindowImage(Path.Combine(directory,"board-prompt.png"));
+                    if(jackpot)liveSession.SetTake(true);else PhysicalTakeDown(PhysicalTake,new MouseButtonEventArgs(Mouse.PrimaryDevice,Environment.TickCount,MouseButton.Left){RoutedEvent=UIElement.PreviewMouseLeftButtonDownEvent});took=true;takeHeld=true;
+                }
+                if(takeHeld && (liveSession.Machine.ReadWord(0xA0)&0x10)!=0){if(jackpot)liveSession.SetTake(false);else PhysicalTakeUp(PhysicalTake,new MouseButtonEventArgs(Mouse.PrimaryDevice,Environment.TickCount,MouseButton.Left){RoutedEvent=UIElement.PreviewMouseLeftButtonUpEvent});takeHeld=false;}
                 if(stage<choices.Length && !pressed && liveSession.Machine.Memory[0x4F]==choices[stage]) {
                     if(jackpot)liveSession.SetStart(true);else PhysicalStartDown(PhysicalStart,new MouseButtonEventArgs(Mouse.PrimaryDevice,Environment.TickCount,MouseButton.Left){RoutedEvent=UIElement.PreviewMouseLeftButtonDownEvent});pressed=true;
                 }
@@ -58,7 +75,7 @@ public partial class MainWindow
             // selection. Exact player timing/awards are checked headlessly; this
             // smoke verifies physical input, completed accounting and rendering.
             ushort win=liveSession.Machine.ReadWord(0x2FA);
-            if(!liveSession.Completed || liveSession.Fault is not null || liveSession.Selections.Count!=3 || win==0 || liveSession.Machine.ReadWord(0xBA)!=0 || (jackpot && win!=60) || liveSession.Panel.StartPressed || (liveSession.IncludesCaller && !title))
+            if(!liveSession.Completed || liveSession.Fault is not null || liveSession.Selections.Count!=3 || win==0 || liveSession.Machine.ReadWord(0xBA)!=0 || (jackpot && win!=60) || liveSession.Panel.StartPressed || liveSession.Panel.TakePressed || (liveSession.IncludesCaller && !title))
                 throw new InvalidOperationException("Live WPF run failed: "+liveSession.Snapshot().Execution+" choices "+string.Join(',',liveSession.Selections));
             RenderLive();await Dispatcher.InvokeAsync(()=>{},DispatcherPriority.ApplicationIdle);SaveWindowImage(Path.Combine(directory,"live-completed.png"));
             if(!await LoadLive(startExecution:false) || liveSession!.Instructions!=0)throw new InvalidOperationException("Restart did not restore feature-entry state");

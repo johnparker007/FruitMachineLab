@@ -128,3 +128,11 @@ and render check, separate from the real-time Live smoke mode.
 type 2/position 32, including take gating, announcement, cash-feature table dispatch
 and the return to E33C. The checkbox retains the earlier C721-only diagnostic entry.
 See recovery/SKILL-CASH-BOARD-ENTRY-PASS.md. Build/smoke commands are unchanged.
+
+## Board selection follow-up
+
+87 groups pass. Live defaults to DD38 on square 32: press TAKE FEATURE, release it,
+then use START for Skill Cash. The entry selector also retains C721 and E2FC modes.
+START on the board reaches an explicit dice-motion boundary; Restart recovers from
+that stop. See recovery/BOARD-SELECTION-TAKE-PASS.md for natural reference evidence,
+physical-input mapping and comparison exclusions. Build/smoke commands are unchanged.

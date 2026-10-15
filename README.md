@@ -23,7 +23,8 @@ or pass the absolute repository path to verification. The Windows viewer accepts
 path separately. No SDK pin or machine configuration is changed.
 
 The diagnostics app opens on **Live Skill Cash**. Click **Start feature**, then
-hold and release the physical **START** button to stop selections. Pause/Resume
+press and release **TAKE FEATURE** at the board prompt. Use the physical **START**
+button to stop each Skill Cash selection. Pause/Resume
 suspend the actual VM and virtual clock; Restart restores the feature-entry state.
 Outputs are generated during execution. Captured CPU/IRQ timing adapters remain
 explicitly unresolved. See [live scope and comparison](docs/recovery/SKILL-CASH-LIVE-PASS.md).
@@ -35,7 +36,7 @@ are available. This mode uses recorded inputs; use Live Skill Cash for the tempo
 player control. Audio remains future work. See
 [playback evidence and boundaries](docs/recovery/SKILL-CASH-PLAYBACK-PASS.md).
 
-Latest local verification: headless and isolated WPF builds succeed; 81
+Latest local verification: headless and isolated WPF builds succeed; 87
 verification groups pass. Continuous C721 execution matches 98,704 VM dispatches,
 selects 3, 2 and 1, and finishes with pending 0/current win 10. All 7,298 lamp frame
 updates and the complete sound timing protocol match recorded native observations.
@@ -69,7 +70,9 @@ The [award coverage and IRQ occupancy pass](docs/recovery/SKILL-CASH-EXTENSION-P
 adds live jackpot announcement support and tests all six default award levels.
 Normal machine play remains the next milestone; captured timing remains provisional.
 
-Live now includes the recovered board take/feature entry and exit by default,
-including the SKILL CASH announcement. Uncheck that option to start directly at
-C721. See the [board entry report](docs/recovery/SKILL-CASH-BOARD-ENTRY-PASS.md)
-for natural MAME comparisons and the boundary before full machine play.
+Live now starts at the square-32 board prompt: press and release **TAKE FEATURE**,
+then use **START** for Skill Cash's three selections. The entry selector retains
+direct C721 and taken-result E2FC modes. START at the board prompt stops at the
+explicit dice-motion boundary; rolling and full machine play are still ahead.
+See the [board selection report](docs/recovery/BOARD-SELECTION-TAKE-PASS.md) for
+reference comparisons, restored call frames and uninitialized-local exclusions.

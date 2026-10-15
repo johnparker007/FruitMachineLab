@@ -45,6 +45,18 @@ public sealed class Mpu4ChoiceStreamScheduler(Machine machine,ushort clock,Actio
         return unchecked((byte)(note+octave));
     }
     public int ActiveTasks=>tasks.Count;
+    // Captured boundary restoration currently supports only freshly queued
+    // native records: no guessed continuation or untyped sound-stack decoding.
+    public void RestoreQueuedNativeTasks()
+    {
+        if(Active)throw new InvalidOperationException("Scheduler already active");
+        var visited=new HashSet<ushort>();
+        for(ushort at=machine.ReadWord(0x47);at!=0;at=machine.ReadWord(at)) {
+            if(!visited.Add(at) || at>0x7DA)throw new InvalidDataException("Invalid captured sound task list");
+            if(machine.ReadWord(Cell.Add(at,4))!=0x5D3B || machine.ReadWord(Cell.Add(at,6))!=Cell.Add(at,0x25) || machine.ReadWord(Cell.Add(at,8))!=machine.ReadWord(Cell.Add(at,0x13)))throw new NotSupportedException("Captured sound continuation is not a fresh queue");
+            tasks.Add(new(){Cursor=machine.ReadWord(Cell.Add(at,8)),Due=machine.ReadWord(Cell.Add(at,2)),Tempo=machine.Memory[at+0xE],Gate=machine.Memory[at+0x10],Flags=machine.Memory[at+0x12],Pitch=machine.Memory[at+0xC],Transpose=machine.Memory[at+0xD]});
+        }
+    }
     public byte Choice=>machine.Memory[0x4F];
     private byte Fetch() { byte value=machine.Memory[cursor];cursor=Cell.Add(cursor,1);return value; }
     private void Emit(string kind,ushort at,byte value=0,ushort callback=0,ushort nextDue=0)=>
@@ -146,6 +158,8 @@ public sealed class Mpu4ChoiceStreamScheduler(Machine machine,ushort clock,Actio
                     else task.StackBytes-=3;
                     break;
                 case 0xC5: Fetch();break; // instrument register operand; audio effects remain separate
+                case 0xDB:
+                case 0xDD: Fetch();break; // same 5F5B table/register helper, no timing or tracked task-state mutation
                 case 0xC6: Fetch();Fetch();break; // instrument-bank operand, YM effects outside timing subset
                 case 0xC7: pitch=Fetch();break;
                 case 0xC8: var offset=Fetch();pitch=offset==0 ? (byte)0 : unchecked((byte)(pitch+offset));break;

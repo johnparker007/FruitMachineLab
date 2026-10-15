@@ -52,6 +52,25 @@ public sealed class ScriptExecutor(Machine machine)
         continuation?.Dispose();remaining=budget;continuation=Execute(script.Instructions,true).GetEnumerator();
         if(!continuation.MoveNext()){continuation.Dispose();continuation=null;}
     }
+    // Resume a captured physical VM context. Completed root fragments follow
+    // the actual S-stack cursor, resolved back to its owning recovered script.
+    public void BeginResumed(RecoveredScript script,ushort first,Func<ushort,RecoveredScript> resolveContinuation,ushort terminalCursor,int budget=1_000_000)
+    {
+        if(machine.Control is null)throw new NotSupportedException("Physical VM control-stack context required");
+        continuation?.Dispose();remaining=budget;
+        IEnumerable<Instruction> ResumeFrames()
+        {
+            var current=script;ushort site=first;
+            while(true) {
+                int start=current.Instructions.ToList().FindIndex(i=>i.Site==site);
+                if(start<0)throw new InvalidDataException($"Resume cursor {site:X4} absent from recovered script");
+                foreach(var instruction in Execute(current.Instructions,true,firstIndex:start))yield return instruction;
+                site=machine.Control.ResumeCursor;if(site==terminalCursor)yield break;
+                current=resolveContinuation(site);
+            }
+        }
+        continuation=ResumeFrames().GetEnumerator();if(!continuation.MoveNext()){continuation.Dispose();continuation=null;}
+    }
     // Executes exactly the pending dispatch, retaining nested C# iterator frames
     // and physical VM call/loop/local frames until the next dispatch boundary.
     public void Step()
@@ -72,9 +91,9 @@ public sealed class ScriptExecutor(Machine machine)
         var following=script.Instructions.SkipWhile(i=>i.Site!=last).Skip(1).FirstOrDefault()?.Site;
         foreach(var _ in Execute(items,false,following)){}
     }
-    private IEnumerable<Instruction> Execute(IReadOnlyList<Instruction> items, bool requireReturn,ushort? boundaryContinuation=null)
+    private IEnumerable<Instruction> Execute(IReadOnlyList<Instruction> items, bool requireReturn,ushort? boundaryContinuation=null,int firstIndex=0)
     {
-        var pc = 0;
+        var pc = firstIndex;
         while (pc < items.Count)
         {
             if (--remaining < 0) throw new InvalidOperationException("VM instruction budget exhausted");
@@ -120,6 +139,7 @@ public sealed class ScriptExecutor(Machine machine)
                 case "vm_add_to_word_memory": { var address=machine.Pop();machine.WriteWord(address,Cell.Add(machine.ReadWord(address),machine.Pop()));break; }
                 case "vm_clear_byte_memory": machine.Memory[machine.Pop()] = 0; break;
                 case "vm_clear_word_memory_bits": {var mask=machine.Pop();var address=machine.Pop();machine.WriteWord(address,(ushort)(machine.ReadWord(address)&~mask));break;}
+                case "vm_or_word_memory": {var mask=machine.Pop();var address=machine.Pop();machine.WriteWord(address,(ushort)(machine.ReadWord(address)|mask));break;}
                 case "vm_fetch_unsigned_byte": machine.Data.Push(machine.Memory[machine.Pop()]); break;
                 case "vm_fetch_word": machine.Data.Push(machine.ReadWord(machine.Pop())); break;
                 case "vm_fetch_byte_and_following_word": {
@@ -177,12 +197,14 @@ public sealed class ScriptExecutor(Machine machine)
                 case "vm_decrement_word": machine.Data.Push(Cell.Subtract(machine.Pop(),1));break;
                 case "vm_negate_cell": machine.Data.Push(Cell.Subtract(0,machine.Pop()));break;
                 case "vm_test_zero": machine.Data.Push(Cell.Flag(machine.Pop()==0));break;
+                case "vm_test_nonzero": machine.Data.Push(Cell.Flag(machine.Pop()!=0));break;
                 case "vm_arithmetic_shift_right_one": machine.Data.Push(unchecked((ushort)((short)machine.Pop()>>1)));break;
                 case "vm_subtract_top_from_second": Binary(Cell.Subtract); break;
                 case "vm_min_signed": Binary(Cell.Min); break;
                 case "vm_max_signed": Binary((a,b)=>(short)a>(short)b ? a : b);break;
                 case "vm_compare_equal": Binary((a,b) => Cell.Flag(a == b)); break;
                 case "vm_compare_top_lt_second_signed": Binary((a,b)=>Cell.Flag((short)b<(short)a)); break;
+                case "vm_compare_top_gt_second_signed": Binary((a,b)=>Cell.Flag((short)b>(short)a));break;
                 case "vm_compare_top_gt_second_unsigned": Binary((a,b)=>Cell.Flag(b>a)); break;
                 case "vm_compare_top_lt_second_unsigned": Binary((a,b)=>Cell.Flag(b<a));break;
                 case "vm_test_greater_than_zero": machine.Data.Push(Cell.Flag((short)machine.Pop()>0)); break;

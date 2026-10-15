@@ -25,8 +25,10 @@ public sealed class SkillCashLiveSession
     private int serviceIndex;
     private ulong serviceEpoch,nextVm,nextCallback=ulong.MaxValue;
     private double fractionalCycles;
-    private bool waitingForScheduler,selectionLoop;
+    private bool waitingForScheduler,selectionLoop,boardChoiceCompleted;
     public bool IncludesCaller {get;}
+    public bool StartsAtBoardSelection {get;}
+    public bool AwaitingBoardSelection=>StartsAtBoardSelection && !boardChoiceCompleted;
     public Machine Machine {get;}=new();
     public Mpu4PanelInput Panel {get;}
     public ulong Cycle {get;private set;}
@@ -39,14 +41,14 @@ public sealed class SkillCashLiveSession
     public bool Paused {get;private set;}=true;
     public bool Completed=>executor.Completed;
     public string? Fault {get;private set;}
-    public ushort VmAddress=>executor.NextInstruction?.Site ?? (IncludesCaller ? (ushort)0xE33C : (ushort)0xC767);
+    public ushort VmAddress=>executor.NextInstruction?.Site ?? (StartsAtBoardSelection ? (ushort)0xE460 : IncludesCaller ? (ushort)0xE33C : (ushort)0xC767);
     public IReadOnlyList<ushort> Selections=>selections;
     public Action<Instruction,Machine>? ObserveDispatch {get;set;}
     public Action<AlphaState>? ObserveAlpha {get;set;}
     public Action<LampRequest>? ObserveLamp {get;set;}
-    public SkillCashLiveSession(string evidenceDirectory,bool includeCaller=false)
+    public SkillCashLiveSession(string evidenceDirectory,bool includeCaller=false,bool boardSelection=false)
     {
-        IncludesCaller=includeCaller;
+        IncludesCaller=includeCaller || boardSelection;StartsAtBoardSelection=boardSelection;
         evidence=evidenceDirectory;
         Lamps=SkillCashPlayback.LoadLamps(evidence);
         var options=new JsonSerializerOptions{PropertyNameCaseInsensitive=true};
@@ -70,6 +72,12 @@ public sealed class SkillCashLiveSession
             foreach(var item in caller.RootElement.GetProperty("sites").EnumerateObject())siteCosts.TryAdd(item.Name,item.Value.GetUInt64());
             foreach(var item in caller.RootElement.GetProperty("tokens").EnumerateObject())tokenCosts.TryAdd(item.Name,item.Value.GetUInt64());
         }
+        if(boardSelection) {
+            initialClock=BoardSelectionState.Apply(Machine,evidence);
+            using var selection=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","board-selection.json")));
+            foreach(var item in selection.RootElement.GetProperty("sites").EnumerateObject())siteCosts.TryAdd(item.Name,item.Value.GetUInt64());
+            foreach(var item in selection.RootElement.GetProperty("tokens").EnumerateObject())tokenCosts.TryAdd(item.Name,item.Value.GetUInt64());
+        }
         Panel=new(Machine);byte[] other=new byte[8];
         // This feature-entry fixture has no Orange/Black service buttons held.
         // DIL bits are fixed prerequisites, not player-event substitutions.
@@ -77,6 +85,7 @@ public sealed class SkillCashLiveSession
         for(int n=0;n<8;n++)Machine.Memory[n]=other[n];
         Machine.Memory[0x91]&=0x7F;
         alpha=new(Machine);scheduler=new(Machine,initialClock);
+        if(boardSelection)scheduler.RestoreQueuedNativeTasks();
         var response=JsonSerializer.Deserialize<LampFrameCapture>(File.ReadAllText(Path.Combine(evidence,"skill-cash","lamp-frames.json")),options)!;
         var frames=new Mpu4LampFrames(Machine,response.Responses.Select(x=>checked((byte)x)).ToArray());
         var requests=new Mpu4LampRequests(Machine,request=>{frames.Apply(request.Id,request.Pattern);LampRequests++;ObserveLamp?.Invoke(request);});
@@ -99,6 +108,7 @@ public sealed class SkillCashLiveSession
             InputConditionCell=value=>Mpu4InputConditions.Evaluate(Machine,(byte)value),
             BeforeInstruction=(instruction,state)=> {
                 Instructions++;ObserveDispatch?.Invoke(instruction,state);
+                if(instruction.Site==0xDDAB)boardChoiceCompleted=true;
                 if(instruction.Site==0xC6AD)selectionLoop=true;
                 if(instruction.Site==0xC757){selections.Add(state.Data.Peek());selectionLoop=false;}
             },
@@ -106,7 +116,8 @@ public sealed class SkillCashLiveSession
                 return AddersNativeWords.Handle(instruction,state,requests,scheduler,alpha,()=>{AlphaOperations++;ObserveAlpha?.Invoke(alpha.Snapshot());});
             }
         };
-        executor.Begin(Resolve(includeCaller ? (ushort)0xE2FC : (ushort)0xC721),10_000_000);
+        if(boardSelection){var catalog=new RecoveredScriptCatalog(Path.Combine(evidence,"VM-SCRIPTS"));executor.BeginResumed(Resolve(0xDD38),0xDD38,catalog.Owner,0xBEEF,10_000_000);}
+        else executor.Begin(Resolve(includeCaller ? (ushort)0xE2FC : (ushort)0xC721),10_000_000);
     }
     private readonly ulong servicePeriod;
     private RecoveredScript Resolve(ushort address)
@@ -146,6 +157,7 @@ public sealed class SkillCashLiveSession
     public void Resume(){if(!Completed && Fault is null)Paused=false;}
     public void Pause(){Paused=true;Panel.Release();}
     public void SetStart(bool pressed){Panel.SetStart(pressed && !Paused && !Completed && Fault is null);}
+    public void SetTake(bool pressed){Panel.SetTake(pressed && !Paused && !Completed && Fault is null);}
     public void Advance(TimeSpan elapsed)
     {
         if(elapsed<TimeSpan.Zero)throw new ArgumentOutOfRangeException(nameof(elapsed));
@@ -185,6 +197,7 @@ public sealed class SkillCashLiveSession
                 if(nextVm==next) {
                     if(--budget==0)throw new InvalidOperationException("Live dispatch budget exceeded");
                     var instruction=executor.NextInstruction!;
+                    if(StartsAtBoardSelection && instruction.Native==0x2C71)throw new NotSupportedException("ROLL reached the unrecovered dice-motion boundary. Restart and use TAKE FEATURE for the supported Skill Cash route.");
                     waitingForScheduler=instruction.Native==0x5CCB && scheduler.Active;
                     if(waitingForScheduler){nextVm=checked(serviceEpoch+services[serviceIndex].Scan);continue;}
                     ulong cost=instruction.Native==0x5CCB ? 0 : Cost(instruction);
@@ -210,7 +223,7 @@ public sealed class SkillCashLiveSession
         var state=alpha.Snapshot();var history=latches.Select((frame,n)=>n==0 ? frame with{Cycle=0} : frame);
         var display=new AlphaPlaybackFrame(0,state.Text,Machine.ReadWord(0xBA),Machine.ReadWord(0x2FA));
         var duty=new OutputPlayback(Math.Max(Cycle,1),history,new[]{display}).Sample(Cycle).LampDuty;
-        string status=Fault is not null ? "Fault: "+Fault : Completed ? "Completed" : Paused ? "Paused" : waitingForScheduler ? "Waiting for native scheduler" : VmAddress is >=0x9986 and <=0x998D ? "Waiting for START release" : selectionLoop ? "Waiting for START · selection loop executing" : "Running";
+        string status=Fault is not null ? "Fault: "+Fault : Completed ? "Completed" : Paused ? "Paused" : waitingForScheduler ? "Waiting for native scheduler" : VmAddress is >=0x9986 and <=0x998D ? "Waiting for panel release" : selectionLoop ? "Waiting for START · selection loop executing" : AwaitingBoardSelection ? "Waiting for TAKE / START · board selection executing" : "Running";
         return new(Cycle,Instructions,VmAddress,status,Panel.PhysicalBlack2,Machine.Memory[3],Machine.ReadWord(0x90),Machine.Memory[0x4F],Machine.ReadWord(0xBA),Machine.ReadWord(0x2FA),state.Text,duty,selections.ToArray());
     }
 }

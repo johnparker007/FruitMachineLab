@@ -7,6 +7,44 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Live physical Take selects Skill Cash and returns to the board-loop caller", () => {
+    var live=new SkillCashLiveSession(evidence,boardSelection:true);live.Resume();int stage=0;bool took=false,held=false,returned=false;
+    live.ObserveDispatch=(i,_)=>returned|=i.Site==0xE460;
+    for(int n=0;n<250000 && !live.Completed;n++) {
+        if(!took && live.Instructions>250){live.SetTake(true);took=true;}
+        if(took && live.VmAddress is >=0xC721 and <=0xC767)live.SetTake(false);
+        if(stage<3 && !held && live.Machine.Memory[0x4F]==3-stage){live.SetStart(true);held=true;}
+        live.AdvanceCycles(512);if(held && live.Selections.Count>stage){live.SetStart(false);held=false;stage++;}
+    }
+    Equal(true,live.Completed);Equal(true,returned);Equal("3,2,1",string.Join(',',live.Selections));Equal((ushort)10,live.Machine.ReadWord(0x2FA));Equal((ushort)0,live.Machine.ReadWord(0xBA));Equal(4,live.Machine.Data.Count);Equal((ushort)0xBEEF,live.Machine.Control!.ResumeCursor);Equal(false,live.Panel.TakePressed);
+});
+Check("Physical Take and Start are independent sampled active-high panel inputs", () => {
+    var live=new SkillCashLiveSession(evidence,boardSelection:true);live.Resume();live.SetTake(true);live.SetStart(true);Equal((byte)0x81,live.Panel.PhysicalBlack2);
+    live.Panel.Sample(3);Equal(ushort.MaxValue,Mpu4InputConditions.Evaluate(live.Machine,0x1C));Equal(ushort.MaxValue,Mpu4InputConditions.Evaluate(live.Machine,0x12));
+    live.SetTake(false);live.Panel.Sample(3);Equal((ushort)0,Mpu4InputConditions.Evaluate(live.Machine,0x1C));Equal(ushort.MaxValue,Mpu4InputConditions.Evaluate(live.Machine,0x12));
+    live.SetTake(true);live.Pause();Equal((byte)0,live.Panel.PhysicalBlack2);Equal(false,live.Panel.TakePressed);Equal(false,live.Panel.StartPressed);
+});
+Check("Board Start follows the recovered roll branch to an explicit dice boundary", () => {
+    var live=new SkillCashLiveSession(evidence,boardSelection:true);live.Resume();bool stopped=false;
+    try {for(int n=0;n<10000 && !live.Completed;n++){if(live.Instructions>250)live.SetStart(true);live.AdvanceCycles(512);}}
+    catch(NotSupportedException error){stopped=error.Message.StartsWith("ROLL reached");if(!stopped)throw;}
+    Equal(true,stopped);Equal(true,live.Paused);Equal(false,live.Completed);Equal(false,live.Panel.StartPressed);Equal(false,live.Panel.TakePressed);Equal(0,live.Selections.Count);
+});
+Check("Captured scheduler restore rejects unknown continuation shapes", () => {
+    var m=new Machine();m.WriteWord(0x47,0x1A0);m.WriteWord(0x1A4,0x1234);var scheduler=new Mpu4ChoiceStreamScheduler(m,0);bool rejected=false;
+    try{scheduler.RestoreQueuedNativeTasks();}catch(NotSupportedException){rejected=true;}Equal(true,rejected);
+});
+Check("Natural board selection, take, Skill Cash and board return match MAME", () => {
+    var result=BoardSelectionVerification.Verify(evidence);Console.WriteLine($"  {result.Instructions} board VM dispatches (uninitialized-local exclusions), {result.Lamps} lamp requests, {result.Sounds} sound commands, {result.AlphaBytes} alpha bytes and {result.Conditions} input conditions checked");
+});
+Check("Captured physical VM frames resume through recovered continuation owners", () => {
+    var catalog=new RecoveredScriptCatalog(Path.Combine(evidence,"VM-SCRIPTS"));
+    var m=new Machine();m.Control=new(m,0x780);m.WriteWord(0x780,0xBEEF);m.Control.EnterCall(0x99AB);
+    var seen=new List<ushort>();var executor=new ScriptExecutor(m){BeforeInstruction=(i,_)=>seen.Add(i.Site)};
+        executor.BeginResumed(catalog.Owner(0xA8F5),0xA8F5,catalog.Owner,0xBEEF);
+    Equal(0,seen.Count);executor.Step();Equal((ushort)0x99AB,executor.NextInstruction!.Site);executor.Step();
+    Equal(true,executor.Completed);Equal("A8F5,99AB",string.Join(',',seen.Select(x=>x.ToString("X4"))));Equal((ushort)0x782,m.Control.Pointer);
+});
 Check("Natural cash-feature caller entry matches MAME before Skill Cash", () => {
     var result=SkillCashCallerVerification.Verify(evidence);
     Console.WriteLine($"  {result.EntryInstructions} caller entry dispatches, {result.AlphaBytes} alpha bytes, {result.SoundCommands} sound commands; {result.ExitInstructions} captured exit dispatches retained");
@@ -66,10 +104,12 @@ Check("Live six-pound Skill Cash executes the recovered jackpot announcement", (
 });
 Check("Live player inputs cover every default Skill Cash award level", () => {
     ushort[] awards=[0,10,16,20,22,30,60];
-    foreach(bool caller in new[]{false,true})
+    foreach(int entry in new[]{0,1,2})
     for(byte level=1;level<=6;level++) {
-        var live=new SkillCashLiveSession(evidence,caller);live.Resume();int stage=0;bool held=false;
+        var live=new SkillCashLiveSession(evidence,entry>=1,entry==2);live.Resume();int stage=0;bool held=false,took=false;
         for(int n=0;n<200000 && !live.Completed;n++) {
+            if(entry==2 && !took && live.Instructions>250){live.SetTake(true);took=true;}
+            if(entry==2 && live.VmAddress is >=0xC721 and <=0xC767)live.SetTake(false);
             if(stage<3 && !held && live.Machine.Memory[0x4F]==level){live.SetStart(true);held=true;}
             live.AdvanceCycles(512);if(held && live.Selections.Count>stage){live.SetStart(false);held=false;stage++;}
         }

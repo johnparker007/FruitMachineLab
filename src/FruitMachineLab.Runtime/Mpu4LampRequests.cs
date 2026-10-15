@@ -21,6 +21,13 @@ public sealed class Mpu4LampRequests(Machine machine,Action<LampRequest> output)
             case 0x4A8C: {var pattern=(byte)machine.Pop();var end=machine.Pop();var start=machine.Pop();Range(start,end,pattern,0x4A8C);return true;}
             case 0x498B: Set((byte)machine.Pop(),5,0x498B);return true;
             case 0x4982: Set((byte)machine.Pop(),0x80,0x4982);return true;
+            case 0x497F: Set((byte)machine.Pop(),0x8F,0x497F);return true;
+            case 0x4985: Set((byte)machine.Pop(),0x83,0x4985);return true;
+            case 0x4988: Set((byte)machine.Pop(),0x8C,0x4988);return true;
+            case 0x2C88: {
+                byte reel=(byte)machine.Pop();ushort at=Cell.Add(0x732C,unchecked((ushort)(sbyte)(reel*3)));
+                for(int n=0;n<3;n++)Set(machine.Memory[Cell.Add(at,(ushort)n)],0,0x49C5);return true;
+            }
             case 0x49C5: {var pattern=(byte)machine.Pop();Set((byte)machine.Pop(),pattern,0x49C5);return true;}
             default:return false;
         }

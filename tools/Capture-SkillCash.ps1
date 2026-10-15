@@ -14,7 +14,8 @@ param(
     [switch]$CpuInterrupts,
     [switch]$JackpotProbe,
     [switch]$CashFeatureCaller,
-    [switch]$BoardResultCaller
+    [switch]$BoardResultCaller,
+    [switch]$BoardSelection
 )
 $ErrorActionPreference='Stop'
 $root=Split-Path $PSScriptRoot -Parent
@@ -54,7 +55,7 @@ if($NativeNvram) {
  ('bpset 0x6e68,temp0==1,{printf "NO'+$nvFormat+'",'+$nvValues+';go}'))
 }
 if($NativeInput) {
- $extra+=@('bpset 0x67ec,temp0==1 && (x==0x83a4 || x==0x83a7 || x==0x8413 || x==0x8386),{printf "PI selector=%02X p0=%02X p1=%02X p2=%02X p3=%02X p6=%02X p7=%02X clock=%04X\n",b@x,b@0,b@1,b@2,b@3,b@6,b@7,w@0x45;go}')
+ $extra+=@('bpset 0x67ec,temp0==1,{printf "PI selector=%02X p0=%02X p1=%02X p2=%02X p3=%02X p6=%02X p7=%02X clock=%04X\n",b@x,b@0,b@1,b@2,b@3,b@6,b@7,w@0x45;go}')
 }
 if($NativeLampFrames) {
  $frameFormat='';$frameValues=''
@@ -106,6 +107,8 @@ if($CpuInterrupts) {
  'bpset 0xff13,temp0==1,{printf "IX cycle=%016X s=%04X resume=%04X\n",totalcycles,s,w@(s+10);go}'
  )
 }
+$print='printf "'+$format+'",'+$values
+if($BoardSelection){if(!$FullFeature -or $JackpotProbe -or !$CpuInterrupts -or !$NativeSound){throw 'Board selection requires full feature, CPU interrupts and native sound'};$extra+=@("bpset 0xfc,temp0==0 && temp2==0 && y==0xdd38 && b@0xc9==0x20,{$print;save boundary-ram.bin,0,800;temp0=1;temp2=1;go}")}
 if($extra.Count -gt 0) {
  # Debugger setup invokes paused frame callbacks. Ignore precisely the added
  # setup callbacks in this copied observer, preserving the original physical times.
@@ -118,6 +121,7 @@ $print='printf "'+$format+'",'+$values
 $stop=if($FullFeature){'0xc767'}else{'0xc71d'}
 if($CashFeatureCaller){if(!$FullFeature -or $JackpotProbe){throw 'Caller capture requires FullFeature and excludes synthetic JackpotProbe'};$stop='0xe0bf'}
 if($BoardResultCaller){if(!$CashFeatureCaller){throw 'Board result capture requires CashFeatureCaller'};$stop='0xe33c'}
+if($BoardSelection){$stop='0xe460'}
 $dispatchAction="temp0=(y!=$stop);$print;go"
 if($JackpotProbe) {
  if(!$FullFeature){throw 'Jackpot probe requires -FullFeature'}
@@ -129,7 +133,7 @@ $commands=@(
  # Keep the original fixture's one-breakpoint startup command count. Each debugger
  # setup command triggers a paused frame callback in this harness; extra commands
  # change frame-number-based physical input timing. temp0 starts at zero in MAME.
- $(if($BoardResultCaller){"bpset 0xfc,(y==0xe2fc && w@u==2 && b@0xc9==0x20) || temp0==1,{$dispatchAction}"}elseif($CashFeatureCaller){"bpset 0xfc,(y==0xdff6 && b@0xc9==0x20) || temp0==1,{$dispatchAction}"}else{"bpset 0xfc,y==0xc721 || temp0==1,{$dispatchAction}"})
+ $(if($BoardSelection){"bpset 0xfc,temp0==1,{$dispatchAction}"}elseif($BoardResultCaller){"bpset 0xfc,(y==0xe2fc && w@u==2 && b@0xc9==0x20) || temp0==1,{$dispatchAction}"}elseif($CashFeatureCaller){"bpset 0xfc,(y==0xdff6 && b@0xc9==0x20) || temp0==1,{$dispatchAction}"}else{"bpset 0xfc,y==0xc721 || temp0==1,{$dispatchAction}"})
 )+$extra+@(
  'gtime #2400000',
  'save ram-final.bin,0,800',
@@ -144,7 +148,7 @@ $arguments=@('m4addr','-noreadconfig','-rompath',$RomDirectory,
 $arguments | ConvertTo-Json | Set-Content "$run/arguments.json"
 @{mame_sha256=(Get-FileHash -LiteralPath $MameExecutable).Hash;replay_sha256=(Get-FileHash "$run/replay-actions.csv").Hash;
  native_sound_capture=[bool]$NativeSound;native_nvram_capture=[bool]$NativeNvram;full_feature_capture=[bool]$FullFeature;native_input_capture=[bool]$NativeInput;native_lamp_frames=[bool]$NativeLampFrames;native_alpha_capture=[bool]$NativeAlpha;native_scan_capture=[bool]$NativeScan;shared_timing=[bool]$SharedTiming;paused_setup_callbacks_skipped=$extra.Count;
- timer_deadlines=[bool]$TimerDeadlines;cpu_interrupts=[bool]$CpuInterrupts;synthetic_jackpot_probe=[bool]$JackpotProbe;cash_feature_caller=[bool]$CashFeatureCaller;board_result_caller=[bool]$BoardResultCaller;
+ timer_deadlines=[bool]$TimerDeadlines;cpu_interrupts=[bool]$CpuInterrupts;synthetic_jackpot_probe=[bool]$JackpotProbe;cash_feature_caller=[bool]$CashFeatureCaller;board_result_caller=[bool]$BoardResultCaller;board_selection=[bool]$BoardSelection;
  initial_state='Fresh isolated default configuration and absent NVRAM; physical-input fixture only; no RAM/ROM injection.'} |
  ConvertTo-Json | Set-Content "$run/provenance.json"
 $previousReplay=$env:MPU4_REPLAY

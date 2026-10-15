@@ -151,3 +151,13 @@ the selected type-2/position-32 route, including take gating, announcement and n
 table dispatch. Natural MAME captures independently preserve the original feature
 digest; both entry modes complete all six default awards. 81 groups pass. This is
 a captured board-result boundary, not startup or persistent whole-machine play.
+
+## Board selection and Take Feature
+
+See docs/recovery/BOARD-SELECTION-TAKE-PASS.md. Live supports physical Take from
+DD38/square 32 through Skill Cash and the board-loop return at E460. Saved physical
+VM frames resume via decoded address ownership. The natural broader replay checks
+99,843 normalized observations plus native lamp/sound/alpha and physical conditions;
+uninitialized frame bytes are explicitly excluded until the ROM initializes them.
+87 groups pass, including all six awards through all three entry modes. Roll/dice
+motion is the next explicit unsupported boundary; no whole-game claim is made.

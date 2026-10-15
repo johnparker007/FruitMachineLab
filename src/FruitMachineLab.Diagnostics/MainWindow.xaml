@@ -2,7 +2,7 @@
  <DockPanel Margin="20">
   <StackPanel DockPanel.Dock="Top">
    <TextBlock FontSize="24" Text="Adders &amp; Ladders: Skill Cash" />
-   <TextBlock Margin="0,10" TextWrapping="Wrap" Text="Live mode executes the recovered feature as you press START. Verified playback remains a separate diagnostic view. Audio and full machine startup are outside this slice." />
+   <TextBlock Margin="0,10" TextWrapping="Wrap" Text="Live mode executes the recovered board selection and Skill Cash feature with physical Take/Start inputs. Verified playback remains separate. Audio and full machine startup are outside this slice." />
    <TextBlock Text="Repository folder" /><TextBox x:Name="RootPath" Margin="0,5" />
    <Button x:Name="LoadReplay" Content="Load verified playback / scrubber" Click="Replay" HorizontalAlignment="Left" Padding="12,7" Margin="0,5" />
    <TextBlock x:Name="Status" Margin="0,10" TextWrapping="Wrap" />
@@ -17,7 +17,9 @@
        <Button x:Name="ResumeLiveButton" Content="Resume execution" Click="ResumeLiveClick" IsEnabled="False" Padding="14,7" />
        <Button x:Name="RestartLiveButton" Content="Restart feature" Click="BeginLive" IsEnabled="False" Padding="14,7" Margin="8,0" />
       </WrapPanel>
-      <CheckBox x:Name="IncludeCaller" Content="Include recovered board take, feature entry and exit (position 32)" ToolTip="Applied on Start feature or Restart. Starts at the captured board-result boundary, before the Skill Cash announcement; full machine startup is not included." IsChecked="True" Margin="0,8,0,0" />
+      <ComboBox x:Name="LiveEntryMode" SelectedIndex="2" Margin="0,8,0,0" HorizontalAlignment="Left" MinWidth="360" ToolTip="Applied on Start feature or Restart. Each mode starts at a captured boundary; full machine startup is not included.">
+       <ComboBoxItem Content="Skill Cash entry (C721)" /><ComboBoxItem Content="Taken board result (E2FC)" /><ComboBoxItem Content="Board selection: Take Skill Cash (DD38)" />
+      </ComboBox>
       <TextBlock x:Name="SessionDiagnostic" Text="Start the feature, then hold and release the physical START button below." Margin="0,10" TextWrapping="Wrap" FontFamily="Consolas" />
      </StackPanel>
      <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -27,8 +29,12 @@
         <Button x:Name="PhysicalStart" Content="START" IsEnabled="False" Padding="32,15" FontSize="20" FontWeight="Bold"
          PreviewMouseLeftButtonDown="PhysicalStartDown" PreviewMouseLeftButtonUp="PhysicalStartUp" LostMouseCapture="PhysicalStartCaptureLost"
          PreviewKeyDown="PhysicalStartKeyDown" PreviewKeyUp="PhysicalStartKeyUp" LostKeyboardFocus="PhysicalStartFocusLost" />
-        <TextBlock Margin="16,0" VerticalAlignment="Center" TextWrapping="Wrap" Text="Physical player button • hold to press, release to let go&#10;BLACK2 bit 80 • Space/Enter also work while focused" />
+        <Button x:Name="PhysicalTake" Content="TAKE FEATURE" IsEnabled="False" Padding="16,15" Margin="8,0" FontSize="18" FontWeight="Bold"
+         PreviewMouseLeftButtonDown="PhysicalTakeDown" PreviewMouseLeftButtonUp="PhysicalTakeUp" LostMouseCapture="PhysicalTakeCaptureLost" LostKeyboardFocus="PhysicalTakeFocusLost"
+         PreviewKeyDown="PhysicalTakeKeyDown" PreviewKeyUp="PhysicalTakeKeyUp" />
+        <TextBlock Margin="16,0" VerticalAlignment="Center" TextWrapping="Wrap" Text="Momentary buttons • mouse or Space/Enter while focused&#10;START: BLACK2 bit 80 • TAKE: BLACK2 bit 01" />
        </WrapPanel>
+       <TextBlock TextWrapping="Wrap" Margin="0,0,0,8" Text="Board selection: TAKE FEATURE chooses Skill Cash (BLACK2 bit 01). START rolls; dice motion is the next recovery boundary. In Skill Cash, START stops each selection." />
        <TextBlock x:Name="SessionAccounting" Margin="0,0,0,10" Text="Pending 0 • current win 0 ROM units" />
        <TextBlock Text="Selection feedback — recovered lamp groups" FontWeight="SemiBold" />
        <UniformGrid x:Name="SessionSelectionLamps" Columns="6" Margin="0,8" />

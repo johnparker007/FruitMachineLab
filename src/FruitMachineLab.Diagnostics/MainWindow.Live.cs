@@ -22,6 +22,7 @@ public partial class MainWindow
         Deactivated+=(_,_)=>{AdvanceLive();ReleasePhysicalStart();RenderLive();};Closed+=(_,_)=>{PauseLive();liveWallClock.Stop();};
         var args=Environment.GetCommandLineArgs();
         if(args.Length==3 && args[1]=="--live-smoke-test")Loaded+=async(_,_)=>await LiveSmokeTest(args[2]);
+        if(args.Length==3 && args[1]=="--live-jackpot-smoke-test")Loaded+=async(_,_)=>await LiveSmokeTest(args[2],true);
     }
     private async void BeginLive(object sender,RoutedEventArgs args)=>await LoadLive();
     private async Task<bool> LoadLive()

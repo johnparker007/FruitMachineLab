@@ -1,0 +1,7 @@
+{
+  "classification": "Synthetic register redirect; no original workspace writes",
+  "run_directory": "C:/Users/John/AppData/Local/Temp/FruitMachineLab-jackpot-probe-54af368de7954961944837784b3da614",
+  "raw_debug_sha256": "1887EB2B58DC86BCF755DE854B8468AEA78BD28AE03F796E155BD5706514FD92",
+  "prefix_dispatches": 98704,
+  "prefix_vm_sha256": "8420A3BEE0F248A6A9F1917E698DB49F0501B764BFCDE1A4A7A3442090839D14"
+}

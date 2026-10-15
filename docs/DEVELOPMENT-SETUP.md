@@ -112,6 +112,12 @@ recovery/SKILL-CASH-PLAYBACK-PASS.md for renderer boundaries and smoke instructi
 
 Live mode now incrementally executes one feature with a momentary physical Start
 control. Pause/Resume suspend the VM and virtual clock. Playback remains separate.
-67 headless groups and Live/playback WPF smoke checks pass. WPF was built in isolated
+The initial pass had 67 headless groups and Live/playback WPF smoke checks. WPF was built in isolated
 temporary output because an existing app locked normal build DLLs. See
 recovery/SKILL-CASH-LIVE-PASS.md for exact comparisons and unresolved CPU/IRQ pacing.
+
+The subsequent recovery/SKILL-CASH-EXTENSION-PASS.md documents 77 passing groups,
+all six default live award levels, jackpot announcement support and captured IRQ
+occupancy pacing. Build commands and dependencies are unchanged. The optional
+--live-jackpot-smoke-test <fresh-output-directory> is an accelerated physical-input
+and render check, separate from the real-time Live smoke mode.

@@ -40,7 +40,7 @@ public sealed class Mpu4Alpha(Machine machine,Action<byte>? serialOutput=null)
             machine.Memory[0x54]=(byte)((machine.Memory[0x54]+1)&15);Emit(character);
         } else {
             SelectCursor(machine.Memory[0x54]);machine.Memory[0x58+machine.Memory[0x54]]=(byte)(character&0x3F);
-            Emit(character);machine.Memory[0x54]=(byte)((machine.Memory[0x54]+1)&15);
+            Emit((byte)(character&0x3F));machine.Memory[0x54]=(byte)((machine.Memory[0x54]+1)&15);
         }
     }
     private void MirrorDigit(byte character)
@@ -77,11 +77,25 @@ public sealed class Mpu4Alpha(Machine machine,Action<byte>? serialOutput=null)
     public void Execute(ushort stream,int budget=10000)
     {
         machine.WriteWord(0x52,stream);machine.Memory[0x51]=0;
+        Continue(budget);
+    }
+    public bool Resume(int budget=10000)
+    {
+        if(machine.ReadWord(0x35)!=0 || machine.Memory[Cell.Subtract(machine.ReadWord(0x52),3)]!=0x68)return false;
+        Continue(budget);return true;
+    }
+    private void Continue(int budget)
+    {
         for(int ordinal=0;ordinal<budget;ordinal++) {
             byte command=(byte)(Fetch()&0x7F);
             if(command<=0x1F)continue;
             if(command<=0x5F){Put(command);if(machine.Memory[0x57]!=0)return;continue;}
             switch(command) {
+                case 0x61:Reset();break;
+                case 0x66:Emit(0xE0);break;
+                case 0x6E:Emit((byte)(machine.Memory[0x55]|0xE0));break;
+                case 0x68:machine.WriteWord(0x35,FetchWord());return;
+                case 0x6A:machine.WriteWord(0x52,FetchWord());break;
                 case 0x70:SelectCursor(Fetch());break;
                 case 0x76: {
                     byte value=machine.Memory[FetchWord()];

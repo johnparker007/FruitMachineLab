@@ -135,3 +135,11 @@ the interpreter translations; decompiler output remains qualified by its warning
 The decoded listings contain recovered token/data values and are curated analysis
 artifacts. Absolute paths in copied launch metadata describe the original run and
 must be resolved explicitly before reuse; they are not portable launch scripts.
+
+## Live award coverage and normal-play boundary
+
+See docs/recovery/SKILL-CASH-EXTENSION-PASS.md. All six default award levels and
+the jackpot announcement execute live; 77 verification groups pass. A synthetic
+MAME helper probe independently checks VM/lamp/sound/alpha effects. Captured IRQ
+occupancy improves pacing but does not resolve general scheduling. The recovered
+normal cash-feature selector is executable; full machine play remains future work.

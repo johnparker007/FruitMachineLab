@@ -10,7 +10,9 @@ param(
     [switch]$NativeAlpha,
     [switch]$NativeScan,
     [switch]$SharedTiming,
-    [switch]$TimerDeadlines
+    [switch]$TimerDeadlines,
+    [switch]$CpuInterrupts,
+    [switch]$JackpotProbe
 )
 $ErrorActionPreference='Stop'
 $root=Split-Path $PSScriptRoot -Parent
@@ -23,7 +25,7 @@ Copy-Item (Join-Path $root 'evidence/mpu4/skill-cash/actions.csv') "$run/replay-
 $format='SC y=%04X token=%04X u=%04X top=%04X second=%04X third=%04X fourth=%04X s=%04X f4=%04X f6=%04X frame=%04X tick=%04X irq=%02X seed=%04X choice=%02X rate=%02X latch=%04X opt=%04X abort=%04X pending=%04X win=%04X\n'
 $values='y,w@y,u,w@u,w@(u+2),w@(u+4),w@(u+6),s,w@0xf4,w@0xf6,w@(w@0xf4),w@0x2d,b@0x33,w@0x324,b@0x4f,b@0x4e,w@0x90,w@0x719f,w@0x719b,w@0xba,w@0x2fa'
 $extra=@()
-if($SharedTiming) {$format=$format.Replace('\n',' cycle=%016X\n');$values+=',totalcycles'}
+if($SharedTiming -or $CpuInterrupts) {$format=$format.Replace('\n',' cycle=%016X\n');$values+=',totalcycles'}
 if($FullFeature) {
  $format=$format.Replace('\n',' guard=%02X checksum=%02X mode=%02X display=%04X suppress=%04X\n')
  $values+=',b@0x2c,b@0x322,b@0x323,w@0x327,w@0xa0'
@@ -96,6 +98,12 @@ if($TimerDeadlines) {
  'bpset 0x48fd,temp0==1,{printf "TC cycle=%016X column=%04X\n",totalcycles,w@0x28;go}'
  )
 }
+if($CpuInterrupts) {
+ $extra+=@(
+ 'bpset 0xfe70,temp0==1,{printf "IE cycle=%016X s=%04X resume=%04X\n",totalcycles,s,w@(s+10);go}',
+ 'bpset 0xff13,temp0==1,{printf "IX cycle=%016X s=%04X resume=%04X\n",totalcycles,s,w@(s+10);go}'
+ )
+}
 if($extra.Count -gt 0) {
  # Debugger setup invokes paused frame callbacks. Ignore precisely the added
  # setup callbacks in this copied observer, preserving the original physical times.
@@ -106,11 +114,18 @@ if($extra.Count -gt 0) {
 }
 $print='printf "'+$format+'",'+$values
 $stop=if($FullFeature){'0xc767'}else{'0xc71d'}
+$dispatchAction="temp0=(y!=$stop);$print;go"
+if($JackpotProbe) {
+ if(!$FullFeature){throw 'Jackpot probe requires -FullFeature'}
+ # Synthetic helper experiment: enter A365 at the real C721 return boundary.
+ # This is not a physically reached jackpot or an award-path reference capture.
+ $dispatchAction="temp0=(y!=0xa398);$print;y=y+(y==0xc767)*(0xa365-0xc767);go"
+}
 $commands=@(
  # Keep the original fixture's one-breakpoint startup command count. Each debugger
  # setup command triggers a paused frame callback in this harness; extra commands
  # change frame-number-based physical input timing. temp0 starts at zero in MAME.
- "bpset 0xfc,y==0xc721 || temp0==1,{temp0=(y!=$stop);$print;go}"
+ "bpset 0xfc,y==0xc721 || temp0==1,{$dispatchAction}"
 )+$extra+@(
  'gtime #2400000',
  'save ram-final.bin,0,800',
@@ -125,7 +140,7 @@ $arguments=@('m4addr','-noreadconfig','-rompath',$RomDirectory,
 $arguments | ConvertTo-Json | Set-Content "$run/arguments.json"
 @{mame_sha256=(Get-FileHash -LiteralPath $MameExecutable).Hash;replay_sha256=(Get-FileHash "$run/replay-actions.csv").Hash;
  native_sound_capture=[bool]$NativeSound;native_nvram_capture=[bool]$NativeNvram;full_feature_capture=[bool]$FullFeature;native_input_capture=[bool]$NativeInput;native_lamp_frames=[bool]$NativeLampFrames;native_alpha_capture=[bool]$NativeAlpha;native_scan_capture=[bool]$NativeScan;shared_timing=[bool]$SharedTiming;paused_setup_callbacks_skipped=$extra.Count;
- timer_deadlines=[bool]$TimerDeadlines;
+ timer_deadlines=[bool]$TimerDeadlines;cpu_interrupts=[bool]$CpuInterrupts;synthetic_jackpot_probe=[bool]$JackpotProbe;
  initial_state='Fresh isolated default configuration and absent NVRAM; physical-input fixture only; no RAM/ROM injection.'} |
  ConvertTo-Json | Set-Content "$run/provenance.json"
 $previousReplay=$env:MPU4_REPLAY

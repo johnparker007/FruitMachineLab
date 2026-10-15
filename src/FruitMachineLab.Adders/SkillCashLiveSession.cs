@@ -18,6 +18,7 @@ public sealed class SkillCashLiveSession
     private readonly Dictionary<ushort,RecoveredScript> scripts=new();
     private readonly string evidence;
     private readonly Dictionary<string,ulong> siteCosts,tokenCosts;
+    private readonly CapturedInterruptOccupancy occupancy;
     private readonly List<(ulong Scan,ulong Callback)> services=new();
     private readonly List<LampLatchFrame> latches=new();
     private readonly List<ushort> selections=new();
@@ -49,11 +50,17 @@ public sealed class SkillCashLiveSession
         var options=new JsonSerializerOptions{PropertyNameCaseInsensitive=true};
         var feature=JsonSerializer.Deserialize<FeatureCapture>(File.ReadAllText(Path.Combine(evidence,"skill-cash","feature-replay.json")),options)!;
         var timing=JsonSerializer.Deserialize<SharedTimingCapture>(File.ReadAllText(Path.Combine(evidence,"skill-cash","shared-timing.json")),options)!;
-        using(var costs=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","live-cpu-timing.json")))) {
+        using(var costs=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","cpu-interrupts.json")))) {
             siteCosts=costs.RootElement.GetProperty("sites").EnumerateObject().ToDictionary(x=>x.Name,x=>x.Value.GetUInt64());
             tokenCosts=costs.RootElement.GetProperty("tokens").EnumerateObject().ToDictionary(x=>x.Name,x=>x.Value.GetUInt64());
         }
-        SeedFeature(feature);SeedScan(timing);
+        using(var costs=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","jackpot-probe.json")))) {
+            foreach(var item in costs.RootElement.GetProperty("sites").EnumerateObject())siteCosts.TryAdd(item.Name,item.Value.GetUInt64());
+            foreach(var item in costs.RootElement.GetProperty("tokens").EnumerateObject())tokenCosts.TryAdd(item.Name,item.Value.GetUInt64());
+        }
+        using(var data=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"maps","skill-cash-extension-data.json"))))
+            foreach(var alias in data.RootElement.GetProperty("equivalent_timing_tokens").EnumerateObject())tokenCosts.Add(alias.Name,tokenCosts[alias.Value.GetString()!]);
+        SeedFeature(feature);SeedScan(timing);SkillCashData.LoadExtensions(Machine,evidence);
         Panel=new(Machine);byte[] other=new byte[8];
         // This feature-entry fixture has no Orange/Black service buttons held.
         // DIL bits are fixed prerequisites, not player-event substitutions.
@@ -75,6 +82,8 @@ public sealed class SkillCashLiveSession
         // Repeat the observed service/jitter template at the source-backed
         // timer-1 period (0D70+1). This is not IRQ instruction acceptance emulation.
         servicePeriod=checked((ulong)services.Count*3441);
+        using(var interrupts=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","cpu-interrupts.json"))))
+            occupancy=new(servicePeriod,interrupts.RootElement.GetProperty("intervals").EnumerateArray().Select(row=>row.EnumerateArray().Select(x=>x.GetUInt64()).ToArray()));
         RecordLatch();
         executor=new(Machine) {
             ResolveScript=Resolve,ResolveWord=SkillCashData.ResolveWord,
@@ -85,15 +94,7 @@ public sealed class SkillCashLiveSession
                 if(instruction.Site==0xC757){selections.Add(state.Data.Peek());selectionLoop=false;}
             },
             WordHandler=(instruction,state)=> {
-                if(requests.HandleWord(instruction))return true;
-                if(instruction.Native==0x5C18)return scheduler.Queue(state.Pop());
-                if(instruction.Native==0x5B77)return scheduler.Reset();
-                if(instruction.Native==0x5CCB){if(scheduler.Active)throw new InvalidOperationException("Native scheduler wait resumed too soon");return true;}
-                if(instruction.Native==0x3D0E || instruction.Operation=="vm_execute_alpha_stream") {
-                    if(instruction.Native==0x3D0E)alpha.Reset();else alpha.Execute(Cell.Add(instruction.Site,2));
-                    AlphaOperations++;ObserveAlpha?.Invoke(alpha.Snapshot());return true;
-                }
-                return false;
+                return AddersNativeWords.Handle(instruction,state,requests,scheduler,alpha,()=>{AlphaOperations++;ObserveAlpha?.Invoke(alpha.Snapshot());});
             }
         };
         executor.Begin(Resolve(0xC721),10_000_000);
@@ -114,6 +115,7 @@ public sealed class SkillCashLiveSession
         foreach(var pair in new[]{("tick",0x2D),("seed",0x324),("latch",0x90),("opt",0x719F),("abort",0x719B),("pending",0xBA),("win",0x2FA),("display",0x327),("suppress",0xA0)})m.WriteWord((ushort)pair.Item2,first[pair.Item1]);
         foreach(var pair in new[]{("irq",0x33),("choice",0x4F),("rate",0x4E),("guard",0x2C),("checksum",0x322),("mode",0x323)})m.Memory[pair.Item2]=(byte)first[pair.Item1];
         foreach(var name in new[]{"fourth","third","second","top"})m.Data.Push(first[name]);
+        m.DataStackBase=Cell.Add(first["u"],8);
         var comp=SkillCashCompensationVerification.Load(evidence)[0];
         foreach(ushort site in new ushort[]{0xA0F1,0xA102}) {
             int at=Array.FindIndex(comp.Steps,x=>x["y"]==site);ushort address=comp.Steps[at]["top"];
@@ -148,7 +150,12 @@ public sealed class SkillCashLiveSession
         try {
             while(!Completed && Cycle<=target) {
                 ulong irq=checked(serviceEpoch+services[serviceIndex].Scan);
-                ulong next=Math.Min(nextVm,Math.Min(irq,nextCallback));if(next>target){Cycle=target;break;}Cycle=next;
+                ulong next=Math.Min(occupancy.NextStart,Math.Min(nextVm,Math.Min(irq,nextCallback)));if(next>target){Cycle=target;break;}Cycle=next;
+                if(occupancy.NextStart==next) {
+                    ulong end=occupancy.NextEnd;
+                    nextVm=waitingForScheduler ? Math.Max(nextVm,end) : checked(nextVm+(end-next));
+                    occupancy.Consume();
+                }
                 if(nextCallback==next) {
                     if(!Mpu4TimerCallbacks.DispatchTimer3(Machine,(address,m)=>{if(address!=0x48FD)throw new NotSupportedException("Unknown live timer callback");Mpu4LampInhibit.Apply(m);}))throw new InvalidOperationException("Missing live timer callback");
                     nextCallback=ulong.MaxValue;Callbacks++;RecordLatch();
@@ -162,6 +169,7 @@ public sealed class SkillCashLiveSession
                     Panel.Sample(checked((byte)Machine.ReadWord(0x28)));
                     Machine.WriteWord(0x2D,Cell.Add(Machine.ReadWord(0x2D),1));Machine.WriteWord(0x2F,Cell.Add(Machine.ReadWord(0x2F),1));
                     Machine.Memory[0x33]=unchecked((byte)(Machine.Memory[0x33]+1));
+                    if(Machine.ReadWord(0x35)!=0)Machine.WriteWord(0x35,Cell.Subtract(Machine.ReadWord(0x35),1));
                     scheduler.AdvanceTicks(1);Machine.Memory[0x2C]=0;
                     if(++serviceIndex==services.Count){serviceIndex=0;serviceEpoch=checked(serviceEpoch+servicePeriod);}
                 }

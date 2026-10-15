@@ -7,6 +7,76 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Synthetic MAME jackpot announcement matches VM, lamp, sound and alpha evidence", () => {
+    var result=SkillCashJackpotProbeVerification.Verify(evidence);
+    Console.WriteLine($"  {result.Instructions} lifted VM dispatches, {result.LampRequests} lamp requests, {result.SoundCommands} sound commands and {result.SerialBytes} alpha bytes checked; synthetic invocation, not a reached jackpot award");
+});
+Check("Recovered board cash-feature selector maps Skill Cash and all named positions", () => {
+    byte[] positions=[4,9,12,19,26,32,37,42,47];
+    for(int n=0;n<positions.Length;n++)Equal((ushort)n,AddersCashFeatureDispatch.Select(evidence,positions[n]).Index);
+    Equal((ushort)0xC71F,AddersCashFeatureDispatch.Select(evidence,32).Token);Equal((ushort)0,AddersCashFeatureDispatch.Select(evidence,255).Index);
+});
+Check("Live six-pound Skill Cash executes the recovered jackpot announcement", () => {
+    var live=new SkillCashLiveSession(evidence);live.Resume();int stage=0;bool held=false;bool sawAnnouncement=false;
+    live.ObserveAlpha=state=>{if(state.Text.Contains("JACKPOT"))sawAnnouncement=true;};
+    for(int n=0;n<200000 && !live.Completed;n++) {
+        if(stage<3 && !held && live.Machine.Memory[0x4F]==6){live.SetStart(true);held=true;}
+        live.AdvanceCycles(512);
+        if(held && live.Selections.Count>stage){live.SetStart(false);held=false;stage++;}
+    }
+    Equal(true,live.Completed);Equal("6,6,6",string.Join(',',live.Selections));Equal(true,sawAnnouncement);Equal((ushort)60,live.Machine.ReadWord(0x2FA));Equal((ushort)0,live.Machine.ReadWord(0xBA));
+    Equal(4,live.Machine.Data.Count);Equal((ushort)0xBEEF,live.Machine.Control!.ResumeCursor);
+    Console.WriteLine($"  Live six-pound run completed in {live.Cycle/SkillCashLiveSession.CyclesPerSecond:0.000} virtual seconds; synthetic player timing, not a MAME jackpot campaign");
+});
+Check("Live player inputs cover every default Skill Cash award level", () => {
+    ushort[] awards=[0,10,16,20,22,30,60];
+    for(byte level=1;level<=6;level++) {
+        var live=new SkillCashLiveSession(evidence);live.Resume();int stage=0;bool held=false;
+        for(int n=0;n<200000 && !live.Completed;n++) {
+            if(stage<3 && !held && live.Machine.Memory[0x4F]==level){live.SetStart(true);held=true;}
+            live.AdvanceCycles(512);if(held && live.Selections.Count>stage){live.SetStart(false);held=false;stage++;}
+        }
+        Equal(true,live.Completed);Equal(awards[level],live.Machine.ReadWord(0x2FA));Equal((ushort)0,live.Machine.ReadWord(0xBA));Equal(4,live.Machine.Data.Count);
+    }
+});
+Check("Recovered lamp save/restore retains the physical U stack and caller cells", () => {
+    var m=new Machine{DataStackBase=0x680};m.Data.Push(0x1234);m.Data.Push(0x5678);m.Data.Push(0x9ABC);m.Data.Push(0xDEF0);
+    for(int n=0;n<64;n++)m.Memory[0x100+n]=(byte)(n*3);
+    var original=m.Memory[0x100..0x140];var cells=m.Data.ToArray();ushort pointer=m.DataPointer;
+    m.Control=new(m,0x7A0);m.WriteWord(0x7A0,0xBEEF);new ScriptExecutor(m).Run(new(Path.Combine(evidence,"VM-SCRIPTS","9B40.txt")));
+    Equal(Cell.Subtract(pointer,64),m.DataPointer);Equal(36,m.Data.Count);
+    Array.Clear(m.Memory,0x100,64);m.Control=new(m,0x7A0);m.WriteWord(0x7A0,0xBEEF);
+    new ScriptExecutor(m).Run(new(Path.Combine(evidence,"VM-SCRIPTS","9B58.txt")));
+    Equal(pointer,m.DataPointer);Equal(true,cells.SequenceEqual(m.Data));Equal(true,original.SequenceEqual(m.Memory[0x100..0x140]));
+});
+Check("Native byte move preserves overlap direction and address wrap", () => {
+    var m=new Machine();for(int n=0;n<8;n++)m.Memory[n]=(byte)n;
+    Mpu4Memory.Move(m,0,2,6);Equal("0001000102030405",Convert.ToHexString(m.Memory[..8]));
+    Mpu4Memory.Move(m,2,0,6);Equal("000102030405",Convert.ToHexString(m.Memory[..6]));
+    m.Memory[65535]=0xAB;m.Memory[0]=0xCD;Mpu4Memory.Move(m,65535,100,2);Equal((byte)0xAB,m.Memory[100]);Equal((byte)0xCD,m.Memory[101]);
+});
+Check("Alpha delayed continuation resumes only after the IRQ counter expires", () => {
+    var m=new Machine();SkillCashData.LoadAlpha(m);SkillCashData.LoadExtensions(m,evidence);var bytes=new List<byte>();var alpha=new Mpu4Alpha(m,bytes.Add);
+    alpha.Reset();bytes.Clear();alpha.Execute(0xA310);Equal((ushort)25,m.ReadWord(0x35));Equal((ushort)0xA314,m.ReadWord(0x52));Equal((byte)0xE0,bytes.Single());
+    Equal(false,alpha.Resume());m.WriteWord(0x35,0);Equal(true,alpha.Resume());Equal((byte)0xFF,bytes[^1]);Equal((ushort)25,m.ReadWord(0x35));
+    m.WriteWord(0x35,0);Equal(true,alpha.Resume());Equal((byte)0xE0,bytes[^1]);
+});
+Check("Lamp stream commands retain equality guards and reset frame counters", () => {
+    var m=new Machine();m.Memory[0x25]=5;m.Memory[0x24]=2;m.Memory[0x27]=4;SkillCashData.LoadExtensions(m,evidence);
+    var requests=new Mpu4LampRequests(m,_=>throw new Exception("Unexpected lamp request"));Equal((ushort)0x9C5F,requests.ExecuteStream(0x9C5A));
+    Equal((byte)2,m.Memory[0x24]);Equal((byte)0,m.Memory[0x26]);Equal((byte)0,m.Memory[0x27]);
+    m.Memory[0x400]=0x92;m.Memory[0x401]=255;m.Memory[0x402]=0x93;m.Memory[0x23]=3;
+    requests.ExecuteStream(0x400);Equal((byte)0,m.Memory[0x26]);Equal((byte)1,m.Memory[0x24]);Equal((byte)0,m.Memory[0x23]);
+});
+Check("Diatonic sound transpose preserves octave shifts and zero reset", () => {
+    Equal((byte)0xF4,Mpu4ChoiceStreamScheduler.DiatonicTranspose(0,0xF9));Equal((byte)0xE8,Mpu4ChoiceStreamScheduler.DiatonicTranspose(0xF4,0xF9));
+    Equal((byte)12,Mpu4ChoiceStreamScheduler.DiatonicTranspose(0,7));Equal((byte)0,Mpu4ChoiceStreamScheduler.DiatonicTranspose(0xE8,0));
+});
+Check("Captured IRQ occupancy repeats outer intervals and rejects overlap", () => {
+    var irq=new CapturedInterruptOccupancy(100,new[]{new[]{10UL,20UL},new[]{50UL,5UL}});Equal(10UL,irq.NextStart);Equal(30UL,irq.NextEnd);irq.Consume();Equal(50UL,irq.NextStart);irq.Consume();Equal(110UL,irq.NextStart);
+    try{_=new CapturedInterruptOccupancy(100,new[]{new[]{10UL,20UL},new[]{20UL,5UL}});}catch(InvalidDataException){return;}
+    throw new Exception("Overlapping outer IRQ intervals accepted");
+});
 Check("Live Start is active-high mux input with sticky ROM panel accumulation", () => {
     var machine=new Machine();SkillCashData.LoadFeature(machine);var panel=new Mpu4PanelInput(machine);
     panel.SetStart(true);Equal((byte)0x80,panel.PhysicalBlack2);Equal((byte)0,machine.Memory[3]);

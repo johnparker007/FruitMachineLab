@@ -31,6 +31,19 @@ public sealed class Mpu4ChoiceStreamScheduler(Machine machine,ushort clock,Actio
     private byte remainingDuration {get=>task.RemainingDuration;set=>task.RemainingDuration=value;}
     public ushort Clock { get; private set; }=clock;
     public bool Active=>tasks.Count!=0;
+    public static byte DiatonicTranspose(byte current,byte increment)
+    {
+        if(increment==0)return 0;
+        byte note=current,octave=0;
+        if((sbyte)note<0){do{octave=unchecked((byte)(octave-12));note=unchecked((byte)(note+12));}while((sbyte)note<0);}
+        else {do{octave=unchecked((byte)(octave+12));note=unchecked((byte)(note-12));}while((sbyte)note>=0);octave=unchecked((byte)(octave-12));note=unchecked((byte)(note+12));}
+        if(note>=4)note++;
+        note=unchecked((byte)((note>>1)+increment));
+        if((sbyte)note<0){do{octave=unchecked((byte)(octave-12));note=unchecked((byte)(note+7));}while((sbyte)note<0);}
+        else {do{octave=unchecked((byte)(octave+12));note=unchecked((byte)(note-7));}while((sbyte)note>=0);octave=unchecked((byte)(octave-12));note=unchecked((byte)(note+7));}
+        note=(byte)(note<<1);if(note>4)note--;
+        return unchecked((byte)(note+octave));
+    }
     public int ActiveTasks=>tasks.Count;
     public byte Choice=>machine.Memory[0x4F];
     private byte Fetch() { byte value=machine.Memory[cursor];cursor=Cell.Add(cursor,1);return value; }
@@ -148,6 +161,7 @@ public sealed class Mpu4ChoiceStreamScheduler(Machine machine,ushort clock,Actio
                 case 0xD3: WriteChoice(unchecked((byte)(Choice+Fetch())),0x60A6);break;
                 case 0xD7: gate=Fetch();break;
                 case 0xD8: flags|=0x80;break;
+                case 0xDA: transpose=DiatonicTranspose(transpose,Fetch());break;
                 default:throw new NotSupportedException($"Untranslated sound command {command:X2} at {at:X4}");
             }
         }

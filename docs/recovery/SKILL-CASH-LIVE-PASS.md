@@ -1,5 +1,8 @@
 # Live Skill Cash vertical slice
 
+Historical initial live pass. SKILL-CASH-EXTENSION-PASS.md supersedes its live
+pacing figures and unsupported jackpot boundary; playback evidence is retained.
+
 The new **Live Skill Cash** tab starts one recovered feature from its existing
 entry state. Click **Start feature**, then hold and release the separate physical
 **START** button to stop each selection. Execution controls are **Pause execution**,

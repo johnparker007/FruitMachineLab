@@ -87,6 +87,7 @@ public sealed class ScriptExecutor(Machine machine)
             VmControlStack Control()=>machine.Control ?? throw new NotSupportedException("Physical VM control-stack context required");
             ushort Continuation()=>pc<items.Count ? items[pc].Site : boundaryContinuation ?? throw new InvalidDataException("Call/loop continuation missing from script range");
             void Jump(ushort site) {
+                if(!requireReturn && site==boundaryContinuation){pc=items.Count;return;}
                 pc=items.ToList().FindIndex(x=>x.Site==site);
                 if(pc<0)throw new InvalidDataException("Control-stack target absent from script");
             }
@@ -96,6 +97,15 @@ public sealed class ScriptExecutor(Machine machine)
                 case "vm_push_inline_word_literal":
                 case "vm_push_word_body_byte":
                 case "vm_push_word_body_word": machine.Data.Push(Value()); break;
+                case "vm_push_word_body_address": machine.Data.Push(Value());break;
+                case "vm_push_data_stack_pointer": machine.Data.Push(machine.DataPointer);break;
+                case "vm_set_data_stack_pointer": {
+                    machine.SyncDataToMemory();ushort pointer=machine.Pop();machine.SetDataPointer(pointer);break;
+                }
+                case "vm_move_bytes_overlap_safe": {
+                    ushort count=machine.Pop(),destination=machine.Pop(),source=machine.Pop();
+                    machine.SyncDataToMemory();ushort pointer=machine.DataPointer;Mpu4Memory.Move(machine,source,destination,count);machine.SetDataPointer(pointer);break;
+                }
                 case "vm_push_local_frame_address": machine.Data.Push(Cell.Add(machine.LocalFrame, Value())); break;
                 case "vm_push_zero": machine.Data.Push(0); break;
                 case "vm_push_two": machine.Data.Push(2); break;
@@ -188,6 +198,7 @@ public sealed class ScriptExecutor(Machine machine)
                     Cell.Flag((InputCondition ?? throw new NotSupportedException("Input condition provider required"))(Value()))); break;
                 case "vm_branch_forward8_if_zero":
                 case "vm_branch_backward8_if_zero":
+                case "vm_branch_absolute16_if_zero":
                     if (machine.Pop() == 0)
                     {
                         pc = items.ToList().FindIndex(x => x.Site == i.Branch);
@@ -195,7 +206,10 @@ public sealed class ScriptExecutor(Machine machine)
                     }
                     break;
                 case "vm_branch_unsigned_forward8":
+                case "vm_branch_absolute16":
                 case "vm_branch_backward8": Jump(i.Branch ?? throw new InvalidDataException("Missing branch target"));break;
+                case "vm_branch_forward8_if_zero_else_drop":
+                    if(machine.Pop()==0)Jump(i.Branch ?? throw new InvalidDataException("Missing branch target"));else machine.Pop();break;
                 case "vm_return_to_caller_stream": machine.Control?.Return();yield break;
                 case "vm_return_if_nonzero": if(machine.Pop()!=0) { machine.Control?.Return();yield break; }break;
                 default:

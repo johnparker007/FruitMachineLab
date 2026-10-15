@@ -35,7 +35,7 @@ are available. This mode uses recorded inputs; use Live Skill Cash for the tempo
 player control. Audio remains future work. See
 [playback evidence and boundaries](docs/recovery/SKILL-CASH-PLAYBACK-PASS.md).
 
-Latest local verification: headless and isolated WPF builds succeed; 67
+Latest local verification: headless and isolated WPF builds succeed; 77
 verification groups pass. Continuous C721 execution matches 98,704 VM dispatches,
 selects 3, 2 and 1, and finishes with pending 0/current win 10. All 7,298 lamp frame
 updates and the complete sound timing protocol match recorded native observations.
@@ -64,3 +64,7 @@ The [alpha/output report](docs/recovery/SKILL-CASH-ALPHA-OUTPUT-PASS.md) records
 display-software recovery, IRQ latch verification and the remaining timer/device work.
 The [shared timing report](docs/recovery/SKILL-CASH-SHARED-TIMING-PASS.md) records
 removal of between-scan frame injection and the remaining deadline-generation boundary.
+
+The [award coverage and IRQ occupancy pass](docs/recovery/SKILL-CASH-EXTENSION-PASS.md)
+adds live jackpot announcement support and tests all six default award levels.
+Normal machine play remains the next milestone; captured timing remains provisional.

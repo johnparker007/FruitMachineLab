@@ -3,6 +3,11 @@ namespace FruitMachineLab.Adders;
 
 public static class SkillCashData
 {
+    public static void LoadExtensions(Machine machine,string evidenceDirectory)
+    {
+        using var data=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidenceDirectory,"maps","skill-cash-extension-data.json")));
+        foreach(var range in data.RootElement.GetProperty("ranges").EnumerateObject())Convert.FromHexString(range.Value.GetString()!).CopyTo(machine.Memory,Convert.ToInt32(range.Name,16));
+    }
     // Static ROM data, a6ls.p1 SHA1 402d1518bb78fdc489b06c2aabc771e5ce151847.
     // Curated addresses/values and evidence qualifications accompany these tables.
     public static void Load(Machine machine)

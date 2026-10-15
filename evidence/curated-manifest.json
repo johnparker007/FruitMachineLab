@@ -120,9 +120,14 @@
     "sha256": "98E40D54C762CB26555784525E00C2B20C0E542EF93FEF46CF229FBAAB313EFF"
   },
   {
+    "path": "docs/recovery/SKILL-CASH-EXTENSION-PASS.md",
+    "bytes": 5889,
+    "sha256": "F5AAA5696A22C9EC10706700B2F64A7188E62D9E6B49E3128DFD756B6F044262"
+  },
+  {
     "path": "docs/recovery/SKILL-CASH-LIVE-PASS.md",
-    "bytes": 7549,
-    "sha256": "1CC47FC2091ECC0EDB14FFC8B15D050B0BF02612D6ABA4400CA0F821CA46826C"
+    "bytes": 7709,
+    "sha256": "CCDD96F461F52BA90AFFA9FA463582CA743D695DCB175128ECE2DCEC6BEEF277"
   },
   {
     "path": "docs/recovery/SKILL-CASH-PLAYBACK-PASS.md",
@@ -210,6 +215,11 @@
     "sha256": "DA00FC61F860955A9F5E3E9D59EB33176D79AD39DB859FDE7A3C399575EF67B2"
   },
   {
+    "path": "evidence/mpu4/maps/skill-cash-extension-data.json",
+    "bytes": 1926,
+    "sha256": "0EE6A21AD9F9CA19B05B93AFE9B87A986BCA0EDE91240D076626BBAE6BD564BF"
+  },
+  {
     "path": "evidence/mpu4/maps/skill-cash-feature-data.json",
     "bytes": 1360,
     "sha256": "D7065372CBF9D2B4E600E422C7E668E7B2DA8D98CEB9745B5C3CE16C241E30A5"
@@ -295,9 +305,24 @@
     "sha256": "FCE9DDF57B93D74E5B6792F9AC6D6AD13777CFD10CC382A281991DAD51968BBC"
   },
   {
+    "path": "evidence/mpu4/native/3cf7.json",
+    "bytes": 1611,
+    "sha256": "0D6C26C24D7C68A1886BF50F7D1F316E33CF0E7ED23A893246056652E11CB377"
+  },
+  {
     "path": "evidence/mpu4/native/3d0e.json",
     "bytes": 2403,
     "sha256": "062F2C7A57314E1128F392E230E6184DF85A4C274D24A1B3C405B2CAA2E7D2D7"
+  },
+  {
+    "path": "evidence/mpu4/native/3d9d.json",
+    "bytes": 1325,
+    "sha256": "AC173036E138492A5DF6ACE2011AA661851FAC1B015FAA3B30E2EF8E9B20A888"
+  },
+  {
+    "path": "evidence/mpu4/native/3db6.json",
+    "bytes": 852,
+    "sha256": "8EB9775B35956491D496EB6074141BA3780762D0D54F46B22CF30AF7E51BE88F"
   },
   {
     "path": "evidence/mpu4/native/3e65.json",
@@ -345,6 +370,16 @@
     "sha256": "DDD10A2608068D8039F9D7D1FAF978FE921FC2D6CB02B6BD498B3EA1E309C80F"
   },
   {
+    "path": "evidence/mpu4/native/403d.json",
+    "bytes": 1067,
+    "sha256": "99E403588C2FDC7ED362908633CCFA7A68E7613ABC3777E15206730E5583D125"
+  },
+  {
+    "path": "evidence/mpu4/native/4048.json",
+    "bytes": 998,
+    "sha256": "F093C20902B1B0D9C0EF68F04133916FD8953511BE3E6AC5234A7E9098F05A25"
+  },
+  {
     "path": "evidence/mpu4/native/404e.json",
     "bytes": 1249,
     "sha256": "75D512C4EAB83E73364DD8064CC03CA3BAAE92533E5E3DF606C350B926368FF1"
@@ -380,6 +415,16 @@
     "sha256": "7D3A030E3E9A7BDEAB7FFD76BBCFF4AD9FDFA91D7E06BF705E202D290B8D60C0"
   },
   {
+    "path": "evidence/mpu4/native/4a2f.json",
+    "bytes": 2704,
+    "sha256": "6F65FFD54C2B217AFCF48C81120C245A320C7B7AF3F1C052AD407142EBE864B8"
+  },
+  {
+    "path": "evidence/mpu4/native/4a6f.json",
+    "bytes": 1317,
+    "sha256": "4BDD191E9E3537DF33485E13E8C5240AA4B8D7388767BDDC748F9B5D9CD32155"
+  },
+  {
     "path": "evidence/mpu4/native/4a83.json",
     "bytes": 991,
     "sha256": "F2E3DDD5A089F33BCCC6E1EE10F139C756AF6451932D5D27215641569AB07035"
@@ -393,6 +438,11 @@
     "path": "evidence/mpu4/native/4a90.json",
     "bytes": 762,
     "sha256": "DBF07882AEDEB47C4BDCCF59D3780B96C97FF20B6A8A8DC6D8023E4F4782ED63"
+  },
+  {
+    "path": "evidence/mpu4/native/4ac0.json",
+    "bytes": 1013,
+    "sha256": "83094B4F5F51B469F6F1870837F5F226F620397E8FFFCDA6EB3F2FEED1D57402"
   },
   {
     "path": "evidence/mpu4/native/5798.json",
@@ -535,6 +585,11 @@
     "sha256": "D89CD341774F64D2BF6F6E149DBF7ADAAF53C1853365D97205E68911E0FC999E"
   },
   {
+    "path": "evidence/mpu4/native/7755.json",
+    "bytes": 1238,
+    "sha256": "4635999CD395B3B0A64E7DF962AC33E7D84D909C80FE84AFB74A2DF1266467DD"
+  },
+  {
     "path": "evidence/mpu4/native/7791.json",
     "bytes": 1771,
     "sha256": "37768AAD3A143A12093C85884B4F4EDAD505AB273A54AA8A9CB8B6880F2812EB"
@@ -610,6 +665,21 @@
     "sha256": "E874438E1E369EAF5257C71A6C38E36AAF52ECA9A2CCAE763DBFBEAF500E40EB"
   },
   {
+    "path": "evidence/mpu4/native/7990.json",
+    "bytes": 1065,
+    "sha256": "935EC5F3005B4BD530B8631BC240E651578948DD4EAF0AC34F787F1C3C58DD37"
+  },
+  {
+    "path": "evidence/mpu4/native/79b2.json",
+    "bytes": 684,
+    "sha256": "15BBF37AF15A41E09722E0523290C8C456A1D81A29643A5F32738C949A764E0A"
+  },
+  {
+    "path": "evidence/mpu4/native/79bb.json",
+    "bytes": 1023,
+    "sha256": "598182D5A5BDB7C772C5524777916ECFB21FB429B096DDAA43F69175FD3D23D5"
+  },
+  {
     "path": "evidence/mpu4/native/79d8.json",
     "bytes": 855,
     "sha256": "B0015DA6917B841F7B942276459E20A96C00189CD385776F39E82B7FA993B857"
@@ -670,6 +740,16 @@
     "sha256": "229E587C392447449551EFCEB8C64835781D361923E5ABAAD9B46CA0472AA86D"
   },
   {
+    "path": "evidence/mpu4/native/7b27.json",
+    "bytes": 699,
+    "sha256": "3D33FAC3B11849C3BD332E448F4303C96E8011DC8C74C6ED25EDC624C4D221C2"
+  },
+  {
+    "path": "evidence/mpu4/native/7b2d.json",
+    "bytes": 769,
+    "sha256": "56FD589811AF937759D1B0D24C02416C5F60A7C221A27A75211C207F114A2FF0"
+  },
+  {
     "path": "evidence/mpu4/native/7b3f.json",
     "bytes": 664,
     "sha256": "FE91C2F7CB99E1D1280E426127D7BF624C9BE4B224BB6CD7F1D3B33DC0C13D9F"
@@ -698,6 +778,11 @@
     "path": "evidence/mpu4/native/7b7f.json",
     "bytes": 831,
     "sha256": "7DB9B52F2D4AA5C2ABA701BA9E2C46B4D6DB6DA007F033457EC0FCA6ED8B8FC7"
+  },
+  {
+    "path": "evidence/mpu4/native/7b8b.json",
+    "bytes": 2061,
+    "sha256": "AE0EC5221263A869AD09589CB56F75B839D693F3AB3889257528989745392A2F"
   },
   {
     "path": "evidence/mpu4/native/7bce.json",
@@ -825,6 +910,16 @@
     "sha256": "E0259522C18E7E5BC2225EFDD98CACA930F485200A0EDA1D93EA610662784CE9"
   },
   {
+    "path": "evidence/mpu4/skill-cash/cpu-interrupts-verification.json",
+    "bytes": 598,
+    "sha256": "107FD0138ABB31DF8516C9ABBF40DD63723E9455B7892D5FE79005E2DADDA244"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/cpu-interrupts.json",
+    "bytes": 99751,
+    "sha256": "1A44238D763DE69060DE37F4AB3F9BD97C0723694D6B3801AB2076BD30C11879"
+  },
+  {
     "path": "evidence/mpu4/skill-cash/debugger.cmd",
     "bytes": 181,
     "sha256": "7CBF0817329F28A027AF20D8753F81F4FA857FAABC0BBD044CB6213CA12DABA6"
@@ -888,6 +983,21 @@
     "path": "evidence/mpu4/skill-cash/input.lua",
     "bytes": 5733,
     "sha256": "23099F8888AF8DB353253E0DF97638320DC59CA9A47371723A380E0C4EE85C94"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/jackpot-probe-debugger.cmd",
+    "bytes": 4462,
+    "sha256": "F602E0C17F7817AF867FE57EA690DFF0D2A275CD9ABC1B2ADDD97B02158CA3BB"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/jackpot-probe-verification.json",
+    "bytes": 419,
+    "sha256": "DD0A075D6F7D604DC3AD1BCF473C7840DDCE9B22639AB6D3263D64B3EC30EA0E"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/jackpot-probe.json",
+    "bytes": 142169,
+    "sha256": "F31DBF11377407DE4E59FD2204302A2B304DAEE716B1EA2B39A9D1B3C7726E91"
   },
   {
     "path": "evidence/mpu4/skill-cash/lamp-calls.json",

@@ -3,6 +3,8 @@ namespace FruitMachineLab.Runtime;
 public record ChoiceStreamEvent(string Kind,ushort Clock,ushort Cursor,byte Value,ushort Callback,
     byte Choice,byte Rate,byte Tempo,byte Gate,byte Flags,byte Pitch,byte Transpose,ushort Due=0);
 
+public record SoundContinuation(ushort Callback,IReadOnlyList<ushort> CallReturns);
+
 /// <summary>
 /// Recovered sound-stream timing and choice effects. YM2413 synthesis and
 /// register-cache/channel effects remain outside this subset.
@@ -45,17 +47,28 @@ public sealed class Mpu4ChoiceStreamScheduler(Machine machine,ushort clock,Actio
         return unchecked((byte)(note+octave));
     }
     public int ActiveTasks=>tasks.Count;
-    // Captured boundary restoration currently supports only freshly queued
-    // native records: no guessed continuation or untyped sound-stack decoding.
-    public void RestoreQueuedNativeTasks()
+    // Fresh queues need no adapter. Other boundary records require an explicit,
+    // game-validated continuation; untyped sound stacks remain unsupported.
+    public void RestoreQueuedNativeTasks(Func<ushort,SoundContinuation?>? resolveContinuation=null)
     {
         if(Active)throw new InvalidOperationException("Scheduler already active");
-        var visited=new HashSet<ushort>();
+        var visited=new HashSet<ushort>();var restoredTasks=new List<TaskState>();
         for(ushort at=machine.ReadWord(0x47);at!=0;at=machine.ReadWord(at)) {
             if(!visited.Add(at) || at>0x7DA)throw new InvalidDataException("Invalid captured sound task list");
-            if(machine.ReadWord(Cell.Add(at,4))!=0x5D3B || machine.ReadWord(Cell.Add(at,6))!=Cell.Add(at,0x25) || machine.ReadWord(Cell.Add(at,8))!=machine.ReadWord(Cell.Add(at,0x13)))throw new NotSupportedException("Captured sound continuation is not a fresh queue");
-            tasks.Add(new(){Cursor=machine.ReadWord(Cell.Add(at,8)),Due=machine.ReadWord(Cell.Add(at,2)),Tempo=machine.Memory[at+0xE],Gate=machine.Memory[at+0x10],Flags=machine.Memory[at+0x12],Pitch=machine.Memory[at+0xC],Transpose=machine.Memory[at+0xD]});
+            bool fresh=machine.ReadWord(Cell.Add(at,4))==0x5D3B && machine.ReadWord(Cell.Add(at,6))==Cell.Add(at,0x25) && machine.ReadWord(Cell.Add(at,8))==machine.ReadWord(Cell.Add(at,0x13));
+            var continuation=fresh ? null : resolveContinuation?.Invoke(at);
+            if(!fresh && continuation is null)throw new NotSupportedException("Captured sound continuation is not a fresh queue");
+            var restored=new TaskState{Cursor=machine.ReadWord(Cell.Add(at,8)),Due=machine.ReadWord(Cell.Add(at,2)),Tempo=machine.Memory[at+0xE],Gate=machine.Memory[at+0x10],Flags=machine.Memory[at+0x12],Pitch=machine.Memory[at+0xC],Transpose=machine.Memory[at+0xD]};
+            if(continuation is not null) {
+                // Only gate-free continuations directly resuming command fetch
+                // are supported here. The game adapter validates typed ROM frames.
+                if(restored.Gate!=0 || continuation.Callback is not (0x5E1F or 0x5E29) || continuation.Callback!=machine.ReadWord(Cell.Add(at,4)) || continuation.CallReturns.Count>8 || machine.ReadWord(Cell.Add(at,6))!=Cell.Add(at,(ushort)(0x25-2*continuation.CallReturns.Count)))throw new InvalidDataException("Invalid typed sound continuation");
+                restored.Resume=continuation.Callback;
+                foreach(ushort address in continuation.CallReturns){restored.StackBytes+=2;if(machine.ReadWord(Cell.Add(at,(ushort)(0x25-restored.StackBytes)))!=address)throw new InvalidDataException("Typed sound frame differs from native stack");restored.Frames.Push(new(null,address));}
+            }
+            restoredTasks.Add(restored);
         }
+        tasks.AddRange(restoredTasks);
     }
     public byte Choice=>machine.Memory[0x4F];
     private byte Fetch() { byte value=machine.Memory[cursor];cursor=Cell.Add(cursor,1);return value; }
@@ -165,6 +178,7 @@ public sealed class Mpu4ChoiceStreamScheduler(Machine machine,ushort clock,Actio
                 case 0xC8: var offset=Fetch();pitch=offset==0 ? (byte)0 : unchecked((byte)(pitch+offset));break;
                 case 0xC9: Fetch();break; // detune operand, register effects outside timing subset
                 case 0xCA: Fetch();break; // volume operand; no timing/choice mutation
+                case 0xCB: Fetch();break; // native 5F92 relative attenuation: register cache only
                 case 0xCC: tempo=Fetch();break;
                 case 0xCD: var multiplier=Fetch();tempo=multiplier==0 ? (byte)16 : unchecked((byte)(tempo*multiplier/16));break;
                 case 0xCE: Wait(Fetch(),0x5E29);return;

@@ -1,5 +1,15 @@
 [
   {
+    "path": "docs/recovery/BOARD-CONTINUATION-PASS.md",
+    "bytes": 6834,
+    "sha256": "D748E5FC542F5778CD99BBA0DA6AFB154C6547EB4B75CC241C74E204DD0381EC"
+  },
+  {
+    "path": "docs/recovery/BOARD-LINK-PASS.md",
+    "bytes": 6780,
+    "sha256": "BD075599469DB84E0AD12E50DA3C21DBD1987A8372F58F948D5D0F32F1918F46"
+  },
+  {
     "path": "docs/recovery/BOARD-MAP.txt",
     "bytes": 1774,
     "sha256": "084C06D5944804C09CA80B040E3BB5FF4C19AB70D619F0401DDA943F2B255132"
@@ -195,6 +205,16 @@
     "sha256": "5239BF49F35DDC956133AC033318187688F8A4AA2E900FB339008926568A956B"
   },
   {
+    "path": "evidence/mpu4/maps/board-availability-boundary.json",
+    "bytes": 2376,
+    "sha256": "AB93128B89F287A4A53B9B0D58474F0A2E8AE0D41A62F33A56E7A99B2BAC1821"
+  },
+  {
+    "path": "evidence/mpu4/maps/board-link-data.json",
+    "bytes": 1190,
+    "sha256": "03FFBB27C80FF6762AC5F57375DFDD36F40B994C370F532148C33691037BB7C7"
+  },
+  {
     "path": "evidence/mpu4/maps/board-movement-data.json",
     "bytes": 644,
     "sha256": "9FF5EF1B96334BD2E6676525234D037B0BE29E06840980C156AFC94487AF4AA7"
@@ -330,6 +350,11 @@
     "sha256": "10DC2B9E5BC7195D4350461DCEE7D138ACD73BC38E095E07FC1A9160FD0672A1"
   },
   {
+    "path": "evidence/mpu4/native/1ac3.json",
+    "bytes": 1725,
+    "sha256": "07044BF308F337E428C2C86DEA32DF3AE11712F0093B6BE3E701F11934C34137"
+  },
+  {
     "path": "evidence/mpu4/native/1b93.json",
     "bytes": 892,
     "sha256": "E34A6D3A687CA7A8F1F55844E5B32477FFCF0E803F741EFFED87EB54BFD5622C"
@@ -353,6 +378,16 @@
     "path": "evidence/mpu4/native/28fe.json",
     "bytes": 4353,
     "sha256": "B305CE0B2C482D42ADF9F2F6833876E8D8AA0C34D3A32ECD262ED3BD7439E176"
+  },
+  {
+    "path": "evidence/mpu4/native/29f4.json",
+    "bytes": 1633,
+    "sha256": "1B2AD1C5570F01229F7988B9683F3FAD51E06E141909DE824E5D93522A2EFF29"
+  },
+  {
+    "path": "evidence/mpu4/native/2a7f.json",
+    "bytes": 4587,
+    "sha256": "59BAB994C486B9E6FFC05C64E59266052911540D3E15B2DA04520F7C6D55DDCB"
   },
   {
     "path": "evidence/mpu4/native/2beb.json",
@@ -698,6 +733,16 @@
     "path": "evidence/mpu4/native/6ea6.json",
     "bytes": 2404,
     "sha256": "FC7FF689FBB431A5E53877D7E4EB51281A166660C1DA9D19468CB7EFD365A20C"
+  },
+  {
+    "path": "evidence/mpu4/native/6fa2.json",
+    "bytes": 1767,
+    "sha256": "E2A053CEFBCC41EA9611E73385BB5820BDA4A042F2B60807F5E04F1CFA0C0698"
+  },
+  {
+    "path": "evidence/mpu4/native/6fb8.json",
+    "bytes": 1024,
+    "sha256": "6EEA9F8BF1CE4D30EE84A97E9AF76343471BA54A1D8E162CDBE5DA51C150940A"
   },
   {
     "path": "evidence/mpu4/native/7055.json",
@@ -1080,6 +1125,16 @@
     "sha256": "232E98F4E17E99F6634B69D59FECD67879D5FCAE1789256F4750B7AD4C01AA07"
   },
   {
+    "path": "evidence/mpu4/native/sound-relative-attenuation-provenance.json",
+    "bytes": 602,
+    "sha256": "7DD7FE0FCD672405B30DFA1A99490D4A06A86185046FA9DA5C6A628BC8C2E22D"
+  },
+  {
+    "path": "evidence/mpu4/native/sound-relative-attenuation.asm",
+    "bytes": 1186,
+    "sha256": "D59F8C8C5E99F1E23F38FBF5CADFDB3C3BB784A511CF4C664E21A0443041EBE4"
+  },
+  {
     "path": "evidence/mpu4/native/timer-native-provenance.json",
     "bytes": 1865,
     "sha256": "77DB339F8BACDBBC8AE53E958EF479A08AC36F6B19FD677D595997B0E505B7ED"
@@ -1133,6 +1188,21 @@
     "path": "evidence/mpu4/skill-cash/board-movement-debugger.cmd",
     "bytes": 5258,
     "sha256": "2928B581285909B334BFF50CD20ABC17E443C17E4365885828265F27D3BEB363"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/board-movement-next-debugger.cmd",
+    "bytes": 5258,
+    "sha256": "BDEC9256C8E47D7DCA1A0F951F8D9557648F1D4FE0C5665FEFFC79C904E38799"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/board-movement-next-verification.json",
+    "bytes": 1564,
+    "sha256": "86C5D6498C482C034557E87EC10BA07F17A35DF21D798CCA4C881302525E54EB"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/board-movement-next.json",
+    "bytes": 42945,
+    "sha256": "741D49FCEB261CD00C6EAC4AD2618CB224CC5A16C558EFFDEFAA27AB8CE1FBBD"
   },
   {
     "path": "evidence/mpu4/skill-cash/board-movement-verification.json",
@@ -1345,6 +1415,36 @@
     "sha256": "F31DBF11377407DE4E59FD2204302A2B304DAEE716B1EA2B39A9D1B3C7726E91"
   },
   {
+    "path": "evidence/mpu4/skill-cash/ladder-link-debugger.cmd",
+    "bytes": 5284,
+    "sha256": "581DE50E1AABC2C221137E35999E21035B8FBF30227A00B0608F299A1EE04C46"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/ladder-link-next-debugger.cmd",
+    "bytes": 5297,
+    "sha256": "1D3A83AD11D6F5E26514E78EF6B1580583479D757BEA472B836812AB99794E8A"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/ladder-link-next-verification.json",
+    "bytes": 1597,
+    "sha256": "232CFAA8FC126CCAAE8AA98412F6EEF123DFA81FF53AAFD10E05CF8600E2238D"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/ladder-link-next.json",
+    "bytes": 40562,
+    "sha256": "C3E4BEE01BA95097D21E3583F10FC4E7512D0281CA6DD3DFEE85144575615BA8"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/ladder-link-verification.json",
+    "bytes": 1429,
+    "sha256": "0EE09F8478B4E78622F15C68E86C47C4538C85534E484E7D7EE30DC90AD29730"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/ladder-link.json",
+    "bytes": 39907,
+    "sha256": "44965BF581918889A40481A92E0CC0257040D98A87B5197049D61481337587E1"
+  },
+  {
     "path": "evidence/mpu4/skill-cash/lamp-calls.json",
     "bytes": 252936,
     "sha256": "908B1F040C73B7D8256E4ABE34418D84B4767ACFB2B230D56C40772E95A0E673"
@@ -1423,6 +1523,36 @@
     "path": "evidence/mpu4/skill-cash/shared-timing.json",
     "bytes": 1526757,
     "sha256": "2B210D8E68FCDE3114F682F6A2B4D2EB4F9E8E7E7BC1876864CABBE8BD599CA5"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/snake-link-debugger.cmd",
+    "bytes": 5284,
+    "sha256": "22CB1845B697F334FF4BD1790899535CCAF1D1DC0D60714E076675795DF47E19"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/snake-link-next-debugger.cmd",
+    "bytes": 5297,
+    "sha256": "B8F5D5134C794053231304C1F6308D2C7B123B1C27C33CC030B84B762216E8BD"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/snake-link-next-verification.json",
+    "bytes": 1596,
+    "sha256": "CEA911340714AE89497A96F03352A09CB4A651F30B33E6FBDA82EC4C8BA99F52"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/snake-link-next.json",
+    "bytes": 57341,
+    "sha256": "B6AAFF02DCFC99654FE79A83AC6E162C8178A656C16689C3CA4ED446677F0F61"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/snake-link-verification.json",
+    "bytes": 1426,
+    "sha256": "416F22EE416ABD256D43972F076F12578CE94F2B82D5D85DC88752487F4A5F83"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/snake-link.json",
+    "bytes": 57070,
+    "sha256": "445938574BE4DCE4DB19075D267E51062899C998484A896FD145ECFACCE69489"
   },
   {
     "path": "evidence/mpu4/skill-cash/sound-debugger.cmd",

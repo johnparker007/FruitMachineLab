@@ -7,6 +7,68 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Natural board continuations preserve VM and all reference outputs", () => {
+    foreach(string kind in new[]{"ladder","snake","movement"}) {
+        var result=BoardSelectionVerification.Verify(evidence,boardMovement:kind=="movement",boardLink:kind=="movement" ? null : kind,continuation:true);
+        Console.WriteLine($"  {kind} continuation: {result.Instructions} observations, {result.Lamps} lamps, {result.Sounds} sounds");
+    }
+});
+Check("Live continuation returns to a board prompt with retained state and accepts another START", () => {
+    SkillCashLiveSession? returned=null;
+    foreach(int delay in new[]{0,50,100,200,400,800,1200,2000}) {
+        var live=new SkillCashLiveSession(evidence,boardSelection:true,continueBoard:true);live.Resume();bool motor=false;
+        try{for(int n=0;n<30000 && live.BoardPrompts<2;n++){if(!motor && live.Instructions>250+delay)live.SetStart(true);live.AdvanceCycles(512);motor|=live.Snapshot().DiceRequest?.Busy==true;if(motor)live.SetStart(false);}}
+        catch(NotSupportedException error){if(!error.Message.StartsWith("BOARD result type"))throw;}
+        if(live.BoardPrompts==2){for(int n=0;n<1000 && !live.AwaitingBoardSelection;n++)live.AdvanceCycles(512);returned=live;break;}
+    }
+    Equal(true,returned is not null);var session=returned!;Equal((byte)36,session.Machine.Memory[0xC9]);Equal(true,session.AwaitingBoardSelection);
+    session.Pause();ulong cycle=session.Cycle;var frozen=session.Machine.Memory.ToArray();session.AdvanceCycles(1_000_000);Equal(cycle,session.Cycle);Equal(true,frozen.SequenceEqual(session.Machine.Memory));
+    int visited=session.Snapshot().Board!.Visited.Count;session.Resume();session.SetStart(true);bool nextMotor=false;
+    try{for(int n=0;n<60000 && session.BoardPrompts<3;n++){session.AdvanceCycles(512);nextMotor|=session.Snapshot().DiceRequest?.Busy==true;if(nextMotor)session.SetStart(false);}}
+    catch(NotSupportedException error){if(!error.Message.StartsWith("BOARD result type") && !error.Message.StartsWith("BOARD nudge availability search"))throw;}
+    Equal(true,nextMotor);Equal(false,session.Panel.StartPressed);Equal(true,session.Snapshot().Board!.Visited.Count>visited);
+});
+Check("Live link continuation stops explicitly at unrecovered availability/result helpers", () => {
+    foreach(string kind in new[]{"ladder","snake"}) {
+        var live=new SkillCashLiveSession(evidence,boardLink:kind,continueBoard:true);live.Resume();
+        try{for(int n=0;n<60000 && live.Fault is null;n++)live.AdvanceCycles(512);}catch(NotSupportedException){}
+        Equal(true,live.Fault?.StartsWith(kind=="ladder" ? "BOARD nudge availability search" : "BOARD result type")==true);
+        Equal((byte)(kind=="ladder" ? 22 : 7),live.Machine.Memory[0xC9]);Equal(false,live.Panel.StartPressed);
+    }
+});
+Check("Natural ladder VM, destination, pot and output path matches MAME", () => {
+    var result=BoardSelectionVerification.Verify(evidence,boardLink:"ladder");Console.WriteLine($"  {result.Instructions} ladder dispatches, {result.Lamps} lamps, {result.Sounds} sound commands, {result.AlphaBytes} alpha bytes");
+});
+Check("Natural snake VM, destination, pot and output path matches MAME", () => {
+    var result=BoardSelectionVerification.Verify(evidence,boardLink:"snake");Console.WriteLine($"  {result.Instructions} snake dispatches, {result.Lamps} lamps, {result.Sounds} sound commands, {result.AlphaBytes} alpha bytes");
+});
+Check("Live natural links execute incrementally, freeze on pause and retain their destinations", () => {
+    foreach(string kind in new[]{"ladder","snake"}) {
+        var reference=BoardSelectionVerification.Verify(evidence,boardLink:kind);
+        var logicalLamps=new List<byte>();var live=new SkillCashLiveSession(evidence,boardLink:kind);int lamps=0,alpha=0;live.ObserveLamp=r=>{lamps++;logicalLamps.Add(r.Id);logicalLamps.Add((byte)(r.Pattern&15));};live.ObserveAlpha=_=>alpha++;
+        byte start=live.Machine.Memory[0xC9];live.Resume();live.AdvanceCycles(1000);live.Pause();
+        ulong cycle=live.Cycle;int instructions=live.Instructions;var frozen=live.Machine.Memory.ToArray();
+        live.AdvanceCycles(1_000_000);Equal(cycle,live.Cycle);Equal(instructions,live.Instructions);Equal(true,frozen.SequenceEqual(live.Machine.Memory));
+        live.Resume();
+        try{for(int n=0;n<100000 && live.Fault is null;n++)live.AdvanceCycles(512);}catch(NotSupportedException){}
+        Equal(true,live.Fault?.StartsWith("BOARD "+kind+" completed")==true);
+        Equal((byte)(kind=="ladder" ? 22 : 7),live.Machine.Memory[0xC9]);Equal((byte)(kind=="ladder" ? 3 : 1),live.Machine.Memory[0xBF]);
+        Equal(reference.LampSequence,Convert.ToHexString(logicalLamps.ToArray()));Equal(reference.AlphaShadow,new Mpu4Alpha(live.Machine).Snapshot().Shadow);
+        Equal((ushort)0,live.Machine.ReadWord(0xBA));Equal((ushort)0,live.Machine.ReadWord(0x2FA));
+        Equal(false,live.Panel.StartPressed);Equal(false,live.Panel.TakePressed);Equal(false,live.AwaitingBoardSelection);
+        Equal(true,live.Cycle>cycle);Equal(true,lamps>0);Equal(true,kind=="snake" || alpha>0);Equal(false,start==live.Machine.Memory[0xC9]);
+        Console.WriteLine($"  Live {kind}: {live.Instructions} dispatches, {lamps} lamps, {alpha} alpha operations, {live.Cycle/SkillCashLiveSession.CyclesPerSecond:F3}s");
+    }
+});
+Check("Typed board sound restoration rejects changed call frames and callbacks", () => {
+    var m=new SkillCashLiveSession(evidence).Machine;ushort clock=BoardLinkState.Apply(m,evidence,"ladder"),at=m.ReadWord(0x47);
+    Equal(true,BoardLinkState.ResolveSoundContinuation(m,at) is not null);
+    m.WriteWord(Cell.Add(at,0x23),0x972C);Equal(true,BoardLinkState.ResolveSoundContinuation(m,at) is null);
+    bool rejected=false;try{new Mpu4ChoiceStreamScheduler(m,clock).RestoreQueuedNativeTasks(a=>BoardLinkState.ResolveSoundContinuation(m,a));}catch(NotSupportedException){rejected=true;}Equal(true,rejected);
+    m.WriteWord(Cell.Add(at,0x23),0x972B);m.WriteWord(Cell.Add(at,4),0x5DF0);Equal(true,BoardLinkState.ResolveSoundContinuation(m,at) is null);
+    m.WriteWord(Cell.Add(at,4),0x5E1F);ushort second=m.ReadWord(at);m.WriteWord(Cell.Add(second,4),0xFFFF);
+    var scheduler=new Mpu4ChoiceStreamScheduler(m,clock);rejected=false;try{scheduler.RestoreQueuedNativeTasks(a=>BoardLinkState.ResolveSoundContinuation(m,a));}catch(NotSupportedException){rejected=true;}Equal(true,rejected);Equal(0,scheduler.ActiveTasks);
+});
 Check("Natural post-roll movement preserves VM, board, nudge pot and outputs", () => {
     var result=BoardSelectionVerification.Verify(evidence,boardMovement:true);Console.WriteLine($"  {result.Instructions} movement dispatches, {result.Lamps} lamp requests, {result.Sounds} sound commands, {result.AlphaBytes} alpha bytes");
 });

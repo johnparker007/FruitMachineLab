@@ -197,5 +197,24 @@ commands. A separate synthetic DDE3 probe checks the digit animation and 36 soun
 commands over 9,565 lifted observations (9,613 raw; 48 inner typed-list observations
 excluded). New native arithmetic and memory primitives retain wrap and signed
 rounding. 106 groups and all four GUI modes pass, including actual mid-board pause.
+
+## Natural board links — 15 October 2026
+
+Ladder/snake DBC4 paths now execute and match MAME through DE81: 571/22,887 VM
+observations, 57/61 lamp requests, 337/265 sound commands and 47/0 alpha bytes.
+Live exposes natural entry modes, matches logical outputs and accounting, and
+supports actual pause/resume/restart. Polling and provisional timing differences
+remain explicit. See docs/recovery/BOARD-LINK-PASS.md. 110 headless groups and
+five WPF smoke modes pass. Following result routing and whole-game play remain open.
+
+## Board continuation — 15 October 2026
+
+The optional continuation mode (GUI default enabled) follows recovered caller
+frames into the next selection/result. Live 32→36 returns to DD38, accepts another
+physical START and retains machine state. Three natural extended captures match
+620/22,902/12,363 VM observations, exact earlier prefixes and all output hashes.
+Nudge-availability search 29F4 and unsupported result types remain explicit stops.
+113 headless groups and six WPF smoke modes pass. See
+docs/recovery/BOARD-CONTINUATION-PASS.md for evidence and timing qualifications.
 One advance is supported; complete board/game play and the earlier alpha brightness
 timing discrepancy remain open. No installations or configuration changes occurred.

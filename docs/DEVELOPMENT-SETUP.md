@@ -5,6 +5,12 @@ Local clone: C:\projects\GitRepos\FruitMachineLab
 
 ## Current status
 
+Latest batch: natural board continuations and retained-state repeated Live
+selection. See recovery/BOARD-CONTINUATION-PASS.md for captures and missing-helper
+boundaries. 113 headless groups and six GUI smoke modes pass;
+--live-board-cycle-smoke-test checks returned input and a second roll. No installation or configuration
+change, commit/push or cloud setup was performed.
+
 For current priorities and continuation context, read [PROJECT-ROADMAP.md](PROJECT-ROADMAP.md)
 and [CURRENT-HANDOFF.md](CURRENT-HANDOFF.md). The dated sections below retain the
 history of setup and implementation batches.

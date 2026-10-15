@@ -18,8 +18,9 @@
        <Button x:Name="RestartLiveButton" Content="Restart feature" Click="BeginLive" IsEnabled="False" Padding="14,7" Margin="8,0" />
       </WrapPanel>
       <ComboBox x:Name="LiveEntryMode" SelectedIndex="2" Margin="0,8,0,0" HorizontalAlignment="Left" MinWidth="360" ToolTip="Applied on Start feature or Restart. Each mode starts at a captured boundary; full machine startup is not included.">
-       <ComboBoxItem Content="Skill Cash entry (C721)" /><ComboBoxItem Content="Taken board result (E2FC)" /><ComboBoxItem Content="Board selection: Take Skill Cash (DD38)" />
+       <ComboBoxItem Content="Skill Cash entry (C721)" /><ComboBoxItem Content="Taken board result (E2FC)" /><ComboBoxItem Content="Board selection: Take Skill Cash (DD38)" /><ComboBoxItem Content="Ladder animation: natural entry (DBC4)" /><ComboBoxItem Content="Snake animation: natural entry (DBC4)" />
       </ComboBox>
+      <CheckBox x:Name="ContinueBoardExecution" IsChecked="True" Margin="0,8,0,0" Content="Continue into the next board selection / verified result (applies on Start or Restart)" />
       <TextBlock x:Name="SessionDiagnostic" Text="Start the feature, then hold and release the physical START button below." Margin="0,10" TextWrapping="Wrap" FontFamily="Consolas" />
      </StackPanel>
      <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -34,7 +35,7 @@
          PreviewKeyDown="PhysicalTakeKeyDown" PreviewKeyUp="PhysicalTakeKeyUp" />
         <TextBlock Margin="16,0" VerticalAlignment="Center" TextWrapping="Wrap" Text="Momentary buttons • mouse or Space/Enter while focused&#10;START: BLACK2 bit 80 • TAKE: BLACK2 bit 01" />
        </WrapPanel>
-       <TextBlock TextWrapping="Wrap" Margin="0,0,0,8" Text="Board selection: TAKE FEATURE chooses Skill Cash (BLACK2 bit 01). START runs one dice roll and board advance, then stops at the next result/selection. In Skill Cash, START stops each selection." />
+       <TextBlock TextWrapping="Wrap" Margin="0,0,0,8" Text="Board selection: TAKE FEATURE chooses Skill Cash (BLACK2 bit 01). START rolls and advances. With continuation enabled, selection prompts can repeat; unsupported result routes stop explicitly. In Skill Cash, START stops each selection." />
        <TextBlock x:Name="SessionAccounting" Margin="0,0,0,10" Text="Pending 0 • current win 0 ROM units" />
        <TextBlock x:Name="SessionDice" Margin="0,0,0,8" TextWrapping="Wrap" />
        <TextBlock x:Name="SessionDiceFace" Margin="0,0,0,8" FontSize="28" FontFamily="Consolas" />

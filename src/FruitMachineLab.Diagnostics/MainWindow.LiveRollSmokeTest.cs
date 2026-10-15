@@ -8,6 +8,7 @@ public partial class MainWindow
 {
     private async Task LiveRollSmokeTest(string directory)
     {
+        ContinueBoardExecution.IsChecked=false;
         Directory.CreateDirectory(directory);
         try {
             LiveEntryMode.SelectedIndex=2;if(!await LoadLive(startExecution:false))throw new InvalidOperationException(Status.Text);

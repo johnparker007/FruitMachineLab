@@ -10,7 +10,7 @@ batch, including its verification.
 - Live Skill Cash: incremental VM, retained state, physical momentary Start input,
   actual Pause/Resume, generated lamp/alpha outputs and diagnostic state display.
 - Separate verified playback/scrubber; original MAME-backed verification retained.
-- Last development batch: 106 headless groups passed. Headless and isolated WPF
+- Last development batch: 113 headless groups passed. Headless and isolated WPF
   builds passed; Live/playback WPF smoke checks and rendered layouts were checked.
 - John subsequently reported that the live feature works well.
 
@@ -29,9 +29,13 @@ DDAF/DE75/E43D frames to E460. The entry selector retains C721 and E2FC modes.
 All six default award levels complete through all three modes. START at the board
 prompt now runs one incremental dice roll with ROLLING, changing face/position,
 native busy-loop completion and symbol refresh. Pause/Resume also suspend the motor.
-It now continues through one incremental board advance and zero-link dispatch,
-stopping before the next DE96 result return or DD38 selection; Restart is available.
-Nonzero links stop before ladder/snake animation. Requested symbol/offset stay
+It continues through incremental board advance and link dispatch. The GUI now
+enables continuation by default; disable that option for the earlier one-advance
+DE96/DD38 boundary. Restart restores the selected entry.
+Nonzero links now execute recovered ladder/snake animations. Two new natural DBC4
+entry modes expose ladder 2→22/pot3 and snake 41→7/pot1. With continuation disabled
+they stop at DE81; enabled, they stop at the explicit availability/result helpers
+described below. Requested symbol/offset stay
 separate from the changing position and displayed face. Board square, nudge pot,
 raw ROM type/link and visited squares are visible.
 The natural selection reference checks 99,843 exposed VM observations (with explicit
@@ -67,13 +71,32 @@ scope and preserved earlier timing qualifications.
 
 ## Next development work
 
-Capture nonzero-link DBC4 paths and translate/verify ladder/snake animation,
-destination setting and pot adjustments. DDF3 movement and zero-link DBC4 dispatch
+Latest continuation batch: default GUI checkbox now enables repeat selection and
+retained-state next rolls. 32→36 returns to an interactive DD38 prompt and accepts
+another physical START, preserving all memory/motor/accounting. Disable the option
+to reproduce earlier one-advance/link boundaries. The headless `continueBoard`
+argument remains opt-in. Board prompt count is visible; readiness starts at DD4E.
+See recovery/BOARD-CONTINUATION-PASS.md for scope and six GUI smoke modes.
+
+Natural extended references match 620 ladder observations through DD38, 22,902
+snake observations through E2FC/type8 and 12,363 normal movement observations
+through E2FC/type3. Complete prior prefixes and all VM/output hashes match. Live
+stops at unsupported E2FC types and at 29F4 nudge-availability search after ladder
+arrival. The repeated 32→36→next roll is synthetic player timing, not a complete
+natural MAME reference. Recover 29F4/2A7F/1AC3 using the newly curated static
+dependency map; do not assume availability or substitute a search result.
+
+Natural nonzero-link DBC4 paths now match 571 ladder and 22,887 snake VM
+observations, with exact reference lamps/sound/alpha. Live matches ordered lamp
+requests, final alpha shadow, destination, pot and accounting, with explicit
+polling/timing differences; see recovery/BOARD-LINK-PASS.md.
+Continue recovery of the remaining board-result and availability helpers.
+DDF3 movement and zero-link DBC4 dispatch
 now execute and are reference-checked. Continue the following board result or
-selection after that; the current live scope deliberately stops after one advance.
+selection after that; only recovered routes continue and missing helpers stop explicitly.
 Normal dice motor preparation, service, generated optics, completion and symbol refresh now run;
 homing, motor-disabled shortcuts and complete alarm handling remain outside this
-feature-entry milestone. The earlier ladder, startup, credits and whole-game play
+feature-entry milestone. Startup, credits and whole-game play
 remain open. Resolve the new alpha brightness timing discrepancy with native/IRQ
 phase evidence, preserving strict earlier alpha comparisons.
 Improve timing and remaining Skill Cash option coverage. Prioritize playable coverage,
@@ -92,6 +115,10 @@ dotnet build FruitMachineLab.sln --no-restore
 An open diagnostics app can lock normal WPF output. Do not stop John's process;
 build the diagnostic project to a fresh temporary output folder when necessary.
 Smoke switches are documented in the Live/playback recovery reports.
+
+--live-link-smoke-test <fresh-output-directory> checks both natural DBC4 entries,
+real-time rendering, memory/time/VM pause, resume, destination/pot, input release
+and restart. All five GUI smoke modes passed this batch.
 
 The default Live/jackpot smoke exercises physical Take before Start, plus Take
 capture/focus release. The jackpot driver remains accelerated. Replay uses captured

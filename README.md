@@ -36,7 +36,7 @@ are available. This mode uses recorded inputs; use Live Skill Cash for the tempo
 player control. Audio remains future work. See
 [playback evidence and boundaries](docs/recovery/SKILL-CASH-PLAYBACK-PASS.md).
 
-Latest local verification: headless and isolated WPF builds succeed; 106
+Latest local verification: headless and isolated WPF builds succeed; 113
 verification groups pass. Continuous C721 execution matches 98,704 VM dispatches,
 selects 3, 2 and 1, and finishes with pending 0/current win 10. All 7,298 lamp frame
 updates and the complete sound timing protocol match recorded native observations.
@@ -85,3 +85,14 @@ records the verified motor service/optic model and the remaining board boundary,
 including the explicit one-byte alpha brightness timing difference. The
 [board movement report](docs/recovery/BOARD-MOVEMENT-PASS.md) records the next
 incremental advance, natural reference and separately labelled nudge-animation probe.
+
+The [ladder/snake pass](docs/recovery/BOARD-LINK-PASS.md) adds two natural Live
+entry choices, recovered animations and complete MAME reference checks. Choose
+Ladder or Snake in the entry selector, then Start feature. Both support actual
+Pause/Resume and Restart, stopping before the following board result.
+
+The new [board continuation option](docs/recovery/BOARD-CONTINUATION-PASS.md),
+enabled by default, allows recovered selection prompts to repeat without resetting
+machine state. A 32→36 roll returns to a usable prompt and accepts another START.
+Unsupported result types and nudge-availability search stop explicitly. Disable
+continuation to retain the earlier bounded animation modes.

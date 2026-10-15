@@ -1,0 +1,31 @@
+{
+  "run_directory": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-snake-valid-f08312b44a5e43e09c6436ed27a030d0",
+  "raw_sha256": "E0F93B55F4DA6FEF0F91EBC0332E95C89FF54B7F94E138F16E25B111E0B46871",
+  "ram_sha256": "A20CC88312133C7C21201E927D5D2C75B7BFA40BDDEA60BC628120682C3B55DC",
+  "classification": "Natural snake dispatch from DBC4 to DE81; unchanged physical input campaign; no RAM/register injection",
+  "capture": {
+    "board_selection": false,
+    "dice_motion": false,
+    "board_movement": false,
+    "board_result_caller": false,
+    "full_feature_capture": true,
+    "native_scan_capture": false,
+    "cash_feature_caller": false,
+    "replay_sha256": "4A051DA15264842697879EFF396B34A789F5D80623F9A2E749C244E6A80E721D",
+    "timer_deadlines": false,
+    "shared_timing": false,
+    "cpu_interrupts": true,
+    "native_nvram_capture": false,
+    "native_alpha_capture": true,
+    "board_link": "Snake",
+    "native_input_capture": true,
+    "native_sound_capture": true,
+    "mame_sha256": "0FCE5A88DF4F9D9B1FBF1405812C00848036E615993780978D967DA34204CB7A",
+    "synthetic_nudge_pot_probe": false,
+    "synthetic_jackpot_probe": false,
+    "dice_requests": false,
+    "paused_setup_callbacks_skipped": 17,
+    "initial_state": "Fresh isolated default configuration and absent NVRAM; physical-input fixture only; no RAM/ROM injection.",
+    "native_lamp_frames": true
+  }
+}

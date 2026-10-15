@@ -1,0 +1,31 @@
+{
+  "run_directory": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-ladder-valid-75bab71928584a34b657421b4e9dd79b",
+  "raw_sha256": "A2F8767355ED42C4749898A8FCB1BD17BACB1D1E8DE43C4076B2E39351A0AB7F",
+  "ram_sha256": "5FF02D65AD8F862C5326C304EF8C7F09AB5EC1A3DEBF8FDD8BECE40DCAD9E3F7",
+  "classification": "Natural ladder dispatch from DBC4 to DE81; unchanged physical input campaign; no RAM/register injection",
+  "capture": {
+    "mame_sha256": "0FCE5A88DF4F9D9B1FBF1405812C00848036E615993780978D967DA34204CB7A",
+    "dice_motion": false,
+    "replay_sha256": "4A051DA15264842697879EFF396B34A789F5D80623F9A2E749C244E6A80E721D",
+    "board_link": "Ladder",
+    "shared_timing": false,
+    "native_sound_capture": true,
+    "initial_state": "Fresh isolated default configuration and absent NVRAM; physical-input fixture only; no RAM/ROM injection.",
+    "native_nvram_capture": false,
+    "timer_deadlines": false,
+    "cpu_interrupts": true,
+    "paused_setup_callbacks_skipped": 17,
+    "board_movement": false,
+    "native_input_capture": true,
+    "native_alpha_capture": true,
+    "native_lamp_frames": true,
+    "synthetic_nudge_pot_probe": false,
+    "dice_requests": false,
+    "cash_feature_caller": false,
+    "board_selection": false,
+    "synthetic_jackpot_probe": false,
+    "native_scan_capture": false,
+    "board_result_caller": false,
+    "full_feature_capture": true
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "excerpt_start": "5F92",
+  "rom_sha1": "402D1518BB78FDC489B06C2AABC771E5CE151847",
+  "source_sha256": "45A63EC112C6DF3EF4FF42C4F91601881FD202B2ECE32948A1AEE5F27C8FDF5E",
+  "source": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-sound-disasm-babaec497fb7425c945bf947aae702e0\\native-sound.asm",
+  "classification": "Static native disassembly; CB relative attenuation changes register-cache/channel effects excluded from the timing/choice scheduler",
+  "dispatch_table": "5963 + 2*CB -> 5F92",
+  "excerpt_end": "5FDB",
+  "debugger_command": "dasm native-sound.asm,0x5d3b,0x400"
+}

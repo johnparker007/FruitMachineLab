@@ -35,10 +35,13 @@ public sealed class SkillCashLiveSession
     private bool waitingForScheduler,selectionLoop,boardChoiceCompleted;
     private DiceRequestState? diceRequest;
     private readonly List<byte> boardVisited=new();
-    private bool boardAdvancing;
+    private bool boardAdvancing,boardPromptReady;
     public bool IncludesCaller {get;}
     public bool StartsAtBoardSelection {get;}
-    public bool AwaitingBoardSelection=>StartsAtBoardSelection && !boardChoiceCompleted && diceRequest is null;
+    public string? BoardLinkEntry {get;}
+    public bool ContinueBoard {get;}
+    public int BoardPrompts {get;private set;}
+    public bool AwaitingBoardSelection=>StartsAtBoardSelection && boardPromptReady && !boardAdvancing && !boardChoiceCompleted;
     public Machine Machine {get;}=new();
     public Mpu4PanelInput Panel {get;}
     public ulong Cycle {get;private set;}
@@ -56,8 +59,11 @@ public sealed class SkillCashLiveSession
     public Action<Instruction,Machine>? ObserveDispatch {get;set;}
     public Action<AlphaState>? ObserveAlpha {get;set;}
     public Action<LampRequest>? ObserveLamp {get;set;}
-    public SkillCashLiveSession(string evidenceDirectory,bool includeCaller=false,bool boardSelection=false)
+    public SkillCashLiveSession(string evidenceDirectory,bool includeCaller=false,bool boardSelection=false,string? boardLink=null,bool continueBoard=false)
     {
+        if(boardLink is not null && boardLink is not ("ladder" or "snake"))throw new ArgumentException("Unknown board link",nameof(boardLink));
+        if(boardLink is not null)boardSelection=true;
+        ContinueBoard=continueBoard;BoardLinkEntry=boardLink;boardAdvancing=boardLink is not null;
         IncludesCaller=includeCaller || boardSelection;StartsAtBoardSelection=boardSelection;
         evidence=evidenceDirectory;
         Lamps=SkillCashPlayback.LoadLamps(evidence);
@@ -85,7 +91,14 @@ public sealed class SkillCashLiveSession
         if(boardSelection) {
             initialClock=BoardSelectionState.Apply(Machine,evidence);
             BoardSelectionState.LoadDiceData(Machine,evidence);
-            BoardMovementState.LoadData(Machine,evidence);boardVisited.Add(Machine.Memory[0xC9]);
+            BoardMovementState.LoadData(Machine,evidence);BoardLinkState.LoadData(Machine,evidence);
+            if(boardLink is not null)initialClock=BoardLinkState.Apply(Machine,evidence,boardLink);
+            boardVisited.Add(Machine.Memory[0xC9]);
+            foreach(string file in new[]{"ladder-link.json","snake-link.json","ladder-link-next.json","snake-link-next.json","board-movement-next.json"}) {
+                using var linkCosts=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",file)));
+                foreach(var item in linkCosts.RootElement.GetProperty("sites").EnumerateObject())siteCosts.TryAdd(item.Name,item.Value.GetUInt64());
+                foreach(var item in linkCosts.RootElement.GetProperty("tokens").EnumerateObject())tokenCosts.TryAdd(item.Name,item.Value.GetUInt64());
+            }
             using var motionData=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"maps","dice-motion-data.json")));
             foreach(var range in motionData.RootElement.GetProperty("ranges").EnumerateObject())Convert.FromHexString(range.Value.GetString()!).CopyTo(Machine.Memory,Convert.ToUInt16(range.Name,16));
             reelMotion=new(Machine);reelHardware=new(Machine);
@@ -117,7 +130,7 @@ public sealed class SkillCashLiveSession
         for(int n=0;n<8;n++)Machine.Memory[n]=other[n];
         Machine.Memory[0x91]&=0x7F;
         alpha=new(Machine);scheduler=new(Machine,initialClock);
-        if(boardSelection)scheduler.RestoreQueuedNativeTasks();
+        if(boardSelection)scheduler.RestoreQueuedNativeTasks(boardLink is null ? null : at=>BoardLinkState.ResolveSoundContinuation(Machine,at));
         var response=JsonSerializer.Deserialize<LampFrameCapture>(File.ReadAllText(Path.Combine(evidence,"skill-cash","lamp-frames.json")),options)!;
         var frames=new Mpu4LampFrames(Machine,response.Responses.Select(x=>checked((byte)x)).ToArray());
         var requests=new Mpu4LampRequests(Machine,request=>{frames.Apply(request.Id,request.Pattern);LampRequests++;ObserveLamp?.Invoke(request);});
@@ -140,9 +153,11 @@ public sealed class SkillCashLiveSession
             InputConditionCell=value=>Mpu4InputConditions.Evaluate(Machine,(byte)value),
             BeforeInstruction=(instruction,state)=> {
                 Instructions++;ObserveDispatch?.Invoke(instruction,state);
+                if(ContinueBoard && instruction.Site==0xDD38){boardAdvancing=false;boardChoiceCompleted=false;boardPromptReady=false;BoardPrompts++;}
                 if(StartsAtBoardSelection && boardVisited[^1]!=state.Memory[0xC9])boardVisited.Add(state.Memory[0xC9]);
                 if(instruction.Site==0xDDF3 && diceRequest is not null)boardAdvancing=true;
-                if(instruction.Site==0xDDAB)boardChoiceCompleted=true;
+                if(instruction.Site==0xDD4E)boardPromptReady=true;
+                if(instruction.Site==0xDDAB){boardChoiceCompleted=true;boardPromptReady=false;}
                 if(instruction.Site==0xC6AD)selectionLoop=true;
                 if(instruction.Site==0xC757){selections.Add(state.Data.Peek());selectionLoop=false;}
             },
@@ -151,7 +166,7 @@ public sealed class SkillCashLiveSession
                 return AddersNativeWords.Handle(instruction,state,requests,scheduler,alpha,()=>{AlphaOperations++;ObserveAlpha?.Invoke(alpha.Snapshot());});
             }
         };
-        if(boardSelection){var catalog=new RecoveredScriptCatalog(Path.Combine(evidence,"VM-SCRIPTS"));executor.BeginResumed(Resolve(0xDD38),0xDD38,catalog.Owner,0xBEEF,10_000_000);}
+        if(boardSelection){var catalog=new RecoveredScriptCatalog(Path.Combine(evidence,"VM-SCRIPTS"));ushort entry=boardLink is null ? (ushort)0xDD38 : (ushort)0xDBC4;executor.BeginResumed(Resolve(entry),entry,catalog.Owner,0xBEEF,10_000_000);}
         else executor.Begin(Resolve(includeCaller ? (ushort)0xE2FC : (ushort)0xC721),10_000_000);
     }
     private readonly ulong servicePeriod;
@@ -237,8 +252,13 @@ public sealed class SkillCashLiveSession
                 if(nextVm==next) {
                     if(--budget==0)throw new InvalidOperationException("Live dispatch budget exceeded");
                     var instruction=executor.NextInstruction!;
-                    if(boardAdvancing && instruction.Site is 0xDE96 or 0xDD38)throw new NotSupportedException($"BOARD advance completed at square {Machine.Memory[0xC9]} (type {Machine.Memory[0xA12E+Machine.Memory[0xC9]]}, nudge pot {Machine.Memory[0xBF]}); the next board result/selection is the recovery boundary. Restart to play again.");
-                    if(boardAdvancing && instruction.Site is 0xDAC7 or 0xDB58)throw new NotSupportedException($"BOARD reached a {(instruction.Site==0xDAC7 ? "ladder" : "snake")} at square {Machine.Memory[0xC9]}; link animation is the next recovery boundary.");
+                    if(!ContinueBoard && boardAdvancing && instruction.Site is 0xDE96 or 0xDD38)throw new NotSupportedException($"BOARD advance completed at square {Machine.Memory[0xC9]} (type {Machine.Memory[0xA12E+Machine.Memory[0xC9]]}, nudge pot {Machine.Memory[0xBF]}); the next board result/selection is the recovery boundary. Restart to play again.");
+                    if(!ContinueBoard && BoardLinkEntry is not null && instruction.Site==0xDE81)throw new NotSupportedException($"BOARD {BoardLinkEntry} completed at square {Machine.Memory[0xC9]} (nudge pot {Machine.Memory[0xBF]}); following board result/selection remains the recovery boundary. Restart to watch again.");
+                    if(ContinueBoard && instruction.Native==0x29F4)throw new NotSupportedException($"BOARD nudge availability search at square {Machine.Memory[0xC9]}; native best-reel-result search remains unrecovered.");
+                    if(ContinueBoard && instruction.Site==0xE2FC && Machine.Data.Peek()!=2)throw new NotSupportedException($"BOARD result type {Machine.Data.Peek()} at square {Machine.Memory[0xC9]}; this result route is the next recovery boundary.");
+                    if(ContinueBoard && BoardLinkEntry is not null && instruction.Site==0xE460)throw new NotSupportedException("BOARD feature exit reached; outer machine caller remains outside the live entry.");
+                    if(ContinueBoard && instruction.Site==0xE227)throw new NotSupportedException($"BOARD special feature at square {Machine.Memory[0xC9]} (type {Machine.Memory[0xA12E+Machine.Memory[0xC9]]}); announcement/feature routing is the next recovery boundary.");
+                    if(ContinueBoard && instruction.Site==0xE2E5 && (Machine.ReadWord(0xA0)&0x10)!=0 && Machine.Data.Peek()!=2)throw new NotSupportedException($"BOARD taken result type {Machine.Data.Peek()} at square {Machine.Memory[0xC9]}; this result helper remains outside the verified routes.");
                     if(StartsAtBoardSelection && instruction.Native==0x61F6 && !motionNativeReady) {
                         if(!motionInitializing){diceRequest=new(Machine.Memory[0x166],unchecked((sbyte)Machine.Memory[0x16F]),Machine.Memory[0x16E]);reelMotion!.Prepare(value=>Mpu4InputConditions.Evaluate(Machine,value));reelMotion.Enable();motionInitializing=true;}
                         nextVm=checked(serviceEpoch+services[serviceIndex].Scan);continue;

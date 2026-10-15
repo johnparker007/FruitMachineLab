@@ -58,6 +58,20 @@ public static class AddersNudgeAvailability
     {
         m.Memory[0xDD]=0xFF;m.Memory[0xDE]=0;Execute(m);
     }
+    // 2A2F returns three ASRB/SEX movement cells, not the best-result cell.
+    // Unlike 29F4 it leaves DD alone. Search scratch and symbol restoration
+    // remain observable native effects.
+    public static void PushMovementPlan(Machine m)
+    {
+        m.SyncDataToMemory();ushort budget=m.Pop();
+        ushort frame=Cell.Subtract(m.DataPointer,17);
+        if(frame<=0x525)throw new NotSupportedException("Native counted frame SWI2 overflow requires recovery");
+        ushort[] saved=[m.ReadWord(0x160),m.ReadWord(0x162),m.ReadWord(0x164)];
+        m.Memory[frame]=17;m.Memory[Cell.Add(frame,7)]=(byte)budget;
+        Search(m,frame);
+        for(ushort n=1;n<=3;n++)m.Data.Push(unchecked((ushort)(short)((sbyte)m.Memory[Cell.Add(frame,n)]>>1)));
+        for(int n=0;n<3;n++)m.WriteWord((ushort)(0x160+2*n),saved[n]);
+    }
     public static void Execute(Machine m)
     {
         m.SyncDataToMemory();ushort budget=m.Pop();

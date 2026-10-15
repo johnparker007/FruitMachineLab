@@ -1,5 +1,5 @@
-Purpose: unresolved
-Confidence: grouping only; purpose unresolved
+Purpose: compare_completed_nudge_result_and_offer_automatic_improvement
+Confidence: natural BD=15hex nudge/improvement path verified; other branches remain static deductions
 Groups: boolean/bit operations, control flow, memory operations
 Callers: B72D
 

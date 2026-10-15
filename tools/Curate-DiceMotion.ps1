@@ -1,9 +1,9 @@
-param([Parameter(Mandatory=$true)][string]$RunDirectory,[Parameter(Mandatory=$true)][string]$RomPath,[string]$HardwareRunDirectory,[string]$IndependentRunDirectory,[switch]$Nudge,[switch]$Sequence)
-$ErrorActionPreference='Stop';if($Sequence -and !$Nudge){throw 'Sequence requires Nudge'};$stem=if($Sequence){'nudge-sequence-native'}elseif($Nudge){'nudge-motion-native'}else{'dice-motion'};$root=Split-Path $PSScriptRoot -Parent
+param([Parameter(Mandatory=$true)][string]$RunDirectory,[Parameter(Mandatory=$true)][string]$RomPath,[string]$HardwareRunDirectory,[string]$IndependentRunDirectory,[switch]$Nudge,[switch]$Sequence,[switch]$Result)
+$ErrorActionPreference='Stop';if($Sequence -and !$Nudge){throw 'Sequence requires Nudge'};$stem=if($Result){'nudge-result-native'}elseif($Sequence){'nudge-sequence-native'}elseif($Nudge){'nudge-motion-native'}else{'dice-motion'};$root=Split-Path $PSScriptRoot -Parent
 if((Get-FileHash -LiteralPath $RomPath -Algorithm SHA1).Hash -ne '402D1518BB78FDC489B06C2AABC771E5CE151847'){throw 'Unexpected ROM'}
 $events=[Collections.Generic.List[object]]::new();$active=$false;$done=$false;$ordinal=-1
 foreach($line in [IO.File]::ReadLines((Join-Path $RunDirectory 'debug.log'))) {
- if($line -match '^SC '){$ordinal++;continue}
+ if($line -match '^SC '){if(!$Result -or $line -notmatch '^SC y=(8571|8573|8575|8577|76BD) '){$ordinal++};continue}
  if($line -notmatch '^RM '){continue};$fields=[ordered]@{}
  foreach($match in [regex]::Matches($line,'(\w+)=([0-9A-F]+)')){$fields[$match.Groups[1].Value]=$match.Groups[2].Value}
  if($fields.pc -eq '61F6'){$active=$true};if(!$active -or ($done -and !$Sequence)){continue}
@@ -16,7 +16,7 @@ if($IndependentRunDirectory) {
  foreach($line in [IO.File]::ReadLines((Join-Path $IndependentRunDirectory 'debug.log'))) {
   if($line -notmatch '^RM '){continue};$fields=@{};foreach($match in [regex]::Matches($line,'(\w+)=([0-9A-F]+)')){$fields[$match.Groups[1].Value]=$match.Groups[2].Value}
   if($fields.pc -eq '61F6'){$observing=$true};if(!$observing){continue}
-  $other.Add((@('pc','flags','drive','records','nvram','checksum')|ForEach-Object {$fields[$_]}) -join ':');if($fields.pc -eq '64F0'){break}
+  $other.Add((@('pc','flags','drive','records','nvram','checksum')|ForEach-Object {$fields[$_]}) -join ':');if($fields.pc -eq '64F0' -and !$Sequence){break}
  }
  $current=@($events | ForEach-Object {$row=$_;(@('pc','flags','drive','records','nvram','checksum')|ForEach-Object {$row[$_]}) -join ':'})
  if(($current -join "`n") -cne ($other.ToArray() -join "`n")){throw 'Independent motion observations differ'}
@@ -26,7 +26,7 @@ $data=[IO.File]::ReadAllBytes($RomPath);$ranges=[ordered]@{}
 foreach($range in @(@(0x1453,10),@(0x60D6,217),@(0x661B,96),@(0x9585,40))) {$ranges[$range[0].ToString('X4')]=[Convert]::ToHexString([byte[]]$data[$range[0]..($range[0]+$range[1]-1)])}
 $target=Join-Path $root 'evidence/mpu4/skill-cash'
 if(!$Nudge){[ordered]@{classification='Selected static ROM data for translated motor profiles, coil phases, stop lamps and rolling sound. No recorded player events, optic waveforms or reel outcomes';rom_sha1=(Get-FileHash $RomPath -Algorithm SHA1).Hash;ranges=$ranges}|ConvertTo-Json -Depth 4|Set-Content (Join-Path $root 'evidence/mpu4/maps/dice-motion-data.json')}
-[ordered]@{classification=$(if($Sequence){'Natural square22 three physical Nudge1 requests; all native observations including idle services retained; reference only'}elseif($Nudge){'Natural square22 Nudge1 motion; physical TAKE/Nudge1, native observations are reference only'}else{'Natural square-7 roll. Native motion states and external optic reads are reference evidence, not a Live input source'});source_run=$RunDirectory;raw_sha256=(Get-FileHash (Join-Path $RunDirectory 'debug.log')).Hash;independent=$independent;rom_sha1=(Get-FileHash $RomPath -Algorithm SHA1).Hash;ram_hex=[Convert]::ToHexString([IO.File]::ReadAllBytes((Join-Path $RunDirectory 'boundary-ram.bin')));ranges=$ranges;events=@($events.ToArray())}|ConvertTo-Json -Depth 5 -Compress|Set-Content (Join-Path $target ($stem+'.json'))
+[ordered]@{classification=$(if($Result){'Natural physical three-nudge sequence and automatic improvement; canonical ordinals exclude typed scheduler-list and local-release dispatches; native observations are reference only'}elseif($Sequence){'Natural square22 three physical Nudge1 requests; all native observations including idle services retained; reference only'}elseif($Nudge){'Natural square22 Nudge1 motion; physical TAKE/Nudge1, native observations are reference only'}else{'Natural square-7 roll. Native motion states and external optic reads are reference evidence, not a Live input source'});source_run=$RunDirectory;raw_sha256=(Get-FileHash (Join-Path $RunDirectory 'debug.log')).Hash;independent=$independent;rom_sha1=(Get-FileHash $RomPath -Algorithm SHA1).Hash;ram_hex=[Convert]::ToHexString([IO.File]::ReadAllBytes((Join-Path $RunDirectory 'boundary-ram.bin')));ranges=$ranges;events=@($events.ToArray())}|ConvertTo-Json -Depth 5 -Compress|Set-Content (Join-Path $target ($stem+'.json'))
 Copy-Item (Join-Path $RunDirectory 'debugger.cmd') (Join-Path $target ($stem+'-debugger.cmd'))
 if($Nudge -and !$Sequence){
  $rows=Import-Csv (Join-Path $RunDirectory 'motor-states.csv');$initial=[Convert]::FromHexString($events[0].records)

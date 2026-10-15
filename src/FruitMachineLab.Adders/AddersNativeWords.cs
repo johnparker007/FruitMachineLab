@@ -11,6 +11,7 @@ public static class AddersNativeWords
         if(instruction.Native==0x1AA3){AddersNudgeAvailability.PushMatchingResult(state);return true;}
         if(instruction.Native==0x29EC){AddersNudgeAvailability.ExecuteFlagged(state);return true;}
         if(instruction.Native==0x29F4){AddersNudgeAvailability.Execute(state);return true;}
+        if(instruction.Native==0x2A2F){AddersNudgeAvailability.PushMovementPlan(state);return true;}
         if(instruction.Native==0x169B){state.Data.Push(AddersParameterProfiles.Compute(state,state.Pop()));return true;}
         if(instruction.Native==0x2C12){AddersReelSymbols.Refresh(state);return true;}
         if(instruction.Native==0x2BEB){AddersReelSymbols.RefreshWithoutRequests(state);return true;}

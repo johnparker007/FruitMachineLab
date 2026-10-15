@@ -10,7 +10,7 @@ batch, including its verification.
 - Live Skill Cash: incremental VM, retained state, physical momentary Start input,
   actual Pause/Resume, generated lamp/alpha outputs and diagnostic state display.
 - Separate verified playback/scrubber; original MAME-backed verification retained.
-- Last development batch: 132 headless groups passed. Headless and isolated WPF
+- Last development batch: 135 headless groups passed. Headless and isolated WPF
   builds passed; Live/playback WPF smoke checks and rendered layouts were checked.
 - John subsequently reported that the live feature works well.
 
@@ -71,7 +71,34 @@ scope and preserved earlier timing qualifications.
 
 ## Next development work
 
-Latest batch: B339's native save-area dependency is resolved. Native4A8C saves
+Latest batch: the exhausted Nudge1 sequence now runs the ROM's automatic
+improvement. B712/B652 compare the current result with the saved target; B666
+rewinds through actual motor steps, B6DB/B384/B352 compute/execute the plan, and
+B72D/B91D/E247 return pending BA=0010 (16 ROM units), current win02FA=0000.
+Final positions6,90,42 and symbols2,2,2; BE/BF0. Live stops at E263 before its
+result caller. Next recover result presentation, award handling and feature return.
+See recovery/NUDGE-IMPROVEMENT-PASS.md. 135 groups/eight WPF smoke modes pass.
+
+Natural reference:66368 canonical VM observations,162 lamps/frame results,1005
+sound commands,405 alpha bytes. Raw72565 retained; exactly6197 typed-list/local-
+release observations excluded and independently counted by the verifier. Prefix
+7785 independently matches nudge-sequence. Two complete captures agree on the VM
+digest;3360 native core observations agree independently, with eight motor
+requests/completions and72optic reads. Terminal RAM is saved read-only at E263;
+the verifier and Live match51 protected bytes2F0..322, pending and final reels.
+Live ordered lamps/final alpha match; automatic-motor pause/resume freezes state.
+Captured CPU/IRQ pacing and other earlier timing qualifications remain explicit.
+
+Native2A2F/token8084 returns three signed ASRB/SEX movement cells (reel3 on top),
+restores symbols, preserves search scratch and leaves DD unchanged.17-case
+synthetic plan/lookup matrix checks all RAM below0700, excluding native S residue.
+Token7A26 follows the saved F6 outer-loop link. New exact bytes, data references,
+routine labels/C# links are in the existing encoding/semantic maps. Fresh Ghidra
+metadata export remains unavailable; do not install/configure anything for it.
+Two failed exploratory external MAME captures are excluded; completed proof runs
+exit0. No award banking/collection, full-machine startup or other-option claim.
+
+Previous return batch: B339's native save-area dependency is resolved. Native4A8C saves
 D=008F at physical VM S-10 through gateway77A8; its low byte is later local+2.
 The lamp translation preserves the relative save area, not a fixed byte seed.
 7A15/7A17 explicit loop leave now removes the current eight-byte frame and restores
@@ -88,9 +115,9 @@ reads; generated optics and translated active motor phases match. Idle service
 observations are retained, not claimed as full CPU comparisons. Earlier dice
 references remain unchanged. Natural repeated-input proof is specifically Nudge1.
 
-Current Live stop: B749, before B74D/B712 post-nudge improvement and result routing.
-Next capture that continuation through B652 and its actual branch, then result/
-accounting return. Do not fabricate awards, automatic-nudge plans or cleanup.
+Previous Live stop: B749, before B74D/B712 improvement and result routing,
+now superseded by the E263 boundary above. Do not fabricate subsequent awards
+or caller cleanup.
 The failed exploratory MAME sequence run is excluded; the retry completed exit0.
 
 Previous motion batch: one completed main-reel nudge ran Live on all3 controls, selected
@@ -115,8 +142,8 @@ source for hardware testing, not original author source/tools. Extend existing
 native JSON, VM listings, maps, provenance and reports with discovered exact bytes,
 labels/RAM meanings/frames/side effects/references/layout constraints and C#/test
 links. No unrelated coverage work. No lossless/full-rebuild claim without checks.
-Updated nudge-encoding-checkpoint.json checks657 native disassembly rows/nine VM
-spans against ROM bytes, links nine existing exports and preserves7659/82BB/7A15
+Updated nudge-encoding-checkpoint.json checks700 native disassembly rows/17 VM
+spans against ROM bytes, links nine existing exports and preserves7659/82BB/7A15/7A26/8084
 dictionary records. It retains61 natural stack watchpoint writes and producer/
 consumer/C# links. Curate-NudgeEncodingCheckpoint.ps1 consumes the existing
 Export-MameDisassembly.ps1 -NudgeCheckpoint output and optional -StackRunDirectory.

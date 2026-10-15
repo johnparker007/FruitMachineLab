@@ -59,7 +59,7 @@
     "B403 button scan / token table9E06",
     "B31F main-reel motion and nudge consumption"
   ],
-  "scope": "Natural Nudge1 capture matches three successive movements and count/pot exhaustion through B749; Live tests cover each control and a repeated Nudge1 sequence. Post-nudge improvement/result and accounting remain bounded.",
+  "scope": "Natural three-Nudge1 sequence, automatic rewind/improvement and pending-award return match through E263. Live follows the same selected route with exact ordered lamp requests, final alpha, reel and protected accounting bytes; CPU/IRQ timing remains provisional.",
   "next_verified_segments": {
     "prompt": "skill-cash/nudge-prompt.json",
     "request": "skill-cash/nudge-request.json",
@@ -69,14 +69,50 @@
     "encoding_checkpoint": "maps/nudge-encoding-checkpoint.json",
     "returned_prompt": "skill-cash/nudge-return.json",
     "sequence": "skill-cash/nudge-sequence.json",
-    "sequence_native": "skill-cash/nudge-sequence-native.json"
+    "sequence_native": "skill-cash/nudge-sequence-native.json",
+    "improvement_result": "skill-cash/nudge-result.json",
+    "improvement_native": "skill-cash/nudge-result-native.json",
+    "plan_matrix": "skill-cash/nudge-plan-matrix.json"
   },
   "post_motion_boundary": {
-    "site": "B749",
-    "meaning": "B4C5 nudge sequence returned. Next B74D/B712 improvement and result routing require recovery.",
-    "resolved_previous_boundary": "B339/B33B local+2 reads preserved native4A8C lamp save-area pattern low byte (008F at VM S-10), reused by the nine-byte local allocation. Not initialized or masked.",
-    "classification": "Natural MAME stack watchpoint and exact byte-checked native mechanics, connected canonical VM proof",
-    "implementation": "src/FruitMachineLab.Runtime/Mpu4LampRequests.cs",
-    "report": "docs/recovery/NUDGE-RETURN-PASS.md"
+    "site": "E263",
+    "meaning": "Pending award BA=0010, current win02FA=0000, pot/remaining=0. Result caller and award routing remain the next recovery boundary.",
+    "previous_boundary": "B749 sequence return now continues via B712/B652, B666 rewind, B6DB/B384/B352 automatic plan and B72D/B91D/E247 cleanup.",
+    "classification": "Natural physical-input VM/native reference; Live equivalent-input path, not complete CPU timing equivalence",
+    "report": "docs/recovery/NUDGE-IMPROVEMENT-PASS.md"
+  },
+  "post_sequence_improvement": {
+    "type": "BD=15hex",
+    "condition": "B652: normalized current matching result >= saved local+7 target, or common symbol flag2; B712 offers improvement when false",
+    "saved_frame": {
+      "+4..+6": "Initial three reel indices saved by B626; B666 rewinds toward these using negative request increments",
+      "+7": "Normalized achievable target saved by B626",
+      "+8": "Original nudge count saved by B626, restored to BE and BF for automatic plan",
+      "+2": "B384 explicitly writes FF for automatic nudge path, then clears it; prior manual path reads preserved lamp save-area residue"
+    },
+    "native_plan": {
+      "entry": "2A2F",
+      "token": "8084",
+      "input": "low byte of consumed budget cell; counted17-byte U scratch frame",
+      "output": "ASRB then SEX of scratch1/2/3; reel3 cell on top",
+      "effects": "Search scratch retained,0160/0162/0164 restored; DD unchanged",
+      "verification": "skill-cash/nudge-plan-matrix.json"
+    },
+    "observed_result": {
+      "positions": [
+        6,
+        90,
+        42
+      ],
+      "symbols": [
+        2,
+        2,
+        2
+      ],
+      "pending_rom_units": 16,
+      "current_win_rom_units": 0,
+      "nvram_source_and_complements": "terminal_ram_hex2F0..322 in skill-cash/nudge-result.json"
+    },
+    "evidence_class": "Natural traced default type15 path; other options, startup and payout not established"
   }
 }

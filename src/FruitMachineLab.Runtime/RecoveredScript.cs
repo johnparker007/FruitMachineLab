@@ -131,6 +131,7 @@ public sealed class ScriptExecutor(Machine machine)
                 case "vm_push_one": machine.Data.Push(1); break;
                 case "vm_push_true_minus_one": machine.Data.Push(ushort.MaxValue); break;
                 case "vm_push_loop_index": machine.Data.Push(machine.Control?.LoopIndex ?? (LoopIndex ?? throw new NotSupportedException("Loop context required"))()); break;
+                case "vm_push_outer_loop_index": machine.Data.Push(Control().OuterLoopIndex);break;
                 case "vm_allocate_local_frame": Control().AllocateLocalFrame(machine.Pop());break;
                 case "vm_enter_loop_frame": { var start=machine.Pop();var limit=machine.Pop();Control().EnterLoop(start,limit,Continuation());break; }
                 case "vm_loop_increment_one": if(Control().IncrementLoop() is { } target)Jump(target);break;

@@ -1,5 +1,5 @@
-Purpose: unresolved
-Confidence: grouping only; purpose unresolved
+Purpose: test_result_meets_saved_target_or_common_symbol_flag2
+Confidence: natural BD=15hex nudge/improvement path verified; other branches remain static deductions
 Groups: boolean/bit operations, memory operations, reels
 Callers: B712
 

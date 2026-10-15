@@ -37,9 +37,10 @@ renderers should use the same backend inputs/outputs, with no gameplay in UI cod
 
 ## Current recovery frontier
 
-Live nudge prompts now repeat with retained reel/count state. A natural three-press
-Nudge1 sequence is verified through B749 and pot exhaustion. Continue post-nudge
-improvement/result routing and accounting from there; see recovery/NUDGE-RETURN-PASS.md.
+Live now continues through the ROM's automatic nudge improvement to pending16,
+current-win0 at E263. Continue the result caller, award handling and feature return
+from there; see recovery/NUDGE-IMPROVEMENT-PASS.md. The natural three-Nudge1 path
+and equivalent Live actions are verified, including final protected accounting bytes.
 Full machine startup and consecutive complete games remain future milestones.
 
 ## Longer-term aims

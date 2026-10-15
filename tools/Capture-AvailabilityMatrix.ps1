@@ -1,13 +1,13 @@
-param([Parameter(Mandatory=$true)][string]$MameExecutable,[Parameter(Mandatory=$true)][string]$RomDirectory,[Parameter(Mandatory=$true)][string]$SeedRam,[Parameter(Mandatory=$true)][string]$RunDirectory,[switch]$Flagged,[switch]$MatchingResult)
-$ErrorActionPreference='Stop';$run=[IO.Path]::GetFullPath($RunDirectory)
+param([Parameter(Mandatory=$true)][string]$MameExecutable,[Parameter(Mandatory=$true)][string]$RomDirectory,[Parameter(Mandatory=$true)][string]$SeedRam,[Parameter(Mandatory=$true)][string]$RunDirectory,[switch]$Flagged,[switch]$MatchingResult,[switch]$Plan)
+$ErrorActionPreference='Stop';if($Plan -and ($Flagged -or $MatchingResult)){throw 'Plan cannot be combined with other native-entry switches'};$run=[IO.Path]::GetFullPath($RunDirectory)
 if(Test-Path -LiteralPath $run){throw 'Use a fresh directory'}
 New-Item -ItemType Directory -Path $run|Out-Null
 foreach($name in @('cfg','nvram','state','snap','diff','comments')){New-Item -ItemType Directory (Join-Path $run $name)|Out-Null}
 Copy-Item -LiteralPath $SeedRam -Destination "$run/seed.bin"
 $commands=[Collections.Generic.List[string]]::new();$cases=[Collections.Generic.List[object]]::new();$number=0
 if(!$MatchingResult){foreach($budget in @(0,1,3,7,0x100,0x103,63,64,127,255)){
- $id='search-'+$number;$number++;$cases.Add([ordered]@{id=$id;kind=$(if($Flagged){'flagged-search'}else{'search'});budget=$budget})
- foreach($command in @('load seed.bin,0','u=0x660','s=0x790','cc=0x50',('w@0x660=0x'+$budget.ToString('X4')),'b@0xdd=0xff','b@0xde=0x35',"save $id-before.bin,0,800",$(if($Flagged){'pc=0x29ec'}else{'pc=0x29f4'}),'g 0x2a2e',"save $id-after.bin,0,800",('printf "MATRIX '+$id+' u=%04X result=%04X best=%02X dd=%02X de=%02X\n",u,w@u,b@0xc8,b@0xdd,b@0xde'))){$commands.Add($command)}
+ $id='search-'+$number;$number++;$cases.Add([ordered]@{id=$id;kind=$(if($Plan){'plan'}elseif($Flagged){'flagged-search'}else{'search'});budget=$budget})
+ foreach($command in @('load seed.bin,0','u=0x660','s=0x790','cc=0x50',('w@0x660=0x'+$budget.ToString('X4')),'b@0xdd=0xff','b@0xde=0x35',"save $id-before.bin,0,800",$(if($Plan){'pc=0x2a2f'}elseif($Flagged){'pc=0x29ec'}else{'pc=0x29f4'}),$(if($Plan){'g 0x2a7e'}else{'g 0x2a2e'}),"save $id-after.bin,0,800",('printf "MATRIX '+$id+' u=%04X result=%04X best=%02X dd=%02X de=%02X\n",u,w@u,b@0xc8,b@0xdd,b@0xde'))){$commands.Add($command)}
 }
 }
 foreach($case in @(@(2,2,2,0,0,0,0),@(2,4,5,1,1,1,0),@(2,4,5,2,2,2,255),@(2,4,5,2,2,2,0),@(3,3,5,0,0,0,0),@(2,3,3,0,0,0,0),@(0,0,0,1,1,1,255))){
@@ -19,7 +19,7 @@ foreach($case in @(@(2,2,2,0,0,0,0),@(2,4,5,1,1,1,0),@(2,4,5,2,2,2,255),@(2,4,5,
 $commands.Add('quit');$commands|Set-Content "$run/debugger.cmd";$cases|ConvertTo-Json -Depth 4|Set-Content "$run/cases.json"
 $arguments=@('m4addr','-noreadconfig','-rompath',$RomDirectory,'-cfg_directory',"$run/cfg",'-nvram_directory',"$run/nvram",'-state_directory',"$run/state",'-snapshot_directory',"$run/snap",'-diff_directory',"$run/diff",'-comment_directory',"$run/comments",'-debug','-debugger','windows','-debugscript',"$run/debugger.cmd",'-debuglog','-video','none','-sound','none','-window','-skip_gameinfo','-nothrottle')
 $arguments|ConvertTo-Json|Set-Content "$run/arguments.json"
-[ordered]@{flagged=[bool]$Flagged;matching_result=[bool]$MatchingResult;classification='Synthetic native helper matrix: explicit PC/U/S/CC/budget/symbol/flag setup; IRQs masked. Not a natural game path';mame_sha256=(Get-FileHash $MameExecutable).Hash;seed_sha256=(Get-FileHash "$run/seed.bin").Hash}|ConvertTo-Json|Set-Content "$run/provenance.json"
+[ordered]@{plan=[bool]$Plan;flagged=[bool]$Flagged;matching_result=[bool]$MatchingResult;classification='Synthetic native helper matrix: explicit PC/U/S/CC/budget/symbol/flag setup; IRQs masked. Not a natural game path';mame_sha256=(Get-FileHash $MameExecutable).Hash;seed_sha256=(Get-FileHash "$run/seed.bin").Hash}|ConvertTo-Json|Set-Content "$run/provenance.json"
 Push-Location $run
 try{& $MameExecutable @arguments *> "$run/console.txt";$LASTEXITCODE|Set-Content "$run/exit-code.txt"}finally{Pop-Location}
 Write-Output $run

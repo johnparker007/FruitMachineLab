@@ -5,11 +5,11 @@ Local clone: C:\projects\GitRepos\FruitMachineLab
 
 ## Current status
 
-Latest batch: returned nudge prompts and a complete three-press Nudge1 sequence;
-native lamp save-area dependency preserved. See recovery/NUDGE-RETURN-PASS.md.
-132 headless groups and eight GUI smoke modes pass; --live-nudge-smoke-test checks
-all three controls, actual motor pause/resume, returned prompts and count exhaustion.
-The next explicit recovery stop is B749 before post-nudge improvement/result routing.
+Latest batch: automatic nudge improvement and pending16/current-win0 result.
+See recovery/NUDGE-IMPROVEMENT-PASS.md. 135 headless groups and eight GUI smoke
+modes pass; --live-nudge-smoke-test checks all three controls, returned prompts,
+exhaustion, automatic improvement, actual auto-motor pause/resume and pending result.
+The next explicit recovery stop is E263 before result-caller/award routing.
 No installation or configuration
 change, commit/push or cloud setup was performed.
 

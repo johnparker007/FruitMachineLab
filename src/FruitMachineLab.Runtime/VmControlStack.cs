@@ -22,6 +22,7 @@ public sealed class VmControlStack(Machine machine,ushort pointer)
         Push(LoopFrame);Push(continuation);Push(limit);Push(start);LoopFrame=Pointer;
     }
     public ushort LoopIndex=>machine.ReadWord(LoopFrame);
+    public ushort OuterLoopIndex=>machine.ReadWord(machine.ReadWord(Cell.Add(LoopFrame,6)));
     public ushort? IncrementLoop()
     {
         if(Pointer!=LoopFrame)throw new InvalidOperationException("Loop increment requires the current frame at S");

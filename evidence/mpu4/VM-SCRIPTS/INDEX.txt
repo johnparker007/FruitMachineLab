@@ -85,7 +85,7 @@ Shared bodies have no colon header at entry-2.
   Groups: arithmetic, memory operations, stack/cell helpers; main callers: DAC7 (animate_ladder_and_adjust_nudgepot_then_set_destination), DB58 (animate_snake_and_reduce_nudgepot_then_set_destination), A4FF (load_next_compensation_word_and_wrap_index_sixteen), A553 (advance_compensation_table_and_decrement_active_counter); calls: none/dynamic
   operations vm_swap_two_cells, vm_shift_left_one, vm_add_words, vm_fetch_word
 9986.txt | wait_for_all_panel_buttons_released | reviewed token mechanics | observed (4/4 sites)
-  Groups: boolean/bit operations, control flow, input conditions; main callers: CED7 (run_fourth_reel_even_roll_and_wait_for_start), BEE5 (nice_dice_prompt_start_and_resolve_fourth_reel_stop), AD65 (run_selection_engine_from_five_callback_record), C721 (cash_feature_skill_cash), B72D (unresolved), D587 (run_super_hold_symbol_selection), D1F5 (unresolved), DC34 (handle_hi_lo_feature_selection_with_wrap); +3 other callers in JSON; calls: none/dynamic
+  Groups: boolean/bit operations, control flow, input conditions; main callers: CED7 (run_fourth_reel_even_roll_and_wait_for_start), BEE5 (nice_dice_prompt_start_and_resolve_fourth_reel_stop), AD65 (run_selection_engine_from_five_callback_record), C721 (cash_feature_skill_cash), B72D (run_nudges_with_saved_target_and_post_sequence_improvement), D587 (run_super_hold_symbol_selection), D1F5 (unresolved), DC34 (handle_hi_lo_feature_selection_with_wrap); +3 other callers in JSON; calls: none/dynamic
   tests INPUT_bank3_mask_FF_condition_30
 9992.txt | execute_indexed_token_table_using_loop_index | reviewed token mechanics | observed (6/6 sites)
   Groups: arithmetic, memory operations, table/dynamic dispatch; main callers: D2BE (unresolved), D501 (latch_super_hold_reels_from_hold_inputs), B403 (scan_nudge_buttons_and_request_reel_step), F509 (unresolved), F4F6 (unresolved); calls: 8444
@@ -268,7 +268,7 @@ Shared bodies have no colon header at entry-2.
   Groups: composition of script calls; main callers: AB33 (record_stake_accounting_unit), ADF8 (unresolved), A588 (update_compensation_gate_from_signed_counter); calls: 9F12
   operations vm_push_word_body_word, script_9f10, vm_return_to_caller_stream
 9F43.txt | store_result_byte_b9_if_zero | reviewed token mechanics | observed (9/9 sites)
-  Groups: boolean/bit operations, control flow, memory operations, stack/cell helpers; main callers: B72D (unresolved), EDD3 (unresolved), EE34 (unresolved); calls: none/dynamic
+  Groups: boolean/bit operations, control flow, memory operations, stack/cell helpers; main callers: B72D (run_nudges_with_saved_target_and_post_sequence_improvement), EDD3 (unresolved), EE34 (unresolved); calls: none/dynamic
   reads 00B9; writes 00B9
 9F58.txt | apply_pattern_8f_to_indexed_lamp_record | reviewed token mechanics | observed (3/3 sites)
   Groups: lamps; main callers: DAC7 (animate_ladder_and_adjust_nudgepot_then_set_destination), DDF3 (advance_feature_index_with_lamp_and_sound_steps), C90C (super_stepper_animate_step_commit_award_and_clear_trail), DB58 (animate_snake_and_reduce_nudgepot_then_set_destination), CD29 (special_feature_boost), CA7B (animate_feature_position_toward_destination), CB60 (special_feature_adders_and_ladders), C98E (cash_feature_super_stepper); +6 other callers in JSON; calls: 9B18
@@ -286,7 +286,7 @@ Shared bodies have no colon header at entry-2.
   Groups: boolean/bit operations, reels, reels/symbol tests, stack/cell helpers; main callers: B2A8 (unresolved), B5ED (unresolved), B91D (refresh_pending_award_after_nudge_result_gate), B458 (select_or_prepare_nudge_reel_records); calls: none/dynamic
   native calls 29EC
 9FA2.txt | reels_test_all_three_symbol_flag2 | reviewed token mechanics | observed (12/12 sites)
-  Groups: boolean/bit operations, memory operations, reel records, reels, reels/symbol tests; main callers: A2AB (unresolved), B72D (unresolved), F0B0 (unresolved), D199 (unresolved), EE34 (unresolved), EE11 (unresolved), F19B (test_reel_result_and_random_gate), B4AD (unresolved); +6 other callers in JSON; calls: 9D7C,9D86
+  Groups: boolean/bit operations, memory operations, reel records, reels, reels/symbol tests; main callers: A2AB (unresolved), B72D (run_nudges_with_saved_target_and_post_sequence_improvement), F0B0 (unresolved), D199 (unresolved), EE34 (unresolved), EE11 (unresolved), F19B (test_reel_result_and_random_gate), B4AD (unresolved); +6 other callers in JSON; calls: 9D7C,9D86
   native calls 2C12
 9FBC.txt | reels_test_exactly_two_symbol_flag2 | reviewed token mechanics | observed (13/13 sites)
   Groups: arithmetic, boolean/bit operations, control flow, memory operations, reel records, reels/symbol tests, stack/cell helpers; main callers: EFF9 (unresolved), D140 (unresolved), F1C3 (test_reel_symbol_flags_and_selection_mask), D177 (unresolved), F052 (unresolved), F186 (unresolved), A3D0 (unresolved); calls: 9D7C,9D86
@@ -601,10 +601,10 @@ B271.txt | run_dice_reel_motion_and_display | reviewed token mechanics | observe
   Groups: display, lamps, reels, reels/symbol tests, sound/scheduler; main callers: DD38 (wait_feature_selection_then_roll_or_take); calls: 856B,9ADB,B1D0,B1FD,B25B
   native calls 3CC0,3D0E,5B77,61F6
 B2A8.txt | purpose unresolved | grouping only; purpose unresolved | observed (30/30 sites)
-  Groups: boolean/bit operations, control flow, lamps, memory operations, stack/cell helpers; main callers: B72D (unresolved); calls: 9ADB,9F93
+  Groups: boolean/bit operations, control flow, lamps, memory operations, stack/cell helpers; main callers: B72D (run_nudges_with_saved_target_and_post_sequence_improvement); calls: 9ADB,9F93
   reads 00BD,00BE,00DE
 B2E8.txt | refresh_nudge_count_lamps | reviewed token mechanics | observed (13/13 sites)
-  Groups: boolean/bit operations, control flow, lamps, memory operations, nudges; main callers: B72D (unresolved), B31F (execute_requested_nudge_motion), B712 (unresolved), B306 (consume_nudge_and_refresh_lamps); calls: 9AFD,A87B,A8EF
+  Groups: boolean/bit operations, control flow, lamps, memory operations, nudges; main callers: B72D (run_nudges_with_saved_target_and_post_sequence_improvement), B31F (execute_requested_nudge_motion), B712 (compare_completed_nudge_result_and_offer_automatic_improvement), B306 (consume_nudge_and_refresh_lamps); calls: 9AFD,A87B,A8EF
   reads 00BD,00BE
 B306.txt | consume_nudge_and_refresh_lamps | reviewed gameplay context | observed (11/11 sites)
   Groups: boolean/bit operations, control flow, memory operations, nudges; main callers: B31F (execute_requested_nudge_motion); calls: B2E8
@@ -640,7 +640,7 @@ B4AD.txt | purpose unresolved | grouping only; purpose unresolved | observed (11
   Groups: boolean/bit operations, memory operations, reels; main callers: B4C5 (run_nudge_sequence); calls: 9FA2
   reads 00BE; native calls 1AA3,2BEB
 B4C5.txt | run_nudge_sequence | reviewed gameplay context | observed (23/25 sites)
-  Groups: boolean/bit operations, control flow, lamps, mask tests, mask/address records, memory operations, nudges, sound/scheduler; main callers: B72D (unresolved); calls: 8417,841E,9ADB,B3C8,B43D,B458,B4AD
+  Groups: boolean/bit operations, control flow, lamps, mask tests, mask/address records, memory operations, nudges, sound/scheduler; main callers: B72D (run_nudges_with_saved_target_and_post_sequence_improvement); calls: 8417,841E,9ADB,B3C8,B43D,B458,B4AD
   reads 00BE; native calls 4982,5B77
 B4FC.txt | purpose unresolved | grouping only; purpose unresolved | observed (11/13 sites)
   Groups: control flow, memory operations; main callers: B51D (unresolved); calls: 7D44,7DF0,A5A5
@@ -652,24 +652,24 @@ B5D7.txt | purpose unresolved | grouping only; purpose unresolved | observed (7/
   Groups: boolean/bit operations, control flow, memory operations, stack/cell helpers; main callers: B5ED (unresolved); calls: 9A1C
   reads 0330
 B5ED.txt | purpose unresolved | grouping only; purpose unresolved | observed (26/26 sites)
-  Groups: boolean/bit operations, control flow, memory operations, stack/cell helpers; main callers: B72D (unresolved); calls: 9F93,B51D,B5D7
+  Groups: boolean/bit operations, control flow, memory operations, stack/cell helpers; main callers: B72D (run_nudges_with_saved_target_and_post_sequence_improvement); calls: 9F93,B51D,B5D7
   reads 00BD,00BE,00BF; writes 00BE; native calls 1AF1
 B626.txt | prepare_nudge_selection_records | reviewed token mechanics | observed (21/21 sites)
-  Groups: arithmetic, memory operations, nudges, reel records, reels; main callers: B72D (unresolved); calls: 9D7C,9D86,9F6A,9F84
+  Groups: arithmetic, memory operations, nudges, reel records, reels; main callers: B72D (run_nudges_with_saved_target_and_post_sequence_improvement); calls: 9D7C,9D86,9F6A,9F84
   reads 00BE; native calls 2BEB
-B652.txt | purpose unresolved | grouping only; purpose unresolved | observed (9/9 sites)
-  Groups: boolean/bit operations, memory operations, reels; main callers: B712 (unresolved); calls: 7D44,9F6A,9FA2
+B652.txt | test_result_meets_saved_target_or_common_symbol_flag2 | natural BD=15hex path verified; other branches static | observed (9/9 sites)
+  Groups: boolean/bit operations, memory operations, reels; main callers: B712 (compare_completed_nudge_result_and_offer_automatic_improvement); calls: 7D44,9F6A,9FA2
   native calls 1AA3,2BEB
 B666.txt | announce_improvement_and_reposition_reels | reviewed token mechanics | observed (46/46 sites)
-  Groups: arithmetic, boolean/bit operations, control flow, display, memory operations, reel records, reels, reels/symbol tests, sound/scheduler, stack/cell helpers; main callers: B712 (unresolved); calls: 856B,8571,99AF,9D7C,9D86,9D97
+  Groups: arithmetic, boolean/bit operations, control flow, display, memory operations, reel records, reels, reels/symbol tests, sound/scheduler, stack/cell helpers; main callers: B712 (compare_completed_nudge_result_and_offer_automatic_improvement); calls: 856B,8571,99AF,9D7C,9D86,9D97
   writes 00BE,00BF; native calls 2BEB,3CC0,3CF7,5B77,61F6; display text 'I CAN DO BETTER'
 B6DB.txt | announce_and_execute_automatic_nudge_plan | reviewed token mechanics | observed (8/8 sites)
-  Groups: display, nudges, sound/scheduler; main callers: B712 (unresolved); calls: 856B,99AF,B384
+  Groups: display, nudges, sound/scheduler; main callers: B712 (compare_completed_nudge_result_and_offer_automatic_improvement); calls: 856B,99AF,B384
   native calls 5B77; display text 'LET ME THINK / HERE I GO'
-B712.txt | purpose unresolved | grouping only; purpose unresolved | observed (12/12 sites)
-  Groups: boolean/bit operations, control flow, memory operations; main callers: B72D (unresolved); calls: B2E8,B652,B666,B6DB
+B712.txt | compare_completed_nudge_result_and_offer_automatic_improvement | natural BD=15hex path verified; other branches static | observed (12/12 sites)
+  Groups: boolean/bit operations, control flow, memory operations; main callers: B72D (run_nudges_with_saved_target_and_post_sequence_improvement); calls: B2E8,B652,B666,B6DB
   reads 00BD
-B72D.txt | purpose unresolved | grouping only; purpose unresolved | observed (33/33 sites)
+B72D.txt | run_nudges_with_saved_target_and_post_sequence_improvement | natural BD=15hex path verified; other branches static | observed (33/33 sites)
   Groups: boolean/bit operations, control flow, lamps, mask/address records, memory operations, reels; main callers: FC34 (paid_play_sequence), B91D (refresh_pending_award_after_nudge_result_gate); calls: 8417,9986,9ADB,9CA5,9F43,9FA2,B2A8,B2E8,B4C5,B5ED,B626,B712
   writes 00BE,00BF,02C6; native calls 1AA3,2BEB
 B774.txt | purpose unresolved | grouping only; purpose unresolved | observed (14/14 sites)

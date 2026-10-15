@@ -29,10 +29,12 @@ param(
     [switch]$NudgeStack,
     [switch]$NudgeReturn,
     [switch]$NudgeSequence,
+    [switch]$NudgeResult,
     [ValidateSet('Ladder','Snake')][string]$BoardLink
 )
 $ErrorActionPreference='Stop'
 if($NudgeStack -and !$NudgeMotion){throw 'NudgeStack requires NudgeMotion'}
+if($NudgeResult -and !$NudgeSequence){throw 'NudgeResult requires NudgeSequence'}
 if($NudgeSequence -and !$NudgeReturn){throw 'NudgeSequence requires NudgeReturn'}
 if($NudgeReturn -and !$NudgeMotion){throw 'NudgeReturn requires NudgeMotion'}
 if($ContinueBoard -and (!$BoardMovement -and !$BoardLink -or $NudgePotProbe)){throw 'ContinueBoard requires a natural BoardMovement or BoardLink capture'}
@@ -198,6 +200,7 @@ if($NudgeSequence) {
 if($NudgeStack) {
  $extra+='wpset 0x78b,9,w,temp0==1,{printf "NS pc=%04X address=%04X value=%02X s=%04X y=%04X f4=%04X cycle=%016X\n",pc,wpaddr,wpdata,s,y,w@0xf4,totalcycles;go}'
 }
+if($NudgeResult){$extra+=('bpset 0xfc,temp0==1 && y==0xe263,{printf "'+$format+'",'+$values+';save result-ram.bin,0,800;temp0=0;quit}')}
 if($extra.Count -gt 0) {
  # Debugger setup invokes paused frame callbacks. Ignore precisely the added
  # setup callbacks in this copied observer, preserving the original physical times.
@@ -225,6 +228,7 @@ if($NudgeRequest){$dispatchAction="temp0=(y!=0xb31f);$print;go"}
 if($NudgeMotion){$dispatchAction="temp0=(y!=0xb34e);$print;go"}
 if($NudgeReturn){$dispatchAction="temp0=(y!=0xb403 || b@0xbe!=2);$print;go"}
 if($NudgeSequence){$dispatchAction="temp0=(y!=0xb749);$print;go"}
+if($NudgeResult){$dispatchAction="temp0=(y!=0xe263);$print;go"}
 if($JackpotProbe) {
  if(!$FullFeature){throw 'Jackpot probe requires -FullFeature'}
  # Synthetic helper experiment: enter A365 at the real C721 return boundary.
@@ -235,7 +239,7 @@ $commands=@(
  # Keep the original fixture's one-breakpoint startup command count. Each debugger
  # setup command triggers a paused frame callback in this harness; extra commands
  # change frame-number-based physical input timing. temp0 starts at zero in MAME.
- $(if($BoardSelection -or $DiceRequests -or $DiceMotion -or $BoardMovement -or $BoardLink){"bpset 0xfc,temp0==1,{$dispatchAction}"}elseif($BoardResultCaller){"bpset 0xfc,(y==0xe2fc && w@u==2 && b@0xc9==0x20) || temp0==1,{$dispatchAction}"}elseif($CashFeatureCaller){"bpset 0xfc,(y==0xdff6 && b@0xc9==0x20) || temp0==1,{$dispatchAction}"}else{"bpset 0xfc,y==0xc721 || temp0==1,{$dispatchAction}"})
+ $(if($BoardSelection -or $DiceRequests -or $DiceMotion -or $BoardMovement -or $BoardLink){"bpset 0xfc,temp0==1$(if($NudgeResult){' && y!=0xe263'}),{$dispatchAction}"}elseif($BoardResultCaller){"bpset 0xfc,(y==0xe2fc && w@u==2 && b@0xc9==0x20) || temp0==1,{$dispatchAction}"}elseif($CashFeatureCaller){"bpset 0xfc,(y==0xdff6 && b@0xc9==0x20) || temp0==1,{$dispatchAction}"}else{"bpset 0xfc,y==0xc721 || temp0==1,{$dispatchAction}"})
 )+$extra+@(
  $(if($NudgePrompt){'gtime #600000'}else{'gtime #2400000'}),
  'save ram-final.bin,0,800',
@@ -250,7 +254,7 @@ $arguments=@('m4addr','-noreadconfig','-rompath',$RomDirectory,
 $arguments | ConvertTo-Json | Set-Content "$run/arguments.json"
 @{mame_sha256=(Get-FileHash -LiteralPath $MameExecutable).Hash;replay_sha256=(Get-FileHash "$run/replay-actions.csv").Hash;
  native_sound_capture=[bool]$NativeSound;native_nvram_capture=[bool]$NativeNvram;full_feature_capture=[bool]$FullFeature;native_input_capture=[bool]$NativeInput;native_lamp_frames=[bool]$NativeLampFrames;native_alpha_capture=[bool]$NativeAlpha;native_scan_capture=[bool]$NativeScan;shared_timing=[bool]$SharedTiming;paused_setup_callbacks_skipped=$extra.Count;
- timer_deadlines=[bool]$TimerDeadlines;cpu_interrupts=[bool]$CpuInterrupts;synthetic_jackpot_probe=[bool]$JackpotProbe;cash_feature_caller=[bool]$CashFeatureCaller;board_result_caller=[bool]$BoardResultCaller;board_selection=[bool]$BoardSelection;dice_requests=[bool]$DiceRequests;dice_motion=[bool]$DiceMotion;board_movement=[bool]$BoardMovement;synthetic_nudge_pot_probe=[bool]$NudgePotProbe;board_link=$BoardLink;continue_board=[bool]$ContinueBoard;availability=[bool]$Availability;nudge_entry=[bool]$NudgeEntry;nudge_prompt=[bool]$NudgePrompt;nudge_request=[bool]$NudgeRequest;nudge_motion=[bool]$NudgeMotion;nudge_stack=[bool]$NudgeStack;nudge_return=[bool]$NudgeReturn;nudge_sequence=[bool]$NudgeSequence;additional_physical_take_at_square22=[bool]$NudgeEntry;
+ timer_deadlines=[bool]$TimerDeadlines;cpu_interrupts=[bool]$CpuInterrupts;synthetic_jackpot_probe=[bool]$JackpotProbe;cash_feature_caller=[bool]$CashFeatureCaller;board_result_caller=[bool]$BoardResultCaller;board_selection=[bool]$BoardSelection;dice_requests=[bool]$DiceRequests;dice_motion=[bool]$DiceMotion;board_movement=[bool]$BoardMovement;synthetic_nudge_pot_probe=[bool]$NudgePotProbe;board_link=$BoardLink;continue_board=[bool]$ContinueBoard;availability=[bool]$Availability;nudge_entry=[bool]$NudgeEntry;nudge_prompt=[bool]$NudgePrompt;nudge_request=[bool]$NudgeRequest;nudge_motion=[bool]$NudgeMotion;nudge_stack=[bool]$NudgeStack;nudge_return=[bool]$NudgeReturn;nudge_sequence=[bool]$NudgeSequence;nudge_result=[bool]$NudgeResult;additional_physical_take_at_square22=[bool]$NudgeEntry;
  initial_state=$(if($NudgePotProbe){'Fresh isolated physical campaign; explicit synthetic Y=DDE3 redirection at B28F; no RAM/ROM injection'}elseif($JackpotProbe){'Fresh isolated physical campaign; explicit synthetic jackpot VM-entry redirection; no RAM/ROM injection'}else{'Fresh isolated default configuration and absent NVRAM; physical-input fixture only; no RAM/ROM injection.'})} |
  ConvertTo-Json | Set-Content "$run/provenance.json"
 $previousReplay=$env:MPU4_REPLAY
@@ -262,7 +266,8 @@ try {
  try { & $MameExecutable @arguments *> "$run/console.txt"; $LASTEXITCODE | Set-Content "$run/exit-code.txt" }
  finally { Pop-Location }
 } finally { $env:MPU4_REPLAY=$previousReplay; $env:MPU4_POLICY=$previousPolicy }
-$completion=if($NudgeSequence){'^SC y=B749 '}elseif($NudgeReturn){'^SC y=B403 '}elseif($NudgeMotion){'^SC y=B34E '}elseif($NudgeRequest){'^SC y=B31F '}elseif($NudgePrompt){'^SC y=B403 '}elseif($NudgeEntry){'^SC y=B4C5 '}elseif($Availability){'^SC y=(DD7E|DD98) '}elseif($ContinueBoard){'^SC y=(DD38|E2FC) '}elseif($BoardLink){'^SC y=DE81 '}elseif($NudgePotProbe){'^SC y=DDEF '}elseif($BoardMovement){'^SC y=(DD38|DE96) '}elseif($DiceMotion){'^SC y=B28F '}elseif($DiceRequests){'^SC y=B283 '}else{'^SC y=C71D '}
+if((Get-Content -LiteralPath "$run/exit-code.txt") -ne '0'){throw "MAME exited unsuccessfully; do not curate an incomplete capture: $run"}
+$completion=if($NudgeResult){'^SC y=E263 '}elseif($NudgeSequence){'^SC y=B749 '}elseif($NudgeReturn){'^SC y=B403 '}elseif($NudgeMotion){'^SC y=B34E '}elseif($NudgeRequest){'^SC y=B31F '}elseif($NudgePrompt){'^SC y=B403 '}elseif($NudgeEntry){'^SC y=B4C5 '}elseif($Availability){'^SC y=(DD7E|DD98) '}elseif($ContinueBoard){'^SC y=(DD38|E2FC) '}elseif($BoardLink){'^SC y=DE81 '}elseif($NudgePotProbe){'^SC y=DDEF '}elseif($BoardMovement){'^SC y=(DD38|DE96) '}elseif($DiceMotion){'^SC y=B28F '}elseif($DiceRequests){'^SC y=B283 '}else{'^SC y=C71D '}
 if(!(Select-String -LiteralPath "$run/debug.log" -Pattern $completion -Quiet)){throw "Requested completion was not captured; inspect $run"}
 Get-ChildItem $run -File | Get-FileHash | Select-Object Path,Hash | ConvertTo-Json | Set-Content "$run/hashes.json"
 Write-Output $run

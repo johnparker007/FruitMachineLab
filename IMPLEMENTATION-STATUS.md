@@ -275,3 +275,19 @@ The encoding checkpoint now preserves 657 byte-checked native rows, nine VM
 spans, 7A15 encodings and 61 natural stack writes with implementation/evidence
 links. Full symbolic toolchain and fresh Ghidra metadata export remain deferred/
 unavailable respectively. See docs/recovery/NUDGE-RETURN-PASS.md.
+
+## Automatic nudge improvement and pending result — 15 October 2026
+
+Live continues past B749 through recovered B712/B652, B666 rewind and
+B6DB/B384/B352 automatic improvement. Native2A2F movement-plan return and7A26
+outer-loop index are translated. The result is pending16/current-win0, positions
+6,90,42 and symbols2,2,2. Live stops at E263 before caller/award routing.
+Natural reference:66368 canonical VM observations,162 lamp/frame requests,1005
+sound commands,405 alpha bytes; strict count of6197 existing typed-list/local-
+release exclusions. Two complete runs agree on the VM digest and3360 native
+core observations.17 synthetic helper cases check complete low RAM, separately
+labelled. Live matches ordered lamps, final alpha, reels and51 protected bytes
+at the saved result boundary; actual pause/resume during automatic movement passes.
+135 headless groups/eight WPF smoke modes pass. Existing encoding checkpoint now
+checks700 native rows/17 VM spans and links new dictionary/data/implementation
+facts. Full symbolic toolchain remains deferred. See docs/recovery/NUDGE-IMPROVEMENT-PASS.md.

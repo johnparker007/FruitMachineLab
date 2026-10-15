@@ -39,7 +39,7 @@ public sealed class SkillCashLiveSession
     private bool boardAdvancing,boardPromptReady;
     public bool AwaitingNudgeInput {get;private set;}
     public bool NudgeMoving {get;private set;}
-    private bool nudgeAttempted;
+    private bool nudgeAttempted,nudgeContext;
     public bool MotorBusy=>reelMotion?.Busy==true;
     public bool IncludesCaller {get;}
     public bool StartsAtBoardSelection {get;}
@@ -99,7 +99,7 @@ public sealed class SkillCashLiveSession
             BoardMovementState.LoadData(Machine,evidence);BoardLinkState.LoadData(Machine,evidence);
             if(boardLink is not null)initialClock=BoardLinkState.Apply(Machine,evidence,boardLink);
             boardVisited.Add(Machine.Memory[0xC9]);
-            foreach(string file in new[]{"ladder-link.json","snake-link.json","ladder-link-next.json","snake-link-next.json","board-movement-next.json","ladder-availability.json","nudge-entry.json","nudge-prompt.json","nudge-request.json","nudge-motion-vm.json","nudge-return.json","nudge-sequence.json"}) {
+            foreach(string file in new[]{"ladder-link.json","snake-link.json","ladder-link-next.json","snake-link-next.json","board-movement-next.json","ladder-availability.json","nudge-entry.json","nudge-prompt.json","nudge-request.json","nudge-motion-vm.json","nudge-return.json","nudge-sequence.json","nudge-result.json"}) {
                 using var linkCosts=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",file)));
                 foreach(var item in linkCosts.RootElement.GetProperty("sites").EnumerateObject())siteCosts.TryAdd(item.Name,item.Value.GetUInt64());
                 foreach(var item in linkCosts.RootElement.GetProperty("tokens").EnumerateObject())tokenCosts.TryAdd(item.Name,item.Value.GetUInt64());
@@ -161,6 +161,10 @@ public sealed class SkillCashLiveSession
                 if(ContinueBoard && instruction.Site==0xDD38){boardAdvancing=false;boardChoiceCompleted=false;boardPromptReady=false;BoardPrompts++;}
                 if(StartsAtBoardSelection && boardVisited[^1]!=state.Memory[0xC9])boardVisited.Add(state.Memory[0xC9]);
                 if(instruction.Site==0xDDF3 && diceRequest is not null)boardAdvancing=true;
+                if(instruction.Site==0xB72D)nudgeContext=true;
+                if(instruction.Site==0xB770){nudgeContext=false;AwaitingNudgeInput=false;}
+                if(instruction.Site==0xB6C4)NudgeMoving=true;
+                if(instruction.Site==0xB6D7)NudgeMoving=false;
                 if(instruction.Site==0xB403)AwaitingNudgeInput=true;
                 if(instruction.Site==0xB34E)NudgeMoving=false;
                 if(instruction.Site==0xB31F){AwaitingNudgeInput=false;NudgeMoving=true;nudgeAttempted=true;}
@@ -261,7 +265,7 @@ public sealed class SkillCashLiveSession
                 if(nextVm==next) {
                     if(--budget==0)throw new InvalidOperationException("Live dispatch budget exceeded");
                     var instruction=executor.NextInstruction!;
-                    if(ContinueBoard && instruction.Site==0xB749)throw new NotSupportedException($"BOARD nudge sequence completed; remaining nudges {Machine.Memory[0xBE]}, pot {Machine.Memory[0xBF]}. Post-nudge improvement and result routing is the next recovery boundary.");
+                    if(ContinueBoard && nudgeAttempted && instruction.Site==0xE263)throw new NotSupportedException($"BOARD nudge result ready; pending award {Machine.ReadWord(0xBA)}, current win {Machine.ReadWord(0x2FA)}. Result caller and award routing is the next recovery boundary.");
                     if(!ContinueBoard && boardAdvancing && instruction.Site is 0xDE96 or 0xDD38)throw new NotSupportedException($"BOARD advance completed at square {Machine.Memory[0xC9]} (type {Machine.Memory[0xA12E+Machine.Memory[0xC9]]}, nudge pot {Machine.Memory[0xBF]}); the next board result/selection is the recovery boundary. Restart to play again.");
                     if(!ContinueBoard && BoardLinkEntry is not null && instruction.Site==0xDE81)throw new NotSupportedException($"BOARD {BoardLinkEntry} completed at square {Machine.Memory[0xC9]} (nudge pot {Machine.Memory[0xBF]}); following board result/selection remains the recovery boundary. Restart to watch again.");
                     if(ContinueBoard && instruction.Site==0xE2FC && Machine.Data.Peek() is not (1 or 2))throw new NotSupportedException($"BOARD result type {Machine.Data.Peek()} at square {Machine.Memory[0xC9]}; this result route is the next recovery boundary.");
@@ -270,7 +274,7 @@ public sealed class SkillCashLiveSession
                     if(ContinueBoard && instruction.Site==0xE227)throw new NotSupportedException($"BOARD special feature at square {Machine.Memory[0xC9]} (type {Machine.Memory[0xA12E+Machine.Memory[0xC9]]}); announcement/feature routing is the next recovery boundary.");
                     if(ContinueBoard && instruction.Site==0xE2E5 && (Machine.ReadWord(0xA0)&0x10)!=0 && Machine.Data.Peek() is not (1 or 2))throw new NotSupportedException($"BOARD taken result type {Machine.Data.Peek()} at square {Machine.Memory[0xC9]}; this result helper remains outside the verified routes.");
                     if(StartsAtBoardSelection && instruction.Native==0x61F6 && !motionNativeReady) {
-                        if(!motionInitializing){if(!NudgeMoving)diceRequest=new(Machine.Memory[0x166],unchecked((sbyte)Machine.Memory[0x16F]),Machine.Memory[0x16E]);reelMotion!.Prepare(value=>Mpu4InputConditions.Evaluate(Machine,value));reelMotion.Enable();motionInitializing=true;}
+                        if(!motionInitializing){if(!nudgeContext)diceRequest=new(Machine.Memory[0x166],unchecked((sbyte)Machine.Memory[0x16F]),Machine.Memory[0x16E]);reelMotion!.Prepare(value=>Mpu4InputConditions.Evaluate(Machine,value));reelMotion.Enable();motionInitializing=true;}
                         nextVm=checked(serviceEpoch+services[serviceIndex].Scan);continue;
                     }
                     waitingForScheduler=instruction.Native==0x5CCB && scheduler.Active;

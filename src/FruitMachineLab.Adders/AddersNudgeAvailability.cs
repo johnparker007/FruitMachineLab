@@ -17,6 +17,17 @@ public static class AddersNudgeAvailability
         if(b==c)return m.Memory[Cell.Add(0x75C4,unchecked((ushort)(sbyte)b))];
         return 0;
     }
+    // Native 1AA3 filters small pair results, then retries common flags.
+    public static void PushMatchingResult(Machine m)
+    {
+        byte result=Lookup(m);if(result<7)result=0;
+        if(result==0){
+            byte common=(byte)(m.Memory[0x161]&m.Memory[0x163]&m.Memory[0x165]);
+            result=(common&1)!=0 ? m.Memory[0x75BE] : (byte)0;
+            if(result==0 && m.Memory[0xDD]!=0 && (common&2)!=0){m.Memory[0xDE]=0xFF;result=0x11;}
+        }
+        m.Data.Push(unchecked((ushort)(short)(sbyte)result));
+    }
     public static void Search(Machine m,ushort frame)
     {
         ushort At(int offset)=>Cell.Add(frame,(ushort)offset);

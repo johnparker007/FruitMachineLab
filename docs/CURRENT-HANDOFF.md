@@ -10,7 +10,7 @@ batch, including its verification.
 - Live Skill Cash: incremental VM, retained state, physical momentary Start input,
   actual Pause/Resume, generated lamp/alpha outputs and diagnostic state display.
 - Separate verified playback/scrubber; original MAME-backed verification retained.
-- Last development batch: 118 headless groups passed. Headless and isolated WPF
+- Last development batch: 124 headless groups passed. Headless and isolated WPF
   builds passed; Live/playback WPF smoke checks and rendered layouts were checked.
 - John subsequently reported that the live feature works well.
 
@@ -71,7 +71,29 @@ scope and preserved earlier timing qualifications.
 
 ## Next development work
 
-Latest batch: 29EC flagged search translated and independently matched against a
+Latest batch: Live TAKE at22 now reaches3 NUDGES and accepts NUDGE1/2/3 through
+actual sampled BLACK2 bits02/04/08 (selectors1A/18/16, table9E06). Only the chosen
+requested offset increments; stop before B31F, BE remains3 and awards remain0.
+Controls release on pause, capture/focus loss, window deactivation and stop.
+Native1AA3 and alpha69/3DA7 are translated and checked. Dynamic native condition
+EXECUTE uses the existing callback without adding VM frames. See
+recovery/NUDGE-INPUT-PASS.md and maps/nudge-inputs.json.
+
+Natural references:375 prompt observations through B403;553 physical Nudge1
+request observations through B31F; full VM/lamp/sound/alpha match. Each preserves
+the prior229-observation preparation prefix and the same141 local masks. Natural
+request uses an explicit six-frame physical Nudge1 pulse after the three-nudge
+display; no state injection. Matrix1AA3 covers seven synthetic cases below0700.
+124 headless groups/eight WPF smoke modes pass. New --live-nudge-smoke-test uses
+focused keyboard handlers for all3 controls and checks mouse-capture failure/loss
+release; actual mouse-held nudge acceptance is not automated. Existing7 modes pass.
+
+Next: capture B31F through completed main-reel motion, B306 nudge consumption,
+refreshed symbols and returned prompt/result. Verify61F6 service, optics and
+cleanup independently rather than reusing dice assumptions. Do not decrement
+count, move reels or issue awards speculatively. UI has no gameplay logic.
+
+Previous preparation batch: 29EC flagged search translated and matched against a
 17-case synthetic native matrix. Natural physical TAKE at square22 now captures
 E247→B4C5: 229 VM observations, 24 lamps, three native calls, zero sound/alpha in
 this narrow segment. Live type1 dispatch prepares BE=3, BD=15hex and stops before

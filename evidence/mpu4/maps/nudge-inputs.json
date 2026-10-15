@@ -1,0 +1,37 @@
+{
+  "classification": "Static ROM condition table plus trace-backed MAME input names; natural request capture covers Nudge1, Live tests cover all three",
+  "table": "9E06",
+  "port": "BLACK2",
+  "mux_column": 3,
+  "polarity": "active-high",
+  "sampling": "B403 executes the indexed condition token; selectors read sampled port3 levels through existing 27D2/19B8/1A87 acquisition. No new edge detector is substituted.",
+  "motion_boundary": "B31F before any motor preparation or nudge consumption",
+  "entries": [
+    {
+      "reel": 1,
+      "token": "83B1",
+      "selector": "1A",
+      "condition_record": "7212",
+      "mask": "02",
+      "mame_label": "Hold 1/Nudge 1"
+    },
+    {
+      "reel": 2,
+      "token": "83B4",
+      "selector": "18",
+      "condition_record": "720A",
+      "mask": "04",
+      "mame_label": "Hold 2/Nudge 2"
+    },
+    {
+      "reel": 3,
+      "token": "83B7",
+      "selector": "16",
+      "condition_record": "7202",
+      "mask": "08",
+      "mame_label": "Hold 3/Nudge 3"
+    }
+  ],
+  "input_inventory_sha256": "EEF9A5870E45D171978A90D1BEBC139758B3A3426593DB100A74E380C39382CE",
+  "rom_sha1": "402D1518BB78FDC489B06C2AABC771E5CE151847"
+}

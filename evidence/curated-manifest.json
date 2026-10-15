@@ -110,6 +110,11 @@
     "sha256": "857180CDC45CC8BD8243B29AFAD847791F9025148D6FB3BF7A33100938B4F4BF"
   },
   {
+    "path": "docs/recovery/NUDGE-INPUT-PASS.md",
+    "bytes": 7543,
+    "sha256": "5ABA77C514E2C575EEC70A67FC75676EB885E7BFEE46263F7EFBC60EFE048CCA"
+  },
+  {
     "path": "docs/recovery/NUDGE-PREPARATION-PASS.md",
     "bytes": 6423,
     "sha256": "4FE8BD07A70B843F35CC72448730CADD29FEAC50CD8312B79A5E278F6A8A03C9"
@@ -270,14 +275,19 @@
     "sha256": "762612A5EC036AD0A1B1465F8403CD532C9797EB5314A517D0970049F4AC12A1"
   },
   {
+    "path": "evidence/mpu4/maps/nudge-inputs.json",
+    "bytes": 1213,
+    "sha256": "57EFCB24E41E03CF7497E052B4FB80776F4818D18F1F868B7F144BF6EF59021A"
+  },
+  {
     "path": "evidence/mpu4/maps/nudge-preparation-data.json",
-    "bytes": 361,
-    "sha256": "99DF8EDFC50298F74B365D19539350689FCB55E88A10EF758D608B8433B51105"
+    "bytes": 657,
+    "sha256": "EBE5255C5E66D001E05324770D0CA183E9BB361BE1A90BB4A587B8B310978917"
   },
   {
     "path": "evidence/mpu4/maps/nudge-preparation-semantics.json",
-    "bytes": 1978,
-    "sha256": "0FDF7F184E57E0E5E7469AB4CFF473A616C32132F78F1D0201760AA694E37C59"
+    "bytes": 2172,
+    "sha256": "9743B8D898CC670116B2169A5827764B6C7EFBD602C7AD1C6060C20C6A8D9078"
   },
   {
     "path": "evidence/mpu4/maps/prerequisite-pass-branch-prerequisites.json",
@@ -373,6 +383,11 @@
     "path": "evidence/mpu4/native/1a87.json",
     "bytes": 1036,
     "sha256": "10DC2B9E5BC7195D4350461DCEE7D138ACD73BC38E095E07FC1A9160FD0672A1"
+  },
+  {
+    "path": "evidence/mpu4/native/1aa3.json",
+    "bytes": 1336,
+    "sha256": "50F6C0BCCF5568C0A4ACC5B32CD79C77B70653691A3ED46EA334A27F92978D38"
   },
   {
     "path": "evidence/mpu4/native/1ac3.json",
@@ -483,6 +498,11 @@
     "path": "evidence/mpu4/native/3d9d.json",
     "bytes": 1325,
     "sha256": "AC173036E138492A5DF6ACE2011AA661851FAC1B015FAA3B30E2EF8E9B20A888"
+  },
+  {
+    "path": "evidence/mpu4/native/3da7.json",
+    "bytes": 1881,
+    "sha256": "6C49AD6C63716F7B09A0A265E25FDF87F60762D8A3A1C516B5AAD267EE9C7CF5"
   },
   {
     "path": "evidence/mpu4/native/3db6.json",
@@ -1545,6 +1565,16 @@
     "sha256": "D653B575C28F1095D9B3149DEA1F4406FB4D8C6C183434511C0CD2EFF8B01D35"
   },
   {
+    "path": "evidence/mpu4/skill-cash/matching-result-matrix-debugger.cmd",
+    "bytes": 1910,
+    "sha256": "B2E2ED41C95429218DA4D4B40AC039162B011F19F7AFDCDA52890A5D3442EE41"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/matching-result-matrix.json",
+    "bytes": 32673,
+    "sha256": "28CC1177734ADBA8D7B9FAA3E33C48818D6CC99DE1C0185FF85D5502CEDE8D69"
+  },
+  {
     "path": "evidence/mpu4/skill-cash/nudge-entry-debugger.cmd",
     "bytes": 5582,
     "sha256": "0C2078DE9E56E18E1618E7A120393AE738ABE435EE03906B96525739877A02BB"
@@ -1573,6 +1603,36 @@
     "path": "evidence/mpu4/skill-cash/nudge-pot-probe.json",
     "bytes": 43476,
     "sha256": "A20C2629B57FC8854F45C7F31CABE942E66DF537595DCB83C8F840BBAF6F7875"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/nudge-prompt-debugger.cmd",
+    "bytes": 5581,
+    "sha256": "26B6D7E86D6B4D73C5C596B74F1CE241A58DE53A0332300E8B5C01A3992BCFFA"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/nudge-prompt-verification.json",
+    "bytes": 1887,
+    "sha256": "B0116AF8915B536635991AC708A467551F6354BA978FEFECEC0B1E7944842BEC"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/nudge-prompt.json",
+    "bytes": 51287,
+    "sha256": "25DE0A62C65AC1D735E28681AF717BE41DA7112653808082363D8D7AA1D390B3"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/nudge-request-debugger.cmd",
+    "bytes": 5581,
+    "sha256": "9895B7D22793B424BED47F4C29A4F377F54E050A6B9600698CCE375A88AD3F43"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/nudge-request-verification.json",
+    "bytes": 1913,
+    "sha256": "51617CB71CD086903209C7DD72B33D4D61A117522B4C83FD27CB57734B7FAA6C"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/nudge-request.json",
+    "bytes": 71475,
+    "sha256": "52F80CE98EA5F91C9FAAEA874A5421B77C79C4B40E054DF615AA221C40E415CC"
   },
   {
     "path": "evidence/mpu4/skill-cash/output-scan-debugger.cmd",

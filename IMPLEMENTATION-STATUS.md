@@ -235,5 +235,15 @@ and three native calls, with explicit uninitialized-local masks until ROM writes
 Live TAKE now prepares three nudges and stops before main-reel interaction.
 118 headless groups and seven GUI smoke modes pass. See
 docs/recovery/NUDGE-PREPARATION-PASS.md for exact evidence and next boundaries.
+
+## Nudge prompt/input — 15 October 2026
+
+Natural prompt/request references match375/553 VM observations and complete
+outputs, preserving earlier preparation proof. Native1AA3 matching-result and
+alpha69 plural formatting now execute. Temporary NUDGE1/2/3 controls route through
+sampled BLACK2 input and actual VM scanning. Live stops before B31F motor motion,
+with only the selected request incremented and no count/award change. 124 headless
+groups and eight GUI smoke modes pass; mouse-held nudge acceptance itself is not
+automated. See docs/recovery/NUDGE-INPUT-PASS.md for exact evidence/limitations.
 One advance is supported; complete board/game play and the earlier alpha brightness
 timing discrepancy remain open. No installations or configuration changes occurred.

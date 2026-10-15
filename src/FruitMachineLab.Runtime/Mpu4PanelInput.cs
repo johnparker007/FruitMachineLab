@@ -11,11 +11,13 @@ public sealed class Mpu4PanelInput(Machine machine)
     public byte PhysicalBlack2=>ports[3];
     public void SetStart(bool pressed){StartPressed=pressed;ports[3]=(byte)((ports[3]&0x7F)|(pressed ? 0x80 : 0));}
     public void SetTake(bool pressed){TakePressed=pressed;ports[3]=(byte)((ports[3]&0xFE)|(pressed ? 1 : 0));}
+    public bool NudgePressed(int reel){if(reel is <0 or >2)throw new ArgumentOutOfRangeException(nameof(reel));return (ports[3]&(2<<reel))!=0;}
+    public void SetNudge(int reel,bool pressed){if(reel is <0 or >2)throw new ArgumentOutOfRangeException(nameof(reel));byte mask=(byte)(2<<reel);ports[3]=(byte)((ports[3]&~mask)|(pressed ? mask : 0));}
     public void SeedOtherPorts(IReadOnlyList<byte> values)
     {
         if(values.Count!=8)throw new ArgumentException("Eight mux port values required");
         for(int n=0;n<8;n++)ports[n]=n==3 ? (byte)(values[n]&0x7F) : values[n];
-        ports[4]=ports[0];ports[5]=ports[1];SetStart(false);SetTake(false);
+        ports[4]=ports[0];ports[5]=ports[1];Release();
     }
     public void Sample(byte column)
     {
@@ -24,5 +26,5 @@ public sealed class Mpu4PanelInput(Machine machine)
         if(column<2)machine.Memory[column+4]=value;
         machine.Memory[0x8E+column]|=value;machine.Memory[0x96+column]&=value;
     }
-    public void Release(){SetStart(false);SetTake(false);}
+    public void Release(){SetStart(false);SetTake(false);for(int n=0;n<3;n++)SetNudge(n,false);}
 }

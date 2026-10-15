@@ -7,12 +7,14 @@ namespace FruitMachineLab.Adders;
 public record BoardSelectionVerificationResult(int Instructions,int Lamps,int Sounds,int AlphaBytes,int Conditions,bool AlphaExact=true,int ReferenceAlphaBytes=0,string LampSequence="",string AlphaShadow="");
 public static class BoardSelectionVerification
 {
-    public static BoardSelectionVerificationResult Verify(string evidence,bool diceRequests=false,bool diceMotion=false,bool boardMovement=false,bool nudgePotProbe=false,string? boardLink=null,bool continuation=false,bool availability=false,bool nudgeEntry=false)
+    public static BoardSelectionVerificationResult Verify(string evidence,bool diceRequests=false,bool diceMotion=false,bool boardMovement=false,bool nudgePotProbe=false,string? boardLink=null,bool continuation=false,bool availability=false,bool nudgeEntry=false,bool nudgePrompt=false,bool nudgeRequest=false)
     {
+        if(nudgeRequest)nudgePrompt=true;
+        if(nudgePrompt)nudgeEntry=true;
         if(diceMotion)diceRequests=true;
         if(nudgePotProbe)boardMovement=true;
         if(boardLink is not null)boardMovement=true;
-        using var capture=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",nudgeEntry ? "nudge-entry.json" : availability ? "ladder-availability.json" : boardLink is not null ? boardLink+"-link"+(continuation ? "-next" : "")+".json" : nudgePotProbe ? "nudge-pot-probe.json" : boardMovement ? (continuation ? "board-movement-next.json" : "board-movement.json") : diceMotion ? "dice-motion-vm.json" : diceRequests ? "dice-requests.json" : "board-selection.json")));var root=capture.RootElement;
+        using var capture=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",nudgeRequest ? "nudge-request.json" : nudgePrompt ? "nudge-prompt.json" : nudgeEntry ? "nudge-entry.json" : availability ? "ladder-availability.json" : boardLink is not null ? boardLink+"-link"+(continuation ? "-next" : "")+".json" : nudgePotProbe ? "nudge-pot-probe.json" : boardMovement ? (continuation ? "board-movement-next.json" : "board-movement.json") : diceMotion ? "dice-motion-vm.json" : diceRequests ? "dice-requests.json" : "board-selection.json")));var root=capture.RootElement;
         if(boardMovement) {
             int lifted=root.GetProperty("lifted_dispatches").GetInt32();
             if(lifted!=(nudgePotProbe ? 48 : 0) || root.GetProperty("raw_instructions").GetInt32()!=root.GetProperty("instructions").GetInt32()+lifted)throw new InvalidDataException("Unexpected board/probe dispatch normalization");
@@ -25,7 +27,7 @@ public static class BoardSelectionVerification
         var declared=root.GetProperty("undefined_frame_masks").EnumerateObject().ToArray();
         if(declared.Length!=frameMasks.Count || declared.Any(item=>!frameMasks.TryGetValue(item.Name,out int mask) || item.Value.GetInt32()!=mask))throw new InvalidDataException("Invalid uninitialized-frame comparison exclusions");
         var ordinalMasks=nudgeEntry ? root.GetProperty("ordinal_frame_masks").EnumerateArray().ToDictionary(r=>r[0].GetInt32(),r=>r[1].GetInt32()) : new Dictionary<int,int>();int nudgeMask=65535;ushort lastNudgeSite=0;
-        var m=new SkillCashLiveSession(evidence).Machine;ushort clock=boardLink is not null ? BoardLinkState.Apply(m,evidence,boardLink,continuation,availability,nudgeEntry) : boardMovement ? BoardMovementState.Apply(m,evidence,nudgePotProbe,continuation) : BoardSelectionState.Apply(m,evidence,diceRequests);
+        var m=new SkillCashLiveSession(evidence).Machine;ushort clock=boardLink is not null ? BoardLinkState.Apply(m,evidence,boardLink,continuation,availability,nudgeEntry,nudgePrompt,nudgeRequest) : boardMovement ? BoardMovementState.Apply(m,evidence,nudgePotProbe,continuation) : BoardSelectionState.Apply(m,evidence,diceRequests);
         var motion=diceMotion ? new DiceMotionReference(m,evidence) : null;
         using var vmHash=IncrementalHash.CreateHash(HashAlgorithmName.SHA256);using var lampHash=IncrementalHash.CreateHash(HashAlgorithmName.SHA256);using var soundHash=IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
         static void Hash(IncrementalHash hash,ReadOnlySpan<ushort> values){Span<byte> bytes=stackalloc byte[values.Length*2];for(int n=0;n<values.Length;n++)BinaryPrimitives.WriteUInt16BigEndian(bytes.Slice(n*2,2),values[n]);hash.AppendData(bytes);}

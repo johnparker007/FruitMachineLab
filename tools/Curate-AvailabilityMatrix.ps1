@@ -1,5 +1,5 @@
-param([Parameter(Mandatory=$true)][string]$RunDirectory,[switch]$Flagged)
-$ErrorActionPreference='Stop';$root=Split-Path $PSScriptRoot -Parent;$target=Join-Path $root 'evidence/mpu4/skill-cash';$stem=if($Flagged){'flagged-availability-matrix'}else{'availability-matrix'}
+param([Parameter(Mandatory=$true)][string]$RunDirectory,[switch]$Flagged,[switch]$MatchingResult)
+$ErrorActionPreference='Stop';$root=Split-Path $PSScriptRoot -Parent;$target=Join-Path $root 'evidence/mpu4/skill-cash';$stem=if($MatchingResult){'matching-result-matrix'}elseif($Flagged){'flagged-availability-matrix'}else{'availability-matrix'}
 $log=[IO.File]::ReadAllText((Join-Path $RunDirectory 'debug.log'));$cases=Get-Content (Join-Path $RunDirectory 'cases.json') -Raw|ConvertFrom-Json;$rows=[Collections.Generic.List[object]]::new()
 foreach($case in $cases){
  $before=[IO.File]::ReadAllBytes((Join-Path $RunDirectory ($case.id+'-before.bin')));$after=[IO.File]::ReadAllBytes((Join-Path $RunDirectory ($case.id+'-after.bin')))

@@ -59,5 +59,10 @@
     "B403 button scan / token table9E06",
     "B31F main-reel motion and nudge consumption"
   ],
-  "scope": "Natural preparation matched; flagged helper independently matched synthetic native matrix; no main-reel stepping or player nudge button control yet"
+  "scope": "Natural preparation, prompt and first request matched; Live input scan for all three buttons; main-reel stepping, nudge consumption and awards remain bounded at B31F",
+  "next_verified_segments": {
+    "prompt": "skill-cash/nudge-prompt.json",
+    "request": "skill-cash/nudge-request.json",
+    "input_map": "maps/nudge-inputs.json"
+  }
 }

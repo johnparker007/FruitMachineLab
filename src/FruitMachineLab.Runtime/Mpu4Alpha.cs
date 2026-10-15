@@ -95,6 +95,7 @@ public sealed class Mpu4Alpha(Machine machine,Action<byte>? serialOutput=null)
                 case 0x66:Emit(0xE0);break;
                 case 0x6E:Emit((byte)(machine.Memory[0x55]|0xE0));break;
                 case 0x68:machine.WriteWord(0x35,FetchWord());return;
+                case 0x69:Put(machine.Memory[FetchWord()]==1 ? (byte)0x20 : (byte)0x53);break; // native 3DA7 plural suffix
                 case 0x6A:machine.WriteWord(0x52,FetchWord());break;
                 case 0x70:SelectCursor(Fetch());break;
                 case 0x72: {

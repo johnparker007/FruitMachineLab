@@ -5,10 +5,10 @@ Local clone: C:\projects\GitRepos\FruitMachineLab
 
 ## Current status
 
-Latest batch: flagged native search and type-1 nudge preparation. See
-recovery/NUDGE-PREPARATION-PASS.md for natural evidence, synthetic matrix and
-uninitialized-local masks. 118 headless groups and seven GUI smoke modes pass;
---live-availability-smoke-test now checks TAKE through three-nudge preparation.
+Latest batch: nudge prompt and sampled NUDGE1/2/3 request controls. See
+recovery/NUDGE-INPUT-PASS.md for natural references, native result/alpha recovery
+and input mappings. 124 headless groups and eight GUI smoke modes pass;
+--live-nudge-smoke-test checks all three controls up to the main-reel boundary.
 No installation or configuration
 change, commit/push or cloud setup was performed.
 

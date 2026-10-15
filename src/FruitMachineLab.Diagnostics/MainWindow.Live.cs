@@ -19,10 +19,11 @@ public partial class MainWindow
     {
         liveTimer=new DispatcherTimer(DispatcherPriority.Render){Interval=TimeSpan.FromMilliseconds(16)};
         liveTimer.Tick+=(_,_)=>{AdvanceLive();RenderLive();if(liveSession?.Paused!=false)liveTimer.Stop();};
-        Deactivated+=(_,_)=>{AdvanceLive();ReleasePhysicalStart();ReleasePhysicalTake();RenderLive();};Closed+=(_,_)=>{PauseLive();liveWallClock.Stop();};
+        Deactivated+=(_,_)=>{AdvanceLive();ReleasePhysicalStart();ReleasePhysicalTake();ReleaseNudges();RenderLive();};Closed+=(_,_)=>{PauseLive();liveWallClock.Stop();};
         var args=Environment.GetCommandLineArgs();
         if(args.Length==3 && args[1]=="--live-smoke-test")Loaded+=async(_,_)=>await LiveSmokeTest(args[2]);
         if(args.Length==3 && args[1]=="--live-jackpot-smoke-test")Loaded+=async(_,_)=>await LiveSmokeTest(args[2],true);
+        if(args.Length==3 && args[1]=="--live-nudge-smoke-test")Loaded+=async(_,_)=>await LiveNudgeSmokeTest(args[2]);
         if(args.Length==3 && args[1]=="--live-availability-smoke-test")Loaded+=async(_,_)=>await LiveAvailabilitySmokeTest(args[2]);
         if(args.Length==3 && args[1]=="--live-board-cycle-smoke-test")Loaded+=async(_,_)=>await LiveBoardCycleSmokeTest(args[2]);
         if(args.Length==3 && args[1]=="--live-link-smoke-test")Loaded+=async(_,_)=>await LiveLinkSmokeTest(args[2]);
@@ -57,7 +58,7 @@ public partial class MainWindow
     }
     private void PauseLive()
     {
-        AdvanceLive();liveSession?.Pause();liveTimer?.Stop();ReleasePhysicalStart();ReleasePhysicalTake();RenderLive();
+        AdvanceLive();liveSession?.Pause();liveTimer?.Stop();ReleasePhysicalStart();ReleasePhysicalTake();ReleaseNudges();RenderLive();
     }
     private void PauseLiveClick(object sender,RoutedEventArgs args)=>PauseLive();
     private void ResumeLiveClick(object sender,RoutedEventArgs args)=>ResumeLive();
@@ -109,6 +110,7 @@ public partial class MainWindow
         bool running=!liveSession.Paused && !liveSession.Completed && liveSession.Fault is null;
         PhysicalStart.IsEnabled=PauseLiveButton.IsEnabled=running;ResumeLiveButton.IsEnabled=!running && !liveSession.Completed && liveSession.Fault is null;
         PhysicalTake.IsEnabled=running && liveSession.AwaitingBoardSelection;
-        if(!running){ReleasePhysicalStart();ReleasePhysicalTake();}
+        Nudge1.IsEnabled=Nudge2.IsEnabled=Nudge3.IsEnabled=running && liveSession.AwaitingNudgeInput;
+        if(!running){ReleasePhysicalStart();ReleasePhysicalTake();ReleaseNudges();}
     }
 }

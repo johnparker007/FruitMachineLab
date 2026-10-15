@@ -166,6 +166,10 @@ public sealed class ScriptExecutor(Machine machine)
                     if(word.Operation is "vm_push_word_body_byte" or "vm_push_word_body_word" or "vm_push_word_body_address") {
                         machine.Data.Push(word.Value ?? throw new InvalidDataException("Dynamic literal has no value"));break;
                     }
+                    if(word.Operation=="vm_test_input_condition") {
+                        ushort selector=word.Value ?? throw new InvalidDataException("Dynamic condition has no selector");
+                        machine.Data.Push(InputConditionCell?.Invoke(selector) ?? Cell.Flag(InputCondition?.Invoke(selector) ?? throw new NotSupportedException("Input condition callback required")));break;
+                    }
                     if(word.Body is not { } entry || ResolveScript is null)throw new NotSupportedException($"Untranslated EXECUTE word {token:X4}");
                     ushort? next=machine.Control is not null ? Continuation() : null;
                     if(next is { } at)Control().EnterCall(at);

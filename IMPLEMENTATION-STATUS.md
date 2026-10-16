@@ -1,5 +1,10 @@
 # Implementation and evidence boundaries
 
+Live selected timer3 dispatch now generates callback entry after128 native CPU
+cycles, with explicit control-shadow and hardware-write events. Recorded FE70
+entry remains; callback entry/return/service-duration captures are not scheduling
+inputs.19 natural native paths and live Pause/corruption checks verify the change.
+
 Live lamp callbacks now generate bank writes at entry+37/+42, optional digit blank
 at+75 and completion+78/+85 from native instructions. Captured return timestamps
 are no longer scheduling inputs; entry/scan/IRQ adapters remain.18 synthetic
@@ -457,3 +462,9 @@ Full-logging external crash remains unresolved; narrow-window capture succeeds.
 wraparound rounding and pause during the flash loop. Existing38 byte-checked VM
 spans/700 native rows and8714 sound bytes retained. Next recover AFF0's real outer
 caller before bank commit, collection or payout. See docs/recovery/NUDGE-ANIMATION-TAIL-PASS.md.
+## Timer3 acknowledgement checkpoint — 16 October 2026
+
+Optional selected dispatch→phase-clock connection generates status/counter reads
+at20/53 cycles and selector/stop writes at85/96. Nineteen natural windows match
+bus times and post-stop counters. Live exposes the read boundaries but still uses
+recorded FE70 entry; surrounding scan execution and IRQ acceptance remain open.

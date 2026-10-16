@@ -2,8 +2,8 @@ namespace FruitMachineLab.Runtime;
 
 public sealed record LampCallbackWrite(ulong Cycle,ushort Address,byte Value);
 
-// Selected non-preempted native48FD/4917 path. Entry remains an external
-// hardware boundary; subsequent port writes/completion derive from instructions.
+// Selected non-preempted native48FD/4917 path. Caller supplies entry (Live now
+// derives it from selected IRQ dispatch); port writes/completion follow code.
 public sealed class Mpu4LampCallbackExecution
 {
     private readonly Machine machine;

@@ -19,6 +19,10 @@ public sealed class SkillCashLiveSession
     private readonly Mpu4Alpha alpha;
     private readonly Mpu4OutputScan scan;
     private Mpu4LampCallbackExecution? lampCallback;
+    private Mpu4Timer3DispatchExecution? timer3Dispatch;
+    public ulong? NextTimer3DispatchEvent=>timer3Dispatch?.NextEventCycle;
+    public Action<ulong>? ObserveTimer3DispatchEntry {get;set;}
+    public Action<Timer3DispatchWrite>? ObserveTimer3DispatchWrite {get;set;}
     public ulong? NextLampCallbackEvent=>lampCallback?.NextEventCycle;
     public Action<ulong>? ObserveLampCallbackEntry {get;set;}
     public Action<LampCallbackWrite>? ObserveLampCallbackWrite {get;set;}
@@ -38,7 +42,7 @@ public sealed class SkillCashLiveSession
     private readonly Dictionary<ushort,(string Operation,ushort Value,ulong Cycles)> literalCosts=new();
     private readonly CapturedInterruptOccupancy occupancy;
     private readonly CapturedInterruptOccupancy delayOccupancy;
-    private readonly List<(ulong Scan,ulong CallbackEntry)> services=new();
+    private readonly List<(ulong Scan,ulong Timer3Irq)> services=new();
     private readonly List<LampLatchFrame> latches=new();
     private readonly List<ushort> selections=new();
     private int serviceIndex;
@@ -173,11 +177,21 @@ public sealed class SkillCashLiveSession
         var frames=new Mpu4LampFrames(Machine,response.Responses.Select(x=>checked((byte)x)).ToArray());
         var requests=new Mpu4LampRequests(Machine,request=>{frames.Apply(request.Id,request.Pattern);LampRequests++;ObserveLamp?.Invoke(request);});
         scan=new(Machine,state=>Mpu4LampPulseSweep.Advance(state,_=>{}));
-        ulong offset=0,scanAt=0;
+        ulong offset=0;var scanTimes=new List<ulong>();
         foreach(var row in timing.Events) {
             offset=checked(offset+row[0]);
-            if(row[1]==4)scanAt=offset;
-            if(row[1]==6){if(scanAt==0 || offset<scanAt)throw new InvalidDataException("Missing live IRQ timing boundary");services.Add((scanAt,offset));scanAt=0;}
+            if(row[1]==4)scanTimes.Add(offset);
+        }
+        // Independent native IRQ capture: retain FE70 handler entry, not either
+        // callback timestamp. Latch coordinate+measured IRQ offset is FE70 time;
+        // it is explicitly not a generated timer assertion/acceptance boundary.
+        using(var deadlines=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","timer-deadlines.json")))){
+            var rows=deadlines.RootElement.GetProperty("rows");if(rows.GetArrayLength()!=scanTimes.Count)throw new InvalidDataException("Scan/IRQ capture counts differ");
+            for(int i=0;i<scanTimes.Count;i++){
+                var row=rows[i];ulong absolute=checked(row[0].GetUInt64()+row[2].GetUInt64());
+                if(absolute<timing.InitialCycle || row[1].GetUInt64()!=40)throw new InvalidDataException("Unsupported timer3 IRQ capture");
+                ulong handler=absolute-timing.InitialCycle;if(handler<=scanTimes[i])throw new InvalidDataException("Timer3 IRQ precedes scan");services.Add((scanTimes[i],handler));
+            }
         }
         if(services.Count==0)throw new InvalidDataException("Missing IRQ service template");
         // Repeat the observed service/jitter template at the source-backed
@@ -286,20 +300,28 @@ public sealed class SkillCashLiveSession
                     occupancy.Consume();
                 }
                 if(nextCallback==next) {
-                    if(lampCallback is null){
-                        if(!Mpu4TimerCallbacks.DispatchTimer3(Machine,(address,m)=>{if(address!=0x48FD)throw new NotSupportedException("Unknown live timer callback");lampCallback=new(m,Cycle);}))throw new InvalidOperationException("Missing live timer callback");
-                        if(lampCallback!.CompletedAt>=checked(serviceEpoch+services[serviceIndex].Scan))throw new NotSupportedException("Scan preemption inside lamp callback is not recovered");
-                        ObserveLampCallbackEntry?.Invoke(Cycle);
+                    if(timer3Dispatch is null && lampCallback is null){
+                        timer3Dispatch=new(Machine,Cycle);ObserveTimer3DispatchEntry?.Invoke(Cycle);
                     }
-                    lampCallback.AdvanceTo(Cycle,write=>{RecordLatch();ObserveLampCallbackWrite?.Invoke(write);});
-                    if(lampCallback.Completed){lampCallback=null;nextCallback=ulong.MaxValue;Callbacks++;}
-                    else nextCallback=lampCallback.NextEventCycle;
+                    if(timer3Dispatch is not null){
+                        timer3Dispatch.AdvanceTo(Cycle,write=>ObserveTimer3DispatchWrite?.Invoke(write));
+                        if(timer3Dispatch.Completed){
+                            timer3Dispatch=null;lampCallback=new(Machine,Cycle);
+                            if(lampCallback.CompletedAt>=checked(serviceEpoch+services[serviceIndex].Scan))throw new NotSupportedException("Scan preemption inside lamp callback is not recovered");
+                            ObserveLampCallbackEntry?.Invoke(Cycle);
+                        }else nextCallback=timer3Dispatch.NextEventCycle;
+                    }
+                    if(lampCallback is not null){
+                        lampCallback.AdvanceTo(Cycle,write=>{RecordLatch();ObserveLampCallbackWrite?.Invoke(write);});
+                        if(lampCallback.Completed){lampCallback=null;nextCallback=ulong.MaxValue;Callbacks++;}
+                        else nextCallback=lampCallback.NextEventCycle;
+                    }
                 }
                 if(irq==next) {
                     scan.Advance();Scans++;RecordLatch();
                     if(Machine.ReadWord(0x32D)!=40)throw new NotSupportedException("Live timer pulse differs from captured latency template");
-                    if(lampCallback is not null)throw new NotSupportedException("Scan preemption inside lamp callback is not recovered");
-                    nextCallback=checked(serviceEpoch+services[serviceIndex].CallbackEntry);
+                    if(lampCallback is not null || timer3Dispatch is not null)throw new NotSupportedException("Scan preemption inside timer3 dispatch/callback is not recovered");
+                    nextCallback=checked(serviceEpoch+services[serviceIndex].Timer3Irq);
                     // Input/counter/scheduler CPU phases are atomic at this explicit
                     // IRQ-service adapter. Their ordering is recovered from FE70.
                     Panel.Sample(checked((byte)Machine.ReadWord(0x28)));
@@ -315,7 +337,7 @@ public sealed class SkillCashLiveSession
                     if(++serviceIndex==services.Count){serviceIndex=0;serviceEpoch=checked(serviceEpoch+servicePeriod);}
                 }
                 if(nextVm==next) {
-                    if(lampCallback is not null)throw new NotSupportedException("VM execution inside lamp callback is not recovered");
+                    if(lampCallback is not null || timer3Dispatch is not null)throw new NotSupportedException("VM execution inside timer3 dispatch/callback is not recovered");
                     if(--budget==0)throw new InvalidOperationException("Live dispatch budget exceeded");
                     var instruction=executor.NextInstruction!;
                     if(!ContinueBoard && boardAdvancing && instruction.Site is 0xDE96 or 0xDD38)throw new NotSupportedException($"BOARD advance completed at square {Machine.Memory[0xC9]} (type {Machine.Memory[0xA12E+Machine.Memory[0xC9]]}, nudge pot {Machine.Memory[0xBF]}); the next board result/selection is the recovery boundary. Restart to play again.");

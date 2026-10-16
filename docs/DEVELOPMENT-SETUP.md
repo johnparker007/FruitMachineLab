@@ -5,6 +5,17 @@ Local clone: C:\projects\GitRepos\FruitMachineLab
 
 ## Current status
 
+Selected timer3 dispatch can now connect its generated status/counter reads and
+control writes to the phase clock. Nineteen natural windows verify acknowledgement,
+stop and frozen counter values. This optional hardware connection is exercised by
+headless verification; Live still retains recorded IRQ entry. See the handoff and
+timing foundation report for the remaining surrounding-instruction boundary.
+
+Dispatch continuation: Live generates48FD entry from32 native FE70 instructions,
+not shared callback timestamps. Recorded IRQ handler entry remains the hardware
+adapter.19 natural windows and live Pause/timestamp-corruption checks pass;
+see handoff/timing foundation for selected-path guards and remaining gaps.
+
 Live timer3 callback port writes/completion now follow source-derived instruction
 events, retaining captured entry only.18 isolated paths/45 effective bus writes
 and19 natural windows match; see the handoff/timing report. Reproduce with

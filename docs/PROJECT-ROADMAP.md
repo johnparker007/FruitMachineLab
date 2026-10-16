@@ -12,6 +12,11 @@ is not authority for which changes John has committed or pushed.
 
 ## Priority order
 
+Dispatch milestone: callback entry and subsequent outputs now derive from native
+software paths after a retained FE70 IRQ entry. Next replace that hardware
+boundary from timer arm/phase and current native-instruction acceptance; do not
+equate moving the captured boundary earlier with eliminating hardware capture.
+
 Callback event milestone: Live no longer depends on recorded callback return
 timestamps. Native instructions generate separate port writes and completion;
 captured entry remains the hardware boundary. Next derive that entry from timer
@@ -177,3 +182,10 @@ substantial batch boundaries with the current result, checks, limitations and ne
 concrete work. Keep detailed technical evidence in recovery reports rather than
 growing the handoff into a transcript. Never present historical test counts or
 captured timing adapters as stronger current verification than they provide.
+## Timer3 hardware connection checkpoint — 16 October 2026
+
+Selected native dispatch now drives status/counter acknowledgement and stop in
+the phase-clock verification path;19 natural bus/frozen-counter comparisons pass.
+Live still requires generated scan-arm timing and surrounding native instruction
+boundaries before replacing its recorded FE70 entry. Keep playable-machine work
+the priority; this is a bounded hardware connection, not a full CPU interpreter.

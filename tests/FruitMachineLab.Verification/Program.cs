@@ -7,6 +7,84 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { if(args.Length>1 && !name.Contains(args[1],StringComparison.OrdinalIgnoreCase))return;action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Timer3 generated dispatch acknowledges and stops the phase clock in nineteen natural windows", () => {
+    using var windows=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","ptm-instruction-boundaries.json")));
+    using var capture=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","ptm-skill-cpu.json")));
+    var rows=capture.RootElement.GetProperty("rows").EnumerateArray().ToArray();
+    decimal Time(System.Text.Json.JsonElement r)=>decimal.Parse(r.GetProperty("seconds").GetString()!,System.Globalization.CultureInfo.InvariantCulture)*Mpu4Timer3PhaseClock.AttosecondsPerSecond+decimal.Parse(r.GetProperty("attoseconds").GetString()!,System.Globalization.CultureInfo.InvariantCulture);
+    ulong Cycle(decimal t)=>(ulong)decimal.Round(t*1_720_000m/Mpu4Timer3PhaseClock.AttosecondsPerSecond);
+    int Number(System.Text.Json.JsonElement r,string key)=>int.Parse(r.GetProperty(key).GetString()!,System.Globalization.CultureInfo.InvariantCulture);
+    int count=0;
+    foreach(var window in windows.RootElement.GetProperty("windows").EnumerateArray()){
+        var last=window.GetProperty("last_instruction");ulong accepted=last.GetProperty("cycle").GetUInt64()+(ulong)M6809InstructionTiming.Decode(Convert.FromHexString(last.GetProperty("context_hex").GetString()!)).Cycles;
+        ulong entry=checked(accepted+M6809IrqEntry.EntryCycles);Equal(window.GetProperty("handler_cycle").GetUInt64(),entry);
+        int h=Array.FindIndex(rows,r=>r.GetProperty("event").GetString()=="handler" && Cycle(Time(r))==entry+1);
+        if(h<0)throw new Exception("Missing independent timer-state handler sample");
+        decimal latchTime=decimal.Parse(window.GetProperty("latch_seconds").GetString()!,System.Globalization.CultureInfo.InvariantCulture)*Mpu4Timer3PhaseClock.AttosecondsPerSecond+decimal.Parse(window.GetProperty("latch_attoseconds").GetString()!,System.Globalization.CultureInfo.InvariantCulture);
+        // Explicit observed arm phase; no universal phase reset or post-shot seed.
+        var timer=Mpu4Timer3PhaseClock.FromStoppedSnapshot(latchTime,window.GetProperty("initial_high").GetBoolean(),true,40,40,false,false);
+        timer.WriteControl(0x63);timer.WriteLatch(40);
+        ulong busCycle=window.GetProperty("latch_bus_cycle").GetUInt64();
+        ulong assertion=Cycle(timer.NextTransition!.Value);Equal(window.GetProperty("calculated_assertion_cycle").GetUInt64(),assertion);
+        if(assertion<last.GetProperty("cycle").GetUInt64() || assertion>accepted || (last.GetProperty("cc").GetByte()&0x10)!=0)throw new Exception("Assertion is outside the selected unmasked instruction");
+        var bus=new Mpu4Timer3DispatchHardware(timer,entry,latchTime+(entry-busCycle)*Mpu4Timer3PhaseClock.AttosecondsPerSecond/1_720_000m);
+        var m=new Machine();m.Memory[0x40]=0x63;m.WriteWord(0x3D,0x48FD);var execution=new Mpu4Timer3DispatchExecution(m,entry,bus);
+        Equal(entry+20,execution.NextEventCycle);execution.AdvanceTo(entry+19);Equal(true,timer.InterruptPending);
+        var observed=new List<(ulong Cycle,ushort Address)>();
+        execution.AdvanceTo(entry+20,observeRead:r=>observed.Add((r.Cycle,r.Address)));Equal(true,timer.InterruptPending);
+        Equal(entry+53,execution.NextEventCycle);execution.AdvanceTo(entry+52);Equal(true,timer.IrqAsserted);
+        execution.AdvanceTo(entry+53,observeRead:r=>observed.Add((r.Cycle,r.Address)));Equal(false,timer.InterruptPending);Equal(true,timer.Enabled);
+        execution.AdvanceTo(entry+95,w=>{if(w.Hardware)observed.Add((w.Cycle,w.Address));});Equal(true,timer.Enabled);
+        execution.AdvanceTo(entry+128,w=>{if(w.Hardware)observed.Add((w.Cycle,w.Address));});Equal(false,timer.Enabled);Equal((byte)0,timer.Control);
+        var segment=rows.Skip(h+1).TakeWhile(r=>r.GetProperty("event").GetString()!="callback").ToArray();
+        var accesses=segment.Where(r=>r.GetProperty("event").GetString() is "read" or "write").ToArray();Equal(4,accesses.Length);Equal(4,observed.Count);
+        for(int i=0;i<4;i++){Equal(Cycle(Time(accesses[i])),observed[i].Cycle);Equal(Convert.ToUInt16(accesses[i].GetProperty("address").GetString(),16),observed[i].Address);}
+        var stopped=segment.Single(r=>r.GetProperty("event").GetString()=="after");Equal(Number(stopped,"counter3"),(int)timer.RawCounter);Equal(Number(stopped,"output3")!=0,timer.OutputHigh);Equal(Number(stopped,"single3")!=0,timer.SingleFired);Equal(0,Number(stopped,"status"));count++;
+    }
+    Equal(19,count);
+});
+Check("Timer3 hardware dispatch rejects absent assertion and invalid acknowledgement order", () => {
+    int rejected=0;var stopped=new Mpu4Timer3PhaseClock();try{new Mpu4Timer3DispatchHardware(stopped,0,0);}catch(NotSupportedException){rejected++;}
+    var timer=Mpu4Timer3PhaseClock.FromStoppedSnapshot(0,true,true,40,40,false,false);timer.WriteControl(0x63);timer.WriteLatch(40);timer.AdvanceTo(400*Mpu4Timer3PhaseClock.AttosecondsPerSecond/1_720_000m);
+    var bus=new Mpu4Timer3DispatchHardware(timer,400,timer.Time);
+    try{bus.Read(new(420,0x906));}catch(NotSupportedException){rejected++;}Equal(true,timer.InterruptPending);
+    bus.Read(new(420,0x901));Equal(true,timer.InterruptPending);
+    try{bus.Write(new(485,0x901,1,true));}catch(NotSupportedException){rejected++;}
+    bus.Read(new(453,0x906));Equal(false,timer.InterruptPending);
+    try{bus.Write(new(496,0x900,0,true));}catch(NotSupportedException){rejected++;}
+    bus.Write(new(485,0x901,0,true));bus.Write(new(496,0x900,0,true));Equal(false,timer.Enabled);
+    try{bus.Read(new(500,0x901));}catch(NotSupportedException){rejected++;}Equal(5,rejected);
+});
+Check("Generated timer3 dispatch matches nineteen natural native IRQ paths", () => {
+    using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","ptm-instruction-boundaries.json")));int count=0;
+    foreach(var window in doc.RootElement.GetProperty("windows").EnumerateArray()){
+        ulong start=window.GetProperty("handler_cycle").GetUInt64(),cursor=start;var native=window.GetProperty("handler_path");var path=Mpu4Timer3DispatchExecution.Path;Equal(32,path.Count);Equal(path.Count,native.GetArrayLength());
+        var m=new Machine();m.Memory[0x40]=0x63;m.WriteWord(0x3D,0x48FD);var dispatch=new Mpu4Timer3DispatchExecution(m,start);
+        for(int i=0;i<path.Count;i++){
+            Equal(path[i].Address,native[i].GetProperty("pc").GetUInt16());Equal(cursor,native[i].GetProperty("cycle").GetUInt64());Equal(true,native[i].GetProperty("context_hex").GetString()!.StartsWith(path[i].Bytes,StringComparison.Ordinal));cursor+=(ulong)M6809InstructionTiming.Decode(Convert.FromHexString(path[i].Bytes)).Cycles;
+            foreach(var write in dispatch.Writes.Where(w=>w.Cycle==cursor))Equal(write.Hardware ? (write.Address==0x901 ? (ushort)0x70BB : (ushort)0x70C2) : (write.Address==0x3F ? (ushort)0x70BE : (ushort)0x70C5),path[i].Address);
+        }
+        Equal(start+128,cursor);Equal(window.GetProperty("callback_cycle").GetUInt64(),dispatch.CallbackAt);Equal(cursor,dispatch.CallbackAt);
+        Equal("85,89,96,100",string.Join(',',dispatch.Writes.Select(w=>w.Cycle-start)));dispatch.AdvanceTo(cursor);Equal(true,dispatch.Completed);Equal((byte)0,m.Memory[0x40]);count++;
+    }
+    Equal(19,count);
+});
+Check("Live timer3 dispatch pauses before native disable and generates callback entry", () => {
+    var live=new SkillCashLiveSession(evidence);ulong irq=0,callback=0;var writes=new List<Timer3DispatchWrite>();live.ObserveTimer3DispatchEntry=at=>irq=at;live.ObserveTimer3DispatchWrite=writes.Add;live.ObserveLampCallbackEntry=at=>callback=at;live.Resume();
+    for(int i=0;i<20000 && live.NextTimer3DispatchEvent is null;i++)live.AdvanceCycles(1);
+    Equal(true,irq>0);Equal(irq+20,live.NextTimer3DispatchEvent!.Value);live.AdvanceCycles(irq+89-live.Cycle);Equal(2,writes.Count);Equal((byte)0x63,live.Machine.Memory[0x40]);
+    live.Pause();ulong at=live.Cycle;var frozen=live.Machine.Memory.ToArray();var pending=live.NextTimer3DispatchEvent;int instructions=live.Instructions;live.AdvanceCycles(100000);Equal(at,live.Cycle);Equal(pending,live.NextTimer3DispatchEvent);Equal(instructions,live.Instructions);Equal(true,frozen.SequenceEqual(live.Machine.Memory));live.Resume();
+    live.AdvanceCycles(7);Equal(3,writes.Count);Equal((ushort)0x900,writes[2].Address);Equal(true,writes[2].Hardware);Equal((byte)0x63,live.Machine.Memory[0x40]);live.AdvanceCycles(4);Equal((byte)0,live.Machine.Memory[0x40]);Equal(0UL,callback);
+    live.AdvanceCycles(28);Equal(irq+128,callback);Equal(true,live.NextTimer3DispatchEvent is null);Equal(callback+37,live.NextLampCallbackEvent!.Value);Equal(4,writes.Count);live.Pause();
+});
+Check("Selected timer3 dispatch keeps hardware writes explicit and rejects priority changes", () => {
+    Machine Seed(){var m=new Machine();m.Memory[0x3F]=1;m.Memory[0x40]=0x63;m.WriteWord(0x3D,0x48FD);m.Memory[0x900]=0xAA;m.Memory[0x901]=0xBB;return m;}
+    var m=Seed();var d=new Mpu4Timer3DispatchExecution(m,0);d.AdvanceTo(88);Equal((byte)1,m.Memory[0x3F]);d.AdvanceTo(89);Equal((byte)0,m.Memory[0x3F]);d.AdvanceTo(128);Equal((byte)0xAA,m.Memory[0x900]);Equal((byte)0xBB,m.Memory[0x901]);
+    int rejected=0;foreach(ushort address in new ushort[]{0xF1,0xB03,0x3F,0x40,0x3D}){
+        m=Seed();m.Memory[address]=address==0xB03 ? (byte)0x80 : address==0x3F ? (byte)0x40 : (byte)0xFF;try{new Mpu4Timer3DispatchExecution(m,0);}catch(NotSupportedException){rejected++;}
+    }
+    m=Seed();d=new(m,0);m.Memory[0x40]=0;try{d.AdvanceTo(100);}catch(NotSupportedException){rejected++;}Equal(6,rejected);
+});
 Check("Generated lamp callback matches eighteen native paths and45 effective bus writes", () => {
     using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","lamp-callback-timing.json")));int count=0,writes=0;
     foreach(var r in doc.RootElement.GetProperty("rows").EnumerateArray()){
@@ -54,13 +132,19 @@ Check("Live callback pauses between generated lamp bank writes", () => {
     live.AdvanceCycles(4);Equal(1,writes.Count);live.AdvanceCycles(1);Equal(2,writes.Count);Equal((ushort)0xA02,writes[1].Address);
     live.AdvanceCycles(entry+(blank ? 85UL : 78UL)-live.Cycle);Equal(1,live.Callbacks);Equal(true,live.NextLampCallbackEvent is null);Equal(blank ? 3 : 2,writes.Count);live.Pause();
 });
-Check("Live ignores recorded callback return timestamps while preserving service entry times", () => {
+Check("Live ignores recorded callback entry and return timestamps while retaining IRQ delivery", () => {
     var directory=Path.Combine(Path.GetTempPath(),"FruitMachineLab-callback-return-"+Guid.NewGuid().ToString("N"));Directory.CreateDirectory(directory);
     try{
         foreach(var source in Directory.EnumerateFiles(evidence,"*",SearchOption.AllDirectories)){string destination=Path.Combine(directory,Path.GetRelativePath(evidence,source));Directory.CreateDirectory(Path.GetDirectoryName(destination)!);File.Copy(source,destination);}
         string file=Path.Combine(directory,"skill-cash","shared-timing.json");var options=new System.Text.Json.JsonSerializerOptions {PropertyNameCaseInsensitive=true};var timing=System.Text.Json.JsonSerializer.Deserialize<SharedTimingCapture>(File.ReadAllText(file),options)!;int changed=0;
-        for(int i=0;i<timing.Events.Length-1;i++)if(timing.Events[i][1]==7){if(timing.Events[i+1][0]<100)throw new Exception("Insufficient diagnostic timestamp gap");timing.Events[i][0]+=100;timing.Events[i+1][0]-=100;changed++;}
+        int changedEntries=0;
+        for(int i=0;i<timing.Events.Length-1;i++){
+            if(timing.Events[i][1]==6){if(timing.Events[i+1][0]<20)throw new Exception("Insufficient callback diagnostic gap");timing.Events[i][0]+=20;timing.Events[i+1][0]-=20;changedEntries++;}
+            if(timing.Events[i][1]==7){if(timing.Events[i+1][0]<100)throw new Exception("Insufficient diagnostic timestamp gap");timing.Events[i][0]+=100;timing.Events[i+1][0]-=100;changed++;}
+        }
+        Equal(6103,changedEntries);
         Equal(6102,changed);File.WriteAllText(file,System.Text.Json.JsonSerializer.Serialize(timing));
+        string deadlineFile=Path.Combine(directory,"skill-cash","timer-deadlines.json");var deadlines=System.Text.Json.Nodes.JsonNode.Parse(File.ReadAllText(deadlineFile))!;foreach(var row in deadlines["rows"]!.AsArray())row![3]=row[3]!.GetValue<ulong>()+1000;File.WriteAllText(deadlineFile,deadlines.ToJsonString());
         var original=new SkillCashLiveSession(evidence);var altered=new SkillCashLiveSession(directory);var a=new List<LampCallbackWrite>();var b=new List<LampCallbackWrite>();original.ObserveLampCallbackWrite=a.Add;altered.ObserveLampCallbackWrite=b.Add;original.Resume();altered.Resume();original.AdvanceCycles(20000);altered.AdvanceCycles(20000);
         Equal(true,a.Count>0);Equal(true,a.SequenceEqual(b));Equal(original.Instructions,altered.Instructions);Equal(original.Callbacks,altered.Callbacks);Equal(true,original.Machine.Memory.SequenceEqual(altered.Machine.Memory));
     }finally{Directory.Delete(directory,true);}

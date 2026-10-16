@@ -1,5 +1,42 @@
 # Current handoff
 
+16 October hardware acknowledgement continuation: selected dispatch now exposes
+status/counter reads at+20/+53 as actual incremental events, alongside existing
++85/+96 hardware writes. Optional Mpu4Timer3DispatchHardware connects these to
+Mpu4Timer3PhaseClock: status arms acknowledgement, counter read clears pending,
+CR2 bit0 selects CR3 and00 stops it. Nineteen natural windows match all four bus
+times and frozen counters, deriving handler time from the observed completing
+instruction and19-cycle IRQ entry. Intra-handler capture times are comparisons,
+not scheduling inputs. This is a bounded verification connection; Live does not
+yet supply a hardware phase seed or execute the surrounding timer1 instruction
+boundaries, so its FE70 entry adapter remains. Do not claim autonomous IRQ timing.
+New tests cover before/at read boundaries and reject absent IRQ, wrong order and
+selector. No new MAME capture; no installs/config changes/commits/pushes. Preserve
+the previous uncommitted dispatch batch. Next recover the surrounding scan's arm
+and instruction boundaries, rather than importing a captured native path as Live.
+Validation:227 headless groups and all eight WPF modes pass; both builds have
+zero warnings/errors. No expectations rebaselined.1096 manifest entries verify.
+External results: %TEMP%/FruitMachineLab-hardware-dispatch-suite.log and
+FruitMachineLab-hardware-dispatch-gui.txt. All owned smoke processes exited.
+
+16 October dispatch continuation: Live now generates callback entry from the
+selected32-instruction FE70 timer3 dispatch path (128 CPU cycles), with shadow
+writes at+89/+100 and separately exposed PTM writes at+85/+96. IRQ handler entry
+is retained from timer-deadlines.json (old latch coordinate+measured IRQ offset);
+it is not calculated PTM assertion/CPU acceptance. Shared callback event6 and
+the recorded callback-duration field are no longer Live scheduling inputs.
+19 natural windows match; live Pause and corruption tests pass. See
+Mpu4Timer3DispatchExecution.cs and the existing timing foundation report/source
+map. Priority/bank/preemption variants and hardware read-to-clear semantics
+remain explicit unsupported boundaries. Next: timer arm/phase→accepted current
+instruction boundary. Preserve any prior uncommitted callback work with this
+batch; no commit/push/config/install or original ROM/MAME/Ghidra changes.
+Validation:225 headless groups and all eight WPF modes pass; both solution builds
+have zero warnings/errors. No expectations were rebaselined. External pointers:
+%TEMP%/FruitMachineLab-dispatch-suite.txt and FruitMachineLab-dispatch-gui.txt.
+All smoke processes exited; no new MAME capture was needed. The working tree
+was clean at this batch's start; the preceding callback batch is already in HEAD.
+
 16 October callback scheduling batch: Live now generates individual timer3 lamp
 bank writes (+37/+42 cycles), optional digit blank (+75) and full completion
 (+78/+85) from the48FD/4917 native path. It no longer applies effects at captured

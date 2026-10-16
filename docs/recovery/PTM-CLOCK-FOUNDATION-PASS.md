@@ -738,3 +738,107 @@ Next derive callback entry from timer arm/phase and CPU acceptance boundaries.
 Validation:222 headless groups, all eight WPF modes and both solution builds pass.
 No expectations were rebaselined.1096 curated entries verify. All owned processes
 exited; no installs/configuration changes, commits or pushes occurred.
+
+## Generated timer-3 IRQ dispatch and callback entry — 16 October 2026
+
+Live now retains FE70 handler entry from the independent timer capture, rather
+than48FD callback entry from shared event6. The original latch coordinate plus
+its measured IRQ offset reconstructs that recorded FE70 timestamp exactly. This
+does not use a calculated timer assertion, add seven cycles to the old coordinate,
+or claim generated CPU acceptance. The hardware boundary has moved earlier;
+it has not been eliminated.
+
+`Mpu4Timer3DispatchExecution` derives the selected FE70→48FD path from32 original
+native instructions. At128 CPU cycles it starts the existing incremental lamp
+callback, which then generates its port writes/completion. No recorded callback
+entry, return or callback-service-duration field is used by Live scheduling.
+The software timer3 control effects now occur during native dispatch rather
+than atomically at callback entry:
+
+| Native store | Cycles after FE70 entry | Effect |
+| --- | ---: | --- |
+|70BB STB0901|85|PTM control-selector write, exposed as hardware event|
+|70BE STB003F|89|Store control shadow with bit0 cleared|
+|70C2 STB0900|96|PTM stop-control write00, exposed as hardware event|
+|70C5 STB0040|100|Clear timer3 software control shadow|
+|FEF0 JSR,X completed|128|Enter48FD callback|
+
+The selected contract is DP0, bank flag00F1=0, nonnegative IC4 control at0B03,
+timer2 enable bit40 clear in003F, timer3 control63 and callback48FD. Prioritized
+timer3 delivery is supplied by the retained capture boundary, not inferred from
+fictional status-register RAM. Other priority/bank/preemption paths fail explicitly.
+Hardware writes are observable events;0900/0901 are not treated as ordinary RAM.
+The selected handler still does not simulate CPU registers/full IRQ frames or
+the read-to-clear hardware protocol. Those boundaries remain for PTM integration.
+
+Nineteen natural native instruction windows verify every address, exact decoded
+encoding, instruction duration and generated callback entry. Their original
+five-byte contexts and ROM provenance remain in `ptm-instruction-boundaries.json`;
+actual instruction lengths/branch references are explicit in the runtime path.
+The existing `timer-deadlines.json` supplies6103 IRQ entry boundaries independently
+of shared callback events; scan times retain shared event4. Its old watchpoint
+latch coordinate is not relabelled as effective bus time. The captured callback
+offset field remains reference evidence and is ignored in Live.
+
+A live test pauses dispatch between the software-shadow clear and timer3 stop,
+verifies memory/VM/time/cursor freeze, resumes through96/100-cycle writes and
+reaches generated callback entry128. Synthetic engine fault checks reject bank,
+priority, callback/control and concurrent state changes; they are not new MAME
+experiments. The previous callback fault experiment now also moves all6103
+shared callback-entry timestamps by20 cycles,6102 return timestamps by100, and
+changes every recorded callback offset by1000, preserving scan/IRQ boundaries.
+Live writes, instruction count, callback count and memory remain identical.
+
+No new capture or unrelated reverse engineering was required. Exact native
+bytes/labels already exist in fe70.json/timer-native.txt and the byte-checked
+instruction fixture; the timing-source map links these to runtime/verification.
+The Ghidra export gap and original-workspace preservation remain unchanged.
+Next recover actual timer arm/phase→CPU acceptance/current native-instruction
+boundary. Do not claim that replacing callback timestamps solves that gap.
+Validation:225 headless groups/all eight WPF modes pass; both builds are clean.
+No test expectations were rebaselined; all smoke processes exited.
+
+## Selected dispatch hardware acknowledgement connection — 16 October 2026
+
+`Mpu4Timer3DispatchExecution` now exposes two additional incremental hardware
+events: FE86 `B6 09 01` completes the status read at entry+20, and FEE1
+`B6 09 06` completes the counter-MSB read at+53. These come from the same
+32-instruction path already byte-checked against the ROM and natural captures.
+The path, addresses and branch references remain in the runtime listing and
+`ptm-instruction-boundaries.json`; no new listing is claimed lossless.
+
+Optional `Mpu4Timer3DispatchHardware` connects that sequence to the existing
+phase clock. The status read arms read-to-clear without clearing the pending
+interrupt. The subsequent counter-MSB read clears it. The70BB selector write
+at+85 requires CR2 bit0 clear (and timer2 enable clear); the70C2 write00 at+96
+therefore stops CR3. Software RAM shadows still change at+89/+100. Hardware
+registers are not stored in ordinary machine RAM. Other sources, priorities,
+control modes and CPU input delivery remain outside this selected connection.
+
+Trace-backed verification uses19 natural windows and independent
+`ptm-skill-cpu.json` observations. Each explicit observed arm phase/latch bus
+time seeds the existing phase model. The observed interrupted instruction's
+decoded completion plus19 generates handler entry; that entry and the original
+instruction encodings generate all four hardware access times. Recorded handler
+and bus timestamps are comparison targets. The model reproduces acknowledgement,
+output/single-shot state and every post-stop frozen counter, including their
+variation between windows. Sub-cycle time is preserved from the latch observation;
+integer-cycle rounding is used for comparisons only, not before stopping the
+timer. This does not resolve arbitrary same-timestamp CPU/timer ordering.
+
+Synthetic engine tests stop one cycle before and exactly at both read events,
+and reject missing assertion, counter-before-status, wrong selector, stop-before-
+selector and repeated reads after stop. They are not new native MAME experiments.
+The existing Live pause test now also sees the first read as its next event.
+
+The connection is deliberately optional. Live has no independently generated
+timer arm/phase seed or surrounding timer1 instruction stream yet, and therefore
+does not attach this hardware bridge. Its recorded FE70 boundary remains explicit.
+The natural test's interrupted instruction is still observed evidence, not a
+translated execution path. Next recover that surrounding scan/arm execution;
+do not turn the captured native instruction list into a disguised Live emulator.
+No unrelated recovery, new capture, installation/configuration or ROM/Ghidra/
+original MAME modifications. The existing Ghidra export access gap is unchanged.
+Validation:227 headless groups and all eight WPF smoke modes pass; full/headless
+builds have zero warnings/errors.1096 curated entries verify. No expectations
+were rebaselined. All owned smoke processes exited.

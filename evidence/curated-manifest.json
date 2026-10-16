@@ -206,8 +206,8 @@
   },
   {
     "path": "docs/recovery/PTM-CLOCK-FOUNDATION-PASS.md",
-    "bytes": 49126,
-    "sha256": "3265A97175992F310C3D6264886CC6E262606D7DC1D75040B15C4EF28507A213"
+    "bytes": 55872,
+    "sha256": "00BEEDC2C7A568576C3C639FAFE54956E9711E8CD391F2136FEB2614D577AA0A"
   },
   {
     "path": "docs/recovery/README.txt",
@@ -356,8 +356,8 @@
   },
   {
     "path": "evidence/mpu4/maps/mame-timing-source.json",
-    "bytes": 9850,
-    "sha256": "C6ADC24EBD2A042DE47803B64FF517291C4347FD8EE3FE6DA228D6B9E139B9E0"
+    "bytes": 11486,
+    "sha256": "DD0551762AA1549B3D1A5DC4D47D04A95D821D267E86032B3AB640C851EA8C5B"
   },
   {
     "path": "evidence/mpu4/maps/nudge-availability-data.json",

@@ -13,6 +13,7 @@ param(
     [switch]$TimerDeadlines,
     [switch]$CpuInterrupts,
     [switch]$PtmCpuTiming,
+    [switch]$PtmInstructionTiming,
     [switch]$JackpotProbe,
     [switch]$CashFeatureCaller,
     [switch]$BoardResultCaller,
@@ -70,6 +71,7 @@ param(
     [ValidateSet('Ladder','Snake')][string]$BoardLink
 )
 $ErrorActionPreference='Stop'
+if($PtmInstructionTiming){$PtmCpuTiming=$true}
 if($PaidFlagBoard -and !$PaidFlagMotion){throw 'PaidFlagBoard requires motion'}
 if($PaidFlagMotion -and !$PaidFlagBootstrap){throw 'PaidFlagMotion requires bootstrap'}
 if($PaidFlagBootstrap -and !$PaidFlagTable){throw 'PaidFlagBootstrap requires PaidFlagTable'}
@@ -202,12 +204,13 @@ if($TimerDeadlines) {
 }
 if($CpuInterrupts) {
  $extra+=@(
- 'bpset 0xfe70,temp0==1,{printf "IE cycle=%016X s=%04X resume=%04X\n",totalcycles,s,w@(s+10);go}',
- 'bpset 0xff13,temp0==1,{printf "IX cycle=%016X s=%04X resume=%04X\n",totalcycles,s,w@(s+10);go}'
+ 'bpset 0xfe70,temp0==1,{printf "IE cycle=%016X s=%04X resume=%04X\n",totalcycles,s,w@(s+0xa);go}',
+ 'bpset 0xff13,temp0==1,{printf "IX cycle=%016X s=%04X resume=%04X\n",totalcycles,s,w@(s+0xa);go}'
  )
 }
 if($PtmCpuTiming){
  Copy-Item "$root/evidence/mpu4/skill-cash/ptm-skill-cpu.lua" "$run/ptm-skill-cpu.lua"
+ if($PtmInstructionTiming){Add-Content "$run/input.lua" "`n_G.fml_ptm_instruction_timing=true"}
  Add-Content "$run/input.lua" "`ndofile('ptm-skill-cpu.lua')"
 }
 $print='printf "'+$format+'",'+$values+$ioPrint+$statusPrint
@@ -359,7 +362,7 @@ $arguments=@('m4addr','-noreadconfig','-rompath',$RomDirectory,
 $arguments | ConvertTo-Json | Set-Content "$run/arguments.json"
 @{mame_sha256=(Get-FileHash -LiteralPath $MameExecutable).Hash;replay_sha256=(Get-FileHash "$run/replay-actions.csv").Hash;
  native_sound_capture=[bool]$NativeSound;native_nvram_capture=[bool]$NativeNvram;full_feature_capture=[bool]$FullFeature;native_input_capture=[bool]$NativeInput;native_lamp_frames=[bool]$NativeLampFrames;native_alpha_capture=[bool]$NativeAlpha;native_scan_capture=[bool]$NativeScan;shared_timing=[bool]$SharedTiming;paused_setup_callbacks_skipped=$extra.Count;
- timer_deadlines=[bool]$TimerDeadlines;cpu_interrupts=[bool]$CpuInterrupts;ptm_cpu_timing=[bool]$PtmCpuTiming;synthetic_jackpot_probe=[bool]$JackpotProbe;cash_feature_caller=[bool]$CashFeatureCaller;board_result_caller=[bool]$BoardResultCaller;board_selection=[bool]$BoardSelection;dice_requests=[bool]$DiceRequests;dice_motion=[bool]$DiceMotion;board_movement=[bool]$BoardMovement;synthetic_nudge_pot_probe=[bool]$NudgePotProbe;board_link=$BoardLink;continue_board=[bool]$ContinueBoard;availability=[bool]$Availability;nudge_entry=[bool]$NudgeEntry;nudge_prompt=[bool]$NudgePrompt;nudge_request=[bool]$NudgeRequest;nudge_motion=[bool]$NudgeMotion;nudge_stack=[bool]$NudgeStack;nudge_return=[bool]$NudgeReturn;nudge_sequence=[bool]$NudgeSequence;nudge_result=[bool]$NudgeResult;nudge_exit=[bool]$NudgeExit;nudge_win_transfer=[bool]$NudgeWinTransfer;nudge_tail=[bool]$NudgeTail;nudge_accounting=[bool]$NudgeAccounting;nudge_bank_return=[bool]$NudgeBankReturn;nudge_cycle_init=[bool]$NudgeCycleInit;nudge_ic8=[bool]$NudgeIc8;nudge_background=[bool]$NudgeBackground;nudge_status=[bool]$NudgeStatus;nudge_services=[bool]$NudgeServices;nudge_preplay=[bool]$NudgePreplay;nudge_eligibility=[bool]$NudgeEligibility;nudge_start=[bool]$NudgeStart;nudge_stake=[bool]$NudgeStake;nudge_tone=[bool]$NudgeTone;nudge_spin_flags=[bool]$NudgeSpinFlags;nudge_spin_gates=[bool]$NudgeSpinGates;nudge_final_selection=[bool]$NudgeFinalSelection;nudge_spin_preparation=[bool]$NudgeSpinPreparation;nudge_paid_spin=[bool]$NudgePaidSpin;nudge_spin_result=[bool]$NudgeSpinResult;nudge_paid_nudge=[bool]$NudgePaidNudge;nudge_paid_step=[bool]$NudgePaidStep;nudge_paid_result=[bool]$NudgePaidResult;nudge_paid_return=[bool]$NudgePaidReturn;nudge_paid_next_prompt=[bool]$NudgePaidNextPrompt;paid_flag_accounting=[bool]$PaidFlagAccounting;paid_flag_announcement=[bool]$PaidFlagAnnouncement;paid_flag_reel_plan=[bool]$PaidFlagReelPlan;paid_flag_table=[bool]$PaidFlagTable;paid_flag_bootstrap=[bool]$PaidFlagBootstrap;paid_flag_motion=[bool]$PaidFlagMotion;paid_flag_board=[bool]$PaidFlagBoard;nudge_pattern=$NudgePattern;tail_window=[bool]$TailWindow;motor_items_observer_disabled=[bool]$NoMotorItems;additional_physical_take_at_square22=[bool]$NudgeEntry;
+ timer_deadlines=[bool]$TimerDeadlines;cpu_interrupts=[bool]$CpuInterrupts;ptm_cpu_timing=[bool]$PtmCpuTiming;ptm_instruction_timing=[bool]$PtmInstructionTiming;synthetic_jackpot_probe=[bool]$JackpotProbe;cash_feature_caller=[bool]$CashFeatureCaller;board_result_caller=[bool]$BoardResultCaller;board_selection=[bool]$BoardSelection;dice_requests=[bool]$DiceRequests;dice_motion=[bool]$DiceMotion;board_movement=[bool]$BoardMovement;synthetic_nudge_pot_probe=[bool]$NudgePotProbe;board_link=$BoardLink;continue_board=[bool]$ContinueBoard;availability=[bool]$Availability;nudge_entry=[bool]$NudgeEntry;nudge_prompt=[bool]$NudgePrompt;nudge_request=[bool]$NudgeRequest;nudge_motion=[bool]$NudgeMotion;nudge_stack=[bool]$NudgeStack;nudge_return=[bool]$NudgeReturn;nudge_sequence=[bool]$NudgeSequence;nudge_result=[bool]$NudgeResult;nudge_exit=[bool]$NudgeExit;nudge_win_transfer=[bool]$NudgeWinTransfer;nudge_tail=[bool]$NudgeTail;nudge_accounting=[bool]$NudgeAccounting;nudge_bank_return=[bool]$NudgeBankReturn;nudge_cycle_init=[bool]$NudgeCycleInit;nudge_ic8=[bool]$NudgeIc8;nudge_background=[bool]$NudgeBackground;nudge_status=[bool]$NudgeStatus;nudge_services=[bool]$NudgeServices;nudge_preplay=[bool]$NudgePreplay;nudge_eligibility=[bool]$NudgeEligibility;nudge_start=[bool]$NudgeStart;nudge_stake=[bool]$NudgeStake;nudge_tone=[bool]$NudgeTone;nudge_spin_flags=[bool]$NudgeSpinFlags;nudge_spin_gates=[bool]$NudgeSpinGates;nudge_final_selection=[bool]$NudgeFinalSelection;nudge_spin_preparation=[bool]$NudgeSpinPreparation;nudge_paid_spin=[bool]$NudgePaidSpin;nudge_spin_result=[bool]$NudgeSpinResult;nudge_paid_nudge=[bool]$NudgePaidNudge;nudge_paid_step=[bool]$NudgePaidStep;nudge_paid_result=[bool]$NudgePaidResult;nudge_paid_return=[bool]$NudgePaidReturn;nudge_paid_next_prompt=[bool]$NudgePaidNextPrompt;paid_flag_accounting=[bool]$PaidFlagAccounting;paid_flag_announcement=[bool]$PaidFlagAnnouncement;paid_flag_reel_plan=[bool]$PaidFlagReelPlan;paid_flag_table=[bool]$PaidFlagTable;paid_flag_bootstrap=[bool]$PaidFlagBootstrap;paid_flag_motion=[bool]$PaidFlagMotion;paid_flag_board=[bool]$PaidFlagBoard;nudge_pattern=$NudgePattern;tail_window=[bool]$TailWindow;motor_items_observer_disabled=[bool]$NoMotorItems;additional_physical_take_at_square22=[bool]$NudgeEntry;
  initial_state=$(if($NudgePotProbe){'Fresh isolated physical campaign; explicit synthetic Y=DDE3 redirection at B28F; no RAM/ROM injection'}elseif($JackpotProbe){'Fresh isolated physical campaign; explicit synthetic jackpot VM-entry redirection; no RAM/ROM injection'}else{'Fresh isolated default configuration and absent NVRAM; physical-input fixture only; no RAM/ROM injection.'})} |
  ConvertTo-Json | Set-Content "$run/provenance.json"
 $previousReplay=$env:MPU4_REPLAY

@@ -206,8 +206,8 @@
   },
   {
     "path": "docs/recovery/PTM-CLOCK-FOUNDATION-PASS.md",
-    "bytes": 16185,
-    "sha256": "5626D905658E178471891D7A2A545B898D493E895E6305B33ABBC11188CDB448"
+    "bytes": 20956,
+    "sha256": "2E935868D34258C7277493374584D9E5B6E422D8507CAEE355682F5B085B65AE"
   },
   {
     "path": "docs/recovery/README.txt",
@@ -356,8 +356,8 @@
   },
   {
     "path": "evidence/mpu4/maps/mame-timing-source.json",
-    "bytes": 3630,
-    "sha256": "9F1D4A4A37E542E416D5770DF0D190987280098FB6970163B13F116BAF36F30E"
+    "bytes": 4841,
+    "sha256": "B7474DB150F799585EAD44D06C1DB24A44E7A2431161DE8D7774837576581E34"
   },
   {
     "path": "evidence/mpu4/maps/nudge-availability-data.json",
@@ -406,8 +406,8 @@
   },
   {
     "path": "evidence/mpu4/maps/ptm-clock-semantics.json",
-    "bytes": 2557,
-    "sha256": "F9EAFBF1A481A8C302139B0CC3A6FBF26571D5A23D7CBBBD1F3A5FAA63FE48A9"
+    "bytes": 2699,
+    "sha256": "AB54DD4B6EE1128D93BF6FB90354A4F58CC7A54514DF006AC9C5E085F68EC795"
   },
   {
     "path": "evidence/mpu4/maps/skill-cash-alpha-scan-data.json",
@@ -2570,6 +2570,16 @@
     "sha256": "51EECFCA763234F47F694D97C6786CE45F75B6B72C26750937545838B9D06756"
   },
   {
+    "path": "evidence/mpu4/skill-cash/ptm-instruction-boundaries-verification.json",
+    "bytes": 3804,
+    "sha256": "8D0DEB3F1378C28EC2478DFA120AE8DA42745471D084BDB34013FCE7EC7A0EA6"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/ptm-instruction-boundaries.json",
+    "bytes": 119781,
+    "sha256": "E5718AC6C240EE2EB62E46054B84152CA474C16E01E54F847080C3B28653F5BD"
+  },
+  {
     "path": "evidence/mpu4/skill-cash/ptm-irq-entry-verification.json",
     "bytes": 924,
     "sha256": "BD747BA37A826C075A65C21CD3CA56B75486BE2ADBFB37C7CCAB04EA2998E8AD"
@@ -2641,8 +2651,8 @@
   },
   {
     "path": "evidence/mpu4/skill-cash/ptm-skill-cpu.lua",
-    "bytes": 2799,
-    "sha256": "3090C68D90244CBF971DF042CC73AA8FCE99CEAE6633CE4FA520ED486966573B"
+    "bytes": 4437,
+    "sha256": "89739845F86C6A6D53A7A90DBA69B1A94EC3D6E0049683D8EA1BA5E139C5510B"
   },
   {
     "path": "evidence/mpu4/skill-cash/reel-request-matrix.json",

@@ -1,0 +1,4795 @@
+{
+  "classification": "Natural original Skill Cash input campaign, passive guarded instruction observer; original354 timer-state rows match field-for-field. Selected windows, not a lossless listing or complete CPU emulator.",
+  "instruction_time": "Opcode-fetch time minus one CPU cycle. context_hex holds five observed bytes, including possible following code/data; it is not an asserted instruction length. ROM contexts byte-checked; RAM contexts observed only.",
+  "delivery_qualification": "first_cpu_level_sample is the first observed delivered CPU IRQ=1 with timer3 flag set after calculated assertion, not a direct timestamp of asynchronous delivery.",
+  "windows": [
+    {
+      "arm_index": 0,
+      "latch_bus_cycle": 3511362718,
+      "latch_seconds": "2041",
+      "latch_attoseconds": "489952324846458619",
+      "latch": 40,
+      "initial_high": true,
+      "calculated_assertion_cycle": 3511363038,
+      "last_instruction": {
+        "pc": 6818,
+        "cycle": 3511363037,
+        "cc": 196,
+        "context_hex": "39BD1AC3C1",
+        "memory_kind": "rom"
+      },
+      "handler_cycle": 3511363061,
+      "first_cpu_level_sample": {
+        "event": "line",
+        "cycle": 3511363039,
+        "pc": 6819,
+        "curpc": 6818,
+        "cpuirq": 1,
+        "status": 132
+      },
+      "handler_path": [
+        {
+          "pc": 65136,
+          "cycle": 3511363061,
+          "cc": 212,
+          "context_hex": "96F12709A7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65138,
+          "cycle": 3511363065,
+          "cc": 212,
+          "context_hex": "2709A76386",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65149,
+          "cycle": 3511363068,
+          "cc": 212,
+          "context_hex": "B60B032A04",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65152,
+          "cycle": 3511363073,
+          "cc": 208,
+          "context_hex": "2A04850126",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65158,
+          "cycle": 3511363076,
+          "cc": 208,
+          "context_hex": "B60901D63F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65161,
+          "cycle": 3511363081,
+          "cc": 216,
+          "context_hex": "D63FC54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65163,
+          "cycle": 3511363085,
+          "cc": 212,
+          "context_hex": "C540270485",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65165,
+          "cycle": 3511363087,
+          "cc": 212,
+          "context_hex": "2704850226",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65171,
+          "cycle": 3511363090,
+          "cc": 212,
+          "context_hex": "85012610D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65173,
+          "cycle": 3511363092,
+          "cc": 212,
+          "context_hex": "2610D640C5",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65175,
+          "cycle": 3511363095,
+          "cc": 212,
+          "context_hex": "D640C54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65177,
+          "cycle": 3511363099,
+          "cc": 208,
+          "context_hex": "C540270085",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65179,
+          "cycle": 3511363101,
+          "cc": 208,
+          "context_hex": "2700850426",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65181,
+          "cycle": 3511363104,
+          "cc": 208,
+          "context_hex": "85042640C6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65183,
+          "cycle": 3511363106,
+          "cc": 208,
+          "context_hex": "2640C60211",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65249,
+          "cycle": 3511363109,
+          "cc": 208,
+          "context_hex": "B609061CEF",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65252,
+          "cycle": 3511363114,
+          "cc": 212,
+          "context_hex": "1CEFBD70B3",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65254,
+          "cycle": 3511363117,
+          "cc": 196,
+          "context_hex": "BD70B39E3D",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28851,
+          "cycle": 3511363125,
+          "cc": 196,
+          "context_hex": "34051A50D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28853,
+          "cycle": 3511363132,
+          "cc": 196,
+          "context_hex": "1A50D63FC4",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28855,
+          "cycle": 3511363135,
+          "cc": 212,
+          "context_hex": "D63FC4FEF7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28857,
+          "cycle": 3511363139,
+          "cc": 212,
+          "context_hex": "C4FEF70901",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28859,
+          "cycle": 3511363141,
+          "cc": 212,
+          "context_hex": "F70901D73F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28862,
+          "cycle": 3511363146,
+          "cc": 212,
+          "context_hex": "D73FC600F7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28864,
+          "cycle": 3511363150,
+          "cc": 212,
+          "context_hex": "C600F70900",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28866,
+          "cycle": 3511363152,
+          "cc": 212,
+          "context_hex": "F70900D740",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28869,
+          "cycle": 3511363157,
+          "cc": 212,
+          "context_hex": "D740358534",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28871,
+          "cycle": 3511363161,
+          "cc": 212,
+          "context_hex": "358534051A",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65257,
+          "cycle": 3511363170,
+          "cc": 196,
+          "context_hex": "9E3D8C1400",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65259,
+          "cycle": 3511363175,
+          "cc": 192,
+          "context_hex": "8C14002502",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65262,
+          "cycle": 3511363179,
+          "cc": 192,
+          "context_hex": "2502AD8420",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65264,
+          "cycle": 3511363182,
+          "cc": 192,
+          "context_hex": "AD842014B6",
+          "memory_kind": "rom"
+        }
+      ],
+      "callback_cycle": 3511363189
+    },
+    {
+      "arm_index": 1,
+      "latch_bus_cycle": 3511366159,
+      "latch_seconds": "2041",
+      "latch_attoseconds": "491952906241807072",
+      "latch": 40,
+      "initial_high": true,
+      "calculated_assertion_cycle": 3511366479,
+      "last_instruction": {
+        "pc": 6587,
+        "cycle": 3511366478,
+        "cc": 196,
+        "context_hex": "BD1A05BD1A",
+        "memory_kind": "rom"
+      },
+      "handler_cycle": 3511366505,
+      "first_cpu_level_sample": {
+        "event": "line",
+        "cycle": 3511366480,
+        "pc": 6589,
+        "curpc": 6587,
+        "cpuirq": 1,
+        "status": 132
+      },
+      "handler_path": [
+        {
+          "pc": 65136,
+          "cycle": 3511366505,
+          "cc": 212,
+          "context_hex": "96F12709A7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65138,
+          "cycle": 3511366509,
+          "cc": 212,
+          "context_hex": "2709A76386",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65149,
+          "cycle": 3511366512,
+          "cc": 212,
+          "context_hex": "B60B032A04",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65152,
+          "cycle": 3511366517,
+          "cc": 208,
+          "context_hex": "2A04850126",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65158,
+          "cycle": 3511366520,
+          "cc": 208,
+          "context_hex": "B60901D63F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65161,
+          "cycle": 3511366525,
+          "cc": 216,
+          "context_hex": "D63FC54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65163,
+          "cycle": 3511366529,
+          "cc": 212,
+          "context_hex": "C540270485",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65165,
+          "cycle": 3511366531,
+          "cc": 212,
+          "context_hex": "2704850226",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65171,
+          "cycle": 3511366534,
+          "cc": 212,
+          "context_hex": "85012610D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65173,
+          "cycle": 3511366536,
+          "cc": 212,
+          "context_hex": "2610D640C5",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65175,
+          "cycle": 3511366539,
+          "cc": 212,
+          "context_hex": "D640C54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65177,
+          "cycle": 3511366543,
+          "cc": 208,
+          "context_hex": "C540270085",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65179,
+          "cycle": 3511366545,
+          "cc": 208,
+          "context_hex": "2700850426",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65181,
+          "cycle": 3511366548,
+          "cc": 208,
+          "context_hex": "85042640C6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65183,
+          "cycle": 3511366550,
+          "cc": 208,
+          "context_hex": "2640C60211",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65249,
+          "cycle": 3511366553,
+          "cc": 208,
+          "context_hex": "B609061CEF",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65252,
+          "cycle": 3511366558,
+          "cc": 212,
+          "context_hex": "1CEFBD70B3",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65254,
+          "cycle": 3511366561,
+          "cc": 196,
+          "context_hex": "BD70B39E3D",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28851,
+          "cycle": 3511366569,
+          "cc": 196,
+          "context_hex": "34051A50D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28853,
+          "cycle": 3511366576,
+          "cc": 196,
+          "context_hex": "1A50D63FC4",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28855,
+          "cycle": 3511366579,
+          "cc": 212,
+          "context_hex": "D63FC4FEF7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28857,
+          "cycle": 3511366583,
+          "cc": 212,
+          "context_hex": "C4FEF70901",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28859,
+          "cycle": 3511366585,
+          "cc": 212,
+          "context_hex": "F70901D73F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28862,
+          "cycle": 3511366590,
+          "cc": 212,
+          "context_hex": "D73FC600F7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28864,
+          "cycle": 3511366594,
+          "cc": 212,
+          "context_hex": "C600F70900",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28866,
+          "cycle": 3511366596,
+          "cc": 212,
+          "context_hex": "F70900D740",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28869,
+          "cycle": 3511366601,
+          "cc": 212,
+          "context_hex": "D740358534",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28871,
+          "cycle": 3511366605,
+          "cc": 212,
+          "context_hex": "358534051A",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65257,
+          "cycle": 3511366614,
+          "cc": 196,
+          "context_hex": "9E3D8C1400",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65259,
+          "cycle": 3511366619,
+          "cc": 192,
+          "context_hex": "8C14002502",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65262,
+          "cycle": 3511366623,
+          "cc": 192,
+          "context_hex": "2502AD8420",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65264,
+          "cycle": 3511366626,
+          "cc": 192,
+          "context_hex": "AD842014B6",
+          "memory_kind": "rom"
+        }
+      ],
+      "callback_cycle": 3511366633
+    },
+    {
+      "arm_index": 2,
+      "latch_bus_cycle": 3511369604,
+      "latch_seconds": "2041",
+      "latch_attoseconds": "493955813218550537",
+      "latch": 40,
+      "initial_high": true,
+      "calculated_assertion_cycle": 3511369924,
+      "last_instruction": {
+        "pc": 6814,
+        "cycle": 3511369916,
+        "cc": 196,
+        "context_hex": "A789009639",
+        "memory_kind": "rom"
+      },
+      "handler_cycle": 3511369943,
+      "first_cpu_level_sample": {
+        "event": "line",
+        "cycle": 3511369924,
+        "pc": 6818,
+        "curpc": 6814,
+        "cpuirq": 1,
+        "status": 132
+      },
+      "handler_path": [
+        {
+          "pc": 65136,
+          "cycle": 3511369943,
+          "cc": 212,
+          "context_hex": "96F12709A7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65138,
+          "cycle": 3511369947,
+          "cc": 212,
+          "context_hex": "2709A76386",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65149,
+          "cycle": 3511369950,
+          "cc": 212,
+          "context_hex": "B60B032A04",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65152,
+          "cycle": 3511369955,
+          "cc": 208,
+          "context_hex": "2A04850126",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65158,
+          "cycle": 3511369958,
+          "cc": 208,
+          "context_hex": "B60901D63F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65161,
+          "cycle": 3511369963,
+          "cc": 216,
+          "context_hex": "D63FC54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65163,
+          "cycle": 3511369967,
+          "cc": 212,
+          "context_hex": "C540270485",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65165,
+          "cycle": 3511369969,
+          "cc": 212,
+          "context_hex": "2704850226",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65171,
+          "cycle": 3511369972,
+          "cc": 212,
+          "context_hex": "85012610D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65173,
+          "cycle": 3511369974,
+          "cc": 212,
+          "context_hex": "2610D640C5",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65175,
+          "cycle": 3511369977,
+          "cc": 212,
+          "context_hex": "D640C54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65177,
+          "cycle": 3511369981,
+          "cc": 208,
+          "context_hex": "C540270085",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65179,
+          "cycle": 3511369983,
+          "cc": 208,
+          "context_hex": "2700850426",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65181,
+          "cycle": 3511369986,
+          "cc": 208,
+          "context_hex": "85042640C6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65183,
+          "cycle": 3511369988,
+          "cc": 208,
+          "context_hex": "2640C60211",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65249,
+          "cycle": 3511369991,
+          "cc": 208,
+          "context_hex": "B609061CEF",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65252,
+          "cycle": 3511369996,
+          "cc": 212,
+          "context_hex": "1CEFBD70B3",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65254,
+          "cycle": 3511369999,
+          "cc": 196,
+          "context_hex": "BD70B39E3D",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28851,
+          "cycle": 3511370007,
+          "cc": 196,
+          "context_hex": "34051A50D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28853,
+          "cycle": 3511370014,
+          "cc": 196,
+          "context_hex": "1A50D63FC4",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28855,
+          "cycle": 3511370017,
+          "cc": 212,
+          "context_hex": "D63FC4FEF7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28857,
+          "cycle": 3511370021,
+          "cc": 212,
+          "context_hex": "C4FEF70901",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28859,
+          "cycle": 3511370023,
+          "cc": 212,
+          "context_hex": "F70901D73F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28862,
+          "cycle": 3511370028,
+          "cc": 212,
+          "context_hex": "D73FC600F7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28864,
+          "cycle": 3511370032,
+          "cc": 212,
+          "context_hex": "C600F70900",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28866,
+          "cycle": 3511370034,
+          "cc": 212,
+          "context_hex": "F70900D740",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28869,
+          "cycle": 3511370039,
+          "cc": 212,
+          "context_hex": "D740358534",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28871,
+          "cycle": 3511370043,
+          "cc": 212,
+          "context_hex": "358534051A",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65257,
+          "cycle": 3511370052,
+          "cc": 196,
+          "context_hex": "9E3D8C1400",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65259,
+          "cycle": 3511370057,
+          "cc": 192,
+          "context_hex": "8C14002502",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65262,
+          "cycle": 3511370061,
+          "cc": 192,
+          "context_hex": "2502AD8420",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65264,
+          "cycle": 3511370064,
+          "cc": 192,
+          "context_hex": "AD842014B6",
+          "memory_kind": "rom"
+        }
+      ],
+      "callback_cycle": 3511370071
+    },
+    {
+      "arm_index": 3,
+      "latch_bus_cycle": 3511373046,
+      "latch_seconds": "2041",
+      "latch_attoseconds": "495956976009247491",
+      "latch": 40,
+      "initial_high": true,
+      "calculated_assertion_cycle": 3511373366,
+      "last_instruction": {
+        "pc": 17328,
+        "cycle": 3511373361,
+        "cc": 201,
+        "context_hex": "E680260931",
+        "memory_kind": "rom"
+      },
+      "handler_cycle": 3511373386,
+      "first_cpu_level_sample": {
+        "event": "line",
+        "cycle": 3511373366,
+        "pc": 17330,
+        "curpc": 17328,
+        "cpuirq": 1,
+        "status": 132
+      },
+      "handler_path": [
+        {
+          "pc": 65136,
+          "cycle": 3511373386,
+          "cc": 209,
+          "context_hex": "96F12709A7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65138,
+          "cycle": 3511373390,
+          "cc": 213,
+          "context_hex": "2709A76386",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65149,
+          "cycle": 3511373393,
+          "cc": 213,
+          "context_hex": "B60B032A04",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65152,
+          "cycle": 3511373398,
+          "cc": 209,
+          "context_hex": "2A04850126",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65158,
+          "cycle": 3511373401,
+          "cc": 209,
+          "context_hex": "B60901D63F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65161,
+          "cycle": 3511373406,
+          "cc": 217,
+          "context_hex": "D63FC54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65163,
+          "cycle": 3511373410,
+          "cc": 213,
+          "context_hex": "C540270485",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65165,
+          "cycle": 3511373412,
+          "cc": 213,
+          "context_hex": "2704850226",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65171,
+          "cycle": 3511373415,
+          "cc": 213,
+          "context_hex": "85012610D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65173,
+          "cycle": 3511373417,
+          "cc": 213,
+          "context_hex": "2610D640C5",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65175,
+          "cycle": 3511373420,
+          "cc": 213,
+          "context_hex": "D640C54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65177,
+          "cycle": 3511373424,
+          "cc": 209,
+          "context_hex": "C540270085",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65179,
+          "cycle": 3511373426,
+          "cc": 209,
+          "context_hex": "2700850426",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65181,
+          "cycle": 3511373429,
+          "cc": 209,
+          "context_hex": "85042640C6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65183,
+          "cycle": 3511373431,
+          "cc": 209,
+          "context_hex": "2640C60211",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65249,
+          "cycle": 3511373434,
+          "cc": 209,
+          "context_hex": "B609061CEF",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65252,
+          "cycle": 3511373439,
+          "cc": 213,
+          "context_hex": "1CEFBD70B3",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65254,
+          "cycle": 3511373442,
+          "cc": 197,
+          "context_hex": "BD70B39E3D",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28851,
+          "cycle": 3511373450,
+          "cc": 197,
+          "context_hex": "34051A50D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28853,
+          "cycle": 3511373457,
+          "cc": 197,
+          "context_hex": "1A50D63FC4",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28855,
+          "cycle": 3511373460,
+          "cc": 213,
+          "context_hex": "D63FC4FEF7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28857,
+          "cycle": 3511373464,
+          "cc": 213,
+          "context_hex": "C4FEF70901",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28859,
+          "cycle": 3511373466,
+          "cc": 213,
+          "context_hex": "F70901D73F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28862,
+          "cycle": 3511373471,
+          "cc": 213,
+          "context_hex": "D73FC600F7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28864,
+          "cycle": 3511373475,
+          "cc": 213,
+          "context_hex": "C600F70900",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28866,
+          "cycle": 3511373477,
+          "cc": 213,
+          "context_hex": "F70900D740",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28869,
+          "cycle": 3511373482,
+          "cc": 213,
+          "context_hex": "D740358534",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28871,
+          "cycle": 3511373486,
+          "cc": 213,
+          "context_hex": "358534051A",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65257,
+          "cycle": 3511373495,
+          "cc": 197,
+          "context_hex": "9E3D8C1400",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65259,
+          "cycle": 3511373500,
+          "cc": 193,
+          "context_hex": "8C14002502",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65262,
+          "cycle": 3511373504,
+          "cc": 192,
+          "context_hex": "2502AD8420",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65264,
+          "cycle": 3511373507,
+          "cc": 192,
+          "context_hex": "AD842014B6",
+          "memory_kind": "rom"
+        }
+      ],
+      "callback_cycle": 3511373514
+    },
+    {
+      "arm_index": 4,
+      "latch_bus_cycle": 3511376481,
+      "latch_seconds": "2041",
+      "latch_attoseconds": "497954069032502586",
+      "latch": 40,
+      "initial_high": true,
+      "calculated_assertion_cycle": 3511376801,
+      "last_instruction": {
+        "pc": 6810,
+        "cycle": 3511376799,
+        "cc": 196,
+        "context_hex": "A4890096A7",
+        "memory_kind": "rom"
+      },
+      "handler_cycle": 3511376826,
+      "first_cpu_level_sample": {
+        "event": "line",
+        "cycle": 3511376801,
+        "pc": 6812,
+        "curpc": 6810,
+        "cpuirq": 1,
+        "status": 132
+      },
+      "handler_path": [
+        {
+          "pc": 65136,
+          "cycle": 3511376826,
+          "cc": 212,
+          "context_hex": "96F12709A7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65138,
+          "cycle": 3511376830,
+          "cc": 212,
+          "context_hex": "2709A76386",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65149,
+          "cycle": 3511376833,
+          "cc": 212,
+          "context_hex": "B60B032A04",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65152,
+          "cycle": 3511376838,
+          "cc": 208,
+          "context_hex": "2A04850126",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65158,
+          "cycle": 3511376841,
+          "cc": 208,
+          "context_hex": "B60901D63F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65161,
+          "cycle": 3511376846,
+          "cc": 216,
+          "context_hex": "D63FC54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65163,
+          "cycle": 3511376850,
+          "cc": 212,
+          "context_hex": "C540270485",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65165,
+          "cycle": 3511376852,
+          "cc": 212,
+          "context_hex": "2704850226",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65171,
+          "cycle": 3511376855,
+          "cc": 212,
+          "context_hex": "85012610D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65173,
+          "cycle": 3511376857,
+          "cc": 212,
+          "context_hex": "2610D640C5",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65175,
+          "cycle": 3511376860,
+          "cc": 212,
+          "context_hex": "D640C54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65177,
+          "cycle": 3511376864,
+          "cc": 208,
+          "context_hex": "C540270085",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65179,
+          "cycle": 3511376866,
+          "cc": 208,
+          "context_hex": "2700850426",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65181,
+          "cycle": 3511376869,
+          "cc": 208,
+          "context_hex": "85042640C6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65183,
+          "cycle": 3511376871,
+          "cc": 208,
+          "context_hex": "2640C60211",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65249,
+          "cycle": 3511376874,
+          "cc": 208,
+          "context_hex": "B609061CEF",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65252,
+          "cycle": 3511376879,
+          "cc": 212,
+          "context_hex": "1CEFBD70B3",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65254,
+          "cycle": 3511376882,
+          "cc": 196,
+          "context_hex": "BD70B39E3D",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28851,
+          "cycle": 3511376890,
+          "cc": 196,
+          "context_hex": "34051A50D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28853,
+          "cycle": 3511376897,
+          "cc": 196,
+          "context_hex": "1A50D63FC4",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28855,
+          "cycle": 3511376900,
+          "cc": 212,
+          "context_hex": "D63FC4FEF7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28857,
+          "cycle": 3511376904,
+          "cc": 212,
+          "context_hex": "C4FEF70901",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28859,
+          "cycle": 3511376906,
+          "cc": 212,
+          "context_hex": "F70901D73F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28862,
+          "cycle": 3511376911,
+          "cc": 212,
+          "context_hex": "D73FC600F7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28864,
+          "cycle": 3511376915,
+          "cc": 212,
+          "context_hex": "C600F70900",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28866,
+          "cycle": 3511376917,
+          "cc": 212,
+          "context_hex": "F70900D740",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28869,
+          "cycle": 3511376922,
+          "cc": 212,
+          "context_hex": "D740358534",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28871,
+          "cycle": 3511376926,
+          "cc": 212,
+          "context_hex": "358534051A",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65257,
+          "cycle": 3511376935,
+          "cc": 196,
+          "context_hex": "9E3D8C1400",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65259,
+          "cycle": 3511376940,
+          "cc": 192,
+          "context_hex": "8C14002502",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65262,
+          "cycle": 3511376944,
+          "cc": 192,
+          "context_hex": "2502AD8420",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65264,
+          "cycle": 3511376947,
+          "cc": 192,
+          "context_hex": "AD842014B6",
+          "memory_kind": "rom"
+        }
+      ],
+      "callback_cycle": 3511376954
+    },
+    {
+      "arm_index": 5,
+      "latch_bus_cycle": 3511379922,
+      "latch_seconds": "2041",
+      "latch_attoseconds": "499954650427850367",
+      "latch": 40,
+      "initial_high": true,
+      "calculated_assertion_cycle": 3511380242,
+      "last_instruction": {
+        "pc": 6804,
+        "cycle": 3511380234,
+        "cc": 196,
+        "context_hex": "A789008E35",
+        "memory_kind": "rom"
+      },
+      "handler_cycle": 3511380261,
+      "first_cpu_level_sample": {
+        "event": "line",
+        "cycle": 3511380243,
+        "pc": 6808,
+        "curpc": 6804,
+        "cpuirq": 1,
+        "status": 132
+      },
+      "handler_path": [
+        {
+          "pc": 65136,
+          "cycle": 3511380261,
+          "cc": 212,
+          "context_hex": "96F12709A7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65138,
+          "cycle": 3511380265,
+          "cc": 212,
+          "context_hex": "2709A76386",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65149,
+          "cycle": 3511380268,
+          "cc": 212,
+          "context_hex": "B60B032A04",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65152,
+          "cycle": 3511380273,
+          "cc": 208,
+          "context_hex": "2A04850126",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65158,
+          "cycle": 3511380276,
+          "cc": 208,
+          "context_hex": "B60901D63F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65161,
+          "cycle": 3511380281,
+          "cc": 216,
+          "context_hex": "D63FC54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65163,
+          "cycle": 3511380285,
+          "cc": 212,
+          "context_hex": "C540270485",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65165,
+          "cycle": 3511380287,
+          "cc": 212,
+          "context_hex": "2704850226",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65171,
+          "cycle": 3511380290,
+          "cc": 212,
+          "context_hex": "85012610D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65173,
+          "cycle": 3511380292,
+          "cc": 212,
+          "context_hex": "2610D640C5",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65175,
+          "cycle": 3511380295,
+          "cc": 212,
+          "context_hex": "D640C54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65177,
+          "cycle": 3511380299,
+          "cc": 208,
+          "context_hex": "C540270085",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65179,
+          "cycle": 3511380301,
+          "cc": 208,
+          "context_hex": "2700850426",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65181,
+          "cycle": 3511380304,
+          "cc": 208,
+          "context_hex": "85042640C6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65183,
+          "cycle": 3511380306,
+          "cc": 208,
+          "context_hex": "2640C60211",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65249,
+          "cycle": 3511380309,
+          "cc": 208,
+          "context_hex": "B609061CEF",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65252,
+          "cycle": 3511380314,
+          "cc": 212,
+          "context_hex": "1CEFBD70B3",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65254,
+          "cycle": 3511380317,
+          "cc": 196,
+          "context_hex": "BD70B39E3D",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28851,
+          "cycle": 3511380325,
+          "cc": 196,
+          "context_hex": "34051A50D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28853,
+          "cycle": 3511380332,
+          "cc": 196,
+          "context_hex": "1A50D63FC4",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28855,
+          "cycle": 3511380335,
+          "cc": 212,
+          "context_hex": "D63FC4FEF7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28857,
+          "cycle": 3511380339,
+          "cc": 212,
+          "context_hex": "C4FEF70901",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28859,
+          "cycle": 3511380341,
+          "cc": 212,
+          "context_hex": "F70901D73F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28862,
+          "cycle": 3511380346,
+          "cc": 212,
+          "context_hex": "D73FC600F7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28864,
+          "cycle": 3511380350,
+          "cc": 212,
+          "context_hex": "C600F70900",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28866,
+          "cycle": 3511380352,
+          "cc": 212,
+          "context_hex": "F70900D740",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28869,
+          "cycle": 3511380357,
+          "cc": 212,
+          "context_hex": "D740358534",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28871,
+          "cycle": 3511380361,
+          "cc": 212,
+          "context_hex": "358534051A",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65257,
+          "cycle": 3511380370,
+          "cc": 196,
+          "context_hex": "9E3D8C1400",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65259,
+          "cycle": 3511380375,
+          "cc": 192,
+          "context_hex": "8C14002502",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65262,
+          "cycle": 3511380379,
+          "cc": 192,
+          "context_hex": "2502AD8420",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65264,
+          "cycle": 3511380382,
+          "cc": 192,
+          "context_hex": "AD842014B6",
+          "memory_kind": "rom"
+        }
+      ],
+      "callback_cycle": 3511380389
+    },
+    {
+      "arm_index": 6,
+      "latch_bus_cycle": 3511383364,
+      "latch_seconds": "2041",
+      "latch_attoseconds": "501955813218547657",
+      "latch": 40,
+      "initial_high": true,
+      "calculated_assertion_cycle": 3511383684,
+      "last_instruction": {
+        "pc": 6804,
+        "cycle": 3511383682,
+        "cc": 196,
+        "context_hex": "A789008E35",
+        "memory_kind": "rom"
+      },
+      "handler_cycle": 3511383709,
+      "first_cpu_level_sample": {
+        "event": "line",
+        "cycle": 3511383685,
+        "pc": 6807,
+        "curpc": 6804,
+        "cpuirq": 1,
+        "status": 132
+      },
+      "handler_path": [
+        {
+          "pc": 65136,
+          "cycle": 3511383709,
+          "cc": 212,
+          "context_hex": "96F12709A7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65138,
+          "cycle": 3511383713,
+          "cc": 212,
+          "context_hex": "2709A76386",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65149,
+          "cycle": 3511383716,
+          "cc": 212,
+          "context_hex": "B60B032A04",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65152,
+          "cycle": 3511383721,
+          "cc": 208,
+          "context_hex": "2A04850126",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65158,
+          "cycle": 3511383724,
+          "cc": 208,
+          "context_hex": "B60901D63F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65161,
+          "cycle": 3511383729,
+          "cc": 216,
+          "context_hex": "D63FC54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65163,
+          "cycle": 3511383733,
+          "cc": 212,
+          "context_hex": "C540270485",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65165,
+          "cycle": 3511383735,
+          "cc": 212,
+          "context_hex": "2704850226",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65171,
+          "cycle": 3511383738,
+          "cc": 212,
+          "context_hex": "85012610D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65173,
+          "cycle": 3511383740,
+          "cc": 212,
+          "context_hex": "2610D640C5",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65175,
+          "cycle": 3511383743,
+          "cc": 212,
+          "context_hex": "D640C54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65177,
+          "cycle": 3511383747,
+          "cc": 208,
+          "context_hex": "C540270085",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65179,
+          "cycle": 3511383749,
+          "cc": 208,
+          "context_hex": "2700850426",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65181,
+          "cycle": 3511383752,
+          "cc": 208,
+          "context_hex": "85042640C6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65183,
+          "cycle": 3511383754,
+          "cc": 208,
+          "context_hex": "2640C60211",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65249,
+          "cycle": 3511383757,
+          "cc": 208,
+          "context_hex": "B609061CEF",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65252,
+          "cycle": 3511383762,
+          "cc": 212,
+          "context_hex": "1CEFBD70B3",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65254,
+          "cycle": 3511383765,
+          "cc": 196,
+          "context_hex": "BD70B39E3D",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28851,
+          "cycle": 3511383773,
+          "cc": 196,
+          "context_hex": "34051A50D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28853,
+          "cycle": 3511383780,
+          "cc": 196,
+          "context_hex": "1A50D63FC4",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28855,
+          "cycle": 3511383783,
+          "cc": 212,
+          "context_hex": "D63FC4FEF7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28857,
+          "cycle": 3511383787,
+          "cc": 212,
+          "context_hex": "C4FEF70901",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28859,
+          "cycle": 3511383789,
+          "cc": 212,
+          "context_hex": "F70901D73F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28862,
+          "cycle": 3511383794,
+          "cc": 212,
+          "context_hex": "D73FC600F7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28864,
+          "cycle": 3511383798,
+          "cc": 212,
+          "context_hex": "C600F70900",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28866,
+          "cycle": 3511383800,
+          "cc": 212,
+          "context_hex": "F70900D740",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28869,
+          "cycle": 3511383805,
+          "cc": 212,
+          "context_hex": "D740358534",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28871,
+          "cycle": 3511383809,
+          "cc": 212,
+          "context_hex": "358534051A",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65257,
+          "cycle": 3511383818,
+          "cc": 196,
+          "context_hex": "9E3D8C1400",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65259,
+          "cycle": 3511383823,
+          "cc": 192,
+          "context_hex": "8C14002502",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65262,
+          "cycle": 3511383827,
+          "cc": 192,
+          "context_hex": "2502AD8420",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65264,
+          "cycle": 3511383830,
+          "cc": 192,
+          "context_hex": "AD842014B6",
+          "memory_kind": "rom"
+        }
+      ],
+      "callback_cycle": 3511383837
+    },
+    {
+      "arm_index": 7,
+      "latch_bus_cycle": 3511386823,
+      "latch_seconds": "2041",
+      "latch_attoseconds": "503966859730174840",
+      "latch": 40,
+      "initial_high": true,
+      "calculated_assertion_cycle": 3511387143,
+      "last_instruction": {
+        "pc": 17348,
+        "cycle": 3511387141,
+        "cc": 196,
+        "context_hex": "89003402B8",
+        "memory_kind": "rom"
+      },
+      "handler_cycle": 3511387162,
+      "first_cpu_level_sample": {
+        "event": "line",
+        "cycle": 3511387144,
+        "pc": 17350,
+        "curpc": 17348,
+        "cpuirq": 1,
+        "status": 132
+      },
+      "handler_path": [
+        {
+          "pc": 65136,
+          "cycle": 3511387162,
+          "cc": 212,
+          "context_hex": "96F12709A7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65138,
+          "cycle": 3511387166,
+          "cc": 212,
+          "context_hex": "2709A76386",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65149,
+          "cycle": 3511387169,
+          "cc": 212,
+          "context_hex": "B60B032A04",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65152,
+          "cycle": 3511387174,
+          "cc": 208,
+          "context_hex": "2A04850126",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65158,
+          "cycle": 3511387177,
+          "cc": 208,
+          "context_hex": "B60901D63F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65161,
+          "cycle": 3511387182,
+          "cc": 216,
+          "context_hex": "D63FC54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65163,
+          "cycle": 3511387186,
+          "cc": 212,
+          "context_hex": "C540270485",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65165,
+          "cycle": 3511387188,
+          "cc": 212,
+          "context_hex": "2704850226",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65171,
+          "cycle": 3511387191,
+          "cc": 212,
+          "context_hex": "85012610D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65173,
+          "cycle": 3511387193,
+          "cc": 212,
+          "context_hex": "2610D640C5",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65175,
+          "cycle": 3511387196,
+          "cc": 212,
+          "context_hex": "D640C54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65177,
+          "cycle": 3511387200,
+          "cc": 208,
+          "context_hex": "C540270085",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65179,
+          "cycle": 3511387202,
+          "cc": 208,
+          "context_hex": "2700850426",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65181,
+          "cycle": 3511387205,
+          "cc": 208,
+          "context_hex": "85042640C6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65183,
+          "cycle": 3511387207,
+          "cc": 208,
+          "context_hex": "2640C60211",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65249,
+          "cycle": 3511387210,
+          "cc": 208,
+          "context_hex": "B609061CEF",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65252,
+          "cycle": 3511387215,
+          "cc": 212,
+          "context_hex": "1CEFBD70B3",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65254,
+          "cycle": 3511387218,
+          "cc": 196,
+          "context_hex": "BD70B39E3D",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28851,
+          "cycle": 3511387226,
+          "cc": 196,
+          "context_hex": "34051A50D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28853,
+          "cycle": 3511387233,
+          "cc": 196,
+          "context_hex": "1A50D63FC4",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28855,
+          "cycle": 3511387236,
+          "cc": 212,
+          "context_hex": "D63FC4FEF7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28857,
+          "cycle": 3511387240,
+          "cc": 212,
+          "context_hex": "C4FEF70901",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28859,
+          "cycle": 3511387242,
+          "cc": 212,
+          "context_hex": "F70901D73F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28862,
+          "cycle": 3511387247,
+          "cc": 212,
+          "context_hex": "D73FC600F7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28864,
+          "cycle": 3511387251,
+          "cc": 212,
+          "context_hex": "C600F70900",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28866,
+          "cycle": 3511387253,
+          "cc": 212,
+          "context_hex": "F70900D740",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28869,
+          "cycle": 3511387258,
+          "cc": 212,
+          "context_hex": "D740358534",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28871,
+          "cycle": 3511387262,
+          "cc": 212,
+          "context_hex": "358534051A",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65257,
+          "cycle": 3511387271,
+          "cc": 196,
+          "context_hex": "9E3D8C1400",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65259,
+          "cycle": 3511387276,
+          "cc": 192,
+          "context_hex": "8C14002502",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65262,
+          "cycle": 3511387280,
+          "cc": 192,
+          "context_hex": "2502AD8420",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65264,
+          "cycle": 3511387283,
+          "cc": 192,
+          "context_hex": "AD842014B6",
+          "memory_kind": "rom"
+        }
+      ],
+      "callback_cycle": 3511387290
+    },
+    {
+      "arm_index": 8,
+      "latch_bus_cycle": 3511390258,
+      "latch_seconds": "2041",
+      "latch_attoseconds": "505963952753429935",
+      "latch": 40,
+      "initial_high": true,
+      "calculated_assertion_cycle": 3511390578,
+      "last_instruction": {
+        "pc": 6818,
+        "cycle": 3511390577,
+        "cc": 196,
+        "context_hex": "39BD1AC3C1",
+        "memory_kind": "rom"
+      },
+      "handler_cycle": 3511390601,
+      "first_cpu_level_sample": {
+        "event": "line",
+        "cycle": 3511390579,
+        "pc": 6819,
+        "curpc": 6818,
+        "cpuirq": 1,
+        "status": 132
+      },
+      "handler_path": [
+        {
+          "pc": 65136,
+          "cycle": 3511390601,
+          "cc": 212,
+          "context_hex": "96F12709A7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65138,
+          "cycle": 3511390605,
+          "cc": 212,
+          "context_hex": "2709A76386",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65149,
+          "cycle": 3511390608,
+          "cc": 212,
+          "context_hex": "B60B032A04",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65152,
+          "cycle": 3511390613,
+          "cc": 208,
+          "context_hex": "2A04850126",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65158,
+          "cycle": 3511390616,
+          "cc": 208,
+          "context_hex": "B60901D63F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65161,
+          "cycle": 3511390621,
+          "cc": 216,
+          "context_hex": "D63FC54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65163,
+          "cycle": 3511390625,
+          "cc": 212,
+          "context_hex": "C540270485",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65165,
+          "cycle": 3511390627,
+          "cc": 212,
+          "context_hex": "2704850226",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65171,
+          "cycle": 3511390630,
+          "cc": 212,
+          "context_hex": "85012610D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65173,
+          "cycle": 3511390632,
+          "cc": 212,
+          "context_hex": "2610D640C5",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65175,
+          "cycle": 3511390635,
+          "cc": 212,
+          "context_hex": "D640C54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65177,
+          "cycle": 3511390639,
+          "cc": 208,
+          "context_hex": "C540270085",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65179,
+          "cycle": 3511390641,
+          "cc": 208,
+          "context_hex": "2700850426",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65181,
+          "cycle": 3511390644,
+          "cc": 208,
+          "context_hex": "85042640C6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65183,
+          "cycle": 3511390646,
+          "cc": 208,
+          "context_hex": "2640C60211",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65249,
+          "cycle": 3511390649,
+          "cc": 208,
+          "context_hex": "B609061CEF",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65252,
+          "cycle": 3511390654,
+          "cc": 212,
+          "context_hex": "1CEFBD70B3",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65254,
+          "cycle": 3511390657,
+          "cc": 196,
+          "context_hex": "BD70B39E3D",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28851,
+          "cycle": 3511390665,
+          "cc": 196,
+          "context_hex": "34051A50D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28853,
+          "cycle": 3511390672,
+          "cc": 196,
+          "context_hex": "1A50D63FC4",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28855,
+          "cycle": 3511390675,
+          "cc": 212,
+          "context_hex": "D63FC4FEF7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28857,
+          "cycle": 3511390679,
+          "cc": 212,
+          "context_hex": "C4FEF70901",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28859,
+          "cycle": 3511390681,
+          "cc": 212,
+          "context_hex": "F70901D73F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28862,
+          "cycle": 3511390686,
+          "cc": 212,
+          "context_hex": "D73FC600F7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28864,
+          "cycle": 3511390690,
+          "cc": 212,
+          "context_hex": "C600F70900",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28866,
+          "cycle": 3511390692,
+          "cc": 212,
+          "context_hex": "F70900D740",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28869,
+          "cycle": 3511390697,
+          "cc": 212,
+          "context_hex": "D740358534",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28871,
+          "cycle": 3511390701,
+          "cc": 212,
+          "context_hex": "358534051A",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65257,
+          "cycle": 3511390710,
+          "cc": 196,
+          "context_hex": "9E3D8C1400",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65259,
+          "cycle": 3511390715,
+          "cc": 192,
+          "context_hex": "8C14002502",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65262,
+          "cycle": 3511390719,
+          "cc": 192,
+          "context_hex": "2502AD8420",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65264,
+          "cycle": 3511390722,
+          "cc": 192,
+          "context_hex": "AD842014B6",
+          "memory_kind": "rom"
+        }
+      ],
+      "callback_cycle": 3511390729
+    },
+    {
+      "arm_index": 9,
+      "latch_bus_cycle": 3511393688,
+      "latch_seconds": "2041",
+      "latch_attoseconds": "507958138799940845",
+      "latch": 40,
+      "initial_high": true,
+      "calculated_assertion_cycle": 3511394008,
+      "last_instruction": {
+        "pc": 6587,
+        "cycle": 3511394007,
+        "cc": 196,
+        "context_hex": "BD1A05BD1A",
+        "memory_kind": "rom"
+      },
+      "handler_cycle": 3511394034,
+      "first_cpu_level_sample": {
+        "event": "line",
+        "cycle": 3511394009,
+        "pc": 6589,
+        "curpc": 6587,
+        "cpuirq": 1,
+        "status": 132
+      },
+      "handler_path": [
+        {
+          "pc": 65136,
+          "cycle": 3511394034,
+          "cc": 212,
+          "context_hex": "96F12709A7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65138,
+          "cycle": 3511394038,
+          "cc": 212,
+          "context_hex": "2709A76386",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65149,
+          "cycle": 3511394041,
+          "cc": 212,
+          "context_hex": "B60B032A04",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65152,
+          "cycle": 3511394046,
+          "cc": 208,
+          "context_hex": "2A04850126",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65158,
+          "cycle": 3511394049,
+          "cc": 208,
+          "context_hex": "B60901D63F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65161,
+          "cycle": 3511394054,
+          "cc": 216,
+          "context_hex": "D63FC54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65163,
+          "cycle": 3511394058,
+          "cc": 212,
+          "context_hex": "C540270485",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65165,
+          "cycle": 3511394060,
+          "cc": 212,
+          "context_hex": "2704850226",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65171,
+          "cycle": 3511394063,
+          "cc": 212,
+          "context_hex": "85012610D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65173,
+          "cycle": 3511394065,
+          "cc": 212,
+          "context_hex": "2610D640C5",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65175,
+          "cycle": 3511394068,
+          "cc": 212,
+          "context_hex": "D640C54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65177,
+          "cycle": 3511394072,
+          "cc": 208,
+          "context_hex": "C540270085",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65179,
+          "cycle": 3511394074,
+          "cc": 208,
+          "context_hex": "2700850426",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65181,
+          "cycle": 3511394077,
+          "cc": 208,
+          "context_hex": "85042640C6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65183,
+          "cycle": 3511394079,
+          "cc": 208,
+          "context_hex": "2640C60211",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65249,
+          "cycle": 3511394082,
+          "cc": 208,
+          "context_hex": "B609061CEF",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65252,
+          "cycle": 3511394087,
+          "cc": 212,
+          "context_hex": "1CEFBD70B3",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65254,
+          "cycle": 3511394090,
+          "cc": 196,
+          "context_hex": "BD70B39E3D",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28851,
+          "cycle": 3511394098,
+          "cc": 196,
+          "context_hex": "34051A50D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28853,
+          "cycle": 3511394105,
+          "cc": 196,
+          "context_hex": "1A50D63FC4",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28855,
+          "cycle": 3511394108,
+          "cc": 212,
+          "context_hex": "D63FC4FEF7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28857,
+          "cycle": 3511394112,
+          "cc": 212,
+          "context_hex": "C4FEF70901",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28859,
+          "cycle": 3511394114,
+          "cc": 212,
+          "context_hex": "F70901D73F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28862,
+          "cycle": 3511394119,
+          "cc": 212,
+          "context_hex": "D73FC600F7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28864,
+          "cycle": 3511394123,
+          "cc": 212,
+          "context_hex": "C600F70900",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28866,
+          "cycle": 3511394125,
+          "cc": 212,
+          "context_hex": "F70900D740",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28869,
+          "cycle": 3511394130,
+          "cc": 212,
+          "context_hex": "D740358534",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28871,
+          "cycle": 3511394134,
+          "cc": 212,
+          "context_hex": "358534051A",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65257,
+          "cycle": 3511394143,
+          "cc": 196,
+          "context_hex": "9E3D8C1400",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65259,
+          "cycle": 3511394148,
+          "cc": 192,
+          "context_hex": "8C14002502",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65262,
+          "cycle": 3511394152,
+          "cc": 192,
+          "context_hex": "2502AD8420",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65264,
+          "cycle": 3511394155,
+          "cc": 192,
+          "context_hex": "AD842014B6",
+          "memory_kind": "rom"
+        }
+      ],
+      "callback_cycle": 3511394162
+    },
+    {
+      "arm_index": 10,
+      "latch_bus_cycle": 3511397129,
+      "latch_seconds": "2041",
+      "latch_attoseconds": "509958720195288626",
+      "latch": 40,
+      "initial_high": true,
+      "calculated_assertion_cycle": 3511397449,
+      "last_instruction": {
+        "pc": 6814,
+        "cycle": 3511397441,
+        "cc": 196,
+        "context_hex": "A789009639",
+        "memory_kind": "rom"
+      },
+      "handler_cycle": 3511397468,
+      "first_cpu_level_sample": {
+        "event": "line",
+        "cycle": 3511397450,
+        "pc": 6818,
+        "curpc": 6814,
+        "cpuirq": 1,
+        "status": 132
+      },
+      "handler_path": [
+        {
+          "pc": 65136,
+          "cycle": 3511397468,
+          "cc": 212,
+          "context_hex": "96F12709A7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65138,
+          "cycle": 3511397472,
+          "cc": 212,
+          "context_hex": "2709A76386",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65149,
+          "cycle": 3511397475,
+          "cc": 212,
+          "context_hex": "B60B032A04",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65152,
+          "cycle": 3511397480,
+          "cc": 208,
+          "context_hex": "2A04850126",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65158,
+          "cycle": 3511397483,
+          "cc": 208,
+          "context_hex": "B60901D63F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65161,
+          "cycle": 3511397488,
+          "cc": 216,
+          "context_hex": "D63FC54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65163,
+          "cycle": 3511397492,
+          "cc": 212,
+          "context_hex": "C540270485",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65165,
+          "cycle": 3511397494,
+          "cc": 212,
+          "context_hex": "2704850226",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65171,
+          "cycle": 3511397497,
+          "cc": 212,
+          "context_hex": "85012610D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65173,
+          "cycle": 3511397499,
+          "cc": 212,
+          "context_hex": "2610D640C5",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65175,
+          "cycle": 3511397502,
+          "cc": 212,
+          "context_hex": "D640C54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65177,
+          "cycle": 3511397506,
+          "cc": 208,
+          "context_hex": "C540270085",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65179,
+          "cycle": 3511397508,
+          "cc": 208,
+          "context_hex": "2700850426",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65181,
+          "cycle": 3511397511,
+          "cc": 208,
+          "context_hex": "85042640C6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65183,
+          "cycle": 3511397513,
+          "cc": 208,
+          "context_hex": "2640C60211",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65249,
+          "cycle": 3511397516,
+          "cc": 208,
+          "context_hex": "B609061CEF",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65252,
+          "cycle": 3511397521,
+          "cc": 212,
+          "context_hex": "1CEFBD70B3",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65254,
+          "cycle": 3511397524,
+          "cc": 196,
+          "context_hex": "BD70B39E3D",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28851,
+          "cycle": 3511397532,
+          "cc": 196,
+          "context_hex": "34051A50D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28853,
+          "cycle": 3511397539,
+          "cc": 196,
+          "context_hex": "1A50D63FC4",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28855,
+          "cycle": 3511397542,
+          "cc": 212,
+          "context_hex": "D63FC4FEF7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28857,
+          "cycle": 3511397546,
+          "cc": 212,
+          "context_hex": "C4FEF70901",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28859,
+          "cycle": 3511397548,
+          "cc": 212,
+          "context_hex": "F70901D73F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28862,
+          "cycle": 3511397553,
+          "cc": 212,
+          "context_hex": "D73FC600F7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28864,
+          "cycle": 3511397557,
+          "cc": 212,
+          "context_hex": "C600F70900",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28866,
+          "cycle": 3511397559,
+          "cc": 212,
+          "context_hex": "F70900D740",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28869,
+          "cycle": 3511397564,
+          "cc": 212,
+          "context_hex": "D740358534",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28871,
+          "cycle": 3511397568,
+          "cc": 212,
+          "context_hex": "358534051A",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65257,
+          "cycle": 3511397577,
+          "cc": 196,
+          "context_hex": "9E3D8C1400",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65259,
+          "cycle": 3511397582,
+          "cc": 192,
+          "context_hex": "8C14002502",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65262,
+          "cycle": 3511397586,
+          "cc": 192,
+          "context_hex": "2502AD8420",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65264,
+          "cycle": 3511397589,
+          "cc": 192,
+          "context_hex": "AD842014B6",
+          "memory_kind": "rom"
+        }
+      ],
+      "callback_cycle": 3511397596
+    },
+    {
+      "arm_index": 11,
+      "latch_bus_cycle": 3511400569,
+      "latch_seconds": "2041",
+      "latch_attoseconds": "511958720195288242",
+      "latch": 40,
+      "initial_high": true,
+      "calculated_assertion_cycle": 3511400889,
+      "last_instruction": {
+        "pc": 17328,
+        "cycle": 3511400884,
+        "cc": 201,
+        "context_hex": "E680260931",
+        "memory_kind": "rom"
+      },
+      "handler_cycle": 3511400909,
+      "first_cpu_level_sample": {
+        "event": "line",
+        "cycle": 3511400890,
+        "pc": 17330,
+        "curpc": 17328,
+        "cpuirq": 1,
+        "status": 132
+      },
+      "handler_path": [
+        {
+          "pc": 65136,
+          "cycle": 3511400909,
+          "cc": 209,
+          "context_hex": "96F12709A7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65138,
+          "cycle": 3511400913,
+          "cc": 213,
+          "context_hex": "2709A76386",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65149,
+          "cycle": 3511400916,
+          "cc": 213,
+          "context_hex": "B60B032A04",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65152,
+          "cycle": 3511400921,
+          "cc": 209,
+          "context_hex": "2A04850126",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65158,
+          "cycle": 3511400924,
+          "cc": 209,
+          "context_hex": "B60901D63F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65161,
+          "cycle": 3511400929,
+          "cc": 217,
+          "context_hex": "D63FC54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65163,
+          "cycle": 3511400933,
+          "cc": 213,
+          "context_hex": "C540270485",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65165,
+          "cycle": 3511400935,
+          "cc": 213,
+          "context_hex": "2704850226",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65171,
+          "cycle": 3511400938,
+          "cc": 213,
+          "context_hex": "85012610D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65173,
+          "cycle": 3511400940,
+          "cc": 213,
+          "context_hex": "2610D640C5",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65175,
+          "cycle": 3511400943,
+          "cc": 213,
+          "context_hex": "D640C54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65177,
+          "cycle": 3511400947,
+          "cc": 209,
+          "context_hex": "C540270085",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65179,
+          "cycle": 3511400949,
+          "cc": 209,
+          "context_hex": "2700850426",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65181,
+          "cycle": 3511400952,
+          "cc": 209,
+          "context_hex": "85042640C6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65183,
+          "cycle": 3511400954,
+          "cc": 209,
+          "context_hex": "2640C60211",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65249,
+          "cycle": 3511400957,
+          "cc": 209,
+          "context_hex": "B609061CEF",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65252,
+          "cycle": 3511400962,
+          "cc": 213,
+          "context_hex": "1CEFBD70B3",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65254,
+          "cycle": 3511400965,
+          "cc": 197,
+          "context_hex": "BD70B39E3D",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28851,
+          "cycle": 3511400973,
+          "cc": 197,
+          "context_hex": "34051A50D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28853,
+          "cycle": 3511400980,
+          "cc": 197,
+          "context_hex": "1A50D63FC4",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28855,
+          "cycle": 3511400983,
+          "cc": 213,
+          "context_hex": "D63FC4FEF7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28857,
+          "cycle": 3511400987,
+          "cc": 213,
+          "context_hex": "C4FEF70901",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28859,
+          "cycle": 3511400989,
+          "cc": 213,
+          "context_hex": "F70901D73F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28862,
+          "cycle": 3511400994,
+          "cc": 213,
+          "context_hex": "D73FC600F7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28864,
+          "cycle": 3511400998,
+          "cc": 213,
+          "context_hex": "C600F70900",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28866,
+          "cycle": 3511401000,
+          "cc": 213,
+          "context_hex": "F70900D740",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28869,
+          "cycle": 3511401005,
+          "cc": 213,
+          "context_hex": "D740358534",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28871,
+          "cycle": 3511401009,
+          "cc": 213,
+          "context_hex": "358534051A",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65257,
+          "cycle": 3511401018,
+          "cc": 197,
+          "context_hex": "9E3D8C1400",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65259,
+          "cycle": 3511401023,
+          "cc": 193,
+          "context_hex": "8C14002502",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65262,
+          "cycle": 3511401027,
+          "cc": 192,
+          "context_hex": "2502AD8420",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65264,
+          "cycle": 3511401030,
+          "cc": 192,
+          "context_hex": "AD842014B6",
+          "memory_kind": "rom"
+        }
+      ],
+      "callback_cycle": 3511401037
+    },
+    {
+      "arm_index": 12,
+      "latch_bus_cycle": 3511404010,
+      "latch_seconds": "2041",
+      "latch_attoseconds": "513959301590636359",
+      "latch": 40,
+      "initial_high": true,
+      "calculated_assertion_cycle": 3511404330,
+      "last_instruction": {
+        "pc": 6810,
+        "cycle": 3511404328,
+        "cc": 196,
+        "context_hex": "A4890096A7",
+        "memory_kind": "rom"
+      },
+      "handler_cycle": 3511404355,
+      "first_cpu_level_sample": {
+        "event": "line",
+        "cycle": 3511404331,
+        "pc": 6813,
+        "curpc": 6810,
+        "cpuirq": 1,
+        "status": 132
+      },
+      "handler_path": [
+        {
+          "pc": 65136,
+          "cycle": 3511404355,
+          "cc": 212,
+          "context_hex": "96F12709A7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65138,
+          "cycle": 3511404359,
+          "cc": 212,
+          "context_hex": "2709A76386",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65149,
+          "cycle": 3511404362,
+          "cc": 212,
+          "context_hex": "B60B032A04",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65152,
+          "cycle": 3511404367,
+          "cc": 208,
+          "context_hex": "2A04850126",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65158,
+          "cycle": 3511404370,
+          "cc": 208,
+          "context_hex": "B60901D63F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65161,
+          "cycle": 3511404375,
+          "cc": 216,
+          "context_hex": "D63FC54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65163,
+          "cycle": 3511404379,
+          "cc": 212,
+          "context_hex": "C540270485",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65165,
+          "cycle": 3511404381,
+          "cc": 212,
+          "context_hex": "2704850226",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65171,
+          "cycle": 3511404384,
+          "cc": 212,
+          "context_hex": "85012610D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65173,
+          "cycle": 3511404386,
+          "cc": 212,
+          "context_hex": "2610D640C5",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65175,
+          "cycle": 3511404389,
+          "cc": 212,
+          "context_hex": "D640C54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65177,
+          "cycle": 3511404393,
+          "cc": 208,
+          "context_hex": "C540270085",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65179,
+          "cycle": 3511404395,
+          "cc": 208,
+          "context_hex": "2700850426",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65181,
+          "cycle": 3511404398,
+          "cc": 208,
+          "context_hex": "85042640C6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65183,
+          "cycle": 3511404400,
+          "cc": 208,
+          "context_hex": "2640C60211",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65249,
+          "cycle": 3511404403,
+          "cc": 208,
+          "context_hex": "B609061CEF",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65252,
+          "cycle": 3511404408,
+          "cc": 212,
+          "context_hex": "1CEFBD70B3",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65254,
+          "cycle": 3511404411,
+          "cc": 196,
+          "context_hex": "BD70B39E3D",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28851,
+          "cycle": 3511404419,
+          "cc": 196,
+          "context_hex": "34051A50D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28853,
+          "cycle": 3511404426,
+          "cc": 196,
+          "context_hex": "1A50D63FC4",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28855,
+          "cycle": 3511404429,
+          "cc": 212,
+          "context_hex": "D63FC4FEF7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28857,
+          "cycle": 3511404433,
+          "cc": 212,
+          "context_hex": "C4FEF70901",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28859,
+          "cycle": 3511404435,
+          "cc": 212,
+          "context_hex": "F70901D73F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28862,
+          "cycle": 3511404440,
+          "cc": 212,
+          "context_hex": "D73FC600F7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28864,
+          "cycle": 3511404444,
+          "cc": 212,
+          "context_hex": "C600F70900",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28866,
+          "cycle": 3511404446,
+          "cc": 212,
+          "context_hex": "F70900D740",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28869,
+          "cycle": 3511404451,
+          "cc": 212,
+          "context_hex": "D740358534",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28871,
+          "cycle": 3511404455,
+          "cc": 212,
+          "context_hex": "358534051A",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65257,
+          "cycle": 3511404464,
+          "cc": 196,
+          "context_hex": "9E3D8C1400",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65259,
+          "cycle": 3511404469,
+          "cc": 192,
+          "context_hex": "8C14002502",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65262,
+          "cycle": 3511404473,
+          "cc": 192,
+          "context_hex": "2502AD8420",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65264,
+          "cycle": 3511404476,
+          "cc": 192,
+          "context_hex": "AD842014B6",
+          "memory_kind": "rom"
+        }
+      ],
+      "callback_cycle": 3511404483
+    },
+    {
+      "arm_index": 13,
+      "latch_bus_cycle": 3511407453,
+      "latch_seconds": "2041",
+      "latch_attoseconds": "515961045776681814",
+      "latch": 40,
+      "initial_high": true,
+      "calculated_assertion_cycle": 3511407773,
+      "last_instruction": {
+        "pc": 6804,
+        "cycle": 3511407765,
+        "cc": 196,
+        "context_hex": "A789008E35",
+        "memory_kind": "rom"
+      },
+      "handler_cycle": 3511407792,
+      "first_cpu_level_sample": {
+        "event": "line",
+        "cycle": 3511407774,
+        "pc": 6808,
+        "curpc": 6804,
+        "cpuirq": 1,
+        "status": 132
+      },
+      "handler_path": [
+        {
+          "pc": 65136,
+          "cycle": 3511407792,
+          "cc": 212,
+          "context_hex": "96F12709A7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65138,
+          "cycle": 3511407796,
+          "cc": 212,
+          "context_hex": "2709A76386",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65149,
+          "cycle": 3511407799,
+          "cc": 212,
+          "context_hex": "B60B032A04",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65152,
+          "cycle": 3511407804,
+          "cc": 208,
+          "context_hex": "2A04850126",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65158,
+          "cycle": 3511407807,
+          "cc": 208,
+          "context_hex": "B60901D63F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65161,
+          "cycle": 3511407812,
+          "cc": 216,
+          "context_hex": "D63FC54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65163,
+          "cycle": 3511407816,
+          "cc": 212,
+          "context_hex": "C540270485",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65165,
+          "cycle": 3511407818,
+          "cc": 212,
+          "context_hex": "2704850226",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65171,
+          "cycle": 3511407821,
+          "cc": 212,
+          "context_hex": "85012610D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65173,
+          "cycle": 3511407823,
+          "cc": 212,
+          "context_hex": "2610D640C5",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65175,
+          "cycle": 3511407826,
+          "cc": 212,
+          "context_hex": "D640C54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65177,
+          "cycle": 3511407830,
+          "cc": 208,
+          "context_hex": "C540270085",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65179,
+          "cycle": 3511407832,
+          "cc": 208,
+          "context_hex": "2700850426",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65181,
+          "cycle": 3511407835,
+          "cc": 208,
+          "context_hex": "85042640C6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65183,
+          "cycle": 3511407837,
+          "cc": 208,
+          "context_hex": "2640C60211",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65249,
+          "cycle": 3511407840,
+          "cc": 208,
+          "context_hex": "B609061CEF",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65252,
+          "cycle": 3511407845,
+          "cc": 212,
+          "context_hex": "1CEFBD70B3",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65254,
+          "cycle": 3511407848,
+          "cc": 196,
+          "context_hex": "BD70B39E3D",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28851,
+          "cycle": 3511407856,
+          "cc": 196,
+          "context_hex": "34051A50D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28853,
+          "cycle": 3511407863,
+          "cc": 196,
+          "context_hex": "1A50D63FC4",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28855,
+          "cycle": 3511407866,
+          "cc": 212,
+          "context_hex": "D63FC4FEF7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28857,
+          "cycle": 3511407870,
+          "cc": 212,
+          "context_hex": "C4FEF70901",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28859,
+          "cycle": 3511407872,
+          "cc": 212,
+          "context_hex": "F70901D73F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28862,
+          "cycle": 3511407877,
+          "cc": 212,
+          "context_hex": "D73FC600F7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28864,
+          "cycle": 3511407881,
+          "cc": 212,
+          "context_hex": "C600F70900",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28866,
+          "cycle": 3511407883,
+          "cc": 212,
+          "context_hex": "F70900D740",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28869,
+          "cycle": 3511407888,
+          "cc": 212,
+          "context_hex": "D740358534",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28871,
+          "cycle": 3511407892,
+          "cc": 212,
+          "context_hex": "358534051A",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65257,
+          "cycle": 3511407901,
+          "cc": 196,
+          "context_hex": "9E3D8C1400",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65259,
+          "cycle": 3511407906,
+          "cc": 192,
+          "context_hex": "8C14002502",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65262,
+          "cycle": 3511407910,
+          "cc": 192,
+          "context_hex": "2502AD8420",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65264,
+          "cycle": 3511407913,
+          "cc": 192,
+          "context_hex": "AD842014B6",
+          "memory_kind": "rom"
+        }
+      ],
+      "callback_cycle": 3511407920
+    },
+    {
+      "arm_index": 14,
+      "latch_bus_cycle": 3511410894,
+      "latch_seconds": "2041",
+      "latch_attoseconds": "517961627172030267",
+      "latch": 40,
+      "initial_high": true,
+      "calculated_assertion_cycle": 3511411214,
+      "last_instruction": {
+        "pc": 6804,
+        "cycle": 3511411212,
+        "cc": 196,
+        "context_hex": "A789008E35",
+        "memory_kind": "rom"
+      },
+      "handler_cycle": 3511411239,
+      "first_cpu_level_sample": {
+        "event": "line",
+        "cycle": 3511411215,
+        "pc": 6807,
+        "curpc": 6804,
+        "cpuirq": 1,
+        "status": 132
+      },
+      "handler_path": [
+        {
+          "pc": 65136,
+          "cycle": 3511411239,
+          "cc": 212,
+          "context_hex": "96F12709A7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65138,
+          "cycle": 3511411243,
+          "cc": 212,
+          "context_hex": "2709A76386",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65149,
+          "cycle": 3511411246,
+          "cc": 212,
+          "context_hex": "B60B032A04",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65152,
+          "cycle": 3511411251,
+          "cc": 208,
+          "context_hex": "2A04850126",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65158,
+          "cycle": 3511411254,
+          "cc": 208,
+          "context_hex": "B60901D63F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65161,
+          "cycle": 3511411259,
+          "cc": 216,
+          "context_hex": "D63FC54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65163,
+          "cycle": 3511411263,
+          "cc": 212,
+          "context_hex": "C540270485",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65165,
+          "cycle": 3511411265,
+          "cc": 212,
+          "context_hex": "2704850226",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65171,
+          "cycle": 3511411268,
+          "cc": 212,
+          "context_hex": "85012610D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65173,
+          "cycle": 3511411270,
+          "cc": 212,
+          "context_hex": "2610D640C5",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65175,
+          "cycle": 3511411273,
+          "cc": 212,
+          "context_hex": "D640C54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65177,
+          "cycle": 3511411277,
+          "cc": 208,
+          "context_hex": "C540270085",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65179,
+          "cycle": 3511411279,
+          "cc": 208,
+          "context_hex": "2700850426",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65181,
+          "cycle": 3511411282,
+          "cc": 208,
+          "context_hex": "85042640C6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65183,
+          "cycle": 3511411284,
+          "cc": 208,
+          "context_hex": "2640C60211",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65249,
+          "cycle": 3511411287,
+          "cc": 208,
+          "context_hex": "B609061CEF",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65252,
+          "cycle": 3511411292,
+          "cc": 212,
+          "context_hex": "1CEFBD70B3",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65254,
+          "cycle": 3511411295,
+          "cc": 196,
+          "context_hex": "BD70B39E3D",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28851,
+          "cycle": 3511411303,
+          "cc": 196,
+          "context_hex": "34051A50D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28853,
+          "cycle": 3511411310,
+          "cc": 196,
+          "context_hex": "1A50D63FC4",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28855,
+          "cycle": 3511411313,
+          "cc": 212,
+          "context_hex": "D63FC4FEF7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28857,
+          "cycle": 3511411317,
+          "cc": 212,
+          "context_hex": "C4FEF70901",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28859,
+          "cycle": 3511411319,
+          "cc": 212,
+          "context_hex": "F70901D73F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28862,
+          "cycle": 3511411324,
+          "cc": 212,
+          "context_hex": "D73FC600F7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28864,
+          "cycle": 3511411328,
+          "cc": 212,
+          "context_hex": "C600F70900",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28866,
+          "cycle": 3511411330,
+          "cc": 212,
+          "context_hex": "F70900D740",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28869,
+          "cycle": 3511411335,
+          "cc": 212,
+          "context_hex": "D740358534",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28871,
+          "cycle": 3511411339,
+          "cc": 212,
+          "context_hex": "358534051A",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65257,
+          "cycle": 3511411348,
+          "cc": 196,
+          "context_hex": "9E3D8C1400",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65259,
+          "cycle": 3511411353,
+          "cc": 192,
+          "context_hex": "8C14002502",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65262,
+          "cycle": 3511411357,
+          "cc": 192,
+          "context_hex": "2502AD8420",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65264,
+          "cycle": 3511411360,
+          "cc": 192,
+          "context_hex": "AD842014B6",
+          "memory_kind": "rom"
+        }
+      ],
+      "callback_cycle": 3511411367
+    },
+    {
+      "arm_index": 15,
+      "latch_bus_cycle": 3511414372,
+      "latch_seconds": "2041",
+      "latch_attoseconds": "519983720195284978",
+      "latch": 40,
+      "initial_high": true,
+      "calculated_assertion_cycle": 3511414692,
+      "last_instruction": {
+        "pc": 17348,
+        "cycle": 3511414690,
+        "cc": 196,
+        "context_hex": "89003402B8",
+        "memory_kind": "rom"
+      },
+      "handler_cycle": 3511414711,
+      "first_cpu_level_sample": {
+        "event": "line",
+        "cycle": 3511414693,
+        "pc": 17350,
+        "curpc": 17348,
+        "cpuirq": 1,
+        "status": 132
+      },
+      "handler_path": [
+        {
+          "pc": 65136,
+          "cycle": 3511414711,
+          "cc": 212,
+          "context_hex": "96F12709A7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65138,
+          "cycle": 3511414715,
+          "cc": 212,
+          "context_hex": "2709A76386",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65149,
+          "cycle": 3511414718,
+          "cc": 212,
+          "context_hex": "B60B032A04",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65152,
+          "cycle": 3511414723,
+          "cc": 208,
+          "context_hex": "2A04850126",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65158,
+          "cycle": 3511414726,
+          "cc": 208,
+          "context_hex": "B60901D63F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65161,
+          "cycle": 3511414731,
+          "cc": 216,
+          "context_hex": "D63FC54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65163,
+          "cycle": 3511414735,
+          "cc": 212,
+          "context_hex": "C540270485",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65165,
+          "cycle": 3511414737,
+          "cc": 212,
+          "context_hex": "2704850226",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65171,
+          "cycle": 3511414740,
+          "cc": 212,
+          "context_hex": "85012610D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65173,
+          "cycle": 3511414742,
+          "cc": 212,
+          "context_hex": "2610D640C5",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65175,
+          "cycle": 3511414745,
+          "cc": 212,
+          "context_hex": "D640C54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65177,
+          "cycle": 3511414749,
+          "cc": 208,
+          "context_hex": "C540270085",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65179,
+          "cycle": 3511414751,
+          "cc": 208,
+          "context_hex": "2700850426",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65181,
+          "cycle": 3511414754,
+          "cc": 208,
+          "context_hex": "85042640C6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65183,
+          "cycle": 3511414756,
+          "cc": 208,
+          "context_hex": "2640C60211",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65249,
+          "cycle": 3511414759,
+          "cc": 208,
+          "context_hex": "B609061CEF",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65252,
+          "cycle": 3511414764,
+          "cc": 212,
+          "context_hex": "1CEFBD70B3",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65254,
+          "cycle": 3511414767,
+          "cc": 196,
+          "context_hex": "BD70B39E3D",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28851,
+          "cycle": 3511414775,
+          "cc": 196,
+          "context_hex": "34051A50D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28853,
+          "cycle": 3511414782,
+          "cc": 196,
+          "context_hex": "1A50D63FC4",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28855,
+          "cycle": 3511414785,
+          "cc": 212,
+          "context_hex": "D63FC4FEF7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28857,
+          "cycle": 3511414789,
+          "cc": 212,
+          "context_hex": "C4FEF70901",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28859,
+          "cycle": 3511414791,
+          "cc": 212,
+          "context_hex": "F70901D73F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28862,
+          "cycle": 3511414796,
+          "cc": 212,
+          "context_hex": "D73FC600F7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28864,
+          "cycle": 3511414800,
+          "cc": 212,
+          "context_hex": "C600F70900",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28866,
+          "cycle": 3511414802,
+          "cc": 212,
+          "context_hex": "F70900D740",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28869,
+          "cycle": 3511414807,
+          "cc": 212,
+          "context_hex": "D740358534",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28871,
+          "cycle": 3511414811,
+          "cc": 212,
+          "context_hex": "358534051A",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65257,
+          "cycle": 3511414820,
+          "cc": 196,
+          "context_hex": "9E3D8C1400",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65259,
+          "cycle": 3511414825,
+          "cc": 192,
+          "context_hex": "8C14002502",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65262,
+          "cycle": 3511414829,
+          "cc": 192,
+          "context_hex": "2502AD8420",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65264,
+          "cycle": 3511414832,
+          "cc": 192,
+          "context_hex": "AD842014B6",
+          "memory_kind": "rom"
+        }
+      ],
+      "callback_cycle": 3511414839
+    },
+    {
+      "arm_index": 16,
+      "latch_bus_cycle": 3511417778,
+      "latch_seconds": "2041",
+      "latch_attoseconds": "521963952753424175",
+      "latch": 40,
+      "initial_high": true,
+      "calculated_assertion_cycle": 3511418098,
+      "last_instruction": {
+        "pc": 6818,
+        "cycle": 3511418097,
+        "cc": 196,
+        "context_hex": "39BD1AC3C1",
+        "memory_kind": "rom"
+      },
+      "handler_cycle": 3511418121,
+      "first_cpu_level_sample": {
+        "event": "line",
+        "cycle": 3511418099,
+        "pc": 6819,
+        "curpc": 6818,
+        "cpuirq": 1,
+        "status": 132
+      },
+      "handler_path": [
+        {
+          "pc": 65136,
+          "cycle": 3511418121,
+          "cc": 212,
+          "context_hex": "96F12709A7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65138,
+          "cycle": 3511418125,
+          "cc": 212,
+          "context_hex": "2709A76386",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65149,
+          "cycle": 3511418128,
+          "cc": 212,
+          "context_hex": "B60B032A04",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65152,
+          "cycle": 3511418133,
+          "cc": 208,
+          "context_hex": "2A04850126",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65158,
+          "cycle": 3511418136,
+          "cc": 208,
+          "context_hex": "B60901D63F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65161,
+          "cycle": 3511418141,
+          "cc": 216,
+          "context_hex": "D63FC54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65163,
+          "cycle": 3511418145,
+          "cc": 212,
+          "context_hex": "C540270485",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65165,
+          "cycle": 3511418147,
+          "cc": 212,
+          "context_hex": "2704850226",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65171,
+          "cycle": 3511418150,
+          "cc": 212,
+          "context_hex": "85012610D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65173,
+          "cycle": 3511418152,
+          "cc": 212,
+          "context_hex": "2610D640C5",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65175,
+          "cycle": 3511418155,
+          "cc": 212,
+          "context_hex": "D640C54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65177,
+          "cycle": 3511418159,
+          "cc": 208,
+          "context_hex": "C540270085",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65179,
+          "cycle": 3511418161,
+          "cc": 208,
+          "context_hex": "2700850426",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65181,
+          "cycle": 3511418164,
+          "cc": 208,
+          "context_hex": "85042640C6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65183,
+          "cycle": 3511418166,
+          "cc": 208,
+          "context_hex": "2640C60211",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65249,
+          "cycle": 3511418169,
+          "cc": 208,
+          "context_hex": "B609061CEF",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65252,
+          "cycle": 3511418174,
+          "cc": 212,
+          "context_hex": "1CEFBD70B3",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65254,
+          "cycle": 3511418177,
+          "cc": 196,
+          "context_hex": "BD70B39E3D",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28851,
+          "cycle": 3511418185,
+          "cc": 196,
+          "context_hex": "34051A50D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28853,
+          "cycle": 3511418192,
+          "cc": 196,
+          "context_hex": "1A50D63FC4",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28855,
+          "cycle": 3511418195,
+          "cc": 212,
+          "context_hex": "D63FC4FEF7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28857,
+          "cycle": 3511418199,
+          "cc": 212,
+          "context_hex": "C4FEF70901",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28859,
+          "cycle": 3511418201,
+          "cc": 212,
+          "context_hex": "F70901D73F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28862,
+          "cycle": 3511418206,
+          "cc": 212,
+          "context_hex": "D73FC600F7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28864,
+          "cycle": 3511418210,
+          "cc": 212,
+          "context_hex": "C600F70900",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28866,
+          "cycle": 3511418212,
+          "cc": 212,
+          "context_hex": "F70900D740",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28869,
+          "cycle": 3511418217,
+          "cc": 212,
+          "context_hex": "D740358534",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28871,
+          "cycle": 3511418221,
+          "cc": 212,
+          "context_hex": "358534051A",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65257,
+          "cycle": 3511418230,
+          "cc": 196,
+          "context_hex": "9E3D8C1400",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65259,
+          "cycle": 3511418235,
+          "cc": 192,
+          "context_hex": "8C14002502",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65262,
+          "cycle": 3511418239,
+          "cc": 192,
+          "context_hex": "2502AD8420",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65264,
+          "cycle": 3511418242,
+          "cc": 192,
+          "context_hex": "AD842014B6",
+          "memory_kind": "rom"
+        }
+      ],
+      "callback_cycle": 3511418249
+    },
+    {
+      "arm_index": 17,
+      "latch_bus_cycle": 3511421215,
+      "latch_seconds": "2041",
+      "latch_attoseconds": "523962208567376944",
+      "latch": 40,
+      "initial_high": true,
+      "calculated_assertion_cycle": 3511421535,
+      "last_instruction": {
+        "pc": 6587,
+        "cycle": 3511421534,
+        "cc": 196,
+        "context_hex": "BD1A05BD1A",
+        "memory_kind": "rom"
+      },
+      "handler_cycle": 3511421561,
+      "first_cpu_level_sample": {
+        "event": "line",
+        "cycle": 3511421536,
+        "pc": 6589,
+        "curpc": 6587,
+        "cpuirq": 1,
+        "status": 132
+      },
+      "handler_path": [
+        {
+          "pc": 65136,
+          "cycle": 3511421561,
+          "cc": 212,
+          "context_hex": "96F12709A7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65138,
+          "cycle": 3511421565,
+          "cc": 212,
+          "context_hex": "2709A76386",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65149,
+          "cycle": 3511421568,
+          "cc": 212,
+          "context_hex": "B60B032A04",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65152,
+          "cycle": 3511421573,
+          "cc": 208,
+          "context_hex": "2A04850126",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65158,
+          "cycle": 3511421576,
+          "cc": 208,
+          "context_hex": "B60901D63F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65161,
+          "cycle": 3511421581,
+          "cc": 216,
+          "context_hex": "D63FC54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65163,
+          "cycle": 3511421585,
+          "cc": 212,
+          "context_hex": "C540270485",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65165,
+          "cycle": 3511421587,
+          "cc": 212,
+          "context_hex": "2704850226",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65171,
+          "cycle": 3511421590,
+          "cc": 212,
+          "context_hex": "85012610D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65173,
+          "cycle": 3511421592,
+          "cc": 212,
+          "context_hex": "2610D640C5",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65175,
+          "cycle": 3511421595,
+          "cc": 212,
+          "context_hex": "D640C54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65177,
+          "cycle": 3511421599,
+          "cc": 208,
+          "context_hex": "C540270085",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65179,
+          "cycle": 3511421601,
+          "cc": 208,
+          "context_hex": "2700850426",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65181,
+          "cycle": 3511421604,
+          "cc": 208,
+          "context_hex": "85042640C6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65183,
+          "cycle": 3511421606,
+          "cc": 208,
+          "context_hex": "2640C60211",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65249,
+          "cycle": 3511421609,
+          "cc": 208,
+          "context_hex": "B609061CEF",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65252,
+          "cycle": 3511421614,
+          "cc": 212,
+          "context_hex": "1CEFBD70B3",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65254,
+          "cycle": 3511421617,
+          "cc": 196,
+          "context_hex": "BD70B39E3D",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28851,
+          "cycle": 3511421625,
+          "cc": 196,
+          "context_hex": "34051A50D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28853,
+          "cycle": 3511421632,
+          "cc": 196,
+          "context_hex": "1A50D63FC4",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28855,
+          "cycle": 3511421635,
+          "cc": 212,
+          "context_hex": "D63FC4FEF7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28857,
+          "cycle": 3511421639,
+          "cc": 212,
+          "context_hex": "C4FEF70901",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28859,
+          "cycle": 3511421641,
+          "cc": 212,
+          "context_hex": "F70901D73F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28862,
+          "cycle": 3511421646,
+          "cc": 212,
+          "context_hex": "D73FC600F7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28864,
+          "cycle": 3511421650,
+          "cc": 212,
+          "context_hex": "C600F70900",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28866,
+          "cycle": 3511421652,
+          "cc": 212,
+          "context_hex": "F70900D740",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28869,
+          "cycle": 3511421657,
+          "cc": 212,
+          "context_hex": "D740358534",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28871,
+          "cycle": 3511421661,
+          "cc": 212,
+          "context_hex": "358534051A",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65257,
+          "cycle": 3511421670,
+          "cc": 196,
+          "context_hex": "9E3D8C1400",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65259,
+          "cycle": 3511421675,
+          "cc": 192,
+          "context_hex": "8C14002502",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65262,
+          "cycle": 3511421679,
+          "cc": 192,
+          "context_hex": "2502AD8420",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65264,
+          "cycle": 3511421682,
+          "cc": 192,
+          "context_hex": "AD842014B6",
+          "memory_kind": "rom"
+        }
+      ],
+      "callback_cycle": 3511421689
+    },
+    {
+      "arm_index": 18,
+      "latch_bus_cycle": 3511424657,
+      "latch_seconds": "2041",
+      "latch_attoseconds": "525963371358073898",
+      "latch": 40,
+      "initial_high": true,
+      "calculated_assertion_cycle": 3511424977,
+      "last_instruction": {
+        "pc": 6814,
+        "cycle": 3511424969,
+        "cc": 196,
+        "context_hex": "A789009639",
+        "memory_kind": "rom"
+      },
+      "handler_cycle": 3511424996,
+      "first_cpu_level_sample": {
+        "event": "line",
+        "cycle": 3511424978,
+        "pc": 6818,
+        "curpc": 6814,
+        "cpuirq": 1,
+        "status": 132
+      },
+      "handler_path": [
+        {
+          "pc": 65136,
+          "cycle": 3511424996,
+          "cc": 212,
+          "context_hex": "96F12709A7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65138,
+          "cycle": 3511425000,
+          "cc": 212,
+          "context_hex": "2709A76386",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65149,
+          "cycle": 3511425003,
+          "cc": 212,
+          "context_hex": "B60B032A04",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65152,
+          "cycle": 3511425008,
+          "cc": 208,
+          "context_hex": "2A04850126",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65158,
+          "cycle": 3511425011,
+          "cc": 208,
+          "context_hex": "B60901D63F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65161,
+          "cycle": 3511425016,
+          "cc": 216,
+          "context_hex": "D63FC54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65163,
+          "cycle": 3511425020,
+          "cc": 212,
+          "context_hex": "C540270485",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65165,
+          "cycle": 3511425022,
+          "cc": 212,
+          "context_hex": "2704850226",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65171,
+          "cycle": 3511425025,
+          "cc": 212,
+          "context_hex": "85012610D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65173,
+          "cycle": 3511425027,
+          "cc": 212,
+          "context_hex": "2610D640C5",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65175,
+          "cycle": 3511425030,
+          "cc": 212,
+          "context_hex": "D640C54027",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65177,
+          "cycle": 3511425034,
+          "cc": 208,
+          "context_hex": "C540270085",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65179,
+          "cycle": 3511425036,
+          "cc": 208,
+          "context_hex": "2700850426",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65181,
+          "cycle": 3511425039,
+          "cc": 208,
+          "context_hex": "85042640C6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65183,
+          "cycle": 3511425041,
+          "cc": 208,
+          "context_hex": "2640C60211",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65249,
+          "cycle": 3511425044,
+          "cc": 208,
+          "context_hex": "B609061CEF",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65252,
+          "cycle": 3511425049,
+          "cc": 212,
+          "context_hex": "1CEFBD70B3",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65254,
+          "cycle": 3511425052,
+          "cc": 196,
+          "context_hex": "BD70B39E3D",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28851,
+          "cycle": 3511425060,
+          "cc": 196,
+          "context_hex": "34051A50D6",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28853,
+          "cycle": 3511425067,
+          "cc": 196,
+          "context_hex": "1A50D63FC4",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28855,
+          "cycle": 3511425070,
+          "cc": 212,
+          "context_hex": "D63FC4FEF7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28857,
+          "cycle": 3511425074,
+          "cc": 212,
+          "context_hex": "C4FEF70901",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28859,
+          "cycle": 3511425076,
+          "cc": 212,
+          "context_hex": "F70901D73F",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28862,
+          "cycle": 3511425081,
+          "cc": 212,
+          "context_hex": "D73FC600F7",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28864,
+          "cycle": 3511425085,
+          "cc": 212,
+          "context_hex": "C600F70900",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28866,
+          "cycle": 3511425087,
+          "cc": 212,
+          "context_hex": "F70900D740",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28869,
+          "cycle": 3511425092,
+          "cc": 212,
+          "context_hex": "D740358534",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 28871,
+          "cycle": 3511425096,
+          "cc": 212,
+          "context_hex": "358534051A",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65257,
+          "cycle": 3511425105,
+          "cc": 196,
+          "context_hex": "9E3D8C1400",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65259,
+          "cycle": 3511425110,
+          "cc": 192,
+          "context_hex": "8C14002502",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65262,
+          "cycle": 3511425114,
+          "cc": 192,
+          "context_hex": "2502AD8420",
+          "memory_kind": "rom"
+        },
+        {
+          "pc": 65264,
+          "cycle": 3511425117,
+          "cc": 192,
+          "context_hex": "AD842014B6",
+          "memory_kind": "rom"
+        }
+      ],
+      "callback_cycle": 3511425124
+    }
+  ]
+}

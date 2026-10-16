@@ -17,6 +17,12 @@
       "url": "https://github.com/mamedev/mame/blob/2843a3deb81cf93735244044894196ccfbea4d20/src/devices/cpu/m6809/m6809.cpp"
     },
     {
+      "path": "src/devices/cpu/m6809/m6809.h",
+      "git_blob": "d2c8d2689051ae4792cc7582b56dd8c45da843ad",
+      "bytes": 12927,
+      "url": "https://github.com/mamedev/mame/blob/2843a3deb81cf93735244044894196ccfbea4d20/src/devices/cpu/m6809/m6809.h"
+    },
+    {
       "path": "src/devices/cpu/m6809/m6809.lst",
       "git_blob": "92fb70052c8965f4b7f8138e65fe7f4517338553",
       "bytes": 34664,
@@ -57,6 +63,12 @@
       "git_blob": "1cd5266c518ba31acd285e1fc8d804d9c796abcc",
       "bytes": 23131,
       "url": "https://github.com/mamedev/mame/blob/2843a3deb81cf93735244044894196ccfbea4d20/src/emu/diexec.cpp"
+    },
+    {
+      "path": "src/frontend/mame/luaengine_mem.cpp",
+      "git_blob": "ff2f406828b966baad58723595d2d1ec62743478",
+      "bytes": 27723,
+      "url": "https://github.com/mamedev/mame/blob/2843a3deb81cf93735244044894196ccfbea4d20/src/frontend/mame/luaengine_mem.cpp"
     }
   ],
   "irq_entry": {
@@ -76,6 +88,23 @@
     ],
     "implementation": "src/FruitMachineLab.Runtime/M6809IrqEntry.cs",
     "evidence": "skill-cash/ptm-irq-entry.json"
+  },
+  "selected_instruction_timing": {
+    "scope": "Bounded opcode length/cycle decoder, not execution or a full ISA",
+    "source_symbols": [
+      "MAIN",
+      "DIRECT",
+      "EXTENDED",
+      "INDEXED",
+      "LD16",
+      "ST8",
+      "PUSH_REGISTERS",
+      "PULL_REGISTERS",
+      "read_opcode"
+    ],
+    "implementation": "src/FruitMachineLab.Runtime/M6809InstructionTiming.cs",
+    "evidence": "skill-cash/ptm-instruction-boundaries.json",
+    "qualification": "Nineteen unmasked timer3 windows and their32-instruction native handler paths; other IRQ paths and generalized same-cycle ordering remain outside this evidence"
   },
   "timer3_symbols": [
     "reload_counter",

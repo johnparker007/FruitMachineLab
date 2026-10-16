@@ -5,6 +5,16 @@ Local clone: C:\projects\GitRepos\FruitMachineLab
 
 ## Current status
 
+Native instruction timing continuation:19 timer3 entry windows and608 native
+handler instruction durations match source-derived costs. All354 previous
+Skill Cash state/timestamp rows stay identical. The remaining0–7 cycles are
+explained by completing the current instruction;32 native instructions explain
+the128-cycle path to the lamp callback. Live adapters remain until exit/timer1/
+contention and translated-helper boundaries are covered. Reproduce with
+Capture-SkillCash.ps1 -FullFeature -PtmInstructionTiming and
+Curate-PtmInstructionTiming.ps1; see the existing timing foundation report.
+201 headless groups/eight WPF modes pass; both solution builds are clean.
+
 IRQ continuation:18 isolated CPU cases verify ordinary19-cycle entry and full
 register frames.354 natural Skill Cash observations match20 timer arms;19
 IRQ/callback pairs agree exactly with the old prefix after qualifying debugger

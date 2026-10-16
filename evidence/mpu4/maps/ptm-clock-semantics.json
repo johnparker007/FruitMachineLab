@@ -9,6 +9,7 @@
   "mame_source": "maps/mame-timing-source.json",
   "irq_entry_evidence": "skill-cash/ptm-irq-entry.json",
   "skill_cash_cpu_evidence": "skill-cash/ptm-skill-cpu.json",
+  "instruction_boundary_evidence": "skill-cash/ptm-instruction-boundaries.json",
   "normal_timer1_latch": 3440,
   "normal_timer1_period_cpu_cycles": 3441,
   "alternate_timer1_latch": 2580,
@@ -26,7 +27,7 @@
   "unresolved": [
     "Remaining canonical arms beyond the first20 observed high phases; do not generalize phase globally",
     "Same-cycle PTM expiry versus CPU status-read ordering",
-    "IRQ acceptance/instruction remainder, CC masking and nested native service timing",
+    "IRQ acceptance beyond the selected19 unmasked timer3 windows; timer1 contention, nested services and translated-helper instruction boundaries",
     "Reset, gate changes, external edges, other controls and zero-latch lifecycle remain outside the selected phase clock",
     "Live still uses captured IRQ service/occupancy and callback timestamps; new clock mechanics are not an invented replacement for CPU acceptance"
   ]

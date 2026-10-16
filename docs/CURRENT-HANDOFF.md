@@ -6,6 +6,30 @@ batch, including its verification.
 
 ## Working implementation
 
+Newest16 October checkpoint: native instruction boundary continuation in
+PTM-CLOCK-FOUNDATION-PASS.md. Guarded passive capture yields13809 opcode samples
+and preserves all354 original state/timestamp rows.19 selected timer3 windows
+now predict IRQ entry from source-derived final-instruction duration+19 cycles,
+without an arbitrary0–7 latency. First delivered IRQ=1 observation is at the
+calculated assertion or next CPU cycle; it is a sample bound, not an exact
+asynchronous delivery timestamp.608 source-derived native instruction costs
+explain all19 FE70→48FD paths (32 instructions/128 cycles each). Added bounded
+M6809InstructionTiming length/cycle decoder; no CPU interpreter or Live timing
+replacement. Next recover callback/IRQ return, RTI and timer1 scan service
+costs, then contention/nesting/later arms and actual Live helper boundaries.
+Capture-SkillCash.ps1 -FullFeature -PtmInstructionTiming implies PtmCpuTiming;
+Curate-PtmInstructionTiming.ps1 checks the old354-row prefix and selected ROM
+bytes. Raw traces stay external; a reentrant unguarded attempt is excluded with
+hashes. Source map now pins11 MAME blobs. New CpuInterrupts captures correct
+saved-PC reads from bare hex10 (S+16) to0x0A; old interval/minimum-cost evidence
+is unchanged, but its old raw resume comparison was not a saved-PC check.
+All previous changes were committed by John before this batch. New changes
+remain uncommitted. No installs/configuration changes, commits or pushes.
+Validation:201 headless groups and all eight WPF smoke modes pass; full/headless
+solutions build with zero warnings/errors. GUI results are in the external
+directory named by %TEMP%/FruitMachineLab-instruction-timing-gui.txt. Captures
+and smoke-test processes completed. Curated evidence now has1083 manifest entries.
+
 Latest timing continuation16 October: matching-source ordinary IRQ helper and
 18 isolated native CPU cases verify19-cycle entry and the entire12-byte frame,
 I masking, preserved F and stack wrap. A deferred passive observer successfully

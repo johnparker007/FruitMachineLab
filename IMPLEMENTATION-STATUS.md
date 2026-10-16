@@ -1,5 +1,13 @@
 # Implementation and evidence boundaries
 
+Native instruction continuation: [timing foundation](docs/recovery/PTM-CLOCK-FOUNDATION-PASS.md)
+now explains19 selected timer3 IRQ entries from the completing instruction plus
+19-cycle entry, and608 native instruction durations explain the128-cycle lamp
+callback path. The354 previous state rows match exactly. Added a bounded
+length/cycle decoder, with unsupported cases explicit; no CPU interpreter or
+Live scheduling replacement. Next cover IRQ exit, timer1 work and helper boundaries.
+201 headless groups/eight GUI smoke modes pass; full/headless builds are clean.
+
 IRQ continuation: [timing foundation](docs/recovery/PTM-CLOCK-FOUNDATION-PASS.md)
 adds18 actual native CPU experiments and354 natural Skill Cash observations.
 The latter match20 timer arms and19 original IRQ/callback pairs; actual store

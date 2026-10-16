@@ -7,6 +7,41 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { if(args.Length>1 && !name.Contains(args[1],StringComparison.OrdinalIgnoreCase))return;action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Native instruction durations explain all nineteen Skill Cash IRQ and callback windows", () => {
+    using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","ptm-instruction-boundaries.json")));
+    int windows=0,instructions=0;ulong min=ulong.MaxValue,max=0;
+    foreach(var w in doc.RootElement.GetProperty("windows").EnumerateArray()){
+        ulong bus=w.GetProperty("latch_bus_cycle").GetUInt64(),assertion=w.GetProperty("calculated_assertion_cycle").GetUInt64();
+        Equal(true,w.GetProperty("initial_high").GetBoolean());Equal(Mpu4Timer3Deadline.Calculate(bus,40,true).Interrupt,assertion);
+        var last=w.GetProperty("last_instruction");ulong start=last.GetProperty("cycle").GetUInt64();var timing=M6809InstructionTiming.Decode(Convert.FromHexString(last.GetProperty("context_hex").GetString()!));
+        ulong completed=checked(start+(ulong)timing.Cycles);if(assertion<start || assertion>completed)throw new Exception("Timer assertion is outside completing instruction");
+        byte cc=last.GetProperty("cc").GetByte();Equal(0,cc&0x10);
+        // Timing-only register seed: full natural frame matching is covered by
+        // the independent native IRQ matrix, not fabricated register contents.
+        var irq=M6809IrqEntry.AtInstructionBoundary(completed,new(cc,0,0,0,0,0,0,0x700,0),true)!;
+        Equal(w.GetProperty("handler_cycle").GetUInt64(),irq.HandlerCycle);
+        ulong observedLevel=w.GetProperty("first_cpu_level_sample").GetProperty("cycle").GetUInt64();
+        if(observedLevel<assertion || observedLevel>assertion+1 || observedLevel>completed+1)throw new Exception("Unexpected delivered-level observation gap");
+        ulong cursor=irq.HandlerCycle;
+        foreach(var ins in w.GetProperty("handler_path").EnumerateArray()){
+            Equal(ins.GetProperty("cycle").GetUInt64(),cursor);var native=M6809InstructionTiming.Decode(Convert.FromHexString(ins.GetProperty("context_hex").GetString()!));
+            cursor=checked(cursor+(ulong)native.Cycles);instructions++;
+        }
+        Equal(w.GetProperty("callback_cycle").GetUInt64(),cursor);Equal(128UL,cursor-irq.HandlerCycle);
+        ulong latency=irq.HandlerCycle-assertion;min=Math.Min(min,latency);max=Math.Max(max,latency);windows++;
+    }
+    Equal(19,windows);Equal(608,instructions);Equal(19UL,min);Equal(26UL,max);
+});
+Check("Selected MC6809 timing handles indexed offsets and register masks without guessing opcodes", () => {
+    foreach(var item in new[]{("AEA1",2,8),("A789008E",4,8),("E680",2,6),("31AB",2,8),("3596",2,11),("3405",2,7),("AD84",2,7),("39",1,5)}){
+        var r=M6809InstructionTiming.Decode(Convert.FromHexString(item.Item1));Equal(item.Item2,r.Length);Equal(item.Item3,r.Cycles);
+    }
+    bool unknown=false,truncated=false,postbyte=false;
+    try{M6809InstructionTiming.Decode(new byte[]{0x3B});}catch(NotSupportedException){unknown=true;}
+    try{M6809InstructionTiming.Decode(new byte[]{0xA7,0x89,0});}catch(InvalidDataException){truncated=true;}
+    try{M6809InstructionTiming.Decode(new byte[]{0xAE,0x87});}catch(NotSupportedException){postbyte=true;}
+    Equal(true,unknown);Equal(true,truncated);Equal(true,postbyte);
+});
 Check("Natural Skill Cash connects timer3 phase and bus time to CPU IRQ and lamp callback", () => {
     using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","ptm-skill-cpu.json")));
     using var old=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","timer-deadlines.json")));

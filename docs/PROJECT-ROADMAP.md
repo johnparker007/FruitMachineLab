@@ -25,6 +25,11 @@ and19 original IRQ/callback pairs. Correct bus coordinates explain the earlier
 latency ambiguity for that prefix. Next resolve instruction completion/input
 delivery and native handler paths, then timer1 contention and later arms.
 Live's captured timing adapters remain explicit until each replacement is proven.
+The native instruction continuation now explains all19 selected timer3 IRQ
+entries from completing the actual instruction plus19 cycles, and all19
+128-cycle handler paths from32 native instructions each. Next cover callback/
+IRQ exit, timer1 scanning and contention/nested paths, then supply those
+boundaries from translated Live helpers. No CPU interpreter/toolchain expansion.
 Return to expanding board outcomes after this focused timing milestone; retain
 MAME regression captures and the existing paid-game/feature gameplay tests.
 

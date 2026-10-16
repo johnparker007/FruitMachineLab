@@ -16,6 +16,7 @@ an unproven clock/CPU coupling.
 | skill-cash/ptm-lifecycle.json | Natural cold/default attract | 643 bus/state observations across20 arms; independent byte-identical repeat |
 | skill-cash/ptm-irq-entry.json | Synthetic native CPU programs | 18 ordinary IRQ cases: instruction completion, masking,19-cycle entry and12-byte register frame |
 | skill-cash/ptm-skill-cpu.json | Original physical-input Skill Cash campaign | 354 bus/state observations,20 arms and19 IRQ/callback pairs matching the old reference prefix |
+| skill-cash/ptm-instruction-boundaries.json | Same campaign, guarded passive instruction observer | 19 selected timer3 windows from13809 opcode samples; native completion/entry timing and32-instruction handler paths |
 
 All have verification sidecars with source/run hashes. ROM files, existing MAME
 configuration/NVRAM and Ghidra projects are preserved. The synthetic programs
@@ -236,12 +237,79 @@ stack wrap and input levels. Live timing adapters remain explicit.
 Validation for this continuation:199 headless groups and all eight WPF smoke
 modes pass. Both headless/full solution builds have zero warnings/errors.
 
+## Native instruction boundary continuation
+
+The next16 October batch records13809 opcode samples plus state-change
+observations around the same20 arms. The original354 state rows remain identical
+field-for-field, including timestamps. Curated windows retain the instruction
+already executing when each of19 timer3 expiries occurs, the delivered CPU IRQ
+observation, and every instruction from FE70 to callback48FD. The complete raw
+instruction stream stays external. An earlier observer reentered the narrow
+taps while inspecting instruction bytes, duplicating events and ending its
+window early. Its source/data hashes and exclusion reason are retained. A
+shared reentrancy guard fixes observation bookkeeping; no game behaviour changed.
+
+M6809InstructionTiming is a bounded opcode length/cycle decoder, not a CPU
+interpreter, assembler or recovered gameplay implementation. Its rules come
+from pinned MAME6809 dispatch, addressing and operation paths. It covers the
+selected immediate/direct/extended/indexed instructions, short branches and
+register masks; other opcodes and unsupported indexed modes fail explicitly.
+Input bytes and branch/register execution remain the caller's responsibility.
+
+All19 timer assertions lie within the final native instruction, including the
+observed instruction-end cases. These instructions are RTS, JSR extended,
+STA/ANDA with16-bit indexed displacement, LDB postincrement and ADCA immediate.
+Their source-derived durations plus19-cycle IRQ entry predict every observed
+FE70 timestamp exactly. The previous0–7-cycle remainder is therefore explained
+by completing the instruction in this window; no extra latency is selected from
+the capture. Every last instruction starts with I clear, and these instruction
+types do not alter I. Delivered CPU IRQ=1 with timer3 pending is first sampled
+at calculated assertion or the following CPU cycle. That is an observation
+bound, not a directly sampled input-line transition instant or a universal
+one-cycle delivery rule. The six earlier synthetic status-read ties stay open.
+
+The same source-derived decoder checks608 individual native durations across
+19 identical32-instruction FE70→48FD paths. Their sum is128 cycles per path,
+so128 is now explained by native work rather than inserted as an arbitrary
+delay. This includes PTM priority/status checks,70B3 control disable and the
+indirect callback call. It does not yet include callback execution, IRQ return,
+RTI, timer1 output-scan work or nested service paths. The wider Live scheduler
+still needs native instruction boundaries for the executing VM/helpers before
+this local proof can replace captured occupancy/callback templates.
+
+Reproduce using Capture-SkillCash.ps1 -FullFeature -PtmInstructionTiming with
+the existing executable/ROM directory and a fresh external RunDirectory. The
+switch implies PtmCpuTiming and adds no debugger startup command. Instruction
+taps attach after2040 simulated seconds and are removed on the first frame
+after the20-arm window. Curate-PtmInstructionTiming.ps1 takes RunDirectory,
+RomPath and optional ExcludedRunDirectory. It rejects any change to the original
+354-row state prefix and byte-checks all selected ROM contexts. context_hex is
+five observed bytes, potentially including following code/data, not an asserted
+instruction length or lossless routine listing. The runtime decoder supplies
+the selected instruction lengths. Existing semantic maps/source identities
+link the encodings, C# implementation and evidence; no new Ghidra exports were
+available and no project was modified. The source checkpoint now has11 blobs,
+including the CPU cycle-read definitions and observer tap API.
+
+Capture maintenance also corrects new -CpuInterrupts resume reads to S+0x0A.
+The debugger treats bare10 as hexadecimal, so the old raw resume field sampled
+S+16 rather than the saved PC. Existing cpu-interrupts.json retains its timing
+intervals and minimum costs unchanged: it does not store that field. Its old
+raw field comparison must not be claimed as saved-PC verification. The newer
+18-case full-frame matrix independently checks the actual saved PC and frame.
+Original captures remain preserved.
+Validation:201 headless groups and all eight WPF smoke modes pass. Full/headless
+solution builds have zero warnings/errors.1083 curated manifest entries verify.
+
 ## Next timing milestone
 
 Keep this ahead of broadening gameplay outcomes: the selected natural
 post-shot/disable/rearm lifecycle and first20 canonical arms are now verified.
-Next recover instruction-boundary/input-delivery timing and the selected native
-handler paths, then broaden to timer1 contention/nested services and later arms.
+Instruction completion and native handler entry→callback timing now agree for
+all19 selected windows. Next recover callback/IRQ exit and timer1 scan service
+instruction costs, including contention/nested services and later arms. Retain
+the selected instruction-boundary contract when adding timing to translated
+helpers; do not replace it with an unexplained fixed remainder.
 Replace the callback template only when those stages can be connected without
 choosing an arbitrary latency. After that, derive timer1/IRQ service scheduling
 and progressively replace per-word captured execution costs. Captures remain

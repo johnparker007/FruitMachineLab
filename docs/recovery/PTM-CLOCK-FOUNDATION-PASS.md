@@ -467,7 +467,7 @@ native helper paths and intra-word interrupt delivery remain unresolved. Next
 derive a state-dependent word/helper boundary, then connect timer assertions to
 generated instruction boundaries without using recorded paths as execution.
 
-Next candidate observation: the accepted opcode stream contains26 samples each
+Initial candidate observation (superseded by the complete boundary check below): the accepted opcode stream contains26 samples each
 at RAM00F8 (`3420`, PSHS Y) and00FA (`3184`, LEAY ,X), both with five-byte
 contexts `34203184AE`/`3184AEA16E`. Source timing suggests7+4 cycles for this
 threaded-call gateway, plus17 for NEXT, consistent with the existing28-cycle
@@ -479,3 +479,192 @@ Validation:208 headless groups and all eight WPF smoke modes pass. Both solution
 builds are clean. The primitive cost cache was rebuilt and targeted-tested after
 the full suite; it changes allocation overhead only. No installs/configuration
 changes, commits or pushes. Curated manifest contains1088 checked entries.
+
+## Threaded-call gateway continuation — short batch, 16 October 2026
+
+`Curate-VmPrimitiveTiming.ps1` now preserves26 complete uninterrupted gateway
+paths in `skill-cash/vm-call-gateway-timing.json`, reusing the accepted capture
+hash. Each observed instruction and both NEXT boundaries match the generated
+plan:00FC `AEA1` costs8,00FE `6E91` costs9,00F8 `3420` costs7,00FA `3184`
+costs4. Total28 CPU cycles, excluding interrupts and the called body. No selected
+complete path was interrupted; partial initial/final boundaries are excluded.
+All bytes here are observed RAM bytes, not a lossless ROM export.
+
+NEXT advances caller Y by2 and loads/increments X through the token's indirect
+header;00F8 PSHS Y saves that return cursor (S−2), then00FA LEAY ,X installs
+the body cursor at token+2. The next NEXT begins the body. Existing physical VM
+call frames implement these effects; timing code does not emulate instructions.
+The candidate pointer/header membership remains independently ROM-byte checked
+in `maps/dice-request-data.json` and its existing exporter/tests. The passive
+opcode stream alone does not identify which token called the RAM gateway.
+
+Live uses `Mpu4VmPrimitiveTiming.ThreadedCallCycles` before per-site/token timing
+for those existing verified headers, requiring Body and no PushAddress. Other
+entry mechanisms are not generalized. This removes the old timing fallback to
+the captured9B3E token. The called body's instructions still execute separately;
+the28-cycle cost never stands in for its logic or duration. No IRQ adapter is
+replaced. Remaining helper/state-dependent paths and intra-word IRQ boundaries
+are still the next work.
+
+Short-batch validation:209 headless groups, both solution builds and the live
+WPF smoke test pass. Other seven GUI modes were not repeated.1089 manifest
+entries checked. No new MAME run, installation, configuration change, commit or
+push; original ROMs/settings/Ghidra and MAME working files remain untouched.
+
+## Conditional VM timing continuation — 16 October 2026
+
+`Mpu4VmConditionalTiming` now selects native timing paths from the current VM
+stack before execution, without consuming or changing cells. Live uses these
+costs ahead of captured site/token minima. This is CPU work for the translated
+word, not instruction-level execution or a replacement of captured IRQ occupancy.
+The old minimum could charge the cheaper path even when actual operands require
+more instructions. Unlike the preceding constant-cost batches, this intentionally
+changes pacing where a selected path differs from that old adapter.
+
+| Token/header | Recovered operation and pre-state predicate | Cycles predicate false / true, including NEXT |
+| --- | --- | --- |
+|7982→7984,798C→7984|Forward byte branch, top==0000|36 /45|
+|79A6→79A8|Backward byte branch, top==0000|36 /45|
+|79B9→79BB|Absolute word branch, top==0000|36 /37|
+|7A6F→7A71|Equality, top==second|44 /47|
+|7ADC→7ADE|Signed minimum, (short)top<(short)second|37 /42|
+|7AE7→7AE9|Signed maximum, (short)top<=(short)second|42 /37|
+
+All paths share observed RAM NEXT `AEA1 6E91` (17 cycles). Native instruction
+encodings, exact lengths, addresses and selected paths are in the runtime plan;
+the fixtures preserve original-ROM-checked five-byte contexts and token-header
+pointers. Five-byte contexts are not claimed instruction lengths or a lossless
+listing. The decoder adds only PULU and indexed SUBD needed here, with the pinned
+MAME timing source linked in `maps/mame-timing-source.json`.
+
+Native layout/calling facts: U addresses the top big-endian cell; every selected
+word consumes one net cell (U+2). Binary words overwrite the surviving second
+cell, preserving the next cell; equality writesFFFF or0000. Signed comparisons
+use N xor V, retaining overflow behavior. No S frame is created. Y points to the
+first operand after NEXT. For a zero condition, forward byte uses unsigned
+operand and Y+operand; backward byte builds `FFxx` and adds that signed word
+(-256..-1), including byte00 as-256. On a nonzero condition both skip one byte.
+Absolute zero branch loads big-endian word atY; nonzero skips two bytes. Binary
+words leave Y unchanged. Shared tails are7A3F/7A42/7A44 (false),7A4C/7A4F/7A51
+(true) and7AF0/7AF2 (store result). Short native branch destinations, aliases,
+pointer headers and common tails remain explicit for future symbolic rebuilding.
+Names/pseudocode are recovered descriptions, not original author source.
+
+### Evidence and reproduction
+
+`Capture-VmConditionalTiming.ps1` executes the actual ROM bodies in installed
+MAME with injected CPU/RAM state, masking IRQ/FIRQ and stopping before NEXT.
+Fresh isolated cfg/NVRAM directories and `-noreadconfig` preserve original settings.
+376 cases cover both initial CC50/5F, all seven token entries and14 paths;
+branch operands00/01/7F/80/FF, zero/nonzero/high-bit cells, and all pairs from
+0000/0001/7FFF/8000/8001/FFFF for equality/min/max. These are synthetic native
+experiments, not whole-machine or reached gameplay paths.
+
+`Curate-VmConditionalTiming.ps1` takes RunDirectory, NaturalRunDirectory, RomPath
+and MameExecutable. It checks the original ROM SHA1, actual headers/native bytes,
+accepted natural instruction-stream hash and complete ordered synthetic cases.
+The existing passive Skill Cash capture provides12 complete uninterrupted paths
+(3 forward branches,4 backward branches,5 min operations). Two forward branch
+paths containing IRQ work are explicitly excluded, as are partial outer bounds.
+Natural operands are not captured: those paths are checked from observed native
+CC and branch destinations; operand-selected paths are independently checked in
+the synthetic matrix. Do not describe all14 alternatives as natural evidence.
+Natural token fields name a representative token for each native entry; the
+opcode stream alone does not distinguish aliases7982/798C.
+
+Verification checks every native instruction duration and conditional destination,
+whole boundary cost, resulting U/Y/S and surviving cells. The same376 operands
+also execute the translated VM operations using synthetic diagnostic listings;
+result selection and stack cells agree with native execution. The listings use
+test marker targets for branch direction, while actual native operand arithmetic
+is separately checked at Y. Timing queries preserve their input stack and reject
+underflow. Unsupported tokens remain outside this timing model.
+
+The first attempt logged breakpoint actions only. MAME `go` skips a breakpoint
+at the current PC, leaving the initial instruction unobserved. The corrected
+capture explicitly records that initial boundary before go. The old attempt is
+excluded with path/hash/reason in `vm-conditional-verification.json`; both raw
+runs remain external. No measured duration is fitted to hide that omission.
+
+Byte-preservation links: the synthetic/natural fixtures, verification hashes,
+capture/curation scripts, runtime paths and existing ScriptExecutor implementation
+are linked in the timing source map. No unrelated ROM routines were recovered,
+no assembler was introduced, and the previous Ghidra export access gap remains.
+Existing ROMs, Ghidra projects and MAME working files/settings are preserved.
+
+Remaining boundary: Live still applies captured IRQ intervals and scan/callback
+times, and translated word effects remain atomic. Paths now expose native
+instruction addresses/costs, but interrupt delivery within a word has not been
+coupled to them. Next choose one such boundary for a causal comparison rather
+than treating recorded paths as Live execution or claiming full clock recovery.
+
+Validation:212 headless verification groups pass, including all existing live
+input, pause/resume, repeated paid-game and MAME-backed replay comparisons.
+All eight WPF smoke modes pass and exit cleanly. Full/headless builds have zero
+warnings/errors. No test expectations were rebaselined for changed pacing.
+
+## Live calibrated-delay scheduling replacement — 16 October 2026
+
+Live no longer obtains the Start-tone wait duration from `nudge-tone.json`.
+`Mpu4CalibratedDelay.StartToneWaitCycles` calculates34276 CPU cycles from native
+5A05/7159/7164/718A instructions and loop counts. Its deadline projects that work
+through full ordinary-IRQ envelopes. Captured wait duration is verification
+evidence, not execution input. IRQ starts, queue setup/cancel and other VM pacing
+remain captured. This replaces one scheduling dependency, not the whole PTM/CPU
+scheduler; native words are not instruction-stepped.
+
+7159 calls718A's enabled gate, preserves A/B and repeats7164.7164 preserves B,
+loads28 outer passes and54 inner iterations, decrements A/B with short BNEs,
+then restores B. Single-pass cost17096; enabled7159 costs47+17108*N, with N=B
+except B00 wraps to256.5A05 adds13 (LDB1,S and JSR7159); fixed5A14 supplies B02.
+719B bit80 disabled pacing remains unsupported in Live. Its bytes are statically
+preserved, not claimed dynamically verified.
+
+`Capture-CalibratedDelay.ps1` executes20 isolated original-ROM calls with
+B00/01/02/03/FF, A00/FF and CC50/5F. IRQ/FIRQ are masked; gate remains00; only
+RAM/register state is injected. All2068 inner passes, whole call durations and
+preserved A/B/X/Y/U/S match. Original settings are protected by fresh directories
+and `-noreadconfig`; no ROM bytes are patched. An initial20-simulated-second limit
+truncated the last case despite exit0; the curator rejected it. The accepted run
+allows60 simulated seconds. The excluded run/hash/reason remains in provenance.
+
+`Curate-CalibratedDelay.ps1` validates the existing natural tone log SHA256 and
+reconciles24 balanced outer IRQs across its phases, including23 during the wait.
+Recorded FE70→RTI-start spans include nested work already. Adding verified19-cycle
+ordinary entry and15-cycle full RTI once per outer span gives CPU phase budgets
+381/34276/360. The old35058 wait included23*34=782 cycles outside handler bodies.
+Source34276 plus full IRQ spans reproduces natural5A05→5A0A exactly. The old log's
+incorrect saved-PC field is not used. Exact ROM ranges/bytes and raw provenance
+are retained in `skill-cash/calibrated-delay-timing.json`.
+
+`CapturedInterruptOccupancy.FromOrdinaryIrqHandlers` builds full envelopes;
+`CompletionAfterCpuWork` projects CPU work through them without consuming the
+service cursor. It handles an IRQ already in progress and periodic wrap; a fully
+busy period rejects positive work. Live uses this projection only during the
+calibrated wait, without charging handler busy time twice. Other phases retain
+the existing body-only occupancy adapter (cancel budget394 remains explicit).
+`TimedToneDelay` exposes its pending start/work/deadline. The live paid-play test
+verifies Pause/Resume, parameter31 one cycle before the deadline and parameter00
+at it, then continues gameplay/accounting. Same-cycle hardware delivery is not
+generalized from this CPU-work calculation.
+
+A trial global full-envelope change reached9E87/7FB1 without pacing coverage and
+changed a GUI paid outcome; that global switch is not retained. The final narrower
+wait also exposed this already translated constant family under GUI input timing.
+Original handlers7946 (CLRA,LDB,X,PSHU D,JMPFC) and794F
+(LDD,X,PSHU D,JMPFC) cost33/32 including NEXT.20 isolated native handler calls with
+RAM operands verify costs, unsigned byte extension, word endianness, U−2,
+unchanged Y/S and the underlying cell. The curator ROM-checks175 header/operand
+pairs referenced1048 times in existing VM listings and exports membership/raw
+encodings to `maps/vm-literal-timing.json`. Live requires matching token/operation/
+value; unknown words still fail. These synthetic tests introduce no gameplay
+semantics or claim a newly reached natural campaign.
+
+Capture/curation scripts, ROM ranges, native/VM effects, implementations and
+verification are linked through the existing timing-source map. No assembler or
+unrelated recovery is added; the Ghidra export gap remains. Original ROMs/settings,
+Ghidra and MAME working files are preserved. Next target remains actual timer
+assertion→CPU acceptance→scan/callback scheduling, not another captured wait fit.
+
+Validation:217 headless groups and all eight WPF smoke modes pass. Both solution
+builds have zero warnings/errors. Test expectations were not rebaselined.

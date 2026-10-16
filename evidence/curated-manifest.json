@@ -206,8 +206,8 @@
   },
   {
     "path": "docs/recovery/PTM-CLOCK-FOUNDATION-PASS.md",
-    "bytes": 32285,
-    "sha256": "DEC7DCEDDED485B31DC34485716CCA312BDCB47E9C7EA9322B8610CA71C5D29F"
+    "bytes": 44633,
+    "sha256": "3AE426B16D1F70218F08E252FFF1250E62EABA1136665D66BD1A9E2EEF537524"
   },
   {
     "path": "docs/recovery/README.txt",
@@ -291,8 +291,8 @@
   },
   {
     "path": "docs/recovery/START-TONE-SPIN-GATES-PASS.md",
-    "bytes": 7123,
-    "sha256": "58B3D46BA01EB183CCD61818A532541346C1804C0502D3F83A5D63B93F37B2C9"
+    "bytes": 7503,
+    "sha256": "712462DF68582EA85ED1E9577876E2C86142DAF1CCFF04B1D89B036DC6AACF7C"
   },
   {
     "path": "docs/recovery/STATE-AWARE-EXPLORATION.txt",
@@ -356,8 +356,8 @@
   },
   {
     "path": "evidence/mpu4/maps/mame-timing-source.json",
-    "bytes": 6874,
-    "sha256": "76649912F80B534AF55274F76100D704894C0539B6B5306CC04637A0D4DF15C1"
+    "bytes": 9021,
+    "sha256": "A22A5885C4994B89096C7056B9FA613EA5477E8EA3EE94FBD6FA383ACE7E67D2"
   },
   {
     "path": "evidence/mpu4/maps/nudge-availability-data.json",
@@ -453,6 +453,11 @@
     "path": "evidence/mpu4/maps/vm-batch-pass-replay-verification.json",
     "bytes": 1871,
     "sha256": "8C5A12BF3A198063A0F7F82A4206290F8BFCCD1CE703DABDC869FCE07F6142F4"
+  },
+  {
+    "path": "evidence/mpu4/maps/vm-literal-timing.json",
+    "bytes": 28473,
+    "sha256": "254D7EFF341B78FFFDDD326C32051A75C2D7EB3C2D93D3F4F6A85B56AE9DB170"
   },
   {
     "path": "evidence/mpu4/native/1421.json",
@@ -1583,6 +1588,11 @@
     "path": "evidence/mpu4/skill-cash/board-selection.json",
     "bytes": 196194,
     "sha256": "CBD562F7BBDA67E822507AE9A818F47EC24E3D26B65F8BE110AAF4A70920BB41"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/calibrated-delay-timing.json",
+    "bytes": 52416,
+    "sha256": "776A7BB7E7DD70E83DA195DD30134B78930B4CC222798E0352EDB2B74AAF2DC1"
   },
   {
     "path": "evidence/mpu4/skill-cash/caller-debugger.cmd",
@@ -2788,6 +2798,26 @@
     "path": "evidence/mpu4/skill-cash/timer-deadlines.json",
     "bytes": 158937,
     "sha256": "C5B7007A5594D198CF6F13186384D3756F420C1116E0B9B2B04DC028674048ED"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/vm-call-gateway-timing.json",
+    "bytes": 19926,
+    "sha256": "014B9D8CF2CAACF65C17D1613D04237F2D4953C12F1A63B1257AF4A7CFB0AC5D"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/vm-conditional-natural.json",
+    "bytes": 9652,
+    "sha256": "9E682FC51BA662B0F481B32AEBB36DE203481BF843DE1B2A276D0332AADAA536"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/vm-conditional-synthetic.json",
+    "bytes": 220510,
+    "sha256": "4BBD6E1C40AE2E47ADCE1BFC52E15488A2FB022828A2EB673337A8B04FE2FDDF"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/vm-conditional-verification.json",
+    "bytes": 1402,
+    "sha256": "14B11DFB683B5A173348C4D6DF75799C8DE758D141F49BD70AF415129FEEAAEE"
   },
   {
     "path": "evidence/mpu4/skill-cash/vm-primitive-timing.json",

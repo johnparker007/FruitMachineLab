@@ -1,5 +1,67 @@
 # Current handoff
 
+16 October live scheduling milestone: Start-tone wait duration is no longer read
+from capture. Mpu4CalibratedDelay generates34276 CPU cycles, with a full ordinary
+IRQ envelope projection generating its deadline.20 original-ROM calls/2068 passes
+and the natural tone boundary match. Source-derived literal timing (175 ROM-checked
+tokens/1048 references;20 native cases) also fixes pacing exposed by the GUI.
+See Capture-/Curate-CalibratedDelay.ps1, calibrated-delay-timing.json,
+maps/vm-literal-timing.json and the existing timing foundation report.
+`TimedToneDelay` exposes pending work/start/deadline; the live test checks Pause
+and exact before/at-deadline transitions. Only this wait uses full IRQ envelopes.
+IRQ starts, queue/cancel and other VM pacing remain explicit captured adapters.
+A trial global switch reached an uncovered route; it is not retained. Next target
+timer assertion/IRQ/scan scheduling. Preserve all earlier uncommitted gateway/
+conditional work with this batch. No installations/configuration changes,
+commits/pushes, ROM changes, Ghidra or original MAME settings/checkout edits.
+Validation:217 headless groups/all eight WPF modes pass; both builds are clean.
+Final external result pointers: %TEMP%/FruitMachineLab-delay-suite-complete.txt,
+FruitMachineLab-delay-gui-complete.txt and FruitMachineLab-calibrated-delay.txt.
+The initial delay capture limit truncated its final case; excluded provenance
+is retained. All capture/smoke processes exited. Earlier trial suite/GUI failures
+remain external and are not the final results. No expectations were rebaselined.
+Curated manifest:1094 entries verified; whitespace check passes.
+
+16 October conditional timing batch: Live now chooses source-derived costs from
+current VM cells for forward/backward/absolute zero branches, equality and signed
+min/max (seven token entries,14 native paths).376 isolated actual-ROM cases verify
+all instructions, native destinations, costs and U/Y/S/results; translated VM
+effects also match.12 natural uninterrupted Skill Cash paths match;2 IRQ-containing
+paths are excluded. See Mpu4VmConditionalTiming.cs, Capture-/Curate-VmConditionalTiming.ps1,
+vm-conditional-{synthetic,natural,verification}.json and the existing timing report.
+Pacing changes when operands select a cost different from the old captured minimum.
+IRQ occupancy/scan/callback adapters remain; word effects are still atomic.
+Next couple one generated instruction boundary to IRQ timing, preserving explicit
+limits; do not replay recorded native paths as Live. Prior gateway changes remain
+uncommitted alongside this batch (John did not report merging them). Preserve both.
+No installs/configuration changes, commits/pushes or original-workspace changes.
+Validation:212 headless groups and all eight WPF smoke modes pass; full/headless
+builds have zero warnings/errors. No expectations were rebaselined for pacing.
+External pointers: %TEMP%/FruitMachineLab-vm-conditional.txt (accepted376-case run),
+FruitMachineLab-vm-conditional-excluded.txt (first capture omits starting opcode),
+FruitMachineLab-conditional-suite.txt and FruitMachineLab-conditional-gui.txt.
+All capture/smoke processes exited. The curator accepts ExcludedRunDirectory to
+preserve excluded-run hash/reason when reproducing the verification metadata.
+Curated manifest:1092 entries verified; whitespace check passes.
+
+16 October short gateway batch:26 complete natural NEXT→00F8→NEXT paths
+match source-derived28-cycle timing. Live now uses that cost for the existing
+byte-checked threaded_call_pacing token membership, before captured site/token
+lookup; push-address/native wrappers remain excluded. No captured reference
+token is used as the timing fallback for these calls. Called bodies still execute
+incrementally. Curate-VmPrimitiveTiming.ps1 now also reproduces
+skill-cash/vm-call-gateway-timing.json from the same accepted external capture.
+See the timing foundation report for RAM encodings, stack/cursor effects and
+limits. Earlier batches were merged by John; only this batch is uncommitted.
+No installs/config changes, commits/pushes or original-workspace modifications.
+Next: state-dependent VM/helper timing, then causal IRQ integration; the recorded
+IRQ occupancy and callback/scan adapter are still present.
+Validation:209 headless groups pass; full/headless builds have zero warnings or
+errors. The live WPF smoke test passes and exits cleanly (other seven modes were
+not repeated in this short batch). External result pointers:
+%TEMP%/FruitMachineLab-gateway-verification.txt and FruitMachineLab-gateway-gui.txt.
+Curated manifest contains1089 checked entries.
+
 16 October VM primitive continuation: Live now calculates30/35/35/27 cycles
 for tokens78B5/795B/7963/792F from their native instructions plus RAM NEXT.
 All54 complete natural paths match instruction-by-instruction (5/1/4/44).

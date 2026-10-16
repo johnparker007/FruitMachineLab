@@ -1,0 +1,20 @@
+{
+  "synthetic_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-vm-conditional-7c3701a0c4aa4d439b14c6ea0496c88f",
+  "natural_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-ptm-instructions-guarded-07c5ee15a51f44029180cc7278eff1e2",
+  "synthetic_debugger_sha256": "70CA4A54E7CBFEA4BF59038693C6A2764A1ACBCD5CA66C1A50EEE723BC2BDCCE",
+  "synthetic_log_sha256": "59B2D37C6784A8CBC1079A6E8C5863513EC1673A73EE6C95CFF87F4CEAA8CAA3",
+  "synthetic_cases_sha256": "A087B7CE890004C643E992D8BA21FEDE9869B3A9D6A8A52D7CC0A1B0043CECAB",
+  "natural_instructions_sha256": "23AFA5F5D3ECBB1326881656905692EA68DEC715B618BDA11A16109B0D04523F",
+  "rom_sha1": "402D1518BB78FDC489B06C2AABC771E5CE151847",
+  "mame_sha256": "0FCE5A88DF4F9D9B1FBF1405812C00848036E615993780978D967DA34204CB7A",
+  "synthetic_cases": 376,
+  "natural_paths": 12,
+  "excluded_interrupted": 2,
+  "source_tag": "mame0281",
+  "source_commit": "2843a3deb81cf93735244044894196ccfbea4d20",
+  "excluded_attempt": {
+    "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-vm-conditional-4922d4bd7ea64b7cbbd07a9e42864d52",
+    "log_sha256": "F24A94897E2FB63A1A5AC7D4BCC3C1051C85D38BFB16B1436DE02D1BAF29B920",
+    "reason": "Initial breakpoint is skipped by debugger go; first instruction snapshot was missing. Corrected capture explicitly logs its start boundary. Excluded from fixtures."
+  }
+}

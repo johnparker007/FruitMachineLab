@@ -21,7 +21,9 @@ public sealed class SkillCashLiveSession
     private readonly AddersReelMotion? reelMotion;
     private readonly AddersReelHardware? reelHardware;
     private byte tonePhase;
-    private readonly ulong toneSetupCycles,toneWaitCycles,toneFinishCycles;
+    private ulong toneWaitStarted;
+    public (ulong Started,ulong CpuCycles,ulong Deadline)? TimedToneDelay=>tonePhase==2 ? (toneWaitStarted,Mpu4CalibratedDelay.StartToneWaitCycles,nextVm) : null;
+    private readonly ulong toneSetupCycles,toneFinishCycles;
     public bool TimedToneActive=>tonePhase is >0 and <4;
     private bool motionInitializing,lastVmInlineLiteral;
     private bool motionNativeReady;
@@ -29,7 +31,9 @@ public sealed class SkillCashLiveSession
     private readonly string evidence;
     private readonly Dictionary<string,ulong> siteCosts,tokenCosts;
     private readonly HashSet<ushort> threadedCallTokens=new();
+    private readonly Dictionary<ushort,(string Operation,ushort Value,ulong Cycles)> literalCosts=new();
     private readonly CapturedInterruptOccupancy occupancy;
+    private readonly CapturedInterruptOccupancy delayOccupancy;
     private readonly List<(ulong Scan,ulong Callback)> services=new();
     private readonly List<LampLatchFrame> latches=new();
     private readonly List<ushort> selections=new();
@@ -80,12 +84,19 @@ public sealed class SkillCashLiveSession
         ContinueBoard=continueBoard;BoardLinkEntry=boardLink;boardAdvancing=boardLink is not null;
         IncludesCaller=includeCaller || boardSelection;StartsAtBoardSelection=boardSelection;
         evidence=evidenceDirectory;
-        using(var tone=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","nudge-tone.json")))){
-            var r=tone.RootElement;var p=r.GetProperty("tone_phases");
-            ulong Active(int a,int b)=>p[b].GetProperty("cycle").GetUInt64()-p[a].GetProperty("cycle").GetUInt64()-(p[b].GetProperty("irq_body_cycles").GetUInt64()-p[a].GetProperty("irq_body_cycles").GetUInt64());
-            if(p.GetArrayLength()!=6 || p[2].GetProperty("pc").GetString()!="5A05" || p[3].GetProperty("pc").GetString()!="5A0A")throw new InvalidDataException("Invalid timed-tone phase capture");
-            toneSetupCycles=p[2].GetProperty("cycle").GetUInt64()-Convert.ToUInt64(r.GetProperty("initial").GetProperty("cycle").GetString(),16);
-            toneWaitCycles=Active(2,3);toneFinishCycles=r.GetProperty("sites").GetProperty("FC4D").GetUInt64()-toneSetupCycles-toneWaitCycles;
+        using(var literals=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"maps","vm-literal-timing.json"))))
+            foreach(var item in literals.RootElement.GetProperty("tokens").EnumerateArray()){
+                string operation=item.GetProperty("operation").GetString()!;
+                literalCosts.Add(item.GetProperty("token").GetUInt16(),(operation,item.GetProperty("value").GetUInt16(),operation=="vm_push_word_body_word" ? Mpu4VmPrimitiveTiming.BodyWordCycles : Mpu4VmPrimitiveTiming.BodyByteCycles));
+            }
+        using(var tone=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","calibrated-delay-timing.json")))){
+            // Queue/cancel allocation still uses observed CPU-only budgets.
+            // The wait is generated from ROM loop counts, never capture duration.
+            var p=tone.RootElement.GetProperty("natural").GetProperty("phases");
+            if(p.GetArrayLength()!=3)throw new InvalidDataException("Invalid timed-tone phase evidence");
+            toneSetupCycles=p[0].GetProperty("cpu_cycles").GetUInt64();
+            // Other native phases retain their existing body-only IRQ adapter.
+            toneFinishCycles=p[2].GetProperty("cpu_cycles").GetUInt64()+p[2].GetProperty("outer_irqs").GetUInt64()*(M6809IrqEntry.EntryCycles+15);
         }
         Lamps=SkillCashPlayback.LoadLamps(evidence);
         var options=new JsonSerializerOptions{PropertyNameCaseInsensitive=true};
@@ -168,8 +179,11 @@ public sealed class SkillCashLiveSession
         // Repeat the observed service/jitter template at the source-backed
         // timer-1 period (0D70+1). This is not IRQ instruction acceptance emulation.
         servicePeriod=checked((ulong)services.Count*Mpu4Timer1Clock.Period(Mpu4Timer1Clock.NormalLatch));
-        using(var interrupts=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","cpu-interrupts.json"))))
-            occupancy=new(servicePeriod,interrupts.RootElement.GetProperty("intervals").EnumerateArray().Select(row=>row.EnumerateArray().Select(x=>x.GetUInt64()).ToArray()));
+        using(var interrupts=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","cpu-interrupts.json")))){
+            var intervals=interrupts.RootElement.GetProperty("intervals").EnumerateArray().Select(row=>row.EnumerateArray().Select(x=>x.GetUInt64()).ToArray()).ToArray();
+            occupancy=new(servicePeriod,intervals);
+            delayOccupancy=CapturedInterruptOccupancy.FromOrdinaryIrqHandlers(servicePeriod,intervals);
+        }
         RecordLatch();
         executor=new(Machine) {
             ResolveScript=Resolve,ResolveWord=SkillCashData.ResolveWord,
@@ -262,7 +276,9 @@ public sealed class SkillCashLiveSession
                 if(occupancy.NextStart==next) {
                     ulong end=occupancy.NextEnd;
                     if(lastVmInlineLiteral && !waitingForScheduler && !motionInitializing && !motionNativeReady && !TimedToneActive)Machine.Control!.PreserveInterruptDirectPage(0);
-                    nextVm=waitingForScheduler ? Math.Max(nextVm,end) : checked(nextVm+(end-next));
+                    // Calibrated delay already projects its CPU budget through
+                    // full IRQ envelopes; do not charge these bodies twice.
+                    if(tonePhase!=2)nextVm=waitingForScheduler ? Math.Max(nextVm,end) : checked(nextVm+(end-next));
                     occupancy.Consume();
                 }
                 if(nextCallback==next) {
@@ -309,7 +325,7 @@ public sealed class SkillCashLiveSession
                     if(instruction.Native==0x5A14 && tonePhase<4){
                         if((Machine.Memory[0x719B]&0x80)!=0)throw new NotSupportedException("Live disabled-tone pacing requires separate verification");
                         if(tonePhase==0){tonePhase=1;nextVm=checked(Cycle+toneSetupCycles);}
-                        else if(tonePhase==1){AddersTimedTone.Begin(Machine,scheduler);tonePhase=2;nextVm=checked(Cycle+toneWaitCycles);}
+                        else if(tonePhase==1){AddersTimedTone.Begin(Machine,scheduler);tonePhase=2;toneWaitStarted=Cycle;nextVm=delayOccupancy.CompletionAfterCpuWork(Cycle,Mpu4CalibratedDelay.StartToneWaitCycles);}
                         else{AddersTimedTone.End(Machine,scheduler);tonePhase=4;nextVm=checked(Cycle+toneFinishCycles);}
                         continue;
                     }
@@ -324,13 +340,20 @@ public sealed class SkillCashLiveSession
     }
     private ulong Cost(Instruction instruction)
     {
+        if(literalCosts.TryGetValue(instruction.Token,out var literal)){
+            if(instruction.Operation!=literal.Operation || instruction.Value!=literal.Value)throw new InvalidDataException($"Literal timing/listing mismatch at {instruction.Site:X4}/{instruction.Token:X4}");
+            return literal.Cycles;
+        }
+        // Decide native branches from the same pre-execution cells the VM will
+        // consume, without popping them or consulting a recorded path.
+        if(Mpu4VmConditionalTiming.Cycles(instruction.Token,Machine.Data) is ulong conditionalCost)return conditionalCost;
         // Selected straight-line words now derive their CPU work from native
         // encodings. Interrupt occupancy remains the explicit captured adapter.
         if(Mpu4VmPrimitiveTiming.Cycles(instruction.Token) is ulong nativeCost)return nativeCost;
+        // Only statically byte-checked 00F8 headers qualify. This charges entry,
+        // never the called body, which continues executing incrementally.
+        if(instruction.Body is not null && instruction.PushAddress is null && threadedCallTokens.Contains(instruction.Token))return Mpu4VmPrimitiveTiming.ThreadedCallCycles;
         if(siteCosts.TryGetValue(instruction.Site.ToString("X4"),out var cost) || tokenCosts.TryGetValue(instruction.Token.ToString("X4"),out cost))return cost;
-        // Identical validated ROM gateway 00F8; only entry cost is shared.
-        // The called body must still execute and every helper must be translated.
-        if(instruction.Body is not null && instruction.PushAddress is null && threadedCallTokens.Contains(instruction.Token))return tokenCosts["9B3E"];
         throw new NotSupportedException($"No captured CPU pacing boundary for {instruction.Site:X4}/{instruction.Token:X4}");
     }
     private void RecordLatch()

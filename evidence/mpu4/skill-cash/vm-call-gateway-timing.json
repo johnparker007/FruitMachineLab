@@ -1,0 +1,787 @@
+{
+  "classification": "Natural complete uninterrupted RAM NEXT/threaded-call gateway boundaries. All bytes observed in RAM, not a ROM listing. Token membership is independently ROM-header checked in maps/dice-request-data.json; this stream does not observe token identities.",
+  "instructions_sha256": "23AFA5F5D3ECBB1326881656905692EA68DEC715B618BDA11A16109B0D04523F",
+  "excluded_interrupted": 0,
+  "samples": [
+    {
+      "start_cycle": 3511362126,
+      "end_cycle": 3511362154,
+      "instructions": [
+        {
+          "pc": 252,
+          "context_hex": "AEA16E9100",
+          "cycle": 3511362126,
+          "completion_cycle": 3511362134
+        },
+        {
+          "pc": 254,
+          "context_hex": "6E91000000",
+          "cycle": 3511362134,
+          "completion_cycle": 3511362143
+        },
+        {
+          "pc": 248,
+          "context_hex": "34203184AE",
+          "cycle": 3511362143,
+          "completion_cycle": 3511362150
+        },
+        {
+          "pc": 250,
+          "context_hex": "3184AEA16E",
+          "cycle": 3511362150,
+          "completion_cycle": 3511362154
+        }
+      ]
+    },
+    {
+      "start_cycle": 3511364059,
+      "end_cycle": 3511364087,
+      "instructions": [
+        {
+          "pc": 252,
+          "context_hex": "AEA16E9100",
+          "cycle": 3511364059,
+          "completion_cycle": 3511364067
+        },
+        {
+          "pc": 254,
+          "context_hex": "6E91000000",
+          "cycle": 3511364067,
+          "completion_cycle": 3511364076
+        },
+        {
+          "pc": 248,
+          "context_hex": "34203184AE",
+          "cycle": 3511364076,
+          "completion_cycle": 3511364083
+        },
+        {
+          "pc": 250,
+          "context_hex": "3184AEA16E",
+          "cycle": 3511364083,
+          "completion_cycle": 3511364087
+        }
+      ]
+    },
+    {
+      "start_cycle": 3511378426,
+      "end_cycle": 3511378454,
+      "instructions": [
+        {
+          "pc": 252,
+          "context_hex": "AEA16E9100",
+          "cycle": 3511378426,
+          "completion_cycle": 3511378434
+        },
+        {
+          "pc": 254,
+          "context_hex": "6E91000000",
+          "cycle": 3511378434,
+          "completion_cycle": 3511378443
+        },
+        {
+          "pc": 248,
+          "context_hex": "34203184AE",
+          "cycle": 3511378443,
+          "completion_cycle": 3511378450
+        },
+        {
+          "pc": 250,
+          "context_hex": "3184AEA16E",
+          "cycle": 3511378450,
+          "completion_cycle": 3511378454
+        }
+      ]
+    },
+    {
+      "start_cycle": 3511378710,
+      "end_cycle": 3511378738,
+      "instructions": [
+        {
+          "pc": 252,
+          "context_hex": "AEA16E9100",
+          "cycle": 3511378710,
+          "completion_cycle": 3511378718
+        },
+        {
+          "pc": 254,
+          "context_hex": "6E91000000",
+          "cycle": 3511378718,
+          "completion_cycle": 3511378727
+        },
+        {
+          "pc": 248,
+          "context_hex": "34203184AE",
+          "cycle": 3511378727,
+          "completion_cycle": 3511378734
+        },
+        {
+          "pc": 250,
+          "context_hex": "3184AEA16E",
+          "cycle": 3511378734,
+          "completion_cycle": 3511378738
+        }
+      ]
+    },
+    {
+      "start_cycle": 3511378738,
+      "end_cycle": 3511378766,
+      "instructions": [
+        {
+          "pc": 252,
+          "context_hex": "AEA16E9100",
+          "cycle": 3511378738,
+          "completion_cycle": 3511378746
+        },
+        {
+          "pc": 254,
+          "context_hex": "6E91000000",
+          "cycle": 3511378746,
+          "completion_cycle": 3511378755
+        },
+        {
+          "pc": 248,
+          "context_hex": "34203184AE",
+          "cycle": 3511378755,
+          "completion_cycle": 3511378762
+        },
+        {
+          "pc": 250,
+          "context_hex": "3184AEA16E",
+          "cycle": 3511378762,
+          "completion_cycle": 3511378766
+        }
+      ]
+    },
+    {
+      "start_cycle": 3511379079,
+      "end_cycle": 3511379107,
+      "instructions": [
+        {
+          "pc": 252,
+          "context_hex": "AEA16E9100",
+          "cycle": 3511379079,
+          "completion_cycle": 3511379087
+        },
+        {
+          "pc": 254,
+          "context_hex": "6E91000000",
+          "cycle": 3511379087,
+          "completion_cycle": 3511379096
+        },
+        {
+          "pc": 248,
+          "context_hex": "34203184AE",
+          "cycle": 3511379096,
+          "completion_cycle": 3511379103
+        },
+        {
+          "pc": 250,
+          "context_hex": "3184AEA16E",
+          "cycle": 3511379103,
+          "completion_cycle": 3511379107
+        }
+      ]
+    },
+    {
+      "start_cycle": 3511379205,
+      "end_cycle": 3511379233,
+      "instructions": [
+        {
+          "pc": 252,
+          "context_hex": "AEA16E9100",
+          "cycle": 3511379205,
+          "completion_cycle": 3511379213
+        },
+        {
+          "pc": 254,
+          "context_hex": "6E91000000",
+          "cycle": 3511379213,
+          "completion_cycle": 3511379222
+        },
+        {
+          "pc": 248,
+          "context_hex": "34203184AE",
+          "cycle": 3511379222,
+          "completion_cycle": 3511379229
+        },
+        {
+          "pc": 250,
+          "context_hex": "3184AEA16E",
+          "cycle": 3511379229,
+          "completion_cycle": 3511379233
+        }
+      ]
+    },
+    {
+      "start_cycle": 3511381777,
+      "end_cycle": 3511381805,
+      "instructions": [
+        {
+          "pc": 252,
+          "context_hex": "AEA16E9100",
+          "cycle": 3511381777,
+          "completion_cycle": 3511381785
+        },
+        {
+          "pc": 254,
+          "context_hex": "6E91000000",
+          "cycle": 3511381785,
+          "completion_cycle": 3511381794
+        },
+        {
+          "pc": 248,
+          "context_hex": "34203184AE",
+          "cycle": 3511381794,
+          "completion_cycle": 3511381801
+        },
+        {
+          "pc": 250,
+          "context_hex": "3184AEA16E",
+          "cycle": 3511381801,
+          "completion_cycle": 3511381805
+        }
+      ]
+    },
+    {
+      "start_cycle": 3511382029,
+      "end_cycle": 3511382057,
+      "instructions": [
+        {
+          "pc": 252,
+          "context_hex": "AEA16E9100",
+          "cycle": 3511382029,
+          "completion_cycle": 3511382037
+        },
+        {
+          "pc": 254,
+          "context_hex": "6E91000000",
+          "cycle": 3511382037,
+          "completion_cycle": 3511382046
+        },
+        {
+          "pc": 248,
+          "context_hex": "34203184AE",
+          "cycle": 3511382046,
+          "completion_cycle": 3511382053
+        },
+        {
+          "pc": 250,
+          "context_hex": "3184AEA16E",
+          "cycle": 3511382053,
+          "completion_cycle": 3511382057
+        }
+      ]
+    },
+    {
+      "start_cycle": 3511382183,
+      "end_cycle": 3511382211,
+      "instructions": [
+        {
+          "pc": 252,
+          "context_hex": "AEA16E9100",
+          "cycle": 3511382183,
+          "completion_cycle": 3511382191
+        },
+        {
+          "pc": 254,
+          "context_hex": "6E91000000",
+          "cycle": 3511382191,
+          "completion_cycle": 3511382200
+        },
+        {
+          "pc": 248,
+          "context_hex": "34203184AE",
+          "cycle": 3511382200,
+          "completion_cycle": 3511382207
+        },
+        {
+          "pc": 250,
+          "context_hex": "3184AEA16E",
+          "cycle": 3511382207,
+          "completion_cycle": 3511382211
+        }
+      ]
+    },
+    {
+      "start_cycle": 3511392722,
+      "end_cycle": 3511392750,
+      "instructions": [
+        {
+          "pc": 252,
+          "context_hex": "AEA16E9100",
+          "cycle": 3511392722,
+          "completion_cycle": 3511392730
+        },
+        {
+          "pc": 254,
+          "context_hex": "6E91000000",
+          "cycle": 3511392730,
+          "completion_cycle": 3511392739
+        },
+        {
+          "pc": 248,
+          "context_hex": "34203184AE",
+          "cycle": 3511392739,
+          "completion_cycle": 3511392746
+        },
+        {
+          "pc": 250,
+          "context_hex": "3184AEA16E",
+          "cycle": 3511392746,
+          "completion_cycle": 3511392750
+        }
+      ]
+    },
+    {
+      "start_cycle": 3511393181,
+      "end_cycle": 3511393209,
+      "instructions": [
+        {
+          "pc": 252,
+          "context_hex": "AEA16E9100",
+          "cycle": 3511393181,
+          "completion_cycle": 3511393189
+        },
+        {
+          "pc": 254,
+          "context_hex": "6E91000000",
+          "cycle": 3511393189,
+          "completion_cycle": 3511393198
+        },
+        {
+          "pc": 248,
+          "context_hex": "34203184AE",
+          "cycle": 3511393198,
+          "completion_cycle": 3511393205
+        },
+        {
+          "pc": 250,
+          "context_hex": "3184AEA16E",
+          "cycle": 3511393205,
+          "completion_cycle": 3511393209
+        }
+      ]
+    },
+    {
+      "start_cycle": 3511395631,
+      "end_cycle": 3511395659,
+      "instructions": [
+        {
+          "pc": 252,
+          "context_hex": "AEA16E9100",
+          "cycle": 3511395631,
+          "completion_cycle": 3511395639
+        },
+        {
+          "pc": 254,
+          "context_hex": "6E91000000",
+          "cycle": 3511395639,
+          "completion_cycle": 3511395648
+        },
+        {
+          "pc": 248,
+          "context_hex": "34203184AE",
+          "cycle": 3511395648,
+          "completion_cycle": 3511395655
+        },
+        {
+          "pc": 250,
+          "context_hex": "3184AEA16E",
+          "cycle": 3511395655,
+          "completion_cycle": 3511395659
+        }
+      ]
+    },
+    {
+      "start_cycle": 3511395785,
+      "end_cycle": 3511395813,
+      "instructions": [
+        {
+          "pc": 252,
+          "context_hex": "AEA16E9100",
+          "cycle": 3511395785,
+          "completion_cycle": 3511395793
+        },
+        {
+          "pc": 254,
+          "context_hex": "6E91000000",
+          "cycle": 3511395793,
+          "completion_cycle": 3511395802
+        },
+        {
+          "pc": 248,
+          "context_hex": "34203184AE",
+          "cycle": 3511395802,
+          "completion_cycle": 3511395809
+        },
+        {
+          "pc": 250,
+          "context_hex": "3184AEA16E",
+          "cycle": 3511395809,
+          "completion_cycle": 3511395813
+        }
+      ]
+    },
+    {
+      "start_cycle": 3511403044,
+      "end_cycle": 3511403072,
+      "instructions": [
+        {
+          "pc": 252,
+          "context_hex": "AEA16E9100",
+          "cycle": 3511403044,
+          "completion_cycle": 3511403052
+        },
+        {
+          "pc": 254,
+          "context_hex": "6E91000000",
+          "cycle": 3511403052,
+          "completion_cycle": 3511403061
+        },
+        {
+          "pc": 248,
+          "context_hex": "34203184AE",
+          "cycle": 3511403061,
+          "completion_cycle": 3511403068
+        },
+        {
+          "pc": 250,
+          "context_hex": "3184AEA16E",
+          "cycle": 3511403068,
+          "completion_cycle": 3511403072
+        }
+      ]
+    },
+    {
+      "start_cycle": 3511403503,
+      "end_cycle": 3511403531,
+      "instructions": [
+        {
+          "pc": 252,
+          "context_hex": "AEA16E9100",
+          "cycle": 3511403503,
+          "completion_cycle": 3511403511
+        },
+        {
+          "pc": 254,
+          "context_hex": "6E91000000",
+          "cycle": 3511403511,
+          "completion_cycle": 3511403520
+        },
+        {
+          "pc": 248,
+          "context_hex": "34203184AE",
+          "cycle": 3511403520,
+          "completion_cycle": 3511403527
+        },
+        {
+          "pc": 250,
+          "context_hex": "3184AEA16E",
+          "cycle": 3511403527,
+          "completion_cycle": 3511403531
+        }
+      ]
+    },
+    {
+      "start_cycle": 3511405973,
+      "end_cycle": 3511406001,
+      "instructions": [
+        {
+          "pc": 252,
+          "context_hex": "AEA16E9100",
+          "cycle": 3511405973,
+          "completion_cycle": 3511405981
+        },
+        {
+          "pc": 254,
+          "context_hex": "6E91000000",
+          "cycle": 3511405981,
+          "completion_cycle": 3511405990
+        },
+        {
+          "pc": 248,
+          "context_hex": "34203184AE",
+          "cycle": 3511405990,
+          "completion_cycle": 3511405997
+        },
+        {
+          "pc": 250,
+          "context_hex": "3184AEA16E",
+          "cycle": 3511405997,
+          "completion_cycle": 3511406001
+        }
+      ]
+    },
+    {
+      "start_cycle": 3511406127,
+      "end_cycle": 3511406155,
+      "instructions": [
+        {
+          "pc": 252,
+          "context_hex": "AEA16E9100",
+          "cycle": 3511406127,
+          "completion_cycle": 3511406135
+        },
+        {
+          "pc": 254,
+          "context_hex": "6E91000000",
+          "cycle": 3511406135,
+          "completion_cycle": 3511406144
+        },
+        {
+          "pc": 248,
+          "context_hex": "34203184AE",
+          "cycle": 3511406144,
+          "completion_cycle": 3511406151
+        },
+        {
+          "pc": 250,
+          "context_hex": "3184AEA16E",
+          "cycle": 3511406151,
+          "completion_cycle": 3511406155
+        }
+      ]
+    },
+    {
+      "start_cycle": 3511412380,
+      "end_cycle": 3511412408,
+      "instructions": [
+        {
+          "pc": 252,
+          "context_hex": "AEA16E9100",
+          "cycle": 3511412380,
+          "completion_cycle": 3511412388
+        },
+        {
+          "pc": 254,
+          "context_hex": "6E91000000",
+          "cycle": 3511412388,
+          "completion_cycle": 3511412397
+        },
+        {
+          "pc": 248,
+          "context_hex": "34203184AE",
+          "cycle": 3511412397,
+          "completion_cycle": 3511412404
+        },
+        {
+          "pc": 250,
+          "context_hex": "3184AEA16E",
+          "cycle": 3511412404,
+          "completion_cycle": 3511412408
+        }
+      ]
+    },
+    {
+      "start_cycle": 3511412839,
+      "end_cycle": 3511412867,
+      "instructions": [
+        {
+          "pc": 252,
+          "context_hex": "AEA16E9100",
+          "cycle": 3511412839,
+          "completion_cycle": 3511412847
+        },
+        {
+          "pc": 254,
+          "context_hex": "6E91000000",
+          "cycle": 3511412847,
+          "completion_cycle": 3511412856
+        },
+        {
+          "pc": 248,
+          "context_hex": "34203184AE",
+          "cycle": 3511412856,
+          "completion_cycle": 3511412863
+        },
+        {
+          "pc": 250,
+          "context_hex": "3184AEA16E",
+          "cycle": 3511412863,
+          "completion_cycle": 3511412867
+        }
+      ]
+    },
+    {
+      "start_cycle": 3511413041,
+      "end_cycle": 3511413069,
+      "instructions": [
+        {
+          "pc": 252,
+          "context_hex": "AEA16E9100",
+          "cycle": 3511413041,
+          "completion_cycle": 3511413049
+        },
+        {
+          "pc": 254,
+          "context_hex": "6E91000000",
+          "cycle": 3511413049,
+          "completion_cycle": 3511413058
+        },
+        {
+          "pc": 248,
+          "context_hex": "34203184AE",
+          "cycle": 3511413058,
+          "completion_cycle": 3511413065
+        },
+        {
+          "pc": 250,
+          "context_hex": "3184AEA16E",
+          "cycle": 3511413065,
+          "completion_cycle": 3511413069
+        }
+      ]
+    },
+    {
+      "start_cycle": 3511413195,
+      "end_cycle": 3511413223,
+      "instructions": [
+        {
+          "pc": 252,
+          "context_hex": "AEA16E9100",
+          "cycle": 3511413195,
+          "completion_cycle": 3511413203
+        },
+        {
+          "pc": 254,
+          "context_hex": "6E91000000",
+          "cycle": 3511413203,
+          "completion_cycle": 3511413212
+        },
+        {
+          "pc": 248,
+          "context_hex": "34203184AE",
+          "cycle": 3511413212,
+          "completion_cycle": 3511413219
+        },
+        {
+          "pc": 250,
+          "context_hex": "3184AEA16E",
+          "cycle": 3511413219,
+          "completion_cycle": 3511413223
+        }
+      ]
+    },
+    {
+      "start_cycle": 3511422725,
+      "end_cycle": 3511422753,
+      "instructions": [
+        {
+          "pc": 252,
+          "context_hex": "AEA16E9100",
+          "cycle": 3511422725,
+          "completion_cycle": 3511422733
+        },
+        {
+          "pc": 254,
+          "context_hex": "6E91000000",
+          "cycle": 3511422733,
+          "completion_cycle": 3511422742
+        },
+        {
+          "pc": 248,
+          "context_hex": "34203184AE",
+          "cycle": 3511422742,
+          "completion_cycle": 3511422749
+        },
+        {
+          "pc": 250,
+          "context_hex": "3184AEA16E",
+          "cycle": 3511422749,
+          "completion_cycle": 3511422753
+        }
+      ]
+    },
+    {
+      "start_cycle": 3511423184,
+      "end_cycle": 3511423212,
+      "instructions": [
+        {
+          "pc": 252,
+          "context_hex": "AEA16E9100",
+          "cycle": 3511423184,
+          "completion_cycle": 3511423192
+        },
+        {
+          "pc": 254,
+          "context_hex": "6E91000000",
+          "cycle": 3511423192,
+          "completion_cycle": 3511423201
+        },
+        {
+          "pc": 248,
+          "context_hex": "34203184AE",
+          "cycle": 3511423201,
+          "completion_cycle": 3511423208
+        },
+        {
+          "pc": 250,
+          "context_hex": "3184AEA16E",
+          "cycle": 3511423208,
+          "completion_cycle": 3511423212
+        }
+      ]
+    },
+    {
+      "start_cycle": 3511423386,
+      "end_cycle": 3511423414,
+      "instructions": [
+        {
+          "pc": 252,
+          "context_hex": "AEA16E9100",
+          "cycle": 3511423386,
+          "completion_cycle": 3511423394
+        },
+        {
+          "pc": 254,
+          "context_hex": "6E91000000",
+          "cycle": 3511423394,
+          "completion_cycle": 3511423403
+        },
+        {
+          "pc": 248,
+          "context_hex": "34203184AE",
+          "cycle": 3511423403,
+          "completion_cycle": 3511423410
+        },
+        {
+          "pc": 250,
+          "context_hex": "3184AEA16E",
+          "cycle": 3511423410,
+          "completion_cycle": 3511423414
+        }
+      ]
+    },
+    {
+      "start_cycle": 3511423540,
+      "end_cycle": 3511423568,
+      "instructions": [
+        {
+          "pc": 252,
+          "context_hex": "AEA16E9100",
+          "cycle": 3511423540,
+          "completion_cycle": 3511423548
+        },
+        {
+          "pc": 254,
+          "context_hex": "6E91000000",
+          "cycle": 3511423548,
+          "completion_cycle": 3511423557
+        },
+        {
+          "pc": 248,
+          "context_hex": "34203184AE",
+          "cycle": 3511423557,
+          "completion_cycle": 3511423564
+        },
+        {
+          "pc": 250,
+          "context_hex": "3184AEA16E",
+          "cycle": 3511423564,
+          "completion_cycle": 3511423568
+        }
+      ]
+    }
+  ]
+}

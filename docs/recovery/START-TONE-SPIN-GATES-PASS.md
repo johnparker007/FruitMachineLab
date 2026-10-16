@@ -1,5 +1,11 @@
 # Native start tone and pre-spin gates
 
+16 October follow-up: Live's35058-cycle captured wait is superseded by34276
+source-derived CPU cycles projected through full ordinary IRQ envelopes. Natural
+5A05→5A0A matches exactly; see the calibrated-delay continuation in the timing
+foundation report. Setup/cancel and other IRQ scheduling remain captured. The
+phase-budget discussion below describes the preceding adapter.
+
 16 October 2026. Live now passes native5A14's timed start routine, F384/F2C8's
 pre-spin flags and F20D's selected random-gate route. It stops at F38C before F072
 and the remaining requested-stop selection/spin sequence. Credit5, cash bank16,

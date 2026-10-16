@@ -12,6 +12,21 @@ is not authority for which changes John has committed or pushed.
 
 ## Priority order
 
+Live scheduling milestone: recovered native CPU work now determines the Start-tone
+wait's end through explicit full IRQ envelopes. Its captured duration is reference
+evidence only. Next target a timer assertion/IRQ/scan event. Global IRQ pacing
+changes expose routes beyond current coverage and must not be silently substituted.
+
+Conditional timing continuation: seven VM entries now select source-derived costs
+from current stack values, covering14 native paths with376 synthetic native cases
+and12 uninterrupted natural paths. Next couple a generated intra-word boundary
+to IRQ delivery; captured IRQ scheduling remains until independently justified.
+
+Short gateway continuation: the shared00F8 threaded-call entry cost is now
+source-derived in Live for verified headers, with26 natural boundaries checked.
+Continue toward state-dependent helper timing; IRQ adapters remain until causal
+integration is verified. Gameplay priorities are unchanged.
+
 16 October integration checkpoint: four straight-line VM word costs now derive
 from native encodings in Live, with54 natural paths checked. Next derive a
 state-dependent VM/helper path and connect PTM events at generated instruction

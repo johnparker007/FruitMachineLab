@@ -1,5 +1,20 @@
 # Implementation and evidence boundaries
 
+Live Start-tone wait is source-scheduled:34276 CPU cycles through full ordinary
+IRQ envelopes, matching natural5A05→5A0A.20 delay calls/2068 passes and20 literal
+handler cases verify it;175 literal header/value pairs are ROM checked. Captured
+wait duration is no longer an execution input. Queue/cancel, IRQ starts and other
+pacing remain explicit adapters.217 groups/eight GUI modes pass; both builds clean.
+
+Conditional VM timing now uses actual stack values in Live for seven token entries
+(14 paths).376 native injected cases verify timing and translated effects;12
+natural uninterrupted paths match. Pacing now follows selected native paths rather
+than per-site minima. IRQ scheduling remains captured and word effects atomic.
+
+Threaded-call gateway:26 complete natural paths verify28 cycles from native
+encodings. Live uses this calculation only for the existing validated00F8
+headers; bodies still execute normally. Captured IRQ scheduling remains explicit.
+
 Live now uses source-derived timing for four VM words (zero, byte/word literal,
 return).54 complete natural paths match all native instruction durations and
 NEXT boundaries. Totals equal prior captured minima; IRQ scheduling and other

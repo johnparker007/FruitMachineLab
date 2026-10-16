@@ -5,6 +5,14 @@ namespace FruitMachineLab.Runtime;
 // is deliberately excluded. This is timing for translated words, not a CPU emulator.
 public static class Mpu4VmPrimitiveTiming
 {
+    public static IReadOnlyList<(ushort Address,string Bytes)> LiteralPath(bool word)=>word
+        ? [(0x00FC,"AEA1"),(0x00FE,"6E91"),(0x794F,"EC84"),(0x7951,"3606"),(0x7953,"0EFC")]
+        : [(0x00FC,"AEA1"),(0x00FE,"6E91"),(0x7946,"4F"),(0x7947,"E684"),(0x7949,"3606"),(0x794B,"0EFC")];
+    public static ulong BodyByteCycles {get;}=(ulong)LiteralPath(false).Sum(i=>M6809InstructionTiming.Decode(Convert.FromHexString(i.Bytes)).Cycles);
+    public static ulong BodyWordCycles {get;}=(ulong)LiteralPath(true).Sum(i=>M6809InstructionTiming.Decode(Convert.FromHexString(i.Bytes)).Cycles);
+    public static IReadOnlyList<(ushort Address,string Bytes)> ThreadedCallPath =>
+        [(0x00FC,"AEA1"),(0x00FE,"6E91"),(0x00F8,"3420"),(0x00FA,"3184")];
+    public static ulong ThreadedCallCycles { get; }=(ulong)ThreadedCallPath.Sum(i=>M6809InstructionTiming.Decode(Convert.FromHexString(i.Bytes)).Cycles);
     private static readonly IReadOnlyDictionary<ushort,ulong> Costs=new ushort[] {0x78B5,0x795B,0x7963,0x792F}
         .ToDictionary(token=>token,token=>(ulong)Path(token)!.Sum(i=>M6809InstructionTiming.Decode(Convert.FromHexString(i.Bytes)).Cycles));
     public static IReadOnlyList<(ushort Address,string Bytes)>? Path(ushort token) => token switch

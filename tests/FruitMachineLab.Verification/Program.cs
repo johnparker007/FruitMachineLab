@@ -7,6 +7,168 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { if(args.Length>1 && !name.Contains(args[1],StringComparison.OrdinalIgnoreCase))return;action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Literal body timing and values match twenty native ROM handler calls", () => {
+    using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","calibrated-delay-timing.json")));int count=0;
+    foreach(var row in doc.RootElement.GetProperty("literal_rows").EnumerateArray()){
+        var c=row.GetProperty("case");bool word=c.GetProperty("word").GetBoolean();ushort value=c.GetProperty("value").GetUInt16();var end=row.GetProperty("end");
+        var path=Mpu4VmPrimitiveTiming.LiteralPath(word);var region=doc.RootElement.GetProperty("literal_native_regions")[word ? 1 : 0];byte[] bytes=Convert.FromHexString(region.GetProperty("bytes_hex").GetString()!);
+        foreach(var ins in path.Skip(2)){var encoded=Convert.FromHexString(ins.Bytes);int offset=ins.Address-region.GetProperty("address").GetInt32();Equal(true,bytes.AsSpan(offset,encoded.Length).SequenceEqual(encoded));}
+        ulong cycles=word ? Mpu4VmPrimitiveTiming.BodyWordCycles : Mpu4VmPrimitiveTiming.BodyByteCycles;
+        Equal(cycles,end.GetProperty("cycle").GetUInt64()-row.GetProperty("start_cycle").GetUInt64()+17);
+        Equal(word ? value : (ushort)(value>>8),end.GetProperty("top").GetUInt16());Equal((ushort)0xBEEF,end.GetProperty("second").GetUInt16());
+        Equal((ushort)0x5FE,end.GetProperty("u").GetUInt16());Equal((ushort)0x700,end.GetProperty("s").GetUInt16());Equal((ushort)0x402,end.GetProperty("y").GetUInt16());Equal((ushort)0xFC,end.GetProperty("pc").GetUInt16());count++;
+    }
+    Equal(20,count);Equal(32UL,Mpu4VmPrimitiveTiming.BodyWordCycles);Equal(33UL,Mpu4VmPrimitiveTiming.BodyByteCycles);
+    using var map=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"maps","vm-literal-timing.json")));var tokens=map.RootElement.GetProperty("tokens");Equal(175,tokens.GetArrayLength());Equal(1048,map.RootElement.GetProperty("references").GetInt32());
+    foreach(var token in tokens.EnumerateArray())Equal(token.GetProperty("operation").GetString()=="vm_push_word_body_word" ? "794F" : "7946",token.GetProperty("header_hex").GetString());
+    Equal((ushort)0x161,tokens.EnumerateArray().Single(t=>t.GetProperty("token").GetUInt16()==0x7FB1).GetProperty("value").GetUInt16());
+});
+Check("Calibrated native delay matches twenty MAME calls and2068 inner passes", () => {
+    using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","calibrated-delay-timing.json")));
+    int count=0,passes=0;
+    foreach(var r in doc.RootElement.GetProperty("rows").EnumerateArray()){
+        var c=r.GetProperty("case");byte b=c.GetProperty("count").GetByte();var end=r.GetProperty("end");
+        Equal(Mpu4CalibratedDelay.RepeatCycles(b),end.GetProperty("cycle").GetUInt64()-r.GetProperty("start_cycle").GetUInt64());
+        Equal(b==0 ? 256 : b,r.GetProperty("passes").GetArrayLength());
+        foreach(var p in r.GetProperty("passes").EnumerateArray()){Equal(Mpu4CalibratedDelay.SinglePassCycles,p[1].GetUInt64()-p[0].GetUInt64()+8);passes++;}
+        Equal(c.GetProperty("a").GetByte(),end.GetProperty("a").GetByte());Equal(b,end.GetProperty("b").GetByte());Equal((ushort)0x702,end.GetProperty("s").GetUInt16());
+        Equal((ushort)0x800,end.GetProperty("pc").GetUInt16());Equal((ushort)0x1234,end.GetProperty("x").GetUInt16());Equal((ushort)0x2345,end.GetProperty("y").GetUInt16());Equal((ushort)0x3456,end.GetProperty("u").GetUInt16());count++;
+    }
+    Equal(20,count);Equal(2068,passes);Equal(17096UL,Mpu4CalibratedDelay.SinglePassCycles);Equal(34263UL,Mpu4CalibratedDelay.RepeatCycles(2));Equal(34276UL,Mpu4CalibratedDelay.StartToneWaitCycles);
+});
+Check("Natural Start tone wait matches generated CPU delay plus full ordinary IRQ envelopes", () => {
+    using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","calibrated-delay-timing.json")));
+    var natural=doc.RootElement.GetProperty("natural");var p=natural.GetProperty("phases");int irqCount=0;
+    for(int i=0;i<3;i++){
+        ulong start=p[i].GetProperty("start").GetUInt64(),end=p[i].GetProperty("end").GetUInt64(),busy=0;int count=0;
+        foreach(var irq in natural.GetProperty("outer_irqs").EnumerateArray()){
+            ulong accepted=irq.GetProperty("accepted_cycle").GetUInt64(),resumed=irq.GetProperty("resumed_cycle").GetUInt64();
+            Equal(accepted+M6809IrqEntry.EntryCycles,irq.GetProperty("handler_cycle").GetUInt64());Equal(irq.GetProperty("rti_cycle").GetUInt64()+15,resumed);
+            if(accepted>=start && resumed<=end){busy+=resumed-accepted;count++;}
+        }
+        Equal(p[i].GetProperty("full_irq_cycles").GetUInt64(),busy);Equal(p[i].GetProperty("cpu_cycles").GetUInt64(),end-start-busy);Equal(p[i].GetProperty("outer_irqs").GetInt32(),count);irqCount+=count;
+    }
+    Equal(24,irqCount);Equal(23,p[1].GetProperty("outer_irqs").GetInt32());Equal(Mpu4CalibratedDelay.StartToneWaitCycles,p[1].GetProperty("cpu_cycles").GetUInt64());Equal(381UL,p[0].GetProperty("cpu_cycles").GetUInt64());Equal(360UL,p[2].GetProperty("cpu_cycles").GetUInt64());
+    var handlers=natural.GetProperty("outer_irqs").EnumerateArray().Select(irq=>new ulong[]{irq.GetProperty("handler_cycle").GetUInt64(),irq.GetProperty("rti_cycle").GetUInt64()-irq.GetProperty("handler_cycle").GetUInt64()});
+    var adapter=CapturedInterruptOccupancy.FromOrdinaryIrqHandlers(natural.GetProperty("terminal").GetUInt64()+100,handlers);
+    ulong before=adapter.NextStart;
+    Equal(p[1].GetProperty("end").GetUInt64(),adapter.CompletionAfterCpuWork(p[1].GetProperty("start").GetUInt64(),Mpu4CalibratedDelay.StartToneWaitCycles));Equal(before,adapter.NextStart);
+});
+Check("CPU work deadline crosses IRQ envelopes and period boundaries without consuming events", () => {
+    var adapter=new CapturedInterruptOccupancy(100,new[]{new ulong[]{20,10},new ulong[]{60,20}});
+    Equal(50UL,adapter.CompletionAfterCpuWork(10,30));Equal(135UL,adapter.CompletionAfterCpuWork(50,55));
+    Equal(35UL,adapter.CompletionAfterCpuWork(25,5));Equal(20UL,adapter.NextStart);
+    Equal(10UL,adapter.CompletionAfterCpuWork(10,0));
+    bool blocked=false;try{new CapturedInterruptOccupancy(100,new[]{new ulong[]{0,100}}).CompletionAfterCpuWork(0,1);}catch(InvalidOperationException){blocked=true;}Equal(true,blocked);
+});
+Check("Full ordinary IRQ occupancy restores verified acceptance and resume boundaries", () => {
+    using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","ptm-outer-timing.json")));var parents=doc.RootElement.GetProperty("parents");
+    var rows=parents.EnumerateArray().Select(p=>new ulong[]{p.GetProperty("entry_cycle").GetUInt64(),p.GetProperty("resumed_cycle").GetUInt64()-p.GetProperty("entry_cycle").GetUInt64()-15}).ToArray();
+    var occupancy=CapturedInterruptOccupancy.FromOrdinaryIrqHandlers(parents[18].GetProperty("resumed_cycle").GetUInt64()+100,rows);
+    foreach(var p in parents.EnumerateArray()){Equal(p.GetProperty("accepted_cycle").GetUInt64(),occupancy.NextStart);Equal(p.GetProperty("resumed_cycle").GetUInt64(),occupancy.NextEnd);occupancy.Consume();}
+    bool invalid=false;try{CapturedInterruptOccupancy.FromOrdinaryIrqHandlers(100,new[]{new ulong[]{18,10}});}catch(InvalidDataException){invalid=true;}Equal(true,invalid);
+});
+void VerifyConditionalPath(System.Text.Json.JsonElement instructions,IReadOnlyList<(ushort Address,string Bytes)> path,int skip,ulong start,ulong end)
+{
+    Equal(path.Count-skip,instructions.GetArrayLength());ulong cursor=start;
+    for(int n=0;n<instructions.GetArrayLength();n++){
+        var ins=instructions[n];var expected=path[n+skip];byte[] bytes=Convert.FromHexString(expected.Bytes);
+        Equal(expected.Address,ins.GetProperty("pc").GetUInt16());Equal(true,ins.GetProperty("context_hex").GetString()!.StartsWith(expected.Bytes,StringComparison.Ordinal));
+        var timing=M6809InstructionTiming.Decode(bytes);Equal(bytes.Length,timing.Length);Equal(cursor,ins.GetProperty("cycle").GetUInt64());
+        ushort next=n+skip+1<path.Count ? path[n+skip+1].Address : (ushort)0xFC;
+        if(bytes[0] is >=0x20 and <=0x2F){
+            bool taken=M6809InstructionTiming.EvaluateBranch(bytes[0],ins.GetProperty("cc").GetByte());
+            Equal(next,unchecked((ushort)(expected.Address+2+(taken ? (sbyte)bytes[1] : 0))));
+        }
+        if(bytes[0]==0x0E)Equal(next,(ushort)bytes[1]);
+        cursor+=(ulong)timing.Cycles;
+    }
+    Equal(end,cursor);
+}
+Check("Conditional VM native paths and effects match376 injected MAME cases", () => {
+    using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","vm-conditional-synthetic.json")));
+    var variants=new HashSet<(ushort,bool)>();int count=0;
+    foreach(var row in doc.RootElement.GetProperty("rows").EnumerateArray()){
+        var c=row.GetProperty("case");ushort token=c.GetProperty("token").GetUInt16(),top=c.GetProperty("top").GetUInt16(),second=c.GetProperty("second").GetUInt16(),operand=c.GetProperty("operand_word").GetUInt16();
+        bool selected=Mpu4VmConditionalTiming.SelectPath(token,top,second);var path=Mpu4VmConditionalTiming.Path(token,selected);
+        var end=row.GetProperty("end");ulong start=row.GetProperty("start_cycle").GetUInt64(),finish=end.GetProperty("cycle").GetUInt64();
+        VerifyConditionalPath(row.GetProperty("instructions"),path,2,start,finish);
+        Equal(path[2].Address,Convert.ToUInt16(row.GetProperty("header_hex").GetString(),16));
+        Equal(finish-start+17,Mpu4VmConditionalTiming.Cycles(token,top,second));
+        Equal((ushort)0x602,end.GetProperty("u").GetUInt16());Equal((ushort)0x700,end.GetProperty("s").GetUInt16());
+        ushort y=0x402,result=second;
+        switch(token){
+            case 0x7982:case 0x798C:y=top==0 ? unchecked((ushort)(0x402+(operand>>8))) : (ushort)0x403;break;
+            case 0x79A6:y=top==0 ? unchecked((ushort)(0x402+(short)(0xFF00|(operand>>8)))) : (ushort)0x403;break;
+            case 0x79B9:y=top==0 ? operand : (ushort)0x404;break;
+            case 0x7A6F:result=Cell.Flag(top==second);break;
+            case 0x7ADC:result=Cell.Min(top,second);break;
+            case 0x7AE7:result=(short)top>(short)second ? top : second;break;
+        }
+        Equal(y,end.GetProperty("y").GetUInt16());Equal(result,end.GetProperty("top").GetUInt16());Equal((ushort)0x1234,end.GetProperty("second").GetUInt16());
+        var data=new Stack<ushort>();data.Push(second);data.Push(top);var before=data.ToArray();Equal(Mpu4VmConditionalTiming.Cycles(token,top,second),Mpu4VmConditionalTiming.Cycles(token,data)!.Value);Equal(true,before.SequenceEqual(data));
+        variants.Add((token,selected));count++;
+    }
+    Equal(376,count);Equal(14,variants.Count);
+    Equal(36UL,Mpu4VmConditionalTiming.Cycles(0x7982,1));Equal(45UL,Mpu4VmConditionalTiming.Cycles(0x7982,0));
+    Equal(36UL,Mpu4VmConditionalTiming.Cycles(0x79B9,1));Equal(37UL,Mpu4VmConditionalTiming.Cycles(0x79B9,0));
+    Equal(44UL,Mpu4VmConditionalTiming.Cycles(0x7A6F,1,0));Equal(47UL,Mpu4VmConditionalTiming.Cycles(0x7A6F,1,1));
+    Equal(37UL,Mpu4VmConditionalTiming.Cycles(0x7ADC,1,0));Equal(42UL,Mpu4VmConditionalTiming.Cycles(0x7ADC,0,1));
+    Equal(42UL,Mpu4VmConditionalTiming.Cycles(0x7AE7,1,0));Equal(37UL,Mpu4VmConditionalTiming.Cycles(0x7AE7,0,1));
+    Equal<ulong?>(null,Mpu4VmConditionalTiming.Cycles(0xFFFF,new Stack<ushort>()));
+    bool underflow=false;try{Mpu4VmConditionalTiming.Cycles(0x7A6F,new Stack<ushort>(new ushort[]{1}));}catch(InvalidOperationException){underflow=true;}Equal(true,underflow);
+});
+Check("Conditional VM timing matches twelve uninterrupted natural Skill Cash paths", () => {
+    using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","vm-conditional-natural.json")));
+    int count=0;
+    foreach(var row in doc.RootElement.GetProperty("rows").EnumerateArray()){
+        ushort token=row.GetProperty("token").GetUInt16();var instructions=row.GetProperty("instructions");
+        var branch=instructions.EnumerateArray().Single(i=>i.GetProperty("pc").GetUInt16()==row.GetProperty("branch_pc").GetUInt16());
+        byte op=Convert.FromHexString(branch.GetProperty("context_hex").GetString()!)[0];bool taken=M6809InstructionTiming.EvaluateBranch(op,row.GetProperty("branch_cc").GetByte());
+        bool selected=token==0x7A6F ? !taken : taken;var path=Mpu4VmConditionalTiming.Path(token,selected);
+        VerifyConditionalPath(instructions,path,0,row.GetProperty("start_cycle").GetUInt64(),row.GetProperty("end_cycle").GetUInt64());count++;
+    }
+    Equal(12,count);Equal(2,doc.RootElement.GetProperty("excluded_interrupted").GetArrayLength());
+});
+Check("Translated conditional VM effects agree with injected native cases", () => {
+    var directory=Path.Combine(Path.GetTempPath(),"FruitMachineLab-conditional-"+Guid.NewGuid().ToString("N"));Directory.CreateDirectory(directory);
+    try{
+        var operations=new Dictionary<ushort,string>{{0x7982,"vm_branch_forward8_if_zero"},{0x798C,"vm_branch_forward8_if_zero"},{0x79A6,"vm_branch_backward8_if_zero"},{0x79B9,"vm_branch_absolute16_if_zero"},{0x7A6F,"vm_compare_equal"},{0x7ADC,"vm_min_signed"},{0x7AE7,"vm_max_signed"}};
+        var scripts=new Dictionary<ushort,RecoveredScript>();
+        foreach(var (token,operation) in operations){
+            string text=Mpu4VmConditionalTiming.RequiredCells(token)==1
+                ? $"0400 {token:X4} {operation} branch=0x0410\n0404 795B vm_push_inline_word_literal inline_value=0x1111\n0408 792F vm_return_to_caller_stream\n0410 795B vm_push_inline_word_literal inline_value=0x2222\n0414 792F vm_return_to_caller_stream\n"
+                : $"0400 {token:X4} {operation}\n0402 792F vm_return_to_caller_stream\n";
+            string file=Path.Combine(directory,$"{token:X4}.txt");File.WriteAllText(file,text);scripts[token]=new RecoveredScript(file);
+        }
+        using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","vm-conditional-synthetic.json")));int count=0;
+        foreach(var row in doc.RootElement.GetProperty("rows").EnumerateArray()){
+            var c=row.GetProperty("case");ushort token=c.GetProperty("token").GetUInt16(),top=c.GetProperty("top").GetUInt16(),second=c.GetProperty("second").GetUInt16();
+            var machine=new Machine {DataStackBase=0x606};machine.Data.Push(0x1234);machine.Data.Push(second);machine.Data.Push(top);
+            new ScriptExecutor(machine).Run(scripts[token]);
+            if(Mpu4VmConditionalTiming.RequiredCells(token)==1)Equal(top==0 ? (ushort)0x2222 : (ushort)0x1111,machine.Pop());
+            machine.SyncDataToMemory();var native=row.GetProperty("end");
+            Equal(native.GetProperty("u").GetUInt16(),machine.DataPointer);Equal(native.GetProperty("top").GetUInt16(),machine.ReadWord(machine.DataPointer));
+            Equal(native.GetProperty("second").GetUInt16(),machine.ReadWord(Cell.Add(machine.DataPointer,2)));count++;
+        }
+        Equal(376,count);
+    }finally{Directory.Delete(directory,true);}
+});
+Check("Source-derived threaded call gateway timing matches complete natural boundaries", () => {
+    using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","vm-call-gateway-timing.json")));
+    var path=Mpu4VmPrimitiveTiming.ThreadedCallPath;int count=0;
+    foreach(var sample in doc.RootElement.GetProperty("samples").EnumerateArray()){
+        var instructions=sample.GetProperty("instructions");Equal(path.Count,instructions.GetArrayLength());ulong start=sample.GetProperty("start_cycle").GetUInt64(),cursor=start;
+        for(int i=0;i<path.Count;i++){
+            var actual=instructions[i];Equal(path[i].Address,actual.GetProperty("pc").GetUInt16());
+            Equal(true,actual.GetProperty("context_hex").GetString()!.StartsWith(path[i].Bytes,StringComparison.Ordinal));
+            byte[] bytes=Convert.FromHexString(path[i].Bytes);var timing=M6809InstructionTiming.Decode(bytes);Equal(bytes.Length,timing.Length);
+            Equal(cursor,actual.GetProperty("cycle").GetUInt64());cursor+=(ulong)timing.Cycles;Equal(cursor,actual.GetProperty("completion_cycle").GetUInt64());
+        }
+        Equal(sample.GetProperty("end_cycle").GetUInt64(),cursor);Equal(Mpu4VmPrimitiveTiming.ThreadedCallCycles,cursor-start);count++;
+    }
+    Equal(26,count);Equal(28UL,Mpu4VmPrimitiveTiming.ThreadedCallCycles);
+});
 Check("Source-derived VM primitive timing matches natural dispatch boundaries", () => {
     using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","vm-primitive-timing.json")));
     int count=0;var counts=new Dictionary<ushort,int>();
@@ -680,8 +842,11 @@ Check("Live nudge award returns to Start prompt and consumes one real paid play"
             live.Pause();var frozen=live.Machine.Memory.ToArray();ulong at=live.Cycle;live.AdvanceCycles(1000000);Equal(at,live.Cycle);Equal(true,frozen.SequenceEqual(live.Machine.Memory));live.Resume();pausedPaidSpin=true;
         }
         if(live.TimedToneActive && live.Machine.Memory[0x4D]==0x31 && !pausedTone){
+            var delay=live.TimedToneDelay ?? throw new Exception("Missing generated tone deadline");Equal(34276UL,delay.CpuCycles);Equal(true,delay.Deadline>=delay.Started+delay.CpuCycles);
             live.Pause();var frozen=live.Machine.Memory.ToArray();ulong at=live.Cycle;ushort vm=live.VmAddress;int count=live.Instructions;live.AdvanceCycles(1000000);
-            Equal(at,live.Cycle);Equal(vm,live.VmAddress);Equal(count,live.Instructions);Equal(true,frozen.SequenceEqual(live.Machine.Memory));live.Resume();pausedTone=true;
+            Equal(at,live.Cycle);Equal(vm,live.VmAddress);Equal(count,live.Instructions);Equal(true,frozen.SequenceEqual(live.Machine.Memory));Equal(delay,live.TimedToneDelay!.Value);live.Resume();
+            live.AdvanceCycles(delay.Deadline-live.Cycle-1);Equal((byte)0x31,live.Machine.Memory[0x4D]);Equal(delay,live.TimedToneDelay!.Value);
+            live.AdvanceCycles(1);Equal((byte)0,live.Machine.Memory[0x4D]);Equal(true,live.TimedToneDelay is null);pausedTone=true;
         }
         if(paidReady && live.Panel.StartPressed && (live.Machine.Memory[3]&0x80)!=0)live.SetStart(false);
         live.AdvanceCycles(512);

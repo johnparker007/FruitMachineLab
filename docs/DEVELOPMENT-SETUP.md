@@ -5,6 +5,23 @@ Local clone: C:\projects\GitRepos\FruitMachineLab
 
 ## Current status
 
+Live Start-tone wait now uses34276 source-derived CPU cycles and projects its
+deadline through explicit full IRQ envelopes. Capture-/Curate-CalibratedDelay.ps1
+reproduce20 delay and20 literal native cases plus the natural phase comparison.
+Curator parameters: RunDirectory, RomPath, MameExecutable, optional
+ExcludedRunDirectory.217 headless groups/eight WPF modes pass; both builds clean.
+See current handoff/timing report; larger IRQ scheduling is still captured.
+
+Conditional timing: Live derives seven VM token entries' costs from pre-execution
+stack values.376 injected native cases and12 natural paths match;2 interrupted
+paths are excluded. Capture-/Curate-VmConditionalTiming.ps1 reproduce the evidence;
+see the existing timing report/handoff. IRQ adapters remain explicit.
+
+Short gateway continuation: Curate-VmPrimitiveTiming.ps1 also exports26 complete
+RAM call-gateway paths. Live calculates their28-cycle cost from instructions
+for already ROM-header-checked tokens. See CURRENT-HANDOFF.md and the existing
+timing foundation report; IRQ timing adapters remain unchanged.
+
 Live now derives selected primitive CPU costs from native encodings, verified
 against54 complete natural paths. Reproduce with Curate-VmPrimitiveTiming.ps1
 using the accepted instruction RunDirectory and original RomPath. Zero/literals/

@@ -1,5 +1,25 @@
 # Implementation and evidence boundaries
 
+Live now uses source-derived timing for four VM words (zero, byte/word literal,
+return).54 complete natural paths match all native instruction durations and
+NEXT boundaries. Totals equal prior captured minima; IRQ scheduling and other
+word costs retain their explicit adapters. See the existing timing foundation.
+
+Outer service continuation: [timing foundation](docs/recovery/PTM-CLOCK-FOUNDATION-PASS.md)
+accounts for19 complete selected timer1 services from7820 native instruction
+durations and19 decoded child interruptions.1854 branch destinations match
+recorded flags. No unexplained timing residual remains in these observed paths.
+Live scheduling still needs generated VM/helper boundaries; capture-supplied
+starts, paths and flags are not a causal timing implementation.
+207 headless groups/eight GUI smoke modes pass; full/headless builds are clean.
+
+Service timing continuation: [timing foundation](docs/recovery/PTM-CLOCK-FOUNDATION-PASS.md)
+adds source-checked callback/IRQ exits and timer1 scans:342 tail instructions,
+1988 scan instructions,38 saved-PC/full RTI returns. Timer3 callbacks complete
+in78 cycles and child IRQs occupy251 cycles inside timer1 service; scans vary
+425–467. Remaining outer work and causal Live scheduling are not yet replaced.
+205 headless groups/eight GUI smoke modes pass; full/headless builds are clean.
+
 Native instruction continuation: [timing foundation](docs/recovery/PTM-CLOCK-FOUNDATION-PASS.md)
 now explains19 selected timer3 IRQ entries from the completing instruction plus
 19-cycle entry, and608 native instruction durations explain the128-cycle lamp

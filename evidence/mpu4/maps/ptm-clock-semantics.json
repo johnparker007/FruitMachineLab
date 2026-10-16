@@ -10,6 +10,8 @@
   "irq_entry_evidence": "skill-cash/ptm-irq-entry.json",
   "skill_cash_cpu_evidence": "skill-cash/ptm-skill-cpu.json",
   "instruction_boundary_evidence": "skill-cash/ptm-instruction-boundaries.json",
+  "service_timing_evidence": "skill-cash/ptm-service-timing.json",
+  "outer_timing_evidence": "skill-cash/ptm-outer-timing.json",
   "normal_timer1_latch": 3440,
   "normal_timer1_period_cpu_cycles": 3441,
   "alternate_timer1_latch": 2580,

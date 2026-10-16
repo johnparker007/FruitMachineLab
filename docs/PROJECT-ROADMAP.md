@@ -12,6 +12,12 @@ is not authority for which changes John has committed or pushed.
 
 ## Priority order
 
+16 October integration checkpoint: four straight-line VM word costs now derive
+from native encodings in Live, with54 natural paths checked. Next derive a
+state-dependent VM/helper path and connect PTM events at generated instruction
+boundaries. Keep captured IRQ adapters until causal comparisons justify replacing
+them; do not turn recorded native paths into the Live execution mechanism.
+
 16 October timing priority: do not defer the shared timing model until all
 gameplay is recovered. PTM-CLOCK-FOUNDATION-PASS.md adds independently verified
 timer clock primitives and shows natural timer3 rearm phase is not universally
@@ -30,6 +36,17 @@ entries from completing the actual instruction plus19 cycles, and all19
 128-cycle handler paths from32 native instructions each. Next cover callback/
 IRQ exit, timer1 scanning and contention/nested paths, then supply those
 boundaries from translated Live helpers. No CPU interpreter/toolchain expansion.
+The service continuation now checks342 callback/exit instruction durations,
+1988 timer1 scan durations and38 saved-PC/RTI returns. Timer3 children are nested
+in timer1 background work; their251-cycle occupancy is already inside the outer
+measured span. Next recover that remaining outer work and provide Live helper/
+VM boundaries; callback-return and scan-return markers must include RTS completion.
+The outer continuation now accounts for all19 completed selected timer1 services
+from7820 own instructions and19 referenced children, with1854 flag/target checks.
+Next provide source-derived common VM dispatch/helper boundaries in Live and
+validate causal scheduling before replacing adapters. Observed native paths
+remain evidence, not a Live replay mechanism. Broaden timing coverage as that
+integration requires rather than pursuing unrelated ISA/toolchain completeness.
 Return to expanding board outcomes after this focused timing milestone; retain
 MAME regression captures and the existing paid-game/feature gameplay tests.
 

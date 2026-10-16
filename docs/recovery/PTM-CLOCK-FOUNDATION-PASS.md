@@ -17,6 +17,8 @@ an unproven clock/CPU coupling.
 | skill-cash/ptm-irq-entry.json | Synthetic native CPU programs | 18 ordinary IRQ cases: instruction completion, masking,19-cycle entry and12-byte register frame |
 | skill-cash/ptm-skill-cpu.json | Original physical-input Skill Cash campaign | 354 bus/state observations,20 arms and19 IRQ/callback pairs matching the old reference prefix |
 | skill-cash/ptm-instruction-boundaries.json | Same campaign, guarded passive instruction observer | 19 selected timer3 windows from13809 opcode samples; native completion/entry timing and32-instruction handler paths |
+| skill-cash/ptm-service-timing.json | Further selected paths from that accepted capture | 19 timer3 tails,19 timer1 scans,38 IRQ returns; incomplete final parent/scan excluded |
+| skill-cash/ptm-outer-timing.json | Complete selected outer services from that capture | 7820 own instructions,611 ROM contexts,1854 branch destinations and19 referenced child interruptions |
 
 All have verification sidecars with source/run hashes. ROM files, existing MAME
 configuration/NVRAM and Ghidra projects are preserved. The synthetic programs
@@ -301,16 +303,179 @@ Original captures remain preserved.
 Validation:201 headless groups and all eight WPF smoke modes pass. Full/headless
 solution builds have zero warnings/errors.1083 curated manifest entries verify.
 
+## Callback return and timer1 service continuation
+
+The next batch reuses the accepted13809-opcode capture; no new MAME campaign
+or original-workspace changes were needed. Curate-PtmServiceTiming.ps1 verifies
+the accepted instruction/state hashes and ROM SHA1 before extracting selected
+tails, scans and IRQ nesting. It byte-checks every five-byte ROM context. This
+extends the existing evidence conventions and source map; the contexts remain
+observations, not a lossless disassembly. The final20th timer1 IRQ and its scan
+are truncated by the observer window and explicitly excluded.
+
+All19 timer3 callbacks execute78 cycles from48FD to caller FEF2. The older
+73-cycle callback event marks the start of final RTS at4916, not its completed
+return. The nested helper RTS at4922 and final RTS each consume five cycles.
+The selected FEF2→FF13 epilogue takes11 cycles, and full-frame RTI takes15.
+Thus each selected timer3 interrupt occupies251 cycles from CPU acceptance
+through resumed execution:19 entry+217 handler+15 RTI. The previous captured
+entry→RTI interval intentionally omitted stacking and RTI; its coordinates
+remain preserved. Do not silently relabel those events as complete CPU service.
+
+The source-derived timing decoder now checks342 individual instructions across
+the19 callback/exit tails. RTI requires the saved CC E bit explicitly; current
+handler CC is not a substitute. Ordinary IRQ sets saved E, the selected handler
+paths leave that frame flag intact, and all38 observed full returns take15 cycles
+and resume at the saved PC sampled independently on entry. The short6-cycle
+RTI check is a synthetic source-derived case, not a captured FIRQ path.
+
+The19 complete timer1 scans contain1988 source-checked instruction durations
+from28FE through completed RTS at29BA. Durations vary425–467 cycles according
+to the actual paths, including column selection, display bit-loop work and
+timer3 arming. They exclude the caller's JSR. The old scan-exit event at29BA
+is before its five-cycle RTS. Prefix10 comparisons/loads/stores and indexed
+TST/AND/load forms retain their native lengths and timing. Long conditional
+timing requires an explicit outcome; the curator derives observed BNE outcomes
+from captured CC and checks the target. The natural long BNEs here are not
+taken; the taken6-cycle long-branch test is synthetic and source-derived.
+
+The IRQ tree has19 completed outer timer1 services and19 timer3 children, plus
+one incomplete outer service. Every selected timer3 interrupt occurs inside a
+timer1 background-service path after the scan, not in otherwise idle main-VM
+execution. The previously checked final-instruction durations remain valid,
+but their surrounding context matters when accounting for occupancy. Child
+acceptance→resume is251 cycles and lies inside its parent. Parent measured
+acceptance→resume wall spans vary1627–3409 cycles and already include the child;
+their remaining native background work has not been fully timing-decoded.
+Do not add child time again to the measured outer span or infer full outer
+timing recovery from the scan checks alone. All38 saved-PC/RTI resumes match.
+
+Reproduce with Curate-PtmServiceTiming.ps1 -RunDirectory <accepted-run>
+-RomPath <original-a6ls.p1>. The accepted source run is recorded in the existing
+ptm-instruction-boundaries-verification.json; the curator rejects a different
+unverified stream. New service verification metadata links its hashes and the
+pinned source. The map includes RTI/PULL_REGISTERS/LBRANCH/TST8 references and
+the C# decoder. No new Ghidra annotation export was available; existing projects
+and source ROM remain unchanged. Live still uses its explicit captured adapter.
+Validation:205 headless groups/all eight WPF modes pass; both solution builds
+have zero warnings/errors.1085 curated manifest entries verify.
+
+## Complete selected outer service continuation
+
+The next batch accounts for all native work in the19 completed outer timer1
+services. It reuses the accepted capture and the verified timer3 prefixes/tails;
+no additional MAME campaign, installation or configuration change was needed.
+Curate-PtmOuterTiming.ps1 requires the accepted instruction/state hashes and
+original ROM SHA1, byte-checks611 unique five-byte contexts, and stores7820
+outer-owned instruction steps. A compact catalog and typed step arrays retain
+captured CC, instruction/next-PC coordinates and completion boundaries without
+duplicating the nested timer3 instruction streams. Catalog bytes can include
+following code/data; the timing decoder supplies actual instruction lengths.
+This is selected preservation, not a lossless listing or new function count.
+
+Source-backed timing rules now cover the observed native input, output, sound,
+stack-check and task-dispatch paths. This adds selected arithmetic/load/store,
+transfer, multiply, prefix10 and CMPS prefix11 encodings. Unsupported encodings
+still fail. EvaluateBranch reads explicitly supplied C/V/Z/N flags; it neither
+generates those flags nor executes the native instruction's state effects.
+All1854 branch destinations agree with the recorded flags and instruction
+encodings:1708 short branches,127 long conditionals and19 LBRA instructions.
+Source predicates and addressing/operation rules remain pinned in the existing
+MAME source map. No native semantic bug or game behaviour was changed.
+
+All19 outer acceptance→resumed-opcode spans match exactly from19-cycle entry,
+1357–3139 cycles of their own native work and one source-decoded251-cycle timer3
+child per parent. Totals vary1627–3409 cycles. The child is counted once, at the
+instruction boundary where it interrupts its parent. For the preceding parent
+instruction, completion is the child's acceptance boundary, not the next opcode
+after the child's19-cycle entry. The resumed destination comes from the child's
+independently checked saved PC. Both IRQ entry and RTI are included. No captured
+busy interval or fitted elapsed residual is added to make the sums match.
+
+The selected service timing is now fully accounted for, but service starts,
+instruction paths and register/flag snapshots are still observations supplied
+to the checks. This does not generate new native paths from game state or prove
+an autonomous Live IRQ schedule. The20th outer service remains incomplete and
+excluded. Other machine states, later arms, timer2/PIA interrupt paths and
+different nesting patterns are outside this proof. The C# runtime remains a
+recovered VM/translated-helper engine with a bounded timing decoder, not a
+general6809 instruction interpreter or assembly/reassembly toolchain.
+
+Reproduce with Curate-PtmOuterTiming.ps1 -RunDirectory <accepted-run> -RomPath
+<original-a6ls.p1>. Existing source/ROM maps link its compact step schema,
+instruction contexts, C# timing/branch implementation and verification. Useful
+discoveries remain in these exports and the report; no live Ghidra export API
+was available and existing projects were preserved. Live's Cost function still
+uses explicit captured site/token costs and throws for missing coverage; its
+IRQ occupancy/service/callback adapters remain unchanged.
+Validation:207 headless groups/all eight WPF modes pass. Full/headless builds
+have zero warnings/errors;1087 curated manifest entries verify.
+
 ## Next timing milestone
 
 Keep this ahead of broadening gameplay outcomes: the selected natural
 post-shot/disable/rearm lifecycle and first20 canonical arms are now verified.
-Instruction completion and native handler entry→callback timing now agree for
-all19 selected windows. Next recover callback/IRQ exit and timer1 scan service
-instruction costs, including contention/nested services and later arms. Retain
+Instruction completion, full selected timer1 service and nested timer3 costs
+now agree. Next supply source-derived native boundaries from the common VM
+dispatch and selected translated Live helper paths, checking those against the
+existing input/output/accounting regressions before replacing captured pacing.
+Do not turn the observed native instruction paths into a disguised Live replay.
+Extend contention and nesting coverage beyond these arms as integration needs it. Retain
 the selected instruction-boundary contract when adding timing to translated
 helpers; do not replace it with an unexplained fixed remainder.
 Replace the callback template only when those stages can be connected without
 choosing an arbitrary latency. After that, derive timer1/IRQ service scheduling
 and progressively replace per-word captured execution costs. Captures remain
 regression references throughout; the complete playable machine remains the goal.
+## VM primitive integration continuation — 16 October 2026
+
+Live now derives CPU work for four straight-line A6L words from their native
+encodings using `Mpu4VmPrimitiveTiming`, rather than looking up a captured
+minimum. The boundary is NEXT at RAM00FC through the following NEXT at00FC;
+IRQ work is excluded. RAM NEXT is the observed `AEA1 6E91`: LDX ,Y++ followed
+by JMP [,X++]. These cost8 and9 cycles. This RAM observation is not claimed
+to be ROM source or a lossless dispatch reconstruction.
+
+| Token/header | Native body bytes and locations | Total CPU cycles | Existing translated effect |
+| --- | --- | --- | --- |
+|78B5→78B7|78B7 `CC0000`,78BA `3606`,78BC `0EFC`|30|Push0000; U−2|
+|795B→795D|795D `ECA1`,795F `3606`,7961 `0EFC`|35|Read big-endian inline word, Y+2; U−2|
+|7963→7965|7965 `4F`,7966 `E6A0`,7968 `3606`,796A `0EFC`|35|Read unsigned inline byte, Y+1; U−2|
+|792F→7931|7931 `3520`,7933 `0EFC`|27|Restore caller Y from S; S+2|
+
+These totals include common NEXT. PSHU A/B costs7; PULS Y costs7; direct JMP
+costs3. The timing decoder adds only PSHU, indexed LDD and direct JMP needed
+for these paths, using the pinned MAME sources. It does not execute a6809.
+`RecoveredScript.cs` still implements the actual VM effects; the Live session
+uses the timing plan by token. No per-site minimum overrides these four words.
+Unsupported tokens continue through the existing explicitly captured adapter.
+
+`Curate-VmPrimitiveTiming.ps1` reproducibly checks original ROM SHA1, token
+headers and native five-byte contexts, reusing the accepted passive instruction
+capture. `skill-cash/vm-primitive-timing.json` preserves54 complete uninterrupted
+paths:5 zero,1 word literal,4 byte literals and44 returns. Every individual
+instruction duration and whole boundary matches. Partial initial/final NEXT
+windows are excluded; there are no interrupted selected complete paths here.
+ROM contexts are checked bytes, not claimed instruction lengths; decoded plan
+lengths are separately verified. No new MAME campaign or Ghidra access was needed;
+the previously documented Ghidra export gap remains.
+
+This is a small causal timing integration, not replacement of the Live IRQ
+scheduler. The selected totals equal previous validated minima, so pacing stays
+the same. Live still applies recorded IRQ occupancy and callback/scan scheduling;
+native helper paths and intra-word interrupt delivery remain unresolved. Next
+derive a state-dependent word/helper boundary, then connect timer assertions to
+generated instruction boundaries without using recorded paths as execution.
+
+Next candidate observation: the accepted opcode stream contains26 samples each
+at RAM00F8 (`3420`, PSHS Y) and00FA (`3184`, LEAY ,X), both with five-byte
+contexts `34203184AE`/`3184AEA16E`. Source timing suggests7+4 cycles for this
+threaded-call gateway, plus17 for NEXT, consistent with the existing28-cycle
+adapter. This pair is not yet curated as a complete boundary proof or integrated;
+retain the existing ROM-header membership checks and validate complete paths
+before broadening the source-derived model. RAM bytes are observations, not ROM.
+
+Validation:208 headless groups and all eight WPF smoke modes pass. Both solution
+builds are clean. The primitive cost cache was rebuilt and targeted-tested after
+the full suite; it changes allocation overhead only. No installs/configuration
+changes, commits or pushes. Curated manifest contains1088 checked entries.

@@ -324,6 +324,9 @@ public sealed class SkillCashLiveSession
     }
     private ulong Cost(Instruction instruction)
     {
+        // Selected straight-line words now derive their CPU work from native
+        // encodings. Interrupt occupancy remains the explicit captured adapter.
+        if(Mpu4VmPrimitiveTiming.Cycles(instruction.Token) is ulong nativeCost)return nativeCost;
         if(siteCosts.TryGetValue(instruction.Site.ToString("X4"),out var cost) || tokenCosts.TryGetValue(instruction.Token.ToString("X4"),out cost))return cost;
         // Identical validated ROM gateway 00F8; only entry cost is shared.
         // The called body must still execute and every helper must be translated.

@@ -1,0 +1,14 @@
+{
+  "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-ptm-instructions-guarded-07c5ee15a51f44029180cc7278eff1e2",
+  "instructions_sha256": "23AFA5F5D3ECBB1326881656905692EA68DEC715B618BDA11A16109B0D04523F",
+  "phase_sha256": "76BC7E484ED4AC0B69925C52A103F532143AA501CF51FE22474CCB0E63532C02",
+  "service_fixture_sha256": "F803CE138FFE6C11F50E6C664B3236C83A60BCFA151216B4C911FAA4C1901B77",
+  "rom_sha1": "402D1518BB78FDC489B06C2AABC771E5CE151847",
+  "parents": 19,
+  "native_instructions": 7820,
+  "referenced_children": 19,
+  "catalog_contexts": 611,
+  "excluded_open_parent": 1,
+  "source_tag": "mame0281",
+  "source_commit": "2843a3deb81cf93735244044894196ccfbea4d20"
+}

@@ -206,8 +206,8 @@
   },
   {
     "path": "docs/recovery/PTM-CLOCK-FOUNDATION-PASS.md",
-    "bytes": 20956,
-    "sha256": "2E935868D34258C7277493374584D9E5B6E422D8507CAEE355682F5B085B65AE"
+    "bytes": 32285,
+    "sha256": "DEC7DCEDDED485B31DC34485716CCA312BDCB47E9C7EA9322B8610CA71C5D29F"
   },
   {
     "path": "docs/recovery/README.txt",
@@ -356,8 +356,8 @@
   },
   {
     "path": "evidence/mpu4/maps/mame-timing-source.json",
-    "bytes": 4841,
-    "sha256": "B7474DB150F799585EAD44D06C1DB24A44E7A2431161DE8D7774837576581E34"
+    "bytes": 6874,
+    "sha256": "76649912F80B534AF55274F76100D704894C0539B6B5306CC04637A0D4DF15C1"
   },
   {
     "path": "evidence/mpu4/maps/nudge-availability-data.json",
@@ -406,8 +406,8 @@
   },
   {
     "path": "evidence/mpu4/maps/ptm-clock-semantics.json",
-    "bytes": 2699,
-    "sha256": "AB54DD4B6EE1128D93BF6FB90354A4F58CC7A54514DF006AC9C5E085F68EC795"
+    "bytes": 2831,
+    "sha256": "7F151F4C350B3C07DDB9D746FE2C6BF82E5D9EA865C9EE7954CB8EBF64C73731"
   },
   {
     "path": "evidence/mpu4/maps/skill-cash-alpha-scan-data.json",
@@ -2640,6 +2640,26 @@
     "sha256": "78CCDFE78E351D8864B82A521D42937C97F52261FA31918C42605480B355B750"
   },
   {
+    "path": "evidence/mpu4/skill-cash/ptm-outer-timing-verification.json",
+    "bytes": 706,
+    "sha256": "D2A1C9AFAF5A4F66A10A6855FF4EC381F24978E064D0ABF5A23ED5B6B61E30CE"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/ptm-outer-timing.json",
+    "bytes": 235915,
+    "sha256": "267D428E243AFA9E776A2A51119E7BFEAE45BD56EFDAB7DB8EC05C7961667747"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/ptm-service-timing-verification.json",
+    "bytes": 623,
+    "sha256": "D2CCB33E810B9FEB7180F8B3C72E90AC6F427199D2205507941C98C5B574E7CC"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/ptm-service-timing.json",
+    "bytes": 585679,
+    "sha256": "F803CE138FFE6C11F50E6C664B3236C83A60BCFA151216B4C911FAA4C1901B77"
+  },
+  {
     "path": "evidence/mpu4/skill-cash/ptm-skill-cpu-verification.json",
     "bytes": 3568,
     "sha256": "A4F30D4F0C356E5FFEDB8CE0CE31EE54BFB90071B1FA092D67DEEB3EFE7987B9"
@@ -2768,6 +2788,11 @@
     "path": "evidence/mpu4/skill-cash/timer-deadlines.json",
     "bytes": 158937,
     "sha256": "C5B7007A5594D198CF6F13186384D3756F420C1116E0B9B2B04DC028674048ED"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/vm-primitive-timing.json",
+    "bytes": 46441,
+    "sha256": "7F7B3B47A5FB9ADC5B96ACC236C156F6E05A092C42592B1E483D3F8D908ABFD8"
   },
   {
     "path": "evidence/mpu4/VM-SCRIPTS/7D3A.txt",

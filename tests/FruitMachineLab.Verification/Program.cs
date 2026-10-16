@@ -7,6 +7,118 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { if(args.Length>1 && !name.Contains(args[1],StringComparison.OrdinalIgnoreCase))return;action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Source-derived VM primitive timing matches natural dispatch boundaries", () => {
+    using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","vm-primitive-timing.json")));
+    int count=0;var counts=new Dictionary<ushort,int>();
+    foreach(var sample in doc.RootElement.GetProperty("samples").EnumerateArray()){
+        ushort token=sample.GetProperty("token").GetUInt16();var path=Mpu4VmPrimitiveTiming.Path(token) ?? throw new Exception("Missing primitive timing");
+        var instructions=sample.GetProperty("instructions");Equal(path.Count,instructions.GetArrayLength());ulong cursor=sample.GetProperty("start_cycle").GetUInt64();
+        Equal(path[2].Address,Convert.ToUInt16(sample.GetProperty("header_hex").GetString(),16));
+        for(int i=0;i<path.Count;i++){
+            var actual=instructions[i];Equal(path[i].Address,actual.GetProperty("pc").GetUInt16());
+            byte[] bytes=Convert.FromHexString(path[i].Bytes);var timing=M6809InstructionTiming.Decode(bytes);Equal(bytes.Length,timing.Length);
+            Equal(true,actual.GetProperty("context_hex").GetString()!.StartsWith(path[i].Bytes,StringComparison.Ordinal));
+            Equal(cursor,actual.GetProperty("cycle").GetUInt64());cursor+=(ulong)timing.Cycles;Equal(cursor,actual.GetProperty("completion_cycle").GetUInt64());
+        }
+        Equal(sample.GetProperty("end_cycle").GetUInt64(),cursor);Equal(cursor-sample.GetProperty("start_cycle").GetUInt64(),Mpu4VmPrimitiveTiming.Cycles(token)!.Value);
+        counts[token]=counts.GetValueOrDefault(token)+1;count++;
+    }
+    Equal(54,count);Equal(5,counts[0x78B5]);Equal(1,counts[0x795B]);Equal(35UL,Mpu4VmPrimitiveTiming.Cycles(0x7963)!.Value);
+    Equal(4,counts[0x7963]);Equal(44,counts[0x792F]);
+    Equal(30UL,Mpu4VmPrimitiveTiming.Cycles(0x78B5)!.Value);Equal(35UL,Mpu4VmPrimitiveTiming.Cycles(0x795B)!.Value);Equal(27UL,Mpu4VmPrimitiveTiming.Cycles(0x792F)!.Value);
+    Equal<ulong?>(null,Mpu4VmPrimitiveTiming.Cycles(0x76A9));
+});
+Check("Complete selected outer timer1 services match native costs with each child counted once", () => {
+    using var outer=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","ptm-outer-timing.json")));
+    using var services=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","ptm-service-timing.json")));
+    using var prefix=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","ptm-instruction-boundaries.json")));
+    var catalog=outer.RootElement.GetProperty("catalog");int parents=0,nativeCount=0,children=0,branches=0;ulong min=ulong.MaxValue,max=0;
+    ulong InstructionCycles(System.Text.Json.JsonElement ins){byte[] b=Convert.FromHexString(ins.GetProperty("context_hex").GetString()!);return (ulong)M6809InstructionTiming.Decode(b,stackedCC:b[0]==0x3B ? (byte)0x80 : null).Cycles;}
+    foreach(var p in outer.RootElement.GetProperty("parents").EnumerateArray()){
+        ulong entry=p.GetProperty("entry_cycle").GetUInt64(),accepted=p.GetProperty("accepted_cycle").GetUInt64(),cursor=entry,own=0,childWork=0;Equal(accepted+M6809IrqEntry.EntryCycles,entry);
+        foreach(var s in p.GetProperty("steps").EnumerateArray()){
+            Equal(entry+s[1].GetUInt64(),cursor);
+            if(s[0].GetInt32()==1){
+                int index=s[2].GetInt32();var pre=prefix.RootElement.GetProperty("windows")[index];var tail=services.RootElement.GetProperty("timer3_tails")[index];ulong childStart=cursor;
+                cursor+=M6809IrqEntry.EntryCycles;Equal(pre.GetProperty("handler_cycle").GetUInt64(),cursor);
+                foreach(var ins in pre.GetProperty("handler_path").EnumerateArray()){Equal(ins.GetProperty("cycle").GetUInt64(),cursor);cursor+=InstructionCycles(ins);}
+                foreach(var ins in tail.GetProperty("instructions").EnumerateArray()){Equal(ins.GetProperty("cycle").GetUInt64(),cursor);cursor+=InstructionCycles(ins);}
+                Equal(entry+s[3].GetUInt64(),cursor);Equal(251UL,cursor-childStart);childWork+=cursor-childStart;children++;continue;
+            }
+            Equal(0,s[0].GetInt32());var insn=catalog[s[2].GetInt32()];ushort pc=insn.GetProperty("pc").GetUInt16();byte cc=s[3].GetByte();byte[] bytes=Convert.FromHexString(insn.GetProperty("context_hex").GetString()!);
+            bool longBranch=bytes[0]==0x10 && bytes[1] is >=0x21 and <=0x2F;bool shortBranch=bytes[0] is >=0x20 and <=0x2F;
+            bool? taken=longBranch ? M6809InstructionTiming.EvaluateBranch(bytes[1],cc) : null;
+            var timing=M6809InstructionTiming.Decode(bytes,taken,bytes[0]==0x3B ? (byte)0x80 : null);
+            if(longBranch || shortBranch || bytes[0]==0x16){
+                bool jump=bytes[0]==0x16 || M6809InstructionTiming.EvaluateBranch(longBranch ? bytes[1] : bytes[0],cc);
+                int disp=shortBranch ? unchecked((sbyte)bytes[1]) : unchecked((short)((bytes[timing.Length-2]<<8)|bytes[timing.Length-1]));
+                Equal(s[5].GetUInt16(),unchecked((ushort)(pc+timing.Length+(jump ? disp : 0))));branches++;
+            }
+            cursor+=(ulong)timing.Cycles;own+=(ulong)timing.Cycles;
+            if(cursor!=entry+s[4].GetUInt64())throw new Exception($"Outer{parents} native {pc:X4} {Convert.ToHexString(bytes)} timing differs: {cursor}, expected {entry+s[4].GetUInt64()}");
+            nativeCount++;
+        }
+        Equal(p.GetProperty("resumed_cycle").GetUInt64(),cursor);Equal(M6809IrqEntry.EntryCycles+own+childWork,cursor-accepted);min=Math.Min(min,cursor-accepted);max=Math.Max(max,cursor-accepted);parents++;
+    }
+    Equal(19,parents);Equal(7820,nativeCount);Equal(19,children);Equal(611,catalog.GetArrayLength());Equal(1627UL,min);Equal(3409UL,max);Equal(1854,branches);
+});
+Check("MC6809 branch conditions retain unsigned, signed and zero flag distinctions", () => {
+    Equal(true,M6809InstructionTiming.EvaluateBranch(0x22,0));Equal(false,M6809InstructionTiming.EvaluateBranch(0x22,4));Equal(true,M6809InstructionTiming.EvaluateBranch(0x23,1));
+    Equal(true,M6809InstructionTiming.EvaluateBranch(0x2C,10));Equal(false,M6809InstructionTiming.EvaluateBranch(0x2C,8));Equal(true,M6809InstructionTiming.EvaluateBranch(0x2D,2));
+    Equal(false,M6809InstructionTiming.EvaluateBranch(0x2E,4));Equal(true,M6809InstructionTiming.EvaluateBranch(0x2F,4));Equal(false,M6809InstructionTiming.EvaluateBranch(0x21,0));
+    bool unsupported=false;try{M6809InstructionTiming.EvaluateBranch(0x39,0);}catch(NotSupportedException){unsupported=true;}Equal(true,unsupported);
+});
+Check("Natural timer3 callback completion and IRQ return match source-derived instruction costs", () => {
+    using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","ptm-service-timing.json")));
+    int tails=0;
+    foreach(var tail in doc.RootElement.GetProperty("timer3_tails").EnumerateArray()){
+        ulong callback=tail.GetProperty("callback_cycle").GetUInt64(),cursor=callback;ulong? rts=null,returned=null;
+        foreach(var ins in tail.GetProperty("instructions").EnumerateArray()){
+            Equal(ins.GetProperty("cycle").GetUInt64(),cursor);byte[] bytes=Convert.FromHexString(ins.GetProperty("context_hex").GetString()!);
+            // All selected ordinary-IRQ frames retain saved E=1. This is not
+            // inferred from the handler's current CC; the source/trace basis
+            // and actual resumed PC are retained separately in the fixture.
+            var timing=M6809InstructionTiming.Decode(bytes,stackedCC:bytes[0]==0x3B ? (byte)0x80 : null);
+            if(ins.GetProperty("pc").GetUInt16()==0x4916)rts=cursor;if(ins.GetProperty("pc").GetUInt16()==0xFEF2)returned=cursor;
+            cursor+=(ulong)timing.Cycles;Equal(ins.GetProperty("next_cycle").GetUInt64(),cursor);
+        }
+        Equal(callback+73,rts!.Value);Equal(callback+78,returned!.Value);Equal(tail.GetProperty("resumed_cycle").GetUInt64(),cursor);
+        Equal(251UL,cursor-(tail.GetProperty("entry_cycle").GetUInt64()-M6809IrqEntry.EntryCycles));tails++;
+    }
+    Equal(19,tails);
+});
+Check("Natural timer1 scan service durations follow native branches and return completion", () => {
+    using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","ptm-service-timing.json")));
+    int scans=0,instructions=0;ulong min=ulong.MaxValue,max=0;
+    foreach(var scan in doc.RootElement.GetProperty("timer1_scans").EnumerateArray()){
+        ulong start=scan.GetProperty("entry_cycle").GetUInt64(),cursor=start;
+        foreach(var ins in scan.GetProperty("instructions").EnumerateArray()){
+            Equal(ins.GetProperty("cycle").GetUInt64(),cursor);var branch=ins.GetProperty("branch_taken");bool? taken=branch.ValueKind==System.Text.Json.JsonValueKind.Null ? null : branch.GetBoolean();
+            var timing=M6809InstructionTiming.Decode(Convert.FromHexString(ins.GetProperty("context_hex").GetString()!),taken);cursor+=(ulong)timing.Cycles;Equal(ins.GetProperty("next_cycle").GetUInt64(),cursor);instructions++;
+        }
+        Equal(scan.GetProperty("returned_cycle").GetUInt64(),cursor);Equal(scan.GetProperty("rts_cycle").GetUInt64()+5,cursor);min=Math.Min(min,cursor-start);max=Math.Max(max,cursor-start);scans++;
+    }
+    Equal(19,scans);Equal(425UL,min);Equal(467UL,max);Equal(1988,instructions);
+});
+Check("Natural nested IRQ returns restore saved PCs and remain inside their parent service", () => {
+    using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","ptm-service-timing.json")));
+    var irqs=doc.RootElement.GetProperty("irqs").EnumerateArray().ToArray();int parents=0,children=0;
+    foreach(var irq in irqs){
+        Equal(1,irq.GetProperty("stacked_cc_e").GetInt32());var rti=irq.GetProperty("rti");var timing=M6809InstructionTiming.Decode(Convert.FromHexString(rti.GetProperty("context_hex").GetString()!),stackedCC:0x80);
+        Equal(rti.GetProperty("cycle").GetUInt64()+(ulong)timing.Cycles,irq.GetProperty("resumed_cycle").GetUInt64());Equal(irq.GetProperty("saved_resume_pc").GetUInt16(),irq.GetProperty("resumed_pc").GetUInt16());
+        if(irq.GetProperty("depth").GetInt32()==0){parents++;continue;}
+        Equal(1,irq.GetProperty("depth").GetInt32());Equal(132,irq.GetProperty("status").GetInt32());children++;
+        ulong from=irq.GetProperty("accepted_cycle").GetUInt64(),to=irq.GetProperty("resumed_cycle").GetUInt64();Equal(251UL,to-from);
+        var parent=irqs.Single(p=>p.GetProperty("depth").GetInt32()==0 && p.GetProperty("accepted_cycle").GetUInt64()<=from && p.GetProperty("resumed_cycle").GetUInt64()>=to);
+        ulong outer=parent.GetProperty("resumed_cycle").GetUInt64()-parent.GetProperty("accepted_cycle").GetUInt64();if(outer<=to-from)throw new Exception("Child is not contained in outer CPU occupancy");
+    }
+    Equal(38,irqs.Length);Equal(19,parents);Equal(19,children);
+});
+Check("RTI timing requires saved CC and long conditional timing requires an outcome", () => {
+    Equal(15,M6809InstructionTiming.Decode(new byte[]{0x3B},stackedCC:0x80).Cycles);Equal(6,M6809InstructionTiming.Decode(new byte[]{0x3B},stackedCC:0).Cycles);
+    Equal(5,M6809InstructionTiming.Decode(new byte[]{0x10,0x26,0,4},false).Cycles);Equal(6,M6809InstructionTiming.Decode(new byte[]{0x10,0x26,0,4},true).Cycles);
+    bool missing=false;try{M6809InstructionTiming.Decode(new byte[]{0x10,0x26,0,4});}catch(NotSupportedException){missing=true;}Equal(true,missing);
+});
 Check("Native instruction durations explain all nineteen Skill Cash IRQ and callback windows", () => {
     using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","ptm-instruction-boundaries.json")));
     int windows=0,instructions=0;ulong min=ulong.MaxValue,max=0;

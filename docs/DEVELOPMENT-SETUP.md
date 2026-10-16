@@ -5,6 +5,28 @@ Local clone: C:\projects\GitRepos\FruitMachineLab
 
 ## Current status
 
+Live now derives selected primitive CPU costs from native encodings, verified
+against54 complete natural paths. Reproduce with Curate-VmPrimitiveTiming.ps1
+using the accepted instruction RunDirectory and original RomPath. Zero/literals/
+return timing is generated; remaining word/IRQ pacing is still captured.
+See the existing timing foundation report and CURRENT-HANDOFF.md.
+
+Outer timing continuation:19 complete selected timer1 services match7820
+source-derived native instruction costs plus one decoded timer3 child each.
+1854 branch destinations match captured flags. Starts/paths remain observed;
+Live still uses captured pacing pending native VM/helper boundary integration.
+Curate-PtmOuterTiming.ps1 reuses the accepted capture and original ROM; see
+the existing timing foundation report and ptm-outer-timing*.json.
+207 headless groups/eight WPF modes pass; both solution builds are clean.
+
+Service timing continuation:19 timer3 tails,19 timer1 scans and38 nested IRQ
+returns match source-derived timing/saved PCs. Callback completion is78 cycles
+(old RTS-start marker73), timer3 acceptance→resume251, scans425–467. Remaining
+outer timer1 background work and Live native-boundary scheduling stay explicit.
+See the existing timing foundation report; Curate-PtmServiceTiming.ps1 reuses
+the accepted external instruction capture with original RomPath.
+205 headless groups/eight WPF modes pass; both solution builds are clean.
+
 Native instruction timing continuation:19 timer3 entry windows and608 native
 handler instruction durations match source-derived costs. All354 previous
 Skill Cash state/timestamp rows stay identical. The remaining0–7 cycles are

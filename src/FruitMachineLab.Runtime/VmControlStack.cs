@@ -8,6 +8,10 @@ public sealed class VmControlStack(Machine machine,ushort pointer)
     public ushort ResumeCursor { get; private set; }
     public void Push(ushort word) { Pointer=Cell.Subtract(Pointer,2);machine.WriteWord(Pointer,word); }
     public ushort Pop() { var word=machine.ReadWord(Pointer);Pointer=Cell.Add(Pointer,2);return word; }
+    // A full 6809 IRQ frame saves DP at pre-interrupt S-9. Call only when
+    // the CPU adapter establishes S has no extra native stack depth. Other
+    // register/CC bytes are deliberately not synthesized here.
+    public void PreserveInterruptDirectPage(byte directPage)=>machine.Memory[Cell.Subtract(Pointer,9)]=directPage;
     public void EnterCall(ushort continuation)=>Push(continuation);
     public void AllocateLocalFrame(ushort size)
     {

@@ -12,6 +12,12 @@ public partial class MainWindow
         var e=new KeyEventArgs(Keyboard.PrimaryDevice,PresentationSource.FromVisual(button),Environment.TickCount,Key.Space){RoutedEvent=down ? Keyboard.PreviewKeyDownEvent : Keyboard.PreviewKeyUpEvent};
         if(down)NudgeKeyDown(button,e);else NudgeKeyUp(button,e);
     }
+    private async Task NudgeSmokePress(Button button)
+    {
+        button.Focus();NudgeSmokeKey(button,true);int mask=2<<int.Parse((string)button.Tag);var timeout=System.Diagnostics.Stopwatch.StartNew();
+        while(liveSession?.Fault is null && liveSession is not null && (liveSession.Machine.Memory[3]&mask)==0 && timeout.ElapsedMilliseconds<250)await Task.Delay(1);
+        NudgeSmokeKey(button,false);
+    }
     private async Task LiveNudgeSmokeTest(string directory)
     {
         Directory.CreateDirectory(directory);
@@ -50,17 +56,18 @@ public partial class MainWindow
                 if(reel==0) {
                     bool pausedImprovement=false,pausedTransfer=false;
                     for(int remaining=2;remaining>0;remaining--) {
-                        Nudge1.Focus();NudgeSmokeKey(Nudge1,true);await Task.Delay(25);NudgeSmokeKey(Nudge1,false);timeout.Restart();
-                        while(liveSession.Fault is null && !liveSession.AwaitingPaidStart && !(liveSession.AwaitingNudgeInput && liveSession.Machine.Memory[0xBE]==remaining-1 && !liveSession.NudgeMoving) && timeout.Elapsed.TotalSeconds<(remaining==1 ? 45 : 5)){
-                            if(remaining==1 && !pausedImprovement && liveSession.Machine.Memory[0xBE]==3 && liveSession.MotorBusy){
+                        var selected=Nudge1;await NudgeSmokePress(selected);timeout.Restart();
+                        while(liveSession.Fault is null && !liveSession.AwaitingPaidStart && !(liveSession.AwaitingNudgeInput && liveSession.Machine.Memory[0xBE]==remaining-1 && !liveSession.NudgeMoving) && timeout.Elapsed.TotalSeconds<45){
+                            if(!pausedImprovement && liveSession.Machine.Memory[0xBE]==3 && liveSession.MotorBusy){
                                 PauseLive();var frozen=liveSession.Machine.Memory.ToArray();ulong at=liveSession.Cycle;await Task.Delay(100);
                                 if(at!=liveSession.Cycle || !frozen.SequenceEqual(liveSession.Machine.Memory))throw new InvalidOperationException("Automatic improvement advanced while paused");
                                 RenderLive();await Dispatcher.InvokeAsync(()=>{},DispatcherPriority.ApplicationIdle);SaveWindowImage(Path.Combine(directory,"improvement-paused.png"));ResumeLive();pausedImprovement=true;
                             }
-                            if(remaining==1 && !pausedTransfer && liveSession.Machine.ReadWord(0xBA) is >0 and <16 && liveSession.Machine.ReadWord(0x2FA)>0){PauseLive();var frozen=liveSession.Machine.Memory.ToArray();ulong at=liveSession.Cycle;await Task.Delay(100);if(at!=liveSession.Cycle || !frozen.SequenceEqual(liveSession.Machine.Memory))throw new InvalidOperationException("Meter transfer advanced while paused");RenderLive();await Dispatcher.InvokeAsync(()=>{},DispatcherPriority.ApplicationIdle);SaveWindowImage(Path.Combine(directory,"meter-transfer-paused.png"));ResumeLive();pausedTransfer=true;}
+                            if(!pausedTransfer && liveSession.Machine.ReadWord(0xBA) is >0 and <16 && liveSession.Machine.ReadWord(0x2FA)>0){PauseLive();var frozen=liveSession.Machine.Memory.ToArray();ulong at=liveSession.Cycle;await Task.Delay(100);if(at!=liveSession.Cycle || !frozen.SequenceEqual(liveSession.Machine.Memory))throw new InvalidOperationException("Meter transfer advanced while paused");RenderLive();await Dispatcher.InvokeAsync(()=>{},DispatcherPriority.ApplicationIdle);SaveWindowImage(Path.Combine(directory,"meter-transfer-paused.png"));ResumeLive();pausedTransfer=true;}
                             await Task.Delay(10);
                         }
-                        if(remaining==2 && (liveSession.Fault is not null || liveSession.Machine.Memory[0xBE]!=1))throw new InvalidOperationException("Second nudge failed: "+Status.Text);
+                        if(liveSession.AwaitingPaidStart)break;
+                        if(remaining==2 && (liveSession.Fault is not null || liveSession.Machine.Memory[0xBE]!=1))throw new InvalidOperationException("Second nudge failed: "+Status.Text+$" vm={liveSession.VmAddress:X4} remaining={liveSession.Machine.Memory[0xBE]} fault={liveSession.Fault} sampled={liveSession.Machine.Memory[3]:X2}");
                     }
                     if(!liveSession.AwaitingPaidStart || liveSession.Fault is not null || liveSession.Snapshot().Credits!=6)throw new InvalidOperationException("Preplay prompt was not reached: "+Status.Text);
                     PauseLive();var readyMemory=liveSession.Machine.Memory.ToArray();ulong readyCycle=liveSession.Cycle;await Task.Delay(100);
@@ -68,7 +75,7 @@ public partial class MainWindow
                     RenderLive();await Dispatcher.InvokeAsync(()=>{},DispatcherPriority.ApplicationIdle);SaveWindowImage(Path.Combine(directory,"paid-start-ready.png"));ResumeLive();
                     PhysicalStart.Focus();PhysicalStartDown(PhysicalStart,new MouseButtonEventArgs(Mouse.PrimaryDevice,Environment.TickCount,MouseButton.Left){RoutedEvent=UIElement.PreviewMouseLeftButtonDownEvent});
                     await Task.Delay(100);PhysicalStartUp(PhysicalStart,new MouseButtonEventArgs(Mouse.PrimaryDevice,Environment.TickCount,MouseButton.Left){RoutedEvent=UIElement.PreviewMouseLeftButtonUpEvent});
-                    bool pausedTone=false,pausedPaidSpin=false;timeout.Restart();while(liveSession.Fault is null && timeout.Elapsed.TotalSeconds<5){
+                    bool pausedTone=false,pausedPaidSpin=false;timeout.Restart();while(liveSession.Fault is null && !liveSession.AwaitingPaidNudge && timeout.Elapsed.TotalSeconds<6){
                         if(liveSession.TimedToneActive && liveSession.Machine.Memory[0x4D]==0x31 && !pausedTone){
                             PauseLive();var frozenTone=liveSession.Machine.Memory.ToArray();ulong toneAt=liveSession.Cycle;await Task.Delay(100);
                             if(toneAt!=liveSession.Cycle || !frozenTone.SequenceEqual(liveSession.Machine.Memory))throw new InvalidOperationException("Native tone advanced while paused");
@@ -83,12 +90,40 @@ public partial class MainWindow
                     }
                     if(!pausedPaidSpin)throw new InvalidOperationException("Paid-spin pause was not exercised");
                     if(!pausedTone)throw new InvalidOperationException("Timed-tone pause was not exercised");
-                    if(liveSession.VmAddress!=0xF398 || liveSession.Fault?.StartsWith("BOARD paid reel spin completed")!=true || liveSession.Machine.Memory[0xBE]!=0 || liveSession.Machine.Memory[0xBF]!=0 || liveSession.Machine.ReadWord(0xBA)!=0 || liveSession.Machine.ReadWord(0x2FA)!=0 || liveSession.Snapshot().CashBank!=16 || liveSession.Snapshot().Credits!=5 || !pausedImprovement || !pausedTransfer || liveSession.Panel.PhysicalBlack2!=0)throw new InvalidOperationException("Sequence did not exhaust cleanly: "+Status.Text);
+                    if(liveSession.VmAddress!=0xFC7C || liveSession.Fault?.StartsWith("BOARD paid play completed")!=true || liveSession.Machine.Memory[0xBE]!=0 || liveSession.Machine.Memory[0xBF]!=0 || liveSession.Machine.ReadWord(0xBA)!=0 || liveSession.Machine.ReadWord(0x2FA)!=0 || liveSession.Snapshot().CashBank!=16 || liveSession.Snapshot().Credits!=5 || !pausedImprovement || !pausedTransfer || liveSession.Panel.PhysicalBlack2!=0)throw new InvalidOperationException("Sequence did not return cleanly: "+Status.Text);
                     RenderLive();await Dispatcher.InvokeAsync(()=>{},DispatcherPriority.ApplicationIdle);SaveWindowImage(Path.Combine(directory,"nudge-improvement-result.png"));
                 }
             }
+            await OrdinaryPaidNudgeGuiCheck(directory);
             if(!await LoadLive(startExecution:false) || liveSession!.Instructions!=0 || liveSession.Fault is not null)throw new InvalidOperationException("Restart retained nudge state");
-            File.WriteAllText(Path.Combine(directory,"result.txt"),"PASS: all three momentary nudge keyboard handlers; actual recovered input scan, only selected main reel moved six positions and remaining/pot became two, mouse-capture failure/loss release, VM/memory/time pause, native cleanup and unchanged award accounting, rendered prompt/request boundaries and clean restart. Returns to the next prompt with preserved lamp-native save bytes; repeated Nudge1 exhausts the pot; recovered automatic improvement executes, actual auto-motor pause/resume freezes execution, board-exit return and pending-to-current-win animation execute, seven-flash tail, statistics/scaled counters and cash-bank16 commit with pending/current-win0; bank-limit service, outer-cycle stack check and next-cycle display refresh execute; status lamps, guarded background services and credit loop complete; preplay wait pauses correctly; physical START reaches credit debit6 to5 and stake accounting; native tone progresses incrementally and pauses; pre-spin flags/random gates execute; selected final preparation and paid reel spin execute with actual motor Pause/Resume; result/award dispatch remains explicit.\n");Application.Current.Shutdown(0);
+            File.WriteAllText(Path.Combine(directory,"result.txt"),"PASS: all three momentary nudge keyboard handlers; actual recovered input scan, only selected main reel moved six positions and remaining/pot became two, mouse-capture failure/loss release, VM/memory/time pause, native cleanup and unchanged award accounting, rendered prompt/request boundaries and clean restart. Returns to the next prompt with preserved lamp-native save bytes; three Nudge1 inputs exhaust the pot; automatic improvement and its motor Pause execute, board-exit return and pending-to-current-win animation execute, seven-flash tail, statistics/scaled counters and cash-bank16 commit with pending/current-win0; bank-limit service, outer-cycle stack check and next-cycle display refresh execute; status lamps, guarded background services and credit loop complete; preplay wait pauses correctly; physical START reaches credit debit6 to5 and stake accounting; native tone progresses incrementally and pauses; pre-spin flags/random gates execute; selected final preparation and paid reel spin execute with actual motor Pause/Resume; paid result and ordinary-nudge offer execute; physical Nudge1 moves only its reel, with prompt/motor Pause; post-sequence result remains explicit.\n");Application.Current.Shutdown(0);
         }catch(Exception error){File.WriteAllText(Path.Combine(directory,"result.txt"),error.ToString());Application.Current.Shutdown(1);}
     }
+    private async Task OrdinaryPaidNudgeGuiCheck(string directory)
+    {
+        if(!await LoadLive(startExecution:false))throw new InvalidOperationException(Status.Text);
+        // Generated physical-input campaign, matching the headless driver. The
+        // deterministic prefix uses ordinary input handlers; no state injection.
+        liveWallClock.Reset();liveLastWallTime=TimeSpan.Zero;liveSession!.Resume();int[] reels=[0,1,0];int next=3;bool started=false,paid=false;
+        for(int n=0;n<180000 && !liveSession.AwaitingPaidNudge;n++){
+            if(liveSession.AwaitingBoardSelection)PressPhysicalTake();
+            if(!paid && liveSession.AwaitingNudgeInput && !liveSession.NudgeMoving){ReleasePhysicalTake();if(next>0 && liveSession.Machine.Memory[0xBE]==next){NudgeSmokeKey(new[]{Nudge1,Nudge2,Nudge3}[reels[3-next]],true);next--;}}
+            if(liveSession.NudgeMoving)ReleaseNudges();
+            if(liveSession.AwaitingPaidStart && !started){PressPhysicalStart();started=true;}
+            if(started && liveSession.Panel.StartPressed && (liveSession.Machine.Memory[3]&128)!=0)ReleasePhysicalStart();
+            if(liveSession.PaidSpinMoving)paid=true;
+            liveSession.AdvanceCycles(512);
+        }
+        if(!liveSession.AwaitingPaidNudge || liveSession.Fault is not null || liveSession.Machine.Memory[0xBE]!=1)throw new InvalidOperationException("Generated ordinary paid nudge prompt missing");
+        PauseLive();var before=liveSession.Machine.Memory.ToArray();ulong at=liveSession.Cycle;await Task.Delay(100);
+        if(at!=liveSession.Cycle || !before.SequenceEqual(liveSession.Machine.Memory))throw new InvalidOperationException("Ordinary nudge prompt advanced during pause");
+        RenderLive();await Dispatcher.InvokeAsync(()=>{},DispatcherPriority.ApplicationIdle);SaveWindowImage(Path.Combine(directory,"ordinary-paid-nudge-prompt.png"));ResumeLive();await NudgeSmokePress(Nudge1);
+        bool pausedMotor=false;var timeout=System.Diagnostics.Stopwatch.StartNew();while(liveSession.Fault is null && timeout.Elapsed.TotalSeconds<4){
+            if(liveSession.MotorBusy && !pausedMotor){PauseLive();var frozen=liveSession.Machine.Memory.ToArray();ulong motorAt=liveSession.Cycle;await Task.Delay(100);if(motorAt!=liveSession.Cycle || !frozen.SequenceEqual(liveSession.Machine.Memory))throw new InvalidOperationException("Ordinary nudge motor advanced during pause");RenderLive();await Dispatcher.InvokeAsync(()=>{},DispatcherPriority.ApplicationIdle);SaveWindowImage(Path.Combine(directory,"ordinary-paid-nudge-motor-paused.png"));ResumeLive();pausedMotor=true;}
+            await Task.Delay(1);
+        }
+        if(!pausedMotor || liveSession.Machine.Memory[0x168]!=(before[0x168]+90)%96 || liveSession.Machine.Memory[0x16A]!=before[0x16A] || liveSession.Machine.Memory[0x16C]!=before[0x16C] || liveSession.VmAddress!=0xB749 || liveSession.Fault?.StartsWith("BOARD ordinary paid nudge completed")!=true || liveSession.Machine.Memory[0xBE]!=0 || liveSession.Snapshot().CashBank!=16 || liveSession.Snapshot().Credits!=5 || liveSession.Panel.PhysicalBlack2!=0)throw new InvalidOperationException("Ordinary paid nudge failed: "+Status.Text);
+        RenderLive();await Dispatcher.InvokeAsync(()=>{},DispatcherPriority.ApplicationIdle);SaveWindowImage(Path.Combine(directory,"ordinary-paid-nudge-result.png"));
+    }
+
 }

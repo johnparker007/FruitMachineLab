@@ -170,6 +170,11 @@
     "sha256": "6210272B93F04B9C03A1A1989AE3B7AD759D5A67C594DE98E6336F79043598C8"
   },
   {
+    "path": "docs/recovery/PAID-RESULT-ORDINARY-NUDGE-PASS.md",
+    "bytes": 7954,
+    "sha256": "07395886E81A91EE9453BF9E5E1FADFF8788CE6972BD0C58805B684EE472AF10"
+  },
+  {
     "path": "docs/recovery/PAYOUT-AND-SERVICE-RECOVERY.txt",
     "bytes": 7027,
     "sha256": "AD6B05EB3DB02331CB6E780241757CDC7398747E8DF32E6987A4A94955DAB0C4"
@@ -336,8 +341,8 @@
   },
   {
     "path": "evidence/mpu4/maps/nudge-encoding-checkpoint.json",
-    "bytes": 731339,
-    "sha256": "4DEA9314198F327503CE79C040C54D0503835F706760F78D0371571735D1C973"
+    "bytes": 785246,
+    "sha256": "DC7286FC84E33D3BF17482F95A2CD8F22923E47796397AB08DE6ACFD239671C0"
   },
   {
     "path": "evidence/mpu4/maps/nudge-inputs.json",
@@ -346,8 +351,8 @@
   },
   {
     "path": "evidence/mpu4/maps/nudge-preparation-data.json",
-    "bytes": 3779,
-    "sha256": "20F1F15D9D7E19547BE1F3A1AACDED89944FBA84441EAD7282A42A0DB08B1834"
+    "bytes": 4584,
+    "sha256": "18FA30AD575A9619EE0C7F01A0D11558331FC941A749ECD3F835A75C6224754F"
   },
   {
     "path": "evidence/mpu4/maps/nudge-preparation-semantics.json",
@@ -1990,6 +1995,21 @@
     "sha256": "5318528CD013822A224801E0C560641F9767F5A5A903F59630479D0121F05A74"
   },
   {
+    "path": "evidence/mpu4/skill-cash/nudge-paid-nudge-debugger.cmd",
+    "bytes": 16369,
+    "sha256": "9D27D1C061E16033EE3F92DBD6D61810249CFDF3D42B4F2DFFDBB7461947728C"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/nudge-paid-nudge-verification.json",
+    "bytes": 2631,
+    "sha256": "5798402E311194D234404B1D99CF7621A6993B0117551EEB7D509F7B97ABAE1B"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/nudge-paid-nudge.json",
+    "bytes": 74980,
+    "sha256": "9E6B89979B2880B8E9F6223240EA4E63B552AD5A631C6CDFE4520633D373ACBE"
+  },
+  {
     "path": "evidence/mpu4/skill-cash/nudge-paid-spin-debugger.cmd",
     "bytes": 16357,
     "sha256": "5D9C9C1DAA945F67EBD0B947DAD22B185CEABCF0D6B6CFCE3AA93DD9FBA19357"
@@ -2003,6 +2023,21 @@
     "path": "evidence/mpu4/skill-cash/nudge-paid-spin.json",
     "bytes": 189480,
     "sha256": "E018EDFCBF062F521A08DB1E2BE95B7F96F0325E52E636EEF6914A3306282BA6"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/nudge-paid-step-debugger.cmd",
+    "bytes": 16520,
+    "sha256": "951E3EC593320E1A32DD5D4DE9FE21ED865FBB99314797EF2BECD9E3EB180A97"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/nudge-paid-step-verification.json",
+    "bytes": 2684,
+    "sha256": "0A18ABAC270BACBE7883F43F0E614C5B51993F7DC87C28E30F97C8475A246AEA"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/nudge-paid-step.json",
+    "bytes": 139945,
+    "sha256": "529D98936056B0ED79C72FFB3896F89262B44E1F9A0EC0CF7E8B22508CB977ED"
   },
   {
     "path": "evidence/mpu4/skill-cash/nudge-plan-matrix-debugger.cmd",
@@ -2200,6 +2235,21 @@
     "sha256": "EE07491C83057E8A783142AF21ADF05C6A15634F81B45360B299BA115A4D1E5F"
   },
   {
+    "path": "evidence/mpu4/skill-cash/nudge-spin-result-debugger.cmd",
+    "bytes": 16357,
+    "sha256": "3FBD35A5DB811773804054F62083277A210B568952C4A5F568D0407155707E32"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/nudge-spin-result-verification.json",
+    "bytes": 2572,
+    "sha256": "7D9971A3DF25C069B93E9DD5BA9C451829F5B6CC4C71C14E1F234442EB246859"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/nudge-spin-result.json",
+    "bytes": 36910,
+    "sha256": "8313CCC848E10518D8A814B97740350EBBF4162DC5C7507D6BF42E2BD45F3012"
+  },
+  {
     "path": "evidence/mpu4/skill-cash/nudge-stake-debugger.cmd",
     "bytes": 14336,
     "sha256": "97D6D7B52ECA4274C259E62DED92FCE401B0C48188C749866BC61ECAEB36C369"
@@ -2303,6 +2353,21 @@
     "path": "evidence/mpu4/skill-cash/output-scan.json",
     "bytes": 646482,
     "sha256": "6B632A9DF1BE6BE732D8D45C4AF6DB59AB361AAFE0EB85549687C3F4B1AB942B"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/paid-nudge-native-debugger.cmd",
+    "bytes": 16520,
+    "sha256": "951E3EC593320E1A32DD5D4DE9FE21ED865FBB99314797EF2BECD9E3EB180A97"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/paid-nudge-native.json",
+    "bytes": 59850,
+    "sha256": "924C2BC945E65683F913363800E9E72C2229B40416E12E873AA19D84D054FD6D"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/paid-result-capture-attempts.json",
+    "bytes": 3358,
+    "sha256": "C50F176275C32A5ECE323D6A83143B35D391FD3DB27982F3DE199842EB0EDA32"
   },
   {
     "path": "evidence/mpu4/skill-cash/paid-spin-native-debugger.cmd",

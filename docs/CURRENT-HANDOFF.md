@@ -6,6 +6,19 @@ batch, including its verification.
 
 ## Working implementation
 
+Newest checkpoint: recovery/PAID-RESULT-ORDINARY-NUDGE-PASS.md. Live passes paid
+result evaluation and ordinary-nudge eligibility. A mixed physical Nudge1/2/1
+campaign reaches a one-nudge offer; physical Nudge1 executes incrementally with
+prompt/motor Pause and stops at B749 before ordinary post-sequence results. The
+quick-Start/three-Nudge1 generated route instead reaches FC7C with no nudge offer.
+Bank16/credits5/pending/current-win0 remain.177 headless groups and all eight WPF
+modes pass. Natural
+203/459/909-observation windows match, including135 generated-optic motor events;
+the909 window overlaps the459 offer window. Independent captures agree on1701
+selected observations. IRQ DP stack residue is preserved only at the proven inline
+literal boundary; other CPU stack footprints remain incomplete. Earlier entries
+below are history.
+
 Newest checkpoint: recovery/PAID-REEL-SPIN-PASS.md. Live completes final request
 selection, preparation and the paid reel motor spin, stopping at F398 before
 result/award dispatch. Credits5/cash bank16/token bank0 and pending/current-win0
@@ -76,7 +89,7 @@ The old75A9 keep-negative label is corrected to native sign normalization in
 - Live Skill Cash: incremental VM, retained state, physical momentary Start input,
   actual Pause/Resume, generated lamp/alpha outputs and diagnostic state display.
 - Separate verified playback/scrubber; original MAME-backed verification retained.
-- Last development batch:172 headless groups passed. Headless and isolated WPF
+- Last development batch:177 headless groups passed. Headless and isolated WPF
   builds passed; Live/playback WPF smoke checks and rendered layouts were checked.
 - John subsequently reported that the live feature works well.
 
@@ -136,6 +149,17 @@ See recovery/BOARD-MOVEMENT-PASS.md for arithmetic, IRQ-byte read phases, synthe
 scope and preserved earlier timing qualifications.
 
 ## Next development work
+
+Read PAID-RESULT-ORDINARY-NUDGE-PASS.md. Continue B749 ordinary post-nudge
+improvement/result, then FC7C/FCDE outer paid-game return. No consecutive-games
+claim yet. Keep the original three-Nudge1 reference distinct from the mixed-input
+Live/GUI experiment. Reproduce new captures with NudgeSpinResult/NudgePaidNudge/
+NudgePaidStep; the last uses FC68 entry to execute inherited sound loops normally.
+The stack-watch evidence explains local079D+2: full IRQ DP save at S07A8-9.
+No local initialization or arbitrary captured memory assignment is introduced.
+The selected byte checkpoint now contains129 VM spans and1565 native instruction
+rows; this is not complete ROM coverage. The manifest checks1028 curated files.
+The prior frontier below is history.
 
 Start at F398 result/award dispatch. Read PAID-REEL-SPIN-PASS.md first. The paid
 spin is complete; another complete game is not yet implemented. Retain the explicit

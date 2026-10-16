@@ -1,0 +1,78 @@
+{
+  "classification": "Capture attempts and exclusions; raw traces remain external, no outcome substitution",
+  "attempts": [
+    {
+      "name": "spin-result",
+      "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-spin-result-cb57e2cc423146ec8bbcad9ec54a9c08",
+      "status": "accepted",
+      "exit_code": "0",
+      "raw_sha256": "1A373F9B31A910156A16AEE0BB9E175F8BB8DC31AB048F9C6C2F1B3713A170C7",
+      "tail_entry_present": true
+    },
+    {
+      "name": "paid-return",
+      "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-paid-return-5518eef1c79f4d77a10a305ca73a3520",
+      "status": "excluded: terminal occurred before selected window entry",
+      "exit_code": "0",
+      "raw_sha256": "A3D28D7D882A193C28BC81987D783AF74B35C740104AF999CBE060A2BBAA3C30",
+      "tail_entry_present": false
+    },
+    {
+      "name": "paid-return-window",
+      "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-paid-return-window-325a8904649d48ad8932c3cd44593a5b",
+      "status": "excluded: MAME access violation before requested return",
+      "exit_code": "-1073741819",
+      "raw_sha256": "2DB67C9B14487ADA3B6DEFDD0E11859BB7D946D07A729F1BC6E4721D7F2D13A8",
+      "tail_entry_present": true
+    },
+    {
+      "name": "paid-nudge",
+      "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-paid-nudge-aa808362ec234ffaa9a04643a3e2755b",
+      "status": "accepted",
+      "exit_code": "0",
+      "raw_sha256": "3A1B4352E5EA915117FFF2AA7FB6AC00C89907BA0FDF3B4824FA4E181E76A3C9",
+      "tail_entry_present": true
+    },
+    {
+      "name": "paid-step",
+      "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-paid-step-5737afa8b1004439871d595139c1a054",
+      "status": "complete but unused: B403 entry contains unsupported inherited sound-loop state",
+      "exit_code": "0",
+      "raw_sha256": "FFDC62DE606132C74B8C4F52975C4B125E4AA694E1D13CF943BC42432C7850F9",
+      "tail_entry_present": true
+    },
+    {
+      "name": "paid-step-complete",
+      "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-paid-step-complete-6e71cc038524420e986ebce1329235a8",
+      "status": "complete corroborating run; superseded by watched stack capture",
+      "exit_code": "0",
+      "raw_sha256": "B4F629069C61A32189FD93C7EC3792FD5F6226D15E49FC48D475C22AE5CC9C6A",
+      "tail_entry_present": true
+    },
+    {
+      "name": "paid-step-stack",
+      "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-paid-step-stack-1a0e8cb130a64de8ba6db2cf2de6efa8",
+      "status": "accepted",
+      "exit_code": "0",
+      "raw_sha256": "272F40D4C165833B062BD44A1C2DF9855F5DC7B2A253D60EFD0E6746C5A401DF",
+      "tail_entry_present": true
+    }
+  ],
+  "corroboration": {
+    "sources": [
+      "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-paid-step-complete-6e71cc038524420e986ebce1329235a8",
+      "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-paid-step-stack-1a0e8cb130a64de8ba6db2cf2de6efa8"
+    ],
+    "selected_prefixes": [
+      "SC",
+      "LF",
+      "SN",
+      "AB",
+      "QE",
+      "RM"
+    ],
+    "exact_lines_equal": true,
+    "observations": 1701,
+    "sha256": "712F72C35771894B754551F94D1ACA6D2E0B58C2F8708D506ADC16175E566EF1"
+  }
+}

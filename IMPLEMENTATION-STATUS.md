@@ -1,5 +1,12 @@
 # Implementation and evidence boundaries
 
+Newest: [paid result / ordinary nudge](docs/recovery/PAID-RESULT-ORDINARY-NUDGE-PASS.md).
+Live executes result checks and ordinary-nudge eligibility; a mixed-input campaign
+offers one nudge and physical Nudge1 reaches B749 with prompt/motor Pause. The
+generated no-nudge path stops at FC7C.177 headless groups/eight GUI modes pass. Three natural
+reference windows and135 motor observations match; IRQ DP residue is preserved
+at a qualified inline-literal boundary. No whole-machine or consecutive-games claim.
+
 Newest: [paid reel spin](docs/recovery/PAID-REEL-SPIN-PASS.md). Live runs the actual
 paid motor spin incrementally with Pause/Resume, reaching F398 before result/award
 dispatch.172 headless groups/eight GUI modes pass;1282 native motor observations

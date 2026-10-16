@@ -23,7 +23,7 @@ public sealed class SkillCashLiveSession
     private byte tonePhase;
     private readonly ulong toneSetupCycles,toneWaitCycles,toneFinishCycles;
     public bool TimedToneActive=>tonePhase is >0 and <4;
-    private bool motionInitializing;
+    private bool motionInitializing,lastVmInlineLiteral;
     private bool motionNativeReady;
     private readonly Dictionary<ushort,RecoveredScript> scripts=new();
     private readonly string evidence;
@@ -44,6 +44,7 @@ public sealed class SkillCashLiveSession
     public bool NudgeMoving {get;private set;}
     private bool nudgeAttempted,nudgeContext;
     public bool AwaitingPaidStart {get;private set;}
+    public bool AwaitingPaidNudge=>paidSpinStarted && AwaitingNudgeInput;
     public bool PaidSpinMoving=>paidSpinStarted && (motionInitializing || reelMotion?.Busy==true);
     private bool paidSpinStarted;
     public bool MotorBusy=>reelMotion?.Busy==true;
@@ -112,11 +113,13 @@ public sealed class SkillCashLiveSession
             BoardMovementState.LoadData(Machine,evidence);BoardLinkState.LoadData(Machine,evidence);BoardLinkState.LoadIc8Entry(Machine,evidence);
             if(boardLink is not null)initialClock=BoardLinkState.Apply(Machine,evidence,boardLink);
             boardVisited.Add(Machine.Memory[0xC9]);
-            foreach(string file in new[]{"ladder-link.json","snake-link.json","ladder-link-next.json","snake-link-next.json","board-movement-next.json","ladder-availability.json","nudge-entry.json","nudge-prompt.json","nudge-request.json","nudge-motion-vm.json","nudge-return.json","nudge-sequence.json","nudge-result.json","nudge-exit.json","nudge-win-transfer.json","nudge-tail.json","nudge-accounting.json","nudge-bank-return.json","nudge-cycle-init.json","nudge-ic8.json","nudge-background.json","nudge-status.json","nudge-services.json","nudge-preplay.json","nudge-eligibility.json","nudge-start.json","nudge-stake.json","nudge-tone.json","nudge-spin-flags.json","nudge-spin-gates.json","nudge-final-selection.json","nudge-spin-preparation.json","nudge-paid-spin.json"}) {
+            foreach(string file in new[]{"ladder-link.json","snake-link.json","ladder-link-next.json","snake-link-next.json","board-movement-next.json","ladder-availability.json","nudge-entry.json","nudge-prompt.json","nudge-request.json","nudge-motion-vm.json","nudge-return.json","nudge-sequence.json","nudge-result.json","nudge-exit.json","nudge-win-transfer.json","nudge-tail.json","nudge-accounting.json","nudge-bank-return.json","nudge-cycle-init.json","nudge-ic8.json","nudge-background.json","nudge-status.json","nudge-services.json","nudge-preplay.json","nudge-eligibility.json","nudge-start.json","nudge-stake.json","nudge-tone.json","nudge-spin-flags.json","nudge-spin-gates.json","nudge-final-selection.json","nudge-spin-preparation.json","nudge-paid-spin.json","nudge-spin-result.json","nudge-paid-nudge.json","nudge-paid-step.json"}) {
                 using var linkCosts=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",file)));
                 foreach(var item in linkCosts.RootElement.GetProperty("sites").EnumerateObject())siteCosts.TryAdd(item.Name,item.Value.GetUInt64());
                 foreach(var item in linkCosts.RootElement.GetProperty("tokens").EnumerateObject())tokenCosts.TryAdd(item.Name,item.Value.GetUInt64());
             }
+            using(var nudgeData=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"maps","nudge-preparation-data.json"))))
+                foreach(var alias in nudgeData.RootElement.GetProperty("equivalent_timing_tokens").EnumerateObject())tokenCosts.TryAdd(alias.Name,tokenCosts[alias.Value.GetString()!]);
             using var motionData=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"maps","dice-motion-data.json")));
             foreach(var range in motionData.RootElement.GetProperty("ranges").EnumerateObject())Convert.FromHexString(range.Value.GetString()!).CopyTo(Machine.Memory,Convert.ToUInt16(range.Name,16));
             reelMotion=new(Machine);reelHardware=new(Machine);
@@ -253,6 +256,7 @@ public sealed class SkillCashLiveSession
                 ulong next=Math.Min(occupancy.NextStart,Math.Min(nextVm,Math.Min(irq,nextCallback)));if(next>target){Cycle=target;break;}Cycle=next;
                 if(occupancy.NextStart==next) {
                     ulong end=occupancy.NextEnd;
+                    if(lastVmInlineLiteral && !waitingForScheduler && !motionInitializing && !motionNativeReady && !TimedToneActive)Machine.Control!.PreserveInterruptDirectPage(0);
                     nextVm=waitingForScheduler ? Math.Max(nextVm,end) : checked(nextVm+(end-next));
                     occupancy.Consume();
                 }
@@ -284,7 +288,8 @@ public sealed class SkillCashLiveSession
                     if(!ContinueBoard && boardAdvancing && instruction.Site is 0xDE96 or 0xDD38)throw new NotSupportedException($"BOARD advance completed at square {Machine.Memory[0xC9]} (type {Machine.Memory[0xA12E+Machine.Memory[0xC9]]}, nudge pot {Machine.Memory[0xBF]}); the next board result/selection is the recovery boundary. Restart to play again.");
                     if(!ContinueBoard && BoardLinkEntry is not null && instruction.Site==0xDE81)throw new NotSupportedException($"BOARD {BoardLinkEntry} completed at square {Machine.Memory[0xC9]} (nudge pot {Machine.Memory[0xBF]}); following board result/selection remains the recovery boundary. Restart to watch again.");
                     if(ContinueBoard && instruction.Site==0xE2FC && Machine.Data.Peek() is not (1 or 2))throw new NotSupportedException($"BOARD result type {Machine.Data.Peek()} at square {Machine.Memory[0xC9]}; this result route is the next recovery boundary.");
-                    if(ContinueBoard && nudgeAttempted && instruction.Site==0xF398)throw new NotSupportedException($"BOARD paid reel spin completed; credits {Machine.Memory[0x2F0]}, cash bank {Machine.ReadWord(0x2FC)}. Refreshed reel result/award dispatch is the next recovery boundary.");
+                    if(ContinueBoard && paidSpinStarted && instruction.Site==0xFC7C)throw new NotSupportedException($"BOARD paid play completed; credits {Machine.Memory[0x2F0]}, cash bank {Machine.ReadWord(0x2FC)}. Outer paid-game return is the next recovery boundary.");
+                    if(paidSpinStarted && instruction.Site==0xB749)throw new NotSupportedException("BOARD ordinary paid nudge completed; post-sequence improvement/result is the next recovery boundary.");
                     if(ContinueBoard && BoardLinkEntry is not null && !nudgeAttempted && instruction.Site==0xE460)throw new NotSupportedException("BOARD feature exit reached; outer machine caller remains outside the live entry.");
                     if(ContinueBoard && instruction.Native==0x2BEB && reelMotion?.Busy==true){nextVm=checked(serviceEpoch+services[serviceIndex].Scan);continue;}
                     if(ContinueBoard && instruction.Site==0xE227)throw new NotSupportedException($"BOARD special feature at square {Machine.Memory[0xC9]} (type {Machine.Memory[0xA12E+Machine.Memory[0xC9]]}); announcement/feature routing is the next recovery boundary.");
@@ -307,7 +312,7 @@ public sealed class SkillCashLiveSession
                     waitingForScheduler=instruction.Native==0x5CCB && scheduler.Active;
                     if(waitingForScheduler){nextVm=checked(serviceEpoch+services[serviceIndex].Scan);continue;}
                     ulong cost=instruction.Native==0x5CCB || instruction.Native==0x5A14 ? 0 : Cost(instruction);
-                    executor.Step();nextVm=checked(Cycle+cost);
+                    executor.Step();lastVmInlineLiteral=instruction.Operation is "vm_push_inline_byte_literal" or "vm_push_inline_word_literal";nextVm=checked(Cycle+cost);
                     if(Completed){Paused=true;Panel.Release();break;}
                 }
             }

@@ -14,10 +14,10 @@ internal sealed class DiceMotionReference
     private readonly bool paidSpin;
     private readonly Action<ushort>? advanceClock,queueSound;
     public bool Complete=>point==events.Length;
-    public DiceMotionReference(Machine machine,string evidence,bool nudge=false,bool sequence=false,bool result=false,bool paidSpin=false,Action<ushort>? advanceClock=null,Action<ushort>? queueSound=null)
+    public DiceMotionReference(Machine machine,string evidence,bool nudge=false,bool sequence=false,bool result=false,bool paidSpin=false,Action<ushort>? advanceClock=null,Action<ushort>? queueSound=null,bool paidStep=false)
     {
-        m=machine;motion=new(m);this.paidSpin=paidSpin;this.advanceClock=advanceClock;this.queueSound=queueSound;
-        using var doc=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",paidSpin ? "paid-spin-native.json" : result ? "nudge-result-native.json" : sequence ? "nudge-sequence-native.json" : nudge ? "nudge-motion-native.json" : "dice-motion.json")));
+        m=machine;motion=new(m);this.paidSpin=paidSpin || paidStep;this.advanceClock=advanceClock;this.queueSound=queueSound;
+        using var doc=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",paidStep ? "paid-nudge-native.json" : paidSpin ? "paid-spin-native.json" : result ? "nudge-result-native.json" : sequence ? "nudge-sequence-native.json" : nudge ? "nudge-motion-native.json" : "dice-motion.json")));
         events=doc.RootElement.GetProperty("events").EnumerateArray().Select(row=>row.Clone()).ToArray();
         foreach(var range in doc.RootElement.GetProperty("ranges").EnumerateObject())Convert.FromHexString(range.Value.GetString()!).CopyTo(m.Memory,Convert.ToUInt16(range.Name,16));
     }

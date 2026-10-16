@@ -5,6 +5,12 @@ Local clone: C:\projects\GitRepos\FruitMachineLab
 
 ## Current status
 
+Latest: Live passes paid result evaluation and can offer/execute an ordinary nudge
+with the existing physical buttons, stopping at B749 before post-sequence results.
+A generated no-nudge route stops at FC7C.177 headless groups/eight WPF modes pass. See
+recovery/PAID-RESULT-ORDINARY-NUDGE-PASS.md for exact reference windows, the mixed
+Live input experiment, interrupt-stack limits and reproduction.
+
 Latest: Live completes the paid reel motor spin and stops at F398 before result/
 award dispatch.172 headless groups/eight WPF modes pass, including motor Pause/
 Resume. See recovery/PAID-REEL-SPIN-PASS.md for evidence and remaining limits.

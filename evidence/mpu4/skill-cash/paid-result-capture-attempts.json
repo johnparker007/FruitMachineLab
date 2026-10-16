@@ -80,6 +80,62 @@
       "exit_code": "0",
       "raw_sha256": "2F259E50F516152828E708AA3808DB0AC25B844DA7053E437BCF247097694D23",
       "tail_entry_present": true
+    },
+    {
+      "name": "paid-flag-121",
+      "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-paid-flag-121-0818406185644f0aa68709dba02bef58",
+      "status": "excluded: narrow credit5 qualifier missed natural later-game entry",
+      "exit_code": "0",
+      "raw_sha256": "CF8A4EA0422DD391209CE822A4210D66E3ACF63723CEF1842D23C814CEFFAEAC",
+      "tail_entry_present": false
+    },
+    {
+      "name": "paid-flag-anycredit",
+      "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-paid-flag-anycredit-971964970619456796b3a686d344ae19",
+      "status": "accepted",
+      "exit_code": "0",
+      "raw_sha256": "3DE92B22B9AC9401C9583561961C9FC5BC079056AB91A7B5DD4A38DA1E486EF1",
+      "tail_entry_present": true
+    },
+    {
+      "name": "flag-announcement",
+      "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-flag-announcement-a1afda4890694698af0096379a760a84",
+      "status": "excluded: early unqualified entry; MAME access violation",
+      "exit_code": "-1073741819",
+      "raw_sha256": "FAF60025C31F352439E00AB9588950FA47A74D700D32A2ABBA36459513E486D2",
+      "tail_entry_present": true
+    },
+    {
+      "name": "flag-announcement-qualified",
+      "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-flag-announcement-qualified-c29f01b4264d406ba97cdbc9d75c123b",
+      "status": "accepted",
+      "exit_code": "0",
+      "raw_sha256": "2E1114AFAD41674A3927FAEF4A4871F80C042946020FA33148120FA07CEE57C9",
+      "tail_entry_present": true
+    },
+    {
+      "name": "flag-reel-plan",
+      "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-flag-reel-plan-220fbfd1c03e47b680db901f259c077a",
+      "status": "accepted",
+      "exit_code": "0",
+      "raw_sha256": "3E3556C79CDB29A2AAE8E3C94EFB5F016057A572D47F0303D23FAA03A7239C67",
+      "tail_entry_present": true
+    },
+    {
+      "name": "flag-table",
+      "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-flag-table-26026b2e086f473c89ccbb9521a9b2c8",
+      "status": "accepted",
+      "exit_code": "0",
+      "raw_sha256": "3E6A2D3E93D95D8726709CFA54DF93DEA88B13AA2DD209F01781E0F92A55C9AE",
+      "tail_entry_present": true
+    },
+    {
+      "name": "flag-bootstrap",
+      "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-flag-bootstrap-5a4ab748048a400b82b3ca7228169791",
+      "status": "accepted",
+      "exit_code": "0",
+      "raw_sha256": "D420FAC8ADA860D5C80B6640511ECF8E9A988F74A61D6397D38B9C0026AB43E4",
+      "tail_entry_present": true
     }
   ],
   "corroboration": {

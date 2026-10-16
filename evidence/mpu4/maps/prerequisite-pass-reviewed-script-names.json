@@ -5,5 +5,6 @@
   "dde3": "play_nudgepot_sound_and_rotating_digit_animation",
   "af67": "round_current_award_even_and_flash_balance_display_seven_times",
   "adc0": "test_award_above_thirty_for_token_balance_route",
-  "af2b": "round_token_award_even_and_commit_to_token_or_cash_bank"
+  "af2b": "round_token_award_even_and_commit_to_token_or_cash_bank",
+  "eb3b": "map_result_b9_to_code_bc_and_set_b9_to_three"
 }

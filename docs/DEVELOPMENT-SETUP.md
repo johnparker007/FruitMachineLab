@@ -5,6 +5,11 @@ Local clone: C:\projects\GitRepos\FruitMachineLab
 
 ## Current status
 
+Latest: Live passes three-flag accounting and board preparation through pot
+animation, stopping at E3AE before native61CF reel motion. Five new natural MAME
+windows match. See recovery/FLAG-FEATURE-ENTRY-PASS.md and CURRENT-HANDOFF.md;
+earlier status entries below retain history.
+
 Latest: Live returns through the actual paid-game outer caller to another Start
 prompt. A generated test completes three consecutive paid plays in one machine
 session (credits6→3, bank16).181 headless groups/eight WPF modes pass. The three-flag feature route

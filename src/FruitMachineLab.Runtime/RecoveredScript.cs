@@ -137,6 +137,29 @@ public sealed class ScriptExecutor(Machine machine)
                 case "vm_enter_loop_frame": { var start=machine.Pop();var limit=machine.Pop();Control().EnterLoop(start,limit,Continuation());break; }
                 case "vm_loop_increment_one": if(Control().IncrementLoop() is { } target)Jump(target);break;
                 case "vm_store_byte": { var address = machine.Pop(); machine.Memory[address] = (byte)machine.Pop(); break; }
+                case "vm_fill_bytes": {
+                    // Native7BBA saves Y before consuming (address count value).
+                    // The BEQ before its loop makes zero count a genuine no-op.
+                    if(machine.DataStackBase is not null)machine.SyncDataToMemory();
+                    ushort savedCursor=Continuation();machine.Control?.Push(savedCursor);
+                    if(machine.DataStackBase is not null)machine.SetDataPointer(machine.DataPointer);
+                    byte value=(byte)machine.Pop();ushort count=machine.Pop(),address=machine.Pop();
+                    for(int n=0;n<count;n++)machine.Memory[Cell.Add(address,(ushort)n)]=value;
+                    if(machine.DataStackBase is not null)machine.SetDataPointer(machine.DataPointer);
+                    if(machine.Control is not null && machine.Control.Pop()!=savedCursor)throw new NotSupportedException("Native fill changed its saved VM cursor; self-modified continuation requires recovery");
+                    break;
+                }
+                case "vm_store_byte_and_following_word": {
+                    // Native7805 stores B before pulling the final cell. Reload
+                    // mapped U cells so an overlapping destination preserves
+                    // the original ordered stores, including surviving cells.
+                    if(machine.DataStackBase is not null)machine.SyncDataToMemory();
+                    ushort address=machine.Pop();byte high=(byte)machine.Pop();machine.Memory[address]=high;
+                    if(machine.DataStackBase is not null)machine.SetDataPointer(machine.DataPointer);
+                    ushort low=machine.Pop();machine.WriteWord(Cell.Add(address,1),low);
+                    if(machine.DataStackBase is not null)machine.SetDataPointer(machine.DataPointer);
+                    break;
+                }
                 case "vm_store_word": { var address = machine.Pop(); machine.WriteWord(address, machine.Pop()); break; }
                 case "vm_add_to_word_memory": { var address=machine.Pop();machine.WriteWord(address,Cell.Add(machine.ReadWord(address),machine.Pop()));break; }
                 case "vm_add_to_byte_memory": {var address=machine.Pop();machine.Memory[address]=unchecked((byte)(machine.Memory[address]+machine.Pop()));break;}

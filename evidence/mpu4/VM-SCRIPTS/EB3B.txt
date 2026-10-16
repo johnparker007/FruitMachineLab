@@ -1,5 +1,5 @@
-Purpose: map_result_b9_to_code_bc_and_reset_b9
-Confidence: reviewed token mechanics
+Purpose: map_result_b9_to_code_bc_and_set_b9_to_three
+Confidence: reviewed token mechanics; paid-flag-announcement traces B9=3 mapping to BC=11 and trailing B9=3 store. Legacy caller labels saying reset are misleading.
 Groups: boolean/bit operations, control flow, memory operations, stack/cell helpers
 Callers: EDD3, EBDA
 

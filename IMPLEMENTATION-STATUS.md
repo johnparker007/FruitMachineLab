@@ -1,5 +1,13 @@
 # Implementation and evidence boundaries
 
+Newest: [flag feature entry](docs/recovery/FLAG-FEATURE-ENTRY-PASS.md). Live passes
+three-flag accounting, software planning/table construction and pot/board
+animation, stopping at E3AE before native61CF motion. Five new natural MAME
+windows match; their later-game starting states differ from the generated Live
+campaign. The two new core VM words preserve original stack/memory semantics.
+147 VM spans/1638 native instruction records are byte-checked in the existing
+preservation checkpoint; full-ROM rebuilding remains deferred.
+
 Newest: [paid cycle return](docs/recovery/PAID-CYCLE-RETURN-PASS.md). Live reaches
 another Start prompt through the real outer caller. Three generated paid plays
 retain one machine and debit credits6→3 with bank16;181 headless groups/eight GUI modes pass.

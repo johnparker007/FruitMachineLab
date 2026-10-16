@@ -7,6 +7,36 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Natural flagged-entry pot animation and board bootstrap match", () => {
+    var r=BoardSelectionVerification.Verify(evidence,boardLink:"ladder",paidFlagBootstrap:true);Console.WriteLine($"  {r.Instructions} bootstrap observations, {r.Lamps} lamps, {r.Sounds} sounds");
+});
+Check("Fill retains zero-count guard, wrapping writes, saved Y and surviving U alias", () => {
+    var script=new RecoveredScript(Path.Combine(evidence,"VM-SCRIPTS","B7C2.txt"));
+    foreach(var row in new[]{(At:(ushort)0x100,Count:(ushort)0),(At:(ushort)0xFFFE,Count:(ushort)4),(At:(ushort)0x6FE,Count:(ushort)1)}){
+        var m=new Machine{DataStackBase=0x700};m.Control=new(m,0x800);m.Memory[0x100]=0x55;m.Memory[2]=0x66;m.Data.Push(0xAAAA);m.Data.Push(row.At);m.Data.Push(row.Count);m.Data.Push(0xABCC);
+        new ScriptExecutor(m).RunRange(script,0xB7EB,0xB7EB);Equal((ushort)0x800,m.Control.Pointer);Equal((ushort)0xB7ED,m.ReadWord(0x7FE));Equal((ushort)0x6FE,m.DataPointer);Equal(row.At==0x6FE ? (ushort)0xCCAA : (ushort)0xAAAA,m.Data.Peek());Equal((byte)0x55,m.Memory[0x100]);Equal((byte)0x66,m.Memory[2]);
+        for(int i=0;i<row.Count;i++)Equal((byte)0xCC,m.Memory[Cell.Add(row.At,(ushort)i)]);
+    }
+});
+Check("Natural flagged-entry table construction and sound completion match", () => {
+    var r=BoardSelectionVerification.Verify(evidence,boardLink:"ladder",paidFlagTable:true);Console.WriteLine($"  {r.Instructions} table observations, {r.Lamps} lamps, {r.Sounds} sounds");
+});
+Check("Natural flagged-entry software reel plan preserves VM, seed and requests", () => {
+    var r=BoardSelectionVerification.Verify(evidence,boardLink:"ladder",paidFlagReelPlan:true);Console.WriteLine($"  {r.Instructions} software-plan observations, {r.Sounds} sound commands");
+});
+Check("Natural flagged entry lamp/category preparation matches after accounting", () => {
+    var r=BoardSelectionVerification.Verify(evidence,boardLink:"ladder",paidFlagAnnouncement:true);Console.WriteLine($"  {r.Instructions} flag-entry preparation observations, {r.Lamps} lamps");
+});
+Check("Packed byte/word store preserves wrap, truncation and overlapping U cells", () => {
+    var script=new RecoveredScript(Path.Combine(evidence,"VM-SCRIPTS","EBB8.txt"));
+    foreach(ushort at in new ushort[]{0x100,0xFFFF,0x6FC}){
+        var m=new Machine{DataStackBase=0x700};m.Memory[0x103]=0x55;m.Data.Push(0xAAAA);m.Data.Push(0x1234);m.Data.Push(0xABCD);m.Data.Push(at);
+        new ScriptExecutor(m).RunRange(script,0xEBD2,0xEBD2);Equal((ushort)0x6FE,m.DataPointer);Equal(1,m.Data.Count);Equal((byte)0xCD,m.Memory[at]);Equal(at==0x6FC ? (ushort)0xCD34 : (ushort)0x1234,m.ReadWord(Cell.Add(at,1)));Equal(at==0x6FC ? (ushort)0x34AA : (ushort)0xAAAA,m.Data.Peek());Equal((byte)0x55,m.Memory[0x103]);
+    }
+});
+Check("Natural three-flag feature accounting matches VM, NVRAM and signed counter", () => {
+    var r=BoardSelectionVerification.Verify(evidence,boardLink:"ladder",paidFlagAccounting:true);Console.WriteLine($"  {r.Instructions} flag-accounting observations");
+});
 Check("Three generated paid games retain one machine, debit each Start and pause between games", () => {
     var live=new SkillCashLiveSession(evidence,boardLink:"ladder",continueBoard:true);var original=live.Machine;int next=3,starts=0,completed=0;bool paid=false,nudgeHeld=false,pausedBetween=false;live.Resume();
     for(int n=0;n<600000 && completed<3;n++){
@@ -57,10 +87,13 @@ Check("Live mixed nudge inputs reach a paid nudge and preserve prompt/motor Paus
             live.Pause();ulong at=live.Cycle;ushort vm=live.VmAddress;int count=live.Instructions;live.AdvanceCycles(1000000);Equal(at,live.Cycle);Equal(vm,live.VmAddress);Equal(count,live.Instructions);Equal(true,before.SequenceEqual(live.Machine.Memory));live.Resume();live.SetNudge(0,true);
         }
         if(ordinary && live.MotorBusy && !pausedMotor){live.Pause();var frozen=live.Machine.Memory.ToArray();ulong at=live.Cycle;live.AdvanceCycles(1000000);Equal(at,live.Cycle);Equal(true,frozen.SequenceEqual(live.Machine.Memory));live.Resume();pausedMotor=true;}
-        try{live.AdvanceCycles(512);}catch(NotSupportedException e){if(!e.Message.StartsWith("BOARD paid nudge reached three flagged symbols"))throw;ended=true;}
+        try{live.AdvanceCycles(512);}catch(NotSupportedException e){if(!e.Message.StartsWith("BOARD feature entry prepared"))throw;ended=true;}
     }
-    Equal(true,ended);Equal(true,ordinary);Equal(true,pausedMotor);Equal((ushort)0xEE16,live.VmAddress);Equal((byte)0,live.Machine.Memory[0xBE]);Equal((byte)0,live.Panel.PhysicalBlack2);Equal((byte)5,live.Snapshot().Credits);Equal((ushort)16,live.Snapshot().CashBank);Equal((ushort)0,live.Snapshot().Pending);Equal((ushort)0,live.Snapshot().CurrentWin);
+    Equal(true,ended);Equal(true,ordinary);Equal(true,pausedMotor);Equal((ushort)0xE3AE,live.VmAddress);Equal((byte)16,live.Machine.Memory[0x305]);Equal((byte)0,live.Panel.PhysicalBlack2);Equal((byte)5,live.Snapshot().Credits);Equal((ushort)16,live.Snapshot().CashBank);Equal((ushort)0,live.Snapshot().Pending);Equal((ushort)0,live.Snapshot().CurrentWin);
     for(int r=0;r<3;r++)Equal((byte)((before![0x168+2*r]+(r==0 ? 90 : 0))%96),live.Machine.Memory[0x168+2*r]);
+    int Counter(byte[] bytes)=>(bytes[0x7D5]<<16)|(bytes[0x7D6]<<8)|bytes[0x7D7];
+    Equal((Counter(before!)-8000)&0xFFFFFF,Counter(live.Machine.Memory));Equal(0,live.PaidGamesCompleted);
+    for(int i=0;i<15;i++)Equal(unchecked((byte)~live.Machine.Memory[0x7C9+i]),live.Machine.Memory[0x7D8+i]);
 });
 Check("Natural ordinary paid Nudge1 matches VM, generated motor, lamps and sounds", () => {
     var r=BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgePaidStep:true);Console.WriteLine($"  {r.Instructions} paid-nudge step observations, {r.Lamps} lamps, {r.Sounds} sounds");

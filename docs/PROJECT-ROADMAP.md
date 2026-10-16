@@ -12,10 +12,11 @@ is not authority for which changes John has committed or pushed.
 
 ## Priority order
 
-Current checkpoint: Live returns through the paid-game outer caller to another
-Start prompt, and a generated regression completes three consecutive paid plays
-in one session. Next recover EE16's three-flag feature-entry accounting and board
-routing to broaden outcomes. See recovery/PAID-CYCLE-RETURN-PASS.md.
+Current checkpoint: Live passes three-flag accounting, software reel/table
+planning and pot/board animation, stopping at E3AE before native61CF motion.
+Next recover that motion and subsequent feature-board entry to broaden outcomes.
+The separate returning path still completes three generated paid games in one
+session. See recovery/FLAG-FEATURE-ENTRY-PASS.md for reference qualifications.
 This remains gameplay recovery; the symbolic editing/rebuild toolchain stays deferred.
 
 The primary milestone is a complete playable Adders & Ladders machine on PC.

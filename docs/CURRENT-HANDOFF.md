@@ -6,6 +6,21 @@ batch, including its verification.
 
 ## Working implementation
 
+Newest checkpoint: recovery/FLAG-FEATURE-ENTRY-PASS.md. Live passes EE16's
+three-flag accounting, lamp/category setup, software reel/table planning and
+nudge-pot/board animation, stopping at E3AE before native61CF motion. This route
+is still an unfinished paid game. Five natural windows (34/108/558/606/9778 VM
+observations) match MAME; they originate on a later credit2 paid game, distinct
+from the credit5 generated mixed-input Live campaign. New core VM words7803 and
+7BB8 retain mapped-stack overlap, wrapping and zero-count semantics. The existing
+checkpoint now preserves147 VM spans/1638 native instruction records; Ghidra
+portable-export gaps remain explicit. Next recover61CF motion and subsequent
+feature-board entry, preserving the real returning paid-game path. Full machine
+startup, collection and hundreds of games remain incomplete. Earlier entries
+below are history. See the report for reproduction, exclusions and evidence scope.
+Validation:188 headless groups/all eight WPF modes pass; solution builds have
+zero warnings/errors. Changes are uncommitted; no installations/config changes.
+
 Newest checkpoint: recovery/PAID-CYCLE-RETURN-PASS.md. The verified ordinary
 post-nudge path returns through FC7C/FCDE, FDBA and the real9ABE stack check, then
 reaches a new Start prompt without resetting the machine. A diagnostic completed

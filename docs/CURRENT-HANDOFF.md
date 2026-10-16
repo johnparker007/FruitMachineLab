@@ -6,6 +6,15 @@ batch, including its verification.
 
 ## Working implementation
 
+Newest checkpoint: recovery/START-TONE-SPIN-GATES-PASS.md. Live passes the
+incremental native start tone, pre-spin flags and selected random gates, stopping
+at F38C before F072 final request selection. Credit5/cash bank16/token bank0 and
+pending/current-win0 remain.168 headless groups/eight WPF modes pass. Three natural
+windows (3/155/652 VM observations) and48 isolated request cases match MAME.
+Tone Pause/Resume is tested while004D=31; selective cancellation preserves other
+tasks. Candidate requests remain distinct from final stops/physical movement.
+Older checkpoints below are history.
+
 Newest checkpoint: recovery/PREPLAY-START-STAKE-PASS.md. Live now waits in the
 real preplay loop after the nudge award. Physical START reaches FC34, debits
 credits6 to5 and records stake/compensation accounting; stops at FC4D before
@@ -59,7 +68,7 @@ The old75A9 keep-negative label is corrected to native sign normalization in
 - Live Skill Cash: incremental VM, retained state, physical momentary Start input,
   actual Pause/Resume, generated lamp/alpha outputs and diagnostic state display.
 - Separate verified playback/scrubber; original MAME-backed verification retained.
-- Last development batch:163 headless groups passed. Headless and isolated WPF
+- Last development batch:168 headless groups passed. Headless and isolated WPF
   builds passed; Live/playback WPF smoke checks and rendered layouts were checked.
 - John subsequently reported that the live feature works well.
 
@@ -119,6 +128,16 @@ See recovery/BOARD-MOVEMENT-PASS.md for arithmetic, IRQ-byte read phases, synthe
 scope and preserved earlier timing qualifications.
 
 ## Next development work
+
+Start at F38C/F072 final request selection, then F248/A03C/F30F and F2B5 main-reel
+execution/result. Read START-TONE-SPIN-GATES-PASS.md. Tone phase budgets retain
+unresolved CPU/IRQ/native allocator pacing; no audio synthesis or full6809 claim.
+Native2BBC now computes unheld candidate requests and has48 isolated cases; its
+legacy multiple-of-four label was corrected in F186/F0B0 (high MUL byte is0..3).
+Natural gate seed1798→F95E, candidate requests6/13/17; differing live Start timing
+can produce other values.111 selected VM spans/1502 native rows byte-checked.
+Keep long-wait2CB3 explicit. No fresh live Ghidra export access was available.
+The FC4D boundary below is historical.
 
 Start at FC4D/native5A14, then F384 spin preparation and result dispatch. Read
 PREPLAY-START-STAKE-PASS.md first. The real Start/latch path and credit debit now

@@ -5,6 +5,17 @@ namespace FruitMachineLab.Adders;
 // This neither moves a stepper nor invents a reel completion time.
 public static class AddersReelSymbols
 {
+    // Native2BBC iterates reel2 -> reel0 with masks08/10/20. Held requests
+    // are cleared too; only unheld reels advance the original PRNG.
+    public static void PrepareUnheldRequests(Machine m)
+    {
+        for(int reel=2;reel>=0;reel--){
+            int at=0x169+2*reel;m.Memory[at]=0;
+            byte mask=(byte)(0x20>>reel);if((m.Memory[0x86]&mask)!=0)continue;
+            byte random=Mpu4Random.AdvanceSeed(m);
+            m.Memory[at]=unchecked((byte)(m.Memory[0x2BB9+reel]+((4*random)>>8)));
+        }
+    }
     public static byte CurrentSymbol(Machine machine,int reel)
     {
         if(reel is <0 or >3)throw new ArgumentOutOfRangeException(nameof(reel));

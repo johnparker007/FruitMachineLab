@@ -7,6 +7,28 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("All48 native reel-request cases preserve holds, PRNG order and RAM", () => {
+    using var matrix=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","reel-request-matrix.json")));Equal(48,matrix.RootElement.GetProperty("cases").GetArrayLength());
+    foreach(var row in matrix.RootElement.GetProperty("cases").EnumerateArray()){
+        var m=new SkillCashLiveSession(evidence,boardSelection:true).Machine;Convert.FromHexString(row.GetProperty("before_hex").GetString()!).CopyTo(m.Memory,0);AddersReelSymbols.PrepareUnheldRequests(m);
+        var after=Convert.FromHexString(row.GetProperty("after_hex").GetString()!);if(!m.Memory.AsSpan(0,0x700).SequenceEqual(after.AsSpan(0,0x700)))throw new Exception("Reel request matrix differs: "+row.GetProperty("id").GetString());
+    }
+});
+Check("Cancel by sound root preserves unrelated and duplicate tasks", () => {
+    var m=new Machine();Convert.FromHexString("C300CE01C4").CopyTo(m.Memory,0x1000);Convert.FromHexString("CE01C0").CopyTo(m.Memory,0x2000);
+    var scheduler=new Mpu4ChoiceStreamScheduler(m,0);scheduler.Queue(0x1000);scheduler.Queue(0x2000);scheduler.Queue(0x1000);Equal(3,scheduler.ActiveTasks);
+    scheduler.Cancel(0x1000);Equal(2,scheduler.ActiveTasks);scheduler.AdvanceTicks(2);Equal(1,scheduler.ActiveTasks);
+    m.Memory[0x719B]=0x80;Equal(false,scheduler.Cancel(0x1000));Equal(1,scheduler.ActiveTasks);m.Memory[0x719B]=0;scheduler.Cancel(0x1000);Equal(false,scheduler.Active);
+});
+Check("Natural pre-spin random gates retain VM, seed and reel records", () => {
+    var r=BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeSpinGates:true);Console.WriteLine($"  {r.Instructions} random-gate observations");
+});
+Check("Natural pre-spin flags match retained VM and accounting state", () => {
+    var r=BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeSpinFlags:true);Console.WriteLine($"  {r.Instructions} pre-spin flag observations");
+});
+Check("Natural timed start tone matches scheduler commands and paid-spin entry", () => {
+    var r=BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeTone:true);Console.WriteLine($"  {r.Instructions} tone VM observations, {r.Sounds} sound commands");
+});
 Check("Stake helpers match75 isolated MAME counter and percentage cases", () => {
     using var matrix=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","stake-matrix.json")));
     Equal(75,matrix.RootElement.GetProperty("cases").GetArrayLength());
@@ -220,7 +242,7 @@ Check("Natural three-nudge sequence matches VM, motor phases and all outputs", (
     Console.WriteLine($"  {result.Instructions} sequence observations, {result.Lamps} lamps, {result.Sounds} sounds, {result.AlphaBytes} alpha bytes");
 });
 Check("Live nudge award returns to Start prompt and consumes one real paid play", () => {
-    var live=new SkillCashLiveSession(evidence,boardLink:"ladder",continueBoard:true);bool returned=false,improving=false,pausedImprovement=false,pausedTransfer=false,pausedFlash=false,pausedAccounting=false,paidReady=false;string eligibilityLamps="";string eligibilityAlpha="";int next=3,pressed=0,flashes=0;var meterSteps=new List<ushort>();
+    var live=new SkillCashLiveSession(evidence,boardLink:"ladder",continueBoard:true);bool returned=false,improving=false,pausedImprovement=false,pausedTransfer=false,pausedFlash=false,pausedAccounting=false,paidReady=false,pausedTone=false;string eligibilityLamps="";string eligibilityAlpha="";int next=3,pressed=0,flashes=0;var meterSteps=new List<ushort>();
     var lamps=new List<byte>();var announcements=new List<string>();live.ObserveDispatch=(i,m)=>{if(i.Site==0xFCD5 && !paidReady){eligibilityLamps=Convert.ToHexString(lamps.ToArray());eligibilityAlpha=new Mpu4Alpha(m).Snapshot().Shadow;}if(i.Site==0xAF76)flashes++;if(i.Site==0xE247)lamps.Clear();if(i.Site==0xB666)improving=true;if(i.Site==0xAFC2){Equal((ushort)16,Cell.Add(m.ReadWord(0xBA),m.ReadWord(0x2FA)));meterSteps.Add(m.ReadWord(0x2FA));}};live.ObserveLamp=r=>{lamps.Add(r.Id);lamps.Add((byte)(r.Pattern&15));};live.ObserveAlpha=a=>announcements.Add(a.Text);
     live.Resume();
     for(int n=0;n<180000 && !returned;n++) {
@@ -237,15 +259,19 @@ Check("Live nudge award returns to Start prompt and consumes one real paid play"
         if(live.AwaitingPaidStart && !paidReady){
             paidReady=true;live.Pause();var frozen=live.Machine.Memory.ToArray();ulong at=live.Cycle;live.AdvanceCycles(1000000);Equal(at,live.Cycle);Equal(true,frozen.SequenceEqual(live.Machine.Memory));live.Resume();live.SetStart(true);
         }
+        if(live.TimedToneActive && live.Machine.Memory[0x4D]==0x31 && !pausedTone){
+            live.Pause();var frozen=live.Machine.Memory.ToArray();ulong at=live.Cycle;ushort vm=live.VmAddress;int count=live.Instructions;live.AdvanceCycles(1000000);
+            Equal(at,live.Cycle);Equal(vm,live.VmAddress);Equal(count,live.Instructions);Equal(true,frozen.SequenceEqual(live.Machine.Memory));live.Resume();pausedTone=true;
+        }
         if(paidReady && live.Panel.StartPressed && (live.Machine.Memory[3]&0x80)!=0)live.SetStart(false);
         try{live.AdvanceCycles(512);}catch(NotSupportedException e){if(!e.Message.StartsWith("BOARD paid-play entry reached"))throw;returned=true;}
 
     }
-    Equal(true,returned);Equal(3,pressed);Equal((byte)0,live.Machine.Memory[0xBE]);Equal((byte)0,live.Machine.Memory[0xBF]);Equal((ushort)0,live.Machine.ReadWord(0xBA));Equal((ushort)0,live.Machine.ReadWord(0x2FA));Equal((ushort)16,live.Snapshot().CashBank);Equal((ushort)0,live.Snapshot().TokenBank);Equal((byte)5,live.Snapshot().Credits);Equal((byte)0x30,live.Machine.Memory[0xF02]);Equal((ushort)0xFC4D,live.VmAddress);Equal(true,paidReady);Equal((byte)0,live.Panel.PhysicalBlack2);Equal((ushort)0, (ushort)(live.Machine.ReadWord(0x90)&0x80));Equal(true,live.Fault?.StartsWith("BOARD paid-play entry reached")==true);
+    Equal(true,returned);Equal(3,pressed);Equal((byte)0,live.Machine.Memory[0xBE]);Equal((byte)0,live.Machine.Memory[0xBF]);Equal((ushort)0,live.Machine.ReadWord(0xBA));Equal((ushort)0,live.Machine.ReadWord(0x2FA));Equal((ushort)16,live.Snapshot().CashBank);Equal((ushort)0,live.Snapshot().TokenBank);Equal((byte)5,live.Snapshot().Credits);Equal((byte)0x30,live.Machine.Memory[0xF02]);Equal((ushort)0xF38C,live.VmAddress);Equal(true,paidReady);Equal(true,pausedTone);Equal((byte)0,live.Machine.Memory[0x4D]);Equal((byte)0,live.Panel.PhysicalBlack2);Equal((ushort)0, (ushort)(live.Machine.ReadWord(0x90)&0x80));Equal(true,live.Fault?.StartsWith("BOARD paid-play entry reached")==true);
     Equal(7,flashes);Equal(true,pausedAccounting);Equal(true,pausedFlash);Equal(true,pausedTransfer);Equal(true,meterSteps.SequenceEqual(Enumerable.Range(1,16).Select(n=>(ushort)n)));Equal(true,pausedImprovement);Equal(true,announcements.Any(x=>x.Contains("I CAN DO BETTER")));Equal(true,announcements.Any(x=>x.Contains("LET ME THINK")));Equal(true,announcements.Any(x=>x.Contains("HERE I GO")));
     var reference=BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeTail:true);Equal(BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeWinTransfer:true).LampSequence+reference.LampSequence+BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeAccounting:true).LampSequence+BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeBankReturn:true).LampSequence+BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeCycleInit:true).LampSequence+BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeIc8:true).LampSequence+BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeBackground:true).LampSequence+BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeStatus:true).LampSequence+BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeServices:true).LampSequence+BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgePreplay:true).LampSequence+BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeEligibility:true).LampSequence,eligibilityLamps);Equal(BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeEligibility:true).AlphaShadow,eligibilityAlpha);
     using var captured=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","nudge-stake.json")));var terminal=Convert.FromHexString(captured.RootElement.GetProperty("terminal_ram_hex").GetString()!);
-    Equal(true,live.Machine.Memory.AsSpan(0x160,14).SequenceEqual(terminal.AsSpan(0x160,14)));Equal(true,live.Machine.Memory.AsSpan(0x2F0,0x33).SequenceEqual(terminal.AsSpan(0x2F0,0x33)));
+    Equal((byte)6,live.Machine.Memory[0x168]);Equal((byte)90,live.Machine.Memory[0x16A]);Equal((byte)42,live.Machine.Memory[0x16C]);Equal(false,live.MotorBusy);Equal(true,live.Machine.Memory.AsSpan(0x2F0,0x33).SequenceEqual(terminal.AsSpan(0x2F0,0x33)));
     Equal(true,live.Machine.Memory.AsSpan(0x43A,30).SequenceEqual(terminal.AsSpan(0x43A,30)));Equal(true,live.Machine.Memory.AsSpan(0x7C9,31).SequenceEqual(terminal.AsSpan(0x7C9,31)));
     for(int n=0;n<25;n++)Equal(unchecked((byte)~live.Machine.Memory[0x2F0+n]),live.Machine.Memory[0x309+n]);
 });

@@ -5,6 +5,11 @@ Local clone: C:\projects\GitRepos\FruitMachineLab
 
 ## Current status
 
+Latest: Live passes the incremental native tone and selected pre-spin random
+gates, reaching F38C before final request selection/spin.168 headless groups/eight
+WPF modes pass, including native-tone Pause and48 isolated reel-request cases.
+See recovery/START-TONE-SPIN-GATES-PASS.md for pacing and coverage qualifications.
+
 Latest: Live returns to the genuine Start prompt, accepts the physical button,
 debits credits6 to5 and records stake accounting. FC4D timed tone/paid spin is the
 next boundary.163 headless groups/eight WPF modes pass, including preplay Pause

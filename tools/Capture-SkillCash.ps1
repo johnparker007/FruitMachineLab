@@ -44,12 +44,18 @@ param(
     [switch]$NudgeEligibility,
     [switch]$NudgeStart,
     [switch]$NudgeStake,
+    [switch]$NudgeTone,
+    [switch]$NudgeSpinFlags,
+    [switch]$NudgeSpinGates,
     [switch]$TailWindow,
     [switch]$NoMotorItems,
     [ValidateSet('Ladder','Snake')][string]$BoardLink
 )
 $ErrorActionPreference='Stop'
 if($NudgeStack -and !$NudgeMotion){throw 'NudgeStack requires NudgeMotion'}
+if($NudgeSpinGates -and !$NudgeSpinFlags){throw 'NudgeSpinGates requires NudgeSpinFlags'}
+if($NudgeSpinFlags -and !$NudgeTone){throw 'NudgeSpinFlags requires NudgeTone'}
+if($NudgeTone -and !$NudgeStake){throw 'NudgeTone requires NudgeStake'}
 if($NudgeStake -and !$NudgeStart){throw 'NudgeStake requires NudgeStart'}
 if($NudgeStart -and !$NudgeEligibility){throw 'NudgeStart requires NudgeEligibility'}
 if($NudgeEligibility -and !$NudgePreplay){throw 'NudgeEligibility requires NudgePreplay'}
@@ -236,8 +242,8 @@ if($NudgeStack) {
 }
 # The terminal observer owns stopping; regular dispatch logging must remain active
 # at earlier occurrences of the same site (for example AFC2 for each meter unit).
-if($NudgeResult){$end=if($NudgeStake){'0xfc4d'}elseif($NudgeStart){'0xfcdc'}elseif($NudgeEligibility){'0xfcd5'}elseif($NudgePreplay){'0xfc99'}elseif($NudgeServices){'0xfc03'}elseif($NudgeStatus){'0xfbf3'}elseif($NudgeBackground){'0xfbf1'}elseif($NudgeIc8){'0xfdba'}elseif($NudgeCycleInit){'0xfaf0'}elseif($NudgeBankReturn){'0xfe1f'}elseif($NudgeAccounting){'0xaf25'}elseif($NudgeTail){'0xaff0'}elseif($NudgeWinTransfer){'0xafc2'}elseif($NudgeExit){'0xe460'}else{'0xe263'};$extra+=('bpset 0xfc,temp0==1 && y=='+$end+$(if($NudgeWinTransfer -and !$NudgeTail){' && w@0xba==0 && w@0x2fa==0x10'}else{''})+',{printf "'+$format+'",'+$values+$ioPrint+$statusPrint+';save result-ram.bin,0,800;temp0=0;quit}')}
-if($TailWindow){$extra+=('bpset 0xfc,temp0==1 && temp3==0 && y=='+$(if($NudgeStake){'0xfcdc'}elseif($NudgeEligibility){'0xfc99'}elseif($NudgePreplay){'0xfc03'}elseif($NudgeServices){'0xfbf3'}elseif($NudgeStatus){'0xfbf1'}elseif($NudgeBackground){'0xfdba'}elseif($NudgeIc8){'0xfaf0'}elseif($NudgeCycleInit){'0xfe1f'}elseif($NudgeBankReturn){'0xaf25'}elseif($NudgeAccounting){'0xaff0'}else{'0xafc2 && w@0xba==0 && w@0x2fa==0x10'})+',{printf "'+$format+'",'+$values+$ioPrint+$statusPrint+';save tail-entry-ram.bin,0,800;'+$(if($NudgeStake){'save config-window.bin,7190,1a;'}else{''})+'temp3=1;go}')}
+if($NudgeResult){$end=if($NudgeSpinGates){'0xf38c'}elseif($NudgeSpinFlags){'0xf38a'}elseif($NudgeTone){'0xf384'}elseif($NudgeStake){'0xfc4d'}elseif($NudgeStart){'0xfcdc'}elseif($NudgeEligibility){'0xfcd5'}elseif($NudgePreplay){'0xfc99'}elseif($NudgeServices){'0xfc03'}elseif($NudgeStatus){'0xfbf3'}elseif($NudgeBackground){'0xfbf1'}elseif($NudgeIc8){'0xfdba'}elseif($NudgeCycleInit){'0xfaf0'}elseif($NudgeBankReturn){'0xfe1f'}elseif($NudgeAccounting){'0xaf25'}elseif($NudgeTail){'0xaff0'}elseif($NudgeWinTransfer){'0xafc2'}elseif($NudgeExit){'0xe460'}else{'0xe263'};$extra+=('bpset 0xfc,temp0==1 && y=='+$end+$(if($NudgeWinTransfer -and !$NudgeTail){' && w@0xba==0 && w@0x2fa==0x10'}else{''})+',{printf "'+$format+'",'+$values+$ioPrint+$statusPrint+';save result-ram.bin,0,800;temp0=0;quit}')}
+if($TailWindow){$extra+=('bpset 0xfc,temp0==1 && temp3==0 && y=='+$(if($NudgeSpinGates){'0xf38a'}elseif($NudgeSpinFlags){'0xf384'}elseif($NudgeTone){'0xfc4d'}elseif($NudgeStake){'0xfcdc'}elseif($NudgeEligibility){'0xfc99'}elseif($NudgePreplay){'0xfc03'}elseif($NudgeServices){'0xfbf3'}elseif($NudgeStatus){'0xfbf1'}elseif($NudgeBackground){'0xfdba'}elseif($NudgeIc8){'0xfaf0'}elseif($NudgeCycleInit){'0xfe1f'}elseif($NudgeBankReturn){'0xaf25'}elseif($NudgeAccounting){'0xaff0'}else{'0xafc2 && w@0xba==0 && w@0x2fa==0x10'})+',{printf "'+$format+'",'+$values+$ioPrint+$statusPrint+';save tail-entry-ram.bin,0,800;'+$(if($NudgeStake){'save config-window.bin,7190,1a;'}else{''})+'temp3=1;go}')}
 if($NudgeIc8){
  # Keep peripheral logging inside the selected window. Earlier failed captures
  # with active pre-window observers are retained externally, never curated.
@@ -248,6 +254,11 @@ if($NudgeStart){
  $lua=[IO.File]::ReadAllText("$run/input.lua").Replace('local frame=0',"local paid_start_sent=false`nlocal frame=0")
  $lua=$lua.Replace('local text=display()',"local text=display()`n if not paid_start_sent and t>=406.6 then`n  pulse(frame,':BLACK2',128,12,'paid_start',text)`n  paid_start_sent=true`n end")
  [IO.File]::WriteAllText("$run/input.lua",$lua)
+}
+if($NudgeTone){
+ foreach($at in @('5a14','5a01','5a05','5a0a','5a10','5a1c')){
+  $extra+=('bpset 0x'+$at+',temp3==1,{printf "NT pc=%04X cycle=%016X clock=%04X tick=%04X parameter=%02X choice=%02X rate=%02X\n",pc,totalcycles,w@0x45,w@0x2d,b@0x4d,b@0x4f,b@0x4e;go}')
+ }
 }
 if($extra.Count -gt 0) {
  # Debugger setup invokes paused frame callbacks. Ignore precisely the added
@@ -302,7 +313,7 @@ $arguments=@('m4addr','-noreadconfig','-rompath',$RomDirectory,
 $arguments | ConvertTo-Json | Set-Content "$run/arguments.json"
 @{mame_sha256=(Get-FileHash -LiteralPath $MameExecutable).Hash;replay_sha256=(Get-FileHash "$run/replay-actions.csv").Hash;
  native_sound_capture=[bool]$NativeSound;native_nvram_capture=[bool]$NativeNvram;full_feature_capture=[bool]$FullFeature;native_input_capture=[bool]$NativeInput;native_lamp_frames=[bool]$NativeLampFrames;native_alpha_capture=[bool]$NativeAlpha;native_scan_capture=[bool]$NativeScan;shared_timing=[bool]$SharedTiming;paused_setup_callbacks_skipped=$extra.Count;
- timer_deadlines=[bool]$TimerDeadlines;cpu_interrupts=[bool]$CpuInterrupts;synthetic_jackpot_probe=[bool]$JackpotProbe;cash_feature_caller=[bool]$CashFeatureCaller;board_result_caller=[bool]$BoardResultCaller;board_selection=[bool]$BoardSelection;dice_requests=[bool]$DiceRequests;dice_motion=[bool]$DiceMotion;board_movement=[bool]$BoardMovement;synthetic_nudge_pot_probe=[bool]$NudgePotProbe;board_link=$BoardLink;continue_board=[bool]$ContinueBoard;availability=[bool]$Availability;nudge_entry=[bool]$NudgeEntry;nudge_prompt=[bool]$NudgePrompt;nudge_request=[bool]$NudgeRequest;nudge_motion=[bool]$NudgeMotion;nudge_stack=[bool]$NudgeStack;nudge_return=[bool]$NudgeReturn;nudge_sequence=[bool]$NudgeSequence;nudge_result=[bool]$NudgeResult;nudge_exit=[bool]$NudgeExit;nudge_win_transfer=[bool]$NudgeWinTransfer;nudge_tail=[bool]$NudgeTail;nudge_accounting=[bool]$NudgeAccounting;nudge_bank_return=[bool]$NudgeBankReturn;nudge_cycle_init=[bool]$NudgeCycleInit;nudge_ic8=[bool]$NudgeIc8;nudge_background=[bool]$NudgeBackground;nudge_status=[bool]$NudgeStatus;nudge_services=[bool]$NudgeServices;nudge_preplay=[bool]$NudgePreplay;nudge_eligibility=[bool]$NudgeEligibility;nudge_start=[bool]$NudgeStart;nudge_stake=[bool]$NudgeStake;tail_window=[bool]$TailWindow;motor_items_observer_disabled=[bool]$NoMotorItems;additional_physical_take_at_square22=[bool]$NudgeEntry;
+ timer_deadlines=[bool]$TimerDeadlines;cpu_interrupts=[bool]$CpuInterrupts;synthetic_jackpot_probe=[bool]$JackpotProbe;cash_feature_caller=[bool]$CashFeatureCaller;board_result_caller=[bool]$BoardResultCaller;board_selection=[bool]$BoardSelection;dice_requests=[bool]$DiceRequests;dice_motion=[bool]$DiceMotion;board_movement=[bool]$BoardMovement;synthetic_nudge_pot_probe=[bool]$NudgePotProbe;board_link=$BoardLink;continue_board=[bool]$ContinueBoard;availability=[bool]$Availability;nudge_entry=[bool]$NudgeEntry;nudge_prompt=[bool]$NudgePrompt;nudge_request=[bool]$NudgeRequest;nudge_motion=[bool]$NudgeMotion;nudge_stack=[bool]$NudgeStack;nudge_return=[bool]$NudgeReturn;nudge_sequence=[bool]$NudgeSequence;nudge_result=[bool]$NudgeResult;nudge_exit=[bool]$NudgeExit;nudge_win_transfer=[bool]$NudgeWinTransfer;nudge_tail=[bool]$NudgeTail;nudge_accounting=[bool]$NudgeAccounting;nudge_bank_return=[bool]$NudgeBankReturn;nudge_cycle_init=[bool]$NudgeCycleInit;nudge_ic8=[bool]$NudgeIc8;nudge_background=[bool]$NudgeBackground;nudge_status=[bool]$NudgeStatus;nudge_services=[bool]$NudgeServices;nudge_preplay=[bool]$NudgePreplay;nudge_eligibility=[bool]$NudgeEligibility;nudge_start=[bool]$NudgeStart;nudge_stake=[bool]$NudgeStake;nudge_tone=[bool]$NudgeTone;nudge_spin_flags=[bool]$NudgeSpinFlags;nudge_spin_gates=[bool]$NudgeSpinGates;tail_window=[bool]$TailWindow;motor_items_observer_disabled=[bool]$NoMotorItems;additional_physical_take_at_square22=[bool]$NudgeEntry;
  initial_state=$(if($NudgePotProbe){'Fresh isolated physical campaign; explicit synthetic Y=DDE3 redirection at B28F; no RAM/ROM injection'}elseif($JackpotProbe){'Fresh isolated physical campaign; explicit synthetic jackpot VM-entry redirection; no RAM/ROM injection'}else{'Fresh isolated default configuration and absent NVRAM; physical-input fixture only; no RAM/ROM injection.'})} |
  ConvertTo-Json | Set-Content "$run/provenance.json"
 $previousReplay=$env:MPU4_REPLAY
@@ -316,7 +327,7 @@ try {
 } finally { $env:MPU4_REPLAY=$previousReplay; $env:MPU4_POLICY=$previousPolicy }
 if((Get-Content -LiteralPath "$run/exit-code.txt") -ne '0'){throw "MAME exited unsuccessfully; do not curate an incomplete capture: $run"}
 if(Select-String -LiteralPath "$run/debug.log" -Pattern '^Error in expression:' -Quiet){throw "Debugger expression error: $run"}
-$completion=if($NudgeStake){'^SC y=FC4D '}elseif($NudgeStart){'^SC y=FCDC '}elseif($NudgeEligibility){'^SC y=FCD5 '}elseif($NudgePreplay){'^SC y=FC99 '}elseif($NudgeServices){'^SC y=FC03 '}elseif($NudgeStatus){'^SC y=FBF3 '}elseif($NudgeBackground){'^SC y=FBF1 '}elseif($NudgeIc8){'^SC y=FDBA '}elseif($NudgeCycleInit){'^SC y=FAF0 '}elseif($NudgeBankReturn){'^SC y=FE1F '}elseif($NudgeAccounting){'^SC y=AF25 '}elseif($NudgeTail){'^SC y=AFF0 '}elseif($NudgeWinTransfer){'^SC y=AFC2 .*pending=0000 win=0010 '}elseif($NudgeExit){'^SC y=E460 '}elseif($NudgeResult){'^SC y=E263 '}elseif($NudgeSequence){'^SC y=B749 '}elseif($NudgeReturn){'^SC y=B403 '}elseif($NudgeMotion){'^SC y=B34E '}elseif($NudgeRequest){'^SC y=B31F '}elseif($NudgePrompt){'^SC y=B403 '}elseif($NudgeEntry){'^SC y=B4C5 '}elseif($Availability){'^SC y=(DD7E|DD98) '}elseif($ContinueBoard){'^SC y=(DD38|E2FC) '}elseif($BoardLink){'^SC y=DE81 '}elseif($NudgePotProbe){'^SC y=DDEF '}elseif($BoardMovement){'^SC y=(DD38|DE96) '}elseif($DiceMotion){'^SC y=B28F '}elseif($DiceRequests){'^SC y=B283 '}else{'^SC y=C71D '}
+$completion=if($NudgeSpinGates){'^SC y=F38C '}elseif($NudgeSpinFlags){'^SC y=F38A '}elseif($NudgeTone){'^SC y=F384 '}elseif($NudgeStake){'^SC y=FC4D '}elseif($NudgeStart){'^SC y=FCDC '}elseif($NudgeEligibility){'^SC y=FCD5 '}elseif($NudgePreplay){'^SC y=FC99 '}elseif($NudgeServices){'^SC y=FC03 '}elseif($NudgeStatus){'^SC y=FBF3 '}elseif($NudgeBackground){'^SC y=FBF1 '}elseif($NudgeIc8){'^SC y=FDBA '}elseif($NudgeCycleInit){'^SC y=FAF0 '}elseif($NudgeBankReturn){'^SC y=FE1F '}elseif($NudgeAccounting){'^SC y=AF25 '}elseif($NudgeTail){'^SC y=AFF0 '}elseif($NudgeWinTransfer){'^SC y=AFC2 .*pending=0000 win=0010 '}elseif($NudgeExit){'^SC y=E460 '}elseif($NudgeResult){'^SC y=E263 '}elseif($NudgeSequence){'^SC y=B749 '}elseif($NudgeReturn){'^SC y=B403 '}elseif($NudgeMotion){'^SC y=B34E '}elseif($NudgeRequest){'^SC y=B31F '}elseif($NudgePrompt){'^SC y=B403 '}elseif($NudgeEntry){'^SC y=B4C5 '}elseif($Availability){'^SC y=(DD7E|DD98) '}elseif($ContinueBoard){'^SC y=(DD38|E2FC) '}elseif($BoardLink){'^SC y=DE81 '}elseif($NudgePotProbe){'^SC y=DDEF '}elseif($BoardMovement){'^SC y=(DD38|DE96) '}elseif($DiceMotion){'^SC y=B28F '}elseif($DiceRequests){'^SC y=B283 '}else{'^SC y=C71D '}
 if(!(Select-String -LiteralPath "$run/debug.log" -Pattern $completion -Quiet)){throw "Requested completion was not captured; inspect $run"}
 Get-ChildItem $run -File | Get-FileHash | Select-Object Path,Hash | ConvertTo-Json | Set-Content "$run/hashes.json"
 Write-Output $run

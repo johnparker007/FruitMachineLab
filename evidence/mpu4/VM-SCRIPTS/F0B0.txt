@@ -15,7 +15,7 @@ Threaded script at F0B0; recovered listing, not original source.
 * F0BD  F0A3  read_indexed_byte_table_at_f0a5  body=0x9971, push_address=0xF0A5
 * F0BF  78B5  vm_push_zero  
 * F0C1  79DC  vm_enter_loop_frame  
-* F0C3  8134  call_prepare_unheld_reel_requests_with_random_multiple_of_four  native=0x2BBC
+* F0C3  8134  call_prepare_unheld_reel_requests_with_random_zero_to_three_offset  native=0x2BBC
 * F0C5  8114  call_reels_translate_positions_to_symbol_records  native=0x2C12
 * F0C7  80C4  call_reels_push_matching_symbol_result  native=0x1AA3
 * F0C9  7B51  vm_duplicate_cell  

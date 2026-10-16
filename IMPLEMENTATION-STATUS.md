@@ -1,5 +1,11 @@
 # Implementation and evidence boundaries
 
+Newest: [start tone/spin gates](docs/recovery/START-TONE-SPIN-GATES-PASS.md). Live
+executes the timed native routine incrementally, then selected pre-spin flags and
+random gates to F38C.168 groups/eight GUI modes pass;48 isolated request cases.
+Final stop selection and the paid reel spin remain the next boundary; tone pacing
+still uses the explicit CPU/IRQ adapter and audio synthesis remains outside scope.
+
 Newest: [preplay Start/stake](docs/recovery/PREPLAY-START-STAKE-PASS.md). Live
 waits for physical START in the recovered preplay loop, consumes one credit and
 records the next stake. FC4D/native5A14 and F384 spin remain the next boundary.

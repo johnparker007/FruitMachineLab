@@ -15,7 +15,7 @@ public sealed class Mpu4ChoiceStreamScheduler(Machine machine,ushort clock,Actio
     private sealed class TaskState
     {
         public readonly Stack<Frame> Frames=new();
-        public ushort Cursor,Due,Resume;
+        public ushort Cursor,Due,Resume,Root;
         public byte Tempo=16,Gate,Flags,Pitch,Transpose,RemainingDuration;
         public int StackBytes;
     }
@@ -58,7 +58,7 @@ public sealed class Mpu4ChoiceStreamScheduler(Machine machine,ushort clock,Actio
             bool fresh=machine.ReadWord(Cell.Add(at,4))==0x5D3B && machine.ReadWord(Cell.Add(at,6))==Cell.Add(at,0x25) && machine.ReadWord(Cell.Add(at,8))==machine.ReadWord(Cell.Add(at,0x13));
             var continuation=fresh ? null : resolveContinuation?.Invoke(at);
             if(!fresh && continuation is null)throw new NotSupportedException("Captured sound continuation is not a fresh queue");
-            var restored=new TaskState{Cursor=machine.ReadWord(Cell.Add(at,8)),Due=machine.ReadWord(Cell.Add(at,2)),Tempo=machine.Memory[at+0xE],Gate=machine.Memory[at+0x10],Flags=machine.Memory[at+0x12],Pitch=machine.Memory[at+0xC],Transpose=machine.Memory[at+0xD]};
+            var restored=new TaskState{Root=machine.ReadWord(Cell.Add(at,0x13)),Cursor=machine.ReadWord(Cell.Add(at,8)),Due=machine.ReadWord(Cell.Add(at,2)),Tempo=machine.Memory[at+0xE],Gate=machine.Memory[at+0x10],Flags=machine.Memory[at+0x12],Pitch=machine.Memory[at+0xC],Transpose=machine.Memory[at+0xD]};
             if(continuation is not null) {
                 // Only gate-free continuations directly resuming command fetch
                 // are supported here. The game adapter validates typed ROM frames.
@@ -80,7 +80,7 @@ public sealed class Mpu4ChoiceStreamScheduler(Machine machine,ushort clock,Actio
         if((machine.Memory[0x719B]&0x80)!=0)return false; // native 60C8 early return
         // Native caller inserts at the active-list head, then sets due=clock+1.
         // Multi-task CPU entry preemption and exhausted allocator are not modeled.
-        task=new(){Cursor=stream,Due=Cell.Add(Clock,1)};
+        task=new(){Cursor=stream,Root=stream,Due=Cell.Add(Clock,1)};
         tasks.Insert(0,task);return true;
     }
     public static ushort ScaleDelay(byte duration,byte globalRate,byte localTempo,byte taskFlags)
@@ -109,6 +109,13 @@ public sealed class Mpu4ChoiceStreamScheduler(Machine machine,ushort clock,Actio
                 task=tasks[0];tasks.RemoveAt(0);RunDueTask();
             }
         }
+    }
+    // Native5C7A removes the first matching root stream, preserving other tasks.
+    // Hardware channel release and native allocator/free-list bytes remain outside this model.
+    public bool Cancel(ushort stream)
+    {
+        if((machine.Memory[0x719B]&0x80)!=0)return false;
+        int index=tasks.FindIndex(item=>item.Root==stream);if(index>=0)tasks.RemoveAt(index);return true;
     }
     public bool Reset()
     {
@@ -159,7 +166,7 @@ public sealed class Mpu4ChoiceStreamScheduler(Machine machine,ushort clock,Actio
                     loops.Push(new(null,cursor));task.StackBytes+=2;cursor=target;break;
                 case 0xC2:
                     ushort child=(ushort)((Fetch()<<8)|Fetch());
-                    tasks.Insert(0,new(){Cursor=child,Due=Clock,Tempo=tempo,Gate=gate,Flags=flags,Pitch=pitch,Transpose=transpose});break;
+                    tasks.Insert(0,new(){Cursor=child,Root=child,Due=Clock,Tempo=tempo,Gate=gate,Flags=flags,Pitch=pitch,Transpose=transpose});break;
                 case 0xC3:
                     if(task.StackBytes>13)throw new InvalidOperationException("Native sound loop stack capacity exceeded");
                     var count=Fetch();loops.Push(new(count,cursor));task.StackBytes+=3;break;

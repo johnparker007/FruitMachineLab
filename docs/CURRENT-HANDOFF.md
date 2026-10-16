@@ -1,10 +1,19 @@
 # Current handoff
 
-Updated 15 October 2026. Read PROJECT-ROADMAP.md for agreed direction and AGENTS.md
+Updated 16 October 2026. Read PROJECT-ROADMAP.md for agreed direction and AGENTS.md
 for permissions and preservation rules. This checkpoint records the last development
 batch, including its verification.
 
 ## Working implementation
+
+Newest completed checkpoint: recovery/IC8-BACKGROUND-ENTRY-PASS.md. Live now
+passes IC8 output and preplay/background dispatch to FBF1 before native482F.
+Natural23/93-dispatch windows match, including port30/control34 and one lamp
+update.150 headless groups/eight WPF smoke modes pass. Captured inherited E247
+port state is a bounded hardware seed, not full PIA/startup recovery. Next482F,
+then characteriser/door/NVRAM/Test guards toward the paid-game input loop.
+Four failed MAME attempts are excluded; successful captures narrow peripheral
+logging to the selected window. See the report and capture-attempt manifest.
 
 Newest continuation: recovery/NUDGE-CYCLE-RETURN-PASS.md. Live passes bank-limit
 service and the actual outer caller, verifies9ABE stack balance, then executes
@@ -31,7 +40,7 @@ The old75A9 keep-negative label is corrected to native sign normalization in
 - Live Skill Cash: incremental VM, retained state, physical momentary Start input,
   actual Pause/Resume, generated lamp/alpha outputs and diagnostic state display.
 - Separate verified playback/scrubber; original MAME-backed verification retained.
-- Last development batch:147 headless groups passed. Headless and isolated WPF
+- Last development batch:150 headless groups passed. Headless and isolated WPF
   builds passed; Live/playback WPF smoke checks and rendered layouts were checked.
 - John subsequently reported that the live feature works well.
 
@@ -91,6 +100,11 @@ See recovery/BOARD-MOVEMENT-PASS.md for arithmetic, IRQ-byte read phases, synthe
 scope and preserved earlier timing qualifications.
 
 ## Next development work
+
+Start at FBF1/native482F. Read IC8-BACKGROUND-ENTRY-PASS.md first. Preserve the
+new successful natural-window fixtures, timer002F replay fix and bounded output
+seed. Finish background hardware services before claiming the next playable game.
+The earlier FAF0 checkpoint below is historical.
 
 Continue from FAF0 into9D5A IC8 output update, then the background services and
 paid-game input loop. Current natural cash bank16 has completed the bank-limit

@@ -8,6 +8,7 @@ public static class AddersNativeWords
     public static bool Handle(Instruction instruction,Machine state,Mpu4LampRequests lamps,Mpu4ChoiceStreamScheduler scheduler,Mpu4Alpha alpha,Action? alphaChanged=null)
     {
         if(lamps.HandleWord(instruction))return true;
+        if(instruction.Native==0x4C34)return true; // Byte-checked RTS compatibility entry.
         // Native5429's idle branch is exactly TST7D; LBEQ53AD (RTS).
         // Busy serial processing has hardware/timing effects not yet translated.
         if(instruction.Native==0x5429){if(state.Memory[0x7D]!=0)throw new NotSupportedException("Native5429 busy serial transfer requires hardware recovery");return true;}

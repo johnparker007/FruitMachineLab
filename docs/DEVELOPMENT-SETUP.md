@@ -5,6 +5,10 @@ Local clone: C:\projects\GitRepos\FruitMachineLab
 
 ## Current status
 
+Latest completed batch: Live reaches FBF1/native482F after IC8 output and initial
+background dispatch.150 headless groups/eight WPF smoke modes pass. See
+recovery/IC8-BACKGROUND-ENTRY-PASS.md for capture qualifications and next work.
+
 Latest: Live completes bank-limit service/outer-cycle return and the next credit/
 bank display refresh through FAF0.147 headless groups/eight WPF smoke modes pass.
 See recovery/NUDGE-CYCLE-RETURN-PASS.md; next recover IC8/background service paths.

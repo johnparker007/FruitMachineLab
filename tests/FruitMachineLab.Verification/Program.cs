@@ -7,6 +7,22 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Natural preplay dispatch reaches status service with exact MAME state", () => {
+    var r=BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeBackground:true);
+    Console.WriteLine($"  {r.Instructions} background observations, {r.Lamps} lamps");
+});
+Check("IC8 script sets only bit10 for008F and clears it for other cells", () => {
+    var catalog=new RecoveredScriptCatalog(Path.Combine(evidence,"VM-SCRIPTS"));
+    foreach(ushort pattern in new ushort[]{0x8F,0x80,0,0x18F})for(int initial=0;initial<256;initial++){
+        var m=new Machine();m.Memory[0xF02]=(byte)initial;m.Data.Push(pattern);
+        new ScriptExecutor(m){ResolveScript=catalog.Owner}.Run(catalog.Owner(0x9D5A));
+        Equal((byte)(pattern==0x8F ? initial|0x10 : initial&0xEF),m.Memory[0xF02]);Equal(0,m.Data.Count);
+    }
+});
+Check("Natural IC8 output update matches MAME latch and VM state", () => {
+    var r=BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeIc8:true);
+    Console.WriteLine($"  {r.Instructions} IC8 observations, {r.Lamps} lamps");
+});
 Check("Bank-limit VM preserves 99/500 option branches and signed threshold behaviour", () => {
     foreach(byte option in new byte[]{0,255})foreach(ushort bank in new ushort[]{0,99,100,500,501,0xFFFF}) {
         var m=new Machine();BoardLinkState.LoadData(m,evidence);m.Memory[0xFF4A]=option;m.WriteWord(0x2FC,bank);
@@ -126,10 +142,10 @@ Check("Live nudge result returns through bank service, stack check and next-cycl
         }
         try{live.AdvanceCycles(512);}catch(NotSupportedException e){if(!e.Message.StartsWith("BOARD nudge machine cycle returned"))throw;returned=true;}
     }
-    Equal(true,returned);Equal(3,pressed);Equal((byte)0,live.Machine.Memory[0xBE]);Equal((byte)0,live.Machine.Memory[0xBF]);Equal((ushort)0,live.Machine.ReadWord(0xBA));Equal((ushort)0,live.Machine.ReadWord(0x2FA));Equal((ushort)16,live.Snapshot().CashBank);Equal((ushort)0,live.Snapshot().TokenBank);Equal((byte)6,live.Snapshot().Credits);Equal(true,live.Fault?.StartsWith("BOARD nudge machine cycle returned")==true);
+    Equal(true,returned);Equal(3,pressed);Equal((byte)0,live.Machine.Memory[0xBE]);Equal((byte)0,live.Machine.Memory[0xBF]);Equal((ushort)0,live.Machine.ReadWord(0xBA));Equal((ushort)0,live.Machine.ReadWord(0x2FA));Equal((ushort)16,live.Snapshot().CashBank);Equal((ushort)0,live.Snapshot().TokenBank);Equal((byte)6,live.Snapshot().Credits);Equal((byte)0x30,live.Machine.Memory[0xF02]);Equal(true,live.Fault?.StartsWith("BOARD nudge machine cycle returned")==true);
     Equal(7,flashes);Equal(true,pausedAccounting);Equal(true,pausedFlash);Equal(true,pausedTransfer);Equal(true,meterSteps.SequenceEqual(Enumerable.Range(1,16).Select(n=>(ushort)n)));Equal(true,pausedImprovement);Equal(true,announcements.Any(x=>x.Contains("I CAN DO BETTER")));Equal(true,announcements.Any(x=>x.Contains("LET ME THINK")));Equal(true,announcements.Any(x=>x.Contains("HERE I GO")));
-    var reference=BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeTail:true);Equal(BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeWinTransfer:true).LampSequence+reference.LampSequence+BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeAccounting:true).LampSequence+BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeBankReturn:true).LampSequence+BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeCycleInit:true).LampSequence,Convert.ToHexString(lamps.ToArray()));Equal(BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeCycleInit:true).AlphaShadow,new Mpu4Alpha(live.Machine).Snapshot().Shadow);
-    using var captured=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","nudge-cycle-init.json")));var terminal=Convert.FromHexString(captured.RootElement.GetProperty("terminal_ram_hex").GetString()!);
+    var reference=BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeTail:true);Equal(BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeWinTransfer:true).LampSequence+reference.LampSequence+BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeAccounting:true).LampSequence+BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeBankReturn:true).LampSequence+BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeCycleInit:true).LampSequence+BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeIc8:true).LampSequence+BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeBackground:true).LampSequence,Convert.ToHexString(lamps.ToArray()));Equal(BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeCycleInit:true).AlphaShadow,new Mpu4Alpha(live.Machine).Snapshot().Shadow);
+    using var captured=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","nudge-background.json")));var terminal=Convert.FromHexString(captured.RootElement.GetProperty("terminal_ram_hex").GetString()!);
     Equal(true,live.Machine.Memory.AsSpan(0x160,14).SequenceEqual(terminal.AsSpan(0x160,14)));Equal(true,live.Machine.Memory.AsSpan(0x2F0,0x33).SequenceEqual(terminal.AsSpan(0x2F0,0x33)));
     Equal(true,live.Machine.Memory.AsSpan(0x43A,30).SequenceEqual(terminal.AsSpan(0x43A,30)));Equal(true,live.Machine.Memory.AsSpan(0x7C9,31).SequenceEqual(terminal.AsSpan(0x7C9,31)));
     for(int n=0;n<25;n++)Equal(unchecked((byte)~live.Machine.Memory[0x2F0+n]),live.Machine.Memory[0x309+n]);

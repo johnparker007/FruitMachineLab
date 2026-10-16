@@ -1,5 +1,9 @@
 # Implementation and evidence boundaries
 
+Newest: [IC8/background entry](docs/recovery/IC8-BACKGROUND-ENTRY-PASS.md). Live
+reaches FBF1/native482F;150 headless groups and eight GUI smoke modes pass.
+The output latch uses a qualified captured entry seed, not full PIA/startup emulation.
+
 Newest: [nudge cycle return](docs/recovery/NUDGE-CYCLE-RETURN-PASS.md). Live now
 passes bank-limit service and the real outer callers/stack check, then refreshes
 the next cycle's credit/bank display. FAF0 IC8/background-service boundary remains.

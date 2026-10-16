@@ -43,6 +43,11 @@ renderers should use the same backend inputs/outputs, with no gameplay in UI cod
 
 ## Current recovery frontier
 
+Newest boundary is FBF1/native482F after the verified IC8 output and background
+entry windows. Continue status lamps/characteriser/door/NVRAM/Test services toward
+the real paid-game input loop. See recovery/IC8-BACKGROUND-ENTRY-PASS.md. Earlier
+cycle-return details below describe the preserved prefix.
+
 Live completes board exit, award animation, statistics/scaled counters, cash-bank
 commit, bank-limit check and real outer-cycle return. It begins the next cycle
 and stops before the IC8 output update at FAF0. Successful narrow natural windows

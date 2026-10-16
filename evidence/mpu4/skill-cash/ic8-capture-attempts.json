@@ -1,0 +1,41 @@
+{
+  "attempts": [
+    {
+      "run_directory": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-ic8-4da9696072044c9390b97b48f6e4546e",
+      "process_exit_code": "-1073741819",
+      "raw_sha256": "11A422DCE5DF38473CA069F7136F6DECC883D2C900CFBF49F08DD189E0DB6600",
+      "classification": "Failed external MAME capture; excluded from verification"
+    },
+    {
+      "run_directory": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-ic8-window-54e1c80cb223458ca6852868f8bedc9a",
+      "process_exit_code": "-1073741819",
+      "raw_sha256": "9CE78EF1924F8B60B6DE5C8CD7197BFA919FDF1C1F4AE175DBBB2BF7DD0F3204",
+      "classification": "Failed external MAME capture; excluded from verification"
+    },
+    {
+      "run_directory": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-ic8-fields-8d3866b2d9754e1c85e381a73565ecf4",
+      "process_exit_code": "-1073741819",
+      "raw_sha256": "196B3EFF4AC963A2CE4108E3FE7F1CA59BB60FF210F0FE8D52582ADB1974482D",
+      "classification": "Failed external MAME capture; excluded from verification"
+    },
+    {
+      "run_directory": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-ic8-split-6e0d48eb85a141fcb1364b07437b67a6",
+      "process_exit_code": "-1073741819",
+      "raw_sha256": "FF79B6C3D9810050D509816FE55B2226AD47EA8A3C9874175D1099289FD876C1",
+      "classification": "Failed external MAME capture; excluded from verification"
+    },
+    {
+      "run_directory": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-ic8-narrow-938a601d40d2405390ced8f8236e6a5f",
+      "process_exit_code": "0",
+      "raw_sha256": "02E39AFFDDAC5C9255516EEB40D807E41708FDB8AB85B86713B3F42C5C812E1F",
+      "classification": "Successful natural narrow window"
+    },
+    {
+      "run_directory": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-background-dc32c08fdcd34f6399f08d2021cedaa3",
+      "process_exit_code": "0",
+      "raw_sha256": "7C8DA196A25C6738BB2D37D671F786419145461C5DC309109C665BDF7EF33C4C",
+      "classification": "Successful natural narrow window"
+    }
+  ],
+  "cause": "Unresolved external access violation; no cause established"
+}

@@ -24,11 +24,20 @@ public static class BoardLinkState
         using var data=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"maps","board-link-data.json")));
         foreach(var range in data.RootElement.GetProperty("ranges").EnumerateObject())Convert.FromHexString(range.Value.GetString()!).CopyTo(machine.Memory,Convert.ToUInt16(range.Name,16));
     }
-    public static ushort Apply(Machine machine,string evidence,string kind,bool continuation=false,bool availability=false,bool nudgeEntry=false,bool nudgePrompt=false,bool nudgeRequest=false,bool nudgeMotion=false,bool nudgeReturn=false,bool nudgeSequence=false,bool nudgeResult=false,bool nudgeExit=false,bool nudgeWinTransfer=false,bool nudgeTail=false,bool nudgeAccounting=false,bool nudgeBankReturn=false,bool nudgeCycleInit=false)
+    // Inherited output latch at the recovered E247 hardware entry. No recorded
+    // output events are applied after this initialization. Full PIA modes remain out of scope.
+    public static void LoadIc8Entry(Machine m,string evidence)
+    {
+        using var capture=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","nudge-ic8.json")));
+        var entry=capture.RootElement.GetProperty("entry_io");
+        if(m.ReadWord(0x204A)!=0xF02 || m.Memory[0x204C]!=255 || (entry[1].GetByte()&4)==0)throw new InvalidDataException("Unsupported IC8 entry configuration");
+        m.Memory[0xF02]=entry[0].GetByte();m.Memory[0xF03]=entry[1].GetByte();
+    }
+    public static ushort Apply(Machine machine,string evidence,string kind,bool continuation=false,bool availability=false,bool nudgeEntry=false,bool nudgePrompt=false,bool nudgeRequest=false,bool nudgeMotion=false,bool nudgeReturn=false,bool nudgeSequence=false,bool nudgeResult=false,bool nudgeExit=false,bool nudgeWinTransfer=false,bool nudgeTail=false,bool nudgeAccounting=false,bool nudgeBankReturn=false,bool nudgeCycleInit=false,bool nudgeIc8=false,bool nudgeBackground=false)
     {
         if(kind is not ("ladder" or "snake"))throw new ArgumentException("Unknown board link kind",nameof(kind));
         BoardMovementState.Apply(machine,evidence);LoadData(machine,evidence);
-        using var data=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",nudgeCycleInit ? "nudge-cycle-init.json" : nudgeBankReturn ? "nudge-bank-return.json" : nudgeAccounting ? "nudge-accounting.json" : nudgeTail ? "nudge-tail.json" : nudgeWinTransfer ? "nudge-win-transfer.json" : nudgeExit ? "nudge-exit.json" : nudgeResult ? "nudge-result.json" : nudgeSequence ? "nudge-sequence.json" : nudgeReturn ? "nudge-return.json" : nudgeMotion ? "nudge-motion-vm.json" : nudgeRequest ? "nudge-request.json" : nudgePrompt ? "nudge-prompt.json" : nudgeEntry ? "nudge-entry.json" : availability ? "ladder-availability.json" : kind+"-link"+(continuation ? "-next" : "")+".json")));var root=data.RootElement;
+        using var data=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",nudgeBackground ? "nudge-background.json" : nudgeIc8 ? "nudge-ic8.json" : nudgeCycleInit ? "nudge-cycle-init.json" : nudgeBankReturn ? "nudge-bank-return.json" : nudgeAccounting ? "nudge-accounting.json" : nudgeTail ? "nudge-tail.json" : nudgeWinTransfer ? "nudge-win-transfer.json" : nudgeExit ? "nudge-exit.json" : nudgeResult ? "nudge-result.json" : nudgeSequence ? "nudge-sequence.json" : nudgeReturn ? "nudge-return.json" : nudgeMotion ? "nudge-motion-vm.json" : nudgeRequest ? "nudge-request.json" : nudgePrompt ? "nudge-prompt.json" : nudgeEntry ? "nudge-entry.json" : availability ? "ladder-availability.json" : kind+"-link"+(continuation ? "-next" : "")+".json")));var root=data.RootElement;
         Convert.FromHexString(root.GetProperty("ram_hex").GetString()!).CopyTo(machine.Memory,0);
         ushort First(string key)=>Convert.ToUInt16(root.GetProperty("initial").GetProperty(key).GetString(),16);
         machine.Control=new(machine,First("s"));machine.DataStackBase=Cell.Add(First("u"),8);machine.SetDataPointer(First("u"));

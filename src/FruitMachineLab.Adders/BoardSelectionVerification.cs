@@ -7,8 +7,10 @@ namespace FruitMachineLab.Adders;
 public record BoardSelectionVerificationResult(int Instructions,int Lamps,int Sounds,int AlphaBytes,int Conditions,bool AlphaExact=true,int ReferenceAlphaBytes=0,string LampSequence="",string AlphaShadow="");
 public static class BoardSelectionVerification
 {
-    public static BoardSelectionVerificationResult Verify(string evidence,bool diceRequests=false,bool diceMotion=false,bool boardMovement=false,bool nudgePotProbe=false,string? boardLink=null,bool continuation=false,bool availability=false,bool nudgeEntry=false,bool nudgePrompt=false,bool nudgeRequest=false,bool nudgeMotion=false,bool nudgeReturn=false,bool nudgeSequence=false,bool nudgeResult=false,bool nudgeExit=false,bool nudgeWinTransfer=false,bool nudgeTail=false,bool nudgeAccounting=false,bool nudgeBankReturn=false,bool nudgeCycleInit=false)
+    public static BoardSelectionVerificationResult Verify(string evidence,bool diceRequests=false,bool diceMotion=false,bool boardMovement=false,bool nudgePotProbe=false,string? boardLink=null,bool continuation=false,bool availability=false,bool nudgeEntry=false,bool nudgePrompt=false,bool nudgeRequest=false,bool nudgeMotion=false,bool nudgeReturn=false,bool nudgeSequence=false,bool nudgeResult=false,bool nudgeExit=false,bool nudgeWinTransfer=false,bool nudgeTail=false,bool nudgeAccounting=false,bool nudgeBankReturn=false,bool nudgeCycleInit=false,bool nudgeIc8=false,bool nudgeBackground=false)
     {
+        if(nudgeBackground)nudgeIc8=true;
+        if(nudgeIc8)nudgeCycleInit=true;
         if(nudgeCycleInit)nudgeBankReturn=true;
         if(nudgeBankReturn)nudgeAccounting=true;
         if(nudgeAccounting)nudgeTail=true;
@@ -24,11 +26,11 @@ public static class BoardSelectionVerification
         if(diceMotion)diceRequests=true;
         if(nudgePotProbe)boardMovement=true;
         if(boardLink is not null)boardMovement=true;
-        using var capture=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",nudgeCycleInit ? "nudge-cycle-init.json" : nudgeBankReturn ? "nudge-bank-return.json" : nudgeAccounting ? "nudge-accounting.json" : nudgeTail ? "nudge-tail.json" : nudgeWinTransfer ? "nudge-win-transfer.json" : nudgeExit ? "nudge-exit.json" : nudgeResult ? "nudge-result.json" : nudgeSequence ? "nudge-sequence.json" : nudgeReturn ? "nudge-return.json" : nudgeMotion ? "nudge-motion-vm.json" : nudgeRequest ? "nudge-request.json" : nudgePrompt ? "nudge-prompt.json" : nudgeEntry ? "nudge-entry.json" : availability ? "ladder-availability.json" : boardLink is not null ? boardLink+"-link"+(continuation ? "-next" : "")+".json" : nudgePotProbe ? "nudge-pot-probe.json" : boardMovement ? (continuation ? "board-movement-next.json" : "board-movement.json") : diceMotion ? "dice-motion-vm.json" : diceRequests ? "dice-requests.json" : "board-selection.json")));var root=capture.RootElement;
+        using var capture=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",nudgeBackground ? "nudge-background.json" : nudgeIc8 ? "nudge-ic8.json" : nudgeCycleInit ? "nudge-cycle-init.json" : nudgeBankReturn ? "nudge-bank-return.json" : nudgeAccounting ? "nudge-accounting.json" : nudgeTail ? "nudge-tail.json" : nudgeWinTransfer ? "nudge-win-transfer.json" : nudgeExit ? "nudge-exit.json" : nudgeResult ? "nudge-result.json" : nudgeSequence ? "nudge-sequence.json" : nudgeReturn ? "nudge-return.json" : nudgeMotion ? "nudge-motion-vm.json" : nudgeRequest ? "nudge-request.json" : nudgePrompt ? "nudge-prompt.json" : nudgeEntry ? "nudge-entry.json" : availability ? "ladder-availability.json" : boardLink is not null ? boardLink+"-link"+(continuation ? "-next" : "")+".json" : nudgePotProbe ? "nudge-pot-probe.json" : boardMovement ? (continuation ? "board-movement-next.json" : "board-movement.json") : diceMotion ? "dice-motion-vm.json" : diceRequests ? "dice-requests.json" : "board-selection.json")));var root=capture.RootElement;
         if(nudgeTail){
-            using var entryReference=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",nudgeCycleInit ? "nudge-bank-return.json" : nudgeBankReturn ? "nudge-accounting.json" : nudgeAccounting ? "nudge-tail.json" : "nudge-win-transfer.json")));
-            using var sidecar=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",nudgeCycleInit ? "nudge-cycle-init-verification.json" : nudgeBankReturn ? "nudge-bank-return-verification.json" : nudgeAccounting ? "nudge-accounting-verification.json" : "nudge-tail-verification.json")));
-            foreach(var field in root.GetProperty("initial").EnumerateObject())if(field.Name!="cycle" && entryReference.RootElement.GetProperty("terminal").GetProperty(field.Name).GetString()!=field.Value.GetString())throw new InvalidDataException("Tail entry differs from verified transfer boundary");
+            using var entryReference=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",nudgeBackground ? "nudge-ic8.json" : nudgeIc8 ? "nudge-cycle-init.json" : nudgeCycleInit ? "nudge-bank-return.json" : nudgeBankReturn ? "nudge-accounting.json" : nudgeAccounting ? "nudge-tail.json" : "nudge-win-transfer.json")));
+            using var sidecar=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",nudgeBackground ? "nudge-background-verification.json" : nudgeIc8 ? "nudge-ic8-verification.json" : nudgeCycleInit ? "nudge-cycle-init-verification.json" : nudgeBankReturn ? "nudge-bank-return-verification.json" : nudgeAccounting ? "nudge-accounting-verification.json" : "nudge-tail-verification.json")));
+            foreach(var field in root.GetProperty("initial").EnumerateObject())if(field.Name is not ("cycle" or "io" or "io_control") && entryReference.RootElement.GetProperty("terminal").GetProperty(field.Name).GetString()!=field.Value.GetString())throw new InvalidDataException("Tail entry differs from verified transfer boundary");
             if(!sidecar.RootElement.GetProperty("tail_window").GetBoolean() || sidecar.RootElement.GetProperty("process_exit_code").GetString()!.Trim()!="0")throw new InvalidDataException("Incomplete tail campaign");
         }
         if(nudgeWinTransfer && !nudgeTail){
@@ -48,7 +50,8 @@ public static class BoardSelectionVerification
         var declared=root.GetProperty("undefined_frame_masks").EnumerateObject().ToArray();
         if(declared.Length!=frameMasks.Count || declared.Any(item=>!frameMasks.TryGetValue(item.Name,out int mask) || item.Value.GetInt32()!=mask))throw new InvalidDataException("Invalid uninitialized-frame comparison exclusions");
         var ordinalMasks=nudgeEntry ? root.GetProperty("ordinal_frame_masks").EnumerateArray().ToDictionary(r=>r[0].GetInt32(),r=>r[1].GetInt32()) : new Dictionary<int,int>();int nudgeMask=65535;ushort lastNudgeSite=0;
-        var m=new SkillCashLiveSession(evidence).Machine;ushort clock=boardLink is not null ? BoardLinkState.Apply(m,evidence,boardLink,continuation,availability,nudgeEntry,nudgePrompt,nudgeRequest,nudgeMotion,nudgeReturn,nudgeSequence,nudgeResult,nudgeExit,nudgeWinTransfer,nudgeTail,nudgeAccounting,nudgeBankReturn,nudgeCycleInit) : boardMovement ? BoardMovementState.Apply(m,evidence,nudgePotProbe,continuation) : BoardSelectionState.Apply(m,evidence,diceRequests);
+        var m=new SkillCashLiveSession(evidence).Machine;ushort clock=boardLink is not null ? BoardLinkState.Apply(m,evidence,boardLink,continuation,availability,nudgeEntry,nudgePrompt,nudgeRequest,nudgeMotion,nudgeReturn,nudgeSequence,nudgeResult,nudgeExit,nudgeWinTransfer,nudgeTail,nudgeAccounting,nudgeBankReturn,nudgeCycleInit,nudgeIc8,nudgeBackground) : boardMovement ? BoardMovementState.Apply(m,evidence,nudgePotProbe,continuation) : BoardSelectionState.Apply(m,evidence,diceRequests);
+        if(nudgeIc8)m.Memory[0xF02]=(byte)Convert.ToUInt16(root.GetProperty("initial").GetProperty("io").GetString(),16);
         var motion=!nudgeTail && (diceMotion || nudgeMotion) ? new DiceMotionReference(m,evidence,nudgeMotion,nudgeSequence,nudgeResult) : null;
         using var vmHash=IncrementalHash.CreateHash(HashAlgorithmName.SHA256);using var lampHash=IncrementalHash.CreateHash(HashAlgorithmName.SHA256);using var soundHash=IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
         static void Hash(IncrementalHash hash,ReadOnlySpan<ushort> values){Span<byte> bytes=stackalloc byte[values.Length*2];for(int n=0;n<values.Length;n++)BinaryPrimitives.WriteUInt16BigEndian(bytes.Slice(n*2,2),values[n]);hash.AppendData(bytes);}
@@ -73,7 +76,7 @@ public static class BoardSelectionVerification
         var byteReads=boardMovement ? Rows("byte_reads") : [];int byteReadPoint=0;
         var catalog=new RecoveredScriptCatalog(Path.Combine(evidence,"VM-SCRIPTS"));
         RecoveredScript Resolve(ushort at)=>catalog.Owner(at);
-        void Advance(ushort target){ushort delta=Cell.Subtract(target,scheduler.Clock);if(delta>32767)throw new InvalidDataException("Board sound clock reversed");if(delta!=0){m.Memory[0x2C]=0;m.WriteWord(0x35,(ushort)Math.Max(0,m.ReadWord(0x35)-delta));}scheduler.AdvanceTicks(delta);}
+        void Advance(ushort target){ushort delta=Cell.Subtract(target,scheduler.Clock);if(delta>32767)throw new InvalidDataException("Board sound clock reversed");if(delta!=0){m.WriteWord(0x2F,Cell.Add(m.ReadWord(0x2F),delta));m.Memory[0x2C]=0;m.WriteWord(0x35,(ushort)Math.Max(0,m.ReadWord(0x35)-delta));}scheduler.AdvanceTicks(delta);}
         int liftedObserved=0;
         var executor=new ScriptExecutor(m){ResolveScript=Resolve,ResolveWord=SkillCashData.ResolveWord,
             InputConditionCell=value=>{
@@ -126,6 +129,7 @@ public static class BoardSelectionVerification
             }
             if(frameMasks.TryGetValue(i.Site.ToString("X4"),out int mask))signature[10]&=(ushort)mask;
             if(anchors.TryGetValue(ordinal,out var expected))for(int n=0;n<signature.Length;n++)if(signature[n]!=expected[n+1])throw new InvalidDataException($"Board ordinal {ordinal}, {i.Site:X4}, field {n}: {signature[n]:X4} != {expected[n+1]:X4}");
+            if(nudgeIc8 && m.Memory[0xF02]!=root.GetProperty("io_rows")[ordinal][1].GetByte())throw new InvalidDataException("IC8 output latch differs");
             Hash(vmHash,signature);if((diceRequests && i.Site==(diceMotion ? 0xB28F : 0xB283)) || (boardMovement && (!nudgeReturn || ordinal==root.GetProperty("instructions").GetInt32()-1) && i.Site==Convert.ToUInt16(root.GetProperty("terminal").GetProperty("y").GetString(),16))){ordinal++;break;}executor.Step();ordinal++;
         }
         void Match(string key,string actual){if(root.GetProperty(key).GetString()!=actual)throw new InvalidDataException($"Board {key} differs: {actual}");}

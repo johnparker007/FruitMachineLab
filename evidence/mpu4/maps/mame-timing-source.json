@@ -255,5 +255,30 @@
       "scope": "Selected phase-clock connection: status then counter acknowledgement, CR2 bit0 selector, CR3 stop;19 natural windows including frozen counters",
       "qualification": "Bounded verification path, not yet supplied to Live. Arm phase and interrupted instruction remain observed inputs; generated bus times use instruction costs, no recorded intra-handler access times. Other PTM sources and CPU delivery remain external."
     }
+  },
+  "output_scan_execution": {
+    "implementation": "src/FruitMachineLab.Runtime/Mpu4OutputScanExecution.cs",
+    "hardware_arm": "src/FruitMachineLab.Runtime/Mpu4Timer3ArmHardware.cs",
+    "live": "src/FruitMachineLab.Adders/SkillCashLiveSession.cs",
+    "natural_evidence": [
+      "skill-cash/ptm-service-timing.json",
+      "skill-cash/ptm-instruction-boundaries.json",
+      "skill-cash/output-scan.json"
+    ],
+    "synthetic_evidence": "skill-cash/output-scan-timing.json",
+    "verification": "skill-cash/output-scan-timing-verification.json",
+    "source_symbols": [
+      "ST8",
+      "ST16",
+      "INDEXED",
+      "LBRANCH",
+      "NEG8",
+      "DEC8",
+      "cond_gt",
+      "cond_le",
+      "cond_hi"
+    ],
+    "scope": "Translated28FE scan,19C2/19FA sweep and70EF arm;64 isolated native paths,19 natural instruction/arm windows,6103 native final-output digest",
+    "qualification": "Live retains scan ENTRY event3 and FE70 IRQ entry, not scan return/event4 or arm/event5. Word store high/low bus events at completion-1/completion. Strict scan->phase->dispatch connection passes19 natural windows; changed Live paths can place retained IRQ before generated assertion, so hardware bridge remains verification-only."
   }
 }

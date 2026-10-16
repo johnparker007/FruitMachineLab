@@ -17,7 +17,12 @@ public sealed class SkillCashLiveSession
     private readonly ScriptExecutor executor;
     private readonly Mpu4ChoiceStreamScheduler scheduler;
     private readonly Mpu4Alpha alpha;
-    private readonly Mpu4OutputScan scan;
+    private Mpu4OutputScanExecution? outputScan;
+    public ulong? NextOutputScanEvent=>outputScan?.NextEventCycle;
+    public ushort? OutputScanAddress=>outputScan?.Address;
+    public Action<OutputScanInstruction>? ObserveOutputScanInstruction {get;set;}
+    public Action<OutputScanAccess>? ObserveOutputScanAccess {get;set;}
+    public Action<ulong,Timer3Arm>? ObserveTimer3Arm {get;set;}
     private Mpu4LampCallbackExecution? lampCallback;
     private Mpu4Timer3DispatchExecution? timer3Dispatch;
     public ulong? NextTimer3DispatchEvent=>timer3Dispatch?.NextEventCycle;
@@ -176,11 +181,10 @@ public sealed class SkillCashLiveSession
         var response=JsonSerializer.Deserialize<LampFrameCapture>(File.ReadAllText(Path.Combine(evidence,"skill-cash","lamp-frames.json")),options)!;
         var frames=new Mpu4LampFrames(Machine,response.Responses.Select(x=>checked((byte)x)).ToArray());
         var requests=new Mpu4LampRequests(Machine,request=>{frames.Apply(request.Id,request.Pattern);LampRequests++;ObserveLamp?.Invoke(request);});
-        scan=new(Machine,state=>Mpu4LampPulseSweep.Advance(state,_=>{}));
         ulong offset=0;var scanTimes=new List<ulong>();
         foreach(var row in timing.Events) {
             offset=checked(offset+row[0]);
-            if(row[1]==4)scanTimes.Add(offset);
+            if(row[1]==3)scanTimes.Add(offset);
         }
         // Independent native IRQ capture: retain FE70 handler entry, not either
         // callback timestamp. Latch coordinate+measured IRQ offset is FE70 time;
@@ -289,7 +293,7 @@ public sealed class SkillCashLiveSession
         ulong target=checked(Cycle+cycles);int budget=200_000;
         try {
             while(!Paused && !Completed && Cycle<=target) {
-                ulong irq=checked(serviceEpoch+services[serviceIndex].Scan);
+                ulong irq=outputScan?.NextEventCycle ?? checked(serviceEpoch+services[serviceIndex].Scan);
                 ulong next=Math.Min(occupancy.NextStart,Math.Min(nextVm,Math.Min(irq,nextCallback)));if(next>target){Cycle=target;break;}Cycle=next;
                 if(occupancy.NextStart==next) {
                     ulong end=occupancy.NextEnd;
@@ -301,6 +305,7 @@ public sealed class SkillCashLiveSession
                 }
                 if(nextCallback==next) {
                     if(timer3Dispatch is null && lampCallback is null){
+                        if(outputScan is not null)throw new NotSupportedException("Timer3 preemption inside generated output scan requires surrounding IRQ execution");
                         timer3Dispatch=new(Machine,Cycle);ObserveTimer3DispatchEntry?.Invoke(Cycle);
                     }
                     if(timer3Dispatch is not null){
@@ -318,25 +323,37 @@ public sealed class SkillCashLiveSession
                     }
                 }
                 if(irq==next) {
-                    scan.Advance();Scans++;RecordLatch();
-                    if(Machine.ReadWord(0x32D)!=40)throw new NotSupportedException("Live timer pulse differs from captured latency template");
                     if(lampCallback is not null || timer3Dispatch is not null)throw new NotSupportedException("Scan preemption inside timer3 dispatch/callback is not recovered");
-                    nextCallback=checked(serviceEpoch+services[serviceIndex].Timer3Irq);
-                    // Input/counter/scheduler CPU phases are atomic at this explicit
-                    // IRQ-service adapter. Their ordering is recovered from FE70.
-                    Panel.Sample(checked((byte)Machine.ReadWord(0x28)));
-                    if(reelMotion is not null) {
-                        Machine.Memory[0x6E]++;
-                        reelHardware!.WriteDrive();reelMotion.Service((_,_)=>reelHardware.ReadOptics(),stream=>scheduler.Queue(stream));
-                        if(motionInitializing){reelMotion.Activate();motionInitializing=false;motionNativeReady=true;}
+                    if(outputScan is null){
+                        outputScan=new(Machine,Cycle);
+                        outputScan.ObserveInstruction=instruction=>ObserveOutputScanInstruction?.Invoke(instruction);
+                        outputScan.ObserveAccess=access=>{if(access.Write && access.Address is 0xA00 or 0xA02 or 0xE01 or 0xB01 or 0xF01)RecordLatch();ObserveOutputScanAccess?.Invoke(access);};
+                        outputScan.ObserveArm=(at,arm)=>{if(arm.Timer!=40)throw new NotSupportedException("Live timer pulse differs from retained IRQ template");ObserveTimer3Arm?.Invoke(at,arm);};
+                        nextCallback=checked(serviceEpoch+services[serviceIndex].Timer3Irq);
                     }
-                    Machine.WriteWord(0x2D,Cell.Add(Machine.ReadWord(0x2D),1));Machine.WriteWord(0x2F,Cell.Add(Machine.ReadWord(0x2F),1));
-                    Machine.Memory[0x33]=unchecked((byte)(Machine.Memory[0x33]+1));
-                    if(Machine.ReadWord(0x35)!=0)Machine.WriteWord(0x35,Cell.Subtract(Machine.ReadWord(0x35),1));
-                    scheduler.AdvanceTicks(1);Machine.Memory[0x2C]=0;
-                    if(++serviceIndex==services.Count){serviceIndex=0;serviceEpoch=checked(serviceEpoch+servicePeriod);}
+                    outputScan.AdvanceTo(Cycle);
+                    if(outputScan.Completed){
+                        outputScan.Dispose();outputScan=null;Scans++;
+                        // Post-scan phases retain their explicit atomic service
+                        // adapter until the surrounding IRQ is translated.
+                        Panel.Sample(checked((byte)Machine.ReadWord(0x28)));
+                        if(reelMotion is not null) {
+                            Machine.Memory[0x6E]++;
+                            reelHardware!.WriteDrive();reelMotion.Service((_,_)=>reelHardware.ReadOptics(),stream=>scheduler.Queue(stream));
+                            if(motionInitializing){reelMotion.Activate();motionInitializing=false;motionNativeReady=true;}
+                        }
+                        Machine.WriteWord(0x2D,Cell.Add(Machine.ReadWord(0x2D),1));Machine.WriteWord(0x2F,Cell.Add(Machine.ReadWord(0x2F),1));
+                        Machine.Memory[0x33]=unchecked((byte)(Machine.Memory[0x33]+1));
+                        if(Machine.ReadWord(0x35)!=0)Machine.WriteWord(0x35,Cell.Subtract(Machine.ReadWord(0x35),1));
+                        scheduler.AdvanceTicks(1);Machine.Memory[0x2C]=0;
+                        if(++serviceIndex==services.Count){serviceIndex=0;serviceEpoch=checked(serviceEpoch+servicePeriod);}
+                    }
                 }
                 if(nextVm==next) {
+                    // A generated scan may outlast the captured outer occupancy
+                    // when current state takes a different native path. VM work
+                    // cannot run inside it; wait for actual instruction progress.
+                    if(outputScan is not null){nextVm=outputScan.NextEventCycle;continue;}
                     if(lampCallback is not null || timer3Dispatch is not null)throw new NotSupportedException("VM execution inside timer3 dispatch/callback is not recovered");
                     if(--budget==0)throw new InvalidOperationException("Live dispatch budget exceeded");
                     var instruction=executor.NextInstruction!;

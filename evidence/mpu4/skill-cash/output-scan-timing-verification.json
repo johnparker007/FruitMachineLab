@@ -1,0 +1,16 @@
+{
+  "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-scan-timing-bbaab81e31804bf6a59518a84cc6c56b",
+  "debug_sha256": "3CF2B43028B6FE52FDBBCAAD03A0C99D0DE9B3743F05E752EA448D79E72FC93E",
+  "cases_sha256": "2DB1C3F704EAB037DE6D04CB3F2C52AC6FF07D22037522090A9F8629CFF3825F",
+  "rom_sha1": "402D1518BB78FDC489B06C2AABC771E5CE151847",
+  "provenance": {
+    "classification": "Synthetic isolated original28FE calls, masked CPU IRQ/FIRQ, injected RAM/PIA state, not natural gameplay",
+    "mame_sha256": "0FCE5A88DF4F9D9B1FBF1405812C00848036E615993780978D967DA34204CB7A"
+  },
+  "cases": 64,
+  "excluded": {
+    "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-scan-timing-07971102e2404549a4d9e8d6e564225f",
+    "debug_sha256": "773ECCDF242F9400C0B7F73BC0C418BD0D67DB91AEE4BDA9538643D0D6F9F2CA",
+    "reason": "Preliminary64-case run used ambiguous debugger b@a/b@b expressions for sample RAM, which resolve CPU registers rather than hex addresses. Replaced with explicit0x addresses and deterministic frame seeds; not used for comparisons."
+  }
+}

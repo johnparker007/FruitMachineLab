@@ -5,6 +5,15 @@ Local clone: C:\projects\GitRepos\FruitMachineLab
 
 ## Current status
 
+Live output scanning is now instruction-staged, including lamp blanking/frame
+writes, timer arm and digit output. It retains scan entry/event3, not scan return
+or recorded arm events.64 isolated ROM calls,19 natural instruction windows and
+the full6103-scan output digest verify it. Reproduce with
+Capture-OutputScanTiming.ps1 (MameExecutable/RomDirectory/fresh RunDirectory), then
+Curate-OutputScanTiming.ps1 (RunDirectory/RomPath, optional ExcludedRunDirectory).
+FE70 entry/outer occupancy and post-scan service remain explicit adapters; see
+CURRENT-HANDOFF.md for the rejected strict hardware attachment and next work.
+
 Selected timer3 dispatch can now connect its generated status/counter reads and
 control writes to the phase clock. Nineteen natural windows verify acknowledgement,
 stop and frozen counter values. This optional hardware connection is exercised by

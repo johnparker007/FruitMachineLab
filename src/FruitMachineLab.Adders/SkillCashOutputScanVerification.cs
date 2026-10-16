@@ -14,7 +14,7 @@ public record OutputScanFrame(int Ordinal,ushort ReferenceClock,ushort Reference
 public record ScanVerification(int Scans,int ExternalChanges,int PulseCalls,IReadOnlyList<OutputScanState> States,IReadOnlyList<OutputScanFrame> Frames);
 public static class SkillCashOutputScanVerification
 {
-    public static ScanVerification Verify(string evidenceDirectory)
+    public static ScanVerification Verify(string evidenceDirectory,bool incremental=false)
     {
         var capture=JsonSerializer.Deserialize<ScanCapture>(File.ReadAllText(Path.Combine(evidenceDirectory,"skill-cash","output-scan.json")),
             new JsonSerializerOptions{PropertyNameCaseInsensitive=true})!;
@@ -43,21 +43,33 @@ public static class SkillCashOutputScanVerification
             }
         }
         int ordinal=0,pulse=0;
-        var scan=new Mpu4OutputScan(m,state=> {
+        int[]? pendingPulse=null;
+        int[] PreparePulse(Machine state) {
             if(pulse>=capture.PulseCalls.Length)throw new InvalidDataException("Extra lamp pulse call");
             var call=capture.PulseCalls[pulse++];if(call[0]!=ordinal || call[1]!=state.Memory[0xB3])throw new InvalidDataException("Pulse call boundary differs");
             state.Memory[0xE8]=(byte)call[2];state.Memory[0xE9]=(byte)call[3];state.Memory[0xEA]=(byte)call[4];
             state.WriteWord(0x32D,(ushort)call[5]);state.WriteWord(0x3D,(ushort)call[6]);state.WriteWord(0x3F,(ushort)call[7]);
-            int arms=0;Mpu4LampPulseSweep.Advance(state,arm=>{arms++;if(arm.Callback!=0x48FD || arm.Timer!=call[10])throw new InvalidDataException("Pulse arm differs");});
+            return call;
+        }
+        void VerifyPulse(Machine state,int[] call,int arms) {
             if(state.Memory[0xE8]!=call[8] || state.Memory[0xEA]!=call[9] || state.ReadWord(0x32D)!=call[10] || state.ReadWord(0x3D)!=call[11] || state.ReadWord(0x3F)!=call[12] || arms!=1)
                 throw new InvalidDataException("Pulse helper state differs");
+        }
+        var scan=new Mpu4OutputScan(m,state=> {
+            var call=PreparePulse(state);int arms=0;Mpu4LampPulseSweep.Advance(state,arm=>{arms++;if(arm.Callback!=0x48FD || arm.Timer!=call[10])throw new InvalidDataException("Pulse arm differs");});VerifyPulse(state,call,arms);
         });
         Apply(capture.Initial);var states=new List<OutputScanState>();var frames=new List<OutputScanFrame>();int input=0,anchor=0;
         using var hash=IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
         Span<byte> bytes=stackalloc byte[13];
         for(ordinal=0;ordinal<capture.Scans;ordinal++) {
             if(input<capture.Inputs.Length && capture.Inputs[input].Ordinal==ordinal)Apply(capture.Inputs[input++].Changes);
-            scan.Advance();var state=scan.Snapshot();states.Add(state);frames.Add(new(ordinal,referenceClock,referenceTick,state));
+            if(incremental){
+                int arms=0;using var execution=new Mpu4OutputScanExecution(m,0);
+                execution.ObserveInstruction=instruction=>{if(instruction.Address==0x19C2)pendingPulse=PreparePulse(m);if(instruction.Address==0x19F8){VerifyPulse(m,pendingPulse ?? throw new InvalidDataException("Missing pulse entry"),arms);pendingPulse=null;}};
+                execution.ObserveArm=(_,arm)=>{arms++;if(pendingPulse is null || arm.Callback!=0x48FD || arm.Timer!=pendingPulse[10])throw new InvalidDataException("Incremental arm differs");};
+                while(!execution.Completed)execution.AdvanceTo(execution.NextEventCycle);
+            }else scan.Advance();
+            var state=scan.Snapshot();states.Add(state);frames.Add(new(ordinal,referenceClock,referenceTick,state));
             if(anchor<capture.Anchors.Length && capture.Anchors[anchor].Ordinal==ordinal) {
                 var expected=capture.Anchors[anchor++];
                 if(state.Phase!=expected.Phase || state.Count!=expected.Count || state.Reload!=expected.Reload || state.Alternate!=expected.Alternate ||

@@ -206,8 +206,8 @@
   },
   {
     "path": "docs/recovery/PTM-CLOCK-FOUNDATION-PASS.md",
-    "bytes": 55872,
-    "sha256": "00BEEDC2C7A568576C3C639FAFE54956E9711E8CD391F2136FEB2614D577AA0A"
+    "bytes": 63343,
+    "sha256": "F3B327623D00C2C3CCDB1D9AFFE62901CCEF7E20FE042BBA7757B09A9451CF6A"
   },
   {
     "path": "docs/recovery/README.txt",
@@ -356,8 +356,8 @@
   },
   {
     "path": "evidence/mpu4/maps/mame-timing-source.json",
-    "bytes": 11486,
-    "sha256": "DD0551762AA1549B3D1A5DC4D47D04A95D821D267E86032B3AB640C851EA8C5B"
+    "bytes": 12746,
+    "sha256": "3BE7002A6F6F92C28C533F71B835EAE151EE37366590143A14F8CEAD2D3B0B6D"
   },
   {
     "path": "evidence/mpu4/maps/nudge-availability-data.json",
@@ -2438,6 +2438,16 @@
     "path": "evidence/mpu4/skill-cash/output-scan-debugger.cmd",
     "bytes": 2823,
     "sha256": "1B36E579B65D892A413789B4B3E294588A75D10FE885B198BB49B3E9A35DAE30"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/output-scan-timing-verification.json",
+    "bytes": 1098,
+    "sha256": "485BFA2FA72BD42DC88CAFF0319D623B0573D7F79EE3BEA76C0F5CC19785F976"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/output-scan-timing.json",
+    "bytes": 644499,
+    "sha256": "8A3C295C668728B3623EEE710C2F68069B3CA1112562A56DEE49F80102BCC876"
   },
   {
     "path": "evidence/mpu4/skill-cash/output-scan-verification.json",

@@ -842,3 +842,109 @@ original MAME modifications. The existing Ghidra export access gap is unchanged.
 Validation:227 headless groups and all eight WPF smoke modes pass; full/headless
 builds have zero warnings/errors.1096 curated entries verify. No expectations
 were rebaselined. All owned smoke processes exited.
+
+## Live staged output scan and generated arm — 16 October 2026
+
+`Mpu4OutputScanExecution` translates28FE→29BA and its19C2/19FA sweep and70EF
+timer-arm helpers as an incremental sequence of native instruction completions.
+It selects branches from current RAM and its translated locals, never from a
+recorded native path. No general6809 opcode execution was added. The selected
+timing decoder adds EORA immediate88 and NEG extended70, checked in native paths.
+Full native register/CC/S-stack residue is not simulated by this routine.
+
+Live now retains shared scan ENTRY/event3, starts this translated scan there,
+and advances it under the same virtual clock as the VM/dispatch/callback. Pause
+stops the scan cursor, locals, RAM effects and virtual time. Individual writes
+blank A00/A02/B00, advance column/counters, set selector controls, write frame
+banks and emit the digit glyph at their generated instruction completion times.
+Lamp-duty history records each physical bank/control write. Playback continues
+using its existing verifier/scrubber. The atomic scan helper remains available
+for playback and independent final-state comparisons.
+
+The scan polls0B02 bit1 through a caller-supplied level reader (Live's current
+port state), including the original38-attempt bound. Timeout stops explicitly
+before the unrecovered LDB19/SWI alarm sequence; it is not silently treated as
+successful readiness. Synthetic engine tests exercise two busy reads then ready
+(30 extra cycles) and38 busy reads reaching that unsupported boundary. Natural
+and64 isolated native cases below exercise the ready path. Electrical PIA sense
+generation, alarm handling and arbitrary IRQ/FIRQ preemption remain outside scope.
+
+19C2 retains the signed countdown/reload, signed timer comparisons at30/300,
+NEG step reversal, signed LEAY addition and16-bit wrap. Exact19FA→1A03 bytes
+preserve the redundant BNE with zero displacement and branch back to19E9; no ROM
+quirk was fixed.70EF retains callback003D=48FD,003F&FE and0040=63 stores. Its
+status/counter reads are exposed as accesses with unknown return data rather
+than fabricated bytes (their loaded B is overwritten before use, then restored).
+Control-selector and enable writes precede the two-byte latch store.710B STY
+0906's MSB bus event is completion−1 at0906, LSB at completion at0907; the arm
+observer fires on the latter. The same natural bus evidence already established
+the effective latch seven cycles after the old instruction-start watchpoint.
+
+`Mpu4Timer3ArmHardware` connects that exact read/status→counter→selector→63→
+MSB→LSB protocol to the phase clock in strict verification. The19-window chain
+starts from an explicit stopped snapshot (high, single-fired, latch40, counter212)
+and a single clock-coordinate anchor. Every later arm, assertion, acknowledgement
+and stop follows generated accesses, preserving phase across shots. Interrupted
+instruction completion and ordinary19-cycle IRQ entry still supply the CPU
+acceptance boundary for this test. Generated times match all19 observed arm,
+assertion and callback times; the preceding independent dispatch test also checks
+all19 stopped counters. This is not a claim that the CPU instruction is generated.
+
+Live no longer reads shared arm/event5 or scan return/event4 as scheduling
+inputs. It retains scan entry/event3 and independent recorded FE70 entry. The
+corruption test moves6103 arms by10 cycles,6103 scan returns by50,6103 callback
+entries by20,6102 callback returns by100 and all callback-duration fields by1000,
+preserving those retained boundaries. Live state/output/callback counts remain
+identical. No test reference outcomes or digests were weakened or rebaselined.
+
+Panel polling, counter increments, reel service and sound scheduler still form
+an explicit atomic post-scan adapter. They now run after the completed scan RTS,
+rather than the old captured RTS-start marker: five cycles later on an identical
+path, plus state-dependent differences. If current scan execution outlasts the
+recorded outer IRQ occupancy, the VM waits for the actual scan to finish; it
+cannot execute inside that native routine. The remaining timer3 callback cannot
+preempt a running scan: this fails explicitly until native IRQ preemption exists.
+
+A trial attaching the strict phase model directly to Live was rejected. The
+existing three-generated-paid-games test reached a retained FE70 delivery before
+the generated timer asserted. The strict constructor reported "requires an
+asserted enabled timer3". This is a captured-schedule/generated-path incompatibility,
+not permission to force pending status or reuse old0–7-cycle acceptance delays
+at a different instruction. Final Live therefore exposes generated hardware bus
+events without attaching this strict clock bridge. Next recover FEBA/FEC0→27D2
+and438C/439F/19B8 post-scan execution so actual instruction boundaries can replace
+the retained delivery. The natural first window interrupts1AA2 RTS; alternatives
+include19BB,1A9E and439F decoding. Captured outer paths remain comparison evidence.
+
+`Capture-OutputScanTiming.ps1` and `Curate-OutputScanTiming.ps1` reproduce64
+isolated original-ROM calls across eight columns and eight state variants:
+suppression, disabled sweep, sample>3, phase/count/reload choices, alternate phase
+branches, decimal/blink, signed timer/step boundaries and wrap. Every native
+instruction encoding/start time and final RAM/port result matches the translation.
+19 natural full instruction/arm windows also match; the existing6103-scan native
+final-output digest passes through this new engine without alteration. Coarse
+and one-instruction updates produce identical access/instruction times and RAM.
+The Live pause test stops between the five-cycle-separated bank blanking stores.
+
+The new `output-scan-timing.json` includes exact ROM-checked regions for28FE,
+19C2,19FA,70EF and the selector/blink tables, alongside selected native contexts.
+These regions come directly from the SHA1-guarded ROM, not a claim that older
+Ghidra listings were lossless. Call/branch targets and effects are linked in the
+runtime translation, this report and existing timing-source export. Pointer003D,
+selector tables28E6/28EE/28F6, phase table29BB, sample08+column, frame100+phase*16+
+column, glyph1A+column, blink2BE+column, phase/count23–27, column28, suppress8D,
+sweepB3 and E8/E9/EA/032D retain their previously recovered meanings. Native calls
+use DP0;19C2 saves/restores A,70EF saves/restores B/CC and masks IRQ/FIRQ around
+the PTM accesses. The translation does not model the resulting CPU stack bytes.
+
+The accepted external run and raw/debug/case hashes are recorded in
+`output-scan-timing-verification.json`. An initial frame-unseeded experiment was
+superseded; a second preliminary run used ambiguous debugger b@a/b@b expressions,
+which resolve registers rather than hex addresses. The excluded provenance keeps
+that failure and hash. The final script uses explicit0x addresses, deterministic
+frame data and fresh isolated MAME directories. No user ROM, settings, source
+checkout or Ghidra project changed; raw logs remain external. Ghidra export access
+remains unavailable as previously documented. No assembler/editor/relocator work.
+Validation:233 headless groups and all eight WPF smoke modes pass; both solution
+builds have zero warnings/errors.1098 curated entries verify. No expectations
+were rebaselined. No installs/configuration changes, commits or pushes occurred.

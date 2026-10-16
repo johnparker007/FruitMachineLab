@@ -12,6 +12,13 @@ is not authority for which changes John has committed or pushed.
 
 ## Priority order
 
+16 October timing checkpoint: the Live output scan and timer arm now execute in
+stages from native code. Recorded scan entry and FE70 entry/occupancy remain.
+Next recover post-scan native service/current-instruction boundaries; a strict
+timer attachment exposed retained IRQ entry preceding generated assertion on a
+changed Live path. Preserve that explicit limit instead of forcing a match.
+The playable-machine priorities below remain unchanged.
+
 Dispatch milestone: callback entry and subsequent outputs now derive from native
 software paths after a retained FE70 IRQ entry. Next replace that hardware
 boundary from timer arm/phase and current native-instruction acceptance; do not

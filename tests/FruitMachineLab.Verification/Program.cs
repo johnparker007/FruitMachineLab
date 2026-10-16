@@ -7,6 +7,63 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { if(args.Length>1 && !name.Contains(args[1],StringComparison.OrdinalIgnoreCase))return;action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Incremental output scan matches64 original-ROM native paths and final states", () => {
+    using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","output-scan-timing.json")));int count=0;
+    foreach(var row in doc.RootElement.GetProperty("rows").EnumerateArray()){
+        var c=row.GetProperty("case");byte B(string n)=>c.GetProperty(n).GetByte();var m=new Machine();SkillCashData.LoadScan(m);
+        m.WriteWord(0x28,B("column"));foreach(var p in new[]{("phase",0x23),("count",0x24),("reload",0x25),("alternate",0x26),("alternate_reload",0x27),("sweep",0xB3),("step",0xEA),("pulse_count",0xE8),("pulse_reload",0xE9),("suppress",0x8D),("decimal",0x22)})m.Memory[p.Item2]=B(p.Item1);
+        m.WriteWord(0x32D,c.GetProperty("timer").GetUInt16());m.WriteWord(0x3D,0x48FD);for(int i=0;i<8;i++){m.Memory[8+i]=B("sample");m.Memory[0x1A+i]=0x3F;m.Memory[0x2BE+i]=0x55;}for(int i=0;i<64;i++)m.Memory[0x100+i]=unchecked((byte)(i*37+11));m.Memory[0xA00]=0xA5;m.Memory[0xA02]=0x5A;m.Memory[0xB00]=0xCC;
+        ulong start=row.GetProperty("instructions")[0].GetProperty("cycle").GetUInt64();var observed=new List<OutputScanInstruction>();using var scan=new Mpu4OutputScanExecution(m,start);scan.ObserveInstruction=observed.Add;while(!scan.Completed)scan.AdvanceTo(scan.NextEventCycle);
+        var native=row.GetProperty("instructions");if(native.GetArrayLength()!=observed.Count)throw new Exception($"Scan case {c.GetProperty("id")}: native {string.Join(',',native.EnumerateArray().Select(i=>i.GetProperty("pc").GetUInt16().ToString("X4")))}; translated {string.Join(',',observed.Select(i=>i.Address.ToString("X4")))}");
+        for(int i=0;i<observed.Count;i++){var ins=observed[i];Equal(native[i].GetProperty("pc").GetUInt16(),ins.Address);Equal(native[i].GetProperty("cycle").GetUInt64(),ins.Started);Equal(true,native[i].GetProperty("context_hex").GetString()!.StartsWith(ins.Bytes,StringComparison.Ordinal));}
+        var end=row.GetProperty("end");Equal(end.GetProperty("cycle").GetUInt64(),scan.Cycle);
+        foreach(var p in new[]{("phase",0x23),("count",0x24),("alternate",0x26),("pulse_count",0xE8),("step",0xEA),("control2",0x3F),("control3",0x40),("bank0",0xA00),("bank1",0xA02),("display",0xB00)})Equal(end.GetProperty(p.Item1).GetByte(),m.Memory[p.Item2]);
+        Equal(end.GetProperty("column").GetUInt16(),m.ReadWord(0x28));Equal(end.GetProperty("timer").GetUInt16(),m.ReadWord(0x32D));Equal(end.GetProperty("callback").GetUInt16(),m.ReadWord(0x3D));count++;
+    }Equal(64,count);
+});
+Check("Incremental output scan matches nineteen natural instruction and arm windows", () => {
+    var capture=System.Text.Json.JsonSerializer.Deserialize<ScanCapture>(File.ReadAllText(Path.Combine(evidence,"skill-cash","output-scan.json")),new System.Text.Json.JsonSerializerOptions{PropertyNameCaseInsensitive=true})!;
+    using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","ptm-service-timing.json")));
+    using var arms=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","ptm-instruction-boundaries.json")));
+    var firstArm=arms.RootElement.GetProperty("windows")[0];decimal firstTime=decimal.Parse(firstArm.GetProperty("latch_seconds").GetString()!,System.Globalization.CultureInfo.InvariantCulture)*Mpu4Timer3PhaseClock.AttosecondsPerSecond+decimal.Parse(firstArm.GetProperty("latch_attoseconds").GetString()!,System.Globalization.CultureInfo.InvariantCulture);
+    decimal origin=firstTime-firstArm.GetProperty("latch_bus_cycle").GetUInt64()*Mpu4Timer3PhaseClock.AttosecondsPerSecond/1_720_000m;
+    decimal Time(ulong cycle)=>origin+cycle*Mpu4Timer3PhaseClock.AttosecondsPerSecond/1_720_000m;
+    var timer=Mpu4Timer3PhaseClock.FromStoppedSnapshot(Time(doc.RootElement.GetProperty("timer1_scans")[0].GetProperty("entry_cycle").GetUInt64()),true,true,40,212,false,true);
+    var hardwareArm=new Mpu4Timer3ArmHardware(timer,Time);
+    var m=new Machine();SkillCashData.LoadScan(m);
+    foreach(var p in new[]{("phase",0x23),("count",0x24),("reload",0x25),("alternate",0x26),("alternate_reload",0x27),("suppress",0x8D),("decimal",0x22),("sweep",0xB3)})m.Memory[p.Item2]=Convert.ToByte(capture.Initial[p.Item1],16);
+    m.WriteWord(0x28,Convert.ToUInt16(capture.Initial["column"],16));foreach(var p in new[]{("samples",8),("digits",0x1A),("blink",0x2BE),("frames",0x100)})Convert.FromHexString(capture.Initial[p.Item1]).CopyTo(m.Memory,p.Item2);
+    int count=0;foreach(var row in doc.RootElement.GetProperty("timer1_scans").EnumerateArray()){
+        foreach(var input in capture.Inputs.Where(i=>i.Ordinal==count))foreach(var p in input.Changes){if(p.Key=="frames")Convert.FromHexString(p.Value).CopyTo(m.Memory,0x100);else if(p.Key is not ("clock" or "tick"))throw new Exception("New natural scan input needs explicit handling");}
+        var pulse=capture.PulseCalls[count];m.Memory[0xE8]=(byte)pulse[2];m.Memory[0xE9]=(byte)pulse[3];m.Memory[0xEA]=(byte)pulse[4];m.WriteWord(0x32D,(ushort)pulse[5]);m.WriteWord(0x3D,(ushort)pulse[6]);m.WriteWord(0x3F,(ushort)pulse[7]);
+        var observed=new List<OutputScanInstruction>();ulong arm=0;using var scan=new Mpu4OutputScanExecution(m,row.GetProperty("entry_cycle").GetUInt64());scan.ObserveInstruction=observed.Add;scan.ObserveAccess=hardwareArm.Access;scan.ObserveArm=(at,value)=>{arm=at;Equal((ushort)40,value.Timer);Equal((ushort)0x48FD,value.Callback);Equal(true,timer.OutputHigh);};while(!scan.Completed)scan.AdvanceTo(scan.NextEventCycle);
+        var native=row.GetProperty("instructions");Equal(native.GetArrayLength(),observed.Count);for(int i=0;i<observed.Count;i++){Equal(native[i].GetProperty("pc").GetUInt16(),observed[i].Address);Equal(native[i].GetProperty("cycle").GetUInt64(),observed[i].Started);Equal(native[i].GetProperty("next_cycle").GetUInt64(),observed[i].Completed);}
+        Equal(row.GetProperty("returned_cycle").GetUInt64(),scan.Cycle);var window=arms.RootElement.GetProperty("windows")[count];Equal(window.GetProperty("latch_bus_cycle").GetUInt64(),arm);
+        Equal(window.GetProperty("calculated_assertion_cycle").GetUInt64(),(ulong)decimal.Round((timer.NextTransition!.Value-origin)*1_720_000m/Mpu4Timer3PhaseClock.AttosecondsPerSecond));
+        var interrupted=window.GetProperty("last_instruction");ulong entry=interrupted.GetProperty("cycle").GetUInt64()+(ulong)M6809InstructionTiming.Decode(Convert.FromHexString(interrupted.GetProperty("context_hex").GetString()!)).Cycles+M6809IrqEntry.EntryCycles;
+        var dispatch=new Mpu4Timer3DispatchExecution(m,entry,new Mpu4Timer3DispatchHardware(timer,entry,Time(entry)));dispatch.AdvanceTo(dispatch.CallbackAt);Equal(window.GetProperty("callback_cycle").GetUInt64(),dispatch.CallbackAt);Equal(false,timer.Enabled);Equal(false,timer.InterruptPending);count++;
+    }Equal(19,count);
+});
+Check("Live pauses actual scan execution between lamp-bank blanking stores", () => {
+    var live=new SkillCashLiveSession(evidence);live.Machine.Memory[0xA00]=0xA5;live.Machine.Memory[0xA02]=0x5A;var accesses=new List<OutputScanAccess>();ulong arm=0;live.ObserveOutputScanAccess=accesses.Add;live.ObserveTimer3Arm=(at,_)=>arm=at;live.Resume();
+    for(int i=0;i<20000 && live.OutputScanAddress!=0x2909;i++)live.AdvanceCycles(1);
+    Equal((ushort?)0x2909,live.OutputScanAddress);Equal((byte)0,live.Machine.Memory[0xA00]);Equal((byte)0x5A,live.Machine.Memory[0xA02]);Equal(1,accesses.Count);Equal(0UL,arm);
+    live.Pause();ulong cycle=live.Cycle;var next=live.NextOutputScanEvent;int vm=live.Instructions;byte[] memory=live.Machine.Memory.ToArray();live.AdvanceCycles(100000);Equal(cycle,live.Cycle);Equal(next,live.NextOutputScanEvent);Equal(vm,live.Instructions);Equal(true,memory.SequenceEqual(live.Machine.Memory));Equal(1,accesses.Count);
+    live.Resume();live.AdvanceCycles(4);Equal((byte)0x5A,live.Machine.Memory[0xA02]);live.AdvanceCycles(1);Equal((byte)0,live.Machine.Memory[0xA02]);Equal(2,accesses.Count);
+    for(int i=0;i<2000 && arm==0;i++)live.AdvanceCycles(1);Equal(true,arm>cycle);Equal((ushort?)0x710F,live.OutputScanAddress);Equal(0,live.Scans);live.Pause();
+});
+Check("Incremental output scan preserves the complete6103-scan native output digest", () => {
+    var result=SkillCashOutputScanVerification.Verify(evidence,incremental:true);Equal(6103,result.Scans);Equal(6103,result.PulseCalls);
+});
+Check("Output scan polls real sense levels and refuses the unresolved native alarm", () => {
+    Machine Seed(){var m=new Machine();SkillCashData.LoadScan(m);m.Memory[0x24]=2;m.Memory[0x25]=3;return m;}
+    ulong Run(int busy){int reads=0;using var scan=new Mpu4OutputScanExecution(Seed(),100,()=>++reads<=busy ? (byte)2 : (byte)0);while(!scan.Completed)scan.AdvanceTo(scan.NextEventCycle);Equal(busy+1,reads);return scan.Cycle;}
+    Equal(Run(0)+30,Run(2));int calls=0;using var timeout=new Mpu4OutputScanExecution(Seed(),0,()=>{calls++;return 2;});bool rejected=false;try{while(!timeout.Completed)timeout.AdvanceTo(timeout.NextEventCycle);}catch(NotSupportedException e){rejected=e.Message.Contains("SWI alarm19",StringComparison.Ordinal);}Equal(true,rejected);Equal(38,calls);
+});
+Check("Output scan coarse updates preserve instruction and hardware event times", () => {
+    Machine Seed(){var m=new Machine();SkillCashData.LoadScan(m);m.WriteWord(0x28,7);m.Memory[0x23]=3;m.Memory[0x24]=1;m.Memory[0x25]=3;m.Memory[0xB3]=255;m.Memory[0xEA]=2;m.Memory[0xE9]=8;m.WriteWord(0x32D,300);return m;}
+    var a=Seed();var b=Seed();var fine=new List<OutputScanInstruction>();var coarse=new List<OutputScanInstruction>();var busA=new List<OutputScanAccess>();var busB=new List<OutputScanAccess>();using var x=new Mpu4OutputScanExecution(a,100);using var y=new Mpu4OutputScanExecution(b,100);x.ObserveInstruction=fine.Add;y.ObserveInstruction=coarse.Add;x.ObserveAccess=busA.Add;y.ObserveAccess=busB.Add;while(!x.Completed)x.AdvanceTo(x.NextEventCycle);y.AdvanceTo(x.Cycle);Equal(true,fine.SequenceEqual(coarse));Equal(true,busA.SequenceEqual(busB));Equal(true,a.Memory.SequenceEqual(b.Memory));var writes=busA.Where(w=>w.Write && w.Address is 0x906 or 0x907).ToArray();Equal(2,writes.Length);Equal(writes[0].Cycle+1,writes[1].Cycle);Equal((ushort?)1,writes[0].Value);Equal((ushort?)42,writes[1].Value);
+});
 Check("Timer3 generated dispatch acknowledges and stops the phase clock in nineteen natural windows", () => {
     using var windows=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","ptm-instruction-boundaries.json")));
     using var capture=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","ptm-skill-cpu.json")));
@@ -132,17 +189,20 @@ Check("Live callback pauses between generated lamp bank writes", () => {
     live.AdvanceCycles(4);Equal(1,writes.Count);live.AdvanceCycles(1);Equal(2,writes.Count);Equal((ushort)0xA02,writes[1].Address);
     live.AdvanceCycles(entry+(blank ? 85UL : 78UL)-live.Cycle);Equal(1,live.Callbacks);Equal(true,live.NextLampCallbackEvent is null);Equal(blank ? 3 : 2,writes.Count);live.Pause();
 });
-Check("Live ignores recorded callback entry and return timestamps while retaining IRQ delivery", () => {
+Check("Live ignores recorded scan return arm and callback timestamps while retaining scan entry and IRQ delivery", () => {
     var directory=Path.Combine(Path.GetTempPath(),"FruitMachineLab-callback-return-"+Guid.NewGuid().ToString("N"));Directory.CreateDirectory(directory);
     try{
         foreach(var source in Directory.EnumerateFiles(evidence,"*",SearchOption.AllDirectories)){string destination=Path.Combine(directory,Path.GetRelativePath(evidence,source));Directory.CreateDirectory(Path.GetDirectoryName(destination)!);File.Copy(source,destination);}
         string file=Path.Combine(directory,"skill-cash","shared-timing.json");var options=new System.Text.Json.JsonSerializerOptions {PropertyNameCaseInsensitive=true};var timing=System.Text.Json.JsonSerializer.Deserialize<SharedTimingCapture>(File.ReadAllText(file),options)!;int changed=0;
-        int changedEntries=0;
+        int changedEntries=0,changedScans=0,changedArms=0;
         for(int i=0;i<timing.Events.Length-1;i++){
+            if(timing.Events[i][1]==4){if(timing.Events[i+1][0]<50)throw new Exception("Insufficient scan diagnostic gap");timing.Events[i][0]+=50;timing.Events[i+1][0]-=50;changedScans++;}
+            if(timing.Events[i][1]==5){if(timing.Events[i+1][0]<10)throw new Exception("Insufficient arm diagnostic gap");timing.Events[i][0]+=10;timing.Events[i+1][0]-=10;changedArms++;}
             if(timing.Events[i][1]==6){if(timing.Events[i+1][0]<20)throw new Exception("Insufficient callback diagnostic gap");timing.Events[i][0]+=20;timing.Events[i+1][0]-=20;changedEntries++;}
             if(timing.Events[i][1]==7){if(timing.Events[i+1][0]<100)throw new Exception("Insufficient diagnostic timestamp gap");timing.Events[i][0]+=100;timing.Events[i+1][0]-=100;changed++;}
         }
         Equal(6103,changedEntries);
+        Equal(6103,changedScans);Equal(6103,changedArms);
         Equal(6102,changed);File.WriteAllText(file,System.Text.Json.JsonSerializer.Serialize(timing));
         string deadlineFile=Path.Combine(directory,"skill-cash","timer-deadlines.json");var deadlines=System.Text.Json.Nodes.JsonNode.Parse(File.ReadAllText(deadlineFile))!;foreach(var row in deadlines["rows"]!.AsArray())row![3]=row[3]!.GetValue<ulong>()+1000;File.WriteAllText(deadlineFile,deadlines.ToJsonString());
         var original=new SkillCashLiveSession(evidence);var altered=new SkillCashLiveSession(directory);var a=new List<LampCallbackWrite>();var b=new List<LampCallbackWrite>();original.ObserveLampCallbackWrite=a.Add;altered.ObserveLampCallbackWrite=b.Add;original.Resume();altered.Resume();original.AdvanceCycles(20000);altered.AdvanceCycles(20000);

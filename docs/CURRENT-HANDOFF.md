@@ -1,5 +1,42 @@
 # Current handoff
 
+16 October staged output-scan milestone: Live now executes28FE,19C2/19FA and70EF
+incrementally, including bank blanking, column/control changes, frame writes,
+signed sweep, PTM arm bus events and digit output. Captured scan ENTRY/event3
+remains; scan return/event4 and arm/event5 no longer schedule Live. Actual pause
+between the two bank-blanking stores is verified. Native callbacks/dispatch stay
+incremental. PIA sense reads use current levels; SWI alarm19 is explicitly open.
+
+64 isolated original-ROM paths match every instruction encoding/time and final
+state.19 natural scans match all instruction/arm times. The generated arm→phase
+clock→acknowledgement/stop chain also passes those19 windows, preserving phase
+across arms. The complete6103-scan native output digest remains unchanged. Tools:
+Capture-/Curate-OutputScanTiming.ps1; output-scan-timing*.json includes exact ROM
+regions/tables and provenance. New runtime files: Mpu4OutputScanExecution.cs and
+Mpu4Timer3ArmHardware.cs. Existing timing source map/report link the implementation.
+
+Important remaining boundary: FE70 entry and outer occupancy remain captured.
+A strict Live phase-clock attachment was tried and rejected: the three-paid-game
+test reaches a retained FE70 entry before the state-dependent generated timer
+has asserted. Do not force pending IRQ or borrow an old acceptance delay. The
+strict hardware connection remains verification-only. Live waits for generated
+scan completion if it outlasts captured occupancy. Panel/counter/reel/scheduler
+service remains atomic after the completed scan RTS (five cycles later than the
+old RTS-start marker, plus real state-dependent path variation).
+
+Next concrete work: translate post-scan FEBA→FEC0→27D2 input/reel service and
+438C/439F/19B8 paths enough to generate the instruction interrupted by timer3.
+The first natural window reaches1AA2 RTS; other windows interrupt19BB,1A9E or
+439F input decoding. Use ptm-outer-timing.json for comparisons, not a replayed
+native instruction stream. Scan-entry timing remains an explicit adapter too.
+Original workspaces/ROM/Ghidra/MAME files preserved. No installs/configuration
+changes, commits or pushes. The working tree was clean at this turn's start.
+Validation:233 headless verification groups/all eight WPF modes pass. Both
+solutions build with zero warnings/errors; no expectations were rebaselined.
+1098 curated entries verify. Raw pointers: %TEMP%/FruitMachineLab-scan-timing.txt,
+FruitMachineLab-scan-timing-excluded.txt, FruitMachineLab-scan-suite-final.log and
+FruitMachineLab-scan-gui.txt. All owned capture/smoke processes exited.
+
 16 October hardware acknowledgement continuation: selected dispatch now exposes
 status/counter reads at+20/+53 as actual incremental events, alongside existing
 +85/+96 hardware writes. Optional Mpu4Timer3DispatchHardware connects these to

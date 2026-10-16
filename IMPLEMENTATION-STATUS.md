@@ -1,5 +1,15 @@
 # Implementation and evidence boundaries
 
+Live now stages28FE output scan,19C2/19FA sweep and70EF timer arm from translated
+native instructions. Lamp blanks, frame writes and arm happen as execution
+advances; Pause freezes between individual stores. Scan ENTRY is retained, while
+recorded arm/scan return timestamps are ignored.64 original-ROM synthetic paths,
+19 natural instruction/arm windows and6103 native scan outputs match. A strict
+phase-clock connection works for the19 natural windows but does not yet fit all
+changed Live paths against retained IRQ entry; that connection is verification-only.
+See CURRENT-HANDOFF.md and the existing timing foundation report for remaining
+post-scan service/CPU acceptance and explicit input/scheduler phase limits.
+
 Live selected timer3 dispatch now generates callback entry after128 native CPU
 cycles, with explicit control-shadow and hardware-write events. Recorded FE70
 entry remains; callback entry/return/service-duration captures are not scheduling

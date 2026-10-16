@@ -5,6 +5,12 @@ Local clone: C:\projects\GitRepos\FruitMachineLab
 
 ## Current status
 
+Latest: Live returns to the genuine Start prompt, accepts the physical button,
+debits credits6 to5 and records stake accounting. FC4D timed tone/paid spin is the
+next boundary.163 headless groups/eight WPF modes pass, including preplay Pause
+and mouse Start. See recovery/PREPLAY-START-STAKE-PASS.md for natural windows,
+75-case matrix, preservation checkpoint and remaining coverage limits.
+
 Latest batch reaches FC99 preplay dispatch after verified background services and
 credit/display return.156 headless groups/eight WPF smoke modes pass. See
 recovery/BACKGROUND-SERVICES-PREPLAY-PASS.md for the explicit MAME characteriser

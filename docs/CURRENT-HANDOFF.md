@@ -6,6 +6,15 @@ batch, including its verification.
 
 ## Working implementation
 
+Newest checkpoint: recovery/PREPLAY-START-STAKE-PASS.md. Live now waits in the
+real preplay loop after the nudge award. Physical START reaches FC34, debits
+credits6 to5 and records stake/compensation accounting; stops at FC4D before
+native5A14 timed tone and F384 paid spin. Cash bank16/token bank0/pending/current
+win0 remain.163 headless groups/eight WPF modes pass. Natural351/1368/419-dispatch
+windows and75-case isolated native matrix match. ROM719A/71A2 are byte-checked
+configuration, not mutable RAM. Next native5A14/F384; long-wait2CB3 still explicit.
+Older checkpoints below are retained history.
+
 Newest checkpoint: recovery/BACKGROUND-SERVICES-PREPLAY-PASS.md. Live reachesFC99
 after status lamps, ROM characteriser scan with explicit MAME6809 compatibility
 adapter, unchanged-door/NVRAM/Test guards and credit/display return. Cash bank16,
@@ -50,7 +59,7 @@ The old75A9 keep-negative label is corrected to native sign normalization in
 - Live Skill Cash: incremental VM, retained state, physical momentary Start input,
   actual Pause/Resume, generated lamp/alpha outputs and diagnostic state display.
 - Separate verified playback/scrubber; original MAME-backed verification retained.
-- Last development batch:156 headless groups passed. Headless and isolated WPF
+- Last development batch:163 headless groups passed. Headless and isolated WPF
   builds passed; Live/playback WPF smoke checks and rendered layouts were checked.
 - John subsequently reported that the live feature works well.
 
@@ -110,6 +119,16 @@ See recovery/BOARD-MOVEMENT-PASS.md for arithmetic, IRQ-byte read phases, synthe
 scope and preserved earlier timing qualifications.
 
 ## Next development work
+
+Start at FC4D/native5A14, then F384 spin preparation and result dispatch. Read
+PREPLAY-START-STAKE-PASS.md first. The real Start/latch path and credit debit now
+execute; do not bypass the persistent accounting to start a synthetic spin.
+Long waits can still reach native2CB3 when timer002F changes sign;171D is now
+translated. Keep the75-case matrix's deliberate in-memory ROM patches distinct
+from natural captures. Its first ordinary ROM-write attempt was excluded; the
+fixed harness reads back every requested configuration. Exact selected encoding
+checkpoint:97 VM spans/1394 native rows. No fresh live Ghidra export was available.
+The FC99 frontier below is historical.
 
 Start at FC99/D30F. Read BACKGROUND-SERVICES-PREPLAY-PASS.md and its compatibility/
 fault qualifications. Recover eligibility and player-input handling without

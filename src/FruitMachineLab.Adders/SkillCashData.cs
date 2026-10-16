@@ -33,6 +33,7 @@ public static class SkillCashData
         Convert.FromHexString("1818797A2041422849").CopyTo(machine.Memory,0x7323);
     }
     public static Instruction ResolveWord(ushort token)=>token switch {
+        0x8448 or 0x844E or 0x8454=>new(0,token,"hold_input_mask_record",null,null,0x8444,Cell.Add(token,2)),
         0x9BDE or 0x9BE2 or 0x9BE6 or 0x9BEA or 0x9C0E or 0x9C12 or 0x9C16 or 0x9C1A=>new(0,token,"indexed_link_lamp",null,null,0x9B18,Cell.Add(token,2)),
         0x83B1=>new(0,token,"vm_test_input_condition",0x1A,null),
         0x83B4=>new(0,token,"vm_test_input_condition",0x18,null),

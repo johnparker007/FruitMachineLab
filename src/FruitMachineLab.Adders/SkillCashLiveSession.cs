@@ -40,6 +40,7 @@ public sealed class SkillCashLiveSession
     public bool AwaitingNudgeInput {get;private set;}
     public bool NudgeMoving {get;private set;}
     private bool nudgeAttempted,nudgeContext;
+    public bool AwaitingPaidStart {get;private set;}
     public bool MotorBusy=>reelMotion?.Busy==true;
     public bool IncludesCaller {get;}
     public bool StartsAtBoardSelection {get;}
@@ -99,7 +100,7 @@ public sealed class SkillCashLiveSession
             BoardMovementState.LoadData(Machine,evidence);BoardLinkState.LoadData(Machine,evidence);BoardLinkState.LoadIc8Entry(Machine,evidence);
             if(boardLink is not null)initialClock=BoardLinkState.Apply(Machine,evidence,boardLink);
             boardVisited.Add(Machine.Memory[0xC9]);
-            foreach(string file in new[]{"ladder-link.json","snake-link.json","ladder-link-next.json","snake-link-next.json","board-movement-next.json","ladder-availability.json","nudge-entry.json","nudge-prompt.json","nudge-request.json","nudge-motion-vm.json","nudge-return.json","nudge-sequence.json","nudge-result.json","nudge-exit.json","nudge-win-transfer.json","nudge-tail.json","nudge-accounting.json","nudge-bank-return.json","nudge-cycle-init.json","nudge-ic8.json","nudge-background.json","nudge-status.json","nudge-services.json","nudge-preplay.json"}) {
+            foreach(string file in new[]{"ladder-link.json","snake-link.json","ladder-link-next.json","snake-link-next.json","board-movement-next.json","ladder-availability.json","nudge-entry.json","nudge-prompt.json","nudge-request.json","nudge-motion-vm.json","nudge-return.json","nudge-sequence.json","nudge-result.json","nudge-exit.json","nudge-win-transfer.json","nudge-tail.json","nudge-accounting.json","nudge-bank-return.json","nudge-cycle-init.json","nudge-ic8.json","nudge-background.json","nudge-status.json","nudge-services.json","nudge-preplay.json","nudge-eligibility.json","nudge-start.json","nudge-stake.json"}) {
                 using var linkCosts=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",file)));
                 foreach(var item in linkCosts.RootElement.GetProperty("sites").EnumerateObject())siteCosts.TryAdd(item.Name,item.Value.GetUInt64());
                 foreach(var item in linkCosts.RootElement.GetProperty("tokens").EnumerateObject())tokenCosts.TryAdd(item.Name,item.Value.GetUInt64());
@@ -168,6 +169,8 @@ public sealed class SkillCashLiveSession
                 if(instruction.Site==0xB403)AwaitingNudgeInput=true;
                 if(instruction.Site==0xB34E)NudgeMoving=false;
                 if(instruction.Site==0xB31F){AwaitingNudgeInput=false;NudgeMoving=true;nudgeAttempted=true;}
+                if(instruction.Site==0xFCD5)AwaitingPaidStart=state.Data.Peek()==0;
+                if(instruction.Site==0xFCD8)AwaitingPaidStart=false;
                 if(instruction.Site==0xDD4E)boardPromptReady=true;
                 if(instruction.Site==0xDDAB){boardChoiceCompleted=true;boardPromptReady=false;}
                 if(instruction.Site==0xC6AD)selectionLoop=true;
@@ -268,7 +271,7 @@ public sealed class SkillCashLiveSession
                     if(!ContinueBoard && boardAdvancing && instruction.Site is 0xDE96 or 0xDD38)throw new NotSupportedException($"BOARD advance completed at square {Machine.Memory[0xC9]} (type {Machine.Memory[0xA12E+Machine.Memory[0xC9]]}, nudge pot {Machine.Memory[0xBF]}); the next board result/selection is the recovery boundary. Restart to play again.");
                     if(!ContinueBoard && BoardLinkEntry is not null && instruction.Site==0xDE81)throw new NotSupportedException($"BOARD {BoardLinkEntry} completed at square {Machine.Memory[0xC9]} (nudge pot {Machine.Memory[0xBF]}); following board result/selection remains the recovery boundary. Restart to watch again.");
                     if(ContinueBoard && instruction.Site==0xE2FC && Machine.Data.Peek() is not (1 or 2))throw new NotSupportedException($"BOARD result type {Machine.Data.Peek()} at square {Machine.Memory[0xC9]}; this result route is the next recovery boundary.");
-                    if(ContinueBoard && nudgeAttempted && instruction.Site==0xFC99)throw new NotSupportedException($"BOARD nudge machine cycle returned; pending {Machine.ReadWord(0xBA)}, current win {Machine.ReadWord(0x2FA)}. Background services and credit handling completed; FC99 preplay eligibility and game-start dispatch are the next recovery boundary.");
+                    if(ContinueBoard && nudgeAttempted && instruction.Site==0xFC4D)throw new NotSupportedException("BOARD paid-play entry reached through physical Start input; credit consumed and stake accounted. Fixed timed tone and the next reel spin are the next recovery boundary.");
                     if(ContinueBoard && BoardLinkEntry is not null && !nudgeAttempted && instruction.Site==0xE460)throw new NotSupportedException("BOARD feature exit reached; outer machine caller remains outside the live entry.");
                     if(ContinueBoard && instruction.Native==0x2BEB && reelMotion?.Busy==true){nextVm=checked(serviceEpoch+services[serviceIndex].Scan);continue;}
                     if(ContinueBoard && instruction.Site==0xE227)throw new NotSupportedException($"BOARD special feature at square {Machine.Memory[0xC9]} (type {Machine.Memory[0xA12E+Machine.Memory[0xC9]]}); announcement/feature routing is the next recovery boundary.");
@@ -305,7 +308,7 @@ public sealed class SkillCashLiveSession
         var state=alpha.Snapshot();var history=latches.Select((frame,n)=>n==0 ? frame with{Cycle=0} : frame);
         var display=new AlphaPlaybackFrame(0,state.Text,Machine.ReadWord(0xBA),Machine.ReadWord(0x2FA));
         var duty=new OutputPlayback(Math.Max(Cycle,1),history,new[]{display}).Sample(Cycle).LampDuty;
-        string status=Fault is not null ? "Fault: "+Fault : Completed ? "Completed" : Paused ? "Paused" : waitingForScheduler ? "Waiting for native scheduler" : VmAddress is >=0x9986 and <=0x998D ? "Waiting for panel release" : NudgeMoving ? "Nudge motor running / cleanup executing" : AwaitingNudgeInput ? "Waiting for NUDGE 1 / 2 / 3 - actual input scan executing" : selectionLoop ? "Waiting for START · selection loop executing" : boardAdvancing ? "Board movement executing" : reelMotion?.Busy==true ? "Dice motor running · VM waiting for completion" : motionInitializing ? "Waiting for reel service" : AwaitingBoardSelection ? "Waiting for TAKE / START · board selection executing" : "Running";
+        string status=Fault is not null ? "Fault: "+Fault : Completed ? "Completed" : Paused ? "Paused" : waitingForScheduler ? "Waiting for native scheduler" : VmAddress is >=0x9986 and <=0x998D ? "Waiting for panel release" : NudgeMoving ? "Nudge motor running / cleanup executing" : AwaitingPaidStart ? "Waiting for START � preplay input loop executing" : AwaitingNudgeInput ? "Waiting for NUDGE 1 / 2 / 3 - actual input scan executing" : selectionLoop ? "Waiting for START · selection loop executing" : boardAdvancing ? "Board movement executing" : reelMotion?.Busy==true ? "Dice motor running · VM waiting for completion" : motionInitializing ? "Waiting for reel service" : AwaitingBoardSelection ? "Waiting for TAKE / START · board selection executing" : "Running";
         return new(Cycle,Instructions,VmAddress,status,Panel.PhysicalBlack2,Machine.Memory[3],Machine.ReadWord(0x90),Machine.Memory[0x4F],Machine.ReadWord(0xBA),Machine.ReadWord(0x2FA),state.Text,duty,selections.ToArray(),diceRequest is null ? null : diceRequest with {PhysicalPosition=Machine.Memory[0x16E],Busy=reelMotion!.Busy,DisplayedSymbol=AddersReelSymbols.CurrentSymbol(Machine,3)},StartsAtBoardSelection ? new(Machine.Memory[0xC9],Machine.Memory[0xBF],Machine.Memory[0xA12E+Machine.Memory[0xC9]],Machine.Memory[0xA160+Machine.Memory[0xC9]],boardVisited.ToArray()) : null,AwaitingNudgeInput || nudgeAttempted ? new(Machine.Memory[0xBE],Machine.Memory[0xBF],MotorBusy,new byte[]{Machine.Memory[0x168],Machine.Memory[0x16A],Machine.Memory[0x16C]},Enumerable.Range(0,3).Select(n=>AddersReelSymbols.CurrentSymbol(Machine,n)).ToArray()) : null,Machine.ReadWord(0x2FC),Machine.ReadWord(0x302),Machine.Memory[0x2F0]);
     }
 }

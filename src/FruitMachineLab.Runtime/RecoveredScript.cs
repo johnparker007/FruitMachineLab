@@ -184,6 +184,7 @@ public sealed class ScriptExecutor(Machine machine)
                 case "vm_copy_second_cell": { var b=machine.Pop(); var a=machine.Pop(); machine.Data.Push(a); machine.Data.Push(b); machine.Data.Push(a); break; }
                 case "vm_pick_cell_by_unsigned_word_index": {machine.SyncDataToMemory();var index=machine.Pop();machine.Data.Push(machine.ReadWord(Cell.Add(machine.DataPointer,unchecked((ushort)(2*index)))));break;}
                 case "vm_add_loop_index_to_top": machine.Data.Push(Cell.Add(machine.Pop(),Control().LoopIndex));break;
+                case "vm_rotate_word_right_by_low_byte_count": {int count=machine.Pop()&15;ushort value=machine.Pop();machine.Data.Push(unchecked((ushort)((value>>count)|(value<<((16-count)&15)))));break;}
                 case "vm_rotate_word_left_by_count": {int count=machine.Pop()&15;ushort value=machine.Pop();machine.Data.Push(unchecked((ushort)((value<<count)|(value>>((16-count)&15)))));break;}
                 case "vm_rotate_three_cells": {
                     var c=machine.Pop(); var b=machine.Pop(); var a=machine.Pop(); machine.Data.Push(b); machine.Data.Push(c); machine.Data.Push(a); break;
@@ -203,6 +204,14 @@ public sealed class ScriptExecutor(Machine machine)
                     machine.Data.Push(result.Remainder);machine.Data.Push(result.Quotient);break;
                 }
                 case "vm_add_words": Binary(Cell.Add); break;
+                case "vm_negate_double_cell": {
+                    var high=machine.Pop();var low=machine.Pop();uint value=unchecked(0u-(((uint)high<<16)|low));
+                    machine.Data.Push((ushort)value);machine.Data.Push((ushort)(value>>16));break;
+                }
+                case "vm_compare_double_cells": {
+                    var bHigh=machine.Pop();var bLow=machine.Pop();var aHigh=machine.Pop();var aLow=machine.Pop();
+                    machine.Data.Push(Cell.Flag((short)bHigh>(short)aHigh || (bHigh==aHigh && bLow>aLow)));break;
+                }
                 case "vm_add_double_cells": {
                     var bHigh=machine.Pop();var bLow=machine.Pop();var aHigh=machine.Pop();var aLow=machine.Pop();
                     uint sum=unchecked((((uint)aHigh<<16)|aLow)+(((uint)bHigh<<16)|bLow));

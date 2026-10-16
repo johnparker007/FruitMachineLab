@@ -43,10 +43,12 @@ renderers should use the same backend inputs/outputs, with no gameplay in UI cod
 
 ## Current recovery frontier
 
-Current boundary is FC99/D30F preplay eligibility after the background services
-and credit loop. Continue hold/gamble/eligibility guards toward the actual Start
-latch and paid-game entry. Keep the explicit MAME compatibility adapter distinct
-from physical PAL recovery. See recovery/BACKGROUND-SERVICES-PREPLAY-PASS.md.
+Current boundary is FC4D/native5A14 after the real preplay Start decision, credit
+debit6 to5 and stake/compensation accounting. Continue timed tone and F384 paid
+spin preparation, main reels and result handling. Long-wait2CB3 remains explicit.
+Keep the MAME compatibility adapter distinct from physical PAL recovery. See
+recovery/PREPLAY-START-STAKE-PASS.md. Complete consecutive playable games remains
+the priority; symbolic editing/reassembly stays deferred with byte preservation.
 Older boundaries below describe preserved prefixes.
 
 Newest boundary is FBF1/native482F after the verified IC8 output and background

@@ -1,5 +1,11 @@
 # Implementation and evidence boundaries
 
+Newest: [preplay Start/stake](docs/recovery/PREPLAY-START-STAKE-PASS.md). Live
+waits for physical START in the recovered preplay loop, consumes one credit and
+records the next stake. FC4D/native5A14 and F384 spin remain the next boundary.
+163 headless groups/eight GUI modes pass; three natural windows and75-case native
+matrix match. This is not another completed game; long-wait2CB3 remains explicit.
+
 Newest: [background services/preplay](docs/recovery/BACKGROUND-SERVICES-PREPLAY-PASS.md).
 Live reachesFC99;156 headless groups/eight GUI modes pass. Status lamps and guarded
 services execute, with explicit MAME characteriser compatibility and fault/reset

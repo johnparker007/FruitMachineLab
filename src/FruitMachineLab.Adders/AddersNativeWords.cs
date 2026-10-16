@@ -8,6 +8,11 @@ public static class AddersNativeWords
     public static bool Handle(Instruction instruction,Machine state,Mpu4LampRequests lamps,Mpu4ChoiceStreamScheduler scheduler,Mpu4Alpha alpha,Action? alphaChanged=null)
     {
         if(lamps.HandleWord(instruction))return true;
+        if(instruction.Native==0x57DB){AddersStakeAccounting.Increment(state,state.Pop());return true;}
+        if(instruction.Native==0x3AFA){AddersStakeAccounting.Decay(state);return true;}
+        if(instruction.Native==0x14EB){AddersStakeAccounting.SubtractConfigured(state,state.Pop());return true;}
+        if(instruction.Native==0x171D){lamps.ExecuteStream(0x1720);return true;}
+        if(instruction.Native==0x2C5E){for(int n=0;n<9;n++)lamps.Set(state.Memory[0x732C+n],0x8F,0x49C5);return true;}
         if(instruction.Native==0x68F1){AddersBackgroundServices.VerifyCharacteriser(state,x=>AddersBackgroundServices.Mame6809CompatibilityResponse(state,x));return true;}
         if(instruction.Native==0x6EF7){AddersBackgroundServices.RefreshDoor(state);return true;}
         if(instruction.Native==0x6E99){AddersBackgroundServices.CheckNvram(state);return true;}

@@ -1,0 +1,14 @@
+{
+  "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-ptm-irq-entry-2d70b11c50304a849cae47996fd10c88",
+  "debug_log_sha256": "F6AA1C1C4E6F7B6AFEE4EA6AE36A977E35BBA40707B8E2535AC27E90F8F8F8F0",
+  "bus_csv_sha256": "7E1D0B86A412C30313CF220F4A2FFCF4775BF464BA2A199C48353C7F8456EE5C",
+  "debugger_sha256": "319D46A77B4E478B1D2707F48C486E8A6B4D79BD19D46B13845EA18B5926F25A",
+  "observer_sha256": "B8C5E97A526E17E41106AFA11E46ABB2665FF5D3983D3C1DD8886866024E5185",
+  "mame_sha256": "0FCE5A88DF4F9D9B1FBF1405812C00848036E615993780978D967DA34204CB7A",
+  "cases": 18,
+  "source_tag": "mame0281",
+  "source_commit": "2843a3deb81cf93735244044894196ccfbea4d20",
+  "entry_cycles": 19,
+  "frame_bytes": 12,
+  "unresolved": "Timer assertion is calculated from selected clock mechanics, not a direct asynchronous IRQ-line timestamp. No canonical Skill Cash handler or nested-service timing is inferred."
+}

@@ -12,6 +12,22 @@ is not authority for which changes John has committed or pushed.
 
 ## Priority order
 
+16 October timing priority: do not defer the shared timing model until all
+gameplay is recovered. PTM-CLOCK-FOUNDATION-PASS.md adds independently verified
+timer clock primitives and shows natural timer3 rearm phase is not universally
+low. Its continuation verifies643 observations across20 natural arms including
+post-shot/disable/rearm phase and exact clock-switch truncation. Next separate
+canonical PTM assertion, CPU acceptance and callback execution, checking gate/
+external-edge assumptions before replacing captured scheduling.
+The IRQ continuation now verifies ordinary19-cycle CPU entry/12-byte frames in
+18 synthetic cases, then354 natural Skill Cash states across20 high-phase arms
+and19 original IRQ/callback pairs. Correct bus coordinates explain the earlier
+latency ambiguity for that prefix. Next resolve instruction completion/input
+delivery and native handler paths, then timer1 contention and later arms.
+Live's captured timing adapters remain explicit until each replacement is proven.
+Return to expanding board outcomes after this focused timing milestone; retain
+MAME regression captures and the existing paid-game/feature gameplay tests.
+
 Current checkpoint: Live passes three-flag accounting, planning, native61CF
 motion and board animation, returning to a genuine selection prompt. Physical
 START launches another dice roll with retained state. Next broaden playable

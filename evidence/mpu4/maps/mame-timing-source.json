@@ -1,0 +1,87 @@
+{
+  "classification": "Pinned upstream release source references, not the original game source or proof of installed executable build provenance",
+  "local_repository": "C:/projects/GitRepos/mame",
+  "tag": "mame0281",
+  "commit": "2843a3deb81cf93735244044894196ccfbea4d20",
+  "files": [
+    {
+      "path": "src/devices/machine/6840ptm.cpp",
+      "git_blob": "42b7c6a45cd321a4e6b12d0725f9b24e42231370",
+      "bytes": 20599,
+      "url": "https://github.com/mamedev/mame/blob/2843a3deb81cf93735244044894196ccfbea4d20/src/devices/machine/6840ptm.cpp"
+    },
+    {
+      "path": "src/devices/cpu/m6809/m6809.cpp",
+      "git_blob": "2ec76a160460792f26b1ef56779a30338cc5d8b5",
+      "bytes": 19381,
+      "url": "https://github.com/mamedev/mame/blob/2843a3deb81cf93735244044894196ccfbea4d20/src/devices/cpu/m6809/m6809.cpp"
+    },
+    {
+      "path": "src/devices/cpu/m6809/m6809.lst",
+      "git_blob": "92fb70052c8965f4b7f8138e65fe7f4517338553",
+      "bytes": 34664,
+      "url": "https://github.com/mamedev/mame/blob/2843a3deb81cf93735244044894196ccfbea4d20/src/devices/cpu/m6809/m6809.lst"
+    },
+    {
+      "path": "src/devices/cpu/m6809/base6x09.lst",
+      "git_blob": "7ae01890187401e4019d9f22a9d0d56fcfe412e4",
+      "bytes": 13546,
+      "url": "https://github.com/mamedev/mame/blob/2843a3deb81cf93735244044894196ccfbea4d20/src/devices/cpu/m6809/base6x09.lst"
+    },
+    {
+      "path": "src/devices/cpu/m6809/m6809inl.h",
+      "git_blob": "f8d8c5744b49bedeb49b0097f026094cffaf06f1",
+      "bytes": 6908,
+      "url": "https://github.com/mamedev/mame/blob/2843a3deb81cf93735244044894196ccfbea4d20/src/devices/cpu/m6809/m6809inl.h"
+    },
+    {
+      "path": "src/mame/barcrest/mpu4.cpp",
+      "git_blob": "b85cfbeddfb4b8ea883dcff70d4d2d16b994a206",
+      "bytes": 81256,
+      "url": "https://github.com/mamedev/mame/blob/2843a3deb81cf93735244044894196ccfbea4d20/src/mame/barcrest/mpu4.cpp"
+    },
+    {
+      "path": "src/emu/schedule.cpp",
+      "git_blob": "a475fd9b515ea6df6ff033f3643ecf6adf4b52c8",
+      "bytes": 28970,
+      "url": "https://github.com/mamedev/mame/blob/2843a3deb81cf93735244044894196ccfbea4d20/src/emu/schedule.cpp"
+    },
+    {
+      "path": "src/emu/attotime.h",
+      "git_blob": "39fcf6e5310a19d4c82746c85c18e0bb097f4439",
+      "bytes": 14006,
+      "url": "https://github.com/mamedev/mame/blob/2843a3deb81cf93735244044894196ccfbea4d20/src/emu/attotime.h"
+    },
+    {
+      "path": "src/emu/diexec.cpp",
+      "git_blob": "1cd5266c518ba31acd285e1fc8d804d9c796abcc",
+      "bytes": 23131,
+      "url": "https://github.com/mamedev/mame/blob/2843a3deb81cf93735244044894196ccfbea4d20/src/emu/diexec.cpp"
+    }
+  ],
+  "irq_entry": {
+    "scope": "Ordinary MC6809 IRQ at instruction completion, no higher-priority interrupt, not CWAI/SYNC",
+    "vector": 65528,
+    "cycles": 19,
+    "stack_bytes": 12,
+    "saved_cc": "CC|80",
+    "handler_cc": "CC|90",
+    "frame_order": "CC A B DP Xhi Xlo Yhi Ylo Uhi Ulo PChi PClo",
+    "source_symbols": [
+      "MAIN",
+      "get_pending_interrupt",
+      "IRQ",
+      "PUSH_REGISTERS",
+      "INTERRUPT_VECTOR"
+    ],
+    "implementation": "src/FruitMachineLab.Runtime/M6809IrqEntry.cs",
+    "evidence": "skill-cash/ptm-irq-entry.json"
+  },
+  "timer3_symbols": [
+    "reload_counter",
+    "compute_counter",
+    "state_changed",
+    "update_expiration_for_clock_source"
+  ],
+  "qualification": "Source-guided rules remain checked against installed MAME captures; source assertion, input-line delivery, CPU acceptance and ROM handler service are separate stages."
+}

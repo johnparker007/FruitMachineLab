@@ -5,6 +5,26 @@ Local clone: C:\projects\GitRepos\FruitMachineLab
 
 ## Current status
 
+IRQ continuation:18 isolated CPU cases verify ordinary19-cycle entry and full
+register frames.354 natural Skill Cash observations match20 timer arms;19
+IRQ/callback pairs agree exactly with the old prefix after qualifying debugger
+versus effective bus timestamps. Live retains captured scheduling while
+instruction-boundary/input delivery and native service paths are recovered.
+See recovery/PTM-CLOCK-FOUNDATION-PASS.md and maps/mame-timing-source.json.
+199 headless groups/eight GUI smoke modes pass; headless/full builds are clean.
+
+Timing continuation: timer3 post-shot/disable/rearm model matches643 natural
+observations across20 arms, with a byte-identical independent repeat. Exact
+attoseconds retain reference clock-switch truncation. Live scheduling remains
+captured pending canonical PTM assertion versus CPU acceptance. See the lifecycle
+continuation in recovery/PTM-CLOCK-FOUNDATION-PASS.md.
+
+Latest: timing foundation pass adds timer1/timer3 clock primitives, a96-sample
+synthetic hardware matrix and100 natural attract-mode phase pairs.194 headless
+groups/eight GUI modes pass. Natural timer3 phase varies; Live's captured IRQ/
+callback adapter remains until post-shot/rearm and CPU acceptance are recovered.
+See recovery/PTM-CLOCK-FOUNDATION-PASS.md. Gameplay coverage remains as below.
+
 Latest: Live passes feature-entry reel motion/board animation and returns to
 an actual board selection prompt; START launches another dice roll.190 headless
 groups/eight WPF modes pass. See recovery/FEATURE-ENTRY-MOTION-PASS.md for natural

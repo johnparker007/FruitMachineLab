@@ -1,0 +1,12 @@
+{
+  "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-ptm-phases-matrix-1006c8d72f7c4bac98264c239b3d4d96",
+  "raw_sha256": "70F1DBDF7FB3FD2868E11B6F9CAEF67452AE5856783D4A124F369B5B9FE8A861",
+  "debugger_sha256": "57A8355900074C152F026520107F51A70923EEAB627E7386A85B91D2F8AF48E5",
+  "observations": 96,
+  "strict_comparisons": 90,
+  "equal_cycle_boundaries": 6,
+  "provenance": {
+    "classification": "Synthetic isolated MC6840 timer matrix; RAM timer-register program/delay loop and CPU masking/register injection, not gameplay; ROM/config originals untouched",
+    "mame_sha256": "0FCE5A88DF4F9D9B1FBF1405812C00848036E615993780978D967DA34204CB7A"
+  }
+}

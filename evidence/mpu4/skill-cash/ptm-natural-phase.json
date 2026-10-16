@@ -1,0 +1,1005 @@
+{
+  "classification": "Natural cold/default attract before any player input. Read-only saved-item observations at710F bus write and7110 opcode fetch; neither canonical Skill Cash nor full startup validation.",
+  "rows": [
+    {
+      "write_time": "25.718166860456",
+      "after_time": "25.718167441851",
+      "initial_high": 0,
+      "control1": 66,
+      "control2": 98,
+      "control3": 99,
+      "previous_latch": 65535,
+      "latch": 40
+    },
+    {
+      "write_time": "25.720283720921",
+      "after_time": "25.720284302316",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 98,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.722147093014",
+      "after_time": "25.722147674409",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 98,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.724148837200",
+      "after_time": "25.724149418595",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 98,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.726150581386",
+      "after_time": "25.726151162781",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 98,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.728159883712",
+      "after_time": "25.728160465107",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 98,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.730288953479",
+      "after_time": "25.730289534874",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 98,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.732151744177",
+      "after_time": "25.732152325572",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 98,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.734308720921",
+      "after_time": "25.734309302316",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 98,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.736744767433",
+      "after_time": "25.736745348828",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 98,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.738288372084",
+      "after_time": "25.738288953479",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 98,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.740155813944",
+      "after_time": "25.740156395340",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 98,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.742161627898",
+      "after_time": "25.742162209293",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 98,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.744289534874",
+      "after_time": "25.744290116270",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 98,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.746152906967",
+      "after_time": "25.746153488363",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 98,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.748185465107",
+      "after_time": "25.748186046502",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 98,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.750183139526",
+      "after_time": "25.750183720921",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 98,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.752301744177",
+      "after_time": "25.752302325572",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 98,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.754156976735",
+      "after_time": "25.754157558130",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 98,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.756156395340",
+      "after_time": "25.756156976735",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 98,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.758161046502",
+      "after_time": "25.758161627898",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 98,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.760294767433",
+      "after_time": "25.760295348828",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 98,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.762164534874",
+      "after_time": "25.762165116270",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 98,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.764173837200",
+      "after_time": "25.764174418595",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 98,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.766318604642",
+      "after_time": "25.766319186037",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 98,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.768618023247",
+      "after_time": "25.768618604642",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 98,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.770276162781",
+      "after_time": "25.770276744177",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 98,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.772165116270",
+      "after_time": "25.772165697665",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 98,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.774298837200",
+      "after_time": "25.774299418595",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 98,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.776182558130",
+      "after_time": "25.776183139526",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 98,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.778162790688",
+      "after_time": "25.778163372084",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 98,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.780163372084",
+      "after_time": "25.780163953479",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.782183139526",
+      "after_time": "25.782183720921",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.784162209293",
+      "after_time": "25.784162790688",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.786163953479",
+      "after_time": "25.786164534874",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.788163953479",
+      "after_time": "25.788164534874",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.790164534874",
+      "after_time": "25.790165116270",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.792164534874",
+      "after_time": "25.792165116270",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.794163953479",
+      "after_time": "25.794164534874",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.796165697665",
+      "after_time": "25.796166279060",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.798195930223",
+      "after_time": "25.798196511619",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.800166279060",
+      "after_time": "25.800166860456",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.802166860456",
+      "after_time": "25.802167441851",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.804182558130",
+      "after_time": "25.804183139526",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.806179651153",
+      "after_time": "25.806180232549",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.808168604642",
+      "after_time": "25.808169186037",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.810169186037",
+      "after_time": "25.810169767433",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.812169767433",
+      "after_time": "25.812170348828",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.814193023247",
+      "after_time": "25.814193604642",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.816172093014",
+      "after_time": "25.816172674409",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.818172093014",
+      "after_time": "25.818172674409",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.820173255805",
+      "after_time": "25.820173837200",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.822176744177",
+      "after_time": "25.822177325572",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.824176744177",
+      "after_time": "25.824177325572",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.826173837200",
+      "after_time": "25.826174418595",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.828176162781",
+      "after_time": "25.828176744177",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.830197674409",
+      "after_time": "25.830198255805",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.832175581386",
+      "after_time": "25.832176162781",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.834177906967",
+      "after_time": "25.834178488363",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.836176744177",
+      "after_time": "25.836177325572",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.838177325572",
+      "after_time": "25.838177906967",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.840178488363",
+      "after_time": "25.840179069758",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.842180813944",
+      "after_time": "25.842181395340",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.844179651153",
+      "after_time": "25.844180232549",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.846211627898",
+      "after_time": "25.846212209293",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.848180813944",
+      "after_time": "25.848181395340",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.850181976735",
+      "after_time": "25.850182558130",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.852181395340",
+      "after_time": "25.852181976735",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.854183720921",
+      "after_time": "25.854184302316",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.856183720921",
+      "after_time": "25.856184302316",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.858185465107",
+      "after_time": "25.858186046502",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.860183720921",
+      "after_time": "25.860184302316",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.862207558130",
+      "after_time": "25.862208139526",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.864185465107",
+      "after_time": "25.864186046502",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.866201744177",
+      "after_time": "25.866202325572",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.868201162781",
+      "after_time": "25.868201744177",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.870189534874",
+      "after_time": "25.870190116270",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.872192441851",
+      "after_time": "25.872193023246",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.874199999991",
+      "after_time": "25.874200581386",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.876190116270",
+      "after_time": "25.876190697665",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.878211627898",
+      "after_time": "25.878212209293",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.880188953479",
+      "after_time": "25.880189534874",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.882203488363",
+      "after_time": "25.882204069758",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.884192441851",
+      "after_time": "25.884193023246",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.886207558130",
+      "after_time": "25.886208139526",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.888203488363",
+      "after_time": "25.888204069758",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.890204069758",
+      "after_time": "25.890204651153",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.892193023246",
+      "after_time": "25.892193604642",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.894222093014",
+      "after_time": "25.894222674409",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.896197093014",
+      "after_time": "25.896197674409",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.898194186037",
+      "after_time": "25.898194767433",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.900195348828",
+      "after_time": "25.900195930223",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.902198255805",
+      "after_time": "25.902198837200",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.904198255805",
+      "after_time": "25.904198837200",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.906196511619",
+      "after_time": "25.906197093014",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.908197093014",
+      "after_time": "25.908197674409",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.910224418595",
+      "after_time": "25.910224999991",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.912212209293",
+      "after_time": "25.912212790688",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.914208720921",
+      "after_time": "25.914209302316",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    },
+    {
+      "write_time": "25.916201162781",
+      "after_time": "25.916201744177",
+      "initial_high": 1,
+      "control1": 66,
+      "control2": 0,
+      "control3": 99,
+      "previous_latch": 40,
+      "latch": 40
+    }
+  ]
+}

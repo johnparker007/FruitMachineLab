@@ -4,15 +4,15 @@ using FruitMachineLab.Runtime;
 namespace FruitMachineLab.Adders;
 
 public record TimerDeadlineCapture([property:JsonPropertyName("initial_callbacks")] int InitialCallbacks,ulong[][] Rows);
-public record TimerDeadlineVerification(int Arms,ulong MinimumIrqLatency,ulong MaximumIrqLatency,ulong MinimumCallbackService,ulong MaximumCallbackService);
+public record TimerDeadlineVerification(int Arms,ulong MinimumIrqLatency,ulong MaximumIrqLatency,ulong MinimumCallbackService,ulong MaximumCallbackService,bool StartingOutputHigh=false);
 
 public static class SkillCashTimerDeadlineVerification
 {
-    public static TimerDeadlineVerification Verify(string evidenceDirectory)
+    public static TimerDeadlineVerification Verify(string evidenceDirectory,bool startingOutputHigh=false)
     {
         var capture=JsonSerializer.Deserialize<TimerDeadlineCapture>(File.ReadAllText(Path.Combine(evidenceDirectory,"skill-cash","timer-deadlines.json")),
             new JsonSerializerOptions{PropertyNameCaseInsensitive=true}) ?? throw new InvalidDataException("Missing timer capture");
-        var result=Verify(capture);
+        var result=Verify(capture,startingOutputHigh);
         var shared=JsonSerializer.Deserialize<SharedTimingCapture>(File.ReadAllText(Path.Combine(evidenceDirectory,"skill-cash","shared-timing.json")),
             new JsonSerializerOptions{PropertyNameCaseInsensitive=true}) ?? throw new InvalidDataException("Missing shared capture");
         ulong cycle=shared.InitialCycle;int callback=0;
@@ -27,22 +27,25 @@ public static class SkillCashTimerDeadlineVerification
         if(callback!=capture.Rows.Length)throw new InvalidDataException("Missing shared timer callback");
         return result;
     }
-    // Consistency check, not proof of the physical expiry instant. Starting-low
-    // phase is a source-backed deduction; recorded IRQ acceptance remains external.
-    public static TimerDeadlineVerification Verify(TimerDeadlineCapture capture)
+    // Conditional consistency check, not an observation of canonical initial
+    // phase for all6103 arms. The newer ptm-skill-cpu capture observes the first20
+    // high phases and effective STY stores seven cycles after these coordinates.
+    // Keep the old coordinate calculation explicit rather than relabeling it as
+    // measured hardware assertion/CPU-entry latency.
+    public static TimerDeadlineVerification Verify(TimerDeadlineCapture capture,bool startingOutputHigh=false)
     {
         if(capture.Rows.Length==0 || capture.InitialCallbacks<0)throw new InvalidDataException("Empty timer capture");
         ulong minimum=ulong.MaxValue,maximum=0,minService=ulong.MaxValue,maxService=0,previous=0;
         foreach(var row in capture.Rows) {
             if(row.Length!=5 || row[1]>ushort.MaxValue || row[4]>7 || row[0]<=previous)throw new InvalidDataException("Malformed or unordered timer capture");
             previous=row[0];
-            var deadline=Mpu4Timer3Deadline.Calculate(row[0],(ushort)row[1],false);
+            var deadline=Mpu4Timer3Deadline.Calculate(row[0],(ushort)row[1],startingOutputHigh);
             ulong irq=checked(row[0]+row[2]);
             if(irq<deadline.Interrupt || row[3]==0)throw new InvalidDataException("Timer callback precedes calculated expiry or IRQ service");
             ulong latency=irq-deadline.Interrupt;
             minimum=Math.Min(minimum,latency);maximum=Math.Max(maximum,latency);
             minService=Math.Min(minService,row[3]);maxService=Math.Max(maxService,row[3]);
         }
-        return new(capture.Rows.Length,minimum,maximum,minService,maxService);
+        return new(capture.Rows.Length,minimum,maximum,minService,maxService,startingOutputHigh);
     }
 }

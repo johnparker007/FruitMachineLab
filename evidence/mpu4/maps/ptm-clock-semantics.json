@@ -1,0 +1,33 @@
+{
+  "classification": "ROM-byte checked timer setup and dispatch records, with synthetic MC6840 reference matrix; not a lossless timer/CPU reconstruction",
+  "rom_sha1": "402D1518BB78FDC489B06C2AABC771E5CE151847",
+  "ranges": {
+    "707E": "34011A508E0A14BF0902358134011A508E0D70BF090235818600973FB70901C600F70900D7408A01B70901C600CA01F70900398D1634051A50D63FC4FEF70901D73FC600F70900D740358534051A50C600F70901D73F358534051A50F60901F609049F3BC662F70901D73F10BF0904358534051A50F60901F609069F3DD63FC4FEF70901D73FC663F70900D74010BF090635",
+    "FE70": "96F12709A763860997F1B7080CB60B032A048501266EB60901D63FC54027048502263D85012610D640C540270085042640C602113F2061B609021CEFAE68C60A8C05252C02103FBD28FE0D2C2610032CBD27D2BD6B4DBD58BBBD5CD00F2C2038B60904BD70C99E3B8C14002502AD842027B609061CEFBD70B39E3D8C14002502AD842014B60B029E818C14002502AD84B60B0384FEB70B03A66327076F6397F1B7080C3B",
+    "FFF8": "FE70"
+  },
+  "mame_source": "maps/mame-timing-source.json",
+  "irq_entry_evidence": "skill-cash/ptm-irq-entry.json",
+  "skill_cash_cpu_evidence": "skill-cash/ptm-skill-cpu.json",
+  "normal_timer1_latch": 3440,
+  "normal_timer1_period_cpu_cycles": 3441,
+  "alternate_timer1_latch": 2580,
+  "native_listing": "native/timer-native.txt",
+  "native_irq_export": "native/fe70.json",
+  "implementation": [
+    "src/FruitMachineLab.Runtime/Mpu4Timer1Clock.cs",
+    "src/FruitMachineLab.Runtime/Mpu4Timer3Deadline.cs",
+    "src/FruitMachineLab.Runtime/Mpu4Timer3Pulse.cs",
+    "src/FruitMachineLab.Runtime/Mpu4Timer3PhaseClock.cs"
+  ],
+  "lifecycle_evidence": "skill-cash/ptm-lifecycle.json: 643 natural observations across20 arms; post-shot phase, frozen counter and control00/63 rearm; independent byte-identical repeat; not canonical Skill Cash",
+  "verification": "skill-cash/ptm-matrix.json",
+  "natural_phase_evidence": "skill-cash/ptm-natural-phase.json: cold-attract100 arms,1 low/99 high at the store; phase unchanged one CPU cycle later; not the canonical Skill Cash capture",
+  "unresolved": [
+    "Remaining canonical arms beyond the first20 observed high phases; do not generalize phase globally",
+    "Same-cycle PTM expiry versus CPU status-read ordering",
+    "IRQ acceptance/instruction remainder, CC masking and nested native service timing",
+    "Reset, gate changes, external edges, other controls and zero-latch lifecycle remain outside the selected phase clock",
+    "Live still uses captured IRQ service/occupancy and callback timestamps; new clock mechanics are not an invented replacement for CPU acceptance"
+  ]
+}

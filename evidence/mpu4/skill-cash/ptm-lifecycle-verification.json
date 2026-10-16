@@ -1,0 +1,20 @@
+{
+  "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-ptm-lifecycle-1974272e4e5f422ea62425cb12862c9d",
+  "csv_sha256": "A9C17666FF77CAB1A192E40B7D2FD87FD673E9EC2E66FAF538DAF2543B41D148",
+  "lua_sha256": "480BAE0A7DAEE216C369E8BF39ED0E7A4E686E4B4A2D3F6E9295B27EDED3A994",
+  "debugger_sha256": "26AD75512C832C50FD48752263656F4E2C65468BC1847F40F7BEC4665650877B",
+  "provenance": {
+    "classification": "Natural cold/default attract sequence, absent NVRAM, no physical inputs or state injection. Read-only writes sample BEFORE access; reads sample AFTER with returned data; selected following opcode fetches sample AFTER prior instruction. Not canonical Skill Cash.",
+    "mame_sha256": "0FCE5A88DF4F9D9B1FBF1405812C00848036E615993780978D967DA34204CB7A"
+  },
+  "rows": 643,
+  "arms": 20,
+  "independent_repeat": {
+    "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-ptm-lifecycle-6dfe4e5255d048c78d7ba7c91befec3c",
+    "csv_sha256": "A9C17666FF77CAB1A192E40B7D2FD87FD673E9EC2E66FAF538DAF2543B41D148",
+    "lua_sha256": "480BAE0A7DAEE216C369E8BF39ED0E7A4E686E4B4A2D3F6E9295B27EDED3A994",
+    "byte_identical": true
+  },
+  "reference_source": "https://raw.githubusercontent.com/mamedev/mame/master/src/devices/machine/6840ptm.cpp",
+  "source_version_gap": "Upstream master explains the hypothesis; installed0.281 read-only observations validate the selected lifecycle. No claim that master equals installed source."
+}

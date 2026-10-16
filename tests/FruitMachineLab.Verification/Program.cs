@@ -7,6 +7,143 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { if(args.Length>1 && !name.Contains(args[1],StringComparison.OrdinalIgnoreCase))return;action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Natural Skill Cash connects timer3 phase and bus time to CPU IRQ and lamp callback", () => {
+    using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","ptm-skill-cpu.json")));
+    using var old=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","timer-deadlines.json")));
+    var reference=old.RootElement.GetProperty("rows").EnumerateArray().ToArray();
+    int Number(System.Text.Json.JsonElement r,string n)=>int.Parse(r.GetProperty(n).GetString()!,System.Globalization.CultureInfo.InvariantCulture);
+    int Hex(System.Text.Json.JsonElement r,string n)=>Convert.ToInt32(r.GetProperty(n).GetString(),16);
+    decimal Time(System.Text.Json.JsonElement r)=>decimal.Parse(r.GetProperty("seconds").GetString()!,System.Globalization.CultureInfo.InvariantCulture)*Mpu4Timer3PhaseClock.AttosecondsPerSecond+decimal.Parse(r.GetProperty("attoseconds").GetString()!,System.Globalization.CultureInfo.InvariantCulture);
+    ulong Cycle(decimal t)=>(ulong)decimal.Round(t*(decimal)SkillCashLiveSession.CyclesPerSecond/Mpu4Timer3PhaseClock.AttosecondsPerSecond);
+    Mpu4Timer3PhaseClock? clock=null;byte msb=0;int count=0,arms=0,handlers=0,callbacks=0;decimal? firstAssertion=null;ulong? handler=null;ulong min=ulong.MaxValue,max=0;
+    foreach(var r in doc.RootElement.GetProperty("rows").EnumerateArray()){
+        decimal time=Time(r);string kind=r.GetProperty("event").GetString()!;int at=Hex(r,"address"),data=Hex(r,"data");
+        Equal(0,Number(r,"gate3"));Equal(0,Number(r,"clock3"));
+        if(clock is null){Equal("entry",kind);Equal(0,Number(r,"control3"));Equal(0,Number(r,"enabled3"));clock=Mpu4Timer3PhaseClock.FromStoppedSnapshot(time,Number(r,"output3")!=0,Number(r,"single3")!=0,(ushort)Number(r,"latch3"),(ushort)Number(r,"counter3"),(Number(r,"status")&4)!=0,(Number(r,"statusread")&4)!=0);}
+        clock.AdvanceTo(time);
+        if(kind=="read"){if(at==0x901)clock.ReadStatus();if(at==0x906)clock.ReadCounterMsb();}
+        Equal(Number(r,"output3")!=0,clock.OutputHigh);Equal(Number(r,"single3")!=0,clock.SingleFired);Equal(Number(r,"enabled3")!=0,clock.Enabled);Equal(Number(r,"counter3"),(int)clock.RawCounter);Equal(Number(r,"latch3"),(int)clock.Latch);Equal(Number(r,"control3"),(int)clock.Control);Equal((Number(r,"status")&4)!=0,clock.InterruptPending);
+        if(kind=="handler" && (Number(r,"status")&4)!=0 && firstAssertion.HasValue && handler is null){
+            handler=Cycle(time)-1;ulong irq=Cycle(firstAssertion.Value);ulong latency=handler.Value-irq;min=Math.Min(min,latency);max=Math.Max(max,latency);
+            if(latency<M6809IrqEntry.EntryCycles || latency>M6809IrqEntry.EntryCycles+7)throw new Exception("Unexplained canonical IRQ entry latency");
+            var row=reference[arms-1].EnumerateArray().ToArray();Equal(row[0].GetUInt64()+row[2].GetUInt64(),handler.Value);handlers++;
+        }
+        if(kind=="callback"){
+            if(handler is null)throw new Exception("Callback without observed timer3 IRQ entry");Equal(128UL,Cycle(time)-1-handler.Value);callbacks++;
+        }
+        if(kind=="write"){
+            if(at==0x900)clock.WriteControl((byte)data);if(at==0x906)msb=(byte)data;
+            if(at==0x907){Equal(true,clock.OutputHigh);clock.WriteLatch((ushort)((msb<<8)|data));firstAssertion=clock.NextTransition;handler=null;Equal(reference[arms][0].GetUInt64()+7,Cycle(time));arms++;}
+        }
+        count++;
+    }
+    Equal(354,count);Equal(20,arms);Equal(19,handlers);Equal(19,callbacks);Equal(19UL,min);Equal(26UL,max);
+});
+Check("Ordinary 6809 IRQ entry matches eighteen native CPU frames and instruction boundaries", () => {
+    using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","ptm-irq-entry.json")));
+    int rows=0,masked=0;ulong longest=0;
+    foreach(var row in doc.RootElement.GetProperty("rows").EnumerateArray()){
+        byte B(string n)=>row.GetProperty(n).GetByte();ushort W(string n)=>row.GetProperty(n).GetUInt16();ulong C(string n)=>row.GetProperty(n).GetUInt64();
+        var regs=new M6809IrqRegisters(B("before_cc"),B("a"),B("b"),B("dp"),W("x"),W("y"),W("u"),W("before_s"),W("resume_pc"));
+        var entry=M6809IrqEntry.AtInstructionBoundary(C("accepted_cycle"),regs,true) ?? throw new Exception("Unmasked IRQ rejected");
+        Equal(C("handler_cycle"),entry.HandlerCycle);Equal(B("handler_cc"),entry.HandlerCC);Equal(W("handler_s"),entry.StackPointer);Equal(row.GetProperty("frame_hex").GetString(),Convert.ToHexString(entry.StackFrame));
+        Equal(C("last_instruction_cycle")+C("last_instruction_cycles"),entry.AcceptedCycle);Equal(C("release_instruction_cycle")+5,C("release_bus_cycle"));
+        ulong assertion=C("calculated_first_assertion_cycle");if(entry.AcceptedCycle<assertion)throw new Exception("Accepted before assertion");
+        ulong delay=entry.AcceptedCycle-assertion;longest=Math.Max(longest,delay);
+        if(delay>3)masked++;rows++;
+    }
+    Equal(18,rows);if(masked<4 || longest<300)throw new Exception("Missing masked IRQ coverage");
+});
+Check("Ordinary IRQ uses delivered level and I mask while preserving F and wrapping stack", () => {
+    var r=new M6809IrqRegisters(0x51,0x12,0x34,0x56,0x789A,0xBCDE,0xF012,5,0x4567);
+    Equal<M6809IrqAcceptance?>(null,M6809IrqEntry.AtInstructionBoundary(10,r,true));
+    r=r with{CC=0x41};Equal<M6809IrqAcceptance?>(null,M6809IrqEntry.AtInstructionBoundary(20,r,false));
+    var e=M6809IrqEntry.AtInstructionBoundary(30,r,true)!;Equal(49UL,e.HandlerCycle);Equal((ushort)0xFFF9,e.StackPointer);Equal((byte)0xD1,e.HandlerCC);Equal("C1123456789ABCDEF0124567",Convert.ToHexString(e.StackFrame));
+    Equal((byte)0x41,r.CC);Equal((ushort)5,r.S);
+});
+Check("Timer3 lifecycle reproduces natural post-shot disable and rearm state", () => {
+    using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","ptm-lifecycle.json")));
+    var clock=new Mpu4Timer3PhaseClock();byte msb=0;int count=0,arms=0,frozen=0;
+    int Number(System.Text.Json.JsonElement row,string name)=>int.Parse(row.GetProperty(name).GetString()!,System.Globalization.CultureInfo.InvariantCulture);
+    foreach(var row in doc.RootElement.GetProperty("rows").EnumerateArray()){
+        decimal time=decimal.Parse(row.GetProperty("seconds").GetString()!,System.Globalization.CultureInfo.InvariantCulture)*Mpu4Timer3PhaseClock.AttosecondsPerSecond+decimal.Parse(row.GetProperty("attoseconds").GetString()!,System.Globalization.CultureInfo.InvariantCulture);
+        clock.AdvanceTo(time);
+        string kind=row.GetProperty("event").GetString()!;int at=Convert.ToInt32(row.GetProperty("address").GetString(),16),data=Convert.ToInt32(row.GetProperty("data").GetString(),16);
+        if(kind=="read"){
+            if(at==0x901){Equal(clock.InterruptPending,(data&4)!=0);clock.ReadStatus();}
+            if(at==0x906)clock.ReadCounterMsb();
+        }
+        Equal(Number(row,"output3")!=0,clock.OutputHigh);Equal(Number(row,"single3")!=0,clock.SingleFired);
+        Equal(Number(row,"enabled3")!=0,clock.Enabled);Equal(Number(row,"counter3"),(int)clock.RawCounter);
+        Equal(Number(row,"latch3"),(int)clock.Latch);Equal(Number(row,"control3"),(int)clock.Control);
+        Equal((Number(row,"status")&4)!=0,clock.InterruptPending);
+        if(kind=="write"){
+            if(at==0x900)clock.WriteControl((byte)data);
+            if(at==0x906)msb=(byte)data;
+            if(at==0x907){clock.WriteLatch((ushort)((msb<<8)|data));arms++;}
+        }
+        if(kind=="after" && at==0x70C5){Equal(false,clock.Enabled);Equal(true,clock.OutputHigh);frozen++;}
+        count++;
+    }
+    Equal(643,count);Equal(20,arms);if(frozen<19)throw new Exception("Missing disable observations");
+});
+Check("Timer3 lifecycle retains post-shot phase across updates and rejects unsupported modes", () => {
+    var coarse=new Mpu4Timer3PhaseClock();var fine=new Mpu4Timer3PhaseClock();
+    foreach(var c in new[]{coarse,fine}){c.WriteControl(0x63);c.WriteLatch(40);}
+    decimal end=1_000_000_000_000_000m;
+    for(decimal t=0;t<end;t+=17_000_000_000_000m)fine.AdvanceTo(t);fine.AdvanceTo(end);coarse.AdvanceTo(end);
+    Equal(coarse.OutputHigh,fine.OutputHigh);Equal(coarse.NextTransition,fine.NextTransition);Equal(true,coarse.SingleFired);
+    Equal(true,coarse.InterruptPending);coarse.ReadCounterMsb();Equal(true,coarse.InterruptPending);coarse.ReadStatus();coarse.ReadCounterMsb();Equal(false,coarse.InterruptPending);
+    coarse.WriteControl(0);ushort held=coarse.RawCounter;bool phase=coarse.OutputHigh;coarse.AdvanceTo(end*2);Equal(held,coarse.RawCounter);Equal(phase,coarse.OutputHigh);coarse.WriteControl(0x63);Equal(phase,coarse.OutputHigh);
+    bool zero=false,mode=false,back=false;try{coarse.WriteLatch(0);}catch(NotSupportedException){zero=true;}try{coarse.WriteControl(0x62);}catch(NotSupportedException){mode=true;}try{coarse.AdvanceTo(0);}catch(ArgumentOutOfRangeException){back=true;}Equal(true,zero);Equal(true,mode);Equal(true,back);
+});
+Check("Natural attract timer3 phase disproves a universal starting-low assumption", () => {
+    using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","ptm-natural-phase.json")));
+    int low=0,high=0;double previous=0;
+    foreach(var row in doc.RootElement.GetProperty("rows").EnumerateArray()){
+        double write=double.Parse(row.GetProperty("write_time").GetString()!,System.Globalization.CultureInfo.InvariantCulture),after=double.Parse(row.GetProperty("after_time").GetString()!,System.Globalization.CultureInfo.InvariantCulture);
+        if(write<previous || Math.Abs((after-write)*SkillCashLiveSession.CyclesPerSecond-1)>0.00001)throw new InvalidDataException("Phase observation ordering/one-cycle gap differs");previous=after;
+        Equal(0x42,row.GetProperty("control1").GetInt32());Equal(0x63,row.GetProperty("control3").GetInt32());Equal(40,row.GetProperty("latch").GetInt32());
+        if(row.GetProperty("initial_high").GetInt32()==0)low++;else high++;
+    }
+    Equal(1,low);Equal(99,high);
+    var candidate=SkillCashTimerDeadlineVerification.Verify(evidence,startingOutputHigh:true);Equal(26UL,candidate.MinimumIrqLatency);Equal(33UL,candidate.MaximumIrqLatency);Equal(true,candidate.StartingOutputHigh);
+});
+Check("MC6840 bus matrix verifies timer1 and both timer3 phases with explicit ties", () => {
+    using var capture=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","ptm-matrix.json")));
+    int rows=0,ties=0;ulong previous=0;
+    foreach(var row in capture.RootElement.GetProperty("rows").EnumerateArray()){
+        int channel=row.GetProperty("channel").GetInt32();ushort latch=row.GetProperty("latch").GetUInt16();bool high=row.GetProperty("initial_high").GetInt32()!=0;
+        ulong arm=row.GetProperty("arm_cycle").GetUInt64(),read=row.GetProperty("read_cycle").GetUInt64();byte status=row.GetProperty("status").GetByte();
+        if(arm<previous || read<arm)throw new InvalidDataException("Unordered matrix bus observations");previous=read;
+        ulong expiry;bool pending;
+        if(channel==1){var clock=new Mpu4Timer1Clock(arm,latch);expiry=clock.NextExpiry;clock.AdvanceTo(read);pending=clock.Expiries!=0;}
+        else if(channel==3){var clock=new Mpu4Timer3Pulse();clock.Arm(arm,latch,high);expiry=clock.Deadline!.Value.Interrupt;clock.AdvanceTo(read);pending=clock.InterruptPending;}
+        else throw new InvalidDataException("Unsupported matrix channel");
+        bool tie=read==expiry;Equal(tie,row.GetProperty("boundary_tie").GetBoolean());
+        byte flag=(byte)(128|(1<<(channel-1)));
+        if(tie){ties++;if(status!=0 && status!=flag)throw new InvalidDataException("Invalid tie status");}
+        else Equal(pending ? flag : (byte)0,status);
+        rows++;
+    }
+    Equal(96,rows);Equal(6,ties);
+    using var source=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"maps","ptm-clock-semantics.json")));
+    byte[] bytes=Convert.FromHexString(source.RootElement.GetProperty("ranges").GetProperty("707E").GetString()!);
+    Equal((byte)0x8E,bytes[16]);Equal(Mpu4Timer1Clock.NormalLatch,(ushort)((bytes[17]<<8)|bytes[18]));Equal(3441UL,Mpu4Timer1Clock.Period(Mpu4Timer1Clock.NormalLatch));
+});
+Check("Timer1 periodic clock preserves phase across coarse updates and rejects backwards time", () => {
+    var coarse=new Mpu4Timer1Clock(123,Mpu4Timer1Clock.NormalLatch);var fine=new Mpu4Timer1Clock(123,Mpu4Timer1Clock.NormalLatch);
+    for(ulong t=123;t<1000000;t+=137)fine.AdvanceTo(t);fine.AdvanceTo(1000000);coarse.AdvanceTo(1000000);
+    Equal((1000000UL-123)/3441,coarse.Expiries);Equal(coarse.Expiries,fine.Expiries);Equal(coarse.NextExpiry,fine.NextExpiry);
+    bool backwards=false,unsupported=false;try{coarse.AdvanceTo(999999);}catch(ArgumentOutOfRangeException){backwards=true;}try{_=new Mpu4Timer1Clock(0,40,0);}catch(NotSupportedException){unsupported=true;}Equal(true,backwards);Equal(true,unsupported);
+});
+Check("Timer3 pulse retains state and separates hardware expiry from CPU acknowledgement", () => {
+    var clock=new Mpu4Timer3Pulse();clock.Arm(0,40,false);Equal(8UL,clock.NextEvent);clock.AdvanceTo(7);Equal(false,clock.OutputHigh);clock.AdvanceTo(8);Equal(true,clock.OutputHigh);Equal(328UL,clock.NextEvent);
+    clock.AdvanceTo(327);Equal(false,clock.InterruptPending);clock.AdvanceTo(328);Equal(true,clock.InterruptPending);Equal(false,clock.OutputHigh);Equal(ulong.MaxValue,clock.NextEvent);
+    clock.AdvanceTo(329);bool postShot=false;try{_=clock.OutputHigh;}catch(NotSupportedException){postShot=true;}Equal(true,postShot);
+    clock.Acknowledge();clock.AdvanceTo(350);Equal(false,clock.InterruptPending);clock.Arm(400,40,true);Equal(720UL,clock.NextEvent);clock.AdvanceTo(719);Equal(true,clock.OutputHigh);clock.AdvanceTo(720);Equal(true,clock.InterruptPending);
+    bool backwards=false,early=false;try{clock.AdvanceTo(719);}catch(ArgumentOutOfRangeException){backwards=true;}clock.Acknowledge();try{clock.Acknowledge();}catch(InvalidOperationException){early=true;}Equal(true,backwards);Equal(true,early);
+});
 Check("Natural flagged-entry return to board selection matches", () => {
     var r=BoardSelectionVerification.Verify(evidence,boardLink:"ladder",paidFlagBoard:true);Console.WriteLine($"  {r.Instructions} board VM observations, {r.Lamps} lamps, {r.Sounds} sounds");
 });
@@ -998,7 +1135,7 @@ Check("Actual timer latch writes are consistent with the reference countdown", (
     var result=SkillCashTimerDeadlineVerification.Verify(evidence);Equal(6103,result.Arms);
     Equal(18UL,result.MinimumIrqLatency);Equal(25UL,result.MaximumIrqLatency);
     Equal(128UL,result.MinimumCallbackService);Equal(128UL,result.MaximumCallbackService);
-    Console.WriteLine($"  {result.Arms} actual latch writes; calculated expiry to IRQ latency {result.MinimumIrqLatency}–{result.MaximumIrqLatency} cycles");
+    Console.WriteLine($"  {result.Arms} actual latch writes; assuming starting-low, expiry to IRQ latency {result.MinimumIrqLatency}–{result.MaximumIrqLatency} cycles");
 });
 Check("Early timer IRQ and reversed latch timestamps are rejected", () => {
     int rejected=0;

@@ -167,7 +167,7 @@ public sealed class SkillCashLiveSession
         if(services.Count==0)throw new InvalidDataException("Missing IRQ service template");
         // Repeat the observed service/jitter template at the source-backed
         // timer-1 period (0D70+1). This is not IRQ instruction acceptance emulation.
-        servicePeriod=checked((ulong)services.Count*3441);
+        servicePeriod=checked((ulong)services.Count*Mpu4Timer1Clock.Period(Mpu4Timer1Clock.NormalLatch));
         using(var interrupts=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","cpu-interrupts.json"))))
             occupancy=new(servicePeriod,interrupts.RootElement.GetProperty("intervals").EnumerateArray().Select(row=>row.EnumerateArray().Select(x=>x.GetUInt64()).ToArray()));
         RecordLatch();

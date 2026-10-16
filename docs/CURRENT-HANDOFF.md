@@ -6,6 +6,82 @@ batch, including its verification.
 
 ## Working implementation
 
+Latest timing continuation16 October: matching-source ordinary IRQ helper and
+18 isolated native CPU cases verify19-cycle entry and the entire12-byte frame,
+I masking, preserved F and stack wrap. A deferred passive observer successfully
+reaches original Skill Cash C721: all354 timer-state observations match over20
+arms; all20 phases high and gate/external clock low. All19 IRQ/callback pairs
+match the original timer-deadlines prefix exactly. Effective STY access is seven
+cycles after its debugger coordinate; corrected calculated-assertion→handler
+latency is19–26, leaving0–7 cycles beyond verified CPU entry. The split between
+instruction completion and synchronized input delivery remains unresolved.
+The lamp callback follows handler entry by128 cycles on this selected path.
+No Live scheduling replacement yet. Next recover boundary/delivery and native
+service paths, timer1 contention and later arms before coupling the clocks.
+See PTM-CLOCK-FOUNDATION-PASS.md IRQ continuation and
+maps/mame-timing-source.json (nine pinned source blobs). Capture-SkillCash.ps1
+adds optional -PtmCpuTiming with no extra debugger setup commands; taps attach
+after2040 simulated seconds. Early startup taps prevented progression and that
+owned run was stopped/excluded; the deferred run reproduces the original prefix.
+Preserve all existing uncommitted changes. No installations/config changes,
+commits/pushes; original MAME checkout/settings, ROM and Ghidra remain preserved.
+Validation:199 headless groups and all eight WPF smoke modes pass; both solution
+builds have zero warnings/errors. GUI results are in the external directory
+named by %TEMP%/FruitMachineLab-irq-boundary-gui.txt. The capture and smoke-test
+processes completed; the excluded startup observer was explicitly stopped.
+
+Local MAME source now available16 October, with John's explicit permission to
+sync: C:/projects/GitRepos/mame. Existing master remains at
+c5e42bc44f9b72b4ea0d499c63c561e3b59586f3 with all nine modified tracked files and
+untracked artwork/sc4clashd preserved. Fetched official upstream tag mame0281
+directly by URL (existing origin lacked it); no branch switch, reset, remote
+configuration or installation. Tag commit2843a3deb81cf93735244044894196ccfbea4d20.
+Read versioned files with git -C <checkout> show mame0281:<path>, not the old
+working-tree files. Relevant paths: src/devices/machine/6840ptm.cpp,
+src/devices/cpu/m6809/{m6809.cpp,m6809.lst,base6x09.lst},
+src/mame/barcrest/mpu4.cpp, src/emu/{schedule.cpp,attotime.h}.
+The tag's timer source contains the selected post-shot/clock-switch mechanisms;
+prior capture-backed findings remain valid. This supplies matching-release
+source, not proof of exact build provenance for the installed executable.
+Earlier reports' upstream-master version gap describes their original basis;
+future timing work should cite the pinned tag and retain behavioural captures.
+
+Continuation16 October: the same PTM-CLOCK-FOUNDATION-PASS.md now includes a
+stateful timer3 lifecycle model. All643 read-only observations across20 natural
+cold-attract arms match phase, raw/frozen counter, control/latch, enabled,
+single_fired and timer3 status. Independent capture repeats byte-identically.
+Exact attoseconds preserve clock-switch truncation (first frozen counter202),
+without arbitrary latency corrections. Control00/63 only; reset/gates/external
+edges/zero-latch lifecycle remain excluded. Neither this model nor the pulse
+model drives Live scheduling. Next capture canonical Skill Cash effective bus
+stores and PTM assertion versus CPU acceptance, proving gate/external assumptions
+before replacing the callback template. Changes remain uncommitted; preserve
+the previous uncommitted timing foundation. No installations/config changes.
+Validation:196 headless groups pass; headless/full solutions build with zero
+warnings/errors. All eight WPF smoke modes pass again, including playback,
+physical inputs, pause/resume and the returning paid-game/feature routes.
+Local GUI results are under the path in
+%TEMP%/FruitMachineLab-ptm-lifecycle-gui.txt. The new lifecycle model remains
+outside the Live event loop. Curated manifest has1074 verified entries.
+
+Newest checkpoint: recovery/PTM-CLOCK-FOUNDATION-PASS.md. Timing work now takes
+priority over expanding gameplay, following John's16 October agreement. Added
+timer1 period/phase clock and a bounded timer3 pulse clock, independently checked
+against96 synthetic native bus samples (90 strict comparisons,6 explicit
+equal-cycle ordering gaps). A separate natural cold-attract100-arm capture proves
+1 low/99 high internal timer3 phases at the latch store, unchanged one CPU cycle
+later. This disproves a universal starting-low assumption; it does not establish
+every canonical Skill Cash phase. The old6103-row latency calculation now exposes
+an explicit phase: low18–25 versus high26–33 cycles. Live retains captured IRQ
+occupancy/service/callback timing; its normal period uses the shared source-backed
+3441-cycle helper. The new timer3 pulse is not yet a Live IRQ source and refuses
+to expose an invented post-shot output phase.194 headless groups/eight GUI modes
+pass; builds have zero warnings/errors. Captures/code/maps/report are uncommitted.
+Next recover post-shot internal transitions and disable/rearm clock behavior,
+then observe canonical PTM assertion versus CPU acceptance before replacing the
+callback template. No installation/configuration changes; no commits/pushes.
+Earlier gameplay checkpoints below remain valid and are retained as history.
+
 Newest checkpoint: recovery/FEATURE-ENTRY-MOTION-PASS.md. Live now runs native61CF
 feature-entry reel motion and the shrinking-board lamp animation, then returns
 to a real selection prompt. The mixed physical-input test pauses the asynchronous

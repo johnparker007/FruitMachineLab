@@ -205,6 +205,11 @@
     "sha256": "44F84BE16184DE3062F2AEF83789442194EBDCD4DABD3A3C6152D5DA57773D2F"
   },
   {
+    "path": "docs/recovery/PTM-CLOCK-FOUNDATION-PASS.md",
+    "bytes": 16185,
+    "sha256": "5626D905658E178471891D7A2A545B898D493E895E6305B33ABBC11188CDB448"
+  },
+  {
     "path": "docs/recovery/README.txt",
     "bytes": 11998,
     "sha256": "116816983F30E222C10D291B3F7B9104AA993C2172095B952910FD264CFB1054"
@@ -276,8 +281,8 @@
   },
   {
     "path": "docs/recovery/SKILL-CASH-TIMER-DEADLINE-PASS.md",
-    "bytes": 3522,
-    "sha256": "EFA8DF76D652A661E6CC973AD201F32E1065EFD511908E5D887D0A80BC246805"
+    "bytes": 4181,
+    "sha256": "B46EED936795B116A36828628BEA56604B37A14E4BE8EA473B6FA4C02100655B"
   },
   {
     "path": "docs/recovery/SPECIAL-FEATURE-RECOVERY.txt",
@@ -350,6 +355,11 @@
     "sha256": "7DF98006E4EEAE794BB7983A8191A89A2167714DA4316E5B53EED215B40590F4"
   },
   {
+    "path": "evidence/mpu4/maps/mame-timing-source.json",
+    "bytes": 3630,
+    "sha256": "9F1D4A4A37E542E416D5770DF0D190987280098FB6970163B13F116BAF36F30E"
+  },
+  {
     "path": "evidence/mpu4/maps/nudge-availability-data.json",
     "bytes": 247,
     "sha256": "762612A5EC036AD0A1B1465F8403CD532C9797EB5314A517D0970049F4AC12A1"
@@ -393,6 +403,11 @@
     "path": "evidence/mpu4/maps/prerequisite-pass-saved-structure-verification.json",
     "bytes": 95,
     "sha256": "B9F1BFBB589D313E3F7C359D5774DFCF76165B7A4E101545F69953F1CB89F7D7"
+  },
+  {
+    "path": "evidence/mpu4/maps/ptm-clock-semantics.json",
+    "bytes": 2557,
+    "sha256": "F9EAFBF1A481A8C302139B0CC3A6FBF26571D5A23D7CBBBD1F3A5FAA63FE48A9"
   },
   {
     "path": "evidence/mpu4/maps/skill-cash-alpha-scan-data.json",
@@ -2553,6 +2568,81 @@
     "path": "evidence/mpu4/skill-cash/paid-spin-native.json",
     "bytes": 520687,
     "sha256": "51EECFCA763234F47F694D97C6786CE45F75B6B72C26750937545838B9D06756"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/ptm-irq-entry-verification.json",
+    "bytes": 924,
+    "sha256": "BD747BA37A826C075A65C21CD3CA56B75486BE2ADBFB37C7CCAB04EA2998E8AD"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/ptm-irq-entry.json",
+    "bytes": 18517,
+    "sha256": "444A1882A937E72614B65618FD6F1CA4F44C3BFF97EEC0FB90F147DD8E295764"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/ptm-irq-entry.lua",
+    "bytes": 415,
+    "sha256": "B8C5E97A526E17E41106AFA11E46ABB2665FF5D3983D3C1DD8886866024E5185"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/ptm-lifecycle-verification.json",
+    "bytes": 1475,
+    "sha256": "3B0E2FD803C928A1D07B411472855FF69BC96DB639EA25FD768EFF6789AEF50E"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/ptm-lifecycle.json",
+    "bytes": 285064,
+    "sha256": "3066598583C9CA0FD6CAF7AE8957205C35198087B3E5E32A825F510C0B79DF1C"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/ptm-lifecycle.lua",
+    "bytes": 1811,
+    "sha256": "480BAE0A7DAEE216C369E8BF39ED0E7A4E686E4B4A2D3F6E9295B27EDED3A994"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/ptm-matrix-debugger.cmd",
+    "bytes": 22626,
+    "sha256": "57A8355900074C152F026520107F51A70923EEAB627E7386A85B91D2F8AF48E5"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/ptm-matrix-verification.json",
+    "bytes": 687,
+    "sha256": "B8C74E1D77DE433D2D3889E597FD25816F8B93EEA40EA0C04AA25DE1253D550F"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/ptm-matrix.json",
+    "bytes": 24864,
+    "sha256": "9558F9F2B3995E32BB7CBA7571A10B5FCAAE17E0A32FE0BD49C1667D70BC4D61"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/ptm-natural-phase-verification.json",
+    "bytes": 2428,
+    "sha256": "6733EECA5771C926232E67EEF78F8EC94444CAFC2A010C6EE2FE654AA9E4D190"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/ptm-natural-phase.json",
+    "bytes": 23966,
+    "sha256": "21E2ED069B226BAB4B9582D94A05987DE617C08619A46E7ED94845D71E7F7AD0"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/ptm-natural-phase.lua",
+    "bytes": 1119,
+    "sha256": "78CCDFE78E351D8864B82A521D42937C97F52261FA31918C42605480B355B750"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/ptm-skill-cpu-verification.json",
+    "bytes": 3568,
+    "sha256": "A4F30D4F0C356E5FFEDB8CE0CE31EE54BFB90071B1FA092D67DEEB3EFE7987B9"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/ptm-skill-cpu.json",
+    "bytes": 207826,
+    "sha256": "F8A33A9C22C4119EA0286869AB37AC98CEF47F51A92E21A58DDB7370324ED4E0"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/ptm-skill-cpu.lua",
+    "bytes": 2799,
+    "sha256": "3090C68D90244CBF971DF042CC73AA8FCE99CEAE6633CE4FA520ED486966573B"
   },
   {
     "path": "evidence/mpu4/skill-cash/reel-request-matrix.json",

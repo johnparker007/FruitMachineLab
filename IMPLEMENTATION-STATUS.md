@@ -1,5 +1,27 @@
 # Implementation and evidence boundaries
 
+IRQ continuation: [timing foundation](docs/recovery/PTM-CLOCK-FOUNDATION-PASS.md)
+adds18 actual native CPU experiments and354 natural Skill Cash observations.
+The latter match20 timer arms and19 original IRQ/callback pairs; actual store
+timing resolves the old prefix's phase/latency ambiguity. Ordinary IRQ entry
+is19 cycles with a12-byte frame. Live still uses captured scheduling pending
+instruction-boundary/input delivery and ROM service recovery.
+199 headless groups/eight GUI smoke modes pass; both solution builds are clean.
+
+Timing continuation: [timer clock foundation](docs/recovery/PTM-CLOCK-FOUNDATION-PASS.md)
+now includes a stateful timer3 control00/63 lifecycle model, matching643 natural
+observations across20 cold-attract arms and an independent byte-identical repeat.
+Internal post-shot phase and disable/rearm counter truncation are preserved.
+It remains separate from Live scheduling until canonical interrupt acceptance
+and the selected external-clock/gate assumptions are verified.
+
+Newest: [timer clock foundation](docs/recovery/PTM-CLOCK-FOUNDATION-PASS.md).
+96 synthetic native bus samples and100 natural attract-mode phase pairs back
+bounded timer1/timer3 clocks. Natural timer3 rearm phase is not universally low;
+six equal-cycle status-read cases remain explicitly unresolved.194 headless
+groups/eight GUI modes pass. Live retains its captured IRQ/callback adapter;
+the new pulse clock does not fabricate post-shot phase or CPU acceptance.
+
 Newest: [feature entry motion](docs/recovery/FEATURE-ENTRY-MOTION-PASS.md). Live
 runs native61CF reel motion, animates the board and returns to actual selection.
 Physical START can launch another dice roll without extra credit debit.190

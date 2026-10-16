@@ -1,6 +1,15 @@
 # Skill Cash timer deadline investigation
 
-14 October 2026. This pass observes the effective timer-3 latch store, rather than
+Historical checkpoint. PTM-CLOCK-FOUNDATION-PASS.md (16 October) adds natural
+attract-mode observations of both starting phases and a96-sample synthetic bus
+matrix. The18–25-cycle range below is conditional on starting low; it is not a
+measured canonical phase or a universal latency. Starting high gives26–33.
+The later canonical20-arm observer directly sees high phase and establishes
+that the old STY watchpoint coordinate is seven cycles before effective bus
+access. For that prefix the corrected assertion→handler range is19–26 cycles.
+The remaining arms are not assigned a phase from that short window.
+
+14 October 2026. This pass observes a debugger watchpoint at the timer-3 latch store, rather than
 the entry to native helper 70EF. No original workspace files or machine settings
 were changed. The new capture uses isolated temporary configuration/NVRAM directories.
 
@@ -10,7 +19,7 @@ The fresh MAME 0.281 campaign matches the original SHA256 values for state.csv,
 feature-state.csv, input-levels.csv and final RAM. There are 6,103 latch stores at
 0907, all from STY at 710B. The debugger reports PC 710F after operand fetch.
 Every observed latch is 0028 with control 63. IRQ entry FE70 occurs 346–353 CPU
-cycles after the store; callback 48FD occurs exactly 128 cycles after IRQ entry.
+cycles after its reported instruction coordinate; callback 48FD occurs exactly 128 cycles after IRQ entry.
 All 6,103 callback cycles and columns independently match the earlier shared-memory
 capture exactly. This adds evidence without replacing its expected lamp outputs.
 

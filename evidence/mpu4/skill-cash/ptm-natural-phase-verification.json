@@ -1,0 +1,39 @@
+{
+  "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-ptm-attract-e89e889492ef4ce5805847a3111f9215",
+  "csv_sha256": "931020AFA617764989D345F0EB7F8D2CDE80476D435349A4DE3809BB8BDD773D",
+  "lua_sha256": "78CCDFE78E351D8864B82A521D42937C97F52261FA31918C42605480B355B750",
+  "debugger_sha256": "26AD75512C832C50FD48752263656F4E2C65468BC1847F40F7BEC4665650877B",
+  "provenance": {
+    "classification": "Natural cold/default attract sequence, absent NVRAM, no physical inputs or state injection. Read-only PTM saved-item samples at native710B latch write and following opcode fetch; not the canonical Skill Cash campaign",
+    "mame_sha256": "0FCE5A88DF4F9D9B1FBF1405812C00848036E615993780978D967DA34204CB7A"
+  },
+  "low_arms": 1,
+  "high_arms": 99,
+  "excluded_attempts": [
+    {
+      "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-ptm-phase-8efa5e1a272b48c782a7cfdbe3a65bbd",
+      "reason": "Unsupported debugger Lua command; setup errors and no accepted feature interval",
+      "raw_sha256": "2FE78A1F8A44C38122B37A51FE7361D888351830A4F5F2DF28AF43C81BD85146"
+    },
+    {
+      "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-ptm-taps-ec9bda1375fc4e2a94239aa52fc1a0c7",
+      "reason": "Observer campaign did not progress; stopped, no accepted evidence",
+      "raw_sha256": "5F7FD60D084DB58DD137ACF6B3FA117A5C578B9C94EC5DEA7BFA6F36A01B8D81"
+    },
+    {
+      "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-ptm-state-4eb64e2d7b0941f1a56af6692c991082",
+      "reason": "Observer campaign did not progress; stopped, no accepted evidence",
+      "raw_sha256": "3461CC41A5A0306373B5C8B6677DB226ECB544FE52087CC38F0CFBDC1E869E36"
+    },
+    {
+      "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-ptm-matrix-451a2428fa134c388917d42941d31b95",
+      "reason": "Debugger-only peripheral writes/single-step experiment; all-zero status, superseded by real CPU bus programs",
+      "raw_sha256": "DAAF4F78E1D4B97C9EAE77490A3BF245B870830AF3E9837A783F472EE946995F"
+    },
+    {
+      "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-ptm-bus-matrix-16cff860d0d8498a82b756a56f0ce051",
+      "reason": "Watchpoint go cleared temporary stop; incomplete one-row experiment",
+      "raw_sha256": "012E27E714C832F0072BA72F0B6ECE5A9A94DD854DAE8ED7286E0F3846C74BF4"
+    }
+  ]
+}

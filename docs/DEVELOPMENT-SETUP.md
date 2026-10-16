@@ -5,6 +5,11 @@ Local clone: C:\projects\GitRepos\FruitMachineLab
 
 ## Current status
 
+Latest batch reaches FC99 preplay dispatch after verified background services and
+credit/display return.156 headless groups/eight WPF smoke modes pass. See
+recovery/BACKGROUND-SERVICES-PREPLAY-PASS.md for the explicit MAME characteriser
+adapter, fault/reset limits, reproducible captures and next eligibility task.
+
 Latest completed batch: Live reaches FBF1/native482F after IC8 output and initial
 background dispatch.150 headless groups/eight WPF smoke modes pass. See
 recovery/IC8-BACKGROUND-ENTRY-PASS.md for capture qualifications and next work.

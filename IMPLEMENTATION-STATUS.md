@@ -1,5 +1,10 @@
 # Implementation and evidence boundaries
 
+Newest: [background services/preplay](docs/recovery/BACKGROUND-SERVICES-PREPLAY-PASS.md).
+Live reachesFC99;156 headless groups/eight GUI modes pass. Status lamps and guarded
+services execute, with explicit MAME characteriser compatibility and fault/reset
+limits. Preplay eligibility and the next paid spin remain outside this milestone.
+
 Newest: [IC8/background entry](docs/recovery/IC8-BACKGROUND-ENTRY-PASS.md). Live
 reaches FBF1/native482F;150 headless groups and eight GUI smoke modes pass.
 The output latch uses a qualified captured entry seed, not full PIA/startup emulation.

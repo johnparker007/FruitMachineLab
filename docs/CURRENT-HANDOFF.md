@@ -6,6 +6,16 @@ batch, including its verification.
 
 ## Working implementation
 
+Newest checkpoint: recovery/BACKGROUND-SERVICES-PREPLAY-PASS.md. Live reachesFC99
+after status lamps, ROM characteriser scan with explicit MAME6809 compatibility
+adapter, unchanged-door/NVRAM/Test guards and credit/display return. Cash bank16,
+token bank0,credits6,pending/current-win0.156 groups/eight WPF smoke modes pass.
+Natural2/13/276-dispatch windows and14-case isolated status matrix pass. Physical
+PAL semantics are not recovered; MAME itself uses the documented compatibility
+path. Reset, corrupt-NVRAM repair and service-menu requests stop explicitly.
+NextFC99/D30F preplay eligibility/holds/gamble guards, then real Start-latch path.
+Earlier FBF1 checkpoint below is preserved history.
+
 Newest completed checkpoint: recovery/IC8-BACKGROUND-ENTRY-PASS.md. Live now
 passes IC8 output and preplay/background dispatch to FBF1 before native482F.
 Natural23/93-dispatch windows match, including port30/control34 and one lamp
@@ -40,7 +50,7 @@ The old75A9 keep-negative label is corrected to native sign normalization in
 - Live Skill Cash: incremental VM, retained state, physical momentary Start input,
   actual Pause/Resume, generated lamp/alpha outputs and diagnostic state display.
 - Separate verified playback/scrubber; original MAME-backed verification retained.
-- Last development batch:150 headless groups passed. Headless and isolated WPF
+- Last development batch:156 headless groups passed. Headless and isolated WPF
   builds passed; Live/playback WPF smoke checks and rendered layouts were checked.
 - John subsequently reported that the live feature works well.
 
@@ -100,6 +110,12 @@ See recovery/BOARD-MOVEMENT-PASS.md for arithmetic, IRQ-byte read phases, synthe
 scope and preserved earlier timing qualifications.
 
 ## Next development work
+
+Start at FC99/D30F. Read BACKGROUND-SERVICES-PREPLAY-PASS.md and its compatibility/
+fault qualifications. Recover eligibility and player-input handling without
+skipping credits or starting a synthetic spin. Native2CB3/171D timer-sign branches
+remain unsupported if the new input loop waits long enough. The FBF1 frontier
+described below is historical.
 
 Start at FBF1/native482F. Read IC8-BACKGROUND-ENTRY-PASS.md first. Preserve the
 new successful natural-window fixtures, timer002F replay fix and bounded output

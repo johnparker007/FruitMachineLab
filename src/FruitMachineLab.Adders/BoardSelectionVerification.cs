@@ -7,8 +7,11 @@ namespace FruitMachineLab.Adders;
 public record BoardSelectionVerificationResult(int Instructions,int Lamps,int Sounds,int AlphaBytes,int Conditions,bool AlphaExact=true,int ReferenceAlphaBytes=0,string LampSequence="",string AlphaShadow="");
 public static class BoardSelectionVerification
 {
-    public static BoardSelectionVerificationResult Verify(string evidence,bool diceRequests=false,bool diceMotion=false,bool boardMovement=false,bool nudgePotProbe=false,string? boardLink=null,bool continuation=false,bool availability=false,bool nudgeEntry=false,bool nudgePrompt=false,bool nudgeRequest=false,bool nudgeMotion=false,bool nudgeReturn=false,bool nudgeSequence=false,bool nudgeResult=false,bool nudgeExit=false,bool nudgeWinTransfer=false,bool nudgeTail=false,bool nudgeAccounting=false,bool nudgeBankReturn=false,bool nudgeCycleInit=false,bool nudgeIc8=false,bool nudgeBackground=false)
+    public static BoardSelectionVerificationResult Verify(string evidence,bool diceRequests=false,bool diceMotion=false,bool boardMovement=false,bool nudgePotProbe=false,string? boardLink=null,bool continuation=false,bool availability=false,bool nudgeEntry=false,bool nudgePrompt=false,bool nudgeRequest=false,bool nudgeMotion=false,bool nudgeReturn=false,bool nudgeSequence=false,bool nudgeResult=false,bool nudgeExit=false,bool nudgeWinTransfer=false,bool nudgeTail=false,bool nudgeAccounting=false,bool nudgeBankReturn=false,bool nudgeCycleInit=false,bool nudgeIc8=false,bool nudgeBackground=false,bool nudgeStatus=false,bool nudgeServices=false,bool nudgePreplay=false)
     {
+        if(nudgePreplay)nudgeServices=true;
+        if(nudgeServices)nudgeStatus=true;
+        if(nudgeStatus)nudgeBackground=true;
         if(nudgeBackground)nudgeIc8=true;
         if(nudgeIc8)nudgeCycleInit=true;
         if(nudgeCycleInit)nudgeBankReturn=true;
@@ -26,11 +29,11 @@ public static class BoardSelectionVerification
         if(diceMotion)diceRequests=true;
         if(nudgePotProbe)boardMovement=true;
         if(boardLink is not null)boardMovement=true;
-        using var capture=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",nudgeBackground ? "nudge-background.json" : nudgeIc8 ? "nudge-ic8.json" : nudgeCycleInit ? "nudge-cycle-init.json" : nudgeBankReturn ? "nudge-bank-return.json" : nudgeAccounting ? "nudge-accounting.json" : nudgeTail ? "nudge-tail.json" : nudgeWinTransfer ? "nudge-win-transfer.json" : nudgeExit ? "nudge-exit.json" : nudgeResult ? "nudge-result.json" : nudgeSequence ? "nudge-sequence.json" : nudgeReturn ? "nudge-return.json" : nudgeMotion ? "nudge-motion-vm.json" : nudgeRequest ? "nudge-request.json" : nudgePrompt ? "nudge-prompt.json" : nudgeEntry ? "nudge-entry.json" : availability ? "ladder-availability.json" : boardLink is not null ? boardLink+"-link"+(continuation ? "-next" : "")+".json" : nudgePotProbe ? "nudge-pot-probe.json" : boardMovement ? (continuation ? "board-movement-next.json" : "board-movement.json") : diceMotion ? "dice-motion-vm.json" : diceRequests ? "dice-requests.json" : "board-selection.json")));var root=capture.RootElement;
+        using var capture=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",nudgePreplay ? "nudge-preplay.json" : nudgeServices ? "nudge-services.json" : nudgeStatus ? "nudge-status.json" : nudgeBackground ? "nudge-background.json" : nudgeIc8 ? "nudge-ic8.json" : nudgeCycleInit ? "nudge-cycle-init.json" : nudgeBankReturn ? "nudge-bank-return.json" : nudgeAccounting ? "nudge-accounting.json" : nudgeTail ? "nudge-tail.json" : nudgeWinTransfer ? "nudge-win-transfer.json" : nudgeExit ? "nudge-exit.json" : nudgeResult ? "nudge-result.json" : nudgeSequence ? "nudge-sequence.json" : nudgeReturn ? "nudge-return.json" : nudgeMotion ? "nudge-motion-vm.json" : nudgeRequest ? "nudge-request.json" : nudgePrompt ? "nudge-prompt.json" : nudgeEntry ? "nudge-entry.json" : availability ? "ladder-availability.json" : boardLink is not null ? boardLink+"-link"+(continuation ? "-next" : "")+".json" : nudgePotProbe ? "nudge-pot-probe.json" : boardMovement ? (continuation ? "board-movement-next.json" : "board-movement.json") : diceMotion ? "dice-motion-vm.json" : diceRequests ? "dice-requests.json" : "board-selection.json")));var root=capture.RootElement;
         if(nudgeTail){
-            using var entryReference=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",nudgeBackground ? "nudge-ic8.json" : nudgeIc8 ? "nudge-cycle-init.json" : nudgeCycleInit ? "nudge-bank-return.json" : nudgeBankReturn ? "nudge-accounting.json" : nudgeAccounting ? "nudge-tail.json" : "nudge-win-transfer.json")));
-            using var sidecar=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",nudgeBackground ? "nudge-background-verification.json" : nudgeIc8 ? "nudge-ic8-verification.json" : nudgeCycleInit ? "nudge-cycle-init-verification.json" : nudgeBankReturn ? "nudge-bank-return-verification.json" : nudgeAccounting ? "nudge-accounting-verification.json" : "nudge-tail-verification.json")));
-            foreach(var field in root.GetProperty("initial").EnumerateObject())if(field.Name is not ("cycle" or "io" or "io_control") && entryReference.RootElement.GetProperty("terminal").GetProperty(field.Name).GetString()!=field.Value.GetString())throw new InvalidDataException("Tail entry differs from verified transfer boundary");
+            using var entryReference=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",nudgePreplay ? "nudge-services.json" : nudgeServices ? "nudge-status.json" : nudgeStatus ? "nudge-background.json" : nudgeBackground ? "nudge-ic8.json" : nudgeIc8 ? "nudge-cycle-init.json" : nudgeCycleInit ? "nudge-bank-return.json" : nudgeBankReturn ? "nudge-accounting.json" : nudgeAccounting ? "nudge-tail.json" : "nudge-win-transfer.json")));
+            using var sidecar=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",nudgePreplay ? "nudge-preplay-verification.json" : nudgeServices ? "nudge-services-verification.json" : nudgeStatus ? "nudge-status-verification.json" : nudgeBackground ? "nudge-background-verification.json" : nudgeIc8 ? "nudge-ic8-verification.json" : nudgeCycleInit ? "nudge-cycle-init-verification.json" : nudgeBankReturn ? "nudge-bank-return-verification.json" : nudgeAccounting ? "nudge-accounting-verification.json" : "nudge-tail-verification.json")));
+            foreach(var field in root.GetProperty("initial").EnumerateObject())if(field.Name is not ("cycle" or "io" or "io_control" or "aux") && entryReference.RootElement.GetProperty("terminal").GetProperty(field.Name).GetString()!=field.Value.GetString())throw new InvalidDataException("Tail entry differs from verified transfer boundary");
             if(!sidecar.RootElement.GetProperty("tail_window").GetBoolean() || sidecar.RootElement.GetProperty("process_exit_code").GetString()!.Trim()!="0")throw new InvalidDataException("Incomplete tail campaign");
         }
         if(nudgeWinTransfer && !nudgeTail){
@@ -50,8 +53,9 @@ public static class BoardSelectionVerification
         var declared=root.GetProperty("undefined_frame_masks").EnumerateObject().ToArray();
         if(declared.Length!=frameMasks.Count || declared.Any(item=>!frameMasks.TryGetValue(item.Name,out int mask) || item.Value.GetInt32()!=mask))throw new InvalidDataException("Invalid uninitialized-frame comparison exclusions");
         var ordinalMasks=nudgeEntry ? root.GetProperty("ordinal_frame_masks").EnumerateArray().ToDictionary(r=>r[0].GetInt32(),r=>r[1].GetInt32()) : new Dictionary<int,int>();int nudgeMask=65535;ushort lastNudgeSite=0;
-        var m=new SkillCashLiveSession(evidence).Machine;ushort clock=boardLink is not null ? BoardLinkState.Apply(m,evidence,boardLink,continuation,availability,nudgeEntry,nudgePrompt,nudgeRequest,nudgeMotion,nudgeReturn,nudgeSequence,nudgeResult,nudgeExit,nudgeWinTransfer,nudgeTail,nudgeAccounting,nudgeBankReturn,nudgeCycleInit,nudgeIc8,nudgeBackground) : boardMovement ? BoardMovementState.Apply(m,evidence,nudgePotProbe,continuation) : BoardSelectionState.Apply(m,evidence,diceRequests);
+        var m=new SkillCashLiveSession(evidence).Machine;ushort clock=boardLink is not null ? BoardLinkState.Apply(m,evidence,boardLink,continuation,availability,nudgeEntry,nudgePrompt,nudgeRequest,nudgeMotion,nudgeReturn,nudgeSequence,nudgeResult,nudgeExit,nudgeWinTransfer,nudgeTail,nudgeAccounting,nudgeBankReturn,nudgeCycleInit,nudgeIc8,nudgeBackground,nudgeStatus,nudgeServices,nudgePreplay) : boardMovement ? BoardMovementState.Apply(m,evidence,nudgePotProbe,continuation) : BoardSelectionState.Apply(m,evidence,diceRequests);
         if(nudgeIc8)m.Memory[0xF02]=(byte)Convert.ToUInt16(root.GetProperty("initial").GetProperty("io").GetString(),16);
+        if(nudgeStatus)m.Memory[0xC02]=Convert.ToByte(root.GetProperty("initial").GetProperty("aux").GetString(),16);
         var motion=!nudgeTail && (diceMotion || nudgeMotion) ? new DiceMotionReference(m,evidence,nudgeMotion,nudgeSequence,nudgeResult) : null;
         using var vmHash=IncrementalHash.CreateHash(HashAlgorithmName.SHA256);using var lampHash=IncrementalHash.CreateHash(HashAlgorithmName.SHA256);using var soundHash=IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
         static void Hash(IncrementalHash hash,ReadOnlySpan<ushort> values){Span<byte> bytes=stackalloc byte[values.Length*2];for(int n=0;n<values.Length;n++)BinaryPrimitives.WriteUInt16BigEndian(bytes.Slice(n*2,2),values[n]);hash.AppendData(bytes);}
@@ -77,7 +81,7 @@ public static class BoardSelectionVerification
         var catalog=new RecoveredScriptCatalog(Path.Combine(evidence,"VM-SCRIPTS"));
         RecoveredScript Resolve(ushort at)=>catalog.Owner(at);
         void Advance(ushort target){ushort delta=Cell.Subtract(target,scheduler.Clock);if(delta>32767)throw new InvalidDataException("Board sound clock reversed");if(delta!=0){m.WriteWord(0x2F,Cell.Add(m.ReadWord(0x2F),delta));m.Memory[0x2C]=0;m.WriteWord(0x35,(ushort)Math.Max(0,m.ReadWord(0x35)-delta));}scheduler.AdvanceTicks(delta);}
-        int liftedObserved=0;
+        int liftedObserved=0,chrPoint=0;
         var executor=new ScriptExecutor(m){ResolveScript=Resolve,ResolveWord=SkillCashData.ResolveWord,
             InputConditionCell=value=>{
                 if(condition>=conditions.Length)throw new InvalidDataException("Extra board input condition");var row=conditions[condition++];
@@ -106,6 +110,11 @@ public static class BoardSelectionVerification
                 if(i.Native is 0x29F4 or 0x29EC && (availability || nudgeEntry)){
                     if(availabilityPoint>=availabilityRows.Length)throw new InvalidDataException("Extra native availability call");av=availabilityRows[availabilityPoint++];
                     if(av[0]!=ordinal || av[1]!=state.DataPointer || av[2]!=state.Data.Peek())throw new InvalidDataException("Native availability entry differs");
+                }
+                if(nudgeServices && i.Native==0x68F1){
+                    var rows=root.GetProperty("characteriser");AddersBackgroundServices.VerifyCharacteriser(state,x=>AddersBackgroundServices.Mame6809CompatibilityResponse(state,x),(at,call,response)=>{
+                        var row=rows[chrPoint++];if(row[0].GetUInt16()!=at+1 || row[1].GetByte()!=call || row[2].GetByte()!=response || row[3].GetByte()!=state.Memory[at+1])throw new InvalidDataException("Characteriser reference response differs");
+                    });return true;
                 }
                 bool handled=AddersNativeWords.Handle(i,state,requests,scheduler,alpha);
                 if(av is not null){ushort[] values=[state.Data.Peek(),state.Memory[0xC8],state.Memory[0xA8],state.Memory[0xDD],state.Memory[0xDE],state.ReadWord(0x160),state.ReadWord(0x162),state.ReadWord(0x164)];for(int n=0;n<values.Length;n++)if(values[n]!=av[n+3])throw new InvalidDataException($"Native availability call {availabilityPoint} field {n} differs: {values[n]:X4} != {av[n+3]:X4}");}
@@ -148,6 +157,7 @@ public static class BoardSelectionVerification
         if(nudgeResult && (!nudgeWinTransfer || nudgeTail)){
             byte[] terminal=Convert.FromHexString(root.GetProperty("terminal_ram_hex").GetString()!);
             if(terminal.Length!=0x800 || !m.Memory.AsSpan(0x2F0,0x33).SequenceEqual(terminal.AsSpan(0x2F0,0x33)) || m.ReadWord(0xBA)!=(ushort)((terminal[0xBA]<<8)|terminal[0xBB]) || m.ReadWord(0x2FA)!=(ushort)((terminal[0x2FA]<<8)|terminal[0x2FB]))throw new InvalidDataException("Pending award/NVRAM boundary bytes differ");
+            if(nudgeServices && (chrPoint!=root.GetProperty("characteriser").GetArrayLength() || m.Memory[0x38]!=terminal[0x38] || m.Memory[0x2C]!=terminal[0x2C]))throw new InvalidDataException("Background guard state differs");
             if(nudgeAccounting && (!m.Memory.AsSpan(0x43A,30).SequenceEqual(terminal.AsSpan(0x43A,30)) || !m.Memory.AsSpan(0x7C9,31).SequenceEqual(terminal.AsSpan(0x7C9,31))))throw new InvalidDataException("Award statistics bytes differ");
         }
         if(nudgeResult && liftedObserved!=root.GetProperty("lifted_dispatches").GetInt32())throw new InvalidDataException("Typed-list/local-release normalization differs");

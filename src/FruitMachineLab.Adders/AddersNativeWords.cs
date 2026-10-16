@@ -8,6 +8,11 @@ public static class AddersNativeWords
     public static bool Handle(Instruction instruction,Machine state,Mpu4LampRequests lamps,Mpu4ChoiceStreamScheduler scheduler,Mpu4Alpha alpha,Action? alphaChanged=null)
     {
         if(lamps.HandleWord(instruction))return true;
+        if(instruction.Native==0x68F1){AddersBackgroundServices.VerifyCharacteriser(state,x=>AddersBackgroundServices.Mame6809CompatibilityResponse(state,x));return true;}
+        if(instruction.Native==0x6EF7){AddersBackgroundServices.RefreshDoor(state);return true;}
+        if(instruction.Native==0x6E99){AddersBackgroundServices.CheckNvram(state);return true;}
+        if(instruction.Native==0x2E53){AddersBackgroundServices.CheckTestGate(state);return true;}
+        if(instruction.Native==0x482F){AddersStatusService.Refresh(state,lamps);return true;}
         if(instruction.Native==0x4C34)return true; // Byte-checked RTS compatibility entry.
         // Native5429's idle branch is exactly TST7D; LBEQ53AD (RTS).
         // Busy serial processing has hardware/timing effects not yet translated.

@@ -1,5 +1,13 @@
 # Third-party notices
 
+`AddersBackgroundServices.Mame6809CompatibilityResponse` reproduces the selected
+6809 compatibility branch in MAME's
+`src/mame/barcrest/mpu4_characteriser_pal.cpp` (`protection_r`). This is a MAME
+reference adapter, not a recovered physical PAL implementation.
+
+Copyright (c) David Haywood and James Wallace. Licensed under BSD-3-Clause,
+under the redistribution conditions and disclaimer reproduced below.
+
 `src/FruitMachineLab.Runtime/BarcrestStepper.cs` translates the Barcrest phase and
 index-optic mechanics in MAME's `src/devices/machine/steppers.cpp`, tag `mame0281`:
 https://github.com/mamedev/mame/blob/mame0281/src/devices/machine/steppers.cpp

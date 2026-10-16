@@ -6,6 +6,18 @@ batch, including its verification.
 
 ## Working implementation
 
+Newest checkpoint: recovery/PAID-CYCLE-RETURN-PASS.md. The verified ordinary
+post-nudge path returns through FC7C/FCDE, FDBA and the real9ABE stack check, then
+reaches a new Start prompt without resetting the machine. A diagnostic completed
+paid-game count increments only at the outer FE1F return. A generated regression
+completes three consecutive paid games: credits6→5→4→3, bank16 retained, with real
+Start press/release and Pause between games.181 headless groups/all eight WPF
+modes pass; the solution builds without warnings/errors. Natural
+310/99/1147-observation windows match MAME, including105 next-cycle alpha bytes.
+The separate mixed-input ordinary nudge reaches three common flag2 symbols and
+now stops at EE16 before unrecovered feature-entry accounting; it is not counted
+as complete. Earlier checkpoints below are history.
+
 Newest checkpoint: recovery/PAID-RESULT-ORDINARY-NUDGE-PASS.md. Live passes paid
 result evaluation and ordinary-nudge eligibility. A mixed physical Nudge1/2/1
 campaign reaches a one-nudge offer; physical Nudge1 executes incrementally with
@@ -89,7 +101,7 @@ The old75A9 keep-negative label is corrected to native sign normalization in
 - Live Skill Cash: incremental VM, retained state, physical momentary Start input,
   actual Pause/Resume, generated lamp/alpha outputs and diagnostic state display.
 - Separate verified playback/scrubber; original MAME-backed verification retained.
-- Last development batch:177 headless groups passed. Headless and isolated WPF
+- Last development batch:181 headless groups passed. Headless and isolated WPF
   builds passed; Live/playback WPF smoke checks and rendered layouts were checked.
 - John subsequently reported that the live feature works well.
 
@@ -149,6 +161,16 @@ See recovery/BOARD-MOVEMENT-PASS.md for arithmetic, IRQ-byte read phases, synthe
 scope and preserved earlier timing qualifications.
 
 ## Next development work
+
+Read PAID-CYCLE-RETURN-PASS.md. Prioritize EE16's three-flag feature-entry0305 /
+07D5 accounting, then EDD3/feature-board routing, preserving the already-consumed
+credit and persistent bank. No full startup, coin insertion, hundreds-of-games or
+complete-machine coverage claim. Three generated paid plays are integration
+experiments, not three independent full MAME reference games. The natural windows
+verify the specific captured result/return/next-prompt path. Use NudgePaidResult,
+NudgePaidReturn and NudgePaidNextPrompt after the existing capture flags. The
+checkpoint preserves133 VM spans/1623 native rows and both stack-evidence records.
+No fresh live Ghidra export API was available. Older frontiers below are history.
 
 Read PAID-RESULT-ORDINARY-NUDGE-PASS.md. Continue B749 ordinary post-nudge
 improvement/result, then FC7C/FCDE outer paid-game return. No consecutive-games

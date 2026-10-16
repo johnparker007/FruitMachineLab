@@ -5,6 +5,12 @@ Local clone: C:\projects\GitRepos\FruitMachineLab
 
 ## Current status
 
+Latest: Live returns through the actual paid-game outer caller to another Start
+prompt. A generated test completes three consecutive paid plays in one machine
+session (credits6→3, bank16).181 headless groups/eight WPF modes pass. The three-flag feature route
+stops explicitly at EE16 before unrecovered accounting. See
+recovery/PAID-CYCLE-RETURN-PASS.md for exact MAME windows and coverage limits.
+
 Latest: Live passes paid result evaluation and can offer/execute an ordinary nudge
 with the existing physical buttons, stopping at B749 before post-sequence results.
 A generated no-nudge route stops at FC7C.177 headless groups/eight WPF modes pass. See

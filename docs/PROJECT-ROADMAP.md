@@ -12,10 +12,10 @@ is not authority for which changes John has committed or pushed.
 
 ## Priority order
 
-Current checkpoint: Live passes paid reel result evaluation and ordinary-nudge
-eligibility, and an offered physical nudge reaches B749. Next recover its ordinary
-post-sequence result and the outer paid-game return past FC7C. See
-recovery/PAID-RESULT-ORDINARY-NUDGE-PASS.md.
+Current checkpoint: Live returns through the paid-game outer caller to another
+Start prompt, and a generated regression completes three consecutive paid plays
+in one session. Next recover EE16's three-flag feature-entry accounting and board
+routing to broaden outcomes. See recovery/PAID-CYCLE-RETURN-PASS.md.
 This remains gameplay recovery; the symbolic editing/rebuild toolchain stays deferred.
 
 The primary milestone is a complete playable Adders & Ladders machine on PC.
@@ -43,11 +43,12 @@ renderers should use the same backend inputs/outputs, with no gameplay in UI cod
 
 ## Current recovery frontier
 
-Current boundaries are B749 after an ordinary paid nudge, and FC7C for a generated
-no-nudge result. Continue post-sequence improvement/result and outer paid-game
-return with persistent credit/bank state. Long-wait2CB3 remains explicit.
+The returning ordinary/no-award route now reaches another Start prompt. Current
+feature boundary is EE16 after three common symbol flag2 bits; recover its0305 /
+07D5 accounting and EDD3 board routing with persistent state. Long-wait2CB3 remains
+explicit. The generated three-game test does not establish broad machine coverage.
 Keep the MAME compatibility adapter distinct from physical PAL recovery. See
-recovery/PAID-RESULT-ORDINARY-NUDGE-PASS.md. Complete consecutive playable games remains
+recovery/PAID-CYCLE-RETURN-PASS.md. Complete consecutive playable games remains
 the priority; symbolic editing/reassembly stays deferred with byte preservation.
 Older boundaries below describe preserved prefixes.
 

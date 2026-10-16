@@ -7,6 +7,37 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Three generated paid games retain one machine, debit each Start and pause between games", () => {
+    var live=new SkillCashLiveSession(evidence,boardLink:"ladder",continueBoard:true);var original=live.Machine;int next=3,starts=0,completed=0;bool paid=false,nudgeHeld=false,pausedBetween=false;live.Resume();
+    for(int n=0;n<600000 && completed<3;n++){
+        if(live.AwaitingBoardSelection)live.SetTake(true);
+        if(!paid && live.AwaitingNudgeInput && !live.NudgeMoving){live.SetTake(false);if(next>0 && live.Machine.Memory[0xBE]==next){live.SetNudge(0,true);next--;}}
+        if(live.NudgeMoving){live.SetNudge(0,false);nudgeHeld=false;}
+        if(live.AwaitingPaidStart && starts==live.PaidGamesCompleted){
+            Equal((byte)(6-completed),live.Snapshot().Credits);
+            if(completed==1){live.Pause();var frozen=live.Machine.Memory.ToArray();ulong at=live.Cycle;ushort vm=live.VmAddress;int count=live.Instructions;live.AdvanceCycles(1000000);Equal(at,live.Cycle);Equal(vm,live.VmAddress);Equal(count,live.Instructions);Equal(1,live.PaidGamesCompleted);Equal(true,frozen.SequenceEqual(live.Machine.Memory));live.Resume();pausedBetween=true;}
+            live.SetStart(true);starts++;
+        }
+        if(live.Panel.StartPressed && (live.Machine.Memory[3]&128)!=0)live.SetStart(false);
+        if(live.PaidSpinMoving)paid=true;
+        if(live.AwaitingPaidNudge && !nudgeHeld){live.SetNudge(0,true);nudgeHeld=true;}
+        if(completed!=live.PaidGamesCompleted){
+            completed=live.PaidGamesCompleted;Equal((byte)(6-completed),live.Snapshot().Credits);Equal((ushort)16,live.Snapshot().CashBank);Equal((ushort)0,live.Snapshot().Pending);Equal((ushort)0,live.Snapshot().CurrentWin);Equal((ushort)0,live.Snapshot().TokenBank);
+            for(int i=0;i<25;i++)Equal(unchecked((byte)~live.Machine.Memory[0x2F0+i]),live.Machine.Memory[0x309+i]);
+        }
+        live.AdvanceCycles(512);
+    }
+    Equal(3,completed);Equal(3,starts);Equal(true,pausedBetween);Equal(true,ReferenceEquals(original,live.Machine));Equal<string?>(null,live.Fault);Equal((byte)0,live.Panel.PhysicalBlack2);Equal((byte)3,live.Snapshot().Credits);live.Pause();
+});
+Check("Natural next paid cycle reaches Start prompt with preserved credits and bank", () => {
+    var r=BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgePaidNextPrompt:true);Console.WriteLine($"  {r.Instructions} next-prompt observations, {r.AlphaBytes} alpha bytes");
+});
+Check("Natural paid-game outer return preserves stack balance and protected state", () => {
+    var r=BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgePaidReturn:true);Console.WriteLine($"  {r.Instructions} outer paid-return observations");
+});
+Check("Natural ordinary post-nudge result reaches paid-play return without invented improvement", () => {
+    var r=BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgePaidResult:true);Console.WriteLine($"  {r.Instructions} post-nudge observations, {r.Lamps} lamps, {r.Sounds} sounds, {r.AlphaBytes} alpha bytes");
+});
 Check("IRQ direct-page residue survives local-frame allocation without clearing neighbors", () => {
     var m=new Machine();m.Control=new(m,0x7A8);m.LocalFrame=0x7B4;Array.Fill(m.Memory,(byte)0xBF,0x79D,9);
     m.Control.PreserveInterruptDirectPage(0);Equal((ushort)0x7A8,m.Control.Pointer);m.Control.AllocateLocalFrame(9);
@@ -26,9 +57,9 @@ Check("Live mixed nudge inputs reach a paid nudge and preserve prompt/motor Paus
             live.Pause();ulong at=live.Cycle;ushort vm=live.VmAddress;int count=live.Instructions;live.AdvanceCycles(1000000);Equal(at,live.Cycle);Equal(vm,live.VmAddress);Equal(count,live.Instructions);Equal(true,before.SequenceEqual(live.Machine.Memory));live.Resume();live.SetNudge(0,true);
         }
         if(ordinary && live.MotorBusy && !pausedMotor){live.Pause();var frozen=live.Machine.Memory.ToArray();ulong at=live.Cycle;live.AdvanceCycles(1000000);Equal(at,live.Cycle);Equal(true,frozen.SequenceEqual(live.Machine.Memory));live.Resume();pausedMotor=true;}
-        try{live.AdvanceCycles(512);}catch(NotSupportedException e){if(!e.Message.StartsWith("BOARD ordinary paid nudge completed"))throw;ended=true;}
+        try{live.AdvanceCycles(512);}catch(NotSupportedException e){if(!e.Message.StartsWith("BOARD paid nudge reached three flagged symbols"))throw;ended=true;}
     }
-    Equal(true,ended);Equal(true,ordinary);Equal(true,pausedMotor);Equal((ushort)0xB749,live.VmAddress);Equal((byte)0,live.Machine.Memory[0xBE]);Equal((byte)0,live.Panel.PhysicalBlack2);Equal((byte)5,live.Snapshot().Credits);Equal((ushort)16,live.Snapshot().CashBank);Equal((ushort)0,live.Snapshot().Pending);Equal((ushort)0,live.Snapshot().CurrentWin);
+    Equal(true,ended);Equal(true,ordinary);Equal(true,pausedMotor);Equal((ushort)0xEE16,live.VmAddress);Equal((byte)0,live.Machine.Memory[0xBE]);Equal((byte)0,live.Panel.PhysicalBlack2);Equal((byte)5,live.Snapshot().Credits);Equal((ushort)16,live.Snapshot().CashBank);Equal((ushort)0,live.Snapshot().Pending);Equal((ushort)0,live.Snapshot().CurrentWin);
     for(int r=0;r<3;r++)Equal((byte)((before![0x168+2*r]+(r==0 ? 90 : 0))%96),live.Machine.Memory[0x168+2*r]);
 });
 Check("Natural ordinary paid Nudge1 matches VM, generated motor, lamps and sounds", () => {
@@ -296,6 +327,7 @@ Check("Live nudge award returns to Start prompt and consumes one real paid play"
     var lamps=new List<byte>();var announcements=new List<string>();live.ObserveDispatch=(i,m)=>{if(i.Native==0x61D5){spinPositions=Enumerable.Range(0,4).Select(n=>m.Memory[0x168+2*n]).ToArray();spinRequests=Enumerable.Range(0,4).Select(n=>m.Memory[0x169+2*n]).ToArray();}if(i.Site==0xFCD5 && !paidReady){eligibilityLamps=Convert.ToHexString(lamps.ToArray());eligibilityAlpha=new Mpu4Alpha(m).Snapshot().Shadow;}if(i.Site==0xAF76)flashes++;if(i.Site==0xE247)lamps.Clear();if(i.Site==0xB666)improving=true;if(i.Site==0xAFC2){Equal((ushort)16,Cell.Add(m.ReadWord(0xBA),m.ReadWord(0x2FA)));meterSteps.Add(m.ReadWord(0x2FA));}};live.ObserveLamp=r=>{lamps.Add(r.Id);lamps.Add((byte)(r.Pattern&15));};live.ObserveAlpha=a=>announcements.Add(a.Text);
     live.Resume();
     for(int n=0;n<180000 && !returned;n++) {
+        if(live.PaidGamesCompleted==1 && live.AwaitingPaidStart){returned=true;break;}
         if(live.AwaitingBoardSelection)live.SetTake(true);
         if(live.AwaitingPaidNudge && !ordinaryReady){ordinaryReady=true;ordinaryOffered=live.Machine.Memory[0xBE];next=ordinaryOffered;}
         if(live.AwaitingNudgeInput && !live.NudgeMoving){live.SetTake(false);if(live.Machine.Memory[0xBE]==next && next>0){live.SetNudge(0,true);pressed++;next--;}}
@@ -318,10 +350,10 @@ Check("Live nudge award returns to Start prompt and consumes one real paid play"
             Equal(at,live.Cycle);Equal(vm,live.VmAddress);Equal(count,live.Instructions);Equal(true,frozen.SequenceEqual(live.Machine.Memory));live.Resume();pausedTone=true;
         }
         if(paidReady && live.Panel.StartPressed && (live.Machine.Memory[3]&0x80)!=0)live.SetStart(false);
-        try{live.AdvanceCycles(512);}catch(NotSupportedException e){if(!e.Message.StartsWith("BOARD ordinary paid nudge completed") && !e.Message.StartsWith("BOARD paid play completed"))throw;returned=true;}
+        live.AdvanceCycles(512);
 
     }
-    Equal(true,returned);Equal(true,ordinaryOffered is >=0 and <=3);Equal(3+ordinaryOffered,pressed);Equal((byte)0,live.Machine.Memory[0xBE]);Equal((byte)0,live.Machine.Memory[0xBF]);Equal((ushort)0,live.Machine.ReadWord(0xBA));Equal((ushort)0,live.Machine.ReadWord(0x2FA));Equal((ushort)16,live.Snapshot().CashBank);Equal((ushort)0,live.Snapshot().TokenBank);Equal((byte)5,live.Snapshot().Credits);Equal((byte)0x30,live.Machine.Memory[0xF02]);Equal(ordinaryReady ? (ushort)0xB749 : (ushort)0xFC7C,live.VmAddress);Equal(true,paidReady);Equal(true,pausedTone);Equal(true,pausedPaidSpin);Equal((byte)0,live.Machine.Memory[0x4D]);Equal((byte)0,live.Panel.PhysicalBlack2);Equal((ushort)0, (ushort)(live.Machine.ReadWord(0x90)&0x80));Equal(true,live.Fault?.StartsWith(ordinaryReady ? "BOARD ordinary paid nudge completed" : "BOARD paid play completed")==true);
+    Equal(true,returned);Equal(true,ordinaryOffered is >=0 and <=3);Equal(3+ordinaryOffered,pressed);Equal((byte)0,live.Machine.Memory[0xBE]);Equal((byte)0,live.Machine.Memory[0xBF]);Equal((ushort)0,live.Machine.ReadWord(0xBA));Equal((ushort)0,live.Machine.ReadWord(0x2FA));Equal((ushort)16,live.Snapshot().CashBank);Equal((ushort)0,live.Snapshot().TokenBank);Equal((byte)5,live.Snapshot().Credits);Equal((byte)0x30,live.Machine.Memory[0xF02]);Equal(1,live.PaidGamesCompleted);Equal(true,live.AwaitingPaidStart);Equal(true,paidReady);Equal(true,pausedTone);Equal(true,pausedPaidSpin);Equal((byte)0,live.Machine.Memory[0x4D]);Equal((byte)0,live.Panel.PhysicalBlack2);Equal((ushort)0, (ushort)(live.Machine.ReadWord(0x90)&0x80));Equal<string?>(null,live.Fault);
     Equal(7,flashes);Equal(true,pausedAccounting);Equal(true,pausedFlash);Equal(true,pausedTransfer);Equal(true,meterSteps.SequenceEqual(Enumerable.Range(1,16).Select(n=>(ushort)n)));Equal(true,pausedImprovement);Equal(true,announcements.Any(x=>x.Contains("I CAN DO BETTER")));Equal(true,announcements.Any(x=>x.Contains("LET ME THINK")));Equal(true,announcements.Any(x=>x.Contains("HERE I GO")));
     var reference=BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeTail:true);Equal(BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeWinTransfer:true).LampSequence+reference.LampSequence+BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeAccounting:true).LampSequence+BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeBankReturn:true).LampSequence+BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeCycleInit:true).LampSequence+BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeIc8:true).LampSequence+BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeBackground:true).LampSequence+BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeStatus:true).LampSequence+BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeServices:true).LampSequence+BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgePreplay:true).LampSequence+BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeEligibility:true).LampSequence,eligibilityLamps);Equal(BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgeEligibility:true).AlphaShadow,eligibilityAlpha);
     using var captured=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","nudge-stake.json")));var terminal=Convert.FromHexString(captured.RootElement.GetProperty("terminal_ram_hex").GetString()!);

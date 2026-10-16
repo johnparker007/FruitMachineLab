@@ -100,7 +100,7 @@ public partial class MainWindow
         if(liveSession is null)return;var state=liveSession.Snapshot();
         SessionAlpha.Text=state.Alpha;
         SessionDiagnostic.Text=$"{state.Execution} · board prompts {liveSession.BoardPrompts}\nVirtual {state.Cycle/SkillCashLiveSession.CyclesPerSecond:0.000} s · VM {state.VmAddress:X4} · dispatches {state.Instructions:N0}\nBLACK2 physical {state.PhysicalBlack2:X2} / sampled {state.SampledBlack2:X2} · latch {state.PanelLatch:X4} · choice {state.Choice}";
-        SessionAccounting.Text=$"Pending {state.Pending} • current win {state.CurrentWin} ROM units / cash bank {state.CashBank} / token bank {state.TokenBank} / credits {state.Credits} • accepted selections {string.Join(", ",state.Selections)}";
+        SessionAccounting.Text=$"Pending {state.Pending} • current win {state.CurrentWin} ROM units / cash bank {state.CashBank} / token bank {state.TokenBank} / credits {state.Credits} / paid games completed {state.PaidGamesCompleted} • accepted selections {string.Join(", ",state.Selections)}";
         SessionDice.Text=state.DiceRequest is { } dice ? $"Dice request {dice.Symbol} · signed stop offset {dice.StopOffset} · ROM position {dice.PhysicalPosition}/96 · {(dice.Busy ? "motor running" : "motor idle")}" : "";
         SessionDiceFace.Text=state.DiceRequest is { } face ? $"DICE {face.DisplayedSymbol,2}" : "";
         SessionNudge.Text=state.Nudge is { } nudge ? $"Nudges {nudge.Remaining} - pot {nudge.Pot} - {(nudge.Busy ? "motor running" : "motor idle")}\nMain reel positions: {string.Join(", ",nudge.Positions)} /96 - symbols: {string.Join(", ",nudge.Symbols)}" : "";

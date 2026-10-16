@@ -628,6 +628,14 @@
   },
   "functions": [
     {
+      "entry": "169B",
+      "label": "compute_scaled_parameter_from_counter_and_credit_profile",
+      "existing_export": "native/169b.json",
+      "export_sha256": "6ED5DA0A1E202B39F7C0D5095937429E39B723FB62C9554BEA47F6E2564F81D9",
+      "exported_body_size": 130,
+      "qualification": "Ghidra recovered function body size is retained, not assumed to be a contiguous extent or complete calling convention"
+    },
+    {
       "entry": "61F6",
       "label": "reels_start_motion_without_sound_setup",
       "existing_export": "native/61f6.json",
@@ -9125,6 +9133,303 @@
           "address": "1451",
           "bytes": "35B6",
           "decoded": "PULS   D,X,Y,PC"
+        }
+      ]
+    },
+    {
+      "source": "parameter-profile.txt",
+      "source_sha256": "E4EDC11DBB33E03F5C6570D7CC33B231B5508AA7A4CB6D9944E7E9A8EBF59D1A",
+      "classification": "Byte-checked MAME linear disassembly; code/data typing, reachability and all function boundaries are not established by this decode",
+      "instructions": [
+        {
+          "address": "169B",
+          "bytes": "3432",
+          "decoded": "PSHS   Y,X,A"
+        },
+        {
+          "address": "169D",
+          "bytes": "8601",
+          "decoded": "LDA    #$01"
+        },
+        {
+          "address": "169F",
+          "bytes": "7D0323",
+          "decoded": "TST    $0323"
+        },
+        {
+          "address": "16A2",
+          "bytes": "2B3A",
+          "decoded": "BMI    $16DE"
+        },
+        {
+          "address": "16A4",
+          "bytes": "CC07D5",
+          "decoded": "LDD    #$07D5"
+        },
+        {
+          "address": "16A7",
+          "bytes": "10A384",
+          "decoded": "CMPD   ,X"
+        },
+        {
+          "address": "16AA",
+          "bytes": "270A",
+          "decoded": "BEQ    $16B6"
+        },
+        {
+          "address": "16AC",
+          "bytes": "B60330",
+          "decoded": "LDA    $0330"
+        },
+        {
+          "address": "16AF",
+          "bytes": "262D",
+          "decoded": "BNE    $16DE"
+        },
+        {
+          "address": "16B1",
+          "bytes": "B671A0",
+          "decoded": "LDA    $71A0"
+        },
+        {
+          "address": "16B4",
+          "bytes": "2628",
+          "decoded": "BNE    $16DE"
+        },
+        {
+          "address": "16B6",
+          "bytes": "7DFF42",
+          "decoded": "TST    $FF42"
+        },
+        {
+          "address": "16B9",
+          "bytes": "2723",
+          "decoded": "BEQ    $16DE"
+        },
+        {
+          "address": "16BB",
+          "bytes": "3410",
+          "decoded": "PSHS   X"
+        },
+        {
+          "address": "16BD",
+          "bytes": "AE84",
+          "decoded": "LDX    ,X"
+        },
+        {
+          "address": "16BF",
+          "bytes": "108E14DB",
+          "decoded": "LDY    #$14DB"
+        },
+        {
+          "address": "16C3",
+          "bytes": "8601",
+          "decoded": "LDA    #$01"
+        },
+        {
+          "address": "16C5",
+          "bytes": "E602",
+          "decoded": "LDB    $2,X"
+        },
+        {
+          "address": "16C7",
+          "bytes": "E023",
+          "decoded": "SUBB   $3,Y"
+        },
+        {
+          "address": "16C9",
+          "bytes": "E601",
+          "decoded": "LDB    $1,X"
+        },
+        {
+          "address": "16CB",
+          "bytes": "E222",
+          "decoded": "SBCB   $2,Y"
+        },
+        {
+          "address": "16CD",
+          "bytes": "E684",
+          "decoded": "LDB    ,X"
+        },
+        {
+          "address": "16CF",
+          "bytes": "E221",
+          "decoded": "SBCB   $1,Y"
+        },
+        {
+          "address": "16D1",
+          "bytes": "2D09",
+          "decoded": "BLT    $16DC"
+        },
+        {
+          "address": "16D3",
+          "bytes": "4C",
+          "decoded": "INCA"
+        },
+        {
+          "address": "16D4",
+          "bytes": "3124",
+          "decoded": "LEAY   $4,Y"
+        },
+        {
+          "address": "16D6",
+          "bytes": "108C14EB",
+          "decoded": "CMPY   #$14EB"
+        },
+        {
+          "address": "16DA",
+          "bytes": "26E9",
+          "decoded": "BNE    $16C5"
+        },
+        {
+          "address": "16DC",
+          "bytes": "3510",
+          "decoded": "PULS   X"
+        },
+        {
+          "address": "16DE",
+          "bytes": "4C",
+          "decoded": "INCA"
+        },
+        {
+          "address": "16DF",
+          "bytes": "8B07",
+          "decoded": "ADDA   #$07"
+        },
+        {
+          "address": "16E1",
+          "bytes": "E686",
+          "decoded": "LDB    A,X"
+        },
+        {
+          "address": "16E3",
+          "bytes": "B600E0",
+          "decoded": "LDA    >$00E0"
+        },
+        {
+          "address": "16E6",
+          "bytes": "2707",
+          "decoded": "BEQ    $16EF"
+        },
+        {
+          "address": "16E8",
+          "bytes": "B60304",
+          "decoded": "LDA    $0304"
+        },
+        {
+          "address": "16EB",
+          "bytes": "8105",
+          "decoded": "CMPA   #$05"
+        },
+        {
+          "address": "16ED",
+          "bytes": "2F04",
+          "decoded": "BLE    $16F3"
+        },
+        {
+          "address": "16EF",
+          "bytes": "8606",
+          "decoded": "LDA    #$06"
+        },
+        {
+          "address": "16F1",
+          "bytes": "2005",
+          "decoded": "BRA    $16F8"
+        },
+        {
+          "address": "16F3",
+          "bytes": "B102F0",
+          "decoded": "CMPA   $02F0"
+        },
+        {
+          "address": "16F6",
+          "bytes": "26F7",
+          "decoded": "BNE    $16EF"
+        },
+        {
+          "address": "16F8",
+          "bytes": "4C",
+          "decoded": "INCA"
+        },
+        {
+          "address": "16F9",
+          "bytes": "4C",
+          "decoded": "INCA"
+        },
+        {
+          "address": "16FA",
+          "bytes": "A686",
+          "decoded": "LDA    A,X"
+        },
+        {
+          "address": "16FC",
+          "bytes": "3D",
+          "decoded": "MUL"
+        },
+        {
+          "address": "16FD",
+          "bytes": "10830000",
+          "decoded": "CMPD   #$0000"
+        },
+        {
+          "address": "1701",
+          "bytes": "2715",
+          "decoded": "BEQ    $1718"
+        },
+        {
+          "address": "1703",
+          "bytes": "108E0001",
+          "decoded": "LDY    #$0001"
+        },
+        {
+          "address": "1707",
+          "bytes": "830064",
+          "decoded": "SUBD   #$0064"
+        },
+        {
+          "address": "170A",
+          "bytes": "10830000",
+          "decoded": "CMPD   #$0000"
+        },
+        {
+          "address": "170E",
+          "bytes": "2F04",
+          "decoded": "BLE    $1714"
+        },
+        {
+          "address": "1710",
+          "bytes": "3121",
+          "decoded": "LEAY   $1,Y"
+        },
+        {
+          "address": "1712",
+          "bytes": "20F3",
+          "decoded": "BRA    $1707"
+        },
+        {
+          "address": "1714",
+          "bytes": "3420",
+          "decoded": "PSHS   Y"
+        },
+        {
+          "address": "1716",
+          "bytes": "3506",
+          "decoded": "PULS   D"
+        },
+        {
+          "address": "1718",
+          "bytes": "4F",
+          "decoded": "CLRA"
+        },
+        {
+          "address": "1719",
+          "bytes": "3606",
+          "decoded": "PSHU   D"
+        },
+        {
+          "address": "171B",
+          "bytes": "35B2",
+          "decoded": "PULS   A,X,Y,PC"
         }
       ]
     }
@@ -21114,7 +21419,7 @@
     },
     {
       "listing": "VM-SCRIPTS/B712.txt",
-      "listing_sha256": "D6B71D9F0C4EB0951A781B3DF04B75BB984B558B23F3228F69BBFBCC3D02B545",
+      "listing_sha256": "DED1D5CBC941620A624C5849CF1B5BC645E906F62A4E3AE85103F01CDA78E479",
       "start": "B712",
       "end_exclusive": "B72B",
       "span_hex": "82DD786B7E827A5B7574B6507ABB798207B664B2E6B6D9792F",
@@ -22034,7 +22339,7 @@
     },
     {
       "listing": "VM-SCRIPTS/B72D.txt",
-      "listing_sha256": "2B6846B1092EF96E37704FBF9A45261E330EC3DF91FF48F4B012E95177FC7D1E",
+      "listing_sha256": "348441EF8EDA46348B0B27B27E0C1B5323B39165466C512CCF9C58AA45C2F74F",
       "start": "B72D",
       "end_exclusive": "B772",
       "span_hex": "79630976A9B29A765FB5EB7982309CA3B62484357671B2A6B2E6B4C382489BFEB710811080C47A539FA07AA37982057E799F417FF2765F7EED765F99848245765FB2E6792F",
@@ -24279,9 +24584,449 @@
           "bytes_through_next_listed_site": "792F"
         }
       ]
+    },
+    {
+      "listing": "VM-SCRIPTS/EF30.txt",
+      "listing_sha256": "FBFEED901ABC6EF50275658B44796D5892EDBC922BF186E3B4FECDCC9B9A0059",
+      "start": "EF30",
+      "end_exclusive": "EF69",
+      "span_hex": "84AA767180C4849E767F7AA37574A6799A118486767F7A977B497A467574EEDB9F687B5179630A7A797B7D7F077A657A977A9784AA9A62792F",
+      "classification": "Exact selected ROM span and checked listed tokens; gaps/operands/embedded data preserved verbatim. Span partition does not prove each decoded operand or relocation semantics. Last return token span ends after two bytes.",
+      "sites": [
+        {
+          "address": "EF30",
+          "token": "84AA",
+          "annotation": "push_pair_0100_00a0  body=0x8417, push_address=0x84AC",
+          "bytes_through_next_listed_site": "84AA"
+        },
+        {
+          "address": "EF32",
+          "token": "7671",
+          "annotation": "vm_clear_word_memory_bits  ",
+          "bytes_through_next_listed_site": "7671"
+        },
+        {
+          "address": "EF34",
+          "token": "80C4",
+          "annotation": "call_reels_push_matching_symbol_result  native=0x1AA3",
+          "bytes_through_next_listed_site": "80C4"
+        },
+        {
+          "address": "EF36",
+          "token": "849E",
+          "annotation": "push_pair_0400_00a0  body=0x8417, push_address=0x84A0",
+          "bytes_through_next_listed_site": "849E"
+        },
+        {
+          "address": "EF38",
+          "token": "767F",
+          "annotation": "vm_test_word_memory_mask  ",
+          "bytes_through_next_listed_site": "767F"
+        },
+        {
+          "address": "EF3A",
+          "token": "7AA3",
+          "annotation": "vm_bitwise_or  ",
+          "bytes_through_next_listed_site": "7AA3"
+        },
+        {
+          "address": "EF3C",
+          "token": "7574",
+          "annotation": "vm_return_if_nonzero  ",
+          "bytes_through_next_listed_site": "7574"
+        },
+        {
+          "address": "EF3E",
+          "token": "A679",
+          "annotation": "scaled_parameter_profile_at_a67b_counter_07c9  body=0xA5A5, push_address=0xA67B",
+          "bytes_through_next_listed_site": "A679"
+        },
+        {
+          "address": "EF40",
+          "token": "9A11",
+          "annotation": "random_percentage_test  body=0x9A13",
+          "bytes_through_next_listed_site": "9A11"
+        },
+        {
+          "address": "EF42",
+          "token": "8486",
+          "annotation": "push_pair_4000_00a0  body=0x8417, push_address=0x8488",
+          "bytes_through_next_listed_site": "8486"
+        },
+        {
+          "address": "EF44",
+          "token": "767F",
+          "annotation": "vm_test_word_memory_mask  ",
+          "bytes_through_next_listed_site": "767F"
+        },
+        {
+          "address": "EF46",
+          "token": "7A97",
+          "annotation": "vm_bitwise_and  ",
+          "bytes_through_next_listed_site": "7A97"
+        },
+        {
+          "address": "EF48",
+          "token": "7B49",
+          "annotation": "vm_duplicate_if_nonzero  ",
+          "bytes_through_next_listed_site": "7B49"
+        },
+        {
+          "address": "EF4A",
+          "token": "7A46",
+          "annotation": "vm_test_zero  ",
+          "bytes_through_next_listed_site": "7A46"
+        },
+        {
+          "address": "EF4C",
+          "token": "7574",
+          "annotation": "vm_return_if_nonzero  ",
+          "bytes_through_next_listed_site": "7574"
+        },
+        {
+          "address": "EF4E",
+          "token": "EEDB",
+          "annotation": "script_eedb  body=0xEEDD",
+          "bytes_through_next_listed_site": "EEDB"
+        },
+        {
+          "address": "EF50",
+          "token": "9F68",
+          "annotation": "normalize_award_47_to_30_with_optional_input_clamp  body=0x9F6A",
+          "bytes_through_next_listed_site": "9F68"
+        },
+        {
+          "address": "EF52",
+          "token": "7B51",
+          "annotation": "vm_duplicate_cell  ",
+          "bytes_through_next_listed_site": "7B51"
+        },
+        {
+          "address": "EF54",
+          "token": "7963",
+          "annotation": "vm_push_inline_byte_literal  inline_value=0x000A",
+          "bytes_through_next_listed_site": "79630A"
+        },
+        {
+          "address": "EF57",
+          "token": "7A79",
+          "annotation": "vm_compare_top_lt_second_signed  ",
+          "bytes_through_next_listed_site": "7A79"
+        },
+        {
+          "address": "EF59",
+          "token": "7B7D",
+          "annotation": "vm_swap_two_cells  ",
+          "bytes_through_next_listed_site": "7B7D"
+        },
+        {
+          "address": "EF5B",
+          "token": "7F07",
+          "annotation": "vm_push_word_body_byte  value=0x003C",
+          "bytes_through_next_listed_site": "7F07"
+        },
+        {
+          "address": "EF5D",
+          "token": "7A65",
+          "annotation": "vm_compare_top_gt_second_signed  ",
+          "bytes_through_next_listed_site": "7A65"
+        },
+        {
+          "address": "EF5F",
+          "token": "7A97",
+          "annotation": "vm_bitwise_and  ",
+          "bytes_through_next_listed_site": "7A97"
+        },
+        {
+          "address": "EF61",
+          "token": "7A97",
+          "annotation": "vm_bitwise_and  ",
+          "bytes_through_next_listed_site": "7A97"
+        },
+        {
+          "address": "EF63",
+          "token": "84AA",
+          "annotation": "push_pair_0100_00a0  body=0x8417, push_address=0x84AC",
+          "bytes_through_next_listed_site": "84AA"
+        },
+        {
+          "address": "EF65",
+          "token": "9A62",
+          "annotation": "conditionally_set_or_clear_memory_mask  body=0x9A64",
+          "bytes_through_next_listed_site": "9A62"
+        },
+        {
+          "address": "EF67",
+          "token": "792F",
+          "annotation": "vm_return_to_caller_stream  ",
+          "bytes_through_next_listed_site": "792F"
+        }
+      ]
+    },
+    {
+      "listing": "VM-SCRIPTS/EEC2.txt",
+      "listing_sha256": "551AE0A020333688152821CD61CE7E6FF3A01FBE7595FAC845917570FC5225F3",
+      "start": "EEC2",
+      "end_exclusive": "EEDB",
+      "span_hex": "849E767F80C47A467A9780167A977982077B3D8016EE96792F",
+      "classification": "Exact selected ROM span and checked listed tokens; gaps/operands/embedded data preserved verbatim. Span partition does not prove each decoded operand or relocation semantics. Last return token span ends after two bytes.",
+      "sites": [
+        {
+          "address": "EEC2",
+          "token": "849E",
+          "annotation": "push_pair_0400_00a0  body=0x8417, push_address=0x84A0",
+          "bytes_through_next_listed_site": "849E"
+        },
+        {
+          "address": "EEC4",
+          "token": "767F",
+          "annotation": "vm_test_word_memory_mask  ",
+          "bytes_through_next_listed_site": "767F"
+        },
+        {
+          "address": "EEC6",
+          "token": "80C4",
+          "annotation": "call_reels_push_matching_symbol_result  native=0x1AA3",
+          "bytes_through_next_listed_site": "80C4"
+        },
+        {
+          "address": "EEC8",
+          "token": "7A46",
+          "annotation": "vm_test_zero  ",
+          "bytes_through_next_listed_site": "7A46"
+        },
+        {
+          "address": "EECA",
+          "token": "7A97",
+          "annotation": "vm_bitwise_and  ",
+          "bytes_through_next_listed_site": "7A97"
+        },
+        {
+          "address": "EECC",
+          "token": "8016",
+          "annotation": "call_push_nonzero_symbol_result_or_fallback_to_vm_stack  native=0x1AF1",
+          "bytes_through_next_listed_site": "8016"
+        },
+        {
+          "address": "EECE",
+          "token": "7A97",
+          "annotation": "vm_bitwise_and  ",
+          "bytes_through_next_listed_site": "7A97"
+        },
+        {
+          "address": "EED0",
+          "token": "7982",
+          "annotation": "vm_branch_forward8_if_zero  branch=0xEED9",
+          "bytes_through_next_listed_site": "798207"
+        },
+        {
+          "address": "EED3",
+          "token": "7B3D",
+          "annotation": "vm_drop_cell  ",
+          "bytes_through_next_listed_site": "7B3D"
+        },
+        {
+          "address": "EED5",
+          "token": "8016",
+          "annotation": "call_push_nonzero_symbol_result_or_fallback_to_vm_stack  native=0x1AF1",
+          "bytes_through_next_listed_site": "8016"
+        },
+        {
+          "address": "EED7",
+          "token": "EE96",
+          "annotation": "script_ee96  body=0xEE98",
+          "bytes_through_next_listed_site": "EE96"
+        },
+        {
+          "address": "EED9",
+          "token": "792F",
+          "annotation": "vm_return_to_caller_stream  ",
+          "bytes_through_next_listed_site": "792F"
+        }
+      ]
+    },
+    {
+      "listing": "VM-SCRIPTS/EE98.txt",
+      "listing_sha256": "25B2121261862F91D2E2E6FA9648717C6EF5B3A33237F04CFC955082C0E16E29",
+      "start": "EE98",
+      "end_exclusive": "EEC0",
+      "span_hex": "7B517F0D7D4A798E07A68979B7EEBE7B517B517A6F798E0DA6999F5E7ABB7A9779B7EEBE7B3D792F",
+      "classification": "Exact selected ROM span and checked listed tokens; gaps/operands/embedded data preserved verbatim. Span partition does not prove each decoded operand or relocation semantics. Last return token span ends after two bytes.",
+      "sites": [
+        {
+          "address": "EE98",
+          "token": "7B51",
+          "annotation": "vm_duplicate_cell  ",
+          "bytes_through_next_listed_site": "7B51"
+        },
+        {
+          "address": "EE9A",
+          "token": "7F0D",
+          "annotation": "vm_push_word_body_byte  value=0x001E",
+          "bytes_through_next_listed_site": "7F0D"
+        },
+        {
+          "address": "EE9C",
+          "token": "7D4A",
+          "annotation": "compare_top_ge_second_signed  body=0x7D4C",
+          "bytes_through_next_listed_site": "7D4A"
+        },
+        {
+          "address": "EE9E",
+          "token": "798E",
+          "annotation": "vm_branch_forward8_if_zero_else_drop  branch=0xEEA7",
+          "bytes_through_next_listed_site": "798E07"
+        },
+        {
+          "address": "EEA1",
+          "token": "A689",
+          "annotation": "scaled_parameter_profile_at_a68b_counter_07c9  body=0xA5A5, push_address=0xA68B",
+          "bytes_through_next_listed_site": "A689"
+        },
+        {
+          "address": "EEA3",
+          "token": "79B7",
+          "annotation": "vm_branch_absolute16  branch=0xEEBE",
+          "bytes_through_next_listed_site": "79B7EEBE"
+        },
+        {
+          "address": "EEA7",
+          "token": "7B51",
+          "annotation": "vm_duplicate_cell  ",
+          "bytes_through_next_listed_site": "7B51"
+        },
+        {
+          "address": "EEA9",
+          "token": "7B51",
+          "annotation": "vm_duplicate_cell  ",
+          "bytes_through_next_listed_site": "7B51"
+        },
+        {
+          "address": "EEAB",
+          "token": "7A6F",
+          "annotation": "vm_compare_equal  ",
+          "bytes_through_next_listed_site": "7A6F"
+        },
+        {
+          "address": "EEAD",
+          "token": "798E",
+          "annotation": "vm_branch_forward8_if_zero_else_drop  branch=0xEEBC",
+          "bytes_through_next_listed_site": "798E0D"
+        },
+        {
+          "address": "EEB0",
+          "token": "A699",
+          "annotation": "scaled_parameter_profile_at_a69b_counter_07c9  body=0xA5A5, push_address=0xA69B",
+          "bytes_through_next_listed_site": "A699"
+        },
+        {
+          "address": "EEB2",
+          "token": "9F5E",
+          "annotation": "test_two_orange1_input_conditions  body=0x9F60",
+          "bytes_through_next_listed_site": "9F5E"
+        },
+        {
+          "address": "EEB4",
+          "token": "7ABB",
+          "annotation": "vm_bitwise_not  ",
+          "bytes_through_next_listed_site": "7ABB"
+        },
+        {
+          "address": "EEB6",
+          "token": "7A97",
+          "annotation": "vm_bitwise_and  ",
+          "bytes_through_next_listed_site": "7A97"
+        },
+        {
+          "address": "EEB8",
+          "token": "79B7",
+          "annotation": "vm_branch_absolute16  branch=0xEEBE",
+          "bytes_through_next_listed_site": "79B7EEBE"
+        },
+        {
+          "address": "EEBC",
+          "token": "7B3D",
+          "annotation": "vm_drop_cell  ",
+          "bytes_through_next_listed_site": "7B3D"
+        },
+        {
+          "address": "EEBE",
+          "token": "792F",
+          "annotation": "vm_return_to_caller_stream  ",
+          "bytes_through_next_listed_site": "792F"
+        }
+      ]
+    },
+    {
+      "listing": "VM-SCRIPTS/9A64.txt",
+      "listing_sha256": "01A93F20773E1530FCCCA66CC4C3ACB2C066F4595C1A0371B08EBF99D3CDC3E9",
+      "start": "9A64",
+      "end_exclusive": "9A72",
+      "span_hex": "7B6D79820676657979037671792F",
+      "classification": "Exact selected ROM span and checked listed tokens; gaps/operands/embedded data preserved verbatim. Span partition does not prove each decoded operand or relocation semantics. Last return token span ends after two bytes.",
+      "sites": [
+        {
+          "address": "9A64",
+          "token": "7B6D",
+          "annotation": "vm_rotate_three_cells  ",
+          "bytes_through_next_listed_site": "7B6D"
+        },
+        {
+          "address": "9A66",
+          "token": "7982",
+          "annotation": "vm_branch_forward8_if_zero  branch=0x9A6E",
+          "bytes_through_next_listed_site": "798206"
+        },
+        {
+          "address": "9A69",
+          "token": "7665",
+          "annotation": "vm_or_word_memory  ",
+          "bytes_through_next_listed_site": "7665"
+        },
+        {
+          "address": "9A6B",
+          "token": "7979",
+          "annotation": "vm_branch_unsigned_forward8  branch=0x9A70",
+          "bytes_through_next_listed_site": "797903"
+        },
+        {
+          "address": "9A6E",
+          "token": "7671",
+          "annotation": "vm_clear_word_memory_bits  ",
+          "bytes_through_next_listed_site": "7671"
+        },
+        {
+          "address": "9A70",
+          "token": "792F",
+          "annotation": "vm_return_to_caller_stream  ",
+          "bytes_through_next_listed_site": "792F"
+        }
+      ]
     }
   ],
   "dictionary_records": [
+    {
+      "address": "A5B9",
+      "bytes": "A5A207C9646464646464646350463C28",
+      "header": "A5A2",
+      "body": "A5A5",
+      "native": "169B",
+      "stack_effect": "( -- scaled-parameter ) via profile pointer A5BB",
+      "effects": "07C9 counter profile; selected natural next-cycle call returns80 decimal",
+      "implementation": "src/FruitMachineLab.Adders/AddersParameterProfiles.cs",
+      "verification": "skill-cash/nudge-paid-next-prompt.json"
+    },
+    {
+      "address": "A689",
+      "bytes": "A5A207C9646464646464643C1E140F05",
+      "header": "A5A2",
+      "body": "A5A5",
+      "native": "169B",
+      "stack_effect": "( -- scaled-parameter ) via profile pointer A68B",
+      "effects": "07C9 counter profile; selected natural next-cycle call returns30 decimal",
+      "implementation": "src/FruitMachineLab.Adders/AddersParameterProfiles.cs",
+      "verification": "skill-cash/nudge-paid-next-prompt.json"
+    },
     {
       "address": "B5C9",
       "bytes": "9A19002122219A190014143C",

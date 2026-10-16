@@ -1,5 +1,5 @@
 Purpose: run_nudges_with_saved_target_and_post_sequence_improvement
-Confidence: natural BD=15hex nudge/improvement path verified; other branches remain static deductions
+Confidence: natural BD=15hex improvement and selected ordinary BD=0 post-sequence paths verified; other branches remain static deductions
 Groups: boolean/bit operations, control flow, lamps, mask/address records, memory operations, reels
 Callers: FC34, B91D
 

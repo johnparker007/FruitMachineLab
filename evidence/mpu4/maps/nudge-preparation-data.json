@@ -1,5 +1,7 @@
 {
   "equivalent_timing_tokens": {
+    "A5B9": "A789",
+    "A689": "A789",
     "7ECB": "7E82",
     "7F0A": "7E82",
     "A729": "A789",
@@ -11,7 +13,7 @@
     "A799": "A789"
   },
   "timing_qualification": "Only identical two-byte constant/profile entry gateways share captured entry pacing. Bodies/native helpers execute normally; CPU scheduling remains an explicit adapter",
-  "classification": "Selected static records for nudge preparation through paid-play result and ordinary nudge eligibility; no recorded outcome substitution",
+  "classification": "Selected static records for nudge preparation through paid-play result, ordinary nudge eligibility and next-cycle preplay; no recorded outcome substitution",
   "rom_sha1": "402D1518BB78FDC489B06C2AABC771E5CE151847",
   "ranges": {
     "8B0D": "C685B924C30FCB01CE02C4C30ACE3CCBFFC4C08568D8CA00C28B0DC5B0181C21C30FCB01CE01C4C30AC30AC97ECE06C4CBFFC4C0",
@@ -84,6 +86,8 @@
     "B5C9": "9A19002122219A190014143C",
     "A729": "A5A207C9646464646464646163636363A5A207C9646464646464645F63636363A5A207C9646464646464645F62636363A5A207C964646464646464565E626363A5A207C964646464646464465D636363A5A207C9646464646464643C575F6062A5A207C964646464646464191E233746A5A207C964646464646464283E484F52",
     "7ECB": "794611",
-    "7F0A": "79462F"
+    "7F0A": "79462F",
+    "A5B9": "A5A207C9646464646464646350463C28",
+    "A689": "A5A207C9646464646464643C1E140F05"
   }
 }

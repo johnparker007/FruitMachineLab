@@ -1,5 +1,11 @@
 # Implementation and evidence boundaries
 
+Newest: [paid cycle return](docs/recovery/PAID-CYCLE-RETURN-PASS.md). Live reaches
+another Start prompt through the real outer caller. Three generated paid plays
+retain one machine and debit credits6→3 with bank16;181 headless groups/eight GUI modes pass.
+Natural310/99/1147-observation windows match. EE16 three-flag feature-entry
+accounting remains explicit; this is not complete-machine coverage.
+
 Newest: [paid result / ordinary nudge](docs/recovery/PAID-RESULT-ORDINARY-NUDGE-PASS.md).
 Live executes result checks and ordinary-nudge eligibility; a mixed-input campaign
 offers one nudge and physical Nudge1 reaches B749 with prompt/motor Pause. The

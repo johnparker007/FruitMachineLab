@@ -1,5 +1,5 @@
 Purpose: compare_completed_nudge_result_and_offer_automatic_improvement
-Confidence: natural BD=15hex nudge/improvement path verified; other branches remain static deductions
+Confidence: natural BD=15hex improvement and ordinary BD=0 early-return paths verified
 Groups: boolean/bit operations, control flow, memory operations
 Callers: B72D
 
@@ -18,3 +18,7 @@ Threaded script at B712; recovered listing, not original source.
 * B725  B2E6  refresh_nudge_count_lamps  body=0xB2E8
 * B727  B6D9  announce_and_execute_automatic_nudge_plan  body=0xB6DB
 * B729  792F  vm_return_to_caller_stream  
+
+16 October 2026: nudge-paid-result observes B712..B71A with BD=0. The nonzero
+not-equal result returns immediately; ordinary nudges do not call B652/B666.
+See docs/recovery/PAID-CYCLE-RETURN-PASS.md. This recovered name is not original source.

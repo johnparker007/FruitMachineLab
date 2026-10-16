@@ -56,6 +56,30 @@
       "exit_code": "0",
       "raw_sha256": "272F40D4C165833B062BD44A1C2DF9855F5DC7B2A253D60EFD0E6746C5A401DF",
       "tail_entry_present": true
+    },
+    {
+      "name": "paid-post-nudge-result",
+      "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-paid-result-tail-993e9fd565f8421da2d4e9b2f0c2df0e",
+      "status": "accepted",
+      "exit_code": "0",
+      "raw_sha256": "B9248C64495D2EBEED4502ACC9E53D3EE903D8383398B320085E00D58891F7E6",
+      "tail_entry_present": true
+    },
+    {
+      "name": "paid-outer-return",
+      "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-paid-outer-return-ca1a50a127a24b85913068daa0c26f92",
+      "status": "accepted",
+      "exit_code": "0",
+      "raw_sha256": "49402E7E5D1FD28C37FDBBDFDA59FABCFAD59BDA6847893204E1F2063E1640B3",
+      "tail_entry_present": true
+    },
+    {
+      "name": "paid-next-prompt",
+      "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-paid-next-prompt-2e16e74775494f9a94faaca109bb96c3",
+      "status": "accepted",
+      "exit_code": "0",
+      "raw_sha256": "2F259E50F516152828E708AA3808DB0AC25B844DA7053E437BCF247097694D23",
+      "tail_entry_present": true
     }
   ],
   "corroboration": {

@@ -1,5 +1,25 @@
 # Current handoff
 
+16 October callback scheduling batch: Live now generates individual timer3 lamp
+bank writes (+37/+42 cycles), optional digit blank (+75) and full completion
+(+78/+85) from the48FD/4917 native path. It no longer applies effects at captured
+return/event7. Captured callback entry/event6, scan and IRQ occupancy remain.
+18 original-ROM experiments/45 effective bus writes and19 natural native windows
+match. A fault test shifts6102 return timestamps without changing Live; another
+pauses actual execution between bank writes. See Mpu4LampCallbackExecution.cs,
+Capture-/Curate-LampCallbackTiming.ps1, lamp-callback-timing.json, the exported Lua
+observer and the existing timing foundation report. Preemption/changed writers
+remain explicit unsupported boundaries. Playback/scrubber stays unchanged.
+The working tree was clean at this batch's start; only callback work is currently
+uncommitted. No installs/config changes, commits/pushes, ROM/Ghidra modifications
+or original MAME settings/working-file changes. Next derive callback entry from
+timer arm/phase and instruction acceptance; do not claim hardware timing complete.
+Validation:222 headless groups and all eight WPF modes pass; both solution builds
+have zero warnings/errors. No test expectations were rebaselined.1096 manifest
+entries verify; whitespace check passes. External pointers:
+%TEMP%/FruitMachineLab-lamp-callback.txt, FruitMachineLab-callback-suite.txt and
+FruitMachineLab-callback-gui.txt. All capture/smoke processes exited.
+
 16 October live scheduling milestone: Start-tone wait duration is no longer read
 from capture. Mpu4CalibratedDelay generates34276 CPU cycles, with a full ordinary
 IRQ envelope projection generating its deadline.20 original-ROM calls/2068 passes

@@ -5,6 +5,13 @@ Local clone: C:\projects\GitRepos\FruitMachineLab
 
 ## Current status
 
+Live timer3 callback port writes/completion now follow source-derived instruction
+events, retaining captured entry only.18 isolated paths/45 effective bus writes
+and19 natural windows match; see the handoff/timing report. Reproduce with
+Capture-/Curate-LampCallbackTiming.ps1 (MameExecutable/RomDirectory/RunDirectory;
+curator takes RunDirectory/RomPath/MameExecutable). Scan/IRQ adapters remain.
+222 headless groups/eight WPF modes pass; both builds have zero warnings/errors.
+
 Live Start-tone wait now uses34276 source-derived CPU cycles and projects its
 deadline through explicit full IRQ envelopes. Capture-/Curate-CalibratedDelay.ps1
 reproduce20 delay and20 literal native cases plus the natural phase comparison.

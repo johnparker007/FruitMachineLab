@@ -210,5 +210,23 @@
     "qualification": "Live tone wait uses source-derived work through recorded IRQ envelopes. Queue/cancel and other VM pacing retain captured adapters; no generated IRQ start claim.",
     "literal_membership": "maps/vm-literal-timing.json",
     "literal_scope": "175 ROM-checked tokens/1048 existing listing references;20 synthetic original-handler calls verify32/33-cycle word/byte costs including NEXT"
+  },
+  "lamp_callback_execution": {
+    "implementation": "src/FruitMachineLab.Runtime/Mpu4LampCallbackExecution.cs",
+    "live": "src/FruitMachineLab.Adders/SkillCashLiveSession.cs",
+    "evidence": "skill-cash/lamp-callback-timing.json",
+    "bus_observer": "skill-cash/lamp-callback-writes.lua",
+    "natural_evidence": "skill-cash/ptm-service-timing.json",
+    "source_symbols": [
+      "INDEXED",
+      "LD8",
+      "ST8",
+      "TST8",
+      "BRANCH",
+      "JSR",
+      "RTS"
+    ],
+    "scope": "18 isolated original-ROM paths/45 effective bus writes,19 natural instruction windows; entry+37/+42 bank writes, optional+75 digit blank, completion+78/+85",
+    "qualification": "Entry remains captured, non-preempted callback only. Live no longer schedules effects/completion from recorded return events."
   }
 }

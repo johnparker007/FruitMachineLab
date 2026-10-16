@@ -7,6 +7,64 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { if(args.Length>1 && !name.Contains(args[1],StringComparison.OrdinalIgnoreCase))return;action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Generated lamp callback matches eighteen native paths and45 effective bus writes", () => {
+    using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","lamp-callback-timing.json")));int count=0,writes=0;
+    foreach(var r in doc.RootElement.GetProperty("rows").EnumerateArray()){
+        var c=r.GetProperty("case");ushort column=c.GetProperty("column").GetUInt16();bool blank=c.GetProperty("blank").GetByte()!=0;ulong start=r.GetProperty("start_cycle").GetUInt64();
+        var m=new Machine();m.WriteWord(0x28,column);m.Memory[0xA00]=c.GetProperty("bank0").GetByte();m.Memory[0xA02]=c.GetProperty("bank1").GetByte();m.Memory[0xB00]=c.GetProperty("display").GetByte();m.Memory[0x140+column]=c.GetProperty("mask0").GetByte();m.Memory[0x148+column]=c.GetProperty("mask1").GetByte();m.Memory[0xAB+column]=c.GetProperty("blank").GetByte();
+        var execution=new Mpu4LampCallbackExecution(m,start);var path=Mpu4LampCallbackExecution.Path(blank);var native=r.GetProperty("instructions");Equal(path.Count,native.GetArrayLength());ulong cursor=start;
+        for(int i=0;i<path.Count;i++){
+            Equal(path[i].Address,native[i].GetProperty("pc").GetUInt16());Equal(cursor,native[i].GetProperty("cycle").GetUInt64());Equal(true,native[i].GetProperty("context_hex").GetString()!.StartsWith(path[i].Bytes,StringComparison.Ordinal));cursor+=(ulong)M6809InstructionTiming.Decode(Convert.FromHexString(path[i].Bytes)).Cycles;
+        }
+        Equal(r.GetProperty("end").GetProperty("cycle").GetUInt64(),cursor);Equal(cursor,execution.CompletedAt);
+        var bus=r.GetProperty("writes");Equal(execution.Writes.Count,bus.GetArrayLength());
+        for(int i=0;i<execution.Writes.Count;i++){var w=execution.Writes[i];Equal(w.Cycle,bus[i].GetProperty("cycle").GetUInt64());Equal(w.Address,bus[i].GetProperty("address").GetUInt16());Equal(w.Value,bus[i].GetProperty("value").GetByte());writes++;}
+        Equal(start+37,execution.Writes[0].Cycle);Equal(start+42,execution.Writes[1].Cycle);Equal(start+(blank ? 85UL : 78UL),execution.CompletedAt);
+        execution.AdvanceTo(execution.CompletedAt);Equal(true,execution.Completed);var end=r.GetProperty("end");Equal(end.GetProperty("bank0").GetByte(),m.Memory[0xA00]);Equal(end.GetProperty("bank1").GetByte(),m.Memory[0xA02]);Equal(end.GetProperty("display").GetByte(),m.Memory[0xB00]);count++;
+    }
+    Equal(18,count);Equal(45,writes);
+});
+Check("Generated callback paths match nineteen natural callback instruction windows", () => {
+    using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","ptm-service-timing.json")));int count=0;
+    foreach(var tail in doc.RootElement.GetProperty("timer3_tails").EnumerateArray()){
+        ulong start=tail.GetProperty("callback_cycle").GetUInt64(),cursor=start;var path=Mpu4LampCallbackExecution.Path(false);var native=tail.GetProperty("instructions");
+        for(int i=0;i<path.Count;i++){
+            Equal(path[i].Address,native[i].GetProperty("pc").GetUInt16());Equal(cursor,native[i].GetProperty("cycle").GetUInt64());cursor+=(ulong)M6809InstructionTiming.Decode(Convert.FromHexString(path[i].Bytes)).Cycles;Equal(cursor,native[i].GetProperty("next_cycle").GetUInt64());
+        }
+        Equal(start+78,cursor);count++;
+    }
+    Equal(19,count);
+});
+Check("Incremental callback preserves coarse timing and rejects unresolved concurrent writers", () => {
+    Machine Seed(){var m=new Machine();m.WriteWord(0x28,0);m.Memory[0xA00]=0xFF;m.Memory[0xA02]=0xAA;m.Memory[0xB00]=0xCC;m.Memory[0x140]=15;m.Memory[0x148]=240;m.Memory[0xAB]=1;return m;}
+    var a=Seed();var b=Seed();var coarse=new Mpu4LampCallbackExecution(a,100);var fine=new Mpu4LampCallbackExecution(b,100);var x=new List<LampCallbackWrite>();var y=new List<LampCallbackWrite>();
+    coarse.AdvanceTo(200,w=>{Equal(w.Cycle,coarse.Cycle);x.Add(w);});for(ulong at=100;at<=200;at++)fine.AdvanceTo(at,y.Add);
+    Equal(true,a.Memory.SequenceEqual(b.Memory));Equal(true,x.SequenceEqual(y));Equal(3,x.Count);Equal(175UL,x[2].Cycle);Equal(185UL,coarse.CompletedAt);
+    int rejected=0;try{fine.AdvanceTo(199);}catch(ArgumentOutOfRangeException){rejected++;}
+    var changed=Seed();var callback=new Mpu4LampCallbackExecution(changed,0);changed.Memory[0x140]=0;try{callback.AdvanceTo(37);}catch(NotSupportedException){rejected++;}
+    changed=Seed();callback=new Mpu4LampCallbackExecution(changed,0);changed.Memory[0xA00]=1;try{callback.AdvanceTo(37);}catch(NotSupportedException){rejected++;}
+    changed=Seed();changed.WriteWord(0x28,8);try{new Mpu4LampCallbackExecution(changed,0);}catch(NotSupportedException){rejected++;}Equal(4,rejected);
+});
+Check("Live callback pauses between generated lamp bank writes", () => {
+    var live=new SkillCashLiveSession(evidence);var writes=new List<LampCallbackWrite>();ulong entry=0;live.ObserveLampCallbackEntry=at=>entry=at;live.ObserveLampCallbackWrite=writes.Add;live.Resume();
+    for(int i=0;i<20000 && live.NextLampCallbackEvent is null;i++)live.AdvanceCycles(1);
+    Equal(true,entry>0);Equal(entry+37,live.NextLampCallbackEvent!.Value);bool blank=live.Machine.Memory[0xAB+live.Machine.ReadWord(0x28)]!=0;
+    live.AdvanceCycles(entry+37-live.Cycle);Equal(1,writes.Count);Equal((ushort)0xA00,writes[0].Address);Equal(entry+42,live.NextLampCallbackEvent!.Value);
+    live.Pause();var frozen=live.Machine.Memory.ToArray();ulong cycle=live.Cycle;int instructions=live.Instructions;var pending=live.NextLampCallbackEvent;live.AdvanceCycles(100000);Equal(cycle,live.Cycle);Equal(instructions,live.Instructions);Equal(pending,live.NextLampCallbackEvent);Equal(true,frozen.SequenceEqual(live.Machine.Memory));live.Resume();
+    live.AdvanceCycles(4);Equal(1,writes.Count);live.AdvanceCycles(1);Equal(2,writes.Count);Equal((ushort)0xA02,writes[1].Address);
+    live.AdvanceCycles(entry+(blank ? 85UL : 78UL)-live.Cycle);Equal(1,live.Callbacks);Equal(true,live.NextLampCallbackEvent is null);Equal(blank ? 3 : 2,writes.Count);live.Pause();
+});
+Check("Live ignores recorded callback return timestamps while preserving service entry times", () => {
+    var directory=Path.Combine(Path.GetTempPath(),"FruitMachineLab-callback-return-"+Guid.NewGuid().ToString("N"));Directory.CreateDirectory(directory);
+    try{
+        foreach(var source in Directory.EnumerateFiles(evidence,"*",SearchOption.AllDirectories)){string destination=Path.Combine(directory,Path.GetRelativePath(evidence,source));Directory.CreateDirectory(Path.GetDirectoryName(destination)!);File.Copy(source,destination);}
+        string file=Path.Combine(directory,"skill-cash","shared-timing.json");var options=new System.Text.Json.JsonSerializerOptions {PropertyNameCaseInsensitive=true};var timing=System.Text.Json.JsonSerializer.Deserialize<SharedTimingCapture>(File.ReadAllText(file),options)!;int changed=0;
+        for(int i=0;i<timing.Events.Length-1;i++)if(timing.Events[i][1]==7){if(timing.Events[i+1][0]<100)throw new Exception("Insufficient diagnostic timestamp gap");timing.Events[i][0]+=100;timing.Events[i+1][0]-=100;changed++;}
+        Equal(6102,changed);File.WriteAllText(file,System.Text.Json.JsonSerializer.Serialize(timing));
+        var original=new SkillCashLiveSession(evidence);var altered=new SkillCashLiveSession(directory);var a=new List<LampCallbackWrite>();var b=new List<LampCallbackWrite>();original.ObserveLampCallbackWrite=a.Add;altered.ObserveLampCallbackWrite=b.Add;original.Resume();altered.Resume();original.AdvanceCycles(20000);altered.AdvanceCycles(20000);
+        Equal(true,a.Count>0);Equal(true,a.SequenceEqual(b));Equal(original.Instructions,altered.Instructions);Equal(original.Callbacks,altered.Callbacks);Equal(true,original.Machine.Memory.SequenceEqual(altered.Machine.Memory));
+    }finally{Directory.Delete(directory,true);}
+});
 Check("Literal body timing and values match twenty native ROM handler calls", () => {
     using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","calibrated-delay-timing.json")));int count=0;
     foreach(var row in doc.RootElement.GetProperty("literal_rows").EnumerateArray()){

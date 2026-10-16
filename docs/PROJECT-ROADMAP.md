@@ -12,6 +12,11 @@ is not authority for which changes John has committed or pushed.
 
 ## Priority order
 
+Callback event milestone: Live no longer depends on recorded callback return
+timestamps. Native instructions generate separate port writes and completion;
+captured entry remains the hardware boundary. Next derive that entry from timer
+arm/phase and CPU acceptance. Keep playback separate and preemption limits explicit.
+
 Live scheduling milestone: recovered native CPU work now determines the Start-tone
 wait's end through explicit full IRQ envelopes. Its captured duration is reference
 evidence only. Next target a timer assertion/IRQ/scan event. Global IRQ pacing

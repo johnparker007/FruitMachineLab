@@ -668,3 +668,73 @@ assertion→CPU acceptance→scan/callback scheduling, not another captured wait
 
 Validation:217 headless groups and all eight WPF smoke modes pass. Both solution
 builds have zero warnings/errors. Test expectations were not rebaselined.
+
+## Generated timer-3 callback output events — 16 October 2026
+
+Live now retains only the captured48FD entry boundary, not the recorded return
+timestamp, for the lamp callback. `Mpu4LampCallbackExecution` generates native
+port writes and completion incrementally. Service timestamps for scan and IRQ
+entry/acceptance remain explicit adapters; no causal PTM assertion claim is made.
+The existing verified playback/scrubber is unchanged.
+
+| Event | Effective CPU cycles after48FD entry |
+| --- | ---: |
+|490D STA0A00, first masked lamp bank|37|
+|4910 STB0A02, second masked lamp bank|42|
+|491F CLR0B00, only if byte at00AB+column is nonzero|75|
+|Completed4916 RTS, no digit blank|78|
+|Completed4916 RTS, digit blank|85|
+
+Former Live behavior applied all callback effects at the recorded4916 RTS-start
+marker (+73 for all6103 reference callbacks). This missed the separate, earlier
+lamp writes and applied optional blanking at the wrong point. The native plan
+now decodes the original48FD/4917 instructions; it uses current column/masks and
+outputs, with the recovered zero/nonzero blank predicate. PortB00 is the scanned
+digit output, not the serial alpha module. No hardware duration is fitted.
+
+`Capture-LampCallbackTiming.ps1` runs18 isolated original-ROM callbacks in MAME:
+columns0/3/7, blank0/1 and three output pairs with0F/F0 masks. CPU IRQ/FIRQ are
+masked; transient PIA DDR/latch and RAM/register state are injected. Original
+ROM files and MAME configuration are untouched; fresh cfg/NVRAM directories and
+`-noreadconfig` isolate the run. A passive Lua write tap records45 actual output
+bus writes, with exact decimal time. All match the generated native instruction
+completion cycles, values and order; all18 whole native paths match. The fixture
+preserves five-byte ROM-checked contexts, explicit instruction boundaries and
+source hashes. Context width is not claimed instruction length or a lossless
+listing. The observer is exported as `lamp-callback-writes.lua`.
+
+`Curate-LampCallbackTiming.ps1` requires RunDirectory, RomPath and MameExecutable;
+it checks the original ROM SHA1, complete cases/return boundaries and that all45
+bus events belong to a case. `lamp-callback-timing.json` retains the raw run/hash
+references and original installed executable hash. Raw logs stay external.
+The19 existing natural callback windows independently match the native path
+and78-cycle completion. Natural per-instruction completions plus the synthetic
+bus observations support the write offsets; these are distinct evidence scopes.
+All6103 recorded callback entry→RTS-start gaps are73, consistent with the selected
+nonblank, uninterrupted path; digit-blank alternatives are synthetic evidence.
+
+Live starts the callback from event6 and ignores event7 as a scheduling boundary.
+Timer3 dispatch flags are applied at that retained entry adapter. The VM remains
+blocked by existing IRQ occupancy; generated write events update ports/latch
+history individually. Completion increments the callback count after the final
+RTS. Pause suspends the actual callback cursor, memory, VM and virtual time, even
+between the bank writes five cycles apart. Coarse and single-cycle updates agree.
+Changed column/masks/other output writers or a scan/VM preemption fail explicitly:
+register-level native preemption inside this path is not implemented. The model
+does not execute CPU registers/frames or infer physical lamp brightness.
+
+A synthetic fault test shifts6102 recorded return timestamps by100 cycles while
+preserving every other absolute event time. Live produces identical callback
+writes, VM count and memory. A separate live test pauses after the first write,
+resumes through the second and reaches generated completion. These verify the
+removed return-time dependency and retained execution state, not a fabricated
+match to unresolved hardware scheduling.
+
+Byte/code links: native48FD/4917 exports, runtime path/length decoder, Live session,
+bus observer, capture/curation tools and both evidence fixtures are referenced in
+the existing timing-source map. No assembler, unrelated recovery or configuration
+changes were introduced; the documented Ghidra export access gap remains.
+Next derive callback entry from timer arm/phase and CPU acceptance boundaries.
+Validation:222 headless groups, all eight WPF modes and both solution builds pass.
+No expectations were rebaselined.1096 curated entries verify. All owned processes
+exited; no installs/configuration changes, commits or pushes occurred.

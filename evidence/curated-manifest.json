@@ -206,8 +206,8 @@
   },
   {
     "path": "docs/recovery/PTM-CLOCK-FOUNDATION-PASS.md",
-    "bytes": 44633,
-    "sha256": "3AE426B16D1F70218F08E252FFF1250E62EABA1136665D66BD1A9E2EEF537524"
+    "bytes": 49126,
+    "sha256": "3265A97175992F310C3D6264886CC6E262606D7DC1D75040B15C4EF28507A213"
   },
   {
     "path": "docs/recovery/README.txt",
@@ -356,8 +356,8 @@
   },
   {
     "path": "evidence/mpu4/maps/mame-timing-source.json",
-    "bytes": 9021,
-    "sha256": "A22A5885C4994B89096C7056B9FA613EA5477E8EA3EE94FBD6FA383ACE7E67D2"
+    "bytes": 9850,
+    "sha256": "C6ADC24EBD2A042DE47803B64FF517291C4347FD8EE3FE6DA228D6B9E139B9E0"
   },
   {
     "path": "evidence/mpu4/maps/nudge-availability-data.json",
@@ -1833,6 +1833,16 @@
     "path": "evidence/mpu4/skill-cash/ladder-link.json",
     "bytes": 39907,
     "sha256": "44965BF581918889A40481A92E0CC0257040D98A87B5197049D61481337587E1"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/lamp-callback-timing.json",
+    "bytes": 23339,
+    "sha256": "AC4A4DAFFE349A64E3D7F6187C943D94582B08D5CBF3863CDB11652CC83DD74D"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/lamp-callback-writes.lua",
+    "bytes": 568,
+    "sha256": "7C99F09FE74FBAEC16BE4C291DF1674F9A87902E859633734A9E3467AC824D69"
   },
   {
     "path": "evidence/mpu4/skill-cash/lamp-calls.json",

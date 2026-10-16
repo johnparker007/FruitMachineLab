@@ -1,5 +1,11 @@
 # Implementation and evidence boundaries
 
+Live lamp callbacks now generate bank writes at entry+37/+42, optional digit blank
+at+75 and completion+78/+85 from native instructions. Captured return timestamps
+are no longer scheduling inputs; entry/scan/IRQ adapters remain.18 synthetic
+native paths/45 bus writes and19 natural windows match. Pause freezes the actual
+callback between writes; output duty history now records each write separately.
+
 Live Start-tone wait is source-scheduled:34276 CPU cycles through full ordinary
 IRQ envelopes, matching natural5A05→5A0A.20 delay calls/2068 passes and20 literal
 handler cases verify it;175 literal header/value pairs are ROM checked. Captured

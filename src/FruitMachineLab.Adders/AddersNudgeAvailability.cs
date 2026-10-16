@@ -28,6 +28,16 @@ public static class AddersNudgeAvailability
         }
         m.Data.Push(unchecked((ushort)(short)(sbyte)result));
     }
+    // Native1AF1 uses the full award table for any equal pair, then falls
+    // back to10 only for exactly two flag-bit0 symbols. It is not1AA3.
+    public static void PushPairOrTwoFlagsResult(Machine m)
+    {
+        byte a=m.Memory[0x160],b=m.Memory[0x162],c=m.Memory[0x164],result=0;
+        if(a==b || a==c)result=m.Memory[Cell.Add(0x75BD,unchecked((ushort)(sbyte)a))];
+        else if(b==c)result=m.Memory[Cell.Add(0x75BD,unchecked((ushort)(sbyte)b))];
+        if(result==0 && ((m.Memory[0x161]&1)+(m.Memory[0x163]&1)+(m.Memory[0x165]&1))==2)result=10;
+        m.Data.Push(unchecked((ushort)(short)(sbyte)result));
+    }
     public static void Search(Machine m,ushort frame)
     {
         ushort At(int offset)=>Cell.Add(frame,(ushort)offset);

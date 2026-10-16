@@ -6,6 +6,14 @@ batch, including its verification.
 
 ## Working implementation
 
+Newest checkpoint: recovery/PAID-REEL-SPIN-PASS.md. Live completes final request
+selection, preparation and the paid reel motor spin, stopping at F398 before
+result/award dispatch. Credits5/cash bank16/token bank0 and pending/current-win0
+remain.172 headless groups/eight WPF modes pass, including motor Pause/Resume.
+Three natural windows (171/228/1394 VM observations),1282 native motor observations
+and18 isolated fallback-result cases match MAME. The lamp mask translation now
+preserves the same ROM mask in both destination bytes. Older entries are history.
+
 Newest checkpoint: recovery/START-TONE-SPIN-GATES-PASS.md. Live passes the
 incremental native start tone, pre-spin flags and selected random gates, stopping
 at F38C before F072 final request selection. Credit5/cash bank16/token bank0 and
@@ -68,7 +76,7 @@ The old75A9 keep-negative label is corrected to native sign normalization in
 - Live Skill Cash: incremental VM, retained state, physical momentary Start input,
   actual Pause/Resume, generated lamp/alpha outputs and diagnostic state display.
 - Separate verified playback/scrubber; original MAME-backed verification retained.
-- Last development batch:168 headless groups passed. Headless and isolated WPF
+- Last development batch:172 headless groups passed. Headless and isolated WPF
   builds passed; Live/playback WPF smoke checks and rendered layouts were checked.
 - John subsequently reported that the live feature works well.
 
@@ -128,6 +136,11 @@ See recovery/BOARD-MOVEMENT-PASS.md for arithmetic, IRQ-byte read phases, synthe
 scope and preserved earlier timing qualifications.
 
 ## Next development work
+
+Start at F398 result/award dispatch. Read PAID-REEL-SPIN-PASS.md first. The paid
+spin is complete; another complete game is not yet implemented. Retain the explicit
+inherited IC4 seed, CPU/IRQ pacing limits and long-wait2CB3 boundary. No fresh live
+Ghidra export access was available. Prior frontier below is history.
 
 Start at F38C/F072 final request selection, then F248/A03C/F30F and F2B5 main-reel
 execution/result. Read START-TONE-SPIN-GATES-PASS.md. Tone phase budgets retain

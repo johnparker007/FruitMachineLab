@@ -10,7 +10,19 @@ public sealed class AddersReelMotion(Machine machine)
     public void Prepare(Func<byte,ushort> condition)
     {
         if((m.Memory[0x719B]&0x20)!=0)throw new NotSupportedException("Motor-disabled native shortcut is outside normal motion recovery");
-        Array.Clear(m.Memory,0x158,8);
+        Array.Clear(m.Memory,0x158,8);PrepareCommon(condition);
+    }
+    // Native61D5 preserves existing stop streams, installing defaults only
+    // when the high byte at0158 is zero. It clears6B before shared6200.
+    public void PrepareAsync(Func<byte,ushort> condition)
+    {
+        m.Memory[0x6B]=0;
+        if(m.Memory[0x158]==0){m.WriteWord(0x158,0x3457);m.WriteWord(0x15A,0x3462);m.WriteWord(0x15C,0x346D);m.WriteWord(0x15E,0);}
+        PrepareCommon(condition);
+    }
+    private void PrepareCommon(Func<byte,ushort> condition)
+    {
+        if((m.Memory[0x719B]&0x20)!=0)throw new NotSupportedException("Motor-disabled native shortcut is outside normal motion recovery");
         for(ushort x=0x150;x<0x158;x+=2) {
             m.Memory[x+0x21]=0;
             foreach(int offset in new[]{0x40,0x48,0x28,0x38})m.WriteWord((ushort)(x+offset),0);
@@ -105,7 +117,7 @@ public sealed class AddersReelMotion(Machine machine)
     private void MarkReelLamps(int reel)
     {
         int table=0x1453+reel;if((m.Memory[0x6B]&2)!=0){table+=5;m.Memory[5]=unchecked((byte)-m.Memory[5]);}
-        for(int x=0x100;x<0x140;x+=0x10){m.Memory[x]|=m.Memory[table];m.Memory[x+1]|=m.Memory[table+1];if(table!=0x1456)m.Memory[x+2]|=m.Memory[table];}
+        for(int x=0x100;x<0x140;x+=0x10){m.Memory[x]|=m.Memory[table];m.Memory[x+1]|=m.Memory[table];if(table!=0x1456)m.Memory[x+2]|=m.Memory[table];}
     }
     private void Stop()
     {

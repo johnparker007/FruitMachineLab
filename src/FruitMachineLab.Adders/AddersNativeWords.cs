@@ -25,11 +25,13 @@ public static class AddersNativeWords
         if(instruction.Native is 0x1622 or 0x166D){AddersAwardStatistics.Execute(state,instruction.Native==0x1622);return true;}
         if(instruction.Native==0x151F){ushort selector=state.Pop();AddersAwardStatistics.AddScaled(state,state.Pop(),selector);return true;}
         if(instruction.Native==0x6F57){AddersAwardStatistics.RefreshAccounting(state);return true;}
+        if(instruction.Native==0x1AF1){AddersNudgeAvailability.PushPairOrTwoFlagsResult(state);return true;}
         if(instruction.Native==0x1AA3){AddersNudgeAvailability.PushMatchingResult(state);return true;}
         if(instruction.Native==0x29EC){AddersNudgeAvailability.ExecuteFlagged(state);return true;}
         if(instruction.Native==0x29F4){AddersNudgeAvailability.Execute(state);return true;}
         if(instruction.Native==0x2A2F){AddersNudgeAvailability.PushMovementPlan(state);return true;}
         if(instruction.Native==0x169B){state.Data.Push(AddersParameterProfiles.Compute(state,state.Pop()));return true;}
+        if(instruction.Native==0x2CD0){AddersReelSymbols.ShowRequestDirections(state,lamps);return true;}
         if(instruction.Native==0x2BBC){AddersReelSymbols.PrepareUnheldRequests(state);return true;}
         if(instruction.Native==0x2C12){AddersReelSymbols.Refresh(state);return true;}
         if(instruction.Native==0x2BEB){AddersReelSymbols.RefreshWithoutRequests(state);return true;}

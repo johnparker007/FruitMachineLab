@@ -44,6 +44,8 @@ public sealed class SkillCashLiveSession
     public bool NudgeMoving {get;private set;}
     private bool nudgeAttempted,nudgeContext;
     public bool AwaitingPaidStart {get;private set;}
+    public bool PaidSpinMoving=>paidSpinStarted && (motionInitializing || reelMotion?.Busy==true);
+    private bool paidSpinStarted;
     public bool MotorBusy=>reelMotion?.Busy==true;
     public bool IncludesCaller {get;}
     public bool StartsAtBoardSelection {get;}
@@ -110,7 +112,7 @@ public sealed class SkillCashLiveSession
             BoardMovementState.LoadData(Machine,evidence);BoardLinkState.LoadData(Machine,evidence);BoardLinkState.LoadIc8Entry(Machine,evidence);
             if(boardLink is not null)initialClock=BoardLinkState.Apply(Machine,evidence,boardLink);
             boardVisited.Add(Machine.Memory[0xC9]);
-            foreach(string file in new[]{"ladder-link.json","snake-link.json","ladder-link-next.json","snake-link-next.json","board-movement-next.json","ladder-availability.json","nudge-entry.json","nudge-prompt.json","nudge-request.json","nudge-motion-vm.json","nudge-return.json","nudge-sequence.json","nudge-result.json","nudge-exit.json","nudge-win-transfer.json","nudge-tail.json","nudge-accounting.json","nudge-bank-return.json","nudge-cycle-init.json","nudge-ic8.json","nudge-background.json","nudge-status.json","nudge-services.json","nudge-preplay.json","nudge-eligibility.json","nudge-start.json","nudge-stake.json","nudge-tone.json","nudge-spin-flags.json","nudge-spin-gates.json"}) {
+            foreach(string file in new[]{"ladder-link.json","snake-link.json","ladder-link-next.json","snake-link-next.json","board-movement-next.json","ladder-availability.json","nudge-entry.json","nudge-prompt.json","nudge-request.json","nudge-motion-vm.json","nudge-return.json","nudge-sequence.json","nudge-result.json","nudge-exit.json","nudge-win-transfer.json","nudge-tail.json","nudge-accounting.json","nudge-bank-return.json","nudge-cycle-init.json","nudge-ic8.json","nudge-background.json","nudge-status.json","nudge-services.json","nudge-preplay.json","nudge-eligibility.json","nudge-start.json","nudge-stake.json","nudge-tone.json","nudge-spin-flags.json","nudge-spin-gates.json","nudge-final-selection.json","nudge-spin-preparation.json","nudge-paid-spin.json"}) {
                 using var linkCosts=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",file)));
                 foreach(var item in linkCosts.RootElement.GetProperty("sites").EnumerateObject())siteCosts.TryAdd(item.Name,item.Value.GetUInt64());
                 foreach(var item in linkCosts.RootElement.GetProperty("tokens").EnumerateObject())tokenCosts.TryAdd(item.Name,item.Value.GetUInt64());
@@ -188,7 +190,7 @@ public sealed class SkillCashLiveSession
             },
             WordHandler=(instruction,state)=> {
                 if(instruction.Native==0x5A14 && tonePhase==4){tonePhase=0;return true;}
-                if(instruction.Native==0x61F6 && motionNativeReady){motionNativeReady=false;return true;}
+                if((instruction.Native is 0x61F6 or 0x61D5) && motionNativeReady){motionNativeReady=false;return true;}
                 return AddersNativeWords.Handle(instruction,state,requests,scheduler,alpha,()=>{AlphaOperations++;ObserveAlpha?.Invoke(alpha.Snapshot());});
             }
         };
@@ -282,13 +284,17 @@ public sealed class SkillCashLiveSession
                     if(!ContinueBoard && boardAdvancing && instruction.Site is 0xDE96 or 0xDD38)throw new NotSupportedException($"BOARD advance completed at square {Machine.Memory[0xC9]} (type {Machine.Memory[0xA12E+Machine.Memory[0xC9]]}, nudge pot {Machine.Memory[0xBF]}); the next board result/selection is the recovery boundary. Restart to play again.");
                     if(!ContinueBoard && BoardLinkEntry is not null && instruction.Site==0xDE81)throw new NotSupportedException($"BOARD {BoardLinkEntry} completed at square {Machine.Memory[0xC9]} (nudge pot {Machine.Memory[0xBF]}); following board result/selection remains the recovery boundary. Restart to watch again.");
                     if(ContinueBoard && instruction.Site==0xE2FC && Machine.Data.Peek() is not (1 or 2))throw new NotSupportedException($"BOARD result type {Machine.Data.Peek()} at square {Machine.Memory[0xC9]}; this result route is the next recovery boundary.");
-                    if(ContinueBoard && nudgeAttempted && instruction.Site==0xF38C)throw new NotSupportedException("BOARD paid-play entry reached through physical Start input; credit consumed, stake accounted and fixed tone completed. Pre-spin flags and random gates executed; final requested-stop selection and reel spin are the next recovery boundary.");
+                    if(ContinueBoard && nudgeAttempted && instruction.Site==0xF398)throw new NotSupportedException($"BOARD paid reel spin completed; credits {Machine.Memory[0x2F0]}, cash bank {Machine.ReadWord(0x2FC)}. Refreshed reel result/award dispatch is the next recovery boundary.");
                     if(ContinueBoard && BoardLinkEntry is not null && !nudgeAttempted && instruction.Site==0xE460)throw new NotSupportedException("BOARD feature exit reached; outer machine caller remains outside the live entry.");
                     if(ContinueBoard && instruction.Native==0x2BEB && reelMotion?.Busy==true){nextVm=checked(serviceEpoch+services[serviceIndex].Scan);continue;}
                     if(ContinueBoard && instruction.Site==0xE227)throw new NotSupportedException($"BOARD special feature at square {Machine.Memory[0xC9]} (type {Machine.Memory[0xA12E+Machine.Memory[0xC9]]}); announcement/feature routing is the next recovery boundary.");
                     if(ContinueBoard && instruction.Site==0xE2E5 && (Machine.ReadWord(0xA0)&0x10)!=0 && Machine.Data.Peek() is not (1 or 2))throw new NotSupportedException($"BOARD taken result type {Machine.Data.Peek()} at square {Machine.Memory[0xC9]}; this result helper remains outside the verified routes.");
-                    if(StartsAtBoardSelection && instruction.Native==0x61F6 && !motionNativeReady) {
-                        if(!motionInitializing){if(!nudgeContext)diceRequest=new(Machine.Memory[0x166],unchecked((sbyte)Machine.Memory[0x16F]),Machine.Memory[0x16E]);reelMotion!.Prepare(value=>Mpu4InputConditions.Evaluate(Machine,value));reelMotion.Enable();motionInitializing=true;}
+                    if(StartsAtBoardSelection && (instruction.Native is 0x61F6 or 0x61D5) && !motionNativeReady) {
+                        if(!motionInitializing){
+                            if(instruction.Native==0x61D5){paidSpinStarted=true;reelMotion!.PrepareAsync(value=>Mpu4InputConditions.Evaluate(Machine,value));}
+                            else{if(!nudgeContext)diceRequest=new(Machine.Memory[0x166],unchecked((sbyte)Machine.Memory[0x16F]),Machine.Memory[0x16E]);reelMotion!.Prepare(value=>Mpu4InputConditions.Evaluate(Machine,value));}
+                            reelMotion.Enable();motionInitializing=true;
+                        }
                         nextVm=checked(serviceEpoch+services[serviceIndex].Scan);continue;
                     }
                     if(instruction.Native==0x5A14 && tonePhase<4){
@@ -326,7 +332,7 @@ public sealed class SkillCashLiveSession
         var state=alpha.Snapshot();var history=latches.Select((frame,n)=>n==0 ? frame with{Cycle=0} : frame);
         var display=new AlphaPlaybackFrame(0,state.Text,Machine.ReadWord(0xBA),Machine.ReadWord(0x2FA));
         var duty=new OutputPlayback(Math.Max(Cycle,1),history,new[]{display}).Sample(Cycle).LampDuty;
-        string status=Fault is not null ? "Fault: "+Fault : Completed ? "Completed" : Paused ? "Paused" : TimedToneActive ? "Native start tone / timed CPU delay executing" : waitingForScheduler ? "Waiting for native scheduler" : VmAddress is >=0x9986 and <=0x998D ? "Waiting for panel release" : NudgeMoving ? "Nudge motor running / cleanup executing" : AwaitingPaidStart ? "Waiting for START - preplay input loop executing" : AwaitingNudgeInput ? "Waiting for NUDGE 1 / 2 / 3 - actual input scan executing" : selectionLoop ? "Waiting for START · selection loop executing" : boardAdvancing ? "Board movement executing" : reelMotion?.Busy==true ? "Dice motor running · VM waiting for completion" : motionInitializing ? "Waiting for reel service" : AwaitingBoardSelection ? "Waiting for TAKE / START · board selection executing" : "Running";
+        string status=Fault is not null ? "Fault: "+Fault : Completed ? "Completed" : Paused ? "Paused" : TimedToneActive ? "Native start tone / timed CPU delay executing" : waitingForScheduler ? "Waiting for native scheduler" : VmAddress is >=0x9986 and <=0x998D ? "Waiting for panel release" : PaidSpinMoving ? "Paid reel spin - motor service executing" : NudgeMoving ? "Nudge motor running / cleanup executing" : AwaitingPaidStart ? "Waiting for START - preplay input loop executing" : AwaitingNudgeInput ? "Waiting for NUDGE 1 / 2 / 3 - actual input scan executing" : selectionLoop ? "Waiting for START · selection loop executing" : boardAdvancing ? "Board movement executing" : reelMotion?.Busy==true ? "Dice motor running · VM waiting for completion" : motionInitializing ? "Waiting for reel service" : AwaitingBoardSelection ? "Waiting for TAKE / START · board selection executing" : "Running";
         return new(Cycle,Instructions,VmAddress,status,Panel.PhysicalBlack2,Machine.Memory[3],Machine.ReadWord(0x90),Machine.Memory[0x4F],Machine.ReadWord(0xBA),Machine.ReadWord(0x2FA),state.Text,duty,selections.ToArray(),diceRequest is null ? null : diceRequest with {PhysicalPosition=Machine.Memory[0x16E],Busy=reelMotion!.Busy,DisplayedSymbol=AddersReelSymbols.CurrentSymbol(Machine,3)},StartsAtBoardSelection ? new(Machine.Memory[0xC9],Machine.Memory[0xBF],Machine.Memory[0xA12E+Machine.Memory[0xC9]],Machine.Memory[0xA160+Machine.Memory[0xC9]],boardVisited.ToArray()) : null,AwaitingNudgeInput || nudgeAttempted ? new(Machine.Memory[0xBE],Machine.Memory[0xBF],MotorBusy,new byte[]{Machine.Memory[0x168],Machine.Memory[0x16A],Machine.Memory[0x16C]},Enumerable.Range(0,3).Select(n=>AddersReelSymbols.CurrentSymbol(Machine,n)).ToArray()) : null,Machine.ReadWord(0x2FC),Machine.ReadWord(0x302),Machine.Memory[0x2F0]);
     }
 }

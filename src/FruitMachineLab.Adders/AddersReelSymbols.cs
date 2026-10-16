@@ -16,6 +16,24 @@ public static class AddersReelSymbols
             m.Memory[at]=unchecked((byte)(m.Memory[0x2BB9+reel]+((4*random)>>8)));
         }
     }
+    // Native2CD0: directional group frames, with the zero-request duplicate
+    // comparison and inline lamp timing stream retained.
+    public static void ShowRequestDirections(Machine m,Mpu4LampRequests lamps)
+    {
+        for(int reel=0;reel<3;reel++){
+            int at=0x732C+3*reel;byte request=m.Memory[0x169+2*reel];
+            if(request==0){
+                lamps.Set(m.Memory[at],0x80,0x4982);lamps.Set(m.Memory[at+1],0x8F,0x497F);
+                if(m.Memory[at+1]!=m.Memory[at+2])lamps.Set(m.Memory[at+2],0x80,0x4982);
+            }else{
+                bool negative=(sbyte)request<0;
+                lamps.Set(m.Memory[at],negative ? (byte)0x81 : (byte)0x84,negative ? (ushort)0x4991 : (ushort)0x4997);
+                lamps.Set(m.Memory[at+1],0x82,0x4994);
+                lamps.Set(m.Memory[at+2],negative ? (byte)0x84 : (byte)0x81,negative ? (ushort)0x4997 : (ushort)0x4991);
+            }
+        }
+        lamps.ExecuteStream(0x2D0F);
+    }
     public static byte CurrentSymbol(Machine machine,int reel)
     {
         if(reel is <0 or >3)throw new ArgumentOutOfRangeException(nameof(reel));

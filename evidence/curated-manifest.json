@@ -165,6 +165,11 @@
     "sha256": "9ABE8D9473CDE79E71D5B6FEE7F3D3538FA2D69E4B7E7351A7F8D9CF90E0CD82"
   },
   {
+    "path": "docs/recovery/PAID-REEL-SPIN-PASS.md",
+    "bytes": 6866,
+    "sha256": "6210272B93F04B9C03A1A1989AE3B7AD759D5A67C594DE98E6336F79043598C8"
+  },
+  {
     "path": "docs/recovery/PAYOUT-AND-SERVICE-RECOVERY.txt",
     "bytes": 7027,
     "sha256": "AD6B05EB3DB02331CB6E780241757CDC7398747E8DF32E6987A4A94955DAB0C4"
@@ -331,8 +336,8 @@
   },
   {
     "path": "evidence/mpu4/maps/nudge-encoding-checkpoint.json",
-    "bytes": 684400,
-    "sha256": "2065850AD1A1AFCD99490CD3D23029FB6A51B116CFDB5E547AC06EB9CB3DE207"
+    "bytes": 731339,
+    "sha256": "4DEA9314198F327503CE79C040C54D0503835F706760F78D0371571735D1C973"
   },
   {
     "path": "evidence/mpu4/maps/nudge-inputs.json",
@@ -341,8 +346,8 @@
   },
   {
     "path": "evidence/mpu4/maps/nudge-preparation-data.json",
-    "bytes": 3653,
-    "sha256": "5DB1C62458CD14682F38802CAC591D4801E4D6F4D61138F75EFB0CE3995AC2C3"
+    "bytes": 3779,
+    "sha256": "20F1F15D9D7E19547BE1F3A1AACDED89944FBA84441EAD7282A42A0DB08B1834"
   },
   {
     "path": "evidence/mpu4/maps/nudge-preparation-semantics.json",
@@ -465,6 +470,11 @@
     "sha256": "07044BF308F337E428C2C86DEA32DF3AE11712F0093B6BE3E701F11934C34137"
   },
   {
+    "path": "evidence/mpu4/native/1af1.json",
+    "bytes": 972,
+    "sha256": "91B3C2BC16BF5751A1668CAA4E361206A85EC978591BCA3B07940121051C29E5"
+  },
+  {
     "path": "evidence/mpu4/native/1b63.json",
     "bytes": 913,
     "sha256": "ADEB35A42E33D0F6CB41DE55FABC2F590B5BE4FF57599C94FE24D6BD7532B5A9"
@@ -553,6 +563,11 @@
     "path": "evidence/mpu4/native/2ca7.json",
     "bytes": 1341,
     "sha256": "FAC24A7307E82ECE1E56DAF7DAA45BBAB2B99A206C56809A9431D405B0FBFF76"
+  },
+  {
+    "path": "evidence/mpu4/native/2cd0.json",
+    "bytes": 1766,
+    "sha256": "3C6B399BDDF15A3B34DA0C9756928115006E03FF6C40AB566CBDE07532C4FD1E"
   },
   {
     "path": "evidence/mpu4/native/2e53.json",
@@ -873,6 +888,11 @@
     "path": "evidence/mpu4/native/60c8.json",
     "bytes": 855,
     "sha256": "5D240EDBF58E8B01DDFD212F0CFF05F459C9968160C92E46EF0EE8B0214F01AB"
+  },
+  {
+    "path": "evidence/mpu4/native/61d5.json",
+    "bytes": 4535,
+    "sha256": "87D969035A81483FC195AAB15A77E4AEF661A42C907F0EE352538E23308B8FED"
   },
   {
     "path": "evidence/mpu4/native/61f6.json",
@@ -1635,6 +1655,16 @@
     "sha256": "660AD9366722E1028FBFE706E5955B1ACD061A9F71B151694F2585A00FECA96D"
   },
   {
+    "path": "evidence/mpu4/skill-cash/fallback-result-matrix-debugger.cmd",
+    "bytes": 4926,
+    "sha256": "4C44161D99A9A73EAB9D1BF77ACDB5609DFC3BE316C3BB8612DD1857318F1C05"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/fallback-result-matrix.json",
+    "bytes": 82913,
+    "sha256": "2D0EC7B4B0147D4755731F1099669A241DDB7C7A9834AABF4B9B293DDB64513A"
+  },
+  {
     "path": "evidence/mpu4/skill-cash/feature-debugger.cmd",
     "bytes": 4413,
     "sha256": "D7D05780FACACBFB786E2E097E943AC8C0CE3C907CA447007E79D5E2D1080AE7"
@@ -1900,6 +1930,21 @@
     "sha256": "3C914EB82A45AF7432E8FD5CBFA045A58063CE27D6EBDA78C9DFBA1A8567A578"
   },
   {
+    "path": "evidence/mpu4/skill-cash/nudge-final-selection-debugger.cmd",
+    "bytes": 15356,
+    "sha256": "EA6D8151A3D213E315EC8D12ED1590401009222CB98CE2753B7E234FEDA35ED6"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/nudge-final-selection-verification.json",
+    "bytes": 2453,
+    "sha256": "5BC08D8BD48663A6EAEEE2BC299A9B02FDCACE9D48C67BF92B09D44E948E0B40"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/nudge-final-selection.json",
+    "bytes": 32404,
+    "sha256": "3897B58D5B7C2E438CFEA611C17FA7F3C6A44C34C2CAE60C7A4FD00B8962C08B"
+  },
+  {
     "path": "evidence/mpu4/skill-cash/nudge-ic8-debugger.cmd",
     "bytes": 14012,
     "sha256": "7AE3235FADBCF63783EE815ACE6A25A02C826082F842D541FF82734340CB8FA8"
@@ -1943,6 +1988,21 @@
     "path": "evidence/mpu4/skill-cash/nudge-motor-seed.json",
     "bytes": 746,
     "sha256": "5318528CD013822A224801E0C560641F9767F5A5A903F59630479D0121F05A74"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/nudge-paid-spin-debugger.cmd",
+    "bytes": 16357,
+    "sha256": "5D9C9C1DAA945F67EBD0B947DAD22B185CEABCF0D6B6CFCE3AA93DD9FBA19357"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/nudge-paid-spin-verification.json",
+    "bytes": 2538,
+    "sha256": "979CF166E97282BECDACBD8D0ED1984062CEAD9EC52D5E5DCCC59DA6F3A7627F"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/nudge-paid-spin.json",
+    "bytes": 189480,
+    "sha256": "E018EDFCBF062F521A08DB1E2BE95B7F96F0325E52E636EEF6914A3306282BA6"
   },
   {
     "path": "evidence/mpu4/skill-cash/nudge-plan-matrix-debugger.cmd",
@@ -2125,6 +2185,21 @@
     "sha256": "AA794B7096D99D5B56C59CF9BDB019E75EBDF3DAEE058A72C1B8D2FC17E4CB49"
   },
   {
+    "path": "evidence/mpu4/skill-cash/nudge-spin-preparation-debugger.cmd",
+    "bytes": 15356,
+    "sha256": "634ECE3C9C26B5C88583BAEF47BB9F49945AE20DBC2E14EF58A2B0AC905AC370"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/nudge-spin-preparation-verification.json",
+    "bytes": 2508,
+    "sha256": "90CC016843F51767E5C1DB511DCA2CC6D31984F0EE14F2D2C024C4AC24A0A3CE"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/nudge-spin-preparation.json",
+    "bytes": 39900,
+    "sha256": "EE07491C83057E8A783142AF21ADF05C6A15634F81B45360B299BA115A4D1E5F"
+  },
+  {
     "path": "evidence/mpu4/skill-cash/nudge-stake-debugger.cmd",
     "bytes": 14336,
     "sha256": "97D6D7B52ECA4274C259E62DED92FCE401B0C48188C749866BC61ECAEB36C369"
@@ -2228,6 +2303,16 @@
     "path": "evidence/mpu4/skill-cash/output-scan.json",
     "bytes": 646482,
     "sha256": "6B632A9DF1BE6BE732D8D45C4AF6DB59AB361AAFE0EB85549687C3F4B1AB942B"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/paid-spin-native-debugger.cmd",
+    "bytes": 16357,
+    "sha256": "5D9C9C1DAA945F67EBD0B947DAD22B185CEABCF0D6B6CFCE3AA93DD9FBA19357"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/paid-spin-native.json",
+    "bytes": 520687,
+    "sha256": "51EECFCA763234F47F694D97C6786CE45F75B6B72C26750937545838B9D06756"
   },
   {
     "path": "evidence/mpu4/skill-cash/reel-request-matrix.json",

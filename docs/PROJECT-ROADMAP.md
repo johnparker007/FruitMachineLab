@@ -12,10 +12,9 @@ is not authority for which changes John has committed or pushed.
 
 ## Priority order
 
-Current checkpoint: bank-limit service and the outer cycle return now execute;
-next-cycle credit/bank display refresh reaches FAF0. Next recover IC8 output and
-background services to reach the genuine paid-game input loop. Collection remains
-subject to its real prerequisites. See recovery/NUDGE-CYCLE-RETURN-PASS.md.
+Current checkpoint: Live completes the genuine Start/stake path, native tone,
+final request selection and paid reel motor spin. Next recover F398 result/award
+dispatch toward a complete paid game. See recovery/PAID-REEL-SPIN-PASS.md.
 This remains gameplay recovery; the symbolic editing/rebuild toolchain stays deferred.
 
 The primary milestone is a complete playable Adders & Ladders machine on PC.

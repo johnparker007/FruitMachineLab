@@ -5,6 +5,11 @@ Local clone: C:\projects\GitRepos\FruitMachineLab
 
 ## Current status
 
+Latest: Live completes the paid reel motor spin and stops at F398 before result/
+award dispatch.172 headless groups/eight WPF modes pass, including motor Pause/
+Resume. See recovery/PAID-REEL-SPIN-PASS.md for evidence and remaining limits.
+Earlier checkpoints below are history.
+
 Latest: Live passes the incremental native tone and selected pre-spin random
 gates, reaching F38C before final request selection/spin.168 headless groups/eight
 WPF modes pass, including native-tone Pause and48 isolated reel-request cases.

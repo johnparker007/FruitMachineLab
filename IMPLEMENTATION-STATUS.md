@@ -1,5 +1,10 @@
 # Implementation and evidence boundaries
 
+Newest: [paid reel spin](docs/recovery/PAID-REEL-SPIN-PASS.md). Live runs the actual
+paid motor spin incrementally with Pause/Resume, reaching F398 before result/award
+dispatch.172 headless groups/eight GUI modes pass;1282 native motor observations
+and18 isolated fallback-result cases match. Earlier entries are history.
+
 Newest: [start tone/spin gates](docs/recovery/START-TONE-SPIN-GATES-PASS.md). Live
 executes the timed native routine incrementally, then selected pre-spin flags and
 random gates to F38C.168 groups/eight GUI modes pass;48 isolated request cases.

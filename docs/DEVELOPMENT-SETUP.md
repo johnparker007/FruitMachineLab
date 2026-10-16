@@ -5,6 +5,11 @@ Local clone: C:\projects\GitRepos\FruitMachineLab
 
 ## Current status
 
+Latest: Live passes feature-entry reel motion/board animation and returns to
+an actual board selection prompt; START launches another dice roll.190 headless
+groups/eight WPF modes pass. See recovery/FEATURE-ENTRY-MOTION-PASS.md for natural
+11936/144-VM windows, independently repeated native motion and coverage limits.
+
 Latest: Live passes three-flag accounting and board preparation through pot
 animation, stopping at E3AE before native61CF reel motion. Five new natural MAME
 windows match. See recovery/FLAG-FEATURE-ENTRY-PASS.md and CURRENT-HANDOFF.md;

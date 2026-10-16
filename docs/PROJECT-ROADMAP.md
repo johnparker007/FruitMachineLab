@@ -12,11 +12,12 @@ is not authority for which changes John has committed or pushed.
 
 ## Priority order
 
-Current checkpoint: Live passes three-flag accounting, software reel/table
-planning and pot/board animation, stopping at E3AE before native61CF motion.
-Next recover that motion and subsequent feature-board entry to broaden outcomes.
+Current checkpoint: Live passes three-flag accounting, planning, native61CF
+motion and board animation, returning to a genuine selection prompt. Physical
+START launches another dice roll with retained state. Next broaden playable
+results/return paths from that re-entered board using targeted natural captures.
 The separate returning path still completes three generated paid games in one
-session. See recovery/FLAG-FEATURE-ENTRY-PASS.md for reference qualifications.
+session. See recovery/FEATURE-ENTRY-MOTION-PASS.md for reference qualifications.
 This remains gameplay recovery; the symbolic editing/rebuild toolchain stays deferred.
 
 The primary milestone is a complete playable Adders & Ladders machine on PC.

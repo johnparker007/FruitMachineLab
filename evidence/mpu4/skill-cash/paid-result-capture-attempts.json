@@ -136,6 +136,30 @@
       "exit_code": "0",
       "raw_sha256": "D420FAC8ADA860D5C80B6640511ECF8E9A988F74A61D6397D38B9C0026AB43E4",
       "tail_entry_present": true
+    },
+    {
+      "name": "flag-motion",
+      "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-flag-motion-cc0a1e0741b449bfb065fd7cf48fa6aa",
+      "status": "accepted",
+      "exit_code": "0",
+      "raw_sha256": "C71FDBDF2659F50BE420984776C0A8ED50AF1228E78E60EA81818A5396481B3A",
+      "tail_entry_present": true
+    },
+    {
+      "name": "flag-board",
+      "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-flag-board-e5e24c37620c4d54a47406d655f8e305",
+      "status": "accepted",
+      "exit_code": "0",
+      "raw_sha256": "5D9708A1B8FB21E3DFCE68CE18C212EAD7BF2B808891D4DF268DE07DC27DFDB7",
+      "tail_entry_present": true
+    },
+    {
+      "name": "flag-motion-repeat",
+      "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-flag-motion-repeat-9287c9ec91484dee8f8fdf2a9cf0d347",
+      "status": "accepted independent repeat",
+      "exit_code": "0",
+      "raw_sha256": "C71FDBDF2659F50BE420984776C0A8ED50AF1228E78E60EA81818A5396481B3A",
+      "tail_entry_present": true
     }
   ],
   "corroboration": {

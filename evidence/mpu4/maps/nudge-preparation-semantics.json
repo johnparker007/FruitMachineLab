@@ -134,5 +134,41 @@
     "implementation": "RecoveredScript plus Mpu4Alpha/Mpu4ChoiceStreamScheduler; no UI accounting logic",
     "verification": "139 groups incl canonical tail VM/sound/alpha, protected RAM, round-wrap, Live seven flashes and pause",
     "capture_limits": "Narrow window succeeds; full-dispatch external crash root cause unknown. NoMotorItems alone did not prevent crash. Invalid-expression attempt rejected."
+  },
+  "paid_feature_entry_motion": {
+    "classification": "Natural trace-backed selected61CF path and static instruction bytes; configuration bypass not dynamically verified",
+    "entry": "E3AE/8120 -> native61CF",
+    "terminal": "E443 after E3A3 returns; paid-flag-board then reaches DD38",
+    "native_setup": "61CF:8601 976B 2021 sets6B=1 then branches61F6; shared entry clears0158..015F. Uses existing6287/6403/656B/649D services; does not install61D5 default stop sounds. Synchronous/motor-disabled modes remain unsupported.",
+    "captured_main_reel_requests": [
+      11,
+      14,
+      17
+    ],
+    "captured_positions_before": [
+      78,
+      54,
+      78,
+      48
+    ],
+    "captured_positions_after": [
+      12,
+      66,
+      72,
+      48
+    ],
+    "animation": "E3C4..E3D4 runs two shrinking board rectangles at current C9; 9C44 points to48 lamp IDs at72BF; E3D8 waits for actual motor cleanup",
+    "frame_comparison": "BB4C allocates10 uninitialised bytes. Signature frame word offsets0/1 excluded until BB14/BB1A writes respectively. BAF6 writes bounds/previous edges before drawing reads; actual execution memory is not patched. Raw VM digest retained. Other CPU stack residue remains incomplete.",
+    "implementation": [
+      "src/FruitMachineLab.Adders/AddersReelMotion.cs",
+      "src/FruitMachineLab.Adders/SkillCashLiveSession.cs",
+      "src/FruitMachineLab.Adders/DiceMotionReference.cs"
+    ],
+    "verification": [
+      "skill-cash/paid-flag-motion.json",
+      "skill-cash/paid-flag-motion-native.json",
+      "skill-cash/paid-flag-board.json"
+    ],
+    "coverage": "1232 native observations independently reproduced; generated optics compared. Live mixed-input credit5 state differs from natural later paid-game credit2 entry. Live actual START re-enters roll; no whole-campaign equivalence claim."
   }
 }

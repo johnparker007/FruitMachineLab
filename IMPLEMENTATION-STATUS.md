@@ -1,5 +1,13 @@
 # Implementation and evidence boundaries
 
+Newest: [feature entry motion](docs/recovery/FEATURE-ENTRY-MOTION-PASS.md). Live
+runs native61CF reel motion, animates the board and returns to actual selection.
+Physical START can launch another dice roll without extra credit debit.190
+headless groups/eight GUI modes pass; natural11936/144-VM windows and1232 native
+observations match, with an independent repeat of the native core. This route is
+an unfinished paid game, not complete machine coverage.161 VM spans/1641 native
+instructions are byte-checked in the existing preservation checkpoint.
+
 Newest: [flag feature entry](docs/recovery/FLAG-FEATURE-ENTRY-PASS.md). Live passes
 three-flag accounting, software planning/table construction and pot/board
 animation, stopping at E3AE before native61CF motion. Five new natural MAME

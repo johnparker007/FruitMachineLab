@@ -14,10 +14,10 @@ internal sealed class DiceMotionReference
     private readonly bool paidSpin;
     private readonly Action<ushort>? advanceClock,queueSound;
     public bool Complete=>point==events.Length;
-    public DiceMotionReference(Machine machine,string evidence,bool nudge=false,bool sequence=false,bool result=false,bool paidSpin=false,Action<ushort>? advanceClock=null,Action<ushort>? queueSound=null,bool paidStep=false)
+    public DiceMotionReference(Machine machine,string evidence,bool nudge=false,bool sequence=false,bool result=false,bool paidSpin=false,Action<ushort>? advanceClock=null,Action<ushort>? queueSound=null,bool paidStep=false,bool flagMotion=false)
     {
-        m=machine;motion=new(m);this.paidSpin=paidSpin || paidStep;this.advanceClock=advanceClock;this.queueSound=queueSound;
-        using var doc=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",paidStep ? "paid-nudge-native.json" : paidSpin ? "paid-spin-native.json" : result ? "nudge-result-native.json" : sequence ? "nudge-sequence-native.json" : nudge ? "nudge-motion-native.json" : "dice-motion.json")));
+        m=machine;motion=new(m);this.paidSpin=paidSpin || paidStep || flagMotion;this.advanceClock=advanceClock;this.queueSound=queueSound;
+        using var doc=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",flagMotion ? "paid-flag-motion-native.json" : paidStep ? "paid-nudge-native.json" : paidSpin ? "paid-spin-native.json" : result ? "nudge-result-native.json" : sequence ? "nudge-sequence-native.json" : nudge ? "nudge-motion-native.json" : "dice-motion.json")));
         events=doc.RootElement.GetProperty("events").EnumerateArray().Select(row=>row.Clone()).ToArray();
         foreach(var range in doc.RootElement.GetProperty("ranges").EnumerateObject())Convert.FromHexString(range.Value.GetString()!).CopyTo(m.Memory,Convert.ToUInt16(range.Name,16));
     }
@@ -26,9 +26,9 @@ internal sealed class DiceMotionReference
         while(point<events.Length && events[point].GetProperty("ordinal").GetInt32()<ordinal) {
             var row=events[point++];string pc=row.GetProperty("pc").GetString()!;
             if(paidSpin)advanceClock!(Convert.ToUInt16(row.GetProperty("clock").GetString(),16));
-            if(pc is "61F6" or "61D5") {
+            if(pc is "61CF" or "61F6" or "61D5") {
                 m.Memory[0x6E]=Hex(row,"drive")[1];if(paidSpin)m.Memory[0xB03]=Convert.ToByte(row.GetProperty("control").GetString(),16);Match(row);hardware=new(m);
-                if(pc=="61D5")motion.PrepareAsync(value=>Mpu4InputConditions.Evaluate(m,value));else motion.Prepare(value=>Mpu4InputConditions.Evaluate(m,value));
+                if(pc=="61D5")motion.PrepareAsync(value=>Mpu4InputConditions.Evaluate(m,value));else if(pc=="61CF")m.Memory[0x6B]=1;else motion.Prepare(value=>Mpu4InputConditions.Evaluate(m,value));
             }else if(pc=="6228"){Match(row);motion.Enable();}
             else if(pc=="623A"){Match(row);motion.Activate();}
             else if(pc=="6248")Match(row);

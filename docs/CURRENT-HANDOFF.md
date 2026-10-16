@@ -6,6 +6,22 @@ batch, including its verification.
 
 ## Working implementation
 
+Newest checkpoint: recovery/FEATURE-ENTRY-MOTION-PASS.md. Live now runs native61CF
+feature-entry reel motion and the shrinking-board lamp animation, then returns
+to a real selection prompt. The mixed physical-input test pauses the asynchronous
+motor and the returned prompt, then START launches/completes another dice motor
+movement without another credit debit. Credit5/bank16 remain; completed games0
+on this unfinished paid feature route. Separate returning-route three-game test
+is retained. Natural11936/144-observation VM windows and1232 native motion
+observations match; the native selected core also agrees across an independent
+capture. Natural windows start on later credit2 game, not the generated credit5
+campaign.190 headless groups/eight WPF modes pass; builds have zero warnings/errors.
+The byte-checked preservation checkpoint has161 VM spans/1641 native instructions.
+Next broaden the newly re-entered board's results/returns through targeted natural
+captures. Existing unsupported result/special-feature guards still apply; no
+complete-machine or hundred-game claim. Changes in this batch are uncommitted;
+no installations/config changes. Earlier checkpoints below are history.
+
 Newest checkpoint: recovery/FLAG-FEATURE-ENTRY-PASS.md. Live passes EE16's
 three-flag accounting, lamp/category setup, software reel/table planning and
 nudge-pot/board animation, stopping at E3AE before native61CF motion. This route

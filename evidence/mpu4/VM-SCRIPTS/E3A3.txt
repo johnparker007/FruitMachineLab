@@ -1,5 +1,5 @@
-Purpose: unresolved
-Confidence: grouping only; purpose unresolved
+Purpose: animate_feature_entry_with_optional_planned_reel_motion
+Confidence: paid-flag-motion natural trace backs the three-flag native61CF path, rectangle animation and return; configuration bypass remains static
 Groups: control flow, lamps, mask tests, memory operations, reels, sound/scheduler, stack/cell helpers
 Callers: E43D
 

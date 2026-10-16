@@ -5,8 +5,14 @@ try {
 var root = args.Length > 0 ? Path.GetFullPath(args[0]) : RepositoryLocation.Find(Directory.GetCurrentDirectory(),AppContext.BaseDirectory);
 var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
-void Check(string name, Action action) { action(); Console.WriteLine("PASS " + name); passed++; }
+void Check(string name, Action action) { if(args.Length>1 && !name.Contains(args[1],StringComparison.OrdinalIgnoreCase))return;action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Natural flagged-entry return to board selection matches", () => {
+    var r=BoardSelectionVerification.Verify(evidence,boardLink:"ladder",paidFlagBoard:true);Console.WriteLine($"  {r.Instructions} board VM observations, {r.Lamps} lamps, {r.Sounds} sounds");
+});
+Check("Natural flagged-entry native motion and board animation match", () => {
+    var r=BoardSelectionVerification.Verify(evidence,boardLink:"ladder",paidFlagMotion:true);Console.WriteLine($"  {r.Instructions} motion VM observations, {r.Lamps} lamps, {r.Sounds} sounds");
+});
 Check("Natural flagged-entry pot animation and board bootstrap match", () => {
     var r=BoardSelectionVerification.Verify(evidence,boardLink:"ladder",paidFlagBootstrap:true);Console.WriteLine($"  {r.Instructions} bootstrap observations, {r.Lamps} lamps, {r.Sounds} sounds");
 });
@@ -74,9 +80,9 @@ Check("IRQ direct-page residue survives local-frame allocation without clearing 
     Equal((ushort)0x79D,m.LocalFrame);Equal((byte)0,m.Memory[m.LocalFrame+2]);Equal((byte)0xBF,m.Memory[m.LocalFrame]);Equal((byte)0xBF,m.Memory[m.LocalFrame+1]);Equal((byte)0xBF,m.Memory[m.LocalFrame+3]);
 });
 Check("Live mixed nudge inputs reach a paid nudge and preserve prompt/motor Pause", () => {
-    var live=new SkillCashLiveSession(evidence,boardLink:"ladder",continueBoard:true);int[] reels=[0,1,0];int next=3;bool started=false,paid=false,ordinary=false,pausedMotor=false,ended=false;byte[]? before=null;live.Resume();
+    var live=new SkillCashLiveSession(evidence,boardLink:"ladder",continueBoard:true);int[] reels=[0,1,0];int next=3;bool started=false,paid=false,ordinary=false,pausedMotor=false,pausedFeature=false,ended=false;byte[]? before=null,nudgeStops=null;live.ObserveDispatch=(i,m)=>{if(i.Site==0xEE16)nudgeStops=m.Memory.ToArray();};live.Resume();
     for(int n=0;n<180000 && !ended;n++){
-        if(live.AwaitingBoardSelection)live.SetTake(true);
+        if(live.AwaitingBoardSelection && !ordinary)live.SetTake(true);
         if(!paid && live.AwaitingNudgeInput && !live.NudgeMoving){live.SetTake(false);if(next>0 && live.Machine.Memory[0xBE]==next){live.SetNudge(reels[3-next],true);next--;}}
         if(live.NudgeMoving)for(int r=0;r<3;r++)live.SetNudge(r,false);
         if(live.AwaitingPaidStart && !started){live.SetStart(true);started=true;}
@@ -87,13 +93,24 @@ Check("Live mixed nudge inputs reach a paid nudge and preserve prompt/motor Paus
             live.Pause();ulong at=live.Cycle;ushort vm=live.VmAddress;int count=live.Instructions;live.AdvanceCycles(1000000);Equal(at,live.Cycle);Equal(vm,live.VmAddress);Equal(count,live.Instructions);Equal(true,before.SequenceEqual(live.Machine.Memory));live.Resume();live.SetNudge(0,true);
         }
         if(ordinary && live.MotorBusy && !pausedMotor){live.Pause();var frozen=live.Machine.Memory.ToArray();ulong at=live.Cycle;live.AdvanceCycles(1000000);Equal(at,live.Cycle);Equal(true,frozen.SequenceEqual(live.Machine.Memory));live.Resume();pausedMotor=true;}
-        try{live.AdvanceCycles(512);}catch(NotSupportedException e){if(!e.Message.StartsWith("BOARD feature entry prepared"))throw;ended=true;}
+        if(live.FeatureEntryMoving && !pausedFeature){live.Pause();var frozen=live.Machine.Memory.ToArray();ulong at=live.Cycle;int count=live.Instructions;live.AdvanceCycles(1000000);Equal(at,live.Cycle);Equal(count,live.Instructions);Equal(true,frozen.SequenceEqual(live.Machine.Memory));live.Resume();pausedFeature=true;}
+        live.AdvanceCycles(512);if(ordinary && pausedFeature && live.AwaitingBoardSelection && live.BoardPrompts>=2)ended=true;
     }
-    Equal(true,ended);Equal(true,ordinary);Equal(true,pausedMotor);Equal((ushort)0xE3AE,live.VmAddress);Equal((byte)16,live.Machine.Memory[0x305]);Equal((byte)0,live.Panel.PhysicalBlack2);Equal((byte)5,live.Snapshot().Credits);Equal((ushort)16,live.Snapshot().CashBank);Equal((ushort)0,live.Snapshot().Pending);Equal((ushort)0,live.Snapshot().CurrentWin);
-    for(int r=0;r<3;r++)Equal((byte)((before![0x168+2*r]+(r==0 ? 90 : 0))%96),live.Machine.Memory[0x168+2*r]);
+    Equal(true,ended);Equal(true,ordinary);Equal(true,pausedMotor);Equal(true,pausedFeature);Equal<string?>(null,live.Fault);Equal(true,live.AwaitingBoardSelection);Equal((byte)16,live.Machine.Memory[0x305]);Equal((byte)0,live.Panel.PhysicalBlack2);Equal((byte)5,live.Snapshot().Credits);Equal((ushort)16,live.Snapshot().CashBank);Equal((ushort)0,live.Snapshot().Pending);Equal((ushort)0,live.Snapshot().CurrentWin);
+    for(int r=0;r<3;r++)Equal((byte)((before![0x168+2*r]+(r==0 ? 90 : 0))%96),nudgeStops![0x168+2*r]);
+    live.Pause();var promptFrozen=live.Machine.Memory.ToArray();ulong promptAt=live.Cycle;live.AdvanceCycles(1000000);Equal(promptAt,live.Cycle);Equal(true,promptFrozen.SequenceEqual(live.Machine.Memory));live.Resume();
     int Counter(byte[] bytes)=>(bytes[0x7D5]<<16)|(bytes[0x7D6]<<8)|bytes[0x7D7];
     Equal((Counter(before!)-8000)&0xFFFFFF,Counter(live.Machine.Memory));Equal(0,live.PaidGamesCompleted);
     for(int i=0;i<15;i++)Equal(unchecked((byte)~live.Machine.Memory[0x7C9+i]),live.Machine.Memory[0x7D8+i]);
+    // A real Start pulse on the re-entered board must reach the existing roll motor.
+    live.SetTake(false);live.SetStart(true);bool rolled=false,finishedRoll=false;
+    for(int n=0;n<100000 && !finishedRoll;n++){
+        if(live.Panel.StartPressed && (live.Machine.Memory[3]&128)!=0)live.SetStart(false);
+        if(live.MotorBusy && live.VmAddress!=0xE3AE)rolled=true;
+        if(rolled && !live.MotorBusy){finishedRoll=true;break;}
+        live.AdvanceCycles(512);
+    }
+    Equal(true,rolled);Equal(true,finishedRoll);Equal<string?>(null,live.Fault);Equal(false,live.PaidSpinMoving);Equal((byte)5,live.Snapshot().Credits);Equal((ushort)16,live.Snapshot().CashBank);Equal((byte)0,live.Panel.PhysicalBlack2);live.Pause();
 });
 Check("Natural ordinary paid Nudge1 matches VM, generated motor, lamps and sounds", () => {
     var r=BoardSelectionVerification.Verify(evidence,boardLink:"ladder",nudgePaidStep:true);Console.WriteLine($"  {r.Instructions} paid-nudge step observations, {r.Lamps} lamps, {r.Sounds} sounds");
@@ -1414,6 +1431,7 @@ Check("Recorded dispatch tokens agree with recovered listings", () => {
     if(checkedSites<100) throw new Exception("Insufficient dispatch comparisons");
     Console.WriteLine($"  {checkedSites} recorded dispatches checked");
 });
+if(passed==0)throw new ArgumentException("No verification groups matched the requested filter");
 Console.WriteLine($"{passed} verification groups passed. Feature, alpha software and IRQ latch replay verified; electrical timing, audio synthesis and general scheduling remain incomplete.");
 return 0;
 } catch (Exception error) {

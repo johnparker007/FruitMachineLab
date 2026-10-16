@@ -65,6 +65,11 @@
     "sha256": "3B08427E71803A3275B892CF99ADFB124C72E9AB31CFD7AECDBF5FBF44D0C138"
   },
   {
+    "path": "docs/recovery/FEATURE-ENTRY-MOTION-PASS.md",
+    "bytes": 7488,
+    "sha256": "1B5CFC79F3573A070DF1F5DD85B0F76BC1AED27639FC8E21962EA314D2EEFFFE"
+  },
+  {
     "path": "docs/recovery/FLAG-FEATURE-ENTRY-PASS.md",
     "bytes": 6433,
     "sha256": "ED43C49C78DF8190B885BF3DB82BC405A742DF4C01BB43AF830D518C008E7D64"
@@ -351,8 +356,8 @@
   },
   {
     "path": "evidence/mpu4/maps/nudge-encoding-checkpoint.json",
-    "bytes": 878679,
-    "sha256": "0DD09CEC21AF55B9FBDC4696183DBA32B51B179116CF3769852E94ABD0FE2B98"
+    "bytes": 960399,
+    "sha256": "24D305F8CDBCDCB46C77A4C03037A573878FAAE3E29786C7140235BFF4BB6AB6"
   },
   {
     "path": "evidence/mpu4/maps/nudge-inputs.json",
@@ -361,13 +366,13 @@
   },
   {
     "path": "evidence/mpu4/maps/nudge-preparation-data.json",
-    "bytes": 5380,
-    "sha256": "312CB7F9C85600668275CBE975B7C2C2C9F0DF949B338DE159493501DC35248B"
+    "bytes": 5518,
+    "sha256": "98FA873E966B77ED08AC9DEF7AA6193CE7B1B75E5D676924C3E52B9847B2B232"
   },
   {
     "path": "evidence/mpu4/maps/nudge-preparation-semantics.json",
-    "bytes": 6453,
-    "sha256": "D7B36D2414920065D7B7337E79B5391005E7397383A4F2579A1D6FD2A89E7362"
+    "bytes": 8333,
+    "sha256": "286D8D85A916985126CEBE261B090BE4880DB8E00B058049C5656209C0C4506E"
   },
   {
     "path": "evidence/mpu4/maps/prerequisite-pass-branch-prerequisites.json",
@@ -376,8 +381,8 @@
   },
   {
     "path": "evidence/mpu4/maps/prerequisite-pass-reviewed-script-names.json",
-    "bytes": 552,
-    "sha256": "B5D9D3A74C402C154B0B7FF7139CBE09A0A6F4C839E3E3731AED4D5F6F1781B7"
+    "bytes": 622,
+    "sha256": "2083422DFC8227649FAB1A5A7E6082C2A1B635BCAA043229AA950C3CD95ABAE6"
   },
   {
     "path": "evidence/mpu4/maps/prerequisite-pass-saved-prerequisite-verification.json",
@@ -2440,6 +2445,21 @@
     "sha256": "01183BA0FF6A04EB4E7A3D5D8F88320888A9ECC0AE85368E3216B6B15AAFF7A4"
   },
   {
+    "path": "evidence/mpu4/skill-cash/paid-flag-board-debugger.cmd",
+    "bytes": 17239,
+    "sha256": "BF5DCFC6FE99D8C80D6A98232A694AFCA2620219D1FD2A24CD775BCAD99BDC73"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/paid-flag-board-verification.json",
+    "bytes": 2989,
+    "sha256": "64280E869747FD69D6A3436CDAF880DFA01811B172A217F4AA5D3F0254DDC47D"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/paid-flag-board.json",
+    "bytes": 29787,
+    "sha256": "7AC339047E9E14D10F71A3FB558FD4A006BE413B7FBA3B865CCE9D2AE61DF73C"
+  },
+  {
     "path": "evidence/mpu4/skill-cash/paid-flag-bootstrap-debugger.cmd",
     "bytes": 16382,
     "sha256": "9908DDE2C18FC154C5C0030E18479190BFD53A79DBF0706412ADE451AEEC4D17"
@@ -2453,6 +2473,31 @@
     "path": "evidence/mpu4/skill-cash/paid-flag-bootstrap.json",
     "bytes": 1297582,
     "sha256": "5638356716BD70BD8B52DB5998982985DC623EE562C3F9618779248E9EA43EEA"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/paid-flag-motion-debugger.cmd",
+    "bytes": 17239,
+    "sha256": "6FDD110AFB02976F93AAE7E321EF84AC2FA0D3B9FFA64BADDDAA53D6843DEFBF"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/paid-flag-motion-native-debugger.cmd",
+    "bytes": 17239,
+    "sha256": "6FDD110AFB02976F93AAE7E321EF84AC2FA0D3B9FFA64BADDDAA53D6843DEFBF"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/paid-flag-motion-native.json",
+    "bytes": 504303,
+    "sha256": "D63157384DBB7DACBB3A237AA88A7E0F8BB6297792FA9032B228BDA2487952B6"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/paid-flag-motion-verification.json",
+    "bytes": 2988,
+    "sha256": "51791D4B07CF53081E623CB07559B2C1E30CF2E12782A99C612710D76152CAC9"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/paid-flag-motion.json",
+    "bytes": 1617795,
+    "sha256": "18E7198DF81BD61B68BAB819623C3761CDECE06B63035C8D2F381F35CC06608E"
   },
   {
     "path": "evidence/mpu4/skill-cash/paid-flag-reel-plan-debugger.cmd",
@@ -2496,8 +2541,8 @@
   },
   {
     "path": "evidence/mpu4/skill-cash/paid-result-capture-attempts.json",
-    "bytes": 7047,
-    "sha256": "8BD978526D2E347E322595E20F7A5F4CFA94B130818F3B17AD9BAFA7F0E38500"
+    "bytes": 8116,
+    "sha256": "AED9A053E056ABB6560FA0AC6072BA98B160C531040C586B478DB0C5059AC646"
   },
   {
     "path": "evidence/mpu4/skill-cash/paid-spin-native-debugger.cmd",
@@ -4621,8 +4666,8 @@
   },
   {
     "path": "evidence/mpu4/VM-SCRIPTS/E3A3.txt",
-    "bytes": 2054,
-    "sha256": "8AF81F21BAABE3F6B5B19A6FFCC195CB71E026819F3FA3BD433105F620F55321"
+    "bytes": 2202,
+    "sha256": "F12200639DD5174C64D118924767961F0DD7D4F00E50DC237CA27E92C5099186"
   },
   {
     "path": "evidence/mpu4/VM-SCRIPTS/E3E2.txt",

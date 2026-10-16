@@ -8878,6 +8878,28 @@
       ]
     },
     {
+      "source": "feature-motion-entry.txt",
+      "source_sha256": "90B9467F7D1CDF0836E4AD1F24D850C52E016071A8B06B908C0C41A49060ED84",
+      "classification": "Byte-checked MAME linear disassembly; code/data typing, reachability and all function boundaries are not established by this decode",
+      "instructions": [
+        {
+          "address": "61CF",
+          "bytes": "8601",
+          "decoded": "LDA    #$01"
+        },
+        {
+          "address": "61D1",
+          "bytes": "976B",
+          "decoded": "STA    <$6B"
+        },
+        {
+          "address": "61D3",
+          "bytes": "2021",
+          "decoded": "BRA    $61F6"
+        }
+      ]
+    },
+    {
       "source": "paid-spin-directions.txt",
       "source_sha256": "7C688B7E418C3F968A2A051F2121F71E7F0C573C9B7EB1FF4630EC781406D278",
       "classification": "Byte-checked MAME linear disassembly; code/data typing, reachability and all function boundaries are not established by this decode",
@@ -9524,6 +9546,2342 @@
     }
   ],
   "vm": [
+    {
+      "listing": "VM-SCRIPTS/E3A3.txt",
+      "listing_sha256": "F12200639DD5174C64D118924767961F0DD7D4F00E50DC237CA27E92C5099186",
+      "start": "E3A3",
+      "end_exclusive": "E3E0",
+      "span_hex": "9CAB81109FD7798205E33E812088FA84F279820E82489B867F14786B9F5679791578DE78B579DC82489B867F14786BBB477A008130811082489C1E792F",
+      "classification": "Exact selected ROM span and checked listed tokens; gaps/operands/embedded data preserved verbatim. Span partition does not prove each decoded operand or relocation semantics. Last return token span ends after two bytes.",
+      "sites": [
+        {
+          "address": "E3A3",
+          "token": "9CAB",
+          "annotation": "apply_lamp_range_constant_0080_record_9c08_9cad  body=0x9CAD",
+          "bytes_through_next_listed_site": "9CAB"
+        },
+        {
+          "address": "E3A5",
+          "token": "8110",
+          "annotation": "call_reels_wait_and_refresh_symbol_records  native=0x2BEB",
+          "bytes_through_next_listed_site": "8110"
+        },
+        {
+          "address": "E3A7",
+          "token": "9FD7",
+          "annotation": "test_all_symbol_flag2_or_nonzero_matching_result  body=0x9FD9",
+          "bytes_through_next_listed_site": "9FD7"
+        },
+        {
+          "address": "E3A9",
+          "token": "7982",
+          "annotation": "vm_branch_forward8_if_zero  branch=0xE3B0",
+          "bytes_through_next_listed_site": "798205"
+        },
+        {
+          "address": "E3AC",
+          "token": "E33E",
+          "annotation": "copy_reel_request_triplet_from_da_if_nonzero  body=0xE340",
+          "bytes_through_next_listed_site": "E33E"
+        },
+        {
+          "address": "E3AE",
+          "token": "8120",
+          "annotation": "call_reels_start_motion_async_without_sound_setup  native=0x61CF",
+          "bytes_through_next_listed_site": "8120"
+        },
+        {
+          "address": "E3B0",
+          "token": "88FA",
+          "annotation": "queue_sound_stream_88fc  body=0x856B, push_address=0x88FC",
+          "bytes_through_next_listed_site": "88FA"
+        },
+        {
+          "address": "E3B2",
+          "token": "84F2",
+          "annotation": "test_mask_4000_at_719f  body=0x841E, push_address=0x84F4",
+          "bytes_through_next_listed_site": "84F2"
+        },
+        {
+          "address": "E3B4",
+          "token": "7982",
+          "annotation": "vm_branch_forward8_if_zero  branch=0xE3C4",
+          "bytes_through_next_listed_site": "79820E"
+        },
+        {
+          "address": "E3B7",
+          "token": "8248",
+          "annotation": "vm_push_word_body_byte  value=0x0080",
+          "bytes_through_next_listed_site": "8248"
+        },
+        {
+          "address": "E3B9",
+          "token": "9B86",
+          "annotation": "apply_lamp_range_728f_72bf  body=0x9ADB, push_address=0x9B88",
+          "bytes_through_next_listed_site": "9B86"
+        },
+        {
+          "address": "E3BB",
+          "token": "7F14",
+          "annotation": "vm_push_word_body_byte  value=0x00C9",
+          "bytes_through_next_listed_site": "7F14"
+        },
+        {
+          "address": "E3BD",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "E3BF",
+          "token": "9F56",
+          "annotation": "apply_pattern_8f_to_indexed_lamp_record  body=0x9F58",
+          "bytes_through_next_listed_site": "9F56"
+        },
+        {
+          "address": "E3C1",
+          "token": "7979",
+          "annotation": "vm_branch_unsigned_forward8  branch=0xE3D8",
+          "bytes_through_next_listed_site": "797915"
+        },
+        {
+          "address": "E3C4",
+          "token": "78DE",
+          "annotation": "vm_push_two  ",
+          "bytes_through_next_listed_site": "78DE"
+        },
+        {
+          "address": "E3C6",
+          "token": "78B5",
+          "annotation": "vm_push_zero  ",
+          "bytes_through_next_listed_site": "78B5"
+        },
+        {
+          "address": "E3C8",
+          "token": "79DC",
+          "annotation": "vm_enter_loop_frame  ",
+          "bytes_through_next_listed_site": "79DC"
+        },
+        {
+          "address": "E3CA",
+          "token": "8248",
+          "annotation": "vm_push_word_body_byte  value=0x0080",
+          "bytes_through_next_listed_site": "8248"
+        },
+        {
+          "address": "E3CC",
+          "token": "9B86",
+          "annotation": "apply_lamp_range_728f_72bf  body=0x9ADB, push_address=0x9B88",
+          "bytes_through_next_listed_site": "9B86"
+        },
+        {
+          "address": "E3CE",
+          "token": "7F14",
+          "annotation": "vm_push_word_body_byte  value=0x00C9",
+          "bytes_through_next_listed_site": "7F14"
+        },
+        {
+          "address": "E3D0",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "E3D2",
+          "token": "BB47",
+          "annotation": "animate_shrinking_board_rectangle_to_selected_square  body=0xBB49",
+          "bytes_through_next_listed_site": "BB47"
+        },
+        {
+          "address": "E3D4",
+          "token": "7A00",
+          "annotation": "vm_loop_increment_one  ",
+          "bytes_through_next_listed_site": "7A00"
+        },
+        {
+          "address": "E3D6",
+          "token": "8130",
+          "annotation": "call_reset_sound_and_scheduler  native=0x5B77",
+          "bytes_through_next_listed_site": "8130"
+        },
+        {
+          "address": "E3D8",
+          "token": "8110",
+          "annotation": "call_reels_wait_and_refresh_symbol_records  native=0x2BEB",
+          "bytes_through_next_listed_site": "8110"
+        },
+        {
+          "address": "E3DA",
+          "token": "8248",
+          "annotation": "vm_push_word_body_byte  value=0x0080",
+          "bytes_through_next_listed_site": "8248"
+        },
+        {
+          "address": "E3DC",
+          "token": "9C1E",
+          "annotation": "apply_lamp_range_7256_7257  body=0x9ADB, push_address=0x9C20",
+          "bytes_through_next_listed_site": "9C1E"
+        },
+        {
+          "address": "E3DE",
+          "token": "792F",
+          "annotation": "vm_return_to_caller_stream  ",
+          "bytes_through_next_listed_site": "792F"
+        }
+      ]
+    },
+    {
+      "listing": "VM-SCRIPTS/BB49.txt",
+      "listing_sha256": "C4CAD13930B9022FFEB1505C1ED9E1DDABA7AC1C8B35EE062DF3A3416DE21F6C",
+      "start": "BB49",
+      "end_exclusive": "BB6A",
+      "span_hex": "79630A76A9BB2AB9707861B96D7861BAF4BAD7B96D786BB970786B8212B944792F",
+      "classification": "Exact selected ROM span and checked listed tokens; gaps/operands/embedded data preserved verbatim. Span partition does not prove each decoded operand or relocation semantics. Last return token span ends after two bytes.",
+      "sites": [
+        {
+          "address": "BB49",
+          "token": "7963",
+          "annotation": "vm_push_inline_byte_literal  inline_value=0x000A",
+          "bytes_through_next_listed_site": "79630A"
+        },
+        {
+          "address": "BB4C",
+          "token": "76A9",
+          "annotation": "vm_allocate_local_frame  ",
+          "bytes_through_next_listed_site": "76A9"
+        },
+        {
+          "address": "BB4E",
+          "token": "BB2A",
+          "annotation": "map_board_index_to_serpentine_grid_coordinates  body=0xBB2C",
+          "bytes_through_next_listed_site": "BB2A"
+        },
+        {
+          "address": "BB50",
+          "token": "B970",
+          "annotation": "vm_push_local_frame_address  value=0x0009",
+          "bytes_through_next_listed_site": "B970"
+        },
+        {
+          "address": "BB52",
+          "token": "7861",
+          "annotation": "vm_store_byte  ",
+          "bytes_through_next_listed_site": "7861"
+        },
+        {
+          "address": "BB54",
+          "token": "B96D",
+          "annotation": "vm_push_local_frame_address  value=0x0008",
+          "bytes_through_next_listed_site": "B96D"
+        },
+        {
+          "address": "BB56",
+          "token": "7861",
+          "annotation": "vm_store_byte  ",
+          "bytes_through_next_listed_site": "7861"
+        },
+        {
+          "address": "BB58",
+          "token": "BAF4",
+          "annotation": "initialize_full_board_rectangle_bounds  body=0xBAF6",
+          "bytes_through_next_listed_site": "BAF4"
+        },
+        {
+          "address": "BB5A",
+          "token": "BAD7",
+          "annotation": "animate_board_rectangle_convergence  body=0xBAD9",
+          "bytes_through_next_listed_site": "BAD7"
+        },
+        {
+          "address": "BB5C",
+          "token": "B96D",
+          "annotation": "vm_push_local_frame_address  value=0x0008",
+          "bytes_through_next_listed_site": "B96D"
+        },
+        {
+          "address": "BB5E",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "BB60",
+          "token": "B970",
+          "annotation": "vm_push_local_frame_address  value=0x0009",
+          "bytes_through_next_listed_site": "B970"
+        },
+        {
+          "address": "BB62",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "BB64",
+          "token": "8212",
+          "annotation": "vm_push_word_body_byte  value=0x0085",
+          "bytes_through_next_listed_site": "8212"
+        },
+        {
+          "address": "BB66",
+          "token": "B944",
+          "annotation": "apply_reel_grid_lamp_pattern_at_row_times_six_plus_column  body=0xB946",
+          "bytes_through_next_listed_site": "B944"
+        },
+        {
+          "address": "BB68",
+          "token": "792F",
+          "annotation": "vm_return_to_caller_stream  ",
+          "bytes_through_next_listed_site": "792F"
+        }
+      ]
+    },
+    {
+      "listing": "VM-SCRIPTS/BB2C.txt",
+      "listing_sha256": "CCCDBB0E6C26B7FA4FEE85DFB5825C1CDDDC912C56CA88A25E62B783CBAE5BB6",
+      "start": "BB2C",
+      "end_exclusive": "BB47",
+      "span_hex": "7963067DE27B5178C07A9779820C7B7D7963057B7D78A07B7D792F",
+      "classification": "Exact selected ROM span and checked listed tokens; gaps/operands/embedded data preserved verbatim. Span partition does not prove each decoded operand or relocation semantics. Last return token span ends after two bytes.",
+      "sites": [
+        {
+          "address": "BB2C",
+          "token": "7963",
+          "annotation": "vm_push_inline_byte_literal  inline_value=0x0006",
+          "bytes_through_next_listed_site": "796306"
+        },
+        {
+          "address": "BB2F",
+          "token": "7DE2",
+          "annotation": "signed_cell_divmod  body=0x7DE4",
+          "bytes_through_next_listed_site": "7DE2"
+        },
+        {
+          "address": "BB31",
+          "token": "7B51",
+          "annotation": "vm_duplicate_cell  ",
+          "bytes_through_next_listed_site": "7B51"
+        },
+        {
+          "address": "BB33",
+          "token": "78C0",
+          "annotation": "vm_push_one  ",
+          "bytes_through_next_listed_site": "78C0"
+        },
+        {
+          "address": "BB35",
+          "token": "7A97",
+          "annotation": "vm_bitwise_and  ",
+          "bytes_through_next_listed_site": "7A97"
+        },
+        {
+          "address": "BB37",
+          "token": "7982",
+          "annotation": "vm_branch_forward8_if_zero  branch=0xBB45",
+          "bytes_through_next_listed_site": "79820C"
+        },
+        {
+          "address": "BB3A",
+          "token": "7B7D",
+          "annotation": "vm_swap_two_cells  ",
+          "bytes_through_next_listed_site": "7B7D"
+        },
+        {
+          "address": "BB3C",
+          "token": "7963",
+          "annotation": "vm_push_inline_byte_literal  inline_value=0x0005",
+          "bytes_through_next_listed_site": "796305"
+        },
+        {
+          "address": "BB3F",
+          "token": "7B7D",
+          "annotation": "vm_swap_two_cells  ",
+          "bytes_through_next_listed_site": "7B7D"
+        },
+        {
+          "address": "BB41",
+          "token": "78A0",
+          "annotation": "vm_subtract_top_from_second  ",
+          "bytes_through_next_listed_site": "78A0"
+        },
+        {
+          "address": "BB43",
+          "token": "7B7D",
+          "annotation": "vm_swap_two_cells  ",
+          "bytes_through_next_listed_site": "7B7D"
+        },
+        {
+          "address": "BB45",
+          "token": "792F",
+          "annotation": "vm_return_to_caller_stream  ",
+          "bytes_through_next_listed_site": "792F"
+        }
+      ]
+    },
+    {
+      "listing": "VM-SCRIPTS/BAF6.txt",
+      "listing_sha256": "F14DB81534A471EC50306DEDC0E19A832B95852E74B147C562A09B1AB1557BAD",
+      "start": "BAF6",
+      "end_exclusive": "BB2A",
+      "span_hex": "78B5B96A7861796305B964786178B5B9677861796307B961786178AAB955786178AAB958786178AAB95B786178AAB95E7861792F",
+      "classification": "Exact selected ROM span and checked listed tokens; gaps/operands/embedded data preserved verbatim. Span partition does not prove each decoded operand or relocation semantics. Last return token span ends after two bytes.",
+      "sites": [
+        {
+          "address": "BAF6",
+          "token": "78B5",
+          "annotation": "vm_push_zero  ",
+          "bytes_through_next_listed_site": "78B5"
+        },
+        {
+          "address": "BAF8",
+          "token": "B96A",
+          "annotation": "vm_push_local_frame_address  value=0x0007",
+          "bytes_through_next_listed_site": "B96A"
+        },
+        {
+          "address": "BAFA",
+          "token": "7861",
+          "annotation": "vm_store_byte  ",
+          "bytes_through_next_listed_site": "7861"
+        },
+        {
+          "address": "BAFC",
+          "token": "7963",
+          "annotation": "vm_push_inline_byte_literal  inline_value=0x0005",
+          "bytes_through_next_listed_site": "796305"
+        },
+        {
+          "address": "BAFF",
+          "token": "B964",
+          "annotation": "vm_push_local_frame_address  value=0x0005",
+          "bytes_through_next_listed_site": "B964"
+        },
+        {
+          "address": "BB01",
+          "token": "7861",
+          "annotation": "vm_store_byte  ",
+          "bytes_through_next_listed_site": "7861"
+        },
+        {
+          "address": "BB03",
+          "token": "78B5",
+          "annotation": "vm_push_zero  ",
+          "bytes_through_next_listed_site": "78B5"
+        },
+        {
+          "address": "BB05",
+          "token": "B967",
+          "annotation": "vm_push_local_frame_address  value=0x0006",
+          "bytes_through_next_listed_site": "B967"
+        },
+        {
+          "address": "BB07",
+          "token": "7861",
+          "annotation": "vm_store_byte  ",
+          "bytes_through_next_listed_site": "7861"
+        },
+        {
+          "address": "BB09",
+          "token": "7963",
+          "annotation": "vm_push_inline_byte_literal  inline_value=0x0007",
+          "bytes_through_next_listed_site": "796307"
+        },
+        {
+          "address": "BB0C",
+          "token": "B961",
+          "annotation": "vm_push_local_frame_address  value=0x0004",
+          "bytes_through_next_listed_site": "B961"
+        },
+        {
+          "address": "BB0E",
+          "token": "7861",
+          "annotation": "vm_store_byte  ",
+          "bytes_through_next_listed_site": "7861"
+        },
+        {
+          "address": "BB10",
+          "token": "78AA",
+          "annotation": "vm_push_true_minus_one  ",
+          "bytes_through_next_listed_site": "78AA"
+        },
+        {
+          "address": "BB12",
+          "token": "B955",
+          "annotation": "vm_push_local_frame_address  value=0x0000",
+          "bytes_through_next_listed_site": "B955"
+        },
+        {
+          "address": "BB14",
+          "token": "7861",
+          "annotation": "vm_store_byte  ",
+          "bytes_through_next_listed_site": "7861"
+        },
+        {
+          "address": "BB16",
+          "token": "78AA",
+          "annotation": "vm_push_true_minus_one  ",
+          "bytes_through_next_listed_site": "78AA"
+        },
+        {
+          "address": "BB18",
+          "token": "B958",
+          "annotation": "vm_push_local_frame_address  value=0x0001",
+          "bytes_through_next_listed_site": "B958"
+        },
+        {
+          "address": "BB1A",
+          "token": "7861",
+          "annotation": "vm_store_byte  ",
+          "bytes_through_next_listed_site": "7861"
+        },
+        {
+          "address": "BB1C",
+          "token": "78AA",
+          "annotation": "vm_push_true_minus_one  ",
+          "bytes_through_next_listed_site": "78AA"
+        },
+        {
+          "address": "BB1E",
+          "token": "B95B",
+          "annotation": "vm_push_local_frame_address  value=0x0002",
+          "bytes_through_next_listed_site": "B95B"
+        },
+        {
+          "address": "BB20",
+          "token": "7861",
+          "annotation": "vm_store_byte  ",
+          "bytes_through_next_listed_site": "7861"
+        },
+        {
+          "address": "BB22",
+          "token": "78AA",
+          "annotation": "vm_push_true_minus_one  ",
+          "bytes_through_next_listed_site": "78AA"
+        },
+        {
+          "address": "BB24",
+          "token": "B95E",
+          "annotation": "vm_push_local_frame_address  value=0x0003",
+          "bytes_through_next_listed_site": "B95E"
+        },
+        {
+          "address": "BB26",
+          "token": "7861",
+          "annotation": "vm_store_byte  ",
+          "bytes_through_next_listed_site": "7861"
+        },
+        {
+          "address": "BB28",
+          "token": "792F",
+          "annotation": "vm_return_to_caller_stream  ",
+          "bytes_through_next_listed_site": "792F"
+        }
+      ]
+    },
+    {
+      "listing": "VM-SCRIPTS/BAD9.txt",
+      "listing_sha256": "75F83F5F19EA777E6EBF37732D7813A27B13E1C76EB5EFB7D53AA0E4FB22C900",
+      "start": "BAD9",
+      "end_exclusive": "BAF4",
+      "span_hex": "B973B9A5BA6F79630778B579DCB973B9A5B9D7BA23BA6F7A00792F",
+      "classification": "Exact selected ROM span and checked listed tokens; gaps/operands/embedded data preserved verbatim. Span partition does not prove each decoded operand or relocation semantics. Last return token span ends after two bytes.",
+      "sites": [
+        {
+          "address": "BAD9",
+          "token": "B973",
+          "annotation": "draw_board_rectangle_vertical_edges  body=0xB975",
+          "bytes_through_next_listed_site": "B973"
+        },
+        {
+          "address": "BADB",
+          "token": "B9A5",
+          "annotation": "draw_board_rectangle_horizontal_edges  body=0xB9A7",
+          "bytes_through_next_listed_site": "B9A5"
+        },
+        {
+          "address": "BADD",
+          "token": "BA6F",
+          "annotation": "move_board_rectangle_bounds_toward_target  body=0xBA71",
+          "bytes_through_next_listed_site": "BA6F"
+        },
+        {
+          "address": "BADF",
+          "token": "7963",
+          "annotation": "vm_push_inline_byte_literal  inline_value=0x0007",
+          "bytes_through_next_listed_site": "796307"
+        },
+        {
+          "address": "BAE2",
+          "token": "78B5",
+          "annotation": "vm_push_zero  ",
+          "bytes_through_next_listed_site": "78B5"
+        },
+        {
+          "address": "BAE4",
+          "token": "79DC",
+          "annotation": "vm_enter_loop_frame  ",
+          "bytes_through_next_listed_site": "79DC"
+        },
+        {
+          "address": "BAE6",
+          "token": "B973",
+          "annotation": "draw_board_rectangle_vertical_edges  body=0xB975",
+          "bytes_through_next_listed_site": "B973"
+        },
+        {
+          "address": "BAE8",
+          "token": "B9A5",
+          "annotation": "draw_board_rectangle_horizontal_edges  body=0xB9A7",
+          "bytes_through_next_listed_site": "B9A5"
+        },
+        {
+          "address": "BAEA",
+          "token": "B9D7",
+          "annotation": "clear_previous_board_rectangle_vertical_edges  body=0xB9D9",
+          "bytes_through_next_listed_site": "B9D7"
+        },
+        {
+          "address": "BAEC",
+          "token": "BA23",
+          "annotation": "clear_previous_board_rectangle_horizontal_edges  body=0xBA25",
+          "bytes_through_next_listed_site": "BA23"
+        },
+        {
+          "address": "BAEE",
+          "token": "BA6F",
+          "annotation": "move_board_rectangle_bounds_toward_target  body=0xBA71",
+          "bytes_through_next_listed_site": "BA6F"
+        },
+        {
+          "address": "BAF0",
+          "token": "7A00",
+          "annotation": "vm_loop_increment_one  ",
+          "bytes_through_next_listed_site": "7A00"
+        },
+        {
+          "address": "BAF2",
+          "token": "792F",
+          "annotation": "vm_return_to_caller_stream  ",
+          "bytes_through_next_listed_site": "792F"
+        }
+      ]
+    },
+    {
+      "listing": "VM-SCRIPTS/B975.txt",
+      "listing_sha256": "E7E3C83F26496CC47953347839ECC6301E257C7CA6BAADF081B630DB57F9CF38",
+      "start": "B975",
+      "end_exclusive": "B9A5",
+      "span_hex": "B961786B78C9B967786B7D527A5B79821C79DCB964786B7A1C824EB944B96A786B7A1C824EB9447A007979037B43792F",
+      "classification": "Exact selected ROM span and checked listed tokens; gaps/operands/embedded data preserved verbatim. Span partition does not prove each decoded operand or relocation semantics. Last return token span ends after two bytes.",
+      "sites": [
+        {
+          "address": "B975",
+          "token": "B961",
+          "annotation": "vm_push_local_frame_address  value=0x0004",
+          "bytes_through_next_listed_site": "B961"
+        },
+        {
+          "address": "B977",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "B979",
+          "token": "78C9",
+          "annotation": "vm_increment_word  ",
+          "bytes_through_next_listed_site": "78C9"
+        },
+        {
+          "address": "B97B",
+          "token": "B967",
+          "annotation": "vm_push_local_frame_address  value=0x0006",
+          "bytes_through_next_listed_site": "B967"
+        },
+        {
+          "address": "B97D",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "B97F",
+          "token": "7D52",
+          "annotation": "duplicate_two_cells  body=0x7D54",
+          "bytes_through_next_listed_site": "7D52"
+        },
+        {
+          "address": "B981",
+          "token": "7A5B",
+          "annotation": "vm_compare_not_equal  ",
+          "bytes_through_next_listed_site": "7A5B"
+        },
+        {
+          "address": "B983",
+          "token": "7982",
+          "annotation": "vm_branch_forward8_if_zero  branch=0xB9A1",
+          "bytes_through_next_listed_site": "79821C"
+        },
+        {
+          "address": "B986",
+          "token": "79DC",
+          "annotation": "vm_enter_loop_frame  ",
+          "bytes_through_next_listed_site": "79DC"
+        },
+        {
+          "address": "B988",
+          "token": "B964",
+          "annotation": "vm_push_local_frame_address  value=0x0005",
+          "bytes_through_next_listed_site": "B964"
+        },
+        {
+          "address": "B98A",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "B98C",
+          "token": "7A1C",
+          "annotation": "vm_push_loop_index  ",
+          "bytes_through_next_listed_site": "7A1C"
+        },
+        {
+          "address": "B98E",
+          "token": "824E",
+          "annotation": "vm_push_word_body_byte  value=0x008F",
+          "bytes_through_next_listed_site": "824E"
+        },
+        {
+          "address": "B990",
+          "token": "B944",
+          "annotation": "apply_reel_grid_lamp_pattern_at_row_times_six_plus_column  body=0xB946",
+          "bytes_through_next_listed_site": "B944"
+        },
+        {
+          "address": "B992",
+          "token": "B96A",
+          "annotation": "vm_push_local_frame_address  value=0x0007",
+          "bytes_through_next_listed_site": "B96A"
+        },
+        {
+          "address": "B994",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "B996",
+          "token": "7A1C",
+          "annotation": "vm_push_loop_index  ",
+          "bytes_through_next_listed_site": "7A1C"
+        },
+        {
+          "address": "B998",
+          "token": "824E",
+          "annotation": "vm_push_word_body_byte  value=0x008F",
+          "bytes_through_next_listed_site": "824E"
+        },
+        {
+          "address": "B99A",
+          "token": "B944",
+          "annotation": "apply_reel_grid_lamp_pattern_at_row_times_six_plus_column  body=0xB946",
+          "bytes_through_next_listed_site": "B944"
+        },
+        {
+          "address": "B99C",
+          "token": "7A00",
+          "annotation": "vm_loop_increment_one  ",
+          "bytes_through_next_listed_site": "7A00"
+        },
+        {
+          "address": "B99E",
+          "token": "7979",
+          "annotation": "vm_branch_unsigned_forward8  branch=0xB9A3",
+          "bytes_through_next_listed_site": "797903"
+        },
+        {
+          "address": "B9A1",
+          "token": "7B43",
+          "annotation": "vm_drop_two_cells  ",
+          "bytes_through_next_listed_site": "7B43"
+        },
+        {
+          "address": "B9A3",
+          "token": "792F",
+          "annotation": "vm_return_to_caller_stream  ",
+          "bytes_through_next_listed_site": "792F"
+        }
+      ]
+    },
+    {
+      "listing": "VM-SCRIPTS/B9A7.txt",
+      "listing_sha256": "06EA04DB7A2C708394234BE6B4CD7F5FF3E346E5FA23420A86F6F6FA97F15913",
+      "start": "B9A7",
+      "end_exclusive": "B9D7",
+      "span_hex": "B964786B78C9B96A786B7D527A5B79821C79DC7A1CB961786B824EB9447A1CB967786B824EB9447A007979037B43792F",
+      "classification": "Exact selected ROM span and checked listed tokens; gaps/operands/embedded data preserved verbatim. Span partition does not prove each decoded operand or relocation semantics. Last return token span ends after two bytes.",
+      "sites": [
+        {
+          "address": "B9A7",
+          "token": "B964",
+          "annotation": "vm_push_local_frame_address  value=0x0005",
+          "bytes_through_next_listed_site": "B964"
+        },
+        {
+          "address": "B9A9",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "B9AB",
+          "token": "78C9",
+          "annotation": "vm_increment_word  ",
+          "bytes_through_next_listed_site": "78C9"
+        },
+        {
+          "address": "B9AD",
+          "token": "B96A",
+          "annotation": "vm_push_local_frame_address  value=0x0007",
+          "bytes_through_next_listed_site": "B96A"
+        },
+        {
+          "address": "B9AF",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "B9B1",
+          "token": "7D52",
+          "annotation": "duplicate_two_cells  body=0x7D54",
+          "bytes_through_next_listed_site": "7D52"
+        },
+        {
+          "address": "B9B3",
+          "token": "7A5B",
+          "annotation": "vm_compare_not_equal  ",
+          "bytes_through_next_listed_site": "7A5B"
+        },
+        {
+          "address": "B9B5",
+          "token": "7982",
+          "annotation": "vm_branch_forward8_if_zero  branch=0xB9D3",
+          "bytes_through_next_listed_site": "79821C"
+        },
+        {
+          "address": "B9B8",
+          "token": "79DC",
+          "annotation": "vm_enter_loop_frame  ",
+          "bytes_through_next_listed_site": "79DC"
+        },
+        {
+          "address": "B9BA",
+          "token": "7A1C",
+          "annotation": "vm_push_loop_index  ",
+          "bytes_through_next_listed_site": "7A1C"
+        },
+        {
+          "address": "B9BC",
+          "token": "B961",
+          "annotation": "vm_push_local_frame_address  value=0x0004",
+          "bytes_through_next_listed_site": "B961"
+        },
+        {
+          "address": "B9BE",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "B9C0",
+          "token": "824E",
+          "annotation": "vm_push_word_body_byte  value=0x008F",
+          "bytes_through_next_listed_site": "824E"
+        },
+        {
+          "address": "B9C2",
+          "token": "B944",
+          "annotation": "apply_reel_grid_lamp_pattern_at_row_times_six_plus_column  body=0xB946",
+          "bytes_through_next_listed_site": "B944"
+        },
+        {
+          "address": "B9C4",
+          "token": "7A1C",
+          "annotation": "vm_push_loop_index  ",
+          "bytes_through_next_listed_site": "7A1C"
+        },
+        {
+          "address": "B9C6",
+          "token": "B967",
+          "annotation": "vm_push_local_frame_address  value=0x0006",
+          "bytes_through_next_listed_site": "B967"
+        },
+        {
+          "address": "B9C8",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "B9CA",
+          "token": "824E",
+          "annotation": "vm_push_word_body_byte  value=0x008F",
+          "bytes_through_next_listed_site": "824E"
+        },
+        {
+          "address": "B9CC",
+          "token": "B944",
+          "annotation": "apply_reel_grid_lamp_pattern_at_row_times_six_plus_column  body=0xB946",
+          "bytes_through_next_listed_site": "B944"
+        },
+        {
+          "address": "B9CE",
+          "token": "7A00",
+          "annotation": "vm_loop_increment_one  ",
+          "bytes_through_next_listed_site": "7A00"
+        },
+        {
+          "address": "B9D0",
+          "token": "7979",
+          "annotation": "vm_branch_unsigned_forward8  branch=0xB9D5",
+          "bytes_through_next_listed_site": "797903"
+        },
+        {
+          "address": "B9D3",
+          "token": "7B43",
+          "annotation": "vm_drop_two_cells  ",
+          "bytes_through_next_listed_site": "7B43"
+        },
+        {
+          "address": "B9D5",
+          "token": "792F",
+          "annotation": "vm_return_to_caller_stream  ",
+          "bytes_through_next_listed_site": "792F"
+        }
+      ]
+    },
+    {
+      "listing": "VM-SCRIPTS/B9D9.txt",
+      "listing_sha256": "5F7DB7DFA8A3DBDBA581B8E0C20DDF6FB83EBB3FF0B8582C803356E35E79636C",
+      "start": "B9D9",
+      "end_exclusive": "BA23",
+      "span_hex": "B955786B78C9B95B786B7D527A5B79823679DCB958786BB964786B7A5B79820BB958786B7A1C8248B944B95E786BB96A786B7A5B79820BB95E786B7A1C8248B9447A007979037B43792F",
+      "classification": "Exact selected ROM span and checked listed tokens; gaps/operands/embedded data preserved verbatim. Span partition does not prove each decoded operand or relocation semantics. Last return token span ends after two bytes.",
+      "sites": [
+        {
+          "address": "B9D9",
+          "token": "B955",
+          "annotation": "vm_push_local_frame_address  value=0x0000",
+          "bytes_through_next_listed_site": "B955"
+        },
+        {
+          "address": "B9DB",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "B9DD",
+          "token": "78C9",
+          "annotation": "vm_increment_word  ",
+          "bytes_through_next_listed_site": "78C9"
+        },
+        {
+          "address": "B9DF",
+          "token": "B95B",
+          "annotation": "vm_push_local_frame_address  value=0x0002",
+          "bytes_through_next_listed_site": "B95B"
+        },
+        {
+          "address": "B9E1",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "B9E3",
+          "token": "7D52",
+          "annotation": "duplicate_two_cells  body=0x7D54",
+          "bytes_through_next_listed_site": "7D52"
+        },
+        {
+          "address": "B9E5",
+          "token": "7A5B",
+          "annotation": "vm_compare_not_equal  ",
+          "bytes_through_next_listed_site": "7A5B"
+        },
+        {
+          "address": "B9E7",
+          "token": "7982",
+          "annotation": "vm_branch_forward8_if_zero  branch=0xBA1F",
+          "bytes_through_next_listed_site": "798236"
+        },
+        {
+          "address": "B9EA",
+          "token": "79DC",
+          "annotation": "vm_enter_loop_frame  ",
+          "bytes_through_next_listed_site": "79DC"
+        },
+        {
+          "address": "B9EC",
+          "token": "B958",
+          "annotation": "vm_push_local_frame_address  value=0x0001",
+          "bytes_through_next_listed_site": "B958"
+        },
+        {
+          "address": "B9EE",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "B9F0",
+          "token": "B964",
+          "annotation": "vm_push_local_frame_address  value=0x0005",
+          "bytes_through_next_listed_site": "B964"
+        },
+        {
+          "address": "B9F2",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "B9F4",
+          "token": "7A5B",
+          "annotation": "vm_compare_not_equal  ",
+          "bytes_through_next_listed_site": "7A5B"
+        },
+        {
+          "address": "B9F6",
+          "token": "7982",
+          "annotation": "vm_branch_forward8_if_zero  branch=0xBA03",
+          "bytes_through_next_listed_site": "79820B"
+        },
+        {
+          "address": "B9F9",
+          "token": "B958",
+          "annotation": "vm_push_local_frame_address  value=0x0001",
+          "bytes_through_next_listed_site": "B958"
+        },
+        {
+          "address": "B9FB",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "B9FD",
+          "token": "7A1C",
+          "annotation": "vm_push_loop_index  ",
+          "bytes_through_next_listed_site": "7A1C"
+        },
+        {
+          "address": "B9FF",
+          "token": "8248",
+          "annotation": "vm_push_word_body_byte  value=0x0080",
+          "bytes_through_next_listed_site": "8248"
+        },
+        {
+          "address": "BA01",
+          "token": "B944",
+          "annotation": "apply_reel_grid_lamp_pattern_at_row_times_six_plus_column  body=0xB946",
+          "bytes_through_next_listed_site": "B944"
+        },
+        {
+          "address": "BA03",
+          "token": "B95E",
+          "annotation": "vm_push_local_frame_address  value=0x0003",
+          "bytes_through_next_listed_site": "B95E"
+        },
+        {
+          "address": "BA05",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "BA07",
+          "token": "B96A",
+          "annotation": "vm_push_local_frame_address  value=0x0007",
+          "bytes_through_next_listed_site": "B96A"
+        },
+        {
+          "address": "BA09",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "BA0B",
+          "token": "7A5B",
+          "annotation": "vm_compare_not_equal  ",
+          "bytes_through_next_listed_site": "7A5B"
+        },
+        {
+          "address": "BA0D",
+          "token": "7982",
+          "annotation": "vm_branch_forward8_if_zero  branch=0xBA1A",
+          "bytes_through_next_listed_site": "79820B"
+        },
+        {
+          "address": "BA10",
+          "token": "B95E",
+          "annotation": "vm_push_local_frame_address  value=0x0003",
+          "bytes_through_next_listed_site": "B95E"
+        },
+        {
+          "address": "BA12",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "BA14",
+          "token": "7A1C",
+          "annotation": "vm_push_loop_index  ",
+          "bytes_through_next_listed_site": "7A1C"
+        },
+        {
+          "address": "BA16",
+          "token": "8248",
+          "annotation": "vm_push_word_body_byte  value=0x0080",
+          "bytes_through_next_listed_site": "8248"
+        },
+        {
+          "address": "BA18",
+          "token": "B944",
+          "annotation": "apply_reel_grid_lamp_pattern_at_row_times_six_plus_column  body=0xB946",
+          "bytes_through_next_listed_site": "B944"
+        },
+        {
+          "address": "BA1A",
+          "token": "7A00",
+          "annotation": "vm_loop_increment_one  ",
+          "bytes_through_next_listed_site": "7A00"
+        },
+        {
+          "address": "BA1C",
+          "token": "7979",
+          "annotation": "vm_branch_unsigned_forward8  branch=0xBA21",
+          "bytes_through_next_listed_site": "797903"
+        },
+        {
+          "address": "BA1F",
+          "token": "7B43",
+          "annotation": "vm_drop_two_cells  ",
+          "bytes_through_next_listed_site": "7B43"
+        },
+        {
+          "address": "BA21",
+          "token": "792F",
+          "annotation": "vm_return_to_caller_stream  ",
+          "bytes_through_next_listed_site": "792F"
+        }
+      ]
+    },
+    {
+      "listing": "VM-SCRIPTS/BA25.txt",
+      "listing_sha256": "D269740C02E30F6859D4E49A9DF113CBE6FB4CFAB54A9B768EF6B9764103CAA0",
+      "start": "BA25",
+      "end_exclusive": "BA6F",
+      "span_hex": "B958786B78C9B95E786B7D527A5B79823679DCB955786BB961786B7A5B79820B7A1CB955786B8248B944B95B786BB967786B7A5B79820B7A1CB95B786B8248B9447A007979037B43792F",
+      "classification": "Exact selected ROM span and checked listed tokens; gaps/operands/embedded data preserved verbatim. Span partition does not prove each decoded operand or relocation semantics. Last return token span ends after two bytes.",
+      "sites": [
+        {
+          "address": "BA25",
+          "token": "B958",
+          "annotation": "vm_push_local_frame_address  value=0x0001",
+          "bytes_through_next_listed_site": "B958"
+        },
+        {
+          "address": "BA27",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "BA29",
+          "token": "78C9",
+          "annotation": "vm_increment_word  ",
+          "bytes_through_next_listed_site": "78C9"
+        },
+        {
+          "address": "BA2B",
+          "token": "B95E",
+          "annotation": "vm_push_local_frame_address  value=0x0003",
+          "bytes_through_next_listed_site": "B95E"
+        },
+        {
+          "address": "BA2D",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "BA2F",
+          "token": "7D52",
+          "annotation": "duplicate_two_cells  body=0x7D54",
+          "bytes_through_next_listed_site": "7D52"
+        },
+        {
+          "address": "BA31",
+          "token": "7A5B",
+          "annotation": "vm_compare_not_equal  ",
+          "bytes_through_next_listed_site": "7A5B"
+        },
+        {
+          "address": "BA33",
+          "token": "7982",
+          "annotation": "vm_branch_forward8_if_zero  branch=0xBA6B",
+          "bytes_through_next_listed_site": "798236"
+        },
+        {
+          "address": "BA36",
+          "token": "79DC",
+          "annotation": "vm_enter_loop_frame  ",
+          "bytes_through_next_listed_site": "79DC"
+        },
+        {
+          "address": "BA38",
+          "token": "B955",
+          "annotation": "vm_push_local_frame_address  value=0x0000",
+          "bytes_through_next_listed_site": "B955"
+        },
+        {
+          "address": "BA3A",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "BA3C",
+          "token": "B961",
+          "annotation": "vm_push_local_frame_address  value=0x0004",
+          "bytes_through_next_listed_site": "B961"
+        },
+        {
+          "address": "BA3E",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "BA40",
+          "token": "7A5B",
+          "annotation": "vm_compare_not_equal  ",
+          "bytes_through_next_listed_site": "7A5B"
+        },
+        {
+          "address": "BA42",
+          "token": "7982",
+          "annotation": "vm_branch_forward8_if_zero  branch=0xBA4F",
+          "bytes_through_next_listed_site": "79820B"
+        },
+        {
+          "address": "BA45",
+          "token": "7A1C",
+          "annotation": "vm_push_loop_index  ",
+          "bytes_through_next_listed_site": "7A1C"
+        },
+        {
+          "address": "BA47",
+          "token": "B955",
+          "annotation": "vm_push_local_frame_address  value=0x0000",
+          "bytes_through_next_listed_site": "B955"
+        },
+        {
+          "address": "BA49",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "BA4B",
+          "token": "8248",
+          "annotation": "vm_push_word_body_byte  value=0x0080",
+          "bytes_through_next_listed_site": "8248"
+        },
+        {
+          "address": "BA4D",
+          "token": "B944",
+          "annotation": "apply_reel_grid_lamp_pattern_at_row_times_six_plus_column  body=0xB946",
+          "bytes_through_next_listed_site": "B944"
+        },
+        {
+          "address": "BA4F",
+          "token": "B95B",
+          "annotation": "vm_push_local_frame_address  value=0x0002",
+          "bytes_through_next_listed_site": "B95B"
+        },
+        {
+          "address": "BA51",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "BA53",
+          "token": "B967",
+          "annotation": "vm_push_local_frame_address  value=0x0006",
+          "bytes_through_next_listed_site": "B967"
+        },
+        {
+          "address": "BA55",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "BA57",
+          "token": "7A5B",
+          "annotation": "vm_compare_not_equal  ",
+          "bytes_through_next_listed_site": "7A5B"
+        },
+        {
+          "address": "BA59",
+          "token": "7982",
+          "annotation": "vm_branch_forward8_if_zero  branch=0xBA66",
+          "bytes_through_next_listed_site": "79820B"
+        },
+        {
+          "address": "BA5C",
+          "token": "7A1C",
+          "annotation": "vm_push_loop_index  ",
+          "bytes_through_next_listed_site": "7A1C"
+        },
+        {
+          "address": "BA5E",
+          "token": "B95B",
+          "annotation": "vm_push_local_frame_address  value=0x0002",
+          "bytes_through_next_listed_site": "B95B"
+        },
+        {
+          "address": "BA60",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "BA62",
+          "token": "8248",
+          "annotation": "vm_push_word_body_byte  value=0x0080",
+          "bytes_through_next_listed_site": "8248"
+        },
+        {
+          "address": "BA64",
+          "token": "B944",
+          "annotation": "apply_reel_grid_lamp_pattern_at_row_times_six_plus_column  body=0xB946",
+          "bytes_through_next_listed_site": "B944"
+        },
+        {
+          "address": "BA66",
+          "token": "7A00",
+          "annotation": "vm_loop_increment_one  ",
+          "bytes_through_next_listed_site": "7A00"
+        },
+        {
+          "address": "BA68",
+          "token": "7979",
+          "annotation": "vm_branch_unsigned_forward8  branch=0xBA6D",
+          "bytes_through_next_listed_site": "797903"
+        },
+        {
+          "address": "BA6B",
+          "token": "7B43",
+          "annotation": "vm_drop_two_cells  ",
+          "bytes_through_next_listed_site": "7B43"
+        },
+        {
+          "address": "BA6D",
+          "token": "792F",
+          "annotation": "vm_return_to_caller_stream  ",
+          "bytes_through_next_listed_site": "792F"
+        }
+      ]
+    },
+    {
+      "listing": "VM-SCRIPTS/BA71.txt",
+      "listing_sha256": "D4A1DE0CACF174685468C61B4B6A057742931C405DB2DD23491AAA2B8FA6788C",
+      "start": "BA71",
+      "end_exclusive": "BAD7",
+      "span_hex": "B96A786BB95E7861B964786BB9587861B961786BB9557861B967786BB95B7861B96D786BB96A786B7A79798205B96A7653B96D786BB964786B7A65798205B9647659B970786BB961786B7A65798205B9617659B970786BB967786B7A79798205B9677653792F",
+      "classification": "Exact selected ROM span and checked listed tokens; gaps/operands/embedded data preserved verbatim. Span partition does not prove each decoded operand or relocation semantics. Last return token span ends after two bytes.",
+      "sites": [
+        {
+          "address": "BA71",
+          "token": "B96A",
+          "annotation": "vm_push_local_frame_address  value=0x0007",
+          "bytes_through_next_listed_site": "B96A"
+        },
+        {
+          "address": "BA73",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "BA75",
+          "token": "B95E",
+          "annotation": "vm_push_local_frame_address  value=0x0003",
+          "bytes_through_next_listed_site": "B95E"
+        },
+        {
+          "address": "BA77",
+          "token": "7861",
+          "annotation": "vm_store_byte  ",
+          "bytes_through_next_listed_site": "7861"
+        },
+        {
+          "address": "BA79",
+          "token": "B964",
+          "annotation": "vm_push_local_frame_address  value=0x0005",
+          "bytes_through_next_listed_site": "B964"
+        },
+        {
+          "address": "BA7B",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "BA7D",
+          "token": "B958",
+          "annotation": "vm_push_local_frame_address  value=0x0001",
+          "bytes_through_next_listed_site": "B958"
+        },
+        {
+          "address": "BA7F",
+          "token": "7861",
+          "annotation": "vm_store_byte  ",
+          "bytes_through_next_listed_site": "7861"
+        },
+        {
+          "address": "BA81",
+          "token": "B961",
+          "annotation": "vm_push_local_frame_address  value=0x0004",
+          "bytes_through_next_listed_site": "B961"
+        },
+        {
+          "address": "BA83",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "BA85",
+          "token": "B955",
+          "annotation": "vm_push_local_frame_address  value=0x0000",
+          "bytes_through_next_listed_site": "B955"
+        },
+        {
+          "address": "BA87",
+          "token": "7861",
+          "annotation": "vm_store_byte  ",
+          "bytes_through_next_listed_site": "7861"
+        },
+        {
+          "address": "BA89",
+          "token": "B967",
+          "annotation": "vm_push_local_frame_address  value=0x0006",
+          "bytes_through_next_listed_site": "B967"
+        },
+        {
+          "address": "BA8B",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "BA8D",
+          "token": "B95B",
+          "annotation": "vm_push_local_frame_address  value=0x0002",
+          "bytes_through_next_listed_site": "B95B"
+        },
+        {
+          "address": "BA8F",
+          "token": "7861",
+          "annotation": "vm_store_byte  ",
+          "bytes_through_next_listed_site": "7861"
+        },
+        {
+          "address": "BA91",
+          "token": "B96D",
+          "annotation": "vm_push_local_frame_address  value=0x0008",
+          "bytes_through_next_listed_site": "B96D"
+        },
+        {
+          "address": "BA93",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "BA95",
+          "token": "B96A",
+          "annotation": "vm_push_local_frame_address  value=0x0007",
+          "bytes_through_next_listed_site": "B96A"
+        },
+        {
+          "address": "BA97",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "BA99",
+          "token": "7A79",
+          "annotation": "vm_compare_top_lt_second_signed  ",
+          "bytes_through_next_listed_site": "7A79"
+        },
+        {
+          "address": "BA9B",
+          "token": "7982",
+          "annotation": "vm_branch_forward8_if_zero  branch=0xBAA2",
+          "bytes_through_next_listed_site": "798205"
+        },
+        {
+          "address": "BA9E",
+          "token": "B96A",
+          "annotation": "vm_push_local_frame_address  value=0x0007",
+          "bytes_through_next_listed_site": "B96A"
+        },
+        {
+          "address": "BAA0",
+          "token": "7653",
+          "annotation": "vm_increment_byte_memory  ",
+          "bytes_through_next_listed_site": "7653"
+        },
+        {
+          "address": "BAA2",
+          "token": "B96D",
+          "annotation": "vm_push_local_frame_address  value=0x0008",
+          "bytes_through_next_listed_site": "B96D"
+        },
+        {
+          "address": "BAA4",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "BAA6",
+          "token": "B964",
+          "annotation": "vm_push_local_frame_address  value=0x0005",
+          "bytes_through_next_listed_site": "B964"
+        },
+        {
+          "address": "BAA8",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "BAAA",
+          "token": "7A65",
+          "annotation": "vm_compare_top_gt_second_signed  ",
+          "bytes_through_next_listed_site": "7A65"
+        },
+        {
+          "address": "BAAC",
+          "token": "7982",
+          "annotation": "vm_branch_forward8_if_zero  branch=0xBAB3",
+          "bytes_through_next_listed_site": "798205"
+        },
+        {
+          "address": "BAAF",
+          "token": "B964",
+          "annotation": "vm_push_local_frame_address  value=0x0005",
+          "bytes_through_next_listed_site": "B964"
+        },
+        {
+          "address": "BAB1",
+          "token": "7659",
+          "annotation": "vm_decrement_byte_memory  ",
+          "bytes_through_next_listed_site": "7659"
+        },
+        {
+          "address": "BAB3",
+          "token": "B970",
+          "annotation": "vm_push_local_frame_address  value=0x0009",
+          "bytes_through_next_listed_site": "B970"
+        },
+        {
+          "address": "BAB5",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "BAB7",
+          "token": "B961",
+          "annotation": "vm_push_local_frame_address  value=0x0004",
+          "bytes_through_next_listed_site": "B961"
+        },
+        {
+          "address": "BAB9",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "BABB",
+          "token": "7A65",
+          "annotation": "vm_compare_top_gt_second_signed  ",
+          "bytes_through_next_listed_site": "7A65"
+        },
+        {
+          "address": "BABD",
+          "token": "7982",
+          "annotation": "vm_branch_forward8_if_zero  branch=0xBAC4",
+          "bytes_through_next_listed_site": "798205"
+        },
+        {
+          "address": "BAC0",
+          "token": "B961",
+          "annotation": "vm_push_local_frame_address  value=0x0004",
+          "bytes_through_next_listed_site": "B961"
+        },
+        {
+          "address": "BAC2",
+          "token": "7659",
+          "annotation": "vm_decrement_byte_memory  ",
+          "bytes_through_next_listed_site": "7659"
+        },
+        {
+          "address": "BAC4",
+          "token": "B970",
+          "annotation": "vm_push_local_frame_address  value=0x0009",
+          "bytes_through_next_listed_site": "B970"
+        },
+        {
+          "address": "BAC6",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "BAC8",
+          "token": "B967",
+          "annotation": "vm_push_local_frame_address  value=0x0006",
+          "bytes_through_next_listed_site": "B967"
+        },
+        {
+          "address": "BACA",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "BACC",
+          "token": "7A79",
+          "annotation": "vm_compare_top_lt_second_signed  ",
+          "bytes_through_next_listed_site": "7A79"
+        },
+        {
+          "address": "BACE",
+          "token": "7982",
+          "annotation": "vm_branch_forward8_if_zero  branch=0xBAD5",
+          "bytes_through_next_listed_site": "798205"
+        },
+        {
+          "address": "BAD1",
+          "token": "B967",
+          "annotation": "vm_push_local_frame_address  value=0x0006",
+          "bytes_through_next_listed_site": "B967"
+        },
+        {
+          "address": "BAD3",
+          "token": "7653",
+          "annotation": "vm_increment_byte_memory  ",
+          "bytes_through_next_listed_site": "7653"
+        },
+        {
+          "address": "BAD5",
+          "token": "792F",
+          "annotation": "vm_return_to_caller_stream  ",
+          "bytes_through_next_listed_site": "792F"
+        }
+      ]
+    },
+    {
+      "listing": "VM-SCRIPTS/B946.txt",
+      "listing_sha256": "953B58D1CDB031A9D37EEE154845D22A0DE6B268E5FAFB6A101573A61C3ACBB8",
+      "start": "B946",
+      "end_exclusive": "B955",
+      "span_hex": "7D5A7963067DC4787E7B7D9C44792F",
+      "classification": "Exact selected ROM span and checked listed tokens; gaps/operands/embedded data preserved verbatim. Span partition does not prove each decoded operand or relocation semantics. Last return token span ends after two bytes.",
+      "sites": [
+        {
+          "address": "B946",
+          "token": "7D5A",
+          "annotation": "rotate_three_cells_twice  body=0x7D5C",
+          "bytes_through_next_listed_site": "7D5A"
+        },
+        {
+          "address": "B948",
+          "token": "7963",
+          "annotation": "vm_push_inline_byte_literal  inline_value=0x0006",
+          "bytes_through_next_listed_site": "796306"
+        },
+        {
+          "address": "B94B",
+          "token": "7DC4",
+          "annotation": "multiply_words_keep_low_cell  body=0x7DC6",
+          "bytes_through_next_listed_site": "7DC4"
+        },
+        {
+          "address": "B94D",
+          "token": "787E",
+          "annotation": "vm_add_words  ",
+          "bytes_through_next_listed_site": "787E"
+        },
+        {
+          "address": "B94F",
+          "token": "7B7D",
+          "annotation": "vm_swap_two_cells  ",
+          "bytes_through_next_listed_site": "7B7D"
+        },
+        {
+          "address": "B951",
+          "token": "9C44",
+          "annotation": "apply_indexed_lamp_id_from_72bf  body=0x9B18, push_address=0x9C46",
+          "bytes_through_next_listed_site": "9C44"
+        },
+        {
+          "address": "B953",
+          "token": "792F",
+          "annotation": "vm_return_to_caller_stream  ",
+          "bytes_through_next_listed_site": "792F"
+        }
+      ]
+    },
+    {
+      "listing": "VM-SCRIPTS/DE75.txt",
+      "listing_sha256": "D2665882818690C8988FA67C344C950015D3CA007C0314938D1C474EB9A7C4D1",
+      "start": "DE75",
+      "end_exclusive": "DE98",
+      "span_hex": "9CA378B5DDF1A283A8EDDBC27ABB798206DDAD79790378BE7B517A4679A6E67B3D792F",
+      "classification": "Exact selected ROM span and checked listed tokens; gaps/operands/embedded data preserved verbatim. Span partition does not prove each decoded operand or relocation semantics. Last return token span ends after two bytes.",
+      "sites": [
+        {
+          "address": "DE75",
+          "token": "9CA3",
+          "annotation": "apply_lamp_range_constant_0080_record_9b8c_9ca5  body=0x9CA5",
+          "bytes_through_next_listed_site": "9CA3"
+        },
+        {
+          "address": "DE77",
+          "token": "78B5",
+          "annotation": "vm_push_zero  ",
+          "bytes_through_next_listed_site": "78B5"
+        },
+        {
+          "address": "DE79",
+          "token": "DDF1",
+          "annotation": "advance_feature_index_with_lamp_and_sound_steps  body=0xDDF3",
+          "bytes_through_next_listed_site": "DDF1"
+        },
+        {
+          "address": "DE7B",
+          "token": "A283",
+          "annotation": "refresh_current_board_square_lamp_if_nonzero  body=0xA285",
+          "bytes_through_next_listed_site": "A283"
+        },
+        {
+          "address": "DE7D",
+          "token": "A8ED",
+          "annotation": "display_nudgepot_byte_as_two_decimal_digits  body=0xA8EF",
+          "bytes_through_next_listed_site": "A8ED"
+        },
+        {
+          "address": "DE7F",
+          "token": "DBC2",
+          "annotation": "dispatch_ladder_or_snake_from_board_link  body=0xDBC4",
+          "bytes_through_next_listed_site": "DBC2"
+        },
+        {
+          "address": "DE81",
+          "token": "7ABB",
+          "annotation": "vm_bitwise_not  ",
+          "bytes_through_next_listed_site": "7ABB"
+        },
+        {
+          "address": "DE83",
+          "token": "7982",
+          "annotation": "vm_branch_forward8_if_zero  branch=0xDE8B",
+          "bytes_through_next_listed_site": "798206"
+        },
+        {
+          "address": "DE86",
+          "token": "DDAD",
+          "annotation": "dispatch_feature_choice_unless_special_or_final_position  body=0xDDAF",
+          "bytes_through_next_listed_site": "DDAD"
+        },
+        {
+          "address": "DE88",
+          "token": "7979",
+          "annotation": "vm_branch_unsigned_forward8  branch=0xDE8D",
+          "bytes_through_next_listed_site": "797903"
+        },
+        {
+          "address": "DE8B",
+          "token": "78BE",
+          "annotation": "vm_push_zero  ",
+          "bytes_through_next_listed_site": "78BE"
+        },
+        {
+          "address": "DE8D",
+          "token": "7B51",
+          "annotation": "vm_duplicate_cell  ",
+          "bytes_through_next_listed_site": "7B51"
+        },
+        {
+          "address": "DE8F",
+          "token": "7A46",
+          "annotation": "vm_test_zero  ",
+          "bytes_through_next_listed_site": "7A46"
+        },
+        {
+          "address": "DE91",
+          "token": "79A6",
+          "annotation": "vm_branch_backward8_if_zero  branch=0xDE79",
+          "bytes_through_next_listed_site": "79A6E6"
+        },
+        {
+          "address": "DE94",
+          "token": "7B3D",
+          "annotation": "vm_drop_cell  ",
+          "bytes_through_next_listed_site": "7B3D"
+        },
+        {
+          "address": "DE96",
+          "token": "792F",
+          "annotation": "vm_return_to_caller_stream  ",
+          "bytes_through_next_listed_site": "792F"
+        }
+      ]
+    },
+    {
+      "listing": "VM-SCRIPTS/DDAF.txt",
+      "listing_sha256": "5109FD17EBCC06CA101C44B681FF6F1FB57D6CA36947964F73EE3EC3586D79D7",
+      "start": "DDAF",
+      "end_exclusive": "DDE1",
+      "span_hex": "A1CC7F14786B79632F7A6F7AA379820A78B584C2766579791881307F14786B78DE7DEE857979630C858196E8DD368130792F",
+      "classification": "Exact selected ROM span and checked listed tokens; gaps/operands/embedded data preserved verbatim. Span partition does not prove each decoded operand or relocation semantics. Last return token span ends after two bytes.",
+      "sites": [
+        {
+          "address": "DDAF",
+          "token": "A1CC",
+          "annotation": "test_selected_feature_table_type_three  body=0xA1CE",
+          "bytes_through_next_listed_site": "A1CC"
+        },
+        {
+          "address": "DDB1",
+          "token": "7F14",
+          "annotation": "vm_push_word_body_byte  value=0x00C9",
+          "bytes_through_next_listed_site": "7F14"
+        },
+        {
+          "address": "DDB3",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "DDB5",
+          "token": "7963",
+          "annotation": "vm_push_inline_byte_literal  inline_value=0x002F",
+          "bytes_through_next_listed_site": "79632F"
+        },
+        {
+          "address": "DDB8",
+          "token": "7A6F",
+          "annotation": "vm_compare_equal  ",
+          "bytes_through_next_listed_site": "7A6F"
+        },
+        {
+          "address": "DDBA",
+          "token": "7AA3",
+          "annotation": "vm_bitwise_or  ",
+          "bytes_through_next_listed_site": "7AA3"
+        },
+        {
+          "address": "DDBC",
+          "token": "7982",
+          "annotation": "vm_branch_forward8_if_zero  branch=0xDDC8",
+          "bytes_through_next_listed_site": "79820A"
+        },
+        {
+          "address": "DDBF",
+          "token": "78B5",
+          "annotation": "vm_push_zero  ",
+          "bytes_through_next_listed_site": "78B5"
+        },
+        {
+          "address": "DDC1",
+          "token": "84C2",
+          "annotation": "push_pair_0010_00a0  body=0x8417, push_address=0x84C4",
+          "bytes_through_next_listed_site": "84C2"
+        },
+        {
+          "address": "DDC3",
+          "token": "7665",
+          "annotation": "vm_or_word_memory  ",
+          "bytes_through_next_listed_site": "7665"
+        },
+        {
+          "address": "DDC5",
+          "token": "7979",
+          "annotation": "vm_branch_unsigned_forward8  branch=0xDDDF",
+          "bytes_through_next_listed_site": "797918"
+        },
+        {
+          "address": "DDC8",
+          "token": "8130",
+          "annotation": "call_reset_sound_and_scheduler  native=0x5B77",
+          "bytes_through_next_listed_site": "8130"
+        },
+        {
+          "address": "DDCA",
+          "token": "7F14",
+          "annotation": "vm_push_word_body_byte  value=0x00C9",
+          "bytes_through_next_listed_site": "7F14"
+        },
+        {
+          "address": "DDCC",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "DDCE",
+          "token": "78DE",
+          "annotation": "vm_push_two  ",
+          "bytes_through_next_listed_site": "78DE"
+        },
+        {
+          "address": "DDD0",
+          "token": "7DEE",
+          "annotation": "signed_cell_quotient  body=0x7DF0",
+          "bytes_through_next_listed_site": "7DEE"
+        },
+        {
+          "address": "DDD2",
+          "token": "8579",
+          "annotation": "write_byte_004d_857b  body=0x857B",
+          "bytes_through_next_listed_site": "8579"
+        },
+        {
+          "address": "DDD4",
+          "token": "7963",
+          "annotation": "vm_push_inline_byte_literal  inline_value=0x000C",
+          "bytes_through_next_listed_site": "79630C"
+        },
+        {
+          "address": "DDD7",
+          "token": "8581",
+          "annotation": "write_byte_004e_8583  body=0x8583",
+          "bytes_through_next_listed_site": "8581"
+        },
+        {
+          "address": "DDD9",
+          "token": "96E8",
+          "annotation": "queue_sound_stream_96ea  body=0x856B, push_address=0x96EA",
+          "bytes_through_next_listed_site": "96E8"
+        },
+        {
+          "address": "DDDB",
+          "token": "DD36",
+          "annotation": "wait_feature_selection_then_roll_or_take  body=0xDD38",
+          "bytes_through_next_listed_site": "DD36"
+        },
+        {
+          "address": "DDDD",
+          "token": "8130",
+          "annotation": "call_reset_sound_and_scheduler  native=0x5B77",
+          "bytes_through_next_listed_site": "8130"
+        },
+        {
+          "address": "DDDF",
+          "token": "792F",
+          "annotation": "vm_return_to_caller_stream  ",
+          "bytes_through_next_listed_site": "792F"
+        }
+      ]
+    },
+    {
+      "listing": "VM-SCRIPTS/DDF3.txt",
+      "listing_sha256": "35911F6749DD5DF2A32A6EF717598D6406086E1846756BD0DD6B2CED26094179",
+      "start": "DDF3",
+      "end_exclusive": "DE73",
+      "span_hex": "7EED786B7B7D7B497982527F14786B7B517B6D787E79632F7ADCB88A7F1476537F14786B7B519F567B51813078DE7DEE8579971D79633C99AD7B597A6F79A6DB7B3D7B5182489B8278C979630F99AD7F14786B7B597A6F79A6E97B3DA2837EED786B7A657F14786B7B5179632F7A657B7DB0877ABB7A977A97798203DDE1792F",
+      "classification": "Exact selected ROM span and checked listed tokens; gaps/operands/embedded data preserved verbatim. Span partition does not prove each decoded operand or relocation semantics. Last return token span ends after two bytes.",
+      "sites": [
+        {
+          "address": "DDF3",
+          "token": "7EED",
+          "annotation": "vm_push_word_body_byte  value=0x00BF",
+          "bytes_through_next_listed_site": "7EED"
+        },
+        {
+          "address": "DDF5",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "DDF7",
+          "token": "7B7D",
+          "annotation": "vm_swap_two_cells  ",
+          "bytes_through_next_listed_site": "7B7D"
+        },
+        {
+          "address": "DDF9",
+          "token": "7B49",
+          "annotation": "vm_duplicate_if_nonzero  ",
+          "bytes_through_next_listed_site": "7B49"
+        },
+        {
+          "address": "DDFB",
+          "token": "7982",
+          "annotation": "vm_branch_forward8_if_zero  branch=0xDE4F",
+          "bytes_through_next_listed_site": "798252"
+        },
+        {
+          "address": "DDFE",
+          "token": "7F14",
+          "annotation": "vm_push_word_body_byte  value=0x00C9",
+          "bytes_through_next_listed_site": "7F14"
+        },
+        {
+          "address": "DE00",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "DE02",
+          "token": "7B51",
+          "annotation": "vm_duplicate_cell  ",
+          "bytes_through_next_listed_site": "7B51"
+        },
+        {
+          "address": "DE04",
+          "token": "7B6D",
+          "annotation": "vm_rotate_three_cells  ",
+          "bytes_through_next_listed_site": "7B6D"
+        },
+        {
+          "address": "DE06",
+          "token": "787E",
+          "annotation": "vm_add_words  ",
+          "bytes_through_next_listed_site": "787E"
+        },
+        {
+          "address": "DE08",
+          "token": "7963",
+          "annotation": "vm_push_inline_byte_literal  inline_value=0x002F",
+          "bytes_through_next_listed_site": "79632F"
+        },
+        {
+          "address": "DE0B",
+          "token": "7ADC",
+          "annotation": "vm_min_signed  ",
+          "bytes_through_next_listed_site": "7ADC"
+        },
+        {
+          "address": "DE0D",
+          "token": "B88A",
+          "annotation": "conditionally_increment_byte_bf_and_refresh_display  body=0xB88C",
+          "bytes_through_next_listed_site": "B88A"
+        },
+        {
+          "address": "DE0F",
+          "token": "7F14",
+          "annotation": "vm_push_word_body_byte  value=0x00C9",
+          "bytes_through_next_listed_site": "7F14"
+        },
+        {
+          "address": "DE11",
+          "token": "7653",
+          "annotation": "vm_increment_byte_memory  ",
+          "bytes_through_next_listed_site": "7653"
+        },
+        {
+          "address": "DE13",
+          "token": "7F14",
+          "annotation": "vm_push_word_body_byte  value=0x00C9",
+          "bytes_through_next_listed_site": "7F14"
+        },
+        {
+          "address": "DE15",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "DE17",
+          "token": "7B51",
+          "annotation": "vm_duplicate_cell  ",
+          "bytes_through_next_listed_site": "7B51"
+        },
+        {
+          "address": "DE19",
+          "token": "9F56",
+          "annotation": "apply_pattern_8f_to_indexed_lamp_record  body=0x9F58",
+          "bytes_through_next_listed_site": "9F56"
+        },
+        {
+          "address": "DE1B",
+          "token": "7B51",
+          "annotation": "vm_duplicate_cell  ",
+          "bytes_through_next_listed_site": "7B51"
+        },
+        {
+          "address": "DE1D",
+          "token": "8130",
+          "annotation": "call_reset_sound_and_scheduler  native=0x5B77",
+          "bytes_through_next_listed_site": "8130"
+        },
+        {
+          "address": "DE1F",
+          "token": "78DE",
+          "annotation": "vm_push_two  ",
+          "bytes_through_next_listed_site": "78DE"
+        },
+        {
+          "address": "DE21",
+          "token": "7DEE",
+          "annotation": "signed_cell_quotient  body=0x7DF0",
+          "bytes_through_next_listed_site": "7DEE"
+        },
+        {
+          "address": "DE23",
+          "token": "8579",
+          "annotation": "write_byte_004d_857b  body=0x857B",
+          "bytes_through_next_listed_site": "8579"
+        },
+        {
+          "address": "DE25",
+          "token": "971D",
+          "annotation": "queue_sound_stream_971f  body=0x856B, push_address=0x971F",
+          "bytes_through_next_listed_site": "971D"
+        },
+        {
+          "address": "DE27",
+          "token": "7963",
+          "annotation": "vm_push_inline_byte_literal  inline_value=0x003C",
+          "bytes_through_next_listed_site": "79633C"
+        },
+        {
+          "address": "DE2A",
+          "token": "99AD",
+          "annotation": "wait_irq_ticks_or_abort_flag  body=0x99AF",
+          "bytes_through_next_listed_site": "99AD"
+        },
+        {
+          "address": "DE2C",
+          "token": "7B59",
+          "annotation": "vm_copy_second_cell  ",
+          "bytes_through_next_listed_site": "7B59"
+        },
+        {
+          "address": "DE2E",
+          "token": "7A6F",
+          "annotation": "vm_compare_equal  ",
+          "bytes_through_next_listed_site": "7A6F"
+        },
+        {
+          "address": "DE30",
+          "token": "79A6",
+          "annotation": "vm_branch_backward8_if_zero  branch=0xDE0D",
+          "bytes_through_next_listed_site": "79A6DB"
+        },
+        {
+          "address": "DE33",
+          "token": "7B3D",
+          "annotation": "vm_drop_cell  ",
+          "bytes_through_next_listed_site": "7B3D"
+        },
+        {
+          "address": "DE35",
+          "token": "7B51",
+          "annotation": "vm_duplicate_cell  ",
+          "bytes_through_next_listed_site": "7B51"
+        },
+        {
+          "address": "DE37",
+          "token": "8248",
+          "annotation": "vm_push_word_body_byte  value=0x0080",
+          "bytes_through_next_listed_site": "8248"
+        },
+        {
+          "address": "DE39",
+          "token": "9B82",
+          "annotation": "apply_indexed_lamp_id_from_728f  body=0x9B18, push_address=0x9B84",
+          "bytes_through_next_listed_site": "9B82"
+        },
+        {
+          "address": "DE3B",
+          "token": "78C9",
+          "annotation": "vm_increment_word  ",
+          "bytes_through_next_listed_site": "78C9"
+        },
+        {
+          "address": "DE3D",
+          "token": "7963",
+          "annotation": "vm_push_inline_byte_literal  inline_value=0x000F",
+          "bytes_through_next_listed_site": "79630F"
+        },
+        {
+          "address": "DE40",
+          "token": "99AD",
+          "annotation": "wait_irq_ticks_or_abort_flag  body=0x99AF",
+          "bytes_through_next_listed_site": "99AD"
+        },
+        {
+          "address": "DE42",
+          "token": "7F14",
+          "annotation": "vm_push_word_body_byte  value=0x00C9",
+          "bytes_through_next_listed_site": "7F14"
+        },
+        {
+          "address": "DE44",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "DE46",
+          "token": "7B59",
+          "annotation": "vm_copy_second_cell  ",
+          "bytes_through_next_listed_site": "7B59"
+        },
+        {
+          "address": "DE48",
+          "token": "7A6F",
+          "annotation": "vm_compare_equal  ",
+          "bytes_through_next_listed_site": "7A6F"
+        },
+        {
+          "address": "DE4A",
+          "token": "79A6",
+          "annotation": "vm_branch_backward8_if_zero  branch=0xDE35",
+          "bytes_through_next_listed_site": "79A6E9"
+        },
+        {
+          "address": "DE4D",
+          "token": "7B3D",
+          "annotation": "vm_drop_cell  ",
+          "bytes_through_next_listed_site": "7B3D"
+        },
+        {
+          "address": "DE4F",
+          "token": "A283",
+          "annotation": "refresh_current_board_square_lamp_if_nonzero  body=0xA285",
+          "bytes_through_next_listed_site": "A283"
+        },
+        {
+          "address": "DE51",
+          "token": "7EED",
+          "annotation": "vm_push_word_body_byte  value=0x00BF",
+          "bytes_through_next_listed_site": "7EED"
+        },
+        {
+          "address": "DE53",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "DE55",
+          "token": "7A65",
+          "annotation": "vm_compare_top_gt_second_signed  ",
+          "bytes_through_next_listed_site": "7A65"
+        },
+        {
+          "address": "DE57",
+          "token": "7F14",
+          "annotation": "vm_push_word_body_byte  value=0x00C9",
+          "bytes_through_next_listed_site": "7F14"
+        },
+        {
+          "address": "DE59",
+          "token": "786B",
+          "annotation": "vm_fetch_unsigned_byte  ",
+          "bytes_through_next_listed_site": "786B"
+        },
+        {
+          "address": "DE5B",
+          "token": "7B51",
+          "annotation": "vm_duplicate_cell  ",
+          "bytes_through_next_listed_site": "7B51"
+        },
+        {
+          "address": "DE5D",
+          "token": "7963",
+          "annotation": "vm_push_inline_byte_literal  inline_value=0x002F",
+          "bytes_through_next_listed_site": "79632F"
+        },
+        {
+          "address": "DE60",
+          "token": "7A65",
+          "annotation": "vm_compare_top_gt_second_signed  ",
+          "bytes_through_next_listed_site": "7A65"
+        },
+        {
+          "address": "DE62",
+          "token": "7B7D",
+          "annotation": "vm_swap_two_cells  ",
+          "bytes_through_next_listed_site": "7B7D"
+        },
+        {
+          "address": "DE64",
+          "token": "B087",
+          "annotation": "test_board_link_destination_nonzero_and_forward  body=0xB089",
+          "bytes_through_next_listed_site": "B087"
+        },
+        {
+          "address": "DE66",
+          "token": "7ABB",
+          "annotation": "vm_bitwise_not  ",
+          "bytes_through_next_listed_site": "7ABB"
+        },
+        {
+          "address": "DE68",
+          "token": "7A97",
+          "annotation": "vm_bitwise_and  ",
+          "bytes_through_next_listed_site": "7A97"
+        },
+        {
+          "address": "DE6A",
+          "token": "7A97",
+          "annotation": "vm_bitwise_and  ",
+          "bytes_through_next_listed_site": "7A97"
+        },
+        {
+          "address": "DE6C",
+          "token": "7982",
+          "annotation": "vm_branch_forward8_if_zero  branch=0xDE71",
+          "bytes_through_next_listed_site": "798203"
+        },
+        {
+          "address": "DE6F",
+          "token": "DDE1",
+          "annotation": "play_nudgepot_sound_and_rotating_digit_animation  body=0xDDE3",
+          "bytes_through_next_listed_site": "DDE1"
+        },
+        {
+          "address": "DE71",
+          "token": "792F",
+          "annotation": "vm_return_to_caller_stream  ",
+          "bytes_through_next_listed_site": "792F"
+        }
+      ]
+    },
     {
       "listing": "VM-SCRIPTS/EBB8.txt",
       "listing_sha256": "2FE7AC592A65751E49FD45C4996853E7FF22C696545193D70FE3D357C45A2AC1",
@@ -11136,7 +13494,7 @@
     },
     {
       "listing": "VM-SCRIPTS/E3A3.txt",
-      "listing_sha256": "8AF81F21BAABE3F6B5B19A6FFCC195CB71E026819F3FA3BD433105F620F55321",
+      "listing_sha256": "F12200639DD5174C64D118924767961F0DD7D4F00E50DC237CA27E92C5099186",
       "start": "E3A3",
       "end_exclusive": "E3E0",
       "span_hex": "9CAB81109FD7798205E33E812088FA84F279820E82489B867F14786B9F5679791578DE78B579DC82489B867F14786BBB477A008130811082489C1E792F",
@@ -27017,6 +29375,15 @@
   ],
   "dictionary_records": [
     {
+      "address": "8120",
+      "bytes": "776F61CF",
+      "native": "61CF",
+      "stack_effect": "( -- )",
+      "effects": "61CF LDA1; STA6B; BRA61F6. Shared61F6 clears0158..015F before profile setup; asynchronous IRQ motor service and actual optics finish at649D. Does not install61D5 default stop sound streams.",
+      "implementation": "src/FruitMachineLab.Adders/AddersReelMotion.cs",
+      "verification": "skill-cash/paid-flag-motion.json; skill-cash/paid-flag-motion-native.json"
+    },
+    {
       "address": "7803",
       "bytes": "780537103706E7843706ED010EFC",
       "native": "7805",
@@ -27377,6 +29744,9 @@
     "src/FruitMachineLab.Runtime/RecoveredScript.cs"
   ],
   "verification": [
+    "skill-cash/paid-flag-motion.json",
+    "skill-cash/paid-flag-motion-native.json",
+    "skill-cash/paid-flag-board.json",
     "skill-cash/paid-flag-accounting.json",
     "skill-cash/paid-flag-announcement.json",
     "skill-cash/paid-flag-reel-plan.json",

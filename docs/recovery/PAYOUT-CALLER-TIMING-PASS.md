@@ -148,3 +148,41 @@ exact776F..778C and80E4..80F7 bytes, including interleaved native pointer fields
 No fresh Ghidra access/source reconstruction claim. Raw pointer payout-word.txt.
 Filter: "Payout VM word". Next is VM host integration under the existing service
 clock, retaining sound-pool and alpha-helper boundaries explicitly.
+
+## Batch7: timed collection VM host
+
+AddersTimedCollectionExecution composes the recovered collection transfer VM with
+the timed payout WORD owner. It acknowledges native completion once, retaining
+one machine, VM data/control context and caller memory. Pause freezes execution,
+pending native/display work and its virtual clock. The enclosing host must also
+freeze IRQ/input/sound clocks. Ordinary collection VM/helper CPU budgets and alpha
+budgets are REQUIRED explicit delegates; zero is rejected. Host supplies the VM
+interrupt mask. No service period, IRQ acceptance or new captured schedule is guessed.
+
+AddersCollectionWordBindings is shared with the established semantic collection
+host, preserving actual sampled input handling, finite sound allocation, source
+reset effects and the native/logical sound-list mismatch boundary. It does not
+fabricate0047 or claim sound-task lifecycle recovery.
+
+Sixteen legacy original-ROM router and32 credit/Collect-gate cases match selected
+RAM, debit ordering, output sequence and return flag under the new composition.
+These fixtures explicitly skipped waits in MAME; comparison is SEMANTIC, not
+elapsed-cycle equality. The new owner executes real polling driven by synthetic
+counter changes. Ordinary VM budget1 and alpha budget1000 in these tests are
+LABELLED synthetic scheduling inputs, not proposed machine timing. Initial VM
+root frame/NEXT are supplied from the independently verified76BF contract because
+the old fixtures start before that gateway. No per-step state is injected.
+
+Integration exposed that the old semantic-only S=0800 convenience is unsafe for
+real native frames: nested display saves can overwrite persistent07C9 accounting.
+The timed host rejects such a context. Tests use the real gateway's root-frame
+position0782 (pre-push0784), retain the persistent accounting comparison and pass.
+This corrects the test/host context; ROM behaviour is not repaired. Native S
+scratch and semantic U scratch remain explicitly excluded, as before.
+
+Pause tests stop inside alpha and polling and preserve all state/deadlines/output;
+sound mismatch/zero-budget tests fail closed. Both timed matrices, pause/boundary
+tests and the18-group Collect regression filter pass. No GUI integration is
+claimed: its retained outer IRQ adapter still needs explicit foreground ownership
+integration, and sound-pool lifecycle remains open. Next verify repeated physical
+Collect transactions and freeze a full regression checkpoint before host UI work.

@@ -1,5 +1,12 @@
 # Current handoff
 
+Eight-batch cycle batch7 complete: AddersTimedCollectionExecution composes real
+collection VM + timed payout word with pause and explicit word/alpha budget and
+IRQ-mask inputs.16 router/32 gate MAME SEMANTIC paths pass (legacy waits skipped;
+no clock-equivalence claim). Shared bindings preserve the sound-list gap. Native
+S must be below07C9; old semantic0800 would corrupt accounts, so reject it and use
+the real gateway root context. GUI not attached; no guessed outer IRQ acceptance.
+
 Eight-batch cycle batch6 complete: VM80E4/80F4 ->776F native bridge now composes the
 full cash/token service and nested reverse76BF display.16 MAME word paths match
 exact instruction/cycle/RAM scope. Native mode writes require explicit080C owner;

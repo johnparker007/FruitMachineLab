@@ -5,6 +5,26 @@ namespace FruitMachineLab.Adders;
 
 public static class AddersPayoutVerification
 {
+    public static int TimedCollectionMatrix(string evidence,bool collectGate=false)
+    {
+        using var doc=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection",collectGate ? "collect-gate-matrix.json" : "router-matrix.json")));int count=0;
+        foreach(var row in doc.RootElement.GetProperty("rows").EnumerateArray()){
+            var m=new Machine{DataStackBase=0x600};m.Control=new(m,0x784);Convert.FromHexString(row.GetProperty("before_hex").GetString()!).CopyTo(m.Memory,0);SkillCashData.LoadFeature(m);SkillCashData.LoadAlpha(m);AddersPayoutCallerData.Load(m,evidence);
+            // These old semantic fixtures start before76BF. Supply its proven
+            // static NEXT template and a logical root frame, not per-step state.
+            Convert.FromHexString("34203184AEA16E91").CopyTo(m.Memory,0xF8);m.Control.Push(0x4C34);
+            using var lampDoc=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","lamp-frames.json")));var lamps=new Mpu4LampFrames(m,lampDoc.RootElement.GetProperty("responses").EnumerateArray().Select(v=>v.GetByte()).ToArray());
+            byte port=0x30;var writes=new List<byte>();var debits=new List<(ushort,ushort)>();
+            using var e=new AddersTimedCollectionExecution(m,evidence,collectGate ? (ushort)0xAB1B : (ushort)0xAA2B,0,r=>lamps.Apply(r.Id,r.Pattern),new(m),new(m,m.ReadWord(0x45)),(_,_)=>1,(_,_)=>1000,()=>port,v=>{port=v;writes.Add(v);},0x50,_=>{});
+            e.ObserveDebit=(call,_)=>debits.Add((call.Y,m.ReadWord(AddersPayoutRecord.Read(m,call.Y).Balance)));int polls=0,budget=1000000;
+            while(!e.Completed && --budget>0){if(e.Address==0x717C && (++polls&1)!=0)m.Memory[0x6E]++;e.AdvanceTo(e.NextEventCycle);}if(!e.Completed)throw new InvalidDataException("Timed collection did not complete");
+            byte[] ram=Convert.FromHexString(row.GetProperty("after_hex").GetString()!);foreach(int p in Enumerable.Range(0,0x700).Where(p=>p!=0x6E && p is not (>=0xF0 and <=0xFF) and not (>=0x5C0 and <=0x5FF)).Concat(Enumerable.Range(0x7C9,0x1F)))if(m.Memory[p]!=ram[p])throw new InvalidDataException($"Timed collection {row.GetProperty("case").GetProperty("id")} RAM{p:X4}: expected{ram[p]:X2}, actual{m.Memory[p]:X2}");
+            if(!writes.SequenceEqual(row.GetProperty("triac_writes").EnumerateArray().Select(v=>v.GetByte())))throw new InvalidDataException("Timed collection output sequence differs");
+            if(!debits.SequenceEqual(row.GetProperty("debits").EnumerateArray().Select(v=>(v.GetProperty("record").GetUInt16(),v.GetProperty("balance").GetUInt16()))))throw new InvalidDataException("Timed collection debit sequence differs");
+            if(e.Debits!=debits.Count || m.Control.Pointer!=0x784)throw new InvalidDataException("Timed collection count/control imbalance");
+            if(collectGate && m.Data.Single()!=row.GetProperty("result").GetUInt16())throw new InvalidDataException("Timed preplay gate result differs");count++;
+        }return count;
+    }
     public static int ServiceMatrix(string evidence,bool collection=false,bool collectGate=false)
     {
         using var doc=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection",collectGate ? "collect-gate-matrix.json" : collection ? "router-matrix.json" : "service-matrix.json")));

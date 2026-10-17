@@ -7,6 +7,21 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { if(args.Length>1 && !name.Contains(args[1],StringComparison.OrdinalIgnoreCase))return;action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Payout timed collection pause freezes native VM output and virtual clock",()=>{
+    var m=new Machine{DataStackBase=0x600};m.Control=new(m,0x784);m.Control.Push(0xBEEF);SkillCashData.LoadFeature(m);SkillCashData.LoadAlpha(m);AddersPayoutCallerData.Load(m,evidence);Convert.FromHexString("34203184AEA16E91").CopyTo(m.Memory,0xF8);m.WriteWord(0x2FC,2);m.Memory[0x55]=0x1F;byte port=0x30;int writes=0;
+    using var e=new AddersTimedCollectionExecution(m,evidence,0xAA2B,0,_=>{},new(m),new(m,0),(_,_)=>10,(_,_)=>1000,()=>port,v=>{port=v;writes++;},0);
+    int polls=0;void Advance(){if(e.Address==0x717C && (++polls&1)!=0)m.Memory[0x6E]++;e.AdvanceTo(e.NextEventCycle);}
+    foreach(ushort cut in new ushort[]{0xA7B4,0x717E}){while(e.Address!=cut)Advance();ulong cycle=e.Cycle,due=e.NextEventCycle;byte[] before=m.Memory.ToArray();int count=writes;e.Pause();e.AdvanceCycles(1000000);e.AdvanceTo(cycle+1000000);Equal(cycle,e.Cycle);Equal(due,e.NextEventCycle);Equal(count,writes);Equal(true,before.SequenceEqual(m.Memory));e.Resume();}
+    while(!e.Completed)Advance();Equal(1,e.Debits);Equal(2,writes);Equal((ushort)0,m.ReadWord(0x2FC));Equal((ushort)0,m.ReadWord(0x2FE));Equal((ushort)0x784,m.Control.Pointer);
+});
+Check("Payout timed collection retains sound mismatch and unknown budget boundaries",()=>{
+    Machine Seed(){var m=new Machine{DataStackBase=0x600};m.Control=new(m,0x784);m.Control.Push(0xBEEF);SkillCashData.LoadFeature(m);SkillCashData.LoadAlpha(m);AddersPayoutCallerData.Load(m,evidence);Convert.FromHexString("34203184AEA16E91").CopyTo(m.Memory,0xF8);m.WriteWord(0x2FC,24);return m;}
+    var m=Seed();m.WriteWord(0x47,0x1A0);using var e=new AddersTimedCollectionExecution(m,evidence,0xAAA1,0,_=>{},new(m),new(m,0),(_,_)=>10,(_,_)=>1000,()=>0x30,_=>throw new Exception("Sound mismatch issued payout"),0);
+    try{while(!e.Completed)e.AdvanceTo(e.NextEventCycle);throw new Exception("Sound lifecycle gap accepted");}catch(NotSupportedException ex){Equal(true,ex.Message.Contains("sound list"));}Equal(true,e.Paused);Equal(true,e.Fault is not null);ulong cycle=e.Cycle;e.AdvanceCycles(1000);Equal(cycle,e.Cycle);Equal((ushort)24,m.ReadWord(0x2FC));
+    var zero=Seed();byte[] before=zero.Memory.ToArray();try{using var bad=new AddersTimedCollectionExecution(zero,evidence,0xAAA1,0,_=>{},new(zero),new(zero,0),(_,_)=>0,(_,_)=>1000,()=>0x30,_=>{},0);throw new Exception("Zero VM budget accepted");}catch(NotSupportedException){}Equal(true,before.SequenceEqual(zero.Memory));
+});
+Check("Payout timed collection router matches16 original MAME semantic paths",()=>Equal(16,AddersPayoutVerification.TimedCollectionMatrix(evidence)));
+Check("Payout timed collection credit and Collect gates match32 original MAME paths",()=>Equal(32,AddersPayoutVerification.TimedCollectionMatrix(evidence,true)));
 Check("Payout VM word bridge preserves caller cells and rejects missing mode hardware",()=>{
     Machine Seed(){var m=new Machine{DataStackBase=0x600};m.Control=new(m,0x790);m.Data.Push(0xBEEF);m.SyncDataToMemory();SkillCashData.LoadFeature(m);SkillCashData.LoadAlpha(m);AddersPayoutCallerData.Load(m,evidence);Convert.FromHexString("34203184AEA16E91").CopyTo(m.Memory,0xF8);m.WriteWord(0x2FE,2);m.Memory[0x55]=0x1F;return m;}
     var instruction=new Instruction(0x110,0x80E4,"payout",null,null,Native:0x4B39);var m=Seed();byte port=0x30;using var e=new AddersTimedPayoutWordExecution(m,evidence,new(m),instruction,0,0,(_,_)=>1000,()=>port,v=>port=v);

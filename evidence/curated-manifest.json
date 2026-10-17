@@ -6398,5 +6398,15 @@
     "path": "evidence/mpu4/definitions/conditionally-set-or-clear-memory-mask-9a64.vm.json",
     "bytes": 1496,
     "sha256": "E2467D2308798FC4D49841797F0BB4D4F8C4CDA84E39E6EEB5A768A3DCCF3EBE"
+  },
+  {
+    "path": "docs/recovery/VM-DEFINITION-9ED9-LITERAL-PASS.md",
+    "bytes": 3441,
+    "sha256": "F0219124196A871AE963F5190DE16C593DF8B1017A6317D5654FB80DA17F73C1"
+  },
+  {
+    "path": "evidence/mpu4/definitions/bias-word-signed-value-9ed9.vm.json",
+    "bytes": 1502,
+    "sha256": "17D310CCE02F3B387BA4A888128AA0515D512D7AFFC3CC048170A9A6E4C07C34"
   }
 ]

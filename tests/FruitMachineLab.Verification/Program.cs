@@ -16,6 +16,11 @@ Check("VM definition branch targets and boundaries reject unsupported encodings"
 Check("VM definition executes stack and return-frame semantics",()=>VmDefinitionVerification.Execution(evidence));
 Check("VM definition changed branch operand propagates to bytes and decoded execution",()=>VmDefinitionVerification.ChangedOperand(evidence));
 Check("VM definition image build preserves unknown bytes and strict original identity",()=>VmDefinitionVerification.ApplyPreservesUnknown(evidence));
+Check("Inline literal VM definition original round-trip matches curated span and listing",()=>VmDefinitionVerification.LiteralRoundTrip(evidence));
+Check("Inline literal VM definition bounds malformed literal and token mismatch are rejected",()=>VmDefinitionVerification.LiteralBoundaries(evidence));
+Check("Inline literal VM definition executes signed wrap and return-frame semantics",()=>VmDefinitionVerification.LiteralExecution(evidence));
+Check("Inline literal VM definition changed literal propagates to bytes and decoded execution",()=>VmDefinitionVerification.LiteralChangedOperand(evidence));
+Check("Inline literal VM definition image build preserves unknown bytes and strict original identity",()=>VmDefinitionVerification.LiteralApplyPreservesUnknown(evidence));
 Check("Serial transport bit images match32 original-ROM instruction paths",()=>Equal(32,AddersSerialTransportVerification.Bit(evidence)));
 Check("Serial transport byte frames match32 original-ROM instruction paths",()=>Equal(32,AddersSerialTransportVerification.Byte(evidence)));
 Check("Serial transport timer2 helpers match16 original-ROM instruction paths",()=>Equal(16,AddersSerialTransportVerification.Timer(evidence)));

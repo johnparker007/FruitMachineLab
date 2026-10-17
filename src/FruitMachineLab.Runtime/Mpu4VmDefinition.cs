@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace FruitMachineLab.Runtime;
 
-public sealed record Mpu4VmInstruction(ushort Token, string Operation, ushort? Branch = null);
+public sealed record Mpu4VmInstruction(ushort Token, string Operation, ushort? Branch = null, ushort? InlineValue = null);
 
 public sealed record Mpu4VmProvenance(
     string Listing,
@@ -23,7 +23,7 @@ public sealed record Mpu4VmImage(
 
 public sealed record Mpu4VmDefinition
 {
-    private enum OperandKind { None, Forward8 }
+    private enum OperandKind { None, Forward8, InlineWord }
 
     private sealed record Encoding(ushort Token, OperandKind Operand);
 
@@ -35,7 +35,10 @@ public sealed record Mpu4VmDefinition
             ["vm_or_word_memory"] = new(0x7665, OperandKind.None),
             ["vm_branch_unsigned_forward8"] = new(0x7979, OperandKind.Forward8),
             ["vm_clear_word_memory_bits"] = new(0x7671, OperandKind.None),
-            ["vm_return_to_caller_stream"] = new(0x792F, OperandKind.None)
+            ["vm_return_to_caller_stream"] = new(0x792F, OperandKind.None),
+            ["vm_push_inline_word_literal"] = new(0x795B, OperandKind.InlineWord),
+            ["vm_add_words"] = new(0x787E, OperandKind.None),
+            ["vm_bitwise_xor"] = new(0x7AAF, OperandKind.None)
         };
 
     private static readonly JsonSerializerOptions JsonOptions = new()
@@ -112,6 +115,13 @@ public sealed record Mpu4VmDefinition
                     bytes.Add((byte)offset);
                     break;
                 }
+                case OperandKind.InlineWord:
+                {
+                    ushort value = item.Instruction.InlineValue!.Value;
+                    bytes.Add((byte)(value >> 8));
+                    bytes.Add((byte)value);
+                    break;
+                }
                 default:
                     throw new InvalidDataException("Unsupported VM operand encoding");
             }
@@ -126,7 +136,7 @@ public sealed record Mpu4VmDefinition
             item.Site,
             item.Instruction.Token,
             item.Instruction.Operation,
-            null,
+            item.Instruction.InlineValue,
             item.Instruction.Branch)).ToArray();
     }
 
@@ -138,6 +148,15 @@ public sealed record Mpu4VmDefinition
             throw new InvalidDataException("VM definition instruction index is out of range");
         var copy = Instructions.ToArray();
         copy[instructionIndex] = copy[instructionIndex] with { Branch = target };
+        return this with { Instructions = copy };
+    }
+
+    public Mpu4VmDefinition WithLiteral(int instructionIndex, ushort value)
+    {
+        if (instructionIndex < 0 || instructionIndex >= Instructions.Count)
+            throw new InvalidDataException("VM definition instruction index is out of range");
+        var copy = Instructions.ToArray();
+        copy[instructionIndex] = copy[instructionIndex] with { InlineValue = value };
         return this with { Instructions = copy };
     }
 
@@ -217,11 +236,27 @@ public sealed record Mpu4VmDefinition
             case OperandKind.None:
                 if (instruction.Branch is not null)
                     throw new InvalidDataException($"Operation {instruction.Operation} does not take an operand");
+                if (instruction.InlineValue is not null)
+                    throw new InvalidDataException(
+                        $"Operation {instruction.Operation} does not take an inline literal");
                 break;
-            default:
+            case OperandKind.Forward8:
                 if (instruction.Branch is null)
                     throw new InvalidDataException($"Operation {instruction.Operation} requires a branch target");
+                if (instruction.InlineValue is not null)
+                    throw new InvalidDataException(
+                        $"Operation {instruction.Operation} does not take an inline literal");
                 break;
+            case OperandKind.InlineWord:
+                if (instruction.Branch is not null)
+                    throw new InvalidDataException(
+                        $"Operation {instruction.Operation} does not take a branch target");
+                if (instruction.InlineValue is null)
+                    throw new InvalidDataException(
+                        $"Operation {instruction.Operation} requires an inline literal");
+                break;
+            default:
+                throw new InvalidDataException("Unsupported VM operand encoding");
         }
     }
 
@@ -229,6 +264,7 @@ public sealed record Mpu4VmDefinition
     {
         OperandKind.None => 2,
         OperandKind.Forward8 => 3,
+        OperandKind.InlineWord => 4,
         _ => throw new InvalidDataException("Unsupported VM operand encoding")
     };
 
@@ -237,7 +273,8 @@ public sealed record Mpu4VmDefinition
         if (model is null || string.IsNullOrWhiteSpace(model.Operation))
             throw new InvalidDataException("VM definition instruction is incomplete");
         ushort? branch = model.Branch is null ? null : Hex16(model.Branch, "Branch");
-        return new(Hex16(model.Token, "Token"), model.Operation, branch);
+        ushort? inlineValue = model.InlineValue is null ? null : Hex16(model.InlineValue, "InlineValue");
+        return new(Hex16(model.Token, "Token"), model.Operation, branch, inlineValue);
     }
 
     private static ushort Hex16(string? value, string name)
@@ -301,5 +338,6 @@ public sealed record Mpu4VmDefinition
         public required string Token { get; init; }
         public required string Operation { get; init; }
         public string? Branch { get; init; }
+        public string? InlineValue { get; init; }
     }
 }

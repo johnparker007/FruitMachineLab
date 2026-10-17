@@ -259,3 +259,12 @@ and curator -Operation rhythm preserve120 synthetic original-ROM paths (all five
 rhythm voices, immediate/timed, prior pool/pitch/global variants). Every emitted
 instruction/cycle/encoding and full2KB RAM matches. This does not model audio or
 split-gate timing. Raw pointer: FruitMachineLab-sound-rhythm.txt under TEMP.
+
+The unmodified8784 prompt now matches128 preserved original-ROM service ticks
+(eight seeded scenarios,16 ticks each). Capture-SoundCommandService -Prompt and
+curator -Operation prompt preserve full source8784/8739/875B plus dispatch/data.
+There are no intermediate state injections. A separate synthetic longevity run
+drains the full prompt twelve times,48 task completions, retaining all six task
+records/channels and clearing key-on bits. Duration/cadence and selected tempo
+variants are component tests, not natural machine IRQ timing. Actual hardware
+audio is not synthesized. Raw pointer: FruitMachineLab-sound-prompt.txt.

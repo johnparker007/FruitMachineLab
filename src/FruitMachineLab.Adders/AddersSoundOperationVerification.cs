@@ -4,15 +4,16 @@ namespace FruitMachineLab.Adders;
 
 public static class AddersSoundOperationVerification
 {
+    public static int Prompt(string evidence)=>Verify(evidence,"sound-prompt",(m,row)=>new AddersSoundServicePlan(m,0x700,0x600,0x8784,0x1A0).Instructions(),0x5CD0,0x4C34,true);
     public static int Rhythm(string evidence)=>Verify(evidence,"sound-rhythm",(m,row)=>new AddersSoundNotePlan(m,0x1A0,0x601,0x700,0x8784,row.GetProperty("case").GetProperty("note").GetByte()).Instructions(),0x5D48,0x5CDE);
     public static int Calls(string evidence)=>Verify(evidence,"sound-callservice",(m,row)=>new AddersSoundServicePlan(m,0x700,0x600,0x8784,0x1A0).Instructions(),0x5CD0,0x4C34,true);
-    public static int NativeChildLongevity(string evidence)
+    public static int NativeChildLongevity(string evidence,bool prompt=false)
     {
-        using var doc=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","sound-noteservice.json")));
+        using var doc=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection",prompt ? "sound-prompt.json" : "sound-noteservice.json")));
         var m=new Machine();foreach(var region in doc.RootElement.GetProperty("rom_regions").EnumerateArray())Convert.FromHexString(region.GetProperty("bytes_hex").GetString()!).CopyTo(m.Memory,region.GetProperty("address").GetInt32());
         AddersSoundResetMemory.Apply(m);m.WriteWord(0x700,0x4C34);m.Memory[0x50]=16;m.Memory[0x4E]=16;ulong clock=0;int writes=0,completed=0;
         for(int round=0;round<12;round++){
-            if(!AddersSoundQueueMemory.Queue(m,0x8739))throw new InvalidDataException("Native child pool exhausted");
+            if(!AddersSoundQueueMemory.Queue(m,prompt ? (ushort)0x8784 : (ushort)0x8739))throw new InvalidDataException("Native child pool exhausted");
             ushort at=m.ReadWord(0x47);m.Memory[at+0xC]=(byte)(round%2==0 ? 0 : 12);m.Memory[at+0xE]=(byte)(round%3==0 ? 0 : 16);
             int ticks=0;while(m.ReadWord(0x47)!=0 && ++ticks<2000){
                 var plan=new AddersSoundServicePlan(m,0x700,0x600,0x8784,0x1A0,ymWrite:(_,_)=>writes++);
@@ -26,7 +27,7 @@ public static class AddersSoundOperationVerification
             if(free.Count!=6 || channels.Count!=6)throw new InvalidDataException("Native child leaked tasks/channels");
             for(int p=0;p<6;p++)if((m.Memory[0x2A4+p]&0x10)!=0)throw new InvalidDataException("Native child retained key-on");
         }
-        if(completed!=12 || writes<100)throw new InvalidDataException("Native child completion/output coverage missing");return completed;
+        if(completed!=(prompt ? 48 : 12) || writes<100)throw new InvalidDataException("Native child completion/output coverage missing");return completed;
     }
     public static int Yield(string evidence)=>Verify(evidence,"sound-yield",(m,row)=>new AddersSoundYieldPlan(m,0x1A0,0x879E,0x700,row.GetProperty("case").GetProperty("duration").GetByte()).Instructions(),0x5CF3,0x5CDE);
     public static int Child(string evidence)=>Verify(evidence,"sound-child",(m,row)=>new AddersSoundChildPlan(m,0x1A0,0x8787,0x700).Instructions(),0x5EE3,0x5D3B);

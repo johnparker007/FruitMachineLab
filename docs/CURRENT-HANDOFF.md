@@ -1,5 +1,9 @@
 # Current handoff
 
+Sixteen-batch cycle batch3: actual8784 matches128 preserved ROM service ticks;
+12 full prompt rounds drain48 tasks with no pool/channel leaks. Next native sound
+owner and collection bindings (single0045 owner). Live unchanged.
+
 Sixteen-batch cycle batch2: all five rhythm voices match120 native note paths.
 Next compare unmodified8784 prompt over preserved native service calls.
 

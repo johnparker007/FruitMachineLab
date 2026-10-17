@@ -1,5 +1,10 @@
 # Current handoff
 
+New five-batch cycle batch4:32 composed command/service native paths match.
+C5 is attenuation5F88 (corrected mistaken isolated-helper label); DB/DC/DD map
+to5F5B. Native C2/CE/pitch/cache now compose and resume. Next melodic acquisition/
+timed release. Actual full8784 prompt and Live remain incomplete.
+
 New five-batch cycle batch3: instrument5F5B and shared60AB match48 native paths;
 all lifecycle regressions pass. Yield/C2/instrument are ready for bounded native
 command/service composition. Note/channel acquisition remains explicit.

@@ -26,241 +26,241 @@ bpset 60B7,1,{printf "OI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,to
 bpset 60B9,1,{printf "OI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
 bpset 60BC,1,{printf "OI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
 bpset 60BD,1,{printf "OI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
-pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xC5;b@601=0x0;b@1ac=0x0;b@1ad=0;b@1b2=0x0;b@4d=0x7f
-b@284=b@5A1F;b@294=b@5A1E&0xf
-b@284=b@284^0xff;b@294=b@294^0xff
+pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDB;b@601=0x0;b@1ac=0x0;b@1ad=0;b@1b2=0x0;b@4d=0x7f
+b@29A=b@5A1F;b@2AA=b@5A1E&0xf
+b@29A=b@29A^0xff;b@2AA=b@2AA^0xff
 save operation-0-before.bin,0,800
 printf "OS pc=%04X cycle=%016X\n",pc,totalcycles
 go
 printf "OF pc=%04X cycle=%016X s=%04X\n",pc,totalcycles,s
 save operation-0-after.bin,0,800
-pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xC5;b@601=0x0;b@1ac=0x0;b@1ad=0;b@1b2=0x0;b@4d=0x7f
-b@284=b@5A1F;b@294=b@5A1E&0xf
+pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDB;b@601=0x0;b@1ac=0x0;b@1ad=0;b@1b2=0x0;b@4d=0x7f
+b@29A=b@5A1F;b@2AA=b@5A1E&0xf
 save operation-1-before.bin,0,800
 printf "OS pc=%04X cycle=%016X\n",pc,totalcycles
 go
 printf "OF pc=%04X cycle=%016X s=%04X\n",pc,totalcycles,s
 save operation-1-after.bin,0,800
-pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xC5;b@601=0x0;b@1ac=0x0;b@1ad=0;b@1b2=0x80;b@4d=0x7f
-b@284=b@5B1D;b@294=b@5B1C&0xf
-b@284=b@284^0xff;b@294=b@294^0xff
+pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDB;b@601=0x0;b@1ac=0x0;b@1ad=0;b@1b2=0x80;b@4d=0x7f
+b@29A=b@5B1D;b@2AA=b@5B1C&0xf
+b@29A=b@29A^0xff;b@2AA=b@2AA^0xff
 save operation-2-before.bin,0,800
 printf "OS pc=%04X cycle=%016X\n",pc,totalcycles
 go
 printf "OF pc=%04X cycle=%016X s=%04X\n",pc,totalcycles,s
 save operation-2-after.bin,0,800
-pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xC5;b@601=0x0;b@1ac=0x0;b@1ad=0;b@1b2=0x80;b@4d=0x7f
-b@284=b@5B1D;b@294=b@5B1C&0xf
+pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDB;b@601=0x0;b@1ac=0x0;b@1ad=0;b@1b2=0x80;b@4d=0x7f
+b@29A=b@5B1D;b@2AA=b@5B1C&0xf
 save operation-3-before.bin,0,800
 printf "OS pc=%04X cycle=%016X\n",pc,totalcycles
 go
 printf "OF pc=%04X cycle=%016X s=%04X\n",pc,totalcycles,s
 save operation-3-after.bin,0,800
-pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xC5;b@601=0xE0;b@1ac=0xC;b@1ad=0;b@1b2=0x0;b@4d=0x7f
-b@284=b@5BF7;b@294=b@5BF6&0xf
-b@284=b@284^0xff;b@294=b@294^0xff
+pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDB;b@601=0xE0;b@1ac=0xC;b@1ad=0;b@1b2=0x0;b@4d=0x7f
+b@29A=b@5BF7;b@2AA=b@5BF6&0xf
+b@29A=b@29A^0xff;b@2AA=b@2AA^0xff
 save operation-4-before.bin,0,800
 printf "OS pc=%04X cycle=%016X\n",pc,totalcycles
 go
 printf "OF pc=%04X cycle=%016X s=%04X\n",pc,totalcycles,s
 save operation-4-after.bin,0,800
-pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xC5;b@601=0xE0;b@1ac=0xC;b@1ad=0;b@1b2=0x0;b@4d=0x7f
-b@284=b@5BF7;b@294=b@5BF6&0xf
+pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDB;b@601=0xE0;b@1ac=0xC;b@1ad=0;b@1b2=0x0;b@4d=0x7f
+b@29A=b@5BF7;b@2AA=b@5BF6&0xf
 save operation-5-before.bin,0,800
 printf "OS pc=%04X cycle=%016X\n",pc,totalcycles
 go
 printf "OF pc=%04X cycle=%016X s=%04X\n",pc,totalcycles,s
 save operation-5-after.bin,0,800
-pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xC5;b@601=0xE0;b@1ac=0xC;b@1ad=0;b@1b2=0x80;b@4d=0x7f
-b@284=b@5AF5;b@294=b@5AF4&0xf
-b@284=b@284^0xff;b@294=b@294^0xff
+pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDB;b@601=0xE0;b@1ac=0xC;b@1ad=0;b@1b2=0x80;b@4d=0x7f
+b@29A=b@5AF5;b@2AA=b@5AF4&0xf
+b@29A=b@29A^0xff;b@2AA=b@2AA^0xff
 save operation-6-before.bin,0,800
 printf "OS pc=%04X cycle=%016X\n",pc,totalcycles
 go
 printf "OF pc=%04X cycle=%016X s=%04X\n",pc,totalcycles,s
 save operation-6-after.bin,0,800
-pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xC5;b@601=0xE0;b@1ac=0xC;b@1ad=0;b@1b2=0x80;b@4d=0x7f
-b@284=b@5AF5;b@294=b@5AF4&0xf
+pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDB;b@601=0xE0;b@1ac=0xC;b@1ad=0;b@1b2=0x80;b@4d=0x7f
+b@29A=b@5AF5;b@2AA=b@5AF4&0xf
 save operation-7-before.bin,0,800
 printf "OS pc=%04X cycle=%016X\n",pc,totalcycles
 go
 printf "OF pc=%04X cycle=%016X s=%04X\n",pc,totalcycles,s
 save operation-7-after.bin,0,800
-pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xC5;b@601=0xFF;b@1ac=0xF4;b@1ad=0;b@1b2=0x0;b@4d=0x7f
-b@284=b@5C05;b@294=b@5C04&0xf
-b@284=b@284^0xff;b@294=b@294^0xff
+pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDB;b@601=0xFF;b@1ac=0xF4;b@1ad=0;b@1b2=0x0;b@4d=0x7f
+b@29A=b@5C05;b@2AA=b@5C04&0xf
+b@29A=b@29A^0xff;b@2AA=b@2AA^0xff
 save operation-8-before.bin,0,800
 printf "OS pc=%04X cycle=%016X\n",pc,totalcycles
 go
 printf "OF pc=%04X cycle=%016X s=%04X\n",pc,totalcycles,s
 save operation-8-after.bin,0,800
-pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xC5;b@601=0xFF;b@1ac=0xF4;b@1ad=0;b@1b2=0x0;b@4d=0x7f
-b@284=b@5C05;b@294=b@5C04&0xf
+pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDB;b@601=0xFF;b@1ac=0xF4;b@1ad=0;b@1b2=0x0;b@4d=0x7f
+b@29A=b@5C05;b@2AA=b@5C04&0xf
 save operation-9-before.bin,0,800
 printf "OS pc=%04X cycle=%016X\n",pc,totalcycles
 go
 printf "OF pc=%04X cycle=%016X s=%04X\n",pc,totalcycles,s
 save operation-9-after.bin,0,800
-pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xC5;b@601=0xFF;b@1ac=0xF4;b@1ad=0;b@1b2=0x80;b@4d=0x7f
-b@284=b@5B03;b@294=b@5B02&0xf
-b@284=b@284^0xff;b@294=b@294^0xff
+pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDB;b@601=0xFF;b@1ac=0xF4;b@1ad=0;b@1b2=0x80;b@4d=0x7f
+b@29A=b@5B03;b@2AA=b@5B02&0xf
+b@29A=b@29A^0xff;b@2AA=b@2AA^0xff
 save operation-10-before.bin,0,800
 printf "OS pc=%04X cycle=%016X\n",pc,totalcycles
 go
 printf "OF pc=%04X cycle=%016X s=%04X\n",pc,totalcycles,s
 save operation-10-after.bin,0,800
-pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xC5;b@601=0xFF;b@1ac=0xF4;b@1ad=0;b@1b2=0x80;b@4d=0x7f
-b@284=b@5B03;b@294=b@5B02&0xf
+pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDB;b@601=0xFF;b@1ac=0xF4;b@1ad=0;b@1b2=0x80;b@4d=0x7f
+b@29A=b@5B03;b@2AA=b@5B02&0xf
 save operation-11-before.bin,0,800
 printf "OS pc=%04X cycle=%016X\n",pc,totalcycles
 go
 printf "OF pc=%04X cycle=%016X s=%04X\n",pc,totalcycles,s
 save operation-11-after.bin,0,800
-pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xC5;b@601=0x80;b@1ac=0xFF;b@1ad=0;b@1b2=0x0;b@4d=0x7f
-b@284=b@5B1D;b@294=b@5B1C&0xf
-b@284=b@284^0xff;b@294=b@294^0xff
+pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDB;b@601=0x80;b@1ac=0xFF;b@1ad=0;b@1b2=0x0;b@4d=0x7f
+b@29A=b@5B1D;b@2AA=b@5B1C&0xf
+b@29A=b@29A^0xff;b@2AA=b@2AA^0xff
 save operation-12-before.bin,0,800
 printf "OS pc=%04X cycle=%016X\n",pc,totalcycles
 go
 printf "OF pc=%04X cycle=%016X s=%04X\n",pc,totalcycles,s
 save operation-12-after.bin,0,800
-pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xC5;b@601=0x80;b@1ac=0xFF;b@1ad=0;b@1b2=0x0;b@4d=0x7f
-b@284=b@5B1D;b@294=b@5B1C&0xf
+pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDB;b@601=0x80;b@1ac=0xFF;b@1ad=0;b@1b2=0x0;b@4d=0x7f
+b@29A=b@5B1D;b@2AA=b@5B1C&0xf
 save operation-13-before.bin,0,800
 printf "OS pc=%04X cycle=%016X\n",pc,totalcycles
 go
 printf "OF pc=%04X cycle=%016X s=%04X\n",pc,totalcycles,s
 save operation-13-after.bin,0,800
-pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xC5;b@601=0x80;b@1ac=0xFF;b@1ad=0;b@1b2=0x80;b@4d=0x7f
-b@284=b@5C1B;b@294=b@5C1A&0xf
-b@284=b@284^0xff;b@294=b@294^0xff
+pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDB;b@601=0x80;b@1ac=0xFF;b@1ad=0;b@1b2=0x80;b@4d=0x7f
+b@29A=b@5C1B;b@2AA=b@5C1A&0xf
+b@29A=b@29A^0xff;b@2AA=b@2AA^0xff
 save operation-14-before.bin,0,800
 printf "OS pc=%04X cycle=%016X\n",pc,totalcycles
 go
 printf "OF pc=%04X cycle=%016X s=%04X\n",pc,totalcycles,s
 save operation-14-after.bin,0,800
-pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xC5;b@601=0x80;b@1ac=0xFF;b@1ad=0;b@1b2=0x80;b@4d=0x7f
-b@284=b@5C1B;b@294=b@5C1A&0xf
+pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDB;b@601=0x80;b@1ac=0xFF;b@1ad=0;b@1b2=0x80;b@4d=0x7f
+b@29A=b@5C1B;b@2AA=b@5C1A&0xf
 save operation-15-before.bin,0,800
 printf "OS pc=%04X cycle=%016X\n",pc,totalcycles
 go
 printf "OF pc=%04X cycle=%016X s=%04X\n",pc,totalcycles,s
 save operation-15-after.bin,0,800
-pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDB;b@601=0x0;b@1ac=0x0;b@1ad=0;b@1b2=0x0;b@4d=0x7f
-b@29A=b@5A1F;b@2AA=b@5A1E&0xf
-b@29A=b@29A^0xff;b@2AA=b@2AA^0xff
+pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDC;b@601=0x0;b@1ac=0x0;b@1ad=0;b@1b2=0x0;b@4d=0x7f
+b@29B=b@5A1F;b@2AB=b@5A1E&0xf
+b@29B=b@29B^0xff;b@2AB=b@2AB^0xff
 save operation-16-before.bin,0,800
 printf "OS pc=%04X cycle=%016X\n",pc,totalcycles
 go
 printf "OF pc=%04X cycle=%016X s=%04X\n",pc,totalcycles,s
 save operation-16-after.bin,0,800
-pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDB;b@601=0x0;b@1ac=0x0;b@1ad=0;b@1b2=0x0;b@4d=0x7f
-b@29A=b@5A1F;b@2AA=b@5A1E&0xf
+pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDC;b@601=0x0;b@1ac=0x0;b@1ad=0;b@1b2=0x0;b@4d=0x7f
+b@29B=b@5A1F;b@2AB=b@5A1E&0xf
 save operation-17-before.bin,0,800
 printf "OS pc=%04X cycle=%016X\n",pc,totalcycles
 go
 printf "OF pc=%04X cycle=%016X s=%04X\n",pc,totalcycles,s
 save operation-17-after.bin,0,800
-pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDB;b@601=0x0;b@1ac=0x0;b@1ad=0;b@1b2=0x80;b@4d=0x7f
-b@29A=b@5B1D;b@2AA=b@5B1C&0xf
-b@29A=b@29A^0xff;b@2AA=b@2AA^0xff
+pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDC;b@601=0x0;b@1ac=0x0;b@1ad=0;b@1b2=0x80;b@4d=0x7f
+b@29B=b@5B1D;b@2AB=b@5B1C&0xf
+b@29B=b@29B^0xff;b@2AB=b@2AB^0xff
 save operation-18-before.bin,0,800
 printf "OS pc=%04X cycle=%016X\n",pc,totalcycles
 go
 printf "OF pc=%04X cycle=%016X s=%04X\n",pc,totalcycles,s
 save operation-18-after.bin,0,800
-pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDB;b@601=0x0;b@1ac=0x0;b@1ad=0;b@1b2=0x80;b@4d=0x7f
-b@29A=b@5B1D;b@2AA=b@5B1C&0xf
+pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDC;b@601=0x0;b@1ac=0x0;b@1ad=0;b@1b2=0x80;b@4d=0x7f
+b@29B=b@5B1D;b@2AB=b@5B1C&0xf
 save operation-19-before.bin,0,800
 printf "OS pc=%04X cycle=%016X\n",pc,totalcycles
 go
 printf "OF pc=%04X cycle=%016X s=%04X\n",pc,totalcycles,s
 save operation-19-after.bin,0,800
-pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDB;b@601=0xE0;b@1ac=0xC;b@1ad=0;b@1b2=0x0;b@4d=0x7f
-b@29A=b@5BF7;b@2AA=b@5BF6&0xf
-b@29A=b@29A^0xff;b@2AA=b@2AA^0xff
+pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDC;b@601=0xE0;b@1ac=0xC;b@1ad=0;b@1b2=0x0;b@4d=0x7f
+b@29B=b@5BF7;b@2AB=b@5BF6&0xf
+b@29B=b@29B^0xff;b@2AB=b@2AB^0xff
 save operation-20-before.bin,0,800
 printf "OS pc=%04X cycle=%016X\n",pc,totalcycles
 go
 printf "OF pc=%04X cycle=%016X s=%04X\n",pc,totalcycles,s
 save operation-20-after.bin,0,800
-pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDB;b@601=0xE0;b@1ac=0xC;b@1ad=0;b@1b2=0x0;b@4d=0x7f
-b@29A=b@5BF7;b@2AA=b@5BF6&0xf
+pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDC;b@601=0xE0;b@1ac=0xC;b@1ad=0;b@1b2=0x0;b@4d=0x7f
+b@29B=b@5BF7;b@2AB=b@5BF6&0xf
 save operation-21-before.bin,0,800
 printf "OS pc=%04X cycle=%016X\n",pc,totalcycles
 go
 printf "OF pc=%04X cycle=%016X s=%04X\n",pc,totalcycles,s
 save operation-21-after.bin,0,800
-pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDB;b@601=0xE0;b@1ac=0xC;b@1ad=0;b@1b2=0x80;b@4d=0x7f
-b@29A=b@5AF5;b@2AA=b@5AF4&0xf
-b@29A=b@29A^0xff;b@2AA=b@2AA^0xff
+pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDC;b@601=0xE0;b@1ac=0xC;b@1ad=0;b@1b2=0x80;b@4d=0x7f
+b@29B=b@5AF5;b@2AB=b@5AF4&0xf
+b@29B=b@29B^0xff;b@2AB=b@2AB^0xff
 save operation-22-before.bin,0,800
 printf "OS pc=%04X cycle=%016X\n",pc,totalcycles
 go
 printf "OF pc=%04X cycle=%016X s=%04X\n",pc,totalcycles,s
 save operation-22-after.bin,0,800
-pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDB;b@601=0xE0;b@1ac=0xC;b@1ad=0;b@1b2=0x80;b@4d=0x7f
-b@29A=b@5AF5;b@2AA=b@5AF4&0xf
+pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDC;b@601=0xE0;b@1ac=0xC;b@1ad=0;b@1b2=0x80;b@4d=0x7f
+b@29B=b@5AF5;b@2AB=b@5AF4&0xf
 save operation-23-before.bin,0,800
 printf "OS pc=%04X cycle=%016X\n",pc,totalcycles
 go
 printf "OF pc=%04X cycle=%016X s=%04X\n",pc,totalcycles,s
 save operation-23-after.bin,0,800
-pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDB;b@601=0xFF;b@1ac=0xF4;b@1ad=0;b@1b2=0x0;b@4d=0x7f
-b@29A=b@5C05;b@2AA=b@5C04&0xf
-b@29A=b@29A^0xff;b@2AA=b@2AA^0xff
+pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDC;b@601=0xFF;b@1ac=0xF4;b@1ad=0;b@1b2=0x0;b@4d=0x7f
+b@29B=b@5C05;b@2AB=b@5C04&0xf
+b@29B=b@29B^0xff;b@2AB=b@2AB^0xff
 save operation-24-before.bin,0,800
 printf "OS pc=%04X cycle=%016X\n",pc,totalcycles
 go
 printf "OF pc=%04X cycle=%016X s=%04X\n",pc,totalcycles,s
 save operation-24-after.bin,0,800
-pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDB;b@601=0xFF;b@1ac=0xF4;b@1ad=0;b@1b2=0x0;b@4d=0x7f
-b@29A=b@5C05;b@2AA=b@5C04&0xf
+pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDC;b@601=0xFF;b@1ac=0xF4;b@1ad=0;b@1b2=0x0;b@4d=0x7f
+b@29B=b@5C05;b@2AB=b@5C04&0xf
 save operation-25-before.bin,0,800
 printf "OS pc=%04X cycle=%016X\n",pc,totalcycles
 go
 printf "OF pc=%04X cycle=%016X s=%04X\n",pc,totalcycles,s
 save operation-25-after.bin,0,800
-pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDB;b@601=0xFF;b@1ac=0xF4;b@1ad=0;b@1b2=0x80;b@4d=0x7f
-b@29A=b@5B03;b@2AA=b@5B02&0xf
-b@29A=b@29A^0xff;b@2AA=b@2AA^0xff
+pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDC;b@601=0xFF;b@1ac=0xF4;b@1ad=0;b@1b2=0x80;b@4d=0x7f
+b@29B=b@5B03;b@2AB=b@5B02&0xf
+b@29B=b@29B^0xff;b@2AB=b@2AB^0xff
 save operation-26-before.bin,0,800
 printf "OS pc=%04X cycle=%016X\n",pc,totalcycles
 go
 printf "OF pc=%04X cycle=%016X s=%04X\n",pc,totalcycles,s
 save operation-26-after.bin,0,800
-pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDB;b@601=0xFF;b@1ac=0xF4;b@1ad=0;b@1b2=0x80;b@4d=0x7f
-b@29A=b@5B03;b@2AA=b@5B02&0xf
+pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDC;b@601=0xFF;b@1ac=0xF4;b@1ad=0;b@1b2=0x80;b@4d=0x7f
+b@29B=b@5B03;b@2AB=b@5B02&0xf
 save operation-27-before.bin,0,800
 printf "OS pc=%04X cycle=%016X\n",pc,totalcycles
 go
 printf "OF pc=%04X cycle=%016X s=%04X\n",pc,totalcycles,s
 save operation-27-after.bin,0,800
-pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDB;b@601=0x80;b@1ac=0xFF;b@1ad=0;b@1b2=0x0;b@4d=0x7f
-b@29A=b@5B1D;b@2AA=b@5B1C&0xf
-b@29A=b@29A^0xff;b@2AA=b@2AA^0xff
+pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDC;b@601=0x80;b@1ac=0xFF;b@1ad=0;b@1b2=0x0;b@4d=0x7f
+b@29B=b@5B1D;b@2AB=b@5B1C&0xf
+b@29B=b@29B^0xff;b@2AB=b@2AB^0xff
 save operation-28-before.bin,0,800
 printf "OS pc=%04X cycle=%016X\n",pc,totalcycles
 go
 printf "OF pc=%04X cycle=%016X s=%04X\n",pc,totalcycles,s
 save operation-28-after.bin,0,800
-pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDB;b@601=0x80;b@1ac=0xFF;b@1ad=0;b@1b2=0x0;b@4d=0x7f
-b@29A=b@5B1D;b@2AA=b@5B1C&0xf
+pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDC;b@601=0x80;b@1ac=0xFF;b@1ad=0;b@1b2=0x0;b@4d=0x7f
+b@29B=b@5B1D;b@2AB=b@5B1C&0xf
 save operation-29-before.bin,0,800
 printf "OS pc=%04X cycle=%016X\n",pc,totalcycles
 go
 printf "OF pc=%04X cycle=%016X s=%04X\n",pc,totalcycles,s
 save operation-29-after.bin,0,800
-pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDB;b@601=0x80;b@1ac=0xFF;b@1ad=0;b@1b2=0x80;b@4d=0x7f
-b@29A=b@5C1B;b@2AA=b@5C1A&0xf
-b@29A=b@29A^0xff;b@2AA=b@2AA^0xff
+pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDC;b@601=0x80;b@1ac=0xFF;b@1ad=0;b@1b2=0x80;b@4d=0x7f
+b@29B=b@5C1B;b@2AB=b@5C1A&0xf
+b@29B=b@29B^0xff;b@2AB=b@2AB^0xff
 save operation-30-before.bin,0,800
 printf "OS pc=%04X cycle=%016X\n",pc,totalcycles
 go
 printf "OF pc=%04X cycle=%016X s=%04X\n",pc,totalcycles,s
 save operation-30-after.bin,0,800
-pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDB;b@601=0x80;b@1ac=0xFF;b@1ad=0;b@1b2=0x80;b@4d=0x7f
-b@29A=b@5C1B;b@2AA=b@5C1A&0xf
+pc=0x5f5b;y=0x1a0;u=0x601;s=0x700;dp=0;cc=0x50;b@600=0xDC;b@601=0x80;b@1ac=0xFF;b@1ad=0;b@1b2=0x80;b@4d=0x7f
+b@29B=b@5C1B;b@2AB=b@5C1A&0xf
 save operation-31-before.bin,0,800
 printf "OS pc=%04X cycle=%016X\n",pc,totalcycles
 go

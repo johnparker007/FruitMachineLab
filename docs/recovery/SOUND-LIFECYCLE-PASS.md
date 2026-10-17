@@ -153,7 +153,7 @@ Raw pointer: %TEMP%/FruitMachineLab-sound-child.txt. Live remains unchanged.
 
 AddersSoundInstrumentPlan now stages5F5B..5F7F. Wrapped operand+optional global
 4D+pitch+C+transpose+D indexes the ROM table5A1E using unsigned ABX twice. The
-preceding command selects cache registers (C5/DB/DD subtractC5); no generic
+preceding command selects cache registers (DB/DC/DD subtractC5); no generic
 instrument interpretation replaces those bytes. Both register values come from
 the original table, including aliases beyond its nominal note range. Native60AB
 is shared with release in AddersYmCachedWritePlan; it retains signed cache
@@ -167,3 +167,23 @@ checked. Existing128 timed lifecycle paths still pass after sharing60AB. Raw
 pointer: %TEMP%/FruitMachineLab-sound-instrument.txt. No audio synthesis or Live
 timing claim. The shared curator's single-span yield export was also checked
 after extending its operation modes; existing yield tests still pass.
+
+## Composed commands and dispatch correction
+
+The first composed service comparison exposed an earlier isolated-helper labeling
+error: C5 maps to5F88 attenuation, NOT5F5B. The direct5F5B C5 test exercised a
+synthetic helper call, not actual dictionary dispatch. Its fixture has been
+replaced with DB/DC/DD, all byte-checked dictionary aliases. Corrected raw pointer
+is FruitMachineLab-sound-instrument.txt. This is not an original-ROM bug fix.
+
+AddersSoundAttenuationPlan implements the actual C5 high-nibble update and
+channel-cache propagation5F88/5FC5..5FDB. AddersSoundServicePlan composes actual
+dictionary targets for C5, C7 pitch, C2 children, DB/DC/DD and CE wait. CE resumes
+through saved5E29, with native5CF3 ordered reinsertion and same-clock child scan.
+Capture-SoundCommandService.ps1 / shared curator -Operation service produce32
+original-ROM synthetic service ticks with RAM command streams, including allocator
+exhaustion and zero tempo/delay. All emitted PC/cycle/encodings/full2KB RAM match.
+This does not claim those synthetic streams are game scripts or full sound runs.
+Raw pointer: %TEMP%/FruitMachineLab-sound-command-service.txt. A first expanded
+capture was valid but comparison correctly rejected the wrong C5 dispatch; the
+replacement observes the actual attenuation code. No ROM bytes were patched.

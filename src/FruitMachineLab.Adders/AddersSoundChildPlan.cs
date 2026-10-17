@@ -8,6 +8,7 @@ public sealed class AddersSoundChildPlan(Machine m,ushort parent,ushort cursor,u
     private ushort x,y=parent,u=cursor,s=stack,clock;private byte a;
     private readonly ushort owner=parent;
     public ushort Cursor=>u;
+    public ushort X=>x;
     public ushort Child {get;private set;}
     public IEnumerable<NativeRoutineWork> Instructions()
     {

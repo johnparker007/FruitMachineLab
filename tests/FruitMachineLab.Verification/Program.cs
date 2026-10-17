@@ -10,6 +10,7 @@ void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exc
 Check("Sound operation yield matches48 original-ROM instruction paths",()=>Equal(48,AddersSoundOperationVerification.Yield(evidence)));
 Check("Sound operation child matches32 original-ROM instruction paths",()=>Equal(32,AddersSoundOperationVerification.Child(evidence)));
 Check("Sound operation instrument matches48 original-ROM instruction paths",()=>Equal(48,AddersSoundOperationVerification.Instrument(evidence)));
+Check("Sound operation composed service matches32 original-ROM instruction paths",()=>Equal(32,AddersSoundOperationVerification.Service(evidence)));
 Check("Sound lifecycle release matches32 original-ROM channel cases",()=>Equal(32,AddersSoundLifecycleVerification.Matrix(evidence,"release")));
 Check("Sound lifecycle staged release matches32 original-ROM instruction paths",()=>Equal(32,AddersSoundLifecycleVerification.TimedRelease(evidence)));
 Check("Sound lifecycle staged root return matches32 original-ROM instruction paths",()=>Equal(32,AddersSoundLifecycleVerification.Timed(evidence,"finish")));

@@ -7,7 +7,7 @@ namespace FruitMachineLab.Adders;
 public sealed class AddersSoundServicePlan(Machine m,ushort stack,ushort initialU,ushort initialX,ushort initialY,ushort entry=0x5CD0,Action<byte,byte>? ymWrite=null)
 {
     private ushort s=stack,u=initialU,x=initialX,y=initialY,clock;
-    private byte command;
+    private byte command,duration;
     private bool zero;
     public int CompletedTasks {get;private set;}
     public IEnumerable<NativeRoutineWork> Instructions()
@@ -36,10 +36,13 @@ public sealed class AddersSoundServicePlan(Machine m,ushort stack,ushort initial
                 yield return new NativeRoutineStep(0x5CEC,"9F47",()=>m.WriteWord(0x47,x));
                 yield return new NativeRoutineStep(0x5CEE,"EE28",()=>u=m.ReadWord((ushort)(y+8)));
                 yield return new NativeRoutineStep(0x5CF0,"6EB804");
-                if(m.ReadWord((ushort)(y+4))!=0x5D3B)throw new NotSupportedException("Unrecovered native sound callback");
+                ushort callback=m.ReadWord((ushort)(y+4));
+                if(callback==0x5E29)yield return new NativeRoutineStep(0x5E29,"7E5D3B");
+                else if(callback!=0x5D3B)throw new NotSupportedException("Unrecovered native sound callback");
             }
             bool rescan=false;
             while(!rescan){
+                if(--budget==0)throw new InvalidDataException("Native sound command budget exhausted");
                 if(!root){
                     yield return new NativeRoutineStep(0x5D3B,"E6C0",()=>{command=m.Memory[u];u++;});
                     yield return new NativeRoutineStep(0x5D3D,"C1C0");
@@ -49,6 +52,25 @@ public sealed class AddersSoundServicePlan(Machine m,ushort stack,ushort initial
                     yield return new NativeRoutineStep(0x5D44,"3A",()=>x+=command);
                     yield return new NativeRoutineStep(0x5D45,"3A",()=>x+=command);
                     yield return new NativeRoutineStep(0x5D46,"6E94");
+                    ushort target=m.ReadWord(x);
+                    if(command==0xC2 && target==0x5EE3){
+                        var child=new AddersSoundChildPlan(m,y,u,s);foreach(var op in child.Instructions())yield return op;u=child.Cursor;x=child.X;continue;
+                    }
+                    if(command is 0xDB or 0xDC or 0xDD && target==0x5F5B){
+                        var instrument=new AddersSoundInstrumentPlan(m,y,u,s,ymWrite);foreach(var op in instrument.Instructions())yield return op;u=instrument.Cursor;x=instrument.X;continue;
+                    }
+                    if(command==0xC5 && target==0x5F88){
+                        var attenuation=new AddersSoundAttenuationPlan(m,y,u,s,x,ymWrite);foreach(var op in attenuation.Instructions())yield return op;u=attenuation.Cursor;x=attenuation.X;continue;
+                    }
+                    if(command==0xC7 && target==0x5EA3){
+                        yield return new NativeRoutineStep(0x5EA3,"A6C0",()=>{duration=m.Memory[u];u++;});
+                        yield return new NativeRoutineStep(0x5EA5,"2006");yield return new NativeRoutineStep(0x5EAD,"A72C",()=>m.Memory[y+0xC]=duration);yield return new NativeRoutineStep(0x5EAF,"7E5D3B");continue;
+                    }
+                    if(command==0xCE && target==0x5E24){
+                        yield return new NativeRoutineStep(0x5E24,"E6C0",()=>{duration=m.Memory[u];u++;});
+                        yield return new NativeRoutineStep(0x5E26,"BD5CF3",()=>{s-=2;m.WriteWord(s,0x5E29);});
+                        foreach(var op in new AddersSoundYieldPlan(m,y,u,s,duration).Instructions())yield return op;s+=2;rescan=true;continue;
+                    }
                     if(command!=0xC0 || m.ReadWord(x)!=0x5E6D)throw new NotSupportedException($"Unrecovered native sound command{command:X2} target{m.ReadWord(x):X4}");
                 }
                 root=false;

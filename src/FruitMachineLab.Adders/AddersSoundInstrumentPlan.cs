@@ -1,12 +1,13 @@
 using FruitMachineLab.Runtime;
 namespace FruitMachineLab.Adders;
 
-// Native5F5B, shared C5/DB/DD helper. Unsigned ABX uses the wrapped byte sum;
+// Native5F5B, shared DB/DC/DD helper. Unsigned ABX uses the wrapped byte sum;
 // command-derived B may be signed-negative for the cache. Preserve that aliasing.
 public sealed class AddersSoundInstrumentPlan(Machine m,ushort task,ushort cursor,ushort stack,Action<byte,byte>? write=null)
 {
     private byte a,b;private ushort u=cursor,x,s=stack;private bool negative;
     public ushort Cursor=>u;
+    public ushort X=>x;
     public IEnumerable<NativeRoutineWork> Instructions()
     {
         AddersSoundLifecycleMemory.ValidateTask(task);

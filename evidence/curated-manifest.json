@@ -250,6 +250,11 @@
     "sha256": "E746D61540F6C608FD8568DFBC9982C0F594814730AFD86429E220B4999E2D5D"
   },
   {
+    "path": "docs/recovery/SERIAL-SERVICE-PASS.md",
+    "bytes": 2350,
+    "sha256": "4ABC1FA19344F6A0ACE6666EB1C202CFCBBDD4EED501A465EC799EFC7E2E48E6"
+  },
+  {
     "path": "docs/recovery/SERVICE-AND-ATTRACT-RECOVERY.txt",
     "bytes": 2093,
     "sha256": "FDCF52BF2A300E751CA2C90E21AD84BA4D0707654798806A873ECC600175814D"
@@ -458,6 +463,16 @@
     "path": "evidence/mpu4/collection/router-matrix.json",
     "bytes": 143068,
     "sha256": "A909CE2A05529DB27FE62475736564E67B77E0EE1EBC4ED46141204337713BB9"
+  },
+  {
+    "path": "evidence/mpu4/collection/serial-reply-debugger.cmd",
+    "bytes": 18926,
+    "sha256": "E15BE296CD8664E18EE5C3146AC2956F8C8B80DD2B17D5E025DC3AE66329F0B7"
+  },
+  {
+    "path": "evidence/mpu4/collection/serial-reply.json",
+    "bytes": 301734,
+    "sha256": "6A2983B289D156C46EDAD629B2D5A03B7D38A0D7258A936BFE79198BFA0C1E96"
   },
   {
     "path": "evidence/mpu4/collection/service-matrix-debugger.cmd",
@@ -1210,9 +1225,39 @@
     "sha256": "7C462504E578B08EDFED72AC959005C5F105E7B72274E3BDBED3AB0766B09C3B"
   },
   {
+    "path": "evidence/mpu4/native/51b1.json",
+    "bytes": 8821,
+    "sha256": "369A3DBC8602C3C589059B487393D3C2AD7D39D8AB779FC5F23C88DDD98D4FC4"
+  },
+  {
+    "path": "evidence/mpu4/native/5330.json",
+    "bytes": 3930,
+    "sha256": "B4F90152CA6F51CE119028F7B407B1A1CE9761FEFC0D774A4290C8571FB57A0B"
+  },
+  {
+    "path": "evidence/mpu4/native/53ae.json",
+    "bytes": 3524,
+    "sha256": "E7476AE59098B5FAB048D9B6E2DE39B72E92EE79C6A23DA6C865AFDA4C6DDAE9"
+  },
+  {
     "path": "evidence/mpu4/native/5429.json",
     "bytes": 1994,
     "sha256": "574FF01598C9B4559B23625B4E3447FBD47DE29F0831C23C373C17FF51D0F977"
+  },
+  {
+    "path": "evidence/mpu4/native/546a.json",
+    "bytes": 821,
+    "sha256": "9B1049A61C20A96CBCD953E94EC1A62B1A3A91B6F3DACF9843F9E4AF2688E5B0"
+  },
+  {
+    "path": "evidence/mpu4/native/5471.json",
+    "bytes": 1440,
+    "sha256": "DFA49D5AE77554076259D30860CA247CEEF8EF552B41B07C3B14560E66BC5ECF"
+  },
+  {
+    "path": "evidence/mpu4/native/5744.json",
+    "bytes": 1199,
+    "sha256": "253636840596472C729CCAE6EE126B330DAC5ACD885B0EEF441D3DB0A078F5C9"
   },
   {
     "path": "evidence/mpu4/native/5798.json",

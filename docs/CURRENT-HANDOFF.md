@@ -1,5 +1,10 @@
 # Current handoff
 
+Sixteen-batch cycle batch11: serial source audit plus53AE parser match32 ROM
+instruction/RAM paths. Actual53D7 STA checksum quirk preserved. Native exports
+and pinned MAME protocol provenance saved. Next5330 state, queue/frame/wait.
+See recovery/SERIAL-SERVICE-PASS.md. No fabricated ACK or Live changes.
+
 Sixteen-batch cycle batch10: native sound owner composes timed foreground and
 background actions on one clock. VM wrapper remains caller-owned. Next busy
 serial investigation, retaining Live acceptance/helper boundaries.

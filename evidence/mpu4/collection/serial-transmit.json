@@ -169,12 +169,6 @@
           "value": 52,
           "write": 1,
           "cycle": 21
-        },
-        {
-          "address": 3073,
-          "value": 52,
-          "write": 1,
-          "cycle": 21
         }
       ],
       "cycles": 43,
@@ -239,12 +233,6 @@
         ]
       ],
       "accesses": [
-        {
-          "address": 3073,
-          "value": 52,
-          "write": 1,
-          "cycle": 21
-        },
         {
           "address": 3073,
           "value": 52,
@@ -319,12 +307,6 @@
           "value": 52,
           "write": 1,
           "cycle": 21
-        },
-        {
-          "address": 3073,
-          "value": 52,
-          "write": 1,
-          "cycle": 21
         }
       ],
       "cycles": 43,
@@ -389,12 +371,6 @@
         ]
       ],
       "accesses": [
-        {
-          "address": 3073,
-          "value": 52,
-          "write": 1,
-          "cycle": 21
-        },
         {
           "address": 3073,
           "value": 52,
@@ -469,12 +445,6 @@
           "value": 60,
           "write": 1,
           "cycle": 21
-        },
-        {
-          "address": 3073,
-          "value": 60,
-          "write": 1,
-          "cycle": 21
         }
       ],
       "cycles": 43,
@@ -539,12 +509,6 @@
         ]
       ],
       "accesses": [
-        {
-          "address": 3073,
-          "value": 60,
-          "write": 1,
-          "cycle": 21
-        },
         {
           "address": 3073,
           "value": 60,
@@ -619,12 +583,6 @@
           "value": 60,
           "write": 1,
           "cycle": 21
-        },
-        {
-          "address": 3073,
-          "value": 60,
-          "write": 1,
-          "cycle": 21
         }
       ],
       "cycles": 43,
@@ -694,12 +652,6 @@
           "value": 60,
           "write": 1,
           "cycle": 21
-        },
-        {
-          "address": 3073,
-          "value": 60,
-          "write": 1,
-          "cycle": 21
         }
       ],
       "cycles": 43,
@@ -756,12 +708,6 @@
         ]
       ],
       "accesses": [
-        {
-          "address": 3073,
-          "value": 60,
-          "write": 1,
-          "cycle": 23
-        },
         {
           "address": 3073,
           "value": 60,
@@ -828,12 +774,6 @@
           "value": 60,
           "write": 1,
           "cycle": 23
-        },
-        {
-          "address": 3073,
-          "value": 60,
-          "write": 1,
-          "cycle": 23
         }
       ],
       "cycles": 36,
@@ -895,12 +835,6 @@
           "value": 60,
           "write": 1,
           "cycle": 23
-        },
-        {
-          "address": 3073,
-          "value": 60,
-          "write": 1,
-          "cycle": 23
         }
       ],
       "cycles": 36,
@@ -957,12 +891,6 @@
         ]
       ],
       "accesses": [
-        {
-          "address": 3073,
-          "value": 60,
-          "write": 1,
-          "cycle": 23
-        },
         {
           "address": 3073,
           "value": 60,
@@ -1037,12 +965,6 @@
           "value": 0,
           "write": 1,
           "cycle": 21
-        },
-        {
-          "address": 3073,
-          "value": 0,
-          "write": 1,
-          "cycle": 21
         }
       ],
       "cycles": 43,
@@ -1107,12 +1029,6 @@
         ]
       ],
       "accesses": [
-        {
-          "address": 3073,
-          "value": 0,
-          "write": 1,
-          "cycle": 21
-        },
         {
           "address": 3073,
           "value": 0,
@@ -1187,12 +1103,6 @@
           "value": 0,
           "write": 1,
           "cycle": 21
-        },
-        {
-          "address": 3073,
-          "value": 0,
-          "write": 1,
-          "cycle": 21
         }
       ],
       "cycles": 43,
@@ -1257,12 +1167,6 @@
         ]
       ],
       "accesses": [
-        {
-          "address": 3073,
-          "value": 0,
-          "write": 1,
-          "cycle": 21
-        },
         {
           "address": 3073,
           "value": 0,
@@ -2178,5 +2082,5 @@
     "classification": "Synthetic TX bit callback and post-reset tail, no helper skipped",
     "mame_sha256": "0FCE5A88DF4F9D9B1FBF1405812C00848036E615993780978D967DA34204CB7A"
   },
-  "raw_sha256": "4C14971924EBD3401661FC32D41BA22C24846481AF63F90557211E927D79E2F0"
+  "raw_sha256": "E847FF0546C257F22EDDDC9C21D820403428E80385DD20B80A99BC211D81E97A"
 }

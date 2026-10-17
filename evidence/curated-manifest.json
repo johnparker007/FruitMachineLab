@@ -536,13 +536,13 @@
   },
   {
     "path": "evidence/mpu4/collection/serial-transmit-debugger.cmd",
-    "bytes": 18858,
-    "sha256": "4F11AED4ED18A01E245363EA112384320AD14053ED2E71E80744AE51F1832AD5"
+    "bytes": 16482,
+    "sha256": "8C67CC22779B39F9C354290D8CA4152E54C4110AB3D08270FE9491D87C1C22FD"
   },
   {
     "path": "evidence/mpu4/collection/serial-transmit.json",
-    "bytes": 297190,
-    "sha256": "6C15CF3059C10F267ECDC8D67A8BF99ECA015679E7694770C56E557AA8EDCC0A"
+    "bytes": 295258,
+    "sha256": "1AB7B431B53A928A0963A6C317DDFE7439EA2312D62C06AF7BE44C71428BED8E"
   },
   {
     "path": "evidence/mpu4/collection/serial-wait-data.json",

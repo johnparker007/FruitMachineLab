@@ -114,3 +114,22 @@ Next recover the minimum8784/8739 task path and yield ownership, then replace
 the prompt mismatch boundary. Foreground/IRQ ownership and busy5429 serial remain
 needed for full Live collection. Keep gameplay priority; no general audio or
 unrelated IRQ campaign. Fresh synchronized Ghidra export remains unavailable.
+
+## Follow-on cycle: native yield5CF3
+
+AddersSoundYieldPlan stages5CF3..5D36. The incoming S word is consumed into task
+callback+4, U is saved into cursor+8, scaled delay is computed through the actual
+byte MUL/add/carry sequence with temporary native stack bytes. Zero delay becomes
+one. The task inserts after equal unsigned relative deadlines, including wrap,
+stores due+2 and next+0, and jumps5CDE at the same tick. No ordinary RTS occurs.
+The caller owns the removed task and outer CPU context.
+
+Capture-SoundYield.ps1 / Curate-SoundYield.ps1 export48 original-ROM synthetic
+masked-IRQ calls (duration0/1/16/255, tempo0/16/255, local/global rate and wrap).
+AddersSoundOperationVerification checks every PC/cycle/encoding and full2KB RAM,
+including stack; no RAM effect occurs early. Curated collection/sound-yield files
+preserve source bytes/catalogs, callback input, initial/final RAM and raw hash.
+Native subtraction opcode93 timing is now supported and exercised by this matrix.
+Raw pointer: %TEMP%/FruitMachineLab-sound-yield.txt. The initial curator had an
+array-expression precedence error; no capture was accepted until that was fixed.
+This is bounded component evidence, not natural playback or Live scheduling.

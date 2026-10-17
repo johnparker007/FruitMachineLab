@@ -1,5 +1,9 @@
 # Current handoff
 
+New five-batch cycle batch1:5CF3 native yield matches48 instruction/RAM paths.
+Callback stack consumption and stable relative-deadline insertion are recovered.
+Next C2 child allocation; Live remains unchanged. See sound lifecycle pass.
+
 FIVE-BATCH CYCLE COMPLETE —318 full verification groups pass, including11 sound
 lifecycle groups. Native5E2C release/60AB cache,5C7A cancel, C0 root/nested return
 and bounded5CD0 service/rescan are recovered.160 synthetic original-ROM cases

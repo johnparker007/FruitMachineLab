@@ -5,6 +5,13 @@ Local clone: C:\projects\GitRepos\FruitMachineLab
 
 ## Current status
 
+Sound follow-on captures: Capture-SoundYield.ps1, SoundChild.ps1, SoundInstrument.ps1,
+SoundCommandService.ps1 (optional -Notes) and SoundNote.ps1 use the standard
+MameExecutable/RomDirectory/fresh RunDirectory parameters. Curate-SoundYield.ps1
+shares export conventions via -Operation yield/child/instrument/service/note/
+noteservice and RunDirectory/RomPath. Filter "Sound operation" runs seven groups.
+Full MAME traces remain external; selected matrices preserve bytes/CPU costs/RAM.
+
 Sound lifecycle: tools/Capture-SoundLifecycle.ps1 takes MameExecutable,
 RomDirectory and a fresh RunDirectory; Curate-SoundLifecycle.ps1 takes that
 RunDirectory and RomPath. It exports160 masked-IRQ native calls with selected

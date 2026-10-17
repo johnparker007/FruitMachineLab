@@ -1,5 +1,11 @@
 # Project direction and handoff
 
+17 October sound follow-on: native yield, C2 children, pitch/attenuation/cache,
+melodic acquisition and gate-free resume now compose. Actual8739 children run
+to completion. Next C1->875B/rhythm closes the remaining actual8784 prompt path,
+then collection ownership integration. Live remains unchanged; cadence/outer IRQ
+and busy serial are explicit. See recovery/SOUND-LIFECYCLE-PASS.md.
+
 17 October sound lifecycle checkpoint: bounded native release/cancel/root and
 service rescan now have160 synthetic original-ROM paths,128 instruction-timed.
 Live is unchanged: next recover actual8784/8739 prompt instrument/child/yield

@@ -187,3 +187,56 @@ This does not claim those synthetic streams are game scripts or full sound runs.
 Raw pointer: %TEMP%/FruitMachineLab-sound-command-service.txt. A first expanded
 capture was valid but comparison correctly rejected the wrong C5 dispatch; the
 replacement observes the actual attenuation code. No ROM bytes were patched.
+
+## Melodic acquisition and preserved native child execution
+
+AddersSoundNotePlan covers melodic5D48..5DDC and gate-free5DE0/5E1A..5E1C.
+It allocates from native free4B/4C through27E channel links, prepends ownership
+to task+A, performs wrapped global/pitch/transpose arithmetic, and reads original
+5A1E frequency bytes. It updates30/10/20+channel caches through60AB, retaining
+the original behaviour of allocating a channel even if adjusted pitch later
+falls outside the playable range. No-channel exhaustion still reaches duration
+handling. Immediate notes continue5D3B; timed notes save5E1F and yield via5CF3.
+Gate values other than zero and rhythm notes remain explicit unsupported paths.
+
+Capture-SoundNote.ps1 / shared curator -Operation note export48 synthetic
+original-ROM cases covering immediate/timed notes, empty/last/multiple channels,
+wrapped pitch/global offsets and sustain bits. All bytes/instruction cycles/full
+2KB RAM match. The first curator incorrectly expected S702 after a timed note;
+the native JSR/yield pair balances back to S700. The capture was rejected until
+the contract was corrected, without injecting any state. Raw pointer:
+%TEMP%/FruitMachineLab-sound-note.txt.
+
+Native service now composes those notes,5E1F release/resume and D0 sustain603A.
+Capture-SoundCommandService.ps1 -Notes runs eight scenarios with twelve consecutive
+native calls each (96 paths). The foreground RAM stream creates the actual ROM
+8739 child. AddersSoundOperationVerification.NoteService seeds each scenario ONCE,
+then compares before/after RAM and every emitted PC/cycle/encoding across calls
+without applying recorded intermediate states. Coverage requires603A sustain,
+5E1F release and5E89 task completion. Zero tempo scenarios reach these callbacks
+within the selected interval; caller cadence/tempo are synthetic, not natural
+game timing. Raw pointer: %TEMP%/FruitMachineLab-sound-note-service.txt.
+
+A separate synthetic headless longevity check runs the unchanged8739 ROM stream
+to completion twelve times on one native state with selected pitches/tempos. All
+six tasks and six channels remain free after each completion, and key-on bits
+clear. This is sound-component longevity, not paid games or complete8784 playback.
+
+### Next precise boundary
+
+8784 begins with recovered C5/C2/C7 and then C1->875B. The latter begins rhythm
+5F/BB/BE notes, not the melodic path. Next recover C1's native frame and this
+bounded rhythm path to finish the actual prompt. C5 is already attenuation;
+do not substitute5F5B or infer that unrelated volume commands are required.
+Split-gate callbacks remain outside the selected gate-zero prompt scope. Then
+join native task ownership to collection, with exactly one owner of0045 ticks.
+The existing logical scheduler/Live are unchanged; mismatch checks remain.
+
+Final follow-on verification:325 full groups pass; seven Sound operation groups
+cover304 additional native paths, plus twelve complete synthetic child runs.
+The original11 lifecycle groups remain green.1196 curated entries verify.
+Headless and isolated WPF builds pass; original application remains untouched.
+All five milestones are committed/pushed under John's request. Final log:
+%TEMP%/FruitMachineLab-sound-followon-final.log. Build pointer:
+FruitMachineLab-sound-followon-build.txt. Last note-service export is repeatable;
+native start/end continuations are checked alongside cycles/bytes/RAM.

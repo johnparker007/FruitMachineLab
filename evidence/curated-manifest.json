@@ -316,8 +316,8 @@
   },
   {
     "path": "docs/recovery/SOUND-LIFECYCLE-PASS.md",
-    "bytes": 11586,
-    "sha256": "2002E197FD3B54C48040F3678C59B4F83919EDC603342AC1DF7B995C4EF6A925"
+    "bytes": 14996,
+    "sha256": "486952CF50444ED981A97C965BF9B34C30BEAE5EE838830C31D0ABFE54374265"
   },
   {
     "path": "docs/recovery/SPECIAL-FEATURE-RECOVERY.txt",
@@ -498,6 +498,26 @@
     "path": "evidence/mpu4/collection/sound-lifecycle.json",
     "bytes": 2166666,
     "sha256": "7BF057EA239B57CEB0F95AD5C3A62C51D65345421BC4A3135A2AA95C217C4114"
+  },
+  {
+    "path": "evidence/mpu4/collection/sound-note-debugger.cmd",
+    "bytes": 36018,
+    "sha256": "65D017055E1BB0D5D2966C7CFDC7E06178413528F660DE546B5D8358E0A7B023"
+  },
+  {
+    "path": "evidence/mpu4/collection/sound-note.json",
+    "bytes": 541161,
+    "sha256": "274E877F38EEADD56DEF931354D16CC5B2016F2392EA302374F70F7FB63E47F5"
+  },
+  {
+    "path": "evidence/mpu4/collection/sound-noteservice-debugger.cmd",
+    "bytes": 75398,
+    "sha256": "8727B7923A419A3A1F14197FEEE142D9DE44510D0119C580596E805D85361657"
+  },
+  {
+    "path": "evidence/mpu4/collection/sound-noteservice.json",
+    "bytes": 1048354,
+    "sha256": "E9D72A6B3872D832454E7CFCB8318FB305B80BC5C64F1582A622642B6F920E31"
   },
   {
     "path": "evidence/mpu4/collection/sound-service-debugger.cmd",

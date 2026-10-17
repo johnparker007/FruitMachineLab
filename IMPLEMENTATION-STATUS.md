@@ -1,5 +1,13 @@
 # Implementation and evidence boundaries
 
+Native sound now composes yield/ordered reinsertion, C2 allocation, C5 attenuation,
+DB/DC/DD table/cache, melodic channels and gate-zero resume/release.96 preserved
+MAME ticks verify actual8739 children without intermediate state injection; a
+separate synthetic check completes that ROM stream twelve times without task/
+channel leaks. Actual8784 still stops at C1->875B/rhythm. Live unchanged; this is
+not a full prompt or whole-machine autonomous timing claim.
+Current full suite:325 groups; final headless and isolated WPF builds pass.
+
 Bounded sound lifecycle now covers native release5E2C, cancellation5C7A, C0 root/
 nested return and5CD0 service with same-clock rescan.160 synthetic original-ROM
 cases verify memory;128 also match all emitted instruction times/encodings and

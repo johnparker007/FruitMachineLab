@@ -1,5 +1,30 @@
 # Current handoff
 
+FOLLOW-ON FIVE-BATCH CYCLE COMPLETE —325 full verification groups pass, including
+7 new Sound operation and11 retained Sound lifecycle groups. Native5CF3 yield,
+C2/5C51 allocation, DB/DC/DD table/cache, C5 attenuation, C7 pitch, CE waits,
+melodic acquisition,5E1F release/resume and D0 sustain now compose.304 additional
+selected MAME native paths cover source bytes/instruction cycles/full2KB RAM:
+48 yield +32 child +48 table +32 command service +48 notes +96 preserved ticks.
+The96 ticks retain state across calls, with actual8739 child ROM. A synthetic
+12-round complete-child check preserves all six tasks/channels. No audio claim.
+
+NEXT: native C1->875B frame and bounded rhythm5F/BB/BE path to finish actual8784
+Collect prompt. C5 maps5F88 attenuation, NOT5F5B; the earlier isolated-helper
+label was corrected against dictionary/composed evidence. Do not repeat that
+assumption. Gate splits and other commands remain explicit boundaries. Then join
+native task ownership to collection with ONE0045 tick owner; Live/logical scheduler
+remain unchanged. Foreground/IRQ ownership and busy5429 serial still open.
+
+Headless and isolated WPF builds pass. Full log:
+%TEMP%/FruitMachineLab-sound-followon-final.log. Build pointer:
+FruitMachineLab-sound-followon-build.txt. Capture pointers: sound-yield.txt,
+sound-child.txt, sound-instrument.txt, sound-command-service.txt, sound-note.txt,
+sound-note-service.txt (all prefixed FruitMachineLab- under TEMP). Every owned
+capture/test exited; original workspace/ROM/MAME/Ghidra/settings preserved. No
+installs/config changes. John authorized all five commits/pushes.1196 curated
+entries verify; see recovery/SOUND-LIFECYCLE-PASS.md for proof and exclusions.
+
 New five-batch cycle batch4:32 composed command/service native paths match.
 C5 is attenuation5F88 (corrected mistaken isolated-helper label); DB/DC/DD map
 to5F5B. Native C2/CE/pitch/cache now compose and resume. Next melodic acquisition/

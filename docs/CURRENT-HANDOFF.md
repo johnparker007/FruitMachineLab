@@ -1,5 +1,8 @@
 # Current handoff
 
+Next16 cycle batch5: TX69C0 and69D7 completion tail match32 ROM boundaries.
+Next verify actual hardware access values/order, then receive sampling.
+
 Next16 cycle batch4: receive edge arm6A08 matches16 ROM calls; next TX callback
 and receive sampling. Hardware clock/IRQ delivery remain external.
 

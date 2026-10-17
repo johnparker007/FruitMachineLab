@@ -154,3 +154,10 @@ Receive arm6A08 now stages72 guard,75 reset, native save frame,500-tick7A timeou
 B02 acknowledgment read,6A3B vector81 and B03 edge-enable write.16 original-ROM
 paths match all emitted instruction cycles/bytes/RAM. Existing active72 returns
 without reinitialization. Hardware reads are explicit. Raw serial-receive-arm.txt.
+
+TX69C0 now stages buffer42 consumption, normal C01 image write/rearm69FE->70D6,
+andFF idle-line write/reset70C9. Its post-reset69D7 tail clears71/vector3B then
+branches to next-byte6BA7, receive6A08 or caller return according to actual state.
+32 original-ROM prefix/tail paths match all instruction cycles/bytes/full RAM.
+Reset/rearm and tail destinations remain typed handoffs; no elapsed timer duration
+or full CPU flags are inferred. Raw serial-transmit.txt.

@@ -251,8 +251,8 @@
   },
   {
     "path": "docs/recovery/SERIAL-SERVICE-PASS.md",
-    "bytes": 9882,
-    "sha256": "39FDBF80D3FAB18B205CCD3104E5492B631EA1D9F7B57F7115AAC0A66E358549"
+    "bytes": 10345,
+    "sha256": "162D1ACE3798100235AAE3D70B1F8D7D4210E1A39FE7522EB4929A83E0D9E2C1"
   },
   {
     "path": "docs/recovery/SERVICE-AND-ATTRACT-RECOVERY.txt",
@@ -533,6 +533,16 @@
     "path": "evidence/mpu4/collection/serial-transfer.json",
     "bytes": 310918,
     "sha256": "E13C335137465BF0BD319C2209D347B95770E99F09D9F93608659AD74C4755AB"
+  },
+  {
+    "path": "evidence/mpu4/collection/serial-transmit-debugger.cmd",
+    "bytes": 15294,
+    "sha256": "55962AA31BFAE01607EBF66A7B2A63FF95E373CA4AA36E01A9B0FE678548BC34"
+  },
+  {
+    "path": "evidence/mpu4/collection/serial-transmit.json",
+    "bytes": 292478,
+    "sha256": "C01EE68E6845BE5CF38AFB39262067FA1573E8CD64EE15A22DC912A5E04A9A32"
   },
   {
     "path": "evidence/mpu4/collection/serial-wait-data.json",

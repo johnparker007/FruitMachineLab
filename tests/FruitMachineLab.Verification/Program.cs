@@ -11,6 +11,7 @@ Check("Serial transport bit images match32 original-ROM instruction paths",()=>E
 Check("Serial transport byte frames match32 original-ROM instruction paths",()=>Equal(32,AddersSerialTransportVerification.Byte(evidence)));
 Check("Serial transport timer2 helpers match16 original-ROM instruction paths",()=>Equal(16,AddersSerialTransportVerification.Timer(evidence)));
 Check("Serial transport receive arm matches16 original-ROM instruction paths",()=>Equal(16,AddersSerialTransportVerification.ReceiveArm(evidence)));
+Check("Serial transport TX callback matches32 original-ROM boundaries",()=>Equal(32,AddersSerialTransportVerification.Transmit(evidence)));
 Check("Sound operation native calls preserve frames across24 ROM ticks",()=>Equal(24,AddersSoundOperationVerification.Calls(evidence)));
 Check("Serial reply parser matches32 original-ROM instruction and RAM paths",()=>Equal(32,AddersSoundOperationVerification.Verify(evidence,"serial-reply",(m,row)=>new AddersSerialReplyPlan(m,row.GetProperty("case").GetProperty("value").GetByte(),0x700).Instructions(),0x53AE,0x4C34)));
 Check("Serial transfer state matches32 original-ROM instruction and RAM paths",()=>Equal(32,AddersSoundOperationVerification.Verify(evidence,"serial-transfer",(m,row)=>new AddersSerialTransferPlan(m,0x700).Instructions(),0x5330,0x4C34)));

@@ -17,7 +17,35 @@ public sealed class AddersSoundNotePlan(Machine m,ushort task,ushort cursor,usho
         yield return new NativeRoutineStep(0x5D48,"C160");yield return new NativeRoutineStep(0x5D4A,"2502");
         if(b>=0x60)yield return new NativeRoutineStep(0x5D4C,"C060",()=>b-=0x60);
         yield return new NativeRoutineStep(0x5D4E,"C15B");yield return new NativeRoutineStep(0x5D50,"253E");
-        if(b>=0x5B)throw new NotSupportedException("Rhythm channel acquisition remains outside the selected melodic path");
+        if(b>=0x5B){
+            yield return new NativeRoutineStep(0x5D52,"8E5A79",()=>x=0x5A79);
+            yield return new NativeRoutineStep(0x5D55,"3A",()=>x+=b);
+            yield return new NativeRoutineStep(0x5D56,"A684",()=>a=m.Memory[x]);
+            yield return new NativeRoutineStep(0x5D58,"AAA811",()=>a|=m.Memory[task+0x11]);
+            yield return new NativeRoutineStep(0x5D5B,"A7A811",()=>m.Memory[task+0x11]=a);
+            yield return new NativeRoutineStep(0x5D5E,"BA0292",()=>a|=m.Memory[0x292]);
+            yield return new NativeRoutineStep(0x5D61,"C60E",()=>b=0x0E);foreach(var op in Cache(0x5D63,0x5D66))yield return op;
+            yield return new NativeRoutineStep(0x5D66,"E605",()=>b=m.Memory[x+5]);
+            yield return new NativeRoutineStep(0x5D68,"6D0A",()=>negative=m.Memory[x+10]!=0);
+            yield return new NativeRoutineStep(0x5D6A,"2610");
+            if(!negative){
+                yield return new NativeRoutineStep(0x5D6C,"8E0284",()=>x=0x284);
+                yield return new NativeRoutineStep(0x5D6F,"A62B",()=>a=m.Memory[task+0xB]);
+                yield return new NativeRoutineStep(0x5D71,"A885",()=>a^=m.Memory[x+b]);
+                yield return new NativeRoutineStep(0x5D73,"840F",()=>a&=15);
+                yield return new NativeRoutineStep(0x5D75,"A885",()=>a^=m.Memory[x+b]);foreach(var op in Cache(0x5D77,0x5D7A))yield return op;
+                yield return new NativeRoutineStep(0x5D7A,"205C");
+            }else{
+                yield return new NativeRoutineStep(0x5D7C,"8E0284",()=>x=0x284);
+                yield return new NativeRoutineStep(0x5D7F,"A62B",()=>a=m.Memory[task+0xB]);
+                yield return new NativeRoutineStep(0x5D81,"48",()=>a<<=1);yield return new NativeRoutineStep(0x5D82,"48",()=>a<<=1);
+                yield return new NativeRoutineStep(0x5D83,"48",()=>a<<=1);yield return new NativeRoutineStep(0x5D84,"48",()=>a<<=1);
+                yield return new NativeRoutineStep(0x5D85,"A885",()=>a^=m.Memory[x+b]);
+                yield return new NativeRoutineStep(0x5D87,"84F0",()=>a&=0xF0);
+                yield return new NativeRoutineStep(0x5D89,"A885",()=>a^=m.Memory[x+b]);foreach(var op in Cache(0x5D8B,0x5D8E))yield return op;
+                yield return new NativeRoutineStep(0x5D8E,"2048");
+            }
+        }else{
         yield return new NativeRoutineStep(0x5D90,"964B",()=>{a=m.Memory[0x4B];negative=(sbyte)a<0;});
         yield return new NativeRoutineStep(0x5D92,"2B44");
         if(!negative){
@@ -51,6 +79,7 @@ public sealed class AddersSoundNotePlan(Machine m,ushort task,ushort cursor,usho
                 yield return new NativeRoutineStep(0x5DD1,"AA2F",()=>a|=m.Memory[task+0xF]);
                 yield return new NativeRoutineStep(0x5DD3,"CB10",()=>b+=0x10);foreach(var op in Cache(0x5DD5,0x5DD8))yield return op;
             }
+        }
         }
         yield return new NativeRoutineStep(0x5DD8,"E65F",()=>{b=m.Memory[unchecked((ushort)(u-1))];immediate=b<0x60;});
         yield return new NativeRoutineStep(0x5DDA,"C160");yield return new NativeRoutineStep(0x5DDC,"1025FF5B",Branch:immediate);if(immediate)yield break;

@@ -316,8 +316,8 @@
   },
   {
     "path": "docs/recovery/SOUND-LIFECYCLE-PASS.md",
-    "bytes": 15660,
-    "sha256": "E03E7C28E6341425923AE479317260378247D8320FC46A9E7C15E5399AD3F8D4"
+    "bytes": 16231,
+    "sha256": "3EE645810C6AA12F70FBE41B448A0F42849AE9F881C17046E51780E9061AE604"
   },
   {
     "path": "docs/recovery/SPECIAL-FEATURE-RECOVERY.txt",
@@ -528,6 +528,26 @@
     "path": "evidence/mpu4/collection/sound-noteservice.json",
     "bytes": 1048354,
     "sha256": "E9D72A6B3872D832454E7CFCB8318FB305B80BC5C64F1582A622642B6F920E31"
+  },
+  {
+    "path": "evidence/mpu4/collection/sound-prompt-debugger.cmd",
+    "bytes": 88438,
+    "sha256": "B912E1994F301F115D1315C29F7216080B2672D4E919AE9E2F71A1F6E7C74FA2"
+  },
+  {
+    "path": "evidence/mpu4/collection/sound-prompt.json",
+    "bytes": 2114466,
+    "sha256": "3277CF7112CD65F61E5E606A7C6BA926F35684F86929DD56B46D0F94EA7D65CB"
+  },
+  {
+    "path": "evidence/mpu4/collection/sound-rhythm-debugger.cmd",
+    "bytes": 75858,
+    "sha256": "82BB20FA86415585B0B9942D1D523BD560DE6D5ECADE254324018BB9EC2DC747"
+  },
+  {
+    "path": "evidence/mpu4/collection/sound-rhythm.json",
+    "bytes": 1380351,
+    "sha256": "A6A07F684D13C0329D1BF0CF5724704C7EC4576E923E1F871B66AFA83F7EEAAB"
   },
   {
     "path": "evidence/mpu4/collection/sound-service-debugger.cmd",

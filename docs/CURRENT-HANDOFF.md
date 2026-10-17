@@ -1,5 +1,8 @@
 # Current handoff
 
+Sixteen-batch cycle batch2: all five rhythm voices match120 native note paths.
+Next compare unmodified8784 prompt over preserved native service calls.
+
 Sixteen-batch cycle batch1: C1 physical call frames match24 preserved native
 MAME ticks; eight Sound operation groups pass. Next875B rhythm then full8784.
 User authorizes commits/pushes throughout sixteen substantial batches.

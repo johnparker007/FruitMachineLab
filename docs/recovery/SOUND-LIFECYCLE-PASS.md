@@ -251,3 +251,11 @@ ticks with two nested calls and yield/resume. Each series is seeded once;
 all instruction bytes/cycles and full RAM agree across preserved ticks. This is
 not yet the875B rhythm path or complete8784. Raw pointer sound-call.txt under
 TEMP (FruitMachineLab- prefix). No ROM/settings/Ghidra modifications.
+
+Rhythm5D52..5D8E now reads original masks/register/nibble selectors from5AD4..5AE2,
+ORs task+11 ownership and cache0E, and merges attenuation into the selected shared
+YM register nibble. It consumes no melodic free channel. Capture-SoundNote -Rhythm
+and curator -Operation rhythm preserve120 synthetic original-ROM paths (all five
+rhythm voices, immediate/timed, prior pool/pitch/global variants). Every emitted
+instruction/cycle/encoding and full2KB RAM matches. This does not model audio or
+split-gate timing. Raw pointer: FruitMachineLab-sound-rhythm.txt under TEMP.

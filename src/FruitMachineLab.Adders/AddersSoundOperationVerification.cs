@@ -4,6 +4,7 @@ namespace FruitMachineLab.Adders;
 
 public static class AddersSoundOperationVerification
 {
+    public static int Rhythm(string evidence)=>Verify(evidence,"sound-rhythm",(m,row)=>new AddersSoundNotePlan(m,0x1A0,0x601,0x700,0x8784,row.GetProperty("case").GetProperty("note").GetByte()).Instructions(),0x5D48,0x5CDE);
     public static int Calls(string evidence)=>Verify(evidence,"sound-callservice",(m,row)=>new AddersSoundServicePlan(m,0x700,0x600,0x8784,0x1A0).Instructions(),0x5CD0,0x4C34,true);
     public static int NativeChildLongevity(string evidence)
     {
@@ -49,7 +50,7 @@ public static class AddersSoundOperationVerification
             if(initial){current=new Machine();seed.CopyTo(current.Memory,0);}
             var m=current!;if(!initial && !m.Memory.AsSpan(0,0x800).SequenceEqual(seed))throw new InvalidDataException("Native sound state diverged BETWEEN service calls");
             foreach(var region in doc.RootElement.GetProperty("rom_regions").EnumerateArray())Convert.FromHexString(region.GetProperty("bytes_hex").GetString()!).CopyTo(m.Memory,region.GetProperty("address").GetInt32());
-            ushort next=stem=="sound-note" && row.GetProperty("case").GetProperty("note").GetByte()<0x60 ? (ushort)0x5D3B : continuation;
+            ushort next=stem is "sound-note" or "sound-rhythm" && row.GetProperty("case").GetProperty("note").GetByte()<0x60 ? (ushort)0x5D3B : continuation;
             var actual=new List<(ushort,ulong)>();using var e=new NativeRoutineExecution(plan(m,row),0,next,()=>true);
             e.ObserveInstruction=i=>{byte[] bytes=Convert.FromHexString(i.Bytes);if(!m.Memory.AsSpan(i.Address,bytes.Length).SequenceEqual(bytes))throw new InvalidDataException("Sound operation opcode differs");actual.Add((i.Address,i.Started));};
             while(!e.Completed){ulong due=e.NextEventCycle;byte[] before=m.Memory.AsSpan(0,0x800).ToArray();e.AdvanceTo(due-1);if(!m.Memory.AsSpan(0,0x800).SequenceEqual(before))throw new InvalidDataException("Early sound operation effect");e.AdvanceTo(due);}

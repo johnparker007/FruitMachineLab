@@ -32,6 +32,11 @@ public sealed class Mpu4InputServiceExecution : IDisposable
         while(!Completed && NextEventCycle<=cycle){var step=pending!;ulong from=NextEventCycle-(ulong)M6809InstructionTiming.Decode(Convert.FromHexString(step.Bytes)).Cycles;Cycle=NextEventCycle;step.Effect?.Invoke();ObserveInstruction?.Invoke(new(step.Address,step.Bytes,from,Cycle));Next();}
         Cycle=cycle;
     }
+    public void SuspendUntil(ulong cycle)
+    {
+        if(cycle<Cycle)throw new ArgumentOutOfRangeException(nameof(cycle));
+        if(!Completed){ulong cost=(ulong)M6809InstructionTiming.Decode(Convert.FromHexString(pending!.Bytes)).Cycles;if(NextEventCycle-Cycle!=cost)throw new InvalidOperationException("IRQ suspension requires an instruction boundary");NextEventCycle=checked(NextEventCycle+(cycle-Cycle));}Cycle=cycle;
+    }
     private void Put(ushort address,byte value){m.Memory[address]=value;ObserveAccess?.Invoke(new(Cycle,address,value,true,false));}
     private void Drive(ushort address,byte value)=>ObserveAccess?.Invoke(new(Cycle,address,value,true,true));
     private IEnumerable<Step> Run()

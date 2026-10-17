@@ -9,7 +9,7 @@ public record LiveSkillCashState(ulong Cycle,int Instructions,ushort VmAddress,s
     byte Choice,ushort Pending,ushort CurrentWin,string Alpha,double[] LampDuty,IReadOnlyList<ushort> Selections,DiceRequestState? DiceRequest,BoardState? Board=null,NudgeReelState? Nudge=null,ushort CashBank=0,ushort TokenBank=0,byte Credits=0,int PaidGamesCompleted=0);
 
 // One live feature-entry session. No replay Inputs/Conditions/Anchors are applied
-// after initialization. Captured CPU pacing and IRQ service timestamps are
+// after initialization. Captured VM pacing/outer IRQ entry and occupancy are
 // explicit unresolved hardware adapters; gameplay, inputs and outputs are live.
 public sealed class SkillCashLiveSession
 {
@@ -17,23 +17,28 @@ public sealed class SkillCashLiveSession
     private readonly ScriptExecutor executor;
     private readonly Mpu4ChoiceStreamScheduler scheduler;
     private readonly Mpu4Alpha alpha;
-    private Mpu4OutputScanExecution? outputScan;
-    private Mpu4InputServiceExecution? inputService;
-    public ulong? NextInputServiceEvent=>inputService?.NextEventCycle;
-    public ushort? InputServiceAddress=>inputService?.Address;
+    private Mpu4TimedPanelService? timedService;
+    private readonly Mpu4Timer3PhaseClock timer3;
+
+    public ulong? NextInputServiceEvent=>timedService?.NextEventCycle;
+    public ushort? InputServiceAddress=>timedService?.InputAddress;
+    public ushort? PanelServiceAddress=>timedService?.PanelAddress;
+    public Action<OutputScanInstruction>? ObservePanelServiceInstruction {get;set;}
+    public Action<ulong>? ObserveTimer3Acceptance {get;set;}
+    public Action<ulong>? ObserveTimer3Return {get;set;}
     public Action<OutputScanInstruction>? ObserveInputServiceInstruction {get;set;}
     public Action<OutputScanAccess>? ObserveInputServiceAccess {get;set;}
-    public ulong? NextOutputScanEvent=>outputScan?.NextEventCycle;
-    public ushort? OutputScanAddress=>outputScan?.Address;
+    public ulong? NextOutputScanEvent=>timedService?.NextEventCycle;
+    public ushort? OutputScanAddress=>timedService?.ScanAddress;
     public Action<OutputScanInstruction>? ObserveOutputScanInstruction {get;set;}
     public Action<OutputScanAccess>? ObserveOutputScanAccess {get;set;}
     public Action<ulong,Timer3Arm>? ObserveTimer3Arm {get;set;}
-    private Mpu4LampCallbackExecution? lampCallback;
-    private Mpu4Timer3DispatchExecution? timer3Dispatch;
-    public ulong? NextTimer3DispatchEvent=>timer3Dispatch?.NextEventCycle;
+
+
+    public ulong? NextTimer3DispatchEvent=>timedService?.NextDispatchEvent;
     public Action<ulong>? ObserveTimer3DispatchEntry {get;set;}
     public Action<Timer3DispatchWrite>? ObserveTimer3DispatchWrite {get;set;}
-    public ulong? NextLampCallbackEvent=>lampCallback?.NextEventCycle;
+    public ulong? NextLampCallbackEvent=>timedService?.NextCallbackEvent;
     public Action<ulong>? ObserveLampCallbackEntry {get;set;}
     public Action<LampCallbackWrite>? ObserveLampCallbackWrite {get;set;}
     private readonly AddersReelMotion? reelMotion;
@@ -52,11 +57,11 @@ public sealed class SkillCashLiveSession
     private readonly Dictionary<ushort,(string Operation,ushort Value,ulong Cycles)> literalCosts=new();
     private readonly CapturedInterruptOccupancy occupancy;
     private readonly CapturedInterruptOccupancy delayOccupancy;
-    private readonly List<(ulong Scan,ulong Timer3Irq)> services=new();
+    private readonly List<ulong> services=new();
     private readonly List<LampLatchFrame> latches=new();
     private readonly List<ushort> selections=new();
     private int serviceIndex;
-    private ulong serviceEpoch,nextVm,nextCallback=ulong.MaxValue;
+    private ulong serviceEpoch,nextVm;
     private double fractionalCycles;
     private bool waitingForScheduler,selectionLoop,boardChoiceCompleted;
     private DiceRequestState? diceRequest;
@@ -180,6 +185,18 @@ public sealed class SkillCashLiveSession
         // DIL bits are fixed prerequisites, not player-event substitutions.
         var condition=feature.Conditions[0];other[6]=(byte)condition[7];other[7]=(byte)condition[8];Panel.SeedOtherPorts(other);
         for(int n=0;n<8;n++)Machine.Memory[n]=other[n];
+        // Original ROM data and selected feature-entry service checkpoint.
+        // Natural passive PIA observation: IC5 ctl3C/DDR0F/out20,
+        // IC8 ctl34/DDRFF/out30; no auxiliary coin input held in this scope.
+        using(var serviceData=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"maps","irq-service-data.json")))){
+            var seed=serviceData.RootElement;
+            foreach(var region in seed.GetProperty("ranges").EnumerateObject())Convert.FromHexString(region.Value.GetString()!).CopyTo(Machine.Memory,Convert.ToInt32(region.Name,16));
+            if(seed.GetProperty("c5_control").GetByte()!=0x3C || seed.GetProperty("c5_direction").GetByte()!=15 || seed.GetProperty("c8_control").GetByte()!=0x34 || seed.GetProperty("c8_direction").GetByte()!=255)throw new NotSupportedException("Unsupported selected service PIA configuration");
+            Machine.WriteWord(0xC6,seed.GetProperty("panel_callback").GetUInt16());Machine.Memory[0x6E]=seed.GetProperty("drive_counter_before_first_service").GetByte();
+            serviceAuxOutput=(byte)((seed.GetProperty("c5_output").GetByte()&0xF0)|(Machine.Memory[0xC02]&15));
+            if(!boardSelection)Machine.Memory[0xF02]=seed.GetProperty("c8_output").GetByte();
+            var clock=seed.GetProperty("timer3");timer3=Mpu4Timer3PhaseClock.FromStoppedSnapshot(0,clock.GetProperty("output_high").GetBoolean(),clock.GetProperty("single_fired").GetBoolean(),clock.GetProperty("latch").GetUInt16(),clock.GetProperty("counter").GetUInt16(),clock.GetProperty("pending").GetBoolean(),clock.GetProperty("status_read").GetBoolean());
+        }
         Machine.Memory[0x91]&=0x7F;
         alpha=new(Machine);scheduler=new(Machine,initialClock);
         if(boardSelection)scheduler.RestoreQueuedNativeTasks(boardLink is null ? null : at=>BoardLinkState.ResolveSoundContinuation(Machine,at));
@@ -191,17 +208,8 @@ public sealed class SkillCashLiveSession
             offset=checked(offset+row[0]);
             if(row[1]==3)scanTimes.Add(offset);
         }
-        // Independent native IRQ capture: retain FE70 handler entry, not either
-        // callback timestamp. Latch coordinate+measured IRQ offset is FE70 time;
-        // it is explicitly not a generated timer assertion/acceptance boundary.
-        using(var deadlines=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","timer-deadlines.json")))){
-            var rows=deadlines.RootElement.GetProperty("rows");if(rows.GetArrayLength()!=scanTimes.Count)throw new InvalidDataException("Scan/IRQ capture counts differ");
-            for(int i=0;i<scanTimes.Count;i++){
-                var row=rows[i];ulong absolute=checked(row[0].GetUInt64()+row[2].GetUInt64());
-                if(absolute<timing.InitialCycle || row[1].GetUInt64()!=40)throw new InvalidDataException("Unsupported timer3 IRQ capture");
-                ulong handler=absolute-timing.InitialCycle;if(handler<=scanTimes[i])throw new InvalidDataException("Timer3 IRQ precedes scan");services.Add((scanTimes[i],handler));
-            }
-        }
+        // Scan entry remains an explicit outer-IRQ boundary. Timer3 delivery is generated.
+        foreach(ulong at in scanTimes)services.Add(at);
         if(services.Count==0)throw new InvalidDataException("Missing IRQ service template");
         // Repeat the observed service/jitter template at the source-backed
         // timer-1 period (0D70+1). This is not IRQ instruction acceptance emulation.
@@ -282,6 +290,10 @@ public sealed class SkillCashLiveSession
         Convert.FromHexString(lamps.Initial).CopyTo(m.Memory,0x100);
     }
     public void Resume(){if(!Completed && Fault is null)Paused=false;}
+    private byte serviceAuxOutput;
+    private static decimal TimerTime(ulong cycle)=>cycle*Mpu4Timer3PhaseClock.AttosecondsPerSecond/1_720_000m;
+    private byte ReadServicePort(ushort address)=>address switch {0xC02=>(byte)(serviceAuxOutput&0x0F),0xF02=>Machine.Memory[0xF02],_=>throw new NotSupportedException($"Service read {address:X4}")};
+    private void WriteServicePort(ushort address,byte value){if(address==0xC02){serviceAuxOutput=value;Machine.Memory[address]=(byte)(value&0x0F);}else if(address==0xF02)Machine.Memory[address]=value;else throw new NotSupportedException($"Service write {address:X4}");}
     public void Pause(){Paused=true;Panel.Release();}
     public void SetStart(bool pressed){Panel.SetStart(pressed && !Paused && !Completed && Fault is null);}
     public void SetNudge(int reel,bool pressed){Panel.SetNudge(reel,pressed && AwaitingNudgeInput && !Paused && !Completed && Fault is null);}
@@ -298,8 +310,8 @@ public sealed class SkillCashLiveSession
         ulong target=checked(Cycle+cycles);int budget=200_000;
         try {
             while(!Paused && !Completed && Cycle<=target) {
-                ulong irq=inputService?.NextEventCycle ?? outputScan?.NextEventCycle ?? checked(serviceEpoch+services[serviceIndex].Scan);
-                ulong next=Math.Min(occupancy.NextStart,Math.Min(nextVm,Math.Min(irq,nextCallback)));if(next>target){Cycle=target;break;}Cycle=next;
+                ulong irq=timedService?.NextEventCycle ?? checked(serviceEpoch+services[serviceIndex]);
+                ulong next=Math.Min(occupancy.NextStart,Math.Min(nextVm,irq));if(next>target){Cycle=target;break;}Cycle=next;
                 if(occupancy.NextStart==next) {
                     ulong end=occupancy.NextEnd;
                     if(lastVmInlineLiteral && !waitingForScheduler && !motionInitializing && !motionNativeReady && !TimedToneActive)Machine.Control!.PreserveInterruptDirectPage(0);
@@ -308,48 +320,27 @@ public sealed class SkillCashLiveSession
                     if(tonePhase!=2)nextVm=waitingForScheduler ? Math.Max(nextVm,end) : checked(nextVm+(end-next));
                     occupancy.Consume();
                 }
-                if(nextCallback==next) {
-                    if(timer3Dispatch is null && lampCallback is null){
-                        if(outputScan is not null || inputService is not null)throw new NotSupportedException("Timer3 preemption inside generated scan/input service requires surrounding IRQ execution");
-                        timer3Dispatch=new(Machine,Cycle);ObserveTimer3DispatchEntry?.Invoke(Cycle);
-                    }
-                    if(timer3Dispatch is not null){
-                        timer3Dispatch.AdvanceTo(Cycle,write=>ObserveTimer3DispatchWrite?.Invoke(write));
-                        if(timer3Dispatch.Completed){
-                            timer3Dispatch=null;lampCallback=new(Machine,Cycle);
-                            if(lampCallback.CompletedAt>=checked(serviceEpoch+services[serviceIndex].Scan))throw new NotSupportedException("Scan preemption inside lamp callback is not recovered");
-                            ObserveLampCallbackEntry?.Invoke(Cycle);
-                        }else nextCallback=timer3Dispatch.NextEventCycle;
-                    }
-                    if(lampCallback is not null){
-                        lampCallback.AdvanceTo(Cycle,write=>{RecordLatch();ObserveLampCallbackWrite?.Invoke(write);});
-                        if(lampCallback.Completed){lampCallback=null;nextCallback=ulong.MaxValue;Callbacks++;}
-                        else nextCallback=lampCallback.NextEventCycle;
-                    }
-                }
                 if(irq==next) {
-                    if(lampCallback is not null || timer3Dispatch is not null)throw new NotSupportedException("Scan preemption inside timer3 dispatch/callback is not recovered");
-                    if(outputScan is null && inputService is null){
-                        outputScan=new(Machine,Cycle);
-                        outputScan.ObserveInstruction=instruction=>ObserveOutputScanInstruction?.Invoke(instruction);
-                        outputScan.ObserveAccess=access=>{if(access.Write && access.Address is 0xA00 or 0xA02 or 0xE01 or 0xB01 or 0xF01)RecordLatch();ObserveOutputScanAccess?.Invoke(access);};
-                        outputScan.ObserveArm=(at,arm)=>{if(arm.Timer!=40)throw new NotSupportedException("Live timer pulse differs from retained IRQ template");ObserveTimer3Arm?.Invoke(at,arm);};
-                        nextCallback=checked(serviceEpoch+services[serviceIndex].Timer3Irq);
+                    if(timedService is null){
+                        timedService=new(Machine,Cycle,timer3,TimerTime,Panel.ReadPort,ReadServicePort,WriteServicePort);
+                        timedService.ObserveScan=i=>ObserveOutputScanInstruction?.Invoke(i);
+                        timedService.ObserveInput=i=>ObserveInputServiceInstruction?.Invoke(i);
+                        timedService.ObservePanel=i=>ObservePanelServiceInstruction?.Invoke(i);
+                        timedService.ObserveAcceptance=at=>ObserveTimer3Acceptance?.Invoke(at);
+                        timedService.ObserveReturn=at=>ObserveTimer3Return?.Invoke(at);
+                        timedService.ObserveScanAccess=a=>{if(a.Write && a.Address is 0xA00 or 0xA02 or 0xE01 or 0xB01 or 0xF01)RecordLatch();ObserveOutputScanAccess?.Invoke(a);};
+                        timedService.ObserveInputAccess=a=>{if(a.Hardware && a.Write && a.Address is 0xD02 or 0xE00)reelHardware?.WriteDriveBank(a.Address,checked((byte)a.Value!.Value));ObserveInputServiceAccess?.Invoke(a);};
+                        timedService.ObserveArm=(at,value)=>ObserveTimer3Arm?.Invoke(at,value);
+                        timedService.ObserveEntry=at=>ObserveTimer3DispatchEntry?.Invoke(at);
+                        timedService.ObserveDispatchWrite=w=>ObserveTimer3DispatchWrite?.Invoke(w);
+                        timedService.ObserveCallbackEntry=at=>ObserveLampCallbackEntry?.Invoke(at);
+                        timedService.ObserveCallbackWrite=w=>{RecordLatch();ObserveLampCallbackWrite?.Invoke(w);};
+                        timedService.ObserveCallbackComplete=_=>Callbacks++;
                     }
-                    outputScan?.AdvanceTo(Cycle);
-                    if(outputScan?.Completed==true){
-                        outputScan.Dispose();outputScan=null;Scans++;
-                        inputService=new(Machine,Cycle,Panel.ReadPort);
-                        inputService.ObserveInstruction=instruction=>ObserveInputServiceInstruction?.Invoke(instruction);
-                        inputService.ObserveAccess=access=>{if(access.Hardware && access.Write && access.Address is 0xD02 or 0xE00)reelHardware?.WriteDriveBank(access.Address,checked((byte)access.Value!.Value));ObserveInputServiceAccess?.Invoke(access);};
-                    }
-                    inputService?.AdvanceTo(Cycle);
-                    if(inputService?.Completed==true){
-                        if(inputService.Continuation!=0x438C)throw new NotSupportedException($"Input-service continuation {inputService.Continuation:X4} is outside the selected Live path");
-                        inputService.Dispose();inputService=null;
-                        // Post-scan phases retain their explicit atomic service
-                        // adapter until the surrounding IRQ is translated.
-                        Panel.Accumulate(checked((byte)Machine.ReadWord(0x28)));
+                    bool scanning=timedService.ScanAddress is not null;timedService.AdvanceTo(Cycle);
+                    if(scanning && timedService.ScanAddress is null)Scans++;
+                    if(timedService.Completed){
+                        timedService.Dispose();timedService=null;
                         if(reelMotion is not null) {
                             reelMotion.Service((_,_)=>reelHardware!.ReadOptics(),stream=>scheduler.Queue(stream));
                             if(motionInitializing){reelMotion.Activate();motionInitializing=false;motionNativeReady=true;}
@@ -365,15 +356,15 @@ public sealed class SkillCashLiveSession
                     // A generated scan may outlast the captured outer occupancy
                     // when current state takes a different native path. VM work
                     // cannot run inside it; wait for actual instruction progress.
-                    if(inputService is not null || outputScan is not null){nextVm=inputService?.NextEventCycle ?? outputScan!.NextEventCycle;continue;}
-                    if(lampCallback is not null || timer3Dispatch is not null)throw new NotSupportedException("VM execution inside timer3 dispatch/callback is not recovered");
+                    if(timedService is not null){nextVm=timedService.NextEventCycle;continue;}
+
                     if(--budget==0)throw new InvalidOperationException("Live dispatch budget exceeded");
                     var instruction=executor.NextInstruction!;
                     if(!ContinueBoard && boardAdvancing && instruction.Site is 0xDE96 or 0xDD38)throw new NotSupportedException($"BOARD advance completed at square {Machine.Memory[0xC9]} (type {Machine.Memory[0xA12E+Machine.Memory[0xC9]]}, nudge pot {Machine.Memory[0xBF]}); the next board result/selection is the recovery boundary. Restart to play again.");
                     if(!ContinueBoard && BoardLinkEntry is not null && instruction.Site==0xDE81)throw new NotSupportedException($"BOARD {BoardLinkEntry} completed at square {Machine.Memory[0xC9]} (nudge pot {Machine.Memory[0xBF]}); following board result/selection remains the recovery boundary. Restart to watch again.");
                     if(ContinueBoard && instruction.Site==0xE2FC && Machine.Data.Peek() is not (1 or 2))throw new NotSupportedException($"BOARD result type {Machine.Data.Peek()} at square {Machine.Memory[0xC9]}; this result route is the next recovery boundary.");
                     if(ContinueBoard && BoardLinkEntry is not null && !nudgeAttempted && instruction.Site==0xE460)throw new NotSupportedException("BOARD feature exit reached; outer machine caller remains outside the live entry.");
-                    if(ContinueBoard && instruction.Native==0x2BEB && reelMotion?.Busy==true){nextVm=checked(serviceEpoch+services[serviceIndex].Scan);continue;}
+                    if(ContinueBoard && instruction.Native==0x2BEB && reelMotion?.Busy==true){nextVm=checked(serviceEpoch+services[serviceIndex]);continue;}
                     if(ContinueBoard && instruction.Site==0xE227)throw new NotSupportedException($"BOARD special feature at square {Machine.Memory[0xC9]} (type {Machine.Memory[0xA12E+Machine.Memory[0xC9]]}); announcement/feature routing is the next recovery boundary.");
                     if(ContinueBoard && instruction.Site==0xE2E5 && (Machine.ReadWord(0xA0)&0x10)!=0 && Machine.Data.Peek() is not (1 or 2))throw new NotSupportedException($"BOARD taken result type {Machine.Data.Peek()} at square {Machine.Memory[0xC9]}; this result helper remains outside the verified routes.");
                     if(StartsAtBoardSelection && (instruction.Native is 0x61F6 or 0x61D5 or 0x61CF) && !motionNativeReady) {
@@ -383,7 +374,7 @@ public sealed class SkillCashLiveSession
                             else{if(!nudgeContext)diceRequest=new(Machine.Memory[0x166],unchecked((sbyte)Machine.Memory[0x16F]),Machine.Memory[0x16E]);reelMotion!.Prepare(value=>Mpu4InputConditions.Evaluate(Machine,value));}
                             reelMotion.Enable();motionInitializing=true;
                         }
-                        nextVm=checked(serviceEpoch+services[serviceIndex].Scan);continue;
+                        nextVm=checked(serviceEpoch+services[serviceIndex]);continue;
                     }
                     if(instruction.Native==0x5A14 && tonePhase<4){
                         if((Machine.Memory[0x719B]&0x80)!=0)throw new NotSupportedException("Live disabled-tone pacing requires separate verification");
@@ -393,7 +384,7 @@ public sealed class SkillCashLiveSession
                         continue;
                     }
                     waitingForScheduler=instruction.Native==0x5CCB && scheduler.Active;
-                    if(waitingForScheduler){nextVm=checked(serviceEpoch+services[serviceIndex].Scan);continue;}
+                    if(waitingForScheduler){nextVm=checked(serviceEpoch+services[serviceIndex]);continue;}
                     ulong cost=instruction.Native==0x5CCB || instruction.Native==0x5A14 ? 0 : Cost(instruction);
                     executor.Step();lastVmInlineLiteral=instruction.Operation is "vm_push_inline_byte_literal" or "vm_push_inline_word_literal";nextVm=checked(Cycle+cost);
                     if(Completed){Paused=true;Panel.Release();break;}

@@ -105,13 +105,16 @@ Check("Input service prefix matches nineteen natural post-scan instruction windo
         for(int i=0;i<native.Length;i++){var step=native[i];Equal(catalog[step[2].GetInt32()].GetProperty("pc").GetUInt16(),observed[i].Address);Equal(entry+step[1].GetUInt64(),observed[i].Started);Equal(entry+step[4].GetUInt64(),observed[i].Completed);}Equal((ushort)0x438C,service.Continuation);count++;
     }Equal(19,count);
 });
+Check("Live timer3 acceptance follows changed native work and preserves entry pause", () => {
+    var a=new SkillCashLiveSession(evidence);var b=new SkillCashLiveSession(evidence);b.Machine.Memory[0x6C]=1;ulong armA=0,armB=0,accepted=0,entryA=0,entryB=0,returned=0;var pathA=new List<OutputScanInstruction>();var pathB=new List<OutputScanInstruction>();a.ObserveTimer3Arm=(at,_)=>armA=at;b.ObserveTimer3Arm=(at,_)=>armB=at;a.ObservePanelServiceInstruction=pathA.Add;b.ObservePanelServiceInstruction=pathB.Add;a.ObserveTimer3Acceptance=at=>accepted=at;a.ObserveTimer3DispatchEntry=at=>entryA=at;b.ObserveTimer3DispatchEntry=at=>entryB=at;a.ObserveTimer3Return=at=>returned=at;a.Resume();b.Resume();for(int i=0;i<20000 && accepted==0;i++)a.AdvanceCycles(1);Equal(true,accepted>0);Equal(accepted,a.Cycle);a.Pause();var memory=a.Machine.Memory.ToArray();int instructions=a.Instructions;a.AdvanceCycles(1000);Equal(accepted,a.Cycle);Equal(0UL,entryA);Equal(instructions,a.Instructions);Equal(true,memory.SequenceEqual(a.Machine.Memory));a.Resume();a.AdvanceCycles(18);Equal(0UL,entryA);a.AdvanceCycles(1);Equal(accepted+19,entryA);for(int i=0;i<20000 && entryB==0;i++)b.AdvanceCycles(1);Equal(armA,armB);Equal(true,pathA.Count>0 && pathB.Count>0);if(entryA==entryB && pathA[^1].Address==pathB[^1].Address)throw new Exception("Changed native work did not affect generated acceptance boundary");for(int i=0;i<1000 && returned==0;i++)a.AdvanceCycles(1);Equal(true,returned>entryA);a.Pause();b.Pause();
+});
 Check("Live input read retains the physical Start level across release pause and delayed RAM store", () => {
     var live=new SkillCashLiveSession(evidence);var reads=new List<OutputScanAccess>();live.ObserveInputServiceAccess=access=>{if(access.Address==0xF00)reads.Add(access);};live.Resume();
     for(int i=0;i<30000 && !(live.InputServiceAddress==0x27EC && live.Machine.ReadWord(0x28)==3);i++)live.AdvanceCycles(1);
     Equal((ushort?)0x27EC,live.InputServiceAddress);Equal((ushort)3,live.Machine.ReadWord(0x28));live.SetStart(true);live.AdvanceCycles(4);Equal((byte)0,live.Machine.Memory[3]);live.AdvanceCycles(1);Equal((ushort?)0x27EF,live.InputServiceAddress);Equal((ushort?)0x80,reads[^1].Value);Equal((byte)0,live.Machine.Memory[3]);
     live.Pause();Equal((byte)0,live.Panel.PhysicalBlack2);ulong cycle=live.Cycle;var next=live.NextInputServiceEvent;var memory=live.Machine.Memory.ToArray();int vm=live.Instructions;live.AdvanceCycles(100000);Equal(cycle,live.Cycle);Equal(next,live.NextInputServiceEvent);Equal(vm,live.Instructions);Equal(true,memory.SequenceEqual(live.Machine.Memory));
     live.Resume();live.AdvanceCycles(7);Equal((byte)0,live.Machine.Memory[3]);live.AdvanceCycles(1);Equal((byte)0x80,live.Machine.Memory[3]);Equal((byte)0,live.Panel.PhysicalBlack2);
-    for(int i=0;i<200 && live.InputServiceAddress is not null;i++)live.AdvanceCycles(1);Equal((byte)0x80,(byte)(live.Machine.Memory[0x91]&0x80));live.Pause();
+    for(int i=0;i<2000 && (live.Machine.Memory[0x91]&0x80)==0;i++)live.AdvanceCycles(1);Equal((byte)0x80,(byte)(live.Machine.Memory[0x91]&0x80));live.Pause();
 });
 Check("Incremental output scan matches64 original-ROM native paths and final states", () => {
     using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","output-scan-timing.json")));int count=0;
@@ -132,7 +135,9 @@ Check("Incremental scan input and panel code generate all nineteen natural IRQ a
     using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","ptm-service-timing.json")));
     using var arms=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","ptm-instruction-boundaries.json")));
     using var outer=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","ptm-outer-timing.json")));
-    using var panelData=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","panel-continuation-timing.json")));
+    using var panelData=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","coin-composed-timing.json")));
+    using var pia=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","pia-service-timing.json")));
+    var checkpoints=pia.RootElement.GetProperty("rows").EnumerateArray().Where(r=>r.GetProperty("event").GetString()=="entry").ToArray();
     var firstArm=arms.RootElement.GetProperty("windows")[0];decimal firstTime=decimal.Parse(firstArm.GetProperty("latch_seconds").GetString()!,System.Globalization.CultureInfo.InvariantCulture)*Mpu4Timer3PhaseClock.AttosecondsPerSecond+decimal.Parse(firstArm.GetProperty("latch_attoseconds").GetString()!,System.Globalization.CultureInfo.InvariantCulture);
     decimal origin=firstTime-firstArm.GetProperty("latch_bus_cycle").GetUInt64()*Mpu4Timer3PhaseClock.AttosecondsPerSecond/1_720_000m;
     decimal Time(ulong cycle)=>origin+cycle*Mpu4Timer3PhaseClock.AttosecondsPerSecond/1_720_000m;
@@ -148,24 +153,21 @@ Check("Incremental scan input and panel code generate all nineteen natural IRQ a
         var native=row.GetProperty("instructions");Equal(native.GetArrayLength(),observed.Count);for(int i=0;i<observed.Count;i++){Equal(native[i].GetProperty("pc").GetUInt16(),observed[i].Address);Equal(native[i].GetProperty("cycle").GetUInt64(),observed[i].Started);Equal(native[i].GetProperty("next_cycle").GetUInt64(),observed[i].Completed);}
         Equal(row.GetProperty("returned_cycle").GetUInt64(),scan.Cycle);var window=arms.RootElement.GetProperty("windows")[count];Equal(window.GetProperty("latch_bus_cycle").GetUInt64(),arm);
         Equal(window.GetProperty("calculated_assertion_cycle").GetUInt64(),(ulong)decimal.Round((timer.NextTransition!.Value-origin)*1_720_000m/Mpu4Timer3PhaseClock.AttosecondsPerSecond));
-        var interrupted=window.GetProperty("last_instruction");ulong entry=interrupted.GetProperty("cycle").GetUInt64()+(ulong)M6809InstructionTiming.Decode(Convert.FromHexString(interrupted.GetProperty("context_hex").GetString()!)).Cycles+M6809IrqEntry.EntryCycles;
-        {
-            // Explicit callback/phase/input seeds; generate the interrupted
-            // instruction instead of reading its captured PC/time as a schedule.
-            m.Memory[0x2C]=0;m.Memory[0x6C]=0;m.Memory[0x6E]=(byte)(1+count);m.WriteWord(0xC6,0x19B8);
-            using var input=new Mpu4InputServiceExecution(m,scan.Cycle,_=>0);while(!input.Completed)input.AdvanceTo(input.NextEventCycle);
-            using var latch=new Mpu4PanelAccumulationExecution(m,input.Cycle,continuePanelService:true);OutputScanInstruction? last=null;latch.ObserveInstruction=i=>last=i;ulong generated=0;
-            while(!latch.Completed){latch.AdvanceTo(latch.NextEventCycle);timer.AdvanceTo(Time(latch.Cycle));if(timer.IrqAsserted){generated=checked(latch.Cycle+M6809IrqEntry.EntryCycles);break;}}
-            Equal(true,generated>0);Equal(entry,generated);Equal(interrupted.GetProperty("pc").GetUInt16(),last!.Address);Equal(interrupted.GetProperty("cycle").GetUInt64(),last.Started);
-            entry=generated;
-            var dispatch=new Mpu4Timer3DispatchExecution(m,entry,new Mpu4Timer3DispatchHardware(timer,entry,Time(entry)));dispatch.AdvanceTo(dispatch.CallbackAt);Equal(window.GetProperty("callback_cycle").GetUInt64(),dispatch.CallbackAt);
-            var callback=new Mpu4LampCallbackExecution(m,dispatch.CallbackAt);callback.AdvanceTo(callback.CompletedAt);
-            var epilogue=new Mpu4OrdinaryIrqReturnExecution(callback.CompletedAt,0,0x80);var returned=new List<OutputScanInstruction>();epilogue.ObserveInstruction=returned.Add;while(!epilogue.Completed)epilogue.AdvanceTo(epilogue.NextEventCycle);
-            var tail=doc.RootElement.GetProperty("timer3_tails")[count];var nativeReturn=tail.GetProperty("instructions").EnumerateArray().TakeLast(4).ToArray();for(int i=0;i<4;i++){Equal(nativeReturn[i].GetProperty("pc").GetUInt16(),returned[i].Address);Equal(nativeReturn[i].GetProperty("cycle").GetUInt64(),returned[i].Started);Equal(nativeReturn[i].GetProperty("next_cycle").GetUInt64(),returned[i].Completed);}
-            Equal(tail.GetProperty("resumed_cycle").GetUInt64(),epilogue.Cycle);Equal(251UL,epilogue.Cycle-latch.Cycle);ushort nextPC=latch.Address;latch.SuspendUntil(epilogue.Cycle);Equal(nextPC,latch.Address);
-            var resumed=new List<OutputScanInstruction>();latch.ObserveInstruction=resumed.Add;while(!latch.Completed && latch.Address!=0x43C8)latch.AdvanceTo(latch.NextEventCycle);
-            var parent=outer.RootElement.GetProperty("parents")[count];var catalog=outer.RootElement.GetProperty("catalog");var suffix=parent.GetProperty("steps").EnumerateArray().SkipWhile(s=>s[0].GetInt32()!=1).Skip(1).Take(resumed.Count).ToArray();Equal(resumed.Count,suffix.Length);for(int i=0;i<resumed.Count;i++){Equal(0,suffix[i][0].GetInt32());Equal(catalog[suffix[i][2].GetInt32()].GetProperty("pc").GetUInt16(),resumed[i].Address);Equal(parent.GetProperty("entry_cycle").GetUInt64()+suffix[i][1].GetUInt64(),resumed[i].Started);Equal(parent.GetProperty("entry_cycle").GetUInt64()+suffix[i][4].GetUInt64(),resumed[i].Completed);}
-        }
+        var checkpoint=checkpoints[count];var ram=Convert.FromHexString(checkpoint.GetProperty("ram_hex").GetString()!);
+        foreach(int address in Enumerable.Range(0,0x22).Concat(new[]{0x2A,0x2B,0x6C,0x6F,0x70,0x88,0x89,0x8A,0x8B,0xC6,0xC7,0xDF,0xE2,0x2F0,0x2FC,0x2FD,0x302,0x303,0x32F,0x338,0x339,0x370,0x372}).Concat(Enumerable.Range(0x8E,16)))m.Memory[address]=ram[address];
+        m.Memory[0x2C]=0;m.Memory[0x6E]=unchecked((byte)(ram[0x6E]-1));byte c5=checkpoint.GetProperty("c5out").GetByte(),c8=checkpoint.GetProperty("c8out").GetByte();
+        Equal((byte)15,checkpoint.GetProperty("c5ddr").GetByte());Equal((byte)255,checkpoint.GetProperty("c8ddr").GetByte());
+        var generated=new List<OutputScanInstruction>();var accesses=new List<(ulong Cycle,ushort Address,byte Value,bool Write)>();ulong acceptance=0,handler=0,returned=0;
+        ulong serviceCycle=scan.Cycle;
+        using var service=new Mpu4TimedPanelService(m,scan.Cycle,timer,Time,_=>0,address=>{byte value=address==0xC02 ? (byte)(c5&15) : address==0xF02 ? c8 : throw new Exception("Unexpected PIA read");accesses.Add((serviceCycle,address,value,false));return value;},(address,value)=>{accesses.Add((serviceCycle,address,value,true));if(address==0xC02)c5=value;else if(address==0xF02)c8=value;else throw new Exception("Unexpected PIA write");},afterScan:true);
+        service.ObserveInput=generated.Add;service.ObservePanel=generated.Add;service.ObserveAcceptance=at=>acceptance=at;service.ObserveEntry=at=>handler=at;service.ObserveReturn=at=>returned=at;
+        while(!service.Completed){serviceCycle=service.NextEventCycle;service.AdvanceTo(serviceCycle);}
+        Equal(window.GetProperty("handler_cycle").GetUInt64(),handler);Equal(handler-M6809IrqEntry.EntryCycles,acceptance);Equal(doc.RootElement.GetProperty("timer3_tails")[count].GetProperty("resumed_cycle").GetUInt64(),returned);Equal(1,service.Interrupts);
+        var parent=outer.RootElement.GetProperty("parents")[count];var catalog=outer.RootElement.GetProperty("catalog");var suffix=parent.GetProperty("steps").EnumerateArray().Where(step=>step[0].GetInt32()==0).SkipWhile(step=>catalog[step[2].GetInt32()].GetProperty("pc").GetUInt16()!=0xFEBA).Take(generated.Count).ToArray();Equal(generated.Count,suffix.Length);
+        for(int i=0;i<generated.Count;i++){Equal(catalog[suffix[i][2].GetInt32()].GetProperty("pc").GetUInt16(),generated[i].Address);Equal(parent.GetProperty("entry_cycle").GetUInt64()+suffix[i][1].GetUInt64(),generated[i].Started);Equal(parent.GetProperty("entry_cycle").GetUInt64()+suffix[i][4].GetUInt64(),generated[i].Completed);}
+        var nextCheckpoint=count+1<checkpoints.Length ? checkpoints[count+1].GetProperty("cycle").GetUInt64() : ulong.MaxValue;
+        var expectedAccess=pia.RootElement.GetProperty("rows").EnumerateArray().Where(r=>r.GetProperty("event").GetString()!="entry" && r.GetProperty("cycle").GetUInt64()>checkpoint.GetProperty("cycle").GetUInt64() && r.GetProperty("cycle").GetUInt64()<nextCheckpoint).ToArray();Equal(expectedAccess.Length,accesses.Count);
+        for(int i=0;i<accesses.Count;i++){Equal(expectedAccess[i].GetProperty("cycle").GetUInt64(),accesses[i].Cycle);Equal(expectedAccess[i].GetProperty("address").GetUInt16(),accesses[i].Address);Equal(expectedAccess[i].GetProperty("data").GetByte(),accesses[i].Value);Equal(expectedAccess[i].GetProperty("event").GetString()=="write",accesses[i].Write);}
         Equal(false,timer.Enabled);Equal(false,timer.InterruptPending);count++;
     }Equal(19,count);
 });
@@ -314,7 +316,7 @@ Check("Live callback pauses between generated lamp bank writes", () => {
     live.AdvanceCycles(4);Equal(1,writes.Count);live.AdvanceCycles(1);Equal(2,writes.Count);Equal((ushort)0xA02,writes[1].Address);
     live.AdvanceCycles(entry+(blank ? 85UL : 78UL)-live.Cycle);Equal(1,live.Callbacks);Equal(true,live.NextLampCallbackEvent is null);Equal(blank ? 3 : 2,writes.Count);live.Pause();
 });
-Check("Live ignores recorded scan return arm and callback timestamps while retaining scan entry and IRQ delivery", () => {
+Check("Live ignores recorded scan return arm and callback timestamps and runs without the timer3 deadline capture", () => {
     var directory=Path.Combine(Path.GetTempPath(),"FruitMachineLab-callback-return-"+Guid.NewGuid().ToString("N"));Directory.CreateDirectory(directory);
     try{
         foreach(var source in Directory.EnumerateFiles(evidence,"*",SearchOption.AllDirectories)){string destination=Path.Combine(directory,Path.GetRelativePath(evidence,source));Directory.CreateDirectory(Path.GetDirectoryName(destination)!);File.Copy(source,destination);}
@@ -329,7 +331,7 @@ Check("Live ignores recorded scan return arm and callback timestamps while retai
         Equal(6103,changedEntries);
         Equal(6103,changedScans);Equal(6103,changedArms);
         Equal(6102,changed);File.WriteAllText(file,System.Text.Json.JsonSerializer.Serialize(timing));
-        string deadlineFile=Path.Combine(directory,"skill-cash","timer-deadlines.json");var deadlines=System.Text.Json.Nodes.JsonNode.Parse(File.ReadAllText(deadlineFile))!;foreach(var row in deadlines["rows"]!.AsArray())row![3]=row[3]!.GetValue<ulong>()+1000;File.WriteAllText(deadlineFile,deadlines.ToJsonString());
+        File.Delete(Path.Combine(directory,"skill-cash","timer-deadlines.json"));
         var original=new SkillCashLiveSession(evidence);var altered=new SkillCashLiveSession(directory);var a=new List<LampCallbackWrite>();var b=new List<LampCallbackWrite>();original.ObserveLampCallbackWrite=a.Add;altered.ObserveLampCallbackWrite=b.Add;original.Resume();altered.Resume();original.AdvanceCycles(20000);altered.AdvanceCycles(20000);
         Equal(true,a.Count>0);Equal(true,a.SequenceEqual(b));Equal(original.Instructions,altered.Instructions);Equal(original.Callbacks,altered.Callbacks);Equal(true,original.Machine.Memory.SequenceEqual(altered.Machine.Memory));
     }finally{Directory.Delete(directory,true);}

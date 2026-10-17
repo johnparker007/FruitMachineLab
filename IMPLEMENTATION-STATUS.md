@@ -1,5 +1,11 @@
 # Implementation and evidence boundaries
 
+Live timer3 delivery is now generated: continuous phase clock, instruction-boundary
+acceptance, IRQ entry, dispatch, lamp callback and return. timer-deadlines.json is
+no longer loaded. The connected service matches19 natural windows through280C,
+including20 actual PIA accesses. Outer scan-entry/occupancy and remaining VM cost
+adapters still use captures; whole-machine autonomous timing remains unfinished.
+
 Ordinary idle coin service now returns4395 and composes with panel service to
 280C.128 original-ROM cases verify suffix/composed instruction timing and PIA
 latch outputs. All nested helpers suspend together; repeated hardware reads and

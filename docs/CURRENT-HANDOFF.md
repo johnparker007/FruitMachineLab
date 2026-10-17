@@ -1,5 +1,60 @@
 # Current handoff
 
+17 October GENERATED TIMER3 LIVE milestone: Mpu4TimedPanelService now owns
+scan→FEBA input→438C panel and nested timer3 CPU ownership. Live no longer loads
+timer-deadlines.json or uses recorded timer3 handler entry. Continuous phase
+clock consumes generated70EF accesses; pending IRQ is accepted after a completed
+selected unmasked input/panel instruction, +19 entry,128 dispatch, callback,
+26 epilogue, then resumes the same pending parent/child state. Pause suspends
+all execution and time, including the19-cycle IRQ-entry interval. Physical Start
+still enters through the actual mux read and staged accumulation.
+
+Natural passive capture now supplies19 entry RAM/PIA checkpoints and20 actual
+0C02/0F02 bus accesses.354 prior timer-state samples match field-for-field and
+their CSV hash is identical. Original campaign/ROM unmodified. Observer uses
+save-state items and ordinary RAM; it does not read PIA registers to observe
+them. New curator/export maps preserve source hashes and exact static ROM data.
+IC5 ctl3C/DDRB0F/out20; IC8 ctl34/DDRBFF/out30; callbackC6=19B8. A single initial
+stopped timer3 snapshot high/single/latch40/counter212/status-read seeds Live;
+no per-arm phase or IRQ timestamp is supplied. Inactive auxiliary coin pins
+remain explicit scope; full PIA handshakes/interrupt line/coin startup are not
+implemented. Board-entry IC8 latch retains its own existing checkpoint.
+
+The19-window verifier now uses the SAME connected service CPU owner as Live,
+matching every FEBA..280C own instruction time, generated acceptance/entry/return
+and actual PIA accesses. It still seeds per-window non-scan RAM from captured
+service-entry checkpoints to isolate this proof; do not describe it as a full
+continuous machine replay. Live seeds once and executes continuously. Existing
+24 Live tests passed before the final extra causal/entry-Pause test was added.
+One older test now waits for actual staged sticky accumulation, which is no
+longer atomic at input-prefix completion. Callback-count semantics unchanged.
+
+REMAINING TIMING DEPENDENCIES: shared-timing event3 scan entry and its jitter
+template; cpu-interrupts outer occupancy (including VM calibrated-delay pacing);
+remaining VM native-word cost tables; post280C motor/counter/scheduler service
+still atomic. Thus timer3 is locally scheduled, NOT yet whole-machine autonomous
+timing. Next largest work: stage280C onward and outer IRQ scheduling, then replace
+captured occupancy and remaining VM CPU boundaries with generated ownership.
+Active coin43E5/44C3 paths and alarms remain explicit unsupported routes; no
+fallback to recorded timer3 entries is present. Latch40/selected bank0 priority
+guards fail explicitly. Do not infer instruction acceptance from atomic VM tokens.
+
+Reproduce Capture-SkillCash.ps1 -FullFeature -PtmInstructionTiming, then
+Curate-PiaServiceTiming.ps1 (RunDirectory/RomPath). Observer automatically emits
+pia-service.csv in the20-arm window; all bulky raw files remain external.
+%TEMP%/FruitMachineLab-pia-service-natural.txt points to accepted raw directory;
+autonomous-timer3-suite.log and generated-live-target.log hold validation output.
+No installs/config changes, commits/pushes or original MAME/ROM/Ghidra changes.
+FINAL validation:251 full headless groups pass on the final connected runner;
+both solutions build with zero warnings/errors. All eight WPF modes pass:
+live-nudge,live-availability,live,live-jackpot,live-roll,live-link,live-board-cycle,
+playback.1115 curated entries verify; whitespace check passes. Owned capture,
+verification and GUI processes exited. Final log: %TEMP%/FruitMachineLab-
+autonomous-timer3-final-suite.log; GUI pointer autonomous-timer3-gui.txt.
+The new causal test proves changed post-arm work changes the accepted boundary
+and Pause preserves the19-cycle entry interval. The full reference-time pulse
+test retains18 VM/frame/accounting checkpoints,44 alpha states and final lamps.
+
 17 October coin-service composition: Mpu4CoinServiceExecution stages4592 through
 ordinary RTS4645→4395, with explicit PIA read/write callbacks and original46D3
 inline tests87/89/80/81. Stops BEFORE JSR4604(48DA alarm) and4621(46F1 helper).

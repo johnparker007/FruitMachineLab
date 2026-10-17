@@ -11,6 +11,18 @@ local function sample(event,address,data)
  f:write(string.format('%s,%04X,%04X,%02X,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%02X,%04X,%04X,%04X\n',event,cpu.state['PC'].value,address,data,m.time.seconds,m.time.attoseconds,item(ptm,'m_output',2),item(ptm,'m_control_reg',0),item(ptm,'m_control_reg',1),item(ptm,'m_control_reg',2),item(ptm,'m_latch',2),item(ptm,'m_counter',2),item(ptm,'m_enabled',2),item(ptm,'m_single_fired',2),item(ptm,'m_status_reg'),item(ptm,'m_status_read_since_int'),item(ptm,'m_irq'),item(ptm,'m_gate',2),item(ptm,'m_clk',2),item(cpu,'m_irq_line'),cpu.state['CC'].value,s,resume,cpu.state['Y'].value))
 end
 local function install()
+-- Passive device-state checkpoint: read save-state items and ordinary RAM,
+-- never read a PIA register merely to observe it (that would acknowledge IRQs).
+local pf=assert(io.open('pia-service.csv','w'));pf:setvbuf('no')
+pf:write('event,address,data,seconds,attoseconds,c5ctl,c5ddr,c5out,c8ctl,c8ddr,c8out,ram\n')
+local function pia(event,address,data)
+ local p5=assert(m.devices[':pia_ic5']);local p8=assert(m.devices[':pia_ic8']);local ram=''
+ _G.fml_ptm_observer_read=true;for i=0,0x3ff do ram=ram..string.format('%02X',mem:read_u8(i)) end;_G.fml_ptm_observer_read=false
+ pf:write(string.format('%s,%04X,%02X,%d,%d,%d,%d,%d,%d,%d,%d,%s\n',event,address,data,m.time.seconds,m.time.attoseconds,item(p5,'m_ctl_b'),item(p5,'m_ddr_b'),item(p5,'m_out_b'),item(p8,'m_ctl_b'),item(p8,'m_ddr_b'),item(p8,'m_out_b'),ram))
+end
+_G.fml_pia_service_code=mem:install_read_tap(0x438c,0x438c,'fml-pia-service-code',function(address,data) if active and not _G.fml_ptm_observer_read and cpu.state['PC'].value==address+1 then pia('entry',address,data) end end)
+_G.fml_pia_service_read=mem:install_read_tap(0xc02,0xf02,'fml-pia-service-read',function(address,data) if active and not _G.fml_ptm_observer_read and (address==0xc02 or address==0xf02) then pia('read',address,data) end end)
+_G.fml_pia_service_write=mem:install_write_tap(0xc02,0xf02,'fml-pia-service-write',function(address,data) if active and not _G.fml_ptm_observer_read and (address==0xc02 or address==0xf02) then pia('write',address,data) end end)
 if _G.fml_ptm_instruction_timing then
  local instructions=assert(io.open('ptm-instructions.csv','w'));instructions:setvbuf('no')
  instructions:write('event,address,pc,curpc,seconds,attoseconds,cc,cpuirq,ptmirq,status,bytes\n')

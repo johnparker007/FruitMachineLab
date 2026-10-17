@@ -5,6 +5,13 @@ Local clone: C:\projects\GitRepos\FruitMachineLab
 
 ## Current status
 
+Live now generates timer3 assertion/acceptance/entry/callback/return locally;
+timer-deadlines.json is no longer a Live dependency. Remaining outer scan/VM
+pacing adapters are explicit. Reproduce natural PIA checkpoints with
+Capture-SkillCash.ps1 -FullFeature -PtmInstructionTiming and
+Curate-PiaServiceTiming.ps1 (RunDirectory/RomPath). Curator also exports the small
+maps/irq-service-data.json static-data/initial-hardware checkpoint used by Live.
+
 Coin service suffix4592 and composed438C idle return now have64 native cases
 each. Reproduce Capture-CoinServiceTiming.ps1 with the standard isolated capture
 parameters; add `-Composed` for the full idle caller. Curate-CoinServiceTiming.ps1

@@ -350,7 +350,7 @@
         "skill-cash/ptm-outer-timing.json"
       ],
       "scope": "Bank0/full-frame FEF2->FF13 epilogue26 cycles;19 generated251-cycle nested interruptions including entry/dispatch/callback/return, then native continuation timing compared",
-      "qualification": "Caller locals preserved; frame/register restoration remains CPU-owner contract. Non-coin suffix now reaches280C; coin comparison stops before actual0C02 read. No whole-handler/Live IRQ claim."
+      "qualification": "Connected CPU-owner component now generates all19 selected natural acceptances and resumes through280C, including actual coin-port data. Full CPU frame restoration/priority and outer service remain explicit."
     },
     "composed_continuation": {
       "implementation": "src/FruitMachineLab.Runtime/Mpu4PanelAccumulationExecution.cs",
@@ -390,10 +390,10 @@
         17924,
         17953
       ],
-      "qualification": "Original FF34/FF40=FF configuration only is native-backed. Alarms48DA and helper46F1 stop before their JSR. Active coin paths43F1/4426/44AB/4519/4562 and43E5 taken44C3 remain open. Synthetic PIA DDR=FF/latches do not establish natural pin state. All nested iterators suspend together; two0F02 reads remain separate. Not attached to Live."
+      "qualification": "Selected idle route now attached to Live through generated timer3 service; active coin paths and alarm/helper boundaries remain unsupported. Original FF34/FF40 configuration only; selected PIA data path from natural checkpoints. Remaining outer service still explicit."
     },
     "auxiliary_source": {
-      "classification": "Static deduction from pinned upstream source; actual captured PIA state remains unavailable",
+      "classification": "Pinned-source static rules plus19 natural service checkpoints and20 observed PIA accesses;354 timer-state rows unchanged",
       "address": 3074,
       "device": "PIA6821 IC5 portB / AUX2",
       "source_symbols": [
@@ -407,7 +407,21 @@
       ],
       "input_bits": "Inherited AUX2 coin1..4 active high10/20/40/80; m4addr does not override AUX2",
       "read_contract": "ControlB bit2 clear selects DDRB; otherwise (outputB & DDRB) | ((AUX2 | auxiliary_internal) & ~DDRB). Port read clears IRQB flags and may change CB2 strobe; coinlock read-side effects remain driver-specific.",
-      "qualification": "Not reel optics (IC4 portB0B02). No zero-level assumption, credit mechanism or PIA model added. The earlier synthetic matrices configure DDRB=FF and inject the output latch, so do not establish natural coin pin levels."
+      "qualification": "Selected IC5 ctl3C/DDR0F/out20 and IC8 ctl34/DDRFF/out30 now natural-backed. Live uses selected data path with inactive AUX2 coin pins; full PIA IRQ/strobe effects remain outside the model. Earlier synthetic all-output matrices remain separate evidence."
     }
+  },
+  "generated_timer3_service": {
+    "implementation": "src/FruitMachineLab.Runtime/Mpu4TimedPanelService.cs",
+    "live": "src/FruitMachineLab.Adders/SkillCashLiveSession.cs",
+    "checkpoint": "maps/irq-service-data.json",
+    "evidence": [
+      "skill-cash/pia-service-timing.json",
+      "skill-cash/ptm-outer-timing.json",
+      "skill-cash/ptm-service-timing.json"
+    ],
+    "verification": "skill-cash/pia-service-timing-verification.json",
+    "scope": "Natural19-window instruction acceptance, generated19-cycle entry, selected128-cycle dispatch, generated callback/26-cycle epilogue and resumed panel service through280C.20 PIA bus accesses and354 unchanged timer-state samples.",
+    "removed_live_dependency": "timer-deadlines.json is no longer loaded. Scan return/arm/callback timestamps remain unused. One entry hardware checkpoint seeds continuous timer phase; no per-arm recorded phase or handler entry.",
+    "remaining": "Recorded scan entry, outer IRQ occupancy and remaining VM native-word costs; atomic post280C motor/counter/scheduler adapter. Selected bank0/control00/63,40-cycle latch, inactive AUX2 coin pins; no full CPU priority/startup/PIA handshake model."
   }
 }

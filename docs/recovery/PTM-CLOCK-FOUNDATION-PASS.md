@@ -1,5 +1,87 @@
 # MC6840 timer clock foundation and phase findings
 
+## 17 October: generated timer3 acceptance connected to Live
+
+Live now runs `Mpu4TimedPanelService`: generated28FE scan, FEBA/27D2 input,
+438C panel and selected coin-idle service, with nested timer3 CPU ownership.
+The continuous `Mpu4Timer3PhaseClock` consumes generated70EF status/counter/control/
+latch bus accesses. After each completed selected unmasked input/panel instruction,
+pending timer3 is accepted. The component yields19 cycles to FE70, runs the
+verified128-cycle dispatch with real model acknowledgement/stop, runs the lamp
+callback and26-cycle FEF2/FF13 return, then shifts and resumes the pending parent
+and all active child iterators. No captured acceptance PC, elapsed handler time,
+or per-arm phase is supplied. Timer3 cannot run the VM while owning this service.
+Pause freezes the owner, pending instruction, IRQ-entry interval and virtual time.
+
+`SkillCashLiveSession` no longer reads timer-deadlines.json; its old Timer3Irq
+tuple field and separate recorded-entry callback scheduling were removed. The
+existing timestamp-corruption test now deletes the entire deadline file and
+still compares output events, RAM and VM counts. A new causal engine test changes
+native drive-prefix work after the same arm and requires a different acceptance
+instruction/time; another part pauses after acceptance and checks the19-cycle
+entry interval. These are synthetic execution tests, separate from natural proof.
+Physical Start remains sampled through0F00 and later staged sticky accumulation;
+it is no longer accumulated atomically when the input prefix finishes. The older
+input test waits for that actual accumulation while preserving its expected value.
+
+The remaining input-state gap was closed with a passive observation added to
+ptm-skill-cpu.lua. Capture-SkillCash.ps1 -FullFeature -PtmInstructionTiming emits
+pia-service.csv alongside existing instruction/timer observations. It records
+save-state IC5/IC8 portB control, DDR and output items plus ordinary RAM0..03FF at
+438C entry and actual0C02/0F02 read/write taps. No extra PIA reads acknowledge IRQs
+merely for observation. Curate-PiaServiceTiming.ps1 requires all354 existing timer
+rows to match field-for-field. Their CSV SHA256 is unchanged:
+76BC7E484ED4AC0B69925C52A103F532143AA501CF51FE22474CCB0E63532C02.
+The natural physical campaign, ROM and original tools/settings were unchanged.
+
+Accepted evidence:19 service-entry checkpoints, four actual0C02 reads, eight
+0F02 reads and four writes to each port. IC5 control3C/DDRB0F/output20 and IC8
+control34/DDRBFF/output30 are stable in this window; C6 points19B8. IC5 reads
+combine output low nibble and AUX2 high pins (zero in this supported entry);
+IC8 reads its output latch. Live stores the raw IC5 output separately and exposes
+the selected mixed read value to existing status helpers. It retains board-entry
+IC8 state when that earlier entry has its own checkpoint. Full PIA IRQ/strobe,
+coin injection/hopper and priority/startup behaviour are not claimed.
+
+maps/irq-service-data.json exports exact ROM helper tables/inline operands/config
+regions and one natural initial state, with provenance. It is a static data and
+checkpoint dependency, not a captured timing path. Initial stopped timer3 has
+high output, single-fired, latch40/raw212, no pending IRQ and status-read bit set;
+subsequent phase is continuous and never replaced from capture. Live does not
+load the128 synthetic native case paths to run. Native encodings and RAM meanings
+remain linked through the existing timing-source map; no assembly toolchain or
+claim of a lossless source listing was added. Ghidra export access remains absent.
+
+The SAME connected owner used by Live now verifies19 natural windows through
+280C, including all resumed FEBA/panel instructions, generated IRQ acceptance/
+entry/return and20 exact PIA access times/values. Output scan instruction costs
+remain checked independently in those same windows. Verification seeds non-scan
+RAM from each observed438C entry to isolate the selected service; it does not
+claim a continuous full-machine state proof. Live initializes once and executes
+subsequent services from retained state. The existing reference-time player run
+still matches18 VM/frame/accounting checkpoints,44 alpha states and final lamp
+frames; full CPU state equality is not claimed. Synthetic jackpot duration moved
+from23.761 to23.777 virtual seconds as atomic service effects became staged;
+no reference timing or expected award values were rebaselined to hide this.
+
+Explicit remaining timing dependencies: shared-timing event3 scan-entry/jitter
+template, cpu-interrupts outer occupancy, remaining native VM word cost tables,
+and atomic post280C motor/counter/scheduler service. Generated timer3 entry is
+therefore a real removed dependency, not whole-machine autonomous timing. Next
+stage280C/6403 and outer-handler ownership, then generate outer interrupt entry
+and VM CPU boundaries before removing occupancy. Do not substitute VM-token
+completion for an unknown6809 instruction boundary. Latch40, bank0/selected IRQ
+priority and known idle coin continuations are guarded; unsupported alarm/helper/
+active-coin paths stop explicitly, with no fallback to recorded timer3 entry.
+
+The diagnostic panel identifies locally generated timer3 and retained outer timing.
+Playback remains separate. No installations/configuration changes, commits/pushes,
+original workspace, ROM, MAME checkout/settings or Ghidra project changes.
+Final validation:251 full headless groups pass; both solution builds have zero
+warnings/errors. All eight WPF modes pass, including Live nudge/roll/board/link/
+jackpot/availability and unchanged playback.1115 curated entries verify and
+whitespace check passes. Owned MAME/GUI/verification processes exited.
+
 ## 17 October: ordinary coin-service return and composed438C caller
 
 `Mpu4CoinServiceExecution` recovers4592..4645's ordinary service path. It starts

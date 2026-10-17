@@ -206,8 +206,8 @@
   },
   {
     "path": "docs/recovery/PTM-CLOCK-FOUNDATION-PASS.md",
-    "bytes": 91928,
-    "sha256": "21B91D6C3481413CE1098EDF5770CE07F91748C9A5C9988B0AA00A27AF8BEA0E"
+    "bytes": 97694,
+    "sha256": "66ABB182683BA12389ECD7188BBC9C22B8357173B6DB50193D66A56A50250BA0"
   },
   {
     "path": "docs/recovery/README.txt",
@@ -355,9 +355,14 @@
     "sha256": "7DF98006E4EEAE794BB7983A8191A89A2167714DA4316E5B53EED215B40590F4"
   },
   {
+    "path": "evidence/mpu4/maps/irq-service-data.json",
+    "bytes": 1677,
+    "sha256": "81BE96FF7C265E12DB64ED9809131C1EB83EB71DBB1AD2A9C0F31596D7188646"
+  },
+  {
     "path": "evidence/mpu4/maps/mame-timing-source.json",
-    "bytes": 20616,
-    "sha256": "F3879A1ADDD5B9F63C928C95E60CFA117C1212E9E6AA30973FBF13EC4AA1B146"
+    "bytes": 21833,
+    "sha256": "F2DF8E5E7DB2E5225CB1666DD84BD39A3031F56343526C71E0D5CED9391D149B"
   },
   {
     "path": "evidence/mpu4/maps/nudge-availability-data.json",
@@ -2670,6 +2675,16 @@
     "sha256": "B7312566B3A35F4FF8D1E041EF5C493A165DFCC9AA64451A89DEE1760AE9028D"
   },
   {
+    "path": "evidence/mpu4/skill-cash/pia-service-timing-verification.json",
+    "bytes": 3096,
+    "sha256": "78D476B4DDE5E52A5824DA36035D23D3E22FEB4DEBC13EC180382C4C5689C070"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/pia-service-timing.json",
+    "bytes": 90057,
+    "sha256": "B61DC1B885221DF287673153DA0944C78865B3B4E06E0D1DCBB6419AB27AECD6"
+  },
+  {
     "path": "evidence/mpu4/skill-cash/ptm-instruction-boundaries-verification.json",
     "bytes": 3804,
     "sha256": "8D0DEB3F1378C28EC2478DFA120AE8DA42745471D084BDB34013FCE7EC7A0EA6"
@@ -2771,8 +2786,8 @@
   },
   {
     "path": "evidence/mpu4/skill-cash/ptm-skill-cpu.lua",
-    "bytes": 4437,
-    "sha256": "89739845F86C6A6D53A7A90DBA69B1A94EC3D6E0049683D8EA1BA5E139C5510B"
+    "bytes": 5934,
+    "sha256": "8E6C97B5DACBD8FA20931D066C7A5A4265583589C955274F8AFFB7E942CA9B51"
   },
   {
     "path": "evidence/mpu4/skill-cash/reel-request-matrix.json",

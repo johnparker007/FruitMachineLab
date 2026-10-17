@@ -1,5 +1,11 @@
 # Project direction and handoff
 
+17 October autonomous-timing milestone: remove recorded timer3 IRQ entry from
+Live (done). Next stage the post280C motor/counter/scheduler service and outer
+IRQ ownership/VM instruction boundaries, then remove recorded scan-entry and
+occupancy templates. Keep playable-machine progress and reference verification
+ahead of unrelated symbolic assembly/editor tooling.
+
 17 October continuation: selected idle coin service now reaches4395 and panel
 return280C, with128 native cases. Next establish natural PIA state and complete
 the required outer-service work before replacing Live's retained IRQ schedule.

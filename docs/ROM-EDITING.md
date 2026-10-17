@@ -126,8 +126,12 @@ continuation reaches the init tail and first VM entry at `76C7` with initial
 stream pointer `FDF0`, stopping before the first token fetch; see
 [startup VM entry](recovery/STARTUP-VM-ENTRY-PASS.md). It does not validate later
 VM/gameplay behaviour. Both patch probes exited0; expected modified loader
-warning occurred. No ROM checksum repair, integrity bypass, natural changed
-award/play session or physical test performed.
+warning occurred. The existing award edit has since been regenerated in the
+original checker's required field order: the unrepaired image is rejected at
+`674F` with `error=12` after `sum=40 xor=70`, while the repaired image passes
+the unmodified checker and reaches the same `76C7` entry with `X=FDF0`; see
+[ordered integrity repair](recovery/ROM-INTEGRITY-REPAIR-PASS.md). No checker
+bypass, gameplay/play-session claim or physical test is made.
 
 Harness development failures are excluded from accepted evidence: the first
 PowerShell run stopped on expected stderr; an early isolated lookup omitted the
@@ -136,8 +140,9 @@ modified controls above reach C708 and are the accepted evidence.
 
 ## Next boundary
 
-Use the existing reset/native initialization analysis to certify firmware sum/XOR
-coverage and integrity fields, then demonstrate original/modified natural play.
-Preserve unknown code/data and do not designate padding as free space. The partial
-machine-readable map is `maps/rom-layout.json`; relocation, bank expansion, full
-dictionary recovery and native/hardware compatibility remain open.
+The active gate-00 field regeneration is now demonstrated to the first VM entry.
+Next demonstrate original/modified natural play beyond that entry, or generalise
+the repair only from a separately validated definition. Preserve unknown code/data
+and do not designate padding as free space. The partial machine-readable map is
+`maps/rom-layout.json`; relocation, bank expansion, full dictionary recovery and
+native/hardware compatibility remain open.

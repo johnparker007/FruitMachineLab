@@ -1,0 +1,54 @@
+MAME debugger version 0.281 (mame0281)
+Currently targeting m4addr (Classic Adders & Ladders (Barcrest) (MPU4) (A6L 0.1, set 1))
+>bpset 7cd1,1,{printf "VARIANT_RESET pc=%04X s=%04X cc=%02X\n",pc,s,cc;go}
+Breakpoint 1 set
+>bpset 6750,1,{printf "VARIANT_INIT_ENTRY pc=%04X u=%04X\n",pc,u;go}
+Breakpoint 2 set
+>bpset 66a5,1,{printf "VARIANT_ROM_CHECK_ENTRY pc=%04X u=%04X gate719b=%02X\n",pc,u,b@0x719b;go}
+Breakpoint 3 set
+>bpset 66db,1,{printf "VARIANT_ROM_VERIFY_ENTRY pc=%04X u=%04X expected=%02X%02X%02X%02X%02X start=%04X end=%04X error=%02X\n",pc,u,b@(w@(u+1)),b@(w@(u+1)+1),b@(w@(u+1)+2),b@(w@(u+1)+3),b@(w@(u+1)+4),w@(u+3),w@(u+5),b@(u+7);go}
+Breakpoint 4 set
+>bpset 66f3,1,{printf "VARIANT_SUM_XOR sum=%02X xor=%02X\n",a,b;go}
+Breakpoint 5 set
+>bpset 6715,1,{printf "VARIANT_ROTATE_ADD value=%02X\n",a;go}
+Breakpoint 6 set
+>bpset 674c,1,{printf "VARIANT_ROTATE_SUB_XOR a=%02X b=%02X\n",a,b;go}
+Breakpoint 7 set
+>bpset 674f,1,{printf "VARIANT_ROM_VERIFY_FAILED error=%02X\n",b}
+Breakpoint 8 set
+>bpset 677e,1,{printf "VARIANT_ROM_CHECK_RETURN pc=%04X y=%04X u=%04X\n",pc,y,u;go}
+Breakpoint 9 set
+>bpset 67b3,1,{printf "VARIANT_INIT_TAIL_JMP pc=%04X y=%04X u=%04X\n",pc,y,u;go}
+Breakpoint A set
+>bpset 3b1a,1,{printf "VARIANT_INIT_TAIL_ENTRY pc=%04X y=%04X u=%04X\n",pc,y,u;go}
+Breakpoint B set
+>bpset 7cf6,1,{printf "VARIANT_VM_CALL pc=%04X x=%04X y=%04X u=%04X\n",pc,x,y,u;go}
+Breakpoint C set
+>bpset 76c7,1,{printf "VARIANT_VM_ENTRY pc=%04X x=%04X y=%04X u=%04X s=%04X\n",pc,x,y,u,s}
+Breakpoint D set
+>go
+VARIANT_RESET pc=7CD1 s=0000 cc=50
+VARIANT_INIT_ENTRY pc=6750 u=0672
+VARIANT_RESET pc=7CD1 s=07C4 cc=58
+VARIANT_INIT_ENTRY pc=6750 u=0672
+VARIANT_ROM_CHECK_ENTRY pc=66A5 u=0672 gate719b=00
+VARIANT_ROM_VERIFY_ENTRY pc=66DB u=066A expected=3E761E2605 start=1400 end=FFFF error=12
+VARIANT_SUM_XOR sum=3E xor=76
+VARIANT_ROTATE_ADD value=1E
+VARIANT_ROTATE_SUB_XOR a=26 b=05
+VARIANT_ROM_CHECK_RETURN pc=677E y=FFFF u=0672
+VARIANT_RESET pc=7CD1 s=07C2 cc=D0
+VARIANT_INIT_ENTRY pc=6750 u=0672
+VARIANT_ROM_CHECK_ENTRY pc=66A5 u=0672 gate719b=00
+VARIANT_ROM_VERIFY_ENTRY pc=66DB u=066A expected=3E761E2605 start=1400 end=FFFF error=12
+VARIANT_SUM_XOR sum=3E xor=76
+VARIANT_ROTATE_ADD value=1E
+VARIANT_ROTATE_SUB_XOR a=26 b=05
+VARIANT_ROM_CHECK_RETURN pc=677E y=FFFF u=0672
+VARIANT_INIT_TAIL_JMP pc=67B3 y=0000 u=0672
+VARIANT_INIT_TAIL_ENTRY pc=3B1A y=0000 u=0672
+VARIANT_VM_CALL pc=7CF6 x=FDF0 y=02DA u=0672
+VARIANT_VM_ENTRY pc=76C7 x=FDF0 y=02DA u=0672 s=07C6
+Stopped at breakpoint D
+VARIANT_CAPTURE_END pc=76C7 x=FDF0 y=02DA u=0672
+>quit

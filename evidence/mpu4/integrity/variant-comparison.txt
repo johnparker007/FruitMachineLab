@@ -1,0 +1,43 @@
+Natural MAME 0.281 reset comparison for the existing shared-award edit.
+MAME SHA256 0fce5a88df4f9d9b1fbf1405812c00848036e615993780978d967da34204cb7a.
+Fresh isolated directories, declared-absent NVRAM/configuration, -noreadconfig,
+no input playback and no state/PC/RAM/ROM injection. Each run stopped at its
+first observed boundary.
+
+ORIGINAL
+  SHA1   402d1518bb78fdc489b06c2aabc771e5ce151847
+  SHA256 ebf580381aa6eb6ffb26e2acd40f30aa34b0311f71c6564607c6f48a53bca15c
+  VARIANT_ROM_VERIFY_ENTRY expected=3E761E2605 start=1400 end=FFFF error=12
+  VARIANT_SUM_XOR sum=3E xor=76
+  VARIANT_ROTATE_ADD value=1E
+  VARIANT_ROTATE_SUB_XOR a=26 b=05
+  VARIANT_ROM_CHECK_RETURN pc=677E y=FFFF u=0672
+  VARIANT_VM_ENTRY pc=76C7 x=FDF0 y=02DA u=0672 s=07C6
+  VARIANT_CAPTURE_END pc=76C7 x=FDF0 y=02DA u=0672
+  debug.log SHA256 23946cf8ec8c4675c4a9392d03eee0ae1325175ec6e7dfdf59cfecfae3d8637e
+
+UNREPAIRED PATCH (only 75BE 0A->0C; fields unchanged)
+  SHA1   58e997e6e1d2ef2251ddde18a5d41716d21368c0
+  SHA256 a67062f32dba37ad4f24c8b1bc6ac92c91e8f3b39ce8f9c21904af0fd1667714
+  VARIANT_ROM_VERIFY_ENTRY expected=3E761E2605 start=1400 end=FFFF error=12
+  VARIANT_SUM_XOR sum=40 xor=70
+  VARIANT_ROM_VERIFY_FAILED error=12
+  VARIANT_CAPTURE_END pc=674F x=FFD1 y=FFFF u=066A
+  debug.log SHA256 7dea1197d8884097eb26df161e0150730f3c3e082f86ab88729c431b0bf3172a
+
+REPAIRED PATCH (75BE plus ordered active fields at FFD1-FFD5)
+  SHA1   ae040f3f130934972b9e651d4dbe36ff24fb4954
+  SHA256 66162b920b05c537a5c7bce098d883b0551951ed46aa97cd98600a3d7b789796
+  VARIANT_ROM_VERIFY_ENTRY expected=40701CFA02 start=1400 end=FFFF error=12
+  VARIANT_SUM_XOR sum=40 xor=70
+  VARIANT_ROTATE_ADD value=1C
+  VARIANT_ROTATE_SUB_XOR a=FA b=02
+  VARIANT_ROM_CHECK_RETURN pc=677E y=FFFF u=0672
+  VARIANT_VM_ENTRY pc=76C7 x=FDF0 y=02DA u=0672 s=07C6
+  VARIANT_CAPTURE_END pc=76C7 x=FDF0 y=02DA u=0672
+  debug.log SHA256 e4a67d0109c476bdcdd696803b0a9fca596c710afd530863819a8fdf30956e74
+
+Changed offsets against the original: unrepaired 30142; repaired
+30142,65489-65493. Repaired differs from unrepaired only at 65489-65493.
+Original checker code 66A5-674F, outer gate 719B, disabled records FFB0-FFD0
+and active record metadata FFD6-FFDB are unchanged in both variants.

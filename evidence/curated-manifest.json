@@ -6328,5 +6328,50 @@
     "path": "evidence/mpu4/VM-SCRIPTS/INDEX.txt",
     "bytes": 215177,
     "sha256": "C4B85FFD74D67512E71AA6D78BF87998E98B896671620BB8EE0AF8BE4F27078F"
+  },
+  {
+    "path": "docs/recovery/ROM-INTEGRITY-REPAIR-PASS.md",
+    "bytes": 5856,
+    "sha256": "99D1C5537374E8259182251B344B3F22A42B3F74E22A5F30847B2F2595B1B54B"
+  },
+  {
+    "path": "evidence/mpu4/integrity/repaired-award-fields.json",
+    "bytes": 4975,
+    "sha256": "225DDD32550C4A81C811177B110FAAEAB97FD756BC52AB29C52DACF807DD7BFB"
+  },
+  {
+    "path": "evidence/mpu4/integrity/variant-comparison.txt",
+    "bytes": 2221,
+    "sha256": "1871668BA181BBDAD1682ACE0E134019CC844CDAC500897D78ED2717D358BD08"
+  },
+  {
+    "path": "evidence/mpu4/integrity/variant-original.json",
+    "bytes": 7654,
+    "sha256": "2A87BF3A945F099C253981DECC0897E8DFD3A36DF982A4FFE5CE4ACBC4F52342"
+  },
+  {
+    "path": "evidence/mpu4/integrity/variant-original.txt",
+    "bytes": 2596,
+    "sha256": "9842AE5FB5E54B935777CF598E2C3790C97EF482D398D84B4CE4A7F4E18CD637"
+  },
+  {
+    "path": "evidence/mpu4/integrity/variant-repaired.json",
+    "bytes": 7659,
+    "sha256": "5BE8293E360754BD461DBF60A5A90709CACD0F162BAC73B59AB2B3368489C342"
+  },
+  {
+    "path": "evidence/mpu4/integrity/variant-repaired.txt",
+    "bytes": 2596,
+    "sha256": "C23C5A5B3E021154EAE98C49151BC150D51B16E8D9AE5897F29A59A57A48B187"
+  },
+  {
+    "path": "evidence/mpu4/integrity/variant-unrepaired.json",
+    "bytes": 7125,
+    "sha256": "0BD9855311DBF943D1FB20A9CEAE6122DE67556F02B0E81F61AE3E92BC4D0543"
+  },
+  {
+    "path": "evidence/mpu4/integrity/variant-unrepaired.txt",
+    "bytes": 1974,
+    "sha256": "6276A679A98A8AFEB5358A5A6106622F9F50553445F56FB6C6C75C8D056E13A4"
   }
 ]

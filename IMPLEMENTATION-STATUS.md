@@ -13,6 +13,21 @@ warnings/errors. Other runtime loaders remain unenforced (A1 partial). See
 [A1 capture policy](docs/recovery/A1-CAPTURE-POLICY-PASS.md). Uncommitted stopped
 sound work was preserved untouched and excluded from the snapshot.
 
+17 October A1 `SkillCashData` static-load increment: the shared
+`RuntimeEvidencePolicy` now covers `LoadExtensions`, `LoadFeature`, `LoadAlpha`
+and `LoadScan`; Live forwards its chosen policy instead of defaulting those
+helpers to compatibility. The covered evidence is static ROM range data
+(`skill-cash-extension-data`, `skill-cash-feature-data`,
+`skill-cash-alpha-scan-data`), so strict mode allows it and reads no captured
+schedule or result. Callers that supply no evidence directory retain the compiled
+ROM arrays and prior replay semantics. Review18 preflights all feature/alpha/scan
+required spans for exact presence, recovered length, valid hex/address/end and
+overlap before any machine write; ten invalid map-copy cases are rejected with
+sentinel memory intact, and valid maps match compiled bytes. Six new groups pass;
+full clean snapshot suite is 382 (376 baseline plus six), zero build
+warnings/errors. Strict Live still fails on recorded timing/IRQ ownership; A1
+remains partial.
+
 17 October natural ROM-integrity boot oracle: a fresh isolated original-ROM
 MAME 0.281 cold boot with declared-absent NVRAM/configuration and no input
 playback reaches reset `7CD1`, init `6750`, checksum `66A5`/`66DB`, computes the

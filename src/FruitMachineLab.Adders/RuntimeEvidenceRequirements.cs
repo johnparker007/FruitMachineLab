@@ -52,6 +52,32 @@ public static class RuntimeEvidenceRequirements
         RuntimeEvidenceClass.StaticDefinition,
         "static declared equivalences; independent source-derived costs for the aliased tokens");
 
+    public static RuntimeEvidenceRequirement SkillCashExtensionRanges { get; }=new(
+        "maps/skill-cash-extension-data.json",
+        "ranges",
+        RuntimeEvidenceClass.StaticDefinition,
+        "ROM-byte-checked static lamp, sound and alpha data ranges",
+        "equivalent_timing_tokens are static declared aliases consumed separately by the Live constructor");
+
+    public static RuntimeEvidenceRequirement SkillCashFeatureRanges { get; }=new(
+        "maps/skill-cash-feature-data.json",
+        "ranges[71AA, 8705, 890A, 7257]",
+        RuntimeEvidenceClass.StaticDefinition,
+        "ROM-byte-checked static feature and sound ranges",
+        "words are static ROM word writes retained in the compiled loader and not read from this file");
+
+    public static RuntimeEvidenceRequirement SkillCashAlphaRanges { get; }=new(
+        "maps/skill-cash-alpha-scan-data.json",
+        "ranges[A7B6, A7C9, A814, AF78, 193B, 6C3C]",
+        RuntimeEvidenceClass.StaticDefinition,
+        "ROM-byte-checked static alpha streams and glyph/mirror tables");
+
+    public static RuntimeEvidenceRequirement SkillCashScanRanges { get; }=new(
+        "maps/skill-cash-alpha-scan-data.json",
+        "ranges[28E6, 29BB]",
+        RuntimeEvidenceClass.StaticDefinition,
+        "ROM-byte-checked static output-scan tables");
+
     public static RuntimeEvidenceRequirement BoardResultCosts { get; }=new(
         "skill-cash/board-result.json",
         "sites, tokens",

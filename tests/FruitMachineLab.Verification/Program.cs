@@ -2876,6 +2876,101 @@ Check("Live runtime evidence policy names captured fields in a mixed static chec
     var allowed=RuntimeEvidencePolicy.CaptureFree(allowDeclaredCheckpoint:true).ReadText(evidence,RuntimeEvidenceRequirements.IrqServiceData);
     if(!allowed.Contains("\"ranges\""))throw new Exception("Static ROM ranges were dropped when checkpoint was permitted");
 });
+Check("SkillCashData extension ranges use the shared policy and preserve compatibility bytes", () => {
+    var baseline=new Machine();SkillCashData.LoadExtensions(baseline,evidence);
+    var explicitCompatibility=new Machine();SkillCashData.LoadExtensions(explicitCompatibility,evidence,RuntimeEvidencePolicy.Compatibility);
+    var strict=new Machine();SkillCashData.LoadExtensions(strict,evidence,RuntimeEvidencePolicy.CaptureFree());
+    Equal(true,baseline.Memory.SequenceEqual(explicitCompatibility.Memory));
+    Equal(true,baseline.Memory.SequenceEqual(strict.Memory));
+    if(baseline.Memory[0x7248]==0)throw new Exception("Static extension ranges were not loaded");
+});
+Check("SkillCashData feature ranges match compiled ROM data under compatibility and strict policy", () => {
+    var compiled=new Machine();SkillCashData.LoadFeature(compiled);
+    var compatibility=new Machine();SkillCashData.LoadFeature(compatibility,evidence,RuntimeEvidencePolicy.Compatibility);
+    var strict=new Machine();SkillCashData.LoadFeature(strict,evidence,RuntimeEvidencePolicy.CaptureFree());
+    Equal(true,compiled.Memory.SequenceEqual(compatibility.Memory));
+    Equal(true,compiled.Memory.SequenceEqual(strict.Memory));
+});
+Check("SkillCashData alpha and scan ranges match compiled ROM data under strict policy", () => {
+    var compiledAlpha=new Machine();SkillCashData.LoadAlpha(compiledAlpha);
+    var strictAlpha=new Machine();SkillCashData.LoadAlpha(strictAlpha,evidence,RuntimeEvidencePolicy.CaptureFree());
+    Equal(true,compiledAlpha.Memory.SequenceEqual(strictAlpha.Memory));
+    var compiledScan=new Machine();SkillCashData.LoadScan(compiledScan);
+    var strictScan=new Machine();SkillCashData.LoadScan(strictScan,evidence,RuntimeEvidencePolicy.CaptureFree());
+    Equal(true,compiledScan.Memory.SequenceEqual(strictScan.Memory));
+});
+Check("SkillCashData requirements name exact static files and fields", () => {
+    var requirements=new[]{
+        (RuntimeEvidenceRequirements.SkillCashExtensionRanges,"maps/skill-cash-extension-data.json","ranges"),
+        (RuntimeEvidenceRequirements.SkillCashFeatureRanges,"maps/skill-cash-feature-data.json","ranges[71AA, 8705, 890A, 7257]"),
+        (RuntimeEvidenceRequirements.SkillCashAlphaRanges,"maps/skill-cash-alpha-scan-data.json","ranges[A7B6, A7C9, A814, AF78, 193B, 6C3C]"),
+        (RuntimeEvidenceRequirements.SkillCashScanRanges,"maps/skill-cash-alpha-scan-data.json","ranges[28E6, 29BB]")
+    };
+    foreach(var item in requirements) {
+        Equal(item.Item2,item.Item1.RelativePath);
+        Equal(RuntimeEvidenceClass.StaticDefinition,item.Item1.Class);
+        Equal(item.Item3,item.Item1.Fields);
+        if(string.IsNullOrEmpty(item.Item1.Replacement))throw new Exception($"Missing replacement for {item.Item1.RelativePath}");
+        var text=RuntimeEvidencePolicy.CaptureFree().ReadText(evidence,item.Item1);
+        using var doc=System.Text.Json.JsonDocument.Parse(text);
+        if(!doc.RootElement.TryGetProperty("ranges",out _))throw new Exception($"Missing ranges in {item.Item1.RelativePath}");
+    }
+});
+Check("SkillCashData static range preflight rejects invalid map copies without mutation", () => {
+    var feature=Path.Combine(evidence,"maps","skill-cash-feature-data.json");
+    var alphaScan=Path.Combine(evidence,"maps","skill-cash-alpha-scan-data.json");
+    var dir=Path.Combine(Path.GetTempPath(),"fml-review18-"+Guid.NewGuid().ToString("N"));
+    Directory.CreateDirectory(Path.Combine(dir,"maps"));
+    try {
+        System.Text.Json.Nodes.JsonArray Ranges(System.Text.Json.Nodes.JsonNode node)=>node["ranges"]!.AsArray();
+        System.Text.Json.Nodes.JsonObject RangeAt(System.Text.Json.Nodes.JsonNode node,string address)=>Ranges(node).Single(x=>x!["address"]!.GetValue<string>()==address)!.AsObject();
+        void Reject(string source,string expected,Action<System.Text.Json.Nodes.JsonNode> mutate,Action<Machine,string> load) {
+            var name=Path.GetFileName(source);
+            var target=Path.Combine(dir,"maps",name);
+            var node=System.Text.Json.Nodes.JsonNode.Parse(File.ReadAllText(source))!;
+            mutate(node);
+            File.WriteAllText(target,node.ToJsonString());
+            var machine=new Machine();Array.Fill(machine.Memory,(byte)0xA5);var before=machine.Memory.ToArray();
+            try { load(machine,dir); }
+            catch(InvalidDataException error) {
+                if(!error.Message.Contains(name,StringComparison.Ordinal) || !error.Message.Contains(expected,StringComparison.OrdinalIgnoreCase))
+                    throw new Exception($"{name}: diagnostic missing {expected}: {error.Message}");
+                if(!machine.Memory.SequenceEqual(before))throw new Exception($"{name}: partial mutation before rejection of {expected}");
+                return;
+            }
+            throw new Exception($"{name}: expected rejection for {expected}");
+        }
+        Reject(feature,"8705",node=>Ranges(node).Remove(RangeAt(node,"8705")),(machine,dir)=>SkillCashData.LoadFeature(machine,dir));
+        Reject(feature,"8705",node=>Ranges(node).Add(RangeAt(node,"8705").DeepClone()),(machine,dir)=>SkillCashData.LoadFeature(machine,dir));
+        Reject(feature,"890A",node=>{var range=RangeAt(node,"890A");var hex=range["hex"]!.GetValue<string>();range["hex"]=hex[..^2];},(machine,dir)=>SkillCashData.LoadFeature(machine,dir));
+        Reject(feature,"7257",node=>{var range=RangeAt(node,"7257");range["hex"]=range["hex"]!.GetValue<string>()+"00";},(machine,dir)=>SkillCashData.LoadFeature(machine,dir));
+        Reject(feature,"7257",node=>Ranges(node).Add(new System.Text.Json.Nodes.JsonObject{["address"]="7260",["bytes"]=1,["hex"]="00"}),(machine,dir)=>SkillCashData.LoadFeature(machine,dir));
+        Reject(feature,"ZZZZ",node=>RangeAt(node,"8705")["address"]="ZZZZ",(machine,dir)=>SkillCashData.LoadFeature(machine,dir));
+        Reject(feature,"8705",node=>RangeAt(node,"8705")["hex"]="ABC",(machine,dir)=>SkillCashData.LoadFeature(machine,dir));
+        Reject(feature,"FFFF",node=>RangeAt(node,"8705")["address"]="FFFF",(machine,dir)=>SkillCashData.LoadFeature(machine,dir));
+        Reject(alphaScan,"A7C9",node=>Ranges(node).Remove(RangeAt(node,"A7C9")),(machine,dir)=>SkillCashData.LoadAlpha(machine,dir));
+        Reject(alphaScan,"29BB",node=>{var range=RangeAt(node,"29BB");range["hex"]=range["hex"]!.GetValue<string>()+"00";},(machine,dir)=>SkillCashData.LoadScan(machine,dir));
+    }
+    finally { Directory.Delete(dir,true); }
+});
+Check("SkillCashData valid temporary map copies match compiled bytes", () => {
+    var dir=Path.Combine(Path.GetTempPath(),"fml-review18-"+Guid.NewGuid().ToString("N"));
+    Directory.CreateDirectory(Path.Combine(dir,"maps"));
+    try {
+        foreach(var name in new[]{"skill-cash-feature-data.json","skill-cash-alpha-scan-data.json"})
+            File.Copy(Path.Combine(evidence,"maps",name),Path.Combine(dir,"maps",name),true);
+        var compiledFeature=new Machine();SkillCashData.LoadFeature(compiledFeature);
+        var mappedFeature=new Machine();SkillCashData.LoadFeature(mappedFeature,dir,RuntimeEvidencePolicy.CaptureFree());
+        Equal(true,compiledFeature.Memory.SequenceEqual(mappedFeature.Memory));
+        var compiledAlpha=new Machine();SkillCashData.LoadAlpha(compiledAlpha);
+        var mappedAlpha=new Machine();SkillCashData.LoadAlpha(mappedAlpha,dir,RuntimeEvidencePolicy.CaptureFree());
+        Equal(true,compiledAlpha.Memory.SequenceEqual(mappedAlpha.Memory));
+        var compiledScan=new Machine();SkillCashData.LoadScan(compiledScan);
+        var mappedScan=new Machine();SkillCashData.LoadScan(mappedScan,dir,RuntimeEvidencePolicy.CaptureFree());
+        Equal(true,compiledScan.Memory.SequenceEqual(mappedScan.Memory));
+    }
+    finally { Directory.Delete(dir,true); }
+});
 if(passed==0)throw new ArgumentException("No verification groups matched the requested filter");
 Console.WriteLine($"{passed} verification groups passed. Feature, alpha software and IRQ latch replay verified; electrical timing, audio synthesis and general scheduling remain incomplete.");
 return 0;

@@ -141,7 +141,7 @@ public sealed class SkillCashLiveSession
         }
         using(var data=JsonDocument.Parse(ReadEvidence(RuntimeEvidenceRequirements.ExtensionTimingAliases)))
             foreach(var alias in data.RootElement.GetProperty("equivalent_timing_tokens").EnumerateObject())tokenCosts.Add(alias.Name,tokenCosts[alias.Value.GetString()!]);
-        SeedFeature(feature);SeedScan(timing);SkillCashData.LoadExtensions(Machine,evidence);
+        SeedFeature(feature);SeedScan(timing);SkillCashData.LoadExtensions(Machine,evidence,evidencePolicy);
         ushort initialClock=feature.Initial["clock"];
         if(includeCaller) {
             initialClock=SkillCashCallerState.Apply(Machine,evidence,true);
@@ -262,7 +262,7 @@ public sealed class SkillCashLiveSession
     }
     private void SeedFeature(FeatureCapture capture)
     {
-        var m=Machine;var first=capture.Initial;SkillCashData.LoadFeature(m);SkillCashData.LoadAlpha(m);
+        var m=Machine;var first=capture.Initial;SkillCashData.LoadFeature(m,evidence,evidencePolicy);SkillCashData.LoadAlpha(m,evidence,evidencePolicy);
         SkillCashAlphaVerification.Seed(m,SkillCashAlphaVerification.Load(evidence).Calls[0].Before);
         var native=capture.Native[0].Before;
         for(ushort at=0x2F0;at<0x322;at++)m.Memory[at]=(byte)native[(at<0x309 ? "source" : "copy")+at.ToString("X4")];
@@ -280,7 +280,7 @@ public sealed class SkillCashLiveSession
     }
     private void SeedScan(SharedTimingCapture capture)
     {
-        var m=Machine;SkillCashData.LoadScan(m);var initial=capture.InitialScan;
+        var m=Machine;SkillCashData.LoadScan(m,evidence,evidencePolicy);var initial=capture.InitialScan;
         foreach(var pair in new[]{("phase",0x23),("count",0x24),("reload",0x25),("alternate",0x26),("alternate_reload",0x27),("suppress",0x8D),("decimal",0x22),("sweep",0xB3)})m.Memory[pair.Item2]=Convert.ToByte(initial[pair.Item1],16);
         m.WriteWord(0x28,Convert.ToUInt16(initial["column"],16));
         foreach(var pair in new[]{("sample",8),("digits",0x1A),("blink",0x2BE),("masks",0x140),("blank",0xAB)})Convert.FromHexString(initial[pair.Item1]).CopyTo(m.Memory,pair.Item2);

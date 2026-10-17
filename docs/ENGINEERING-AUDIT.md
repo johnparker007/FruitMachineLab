@@ -47,7 +47,8 @@ listing decode/rebuild path before the PC executor can consume them reliably.
 Locations below are repository-relative. This inventories the current execution
 owners and groups repeated fields by their consumer; it does not treat every byte
 in a capture file as a runtime dependency. `SkillCashLiveSession`'s direct reads
-now have field-level classifications and a strict `RuntimeEvidencePolicy`; strict
+and the `SkillCashData` extension/feature/alpha/scan static range loads now have
+field-level classifications and a strict `RuntimeEvidencePolicy`; strict
 construction fails early until recorded timing/results have causal replacements.
 Reads through other helpers and owners below remain unenforced.
 
@@ -64,7 +65,7 @@ Reads through other helpers and owners below remain unenforced.
 | Live constructor: `lamp-frames.json.Responses`, initial frames; `AddersBackgroundServices.Mame6809CompatibilityResponse` | Characteriser/MAME compatibility adapter and seeded frame memory affect correctness; not recovered physical PAL | Isolate compatibility target and recover physical PAL contract separately; P1/C7, high |
 | `Mpu4ChoiceStreamScheduler.RestoreQueuedNativeTasks`, `BoardLinkState.ResolveSoundContinuation` | Resume selected captured task continuation; subsequent logical stream execution generated. Not complete native sound service ownership | Integrate existing `AddersNativeSound` native task owner with Live and foreground scheduling; P1, medium/high |
 | `AddersTimedCollectionExecution` wordCycles/alphaCycles, port delegates; selected collection hosts | Explicit host budgets/inputs, often synthetic in tests. Not necessarily recorded but still externally supplied causal assumptions | Integrate real clock, sampled ports and timed foreground/native sound owners; P1, high |
-| `SkillCashData`, Board* LoadData, ROM ranges in maps; decoded VM-SCRIPTS | Static recovered executable/data content, legitimate runtime assets; some embedded constants duplicated in C# | Common validated ROM-derived memory/decoded representation; B1/B2, medium |
+| `SkillCashData`, Board* LoadData, ROM ranges in maps; decoded VM-SCRIPTS | Static recovered executable/data content, legitimate runtime assets; `SkillCashData` extension/feature/alpha/scan ranges are policy-classified, other loaders and some embedded constants duplicated in C# remain unenforced | Common validated ROM-derived memory/decoded representation; B1/B2, medium |
 | `SkillCashReplay`, *Verification, `OutputPlayback`, `SkillCashPlayback` | Trajectory/input/expected stack/lamp/alpha traces are verification/playback dependencies. Not autonomous runtime claims | Retain as oracle; no replacement required |
 | timer-deadlines.json and shared-timing.Events | Reference-only after prior scheduling work; Live still reads other fields of shared-timing | Keep differential tests; no new scheduler dependency |
 

@@ -54,12 +54,44 @@ The `shared-timing.json` requirement notes `events` and `vm_cycle_deltas` are no
 consumed. The timing aliases remain static declarations; the captured costs they
 point at are rejected separately.
 
+## SkillCashData static load consumers
+
+General17 extends the same policy object through the four `SkillCashData` loaders
+used by Live. These consumers are static ROM data, so strict capture-free policy
+allows them without a checkpoint; no recorded schedule or result is read.
+
+| Helper | Evidence file | Consumed fields | Class |
+| --- | --- | --- | --- |
+| `LoadExtensions` | `maps/skill-cash-extension-data.json` | `ranges` | Static definition |
+| `LoadFeature` | `maps/skill-cash-feature-data.json` | `ranges[71AA, 8705, 890A, 7257]` | Static definition |
+| `LoadAlpha` | `maps/skill-cash-alpha-scan-data.json` | `ranges[A7B6, A7C9, A814, AF78, 193B, 6C3C]` | Static definition |
+| `LoadScan` | `maps/skill-cash-alpha-scan-data.json` | `ranges[28E6, 29BB]` | Static definition |
+
+`SkillCashLiveSession` passes its chosen policy into `LoadExtensions`,
+`LoadFeature`, `LoadAlpha` and `LoadScan`; the helpers no longer default silently
+to compatibility on that path. When an evidence directory is supplied they read
+the source-backed ranges above. Existing callers that pass no directory retain
+the compiled ROM byte arrays unchanged, preserving prior verification and replay
+semantics. The feature-data `words` and the ROM pointer writes at `851E`/`8522`
+remain compiled static definitions; the former is noted as not read from this
+file by this loader.
+
+Review18 hardens the feature/alpha/scan map path before any machine write. Every
+required range must appear exactly once with its recovered byte length; the
+address, hex text and end must be valid within 65536, and a span overlapping a
+required span is rejected. Missing, duplicate, short, long, overlapping,
+malformed or out-of-bounds entries fail with the file and address in the
+diagnostic. `LoadFeature` preflights before its shared `Load(machine)` step, so a
+rejected map leaves the supplied machine untouched. Valid maps produce the same
+bytes as the compiled arrays. Negative tests use temporary map copies and
+sentinel memory, including the feature loader's earlier mutation path.
+
 ## Remaining unenforced reads (A1 still partial)
 
-These runtime reads are outside the protected constructor boundary and remain
-unclassified: `SkillCashPlayback.LoadLamps`; `SkillCashData.LoadExtensions`,
-`LoadFeature`, `LoadAlpha`, `LoadScan`; `SkillCashAlphaVerification.Load`;
-`SkillCashCompensationVerification.Load`; `SkillCashCallerState.Apply`; the
+These runtime reads remain outside the protected boundaries and unclassified:
+`SkillCashPlayback.LoadLamps`; `SkillCashAlphaVerification.Load`;
+`SkillCashCompensationVerification.Load` (both still read by Live seeding);
+`SkillCashCallerState.Apply`; the
 `BoardSelectionState`/`BoardMovementState`/`BoardLinkState` loaders;
 `Mpu4ChoiceStreamScheduler.RestoreQueuedNativeTasks` and
 `BoardLinkState.ResolveSoundContinuation`. Collection/payout owners
@@ -77,13 +109,25 @@ but the same recorded data still has other verification consumers by design.
 - Clean `HEAD` snapshot (`e443040`) plus only these intended files:
   `dotnet build FruitMachineLab.Headless.sln --no-restore` succeeds with zero
   warnings/errors; full suite passes 376 groups (370 previous baseline plus six).
-- `e443040` was not amended or committed to. Uncommitted stopped FEC9 sound
-  files/tests/evidence were preserved untouched and excluded from the snapshot
-  suite; they were not retried.
+- General17 adds four `SkillCashData` groups: actual strict/default extension
+  load equality, feature range equality, alpha/scan range equality, and exact
+  requirement file/field inventory. Full suite passes 380 groups (376 baseline
+  plus four) with zero build warnings/errors.
+- Review18 adds two actual-helper groups: ten invalid temporary map copies
+  (missing, duplicate, short, long, overlapping, malformed address/hex and
+  out-of-bounds; alpha and scan included) rejected with sentinel memory intact,
+  plus valid temporary copies matching compiled bytes. Clean `HEAD` (`a0deb81`)
+  snapshot plus only intended files builds with zero warnings/errors and passes
+  382 groups.
+- `e443040` and `a0deb81` were not amended or committed to. Uncommitted stopped
+  FEC9 sound files/tests/evidence were preserved untouched and excluded from all
+  snapshot suites; they were not retried.
 
 ## Limits
 
 Strict Live fails early because the current feature-entry path still needs
-recorded outer occupancy, helper budgets and lamp responses. A1 remains partial
-until every runtime read has a policy classification and causal replacements
-exist. No MAME run, capture, installation or configuration change was made.
+recorded outer occupancy, helper budgets and lamp responses. Adding static ROM
+consumers does not make gameplay capture-free or remove that timing/IRQ
+ownership. A1 remains partial until every runtime read has a policy
+classification and causal replacements exist. No MAME run, capture, installation
+or configuration change was made.

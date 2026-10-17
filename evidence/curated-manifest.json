@@ -246,8 +246,8 @@
   },
   {
     "path": "docs/recovery/ROM-INTEGRITY-PASS.md",
-    "bytes": 11113,
-    "sha256": "791E9B293BF80F3336BB85D86B871E8BFCC4F06D742A44287181A1FCB90F6673"
+    "bytes": 11370,
+    "sha256": "56F77D370C1678BEFB0443084F897FA0EAC45F765B9C21278E94E35932A62794"
   },
   {
     "path": "docs/recovery/SCRIPT-CLASSIFICATION.txt",
@@ -338,6 +338,11 @@
     "path": "docs/recovery/START-TONE-SPIN-GATES-PASS.md",
     "bytes": 7503,
     "sha256": "712462DF68582EA85ED1E9577876E2C86142DAF1CCFF04B1D89B036DC6AACF7C"
+  },
+  {
+    "path": "docs/recovery/STARTUP-VM-ENTRY-PASS.md",
+    "bytes": 5177,
+    "sha256": "08A59E333666A827BDEDCF466E09E061B6A2FB0D93EDF7102E53A4FE27DDC79A"
   },
   {
     "path": "docs/recovery/STATE-AWARE-EXPLORATION.txt",
@@ -768,6 +773,16 @@
     "path": "evidence/mpu4/integrity/original-reset-boot.log",
     "bytes": 1552,
     "sha256": "AB52014199FA93869BF77E1D80B872CDB33818CDF3EFABF165611EF172316B8C"
+  },
+  {
+    "path": "evidence/mpu4/integrity/original-startup-vm-entry.json",
+    "bytes": 6865,
+    "sha256": "576D7AE190FBB9DA264BE386ED8F71F18C99C0FF492CB9A887B743F58968A94F"
+  },
+  {
+    "path": "evidence/mpu4/integrity/original-startup-vm-entry.txt",
+    "bytes": 2596,
+    "sha256": "758BED6D6588F9CBDE74FD01AA389546D9014AE7D56D70BB75D6925C72D8A804"
   },
   {
     "path": "evidence/mpu4/maps/board-availability-boundary.json",

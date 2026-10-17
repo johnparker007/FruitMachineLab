@@ -215,6 +215,9 @@ is, any re-signer must reproduce all three skip sets and the `rotate_add`
 address-comparison carry exactly, and must be validated against the natural
 original/MAME boot oracle now recorded in
 `evidence/mpu4/integrity/original-reset-boot.json` rather than assumed. That
-oracle currently covers only the original image through the `677E` return.
-Until then, preserve the original image and report integrity mismatches
-explicitly.
+oracle covers the original image through the `677E` return. A separate natural
+original-image continuation now observes the init tail and first VM entry at
+`76C7` with initial stream pointer `FDF0`; see
+[Startup VM entry](STARTUP-VM-ENTRY-PASS.md). Neither observation covers the
+first token fetch, modified-image boot or gameplay. Until then, preserve the
+original image and report integrity mismatches explicitly.

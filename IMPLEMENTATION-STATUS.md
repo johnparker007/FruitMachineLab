@@ -14,6 +14,17 @@ original-image observation, not modified-ROM boot, gameplay or hardware
 evidence. See [ROM integrity](docs/recovery/ROM-INTEGRITY-PASS.md) and
 `evidence/mpu4/integrity/original-reset-boot.json`.
 
+17 October original startup continuation: the same natural no-injection rules
+now observe the init tail (`67B3`, `3B1A`) and first threaded-VM entry at `76C7`
+with `X=FDF0`, after a second completed checksum pass. The strict curator anchors
+the checksum chain to the pass immediately preceding `67B3` and enforces the
+original SHA1, isolated-copy length/hash, raw log/console hashes, exit `0`,
+marker order and `X=FDF0`. Three resets and two checksum passes are observed
+before the tail; why the first pass restarts is an explicit hypothesis. The run
+stops before the first token fetch. See
+[startup VM entry](docs/recovery/STARTUP-VM-ENTRY-PASS.md) and
+`evidence/mpu4/integrity/original-startup-vm-entry.json`.
+
 17 October static ROM-integrity increment: startup 66A5/66DB self-check recovered
 as four 11-byte records at FFB0; the single gate-00 record covers CPU range
 1400-FFFF with expected fields FFD1-FFD5 (`3E 76 1E 26 05`). All three recovered

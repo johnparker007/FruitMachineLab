@@ -121,10 +121,13 @@ A separate natural original-ROM capture now observes reset, init `6750`,
 checksum `66A5`/`66DB` and return to `677E` with unchanged original SHA1; the
 curator strictly rechecks identity, isolated ROM copy length/hash, raw log and
 console hashes, exit0, marker order and captured injection claims; see
-[ROM integrity](recovery/ROM-INTEGRITY-PASS.md). It does not validate `FDF0`
-or any later VM/gameplay boundary. Both exited0; expected modified loader warning
-occurred. No ROM checksum repair, integrity bypass, natural changed award/play
-session or physical test performed.
+[ROM integrity](recovery/ROM-INTEGRITY-PASS.md). A separate natural original-ROM
+continuation reaches the init tail and first VM entry at `76C7` with initial
+stream pointer `FDF0`, stopping before the first token fetch; see
+[startup VM entry](recovery/STARTUP-VM-ENTRY-PASS.md). It does not validate later
+VM/gameplay behaviour. Both patch probes exited0; expected modified loader
+warning occurred. No ROM checksum repair, integrity bypass, natural changed
+award/play session or physical test performed.
 
 Harness development failures are excluded from accepted evidence: the first
 PowerShell run stopped on expected stderr; an early isolated lookup omitted the

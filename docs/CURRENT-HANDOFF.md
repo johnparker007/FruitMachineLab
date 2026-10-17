@@ -1,5 +1,9 @@
 # Current handoff
 
+Five-batch cycle batch1: native5E2C release matches16 original-ROM cases.
+Cancel/root evidence is curated, not implemented yet. Live ownership remains
+explicit. See recovery/SOUND-LIFECYCLE-PASS.md. Commits/pushes authorized by John.
+
 EIGHT-BATCH CYCLE COMPLETE —307 full verification groups pass;39 Payout and19
 Collect groups pass. Selected normal cash/token callers and both VM native bridges
 now compose through incremental collection VM, debit/display, compensation and

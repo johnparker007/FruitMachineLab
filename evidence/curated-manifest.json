@@ -315,6 +315,11 @@
     "sha256": "B46EED936795B116A36828628BEA56604B37A14E4BE8EA473B6FA4C02100655B"
   },
   {
+    "path": "docs/recovery/SOUND-LIFECYCLE-PASS.md",
+    "bytes": 1748,
+    "sha256": "200383587B3523E8C29DE9A1C308502286D3496B6082E495F4FD1D85A8929425"
+  },
+  {
     "path": "docs/recovery/SPECIAL-FEATURE-RECOVERY.txt",
     "bytes": 4243,
     "sha256": "DAE384645EA4E1886145F25103378F9BBFE49C10958DE236EA9CF69D52BAE066"
@@ -463,6 +468,16 @@
     "path": "evidence/mpu4/collection/service-matrix.json",
     "bytes": 141819,
     "sha256": "DB4CA227A480986AD076D59C3F3C7259E0A058FEFEBB200802B4AF31FC3642DA"
+  },
+  {
+    "path": "evidence/mpu4/collection/sound-lifecycle-debugger.cmd",
+    "bytes": 28788,
+    "sha256": "315AC5FCB9F96C9B6EF8B6173A6DCC921A11FC7AF4004FAFB3249DEA8876303B"
+  },
+  {
+    "path": "evidence/mpu4/collection/sound-lifecycle.json",
+    "bytes": 407766,
+    "sha256": "1A0C8685397E50A20A3CEE2ABB4AA3B9CCBEE091040BD3D87C20D0A1DCFF8287"
   },
   {
     "path": "evidence/mpu4/collection/tail-timing-debugger.cmd",

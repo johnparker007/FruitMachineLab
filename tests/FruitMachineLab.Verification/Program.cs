@@ -7,6 +7,7 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { if(args.Length>1 && !name.Contains(args[1],StringComparison.OrdinalIgnoreCase))return;action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Sound lifecycle release matches16 original-ROM channel cases",()=>Equal(16,AddersSoundLifecycleVerification.Matrix(evidence,"release")));
 Check("Payout timed collection handles100 seeded transactions with physical Collect sampling",()=>{
     var m=new Machine{DataStackBase=0x600};m.Control=new(m,0x784);SkillCashData.LoadFeature(m);SkillCashData.LoadAlpha(m);AddersPayoutCallerData.Load(m,evidence);Convert.FromHexString("34203184AEA16E91").CopyTo(m.Memory,0xF8);m.Memory[0x55]=0x1F;var scheduler=new Mpu4ChoiceStreamScheduler(m,0);scheduler.Reset();AddersSoundResetMemory.Apply(m);var panel=new Mpu4PanelInput(m);byte port=0x30;ulong clock=0;int polls=0,totalDebits=0,totalWrites=0;
     int Poll(){m.Control.Push(0xBEEF);using var e=new AddersTimedCollectionExecution(m,evidence,0xAAA1,clock,_=>{},new(m),scheduler,(_,_)=>10,(_,_)=>1000,()=>port,v=>{port=v;totalWrites++;},0,_=>{});int budget=1000000;

@@ -4,6 +4,7 @@ namespace FruitMachineLab.Adders;
 
 public static class AddersSoundOperationVerification
 {
+    public static int Calls(string evidence)=>Verify(evidence,"sound-callservice",(m,row)=>new AddersSoundServicePlan(m,0x700,0x600,0x8784,0x1A0).Instructions(),0x5CD0,0x4C34,true);
     public static int NativeChildLongevity(string evidence)
     {
         using var doc=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","sound-noteservice.json")));

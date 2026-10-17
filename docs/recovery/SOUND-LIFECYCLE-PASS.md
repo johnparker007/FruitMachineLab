@@ -240,3 +240,14 @@ All five milestones are committed/pushed under John's request. Final log:
 %TEMP%/FruitMachineLab-sound-followon-final.log. Build pointer:
 FruitMachineLab-sound-followon-build.txt. Last note-service export is repeatable;
 native start/end continuations are checked alongside cycles/bytes/RAM.
+
+## Sixteen-batch cycle: C1 native frames
+
+C1 dictionary target5E8F now stages its exact bounds test, consumes the two-byte
+destination at U, saves the incremented U in the physical task stack, updates+6,
+and resumes5D3B. Overflow remains an explicit SWI3 boundary. Capture command
+service -Calls/shared curator -Operation callservice exports24 synthetic native
+ticks with two nested calls and yield/resume. Each series is seeded once;
+all instruction bytes/cycles and full RAM agree across preserved ticks. This is
+not yet the875B rhythm path or complete8784. Raw pointer sound-call.txt under
+TEMP (FruitMachineLab- prefix). No ROM/settings/Ghidra modifications.

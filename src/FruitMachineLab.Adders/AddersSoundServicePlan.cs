@@ -60,6 +60,19 @@ public sealed class AddersSoundServicePlan(Machine m,ushort stack,ushort initial
                     yield return new NativeRoutineStep(0x5D45,"3A",()=>x+=command);
                     yield return new NativeRoutineStep(0x5D46,"6E94");
                     ushort target=m.ReadWord(x);
+                    if(command==0xC1 && target==0x5E8F){
+                        yield return new NativeRoutineStep(0x5E8F,"30A817",()=>x=(ushort)(y+0x17));
+                        yield return new NativeRoutineStep(0x5E92,"AC26",()=>zero=x>m.ReadWord((ushort)(y+6)));
+                        yield return new NativeRoutineStep(0x5E94,"22E9");
+                        if(zero)throw new NotSupportedException("Native sound call stack overflow reaches SWI3");
+                        ushort destination=0;
+                        yield return new NativeRoutineStep(0x5E96,"ECC1",()=>{destination=m.ReadWord(u);u+=2;});
+                        yield return new NativeRoutineStep(0x5E98,"AE26",()=>x=m.ReadWord((ushort)(y+6)));
+                        yield return new NativeRoutineStep(0x5E9A,"EF83",()=>{x-=2;m.WriteWord(x,u);});
+                        yield return new NativeRoutineStep(0x5E9C,"AF26",()=>m.WriteWord((ushort)(y+6),x));
+                        yield return new NativeRoutineStep(0x5E9E,"1F03",()=>u=destination);
+                        yield return new NativeRoutineStep(0x5EA0,"7E5D3B");continue;
+                    }
                     if(command==0xC2 && target==0x5EE3){
                         var child=new AddersSoundChildPlan(m,y,u,s);foreach(var op in child.Instructions())yield return op;u=child.Cursor;x=child.X;continue;
                     }

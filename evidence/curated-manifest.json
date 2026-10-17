@@ -316,8 +316,8 @@
   },
   {
     "path": "docs/recovery/SOUND-LIFECYCLE-PASS.md",
-    "bytes": 14996,
-    "sha256": "486952CF50444ED981A97C965BF9B34C30BEAE5EE838830C31D0ABFE54374265"
+    "bytes": 15660,
+    "sha256": "E03E7C28E6341425923AE479317260378247D8320FC46A9E7C15E5399AD3F8D4"
   },
   {
     "path": "docs/recovery/SPECIAL-FEATURE-RECOVERY.txt",
@@ -468,6 +468,16 @@
     "path": "evidence/mpu4/collection/service-matrix.json",
     "bytes": 141819,
     "sha256": "DB4CA227A480986AD076D59C3F3C7259E0A058FEFEBB200802B4AF31FC3642DA"
+  },
+  {
+    "path": "evidence/mpu4/collection/sound-callservice-debugger.cmd",
+    "bytes": 59950,
+    "sha256": "421EAE4C7D6F655AFEC89C81942CBB1490A35A53F75CD7A1A06E1590229FB065"
+  },
+  {
+    "path": "evidence/mpu4/collection/sound-callservice.json",
+    "bytes": 297297,
+    "sha256": "3F8C922301C6732768226801AABB4E664D44802828729ED9E5773B28A7FD992C"
   },
   {
     "path": "evidence/mpu4/collection/sound-child-debugger.cmd",

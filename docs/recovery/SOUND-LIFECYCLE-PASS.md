@@ -268,3 +268,12 @@ drains the full prompt twelve times,48 task completions, retaining all six task
 records/channels and clearing key-on bits. Duration/cadence and selected tempo
 variants are component tests, not natural machine IRQ timing. Actual hardware
 audio is not synthesized. Raw pointer: FruitMachineLab-sound-prompt.txt.
+
+AddersNativeSound now provides an opt-in native task owner. BeginService requires
+explicit native S/U/X/Y/IRQ mask and caller-chosen cycle; each call runs one5CD0
+tick. Queue/cancel/reset are semantic foreground operations, not zero-cycle Live
+CPU adapters. Competing task mutation during service is rejected. Pause freezes
+actual native execution/time; faults latch and cannot resume. There is no IRQ
+period or acceptance inference. Selected diagnostic return continuation is4C34.
+Synthetic owner checks exercise pause, single tick, mutation exclusion and disabled
+reset/queue. Logical scheduler/Live are unchanged.

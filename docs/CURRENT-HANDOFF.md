@@ -1,5 +1,10 @@
 # Current handoff
 
+Sixteen-batch cycle batch4: explicit AddersNativeSound owner stages one native
+service call, blocks competing foreground mutation and freezes on pause/fault.
+Host supplies cadence/native context; queue/reset remain semantic boundaries.
+Next optional collection bindings; do not connect as zero-cost Live work.
+
 Sixteen-batch cycle batch3: actual8784 matches128 preserved ROM service ticks;
 12 full prompt rounds drain48 tasks with no pool/channel leaks. Next native sound
 owner and collection bindings (single0045 owner). Live unchanged.

@@ -11,6 +11,16 @@ Check("Sound operation native calls preserve frames across24 ROM ticks",()=>Equa
 Check("Sound operation rhythm notes match120 original-ROM paths",()=>Equal(120,AddersSoundOperationVerification.Rhythm(evidence)));
 Check("Sound operation original8784 prompt matches128 preserved ROM ticks",()=>Equal(128,AddersSoundOperationVerification.Prompt(evidence)));
 Check("Sound operation complete8784 prompt drains twelve times without native leaks",()=>Equal(48,AddersSoundOperationVerification.NativeChildLongevity(evidence,true)));
+Check("Native sound owner preserves pause and rejects competing foreground mutation",()=>{
+    var m=new Machine();using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","sound-prompt.json")));
+    foreach(var r in doc.RootElement.GetProperty("rom_regions").EnumerateArray())Convert.FromHexString(r.GetProperty("bytes_hex").GetString()!).CopyTo(m.Memory,r.GetProperty("address").GetInt32());
+    var sound=new AddersNativeSound(m);Equal(true,sound.Reset());Equal(true,sound.Queue(0x8784));sound.BeginService(100,0x700,0x600,0x8784,0x1A0,true);
+    ulong due=sound.NextEventCycle;byte[] before=m.Memory.ToArray();sound.Pause();sound.AdvanceTo(10000);Equal((ulong)100,sound.Cycle);Equal(due,sound.NextEventCycle);Equal(true,before.SequenceEqual(m.Memory));
+    try{sound.Queue(0x8739);throw new Exception("Competing allocator accepted");}catch(InvalidOperationException){}
+    sound.Resume();while(sound.Servicing)sound.AdvanceTo(sound.NextEventCycle);Equal((ushort)1,m.ReadWord(0x45));Equal(true,sound.Active);
+    Equal(true,sound.Cancel(0x8784));Equal(true,sound.Reset());Equal(false,sound.Active);Equal((ushort)0x1A0,m.ReadWord(0x49));
+    m.Memory[0x719B]=0x80;before=m.Memory.ToArray();Equal(false,sound.Reset());Equal(false,sound.Queue(0x8784));Equal(true,before.SequenceEqual(m.Memory));
+});
 Check("Sound operation yield matches48 original-ROM instruction paths",()=>Equal(48,AddersSoundOperationVerification.Yield(evidence)));
 Check("Sound operation child matches32 original-ROM instruction paths",()=>Equal(32,AddersSoundOperationVerification.Child(evidence)));
 Check("Sound operation instrument matches48 original-ROM instruction paths",()=>Equal(48,AddersSoundOperationVerification.Instrument(evidence)));

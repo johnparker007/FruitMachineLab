@@ -149,3 +149,8 @@ bus strobe phase/expiry acceptance are not yet inferred. Mode62 is one-shot
 internal16-bit, not the timer1 continuous period model. Zero/FFFF latch cases
 verify programming only. Raw serial-timer.txt; early observer version omitted
 dynamic ORCC entries and was replaced with explicit observations.
+
+Receive arm6A08 now stages72 guard,75 reset, native save frame,500-tick7A timeout,
+B02 acknowledgment read,6A3B vector81 and B03 edge-enable write.16 original-ROM
+paths match all emitted instruction cycles/bytes/RAM. Existing active72 returns
+without reinitialization. Hardware reads are explicit. Raw serial-receive-arm.txt.

@@ -1,5 +1,8 @@
 # Current handoff
 
+Next16 cycle batch4: receive edge arm6A08 matches16 ROM calls; next TX callback
+and receive sampling. Hardware clock/IRQ delivery remain external.
+
 Next16 cycle batch3:70C9/70D6 timer2 programming matches16 original-ROM paths.
 Mode62 one-shot needs its own hardware lifecycle; no latch+1 shortcut/IRQ guess.
 

@@ -1,5 +1,9 @@
 # Current handoff
 
+Sixteen-batch cycle batch12:5330 transfer state/parser composition matches32
+native instruction/RAM paths, including ACK/retry preparation. Actual70C9 PTM
+retry reset remains explicit. Next queue->frame51B1 and busy5429 ownership.
+
 Sixteen-batch cycle batch11: serial source audit plus53AE parser match32 ROM
 instruction/RAM paths. Actual53D7 STA checksum quirk preserved. Native exports
 and pinned MAME protocol provenance saved. Next5330 state, queue/frame/wait.

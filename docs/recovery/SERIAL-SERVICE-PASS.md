@@ -38,3 +38,15 @@ under TEMP. Existing native export conventions and curated manifest are reused.
 Next compose5330 transfer state around actual parser results, then queue->frame
 and busy wait. Do not attach a simulated ACK until its transport boundary is
 explicit. No MAME settings/ROM/Ghidra installation changes.
+
+## Transfer state5330
+
+AddersSerialTransferPlan composes the byte parser and native5330 state paths:
+73/71/72 gates, receive status75, accepted ACK clearing3A5/2B bit7/7D/80,
+and retransmit preparation at38F/3A3/3A6 with original high-bit marking.32 native
+instruction/RAM comparisons pass with injected status/bytes, not physical serial
+traffic. Retry reaching70C9 stops explicitly before an unowned PTM reset; no
+register write or elapsed retry duration is invented. Native byte-result2 returns
+without clearing a partial frame. Capture-SerialTransfer and shared curator mode
+serial-transfer preserve source5330..5428 and before/after2KB. Raw pointer:
+FruitMachineLab-serial-transfer.txt. Busy5429 remains unconnected to Live.

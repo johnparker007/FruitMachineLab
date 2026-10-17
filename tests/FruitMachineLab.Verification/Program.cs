@@ -7,6 +7,29 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { if(args.Length>1 && !name.Contains(args[1],StringComparison.OrdinalIgnoreCase))return;action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Payout debit staged native spans match32 MAME paths around explicit display owner",()=>{
+    using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","debit-timing.json")));var catalog=doc.RootElement.GetProperty("catalog");int count=0;
+    foreach(var row in doc.RootElement.GetProperty("rows").EnumerateArray()) {
+        var m=new Machine{DataStackBase=0x600};m.Control=new(m,0x800);Convert.FromHexString(row.GetProperty("before_hex").GetString()!).CopyTo(m.Memory,0);SkillCashData.LoadFeature(m);SkillCashData.LoadAlpha(m);AddersPayoutDisplay.LoadRomData(m,evidence);
+        ulong start=row.GetProperty("start_cycle").GetUInt64();var observed=new List<OutputScanInstruction>();using var vm=new AddersPayoutDebitExecution(m,start,row.GetProperty("case").GetProperty("record").GetUInt16(),0x600,0x50);vm.ObserveInstruction=observed.Add;
+        void Instructions(string phase){var expected=row.GetProperty(phase);Equal(expected.GetArrayLength(),observed.Count);for(int n=0;n<observed.Count;n++){var reference=catalog[expected[n][0].GetInt32()];if(reference.GetProperty("pc").GetUInt16()!=observed[n].Address || start+expected[n][1].GetUInt64()!=observed[n].Started)throw new Exception($"Debit case{count} {phase} instruction{n}: expected{reference.GetProperty("pc").GetUInt16():X4}@{expected[n][1]}, actual{observed[n].Address:X4}@{observed[n].Started-start}");Equal(true,reference.GetProperty("context_hex").GetString()!.StartsWith(observed[n].Bytes,StringComparison.Ordinal));}observed.Clear();}
+        void Ram(string key,bool display){byte[] ram=Convert.FromHexString(row.GetProperty(key).GetString()!);foreach(int p in Enumerable.Range(0,0x700).Where(p=>!display || p is not (>=0xF0 and <=0xFF) and not (>=0x5C0 and <=0x5FF)) .Concat(Enumerable.Range(0x7C9,0x1F)))if(m.Memory[p]!=ram[p])throw new Exception($"Debit case{count} {key} RAM{p:X4}: expected{ram[p]:X2}, actual{m.Memory[p]:X2}");}
+        while(!vm.WaitingForDisplay)vm.AdvanceTo(vm.NextEventCycle);Instructions("prefix");Equal(row.GetProperty("display_entry").GetProperty("cycle").GetUInt64(),vm.Cycle);Equal((ushort)0xA8F9,vm.DisplayBody);Ram("display_entry_hex",false);
+        AddersPayoutDisplay.Refresh(m,evidence,new(m));Ram("display_return_hex",true);
+        vm.ReturnFromDisplay(row.GetProperty("display_return_cycle").GetUInt64(),m.DataPointer,0x4CD1);while(!vm.Completed)vm.AdvanceTo(vm.NextEventCycle);Instructions("suffix");Equal(row.GetProperty("end").GetProperty("cycle").GetUInt64(),vm.Cycle);Ram("after_hex",true);count++;
+    }Equal(32,count);
+});
+Check("Payout debit handoff blocks zero time display and rejects unbalanced return",()=>{
+    var m=new Machine();SkillCashData.LoadFeature(m);AddersPayoutDisplay.LoadRomData(m,evidence);m.WriteWord(0x2FE,20);
+    using var vm=new AddersPayoutDebitExecution(m,0,0x4ACA,0x600,0);while(!vm.WaitingForDisplay)vm.AdvanceTo(vm.NextEventCycle);
+    Equal(false,vm.Completed);Equal(ulong.MaxValue,vm.NextEventCycle);byte[] before=m.Memory.ToArray();ulong cycle=vm.Cycle;
+    try{vm.AdvanceTo(cycle+1000);throw new Exception("Unowned display advanced");}catch(InvalidOperationException){}Equal(cycle,vm.Cycle);Equal(true,before.SequenceEqual(m.Memory));
+    foreach(var bad in new[]{(U:(ushort)0x5FE,At:(ushort)0x4CD1),(U:(ushort)0x600,At:(ushort)0x4CD3)}){try{vm.ReturnFromDisplay(cycle+100,bad.U,bad.At);throw new Exception("Unbalanced display accepted");}catch(InvalidOperationException){}}
+    vm.ReturnFromDisplay(cycle+100,0x600,0x4CD1);while(vm.Address!=0x59B0)vm.AdvanceTo(vm.NextEventCycle);Equal(true,vm.IrqMasked);
+    try{vm.SuspendUntil(vm.Cycle+100);throw new Exception("Masked accounting accepted IRQ");}catch(InvalidOperationException){}
+    while(vm.Address!=0x6FC7)vm.AdvanceTo(vm.NextEventCycle);Equal(false,vm.IrqMasked);ulong due=vm.NextEventCycle;vm.SuspendUntil(vm.Cycle+99);Equal(due+99,vm.NextEventCycle);
+    while(!vm.Completed)vm.AdvanceTo(vm.NextEventCycle);Equal((ushort)18,m.ReadWord(0x2FE));Equal((byte)1,m.Memory[0x36B]);
+});
 Check("Payout NVRAM staged refresh matches24 native MAME instruction and RAM paths",()=>{
     using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","nvram-timing.json")));var catalog=doc.RootElement.GetProperty("catalog");int count=0;
     foreach(var row in doc.RootElement.GetProperty("rows").EnumerateArray()) {

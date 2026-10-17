@@ -1,5 +1,12 @@
 # Current handoff
 
+17 October staged debit checkpoint: AddersPayoutDebitExecution now covers4CBE and
+4CD1..4CF0 with timed NVRAM/account/meter/output checksums.32 fresh original-ROM
+native spans match around an explicitly external76BF/A8F9 display owner. No
+recorded duration feeds runtime. Handoff blocks advancement until balanced U/4CD1
+return. Next incremental display/gateway owner, then collection composition.
+See [debit timing pass](recovery/PAYOUT-DEBIT-TIMING-PASS.md). Live unchanged.
+
 17 October staged NVRAM checkpoint:24 original-ROM cases match every instruction,
 cycle and RAM0000..077F including U scratch. Software guard and CPU mask remain
 separate; synthetic suspension preserves IRQ checksum delta. Next4CBE wrapper and

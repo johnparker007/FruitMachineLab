@@ -82,6 +82,68 @@ excludes the whole active expected-field area; `rotate_add` does not cover its
 own field or later fields; `rotate_sub_xor` does not cover its own two fields.
 The intent is a hypothesis; the skip addresses are instruction facts.
 
+## Natural reset boot oracle
+
+A separate natural observation of the original image now reaches the active check
+and returns to its caller. It uses an isolated fresh directory with declared
+absent NVRAM and configuration, no input playback and `-noreadconfig`. The
+original `a6ls.p1` was copied into the isolated run; the curator requires the
+recorded original/run-copy SHA1 values to equal `402d...` and verifies the actual
+isolated copy length `65536` and SHA1 after the run. It also recomputes
+the raw `debug.log` and `console.txt` SHA256 values, requires exit `0`, checks
+the required breakpoint PCs and the chronological checksum chain
+`66A5 -> 66DB -> 66F3 -> 6715 -> 674C -> 677E -> end`. It reads the captured
+`debugger.cmd` and `arguments.json` and rejects state loading, playback,
+autoboot, cheat, memory/PC-write or ROM-replacement claims. Starting NVRAM and
+configuration absence remain capture declarations because the post-run
+directory cannot prove pre-run emptiness; `-noreadconfig` is verified from the
+arguments.
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File tools/Capture-RomIntegrityBoot.ps1 `
+  -MameExecutable 'E:\Arcade\MAME0266\mame281.exe' `
+  -RomDirectory 'E:\Arcade\MAME0266\roms' `
+  -OriginalRom 'C:\Users\John\Documents\Codex\2026-10-13\help-me-set-up-a-local\outputs\mpu4\rom\a6ls.p1' `
+  -RunDirectory 'artifacts/deepseek/general-04/mame-reset-boot-original-5'
+
+powershell -NoProfile -ExecutionPolicy Bypass -File tools/Curate-RomIntegrityBoot.ps1 `
+  -RunDirectory 'artifacts/deepseek/general-04/mame-reset-boot-original-5' `
+  -OutputPath 'evidence/mpu4/integrity/original-reset-boot.json' -NegativeControl
+```
+
+Both commands exited `0`. MAME 0.281 SHA256
+`0fce5a88df4f9d9b1fbf1405812c00848036e615993780978d967da34204cb7a`; run exit
+`0`. The compact observed sequence was:
+
+```text
+BOOT_RESET pc=7CD1 s=0000 cc=50
+BOOT_INIT_ENTRY pc=6750 u=0672
+BOOT_RESET pc=7CD1 s=07C4 cc=58
+BOOT_INIT_ENTRY pc=6750 u=0672
+BOOT_ROM_CHECK_ENTRY pc=66A5 u=0672 gate719b=00
+BOOT_ROM_VERIFY_ENTRY pc=66DB u=066A expected=3E761E2605 start=1400 end=FFFF error=12
+BOOT_SUM_XOR sum=3E xor=76
+BOOT_ROTATE_ADD value=1E
+BOOT_ROTATE_SUB_XOR a=26 b=05
+BOOT_ROM_CHECK_RETURN pc=677E y=FFFF u=0672
+BOOT_CAPTURE_END pc=677E y=FFFF
+```
+
+The capture stopped immediately after the successful return to caller `677E`;
+that is the next startup boundary recorded here. Two reset entries were observed
+before the check. Why the cold-NVRAM path restarts once before reaching `66A5`
+is a hypothesis, not proved by this capture. A second independent fresh run
+(`mame-reset-boot-original-6`) produced identical `BOOT_` lines and the same
+debug-log SHA256 `dee6c959...`; the strict curator accepted it unchanged. The
+failure marker at `674D` was absent. Synthetic negative controls on copied raw
+artifacts altered the sum, moved a marker out of order, changed provenance
+identity, changed the starting-contract claim, set `rom_unchanged` false,
+changed the recorded log hash, changed and truncated the isolated ROM copy,
+changed the exit code and added a debugger PC write. Each was rejected; none
+writes a ROM. Curated output is
+`evidence/mpu4/integrity/original-reset-boot.json` (schema 2) plus its compact
+log.
+
 ## Verification
 
 `tools/Verify-RomIntegrity.ps1` performs a strict original-identity check, reads
@@ -142,12 +204,17 @@ was disabled or changed.
   does not update or re-sign the five fields.
 - MAME loader CRC/SHA warnings, the 68F1 characteriser challenge records and
   NVRAM/meter-queue checksums are separate mechanisms and are not covered.
-- No natural reset boot, executable handoff or gameplay is claimed.
+- The natural reset observation above reaches `66A5`/`66DB` and returns to
+  `677E` on the original image. It does not demonstrate modified-image boot,
+  executable handoff beyond that boundary, gameplay or physical hardware.
 
 ## Next boundary
 
 Decide separately whether modified-image integrity repair is in scope. If it
 is, any re-signer must reproduce all three skip sets and the `rotate_add`
-address-comparison carry exactly, and must be validated against a natural
-original/MAME boot oracle rather than assumed. Until then, preserve the
-original image and report integrity mismatches explicitly.
+address-comparison carry exactly, and must be validated against the natural
+original/MAME boot oracle now recorded in
+`evidence/mpu4/integrity/original-reset-boot.json` rather than assumed. That
+oracle currently covers only the original image through the `677E` return.
+Until then, preserve the original image and report integrity mismatches
+explicitly.

@@ -117,8 +117,14 @@ final state at12 emulated seconds. Neither original nor patched image reached
 that marker. Original ended PC294C/YFFFF; modified PC1A5B/Y3824. This is **inconclusive
 startup evidence**, not a diagnosis of firmware failure or proof of successful
 boot. The marker/window itself needs validation against known original startup.
-Both exited0; expected modified loader warning occurred. No ROM checksum repair,
-integrity bypass, natural changed award/play session or physical test performed.
+A separate natural original-ROM capture now observes reset, init `6750`,
+checksum `66A5`/`66DB` and return to `677E` with unchanged original SHA1; the
+curator strictly rechecks identity, isolated ROM copy length/hash, raw log and
+console hashes, exit0, marker order and captured injection claims; see
+[ROM integrity](recovery/ROM-INTEGRITY-PASS.md). It does not validate `FDF0`
+or any later VM/gameplay boundary. Both exited0; expected modified loader warning
+occurred. No ROM checksum repair, integrity bypass, natural changed award/play
+session or physical test performed.
 
 Harness development failures are excluded from accepted evidence: the first
 PowerShell run stopped on expected stderr; an early isolated lookup omitted the

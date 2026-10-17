@@ -1,5 +1,19 @@
 # Implementation and evidence boundaries
 
+17 October natural ROM-integrity boot oracle: a fresh isolated original-ROM
+MAME 0.281 cold boot with declared-absent NVRAM/configuration and no input
+playback reaches reset `7CD1`, init `6750`, checksum `66A5`/`66DB`, computes the
+static `3E 76 1E 26 05` fields, returns to caller `677E` and is stopped there.
+The curator enforces original SHA1, isolated-copy length `65536` and hash,
+recomputed raw log/console hashes, exit `0` and chronological marker PCs; it
+also rejects captured state/playback/autoboot/cheat or debugger memory/PC-write
+injection. Tampered sum, order, provenance, log hash, ROM hash/length, exit and
+injection copies are rejected. Starting NVRAM/configuration absence remains a
+capture declaration; `-noreadconfig` is verified. This is one natural
+original-image observation, not modified-ROM boot, gameplay or hardware
+evidence. See [ROM integrity](docs/recovery/ROM-INTEGRITY-PASS.md) and
+`evidence/mpu4/integrity/original-reset-boot.json`.
+
 17 October static ROM-integrity increment: startup 66A5/66DB self-check recovered
 as four 11-byte records at FFB0; the single gate-00 record covers CPU range
 1400-FFFF with expected fields FFD1-FFD5 (`3E 76 1E 26 05`). All three recovered

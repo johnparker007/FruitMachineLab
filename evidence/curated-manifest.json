@@ -246,8 +246,8 @@
   },
   {
     "path": "docs/recovery/ROM-INTEGRITY-PASS.md",
-    "bytes": 7579,
-    "sha256": "779D515A9C23A33D63AE64166839936864289FCACC4C3B92362D1D24AC495D3A"
+    "bytes": 11113,
+    "sha256": "791E9B293BF80F3336BB85D86B871E8BFCC4F06D742A44287181A1FCB90F6673"
   },
   {
     "path": "docs/recovery/SCRIPT-CLASSIFICATION.txt",
@@ -758,6 +758,16 @@
     "path": "evidence/mpu4/collection/vm-word-timing.json",
     "bytes": 1041151,
     "sha256": "6525E31BF565048BCA86347CEB3C14B1EF6B4026699680E4D283622C1319E10E"
+  },
+  {
+    "path": "evidence/mpu4/integrity/original-reset-boot.json",
+    "bytes": 7554,
+    "sha256": "087DB7C467D4B28B4AE6C20FBFA335BBC1C698715427DF4D3459763C5104E64D"
+  },
+  {
+    "path": "evidence/mpu4/integrity/original-reset-boot.log",
+    "bytes": 1552,
+    "sha256": "AB52014199FA93869BF77E1D80B872CDB33818CDF3EFABF165611EF172316B8C"
   },
   {
     "path": "evidence/mpu4/maps/board-availability-boundary.json",

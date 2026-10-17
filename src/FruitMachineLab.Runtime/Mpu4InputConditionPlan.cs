@@ -10,9 +10,10 @@ public sealed class Mpu4InputConditionPlan(Machine machine,ushort selectorAddres
     public bool Zero {get;private set;}
     public bool Carry {get;private set;}
     public ushort CellValue=>Zero ? (ushort)0 : Carry ? ushort.MaxValue : (ushort)1;
-    public IEnumerable<NativeRoutineWork> Instructions()
+    public IEnumerable<NativeRoutineWork> Instructions(bool inline=false)
     {
-        yield return new NativeRoutineStep(0x67EC,"3434");yield return new NativeRoutineStep(0x67EE,"E684",()=>b=machine.Memory[selectorAddress]);
+        if(inline){yield return new NativeRoutineStep(0x67E2,"3434");yield return new NativeRoutineStep(0x67E4,"AE65");yield return new NativeRoutineStep(0x67E6,"E680",()=>b=machine.Memory[selectorAddress]);yield return new NativeRoutineStep(0x67E8,"AF65");yield return new NativeRoutineStep(0x67EA,"2004");}
+        else{yield return new NativeRoutineStep(0x67EC,"3434");yield return new NativeRoutineStep(0x67EE,"E684",()=>b=machine.Memory[selectorAddress]);}
         yield return new NativeRoutineStep(0x67F0,"5D",()=>negative=(sbyte)b<0);yield return new NativeRoutineStep(0x67F1,"2B45");
         bool selected=false;
         if(negative){

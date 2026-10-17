@@ -49,3 +49,32 @@ not a natural empty/full-pin interpretation. A suspension test mutates another
 queue during checksum, retains sampled A and restores the guard. Existing exact
 payout native spans plus byte-checked instruction contexts cover4C91/7032; no new
 Ghidra-only discovery. Raw pointer payout-tail.txt. Filter: "Payout tail".
+
+## Batch3: complete selected normal cash caller
+
+AddersCashPayoutPlan stages4B39, its67E2 inline82 selector (the byte4B3C is data),
+4C25 denomination/tail loop, ROM-option checks and forced4C7C loop. Physical native
+S return/D-save words are supplied at each4CBE handoff. AddersTimedCashPayoutExecution
+composes the previously verified timed debit/display/output owner, never semantic
+Outputs. The flat clock is now reused across input, tail, checksum and caller.
+The4BC5 manager prompt and negative0323 service mode remain explicit boundaries.
+Caller arithmetic flags are selected local operands, not a complete exposed CPU
+snapshot; child output does not currently export every transient condition flag.
+
+Capture-PayoutService.ps1 -InstructionTiming now executes real7172 polling with
+odd717C counter increments, instead of its legacy skipped-wait mode. New curator
+Curate-PayoutCallerTiming.ps1 checks original ROM bytes and separates caller
+instructions, child entry/return and display NEXT observations. Sixteen cases
+are preserved (eight cash/eight token); the cash component verifies its eight:
+every caller PC/encoding/start cycle, every child entry Y/S/time, final cycle,
+poll count and selected RAM/accounting match without intermediate state injection.
+Only per-alpha helper CPU budgets are reference adapters; no return timestamps
+drive runtime. Counter policy is synthetic, not natural IRQ scheduling/delivery.
+Selected RAM exclusions retain U scratch05C0..05FF and native S residue; F0..FF
+and persistent accounts are compared. Default old service capture is unchanged.
+
+Synthetic suspension at tail/display/poll preserves all RAM/output effects and
+adds only the requested411 cycles. A labelled synthetic option change reaches
+the manager boundary and fails without inventing a prompt. ROM files are unchanged.
+Caller byte spans already exist in payout-data; new export preserves67E2's exact
+inline wrapper too. Raw pointer payout-caller.txt. Filters: "Payout cash".

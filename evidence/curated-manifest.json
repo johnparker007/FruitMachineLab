@@ -211,8 +211,8 @@
   },
   {
     "path": "docs/recovery/PAYOUT-CALLER-TIMING-PASS.md",
-    "bytes": 3252,
-    "sha256": "180806D8713510B9A88437BA34DB8196D65E8D4A63D584F6184AFCC330E71CF6"
+    "bytes": 5235,
+    "sha256": "C81113E30B46736F37CE7DA89048DFA6D0A9C4D2D1905BBB5DC75A5802F84217"
   },
   {
     "path": "docs/recovery/PAYOUT-DEBIT-TIMING-PASS.md",
@@ -338,6 +338,16 @@
     "path": "evidence/mpu4/collection/bank-transfer-validation.json",
     "bytes": 4512,
     "sha256": "231EFC42EF3F02A693E59EC32C2EFD02242D39CAF79AF7E2850E4A070CB7A0CB"
+  },
+  {
+    "path": "evidence/mpu4/collection/caller-timing-debugger.cmd",
+    "bytes": 48746,
+    "sha256": "02D5E7231F3408DA96F087910ADD61B4DDEC35F539C7E5A7841B9556D7EABDE5"
+  },
+  {
+    "path": "evidence/mpu4/collection/caller-timing.json",
+    "bytes": 897335,
+    "sha256": "3286D3DCF3649A8A6B3B50E51CCBEB6297653E56C157C35FEF09F94B7A44C1BE"
   },
   {
     "path": "evidence/mpu4/collection/collect-gate-matrix-debugger.cmd",

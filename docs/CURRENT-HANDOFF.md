@@ -1,5 +1,11 @@
 # Current handoff
 
+Eight-batch cycle batch3 complete: selected normal cash4B39 now composes timed
+tail/debit/VM display/payout outputs. Eight MAME paths match exact caller/child/
+final cycles and RAM with real synthetic-counter polling (no skipped waits).
+Alpha helper budgets remain explicit. Next token compensation/caller; sound/Live
+integration remains open. See recovery/PAYOUT-CALLER-TIMING-PASS.md.
+
 Eight-batch cycle batch2 complete: staged4C91 tail plus shared7032 checksum match32
 original-ROM paths.67EC input plan is reused under the same instruction clock.
 Next compose cash4B39/4C25/4C7C with the timed debit/display/output owner. See

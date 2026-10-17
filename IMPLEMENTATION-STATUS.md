@@ -1,5 +1,16 @@
 # Implementation and evidence boundaries
 
+17 October collection pass: AddersCollectionTransfer now executes five recovered
+bank/token transfer entries, stopping explicitly before native4B39/4B8C. Six new
+verification groups cover16 retained natural cash examples and labelled synthetic
+continuation tests. No GUI collection or physical payout is claimed.
+
+Bounded IRQ decision: nineteen windows still require captured outer timer1 entry;
+atomic native/VM boundaries prevent autonomous outer acceptance. Preserve the
+working adapter and prioritise collection service/gameplay. See
+[collection pass and runtime dependency audit](docs/recovery/COLLECTION-TRANSFER-PASS.md).
+
+
 Live scan entry is now generated from selected FE70 timer1 dispatch, rather than
 shared-timing Events. Normal65-cycle and ignored-SWI2 112-cycle paths are verified;
 60 natural guard frames preserve the original signed-ROM-pointer quirk. Idle

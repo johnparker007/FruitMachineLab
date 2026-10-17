@@ -1,5 +1,17 @@
 # Project direction and handoff
 
+17 October priority reset (supersedes the timing-first next-step notes below):
+the bounded nineteen-window audit leaves autonomous outer IRQ acceptance open.
+Do not expand this into another timing campaign. Atomic native/VM execution
+boundaries remain a substantial gap, but do not block gameplay recovery.
+
+Next implement collection native4B39/4B8C and4C25/4CBE through6858, then connect
+AAA1/AA2B to the paid-play prompt. Five bank/token VM transfer entries are now
+executable with explicit native payout suspension; no GUI collection is claimed.
+Prioritise continuous playable games, followed by cross-game validation and the
+agreed layout work. Symbolic ASM/reassembly and script editing remain deferred.
+See [collection pass and dependency audit](recovery/COLLECTION-TRANSFER-PASS.md).
+
 17 October next boundary removed: shared scan-entry event timestamps. FE70
 dispatch now generates scan entry; idle motor/counter/sense suffix is staged.
 Next recover2851 validation and FEC3 watchdog/meter/sound service so outer IRQ

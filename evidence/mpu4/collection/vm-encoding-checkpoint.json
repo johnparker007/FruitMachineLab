@@ -1,0 +1,195 @@
+{
+  "scope": "Exact contiguous bytes through final return token; checked every listing token. Literal/header semantics remain recovered listings, not a lossless symbolic rebuild.",
+  "regions": [
+    {
+      "body": "A942",
+      "checked_token_sites": [
+        43330,
+        43332,
+        43334,
+        43336,
+        43338,
+        43340,
+        43342,
+        43344,
+        43346,
+        43348,
+        43350,
+        43352,
+        43354,
+        43356,
+        43358,
+        43360,
+        43362,
+        43364,
+        43366,
+        43368,
+        43370,
+        43372,
+        43374,
+        43376,
+        43378
+      ],
+      "bytes_hex": "8345806C82D2790D7B517CCD82D2788882267888812880F482CE790D7B517CCD82CE788882227888812880E483458068792F",
+      "address": 43330
+    },
+    {
+      "body": "A983",
+      "checked_token_sites": [
+        43395,
+        43397,
+        43399,
+        43402,
+        43404,
+        43406,
+        43408,
+        43410,
+        43412,
+        43414,
+        43416,
+        43418,
+        43420
+      ],
+      "bytes_hex": "82CE790D79630A7DF87B517CCD82CE788882227888812880E4792F",
+      "address": 43395
+    },
+    {
+      "body": "A9A0",
+      "checked_token_sites": [
+        43424,
+        43426,
+        43428,
+        43430,
+        43433,
+        43435,
+        43437,
+        43439,
+        43442,
+        43444,
+        43446,
+        43448,
+        43450,
+        43452,
+        43454,
+        43456,
+        43458,
+        43460
+      ],
+      "bytes_hex": "78DE82CE790D79630A7DEE7D38787E79630A7DC47B517CCD82CE788882227874812880E4792F",
+      "address": 43424
+    },
+    {
+      "body": "A9D5",
+      "checked_token_sites": [
+        43477,
+        43479,
+        43481,
+        43484,
+        43486,
+        43488,
+        43490,
+        43492,
+        43494,
+        43496,
+        43498,
+        43500,
+        43504,
+        43506,
+        43508,
+        43510,
+        43512,
+        43514,
+        43516,
+        43518,
+        43520
+      ],
+      "bytes_hex": "82D2790D79630A7DF878DE7DEE7B517A46757478B579DC795BFFFE82D2788878DE82267888812880F47A00792F",
+      "address": 43477
+    },
+    {
+      "body": "AA04",
+      "checked_token_sites": [
+        43524,
+        43527,
+        43529,
+        43531,
+        43535,
+        43537,
+        43539,
+        43541,
+        43543,
+        43545,
+        43547,
+        43549,
+        43551
+      ],
+      "bytes_hex": "79630578B579DC795BFFFE82D2788878DE82267874812880F47A00792F",
+      "address": 43524
+    },
+    {
+      "body": "7DFA",
+      "checked_token_sites": [
+        32250,
+        32252,
+        32254
+      ],
+      "bytes_hex": "7DE27B3D792F",
+      "address": 32250
+    },
+    {
+      "body": "7DF0",
+      "checked_token_sites": [
+        32240,
+        32242,
+        32244,
+        32246
+      ],
+      "bytes_hex": "7DE27B7D7B3D792F",
+      "address": 32240
+    },
+    {
+      "body": "7DE4",
+      "checked_token_sites": [
+        32228,
+        32230,
+        32232,
+        32234,
+        32236
+      ],
+      "bytes_hex": "7AF47D627B047C06792F",
+      "address": 32228
+    },
+    {
+      "body": "7D64",
+      "checked_token_sites": [
+        32100,
+        32102,
+        32104
+      ],
+      "bytes_hex": "7B517A39792F",
+      "address": 32100
+    },
+    {
+      "body": "7DC6",
+      "checked_token_sites": [
+        32198,
+        32200,
+        32202
+      ],
+      "bytes_hex": "7BCC7B3D792F",
+      "address": 32198
+    },
+    {
+      "body": "7D3A",
+      "checked_token_sites": [
+        32058,
+        32060,
+        32062,
+        32064
+      ],
+      "bytes_hex": "78C07A977A53792F",
+      "address": 32058
+    }
+  ],
+  "rom_sha1": "402D1518BB78FDC489B06C2AABC771E5CE151847"
+}

@@ -7,6 +7,74 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { if(args.Length>1 && !name.Contains(args[1],StringComparison.OrdinalIgnoreCase))return;action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Collection cash transfer scripts match retained natural MAME examples", () => {
+    using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","bank-transfer-validation.json")));
+    int count=0;
+    foreach(var row in doc.RootElement.GetProperty("examples").EnumerateArray()) {
+        var m=new Machine();m.Control=new(m,0x800);m.Control.Push(0x1234);
+        m.WriteWord(0x2FC,row.GetProperty("before")[0].GetUInt16());m.WriteWord(0x2FE,row.GetProperty("before")[1].GetUInt16());
+        var vm=new AddersCollectionTransfer(m,evidence,row.GetProperty("entry").GetUInt16(),_=>throw new Exception("Unexpected lamp"));
+        for(int n=0;vm.PendingPayout is null && !vm.Completed && n<200;n++)vm.Step();
+        Equal((ushort?)0x4B39,vm.PendingPayout);Equal(0,m.Data.Count);Equal(row.GetProperty("actual")[0].GetUInt16(),m.ReadWord(0x2FC));Equal(row.GetProperty("actual")[1].GetUInt16(),m.ReadWord(0x2FE));
+        for(ushort p=0x2F0;p<0x309;p++)Equal(unchecked((byte)~m.Memory[p]),m.Memory[p+0x19]);
+        var before=m.Memory.ToArray();try {vm.Step();throw new Exception("Payout boundary silently executed");}catch(InvalidOperationException){}
+        Equal(true,before.SequenceEqual(m.Memory));count++;
+    }
+    Equal(16,count); // Only retained examples are independently reproducible, not all30 historical checks.
+});
+Check("Collection token VM retains loop frames across explicit payout boundaries", () => {
+    var m=new Machine();m.Control=new(m,0x800);m.Control.Push(0x1234);m.WriteWord(0x302,20);m.WriteWord(0x300,99);
+    var vm=new AddersCollectionTransfer(m,evidence,0xAA04,_=>throw new Exception("Unexpected lamp"));int services=0;
+    while(!vm.Completed) {
+        if(vm.PendingPayout is not null) {
+            Equal((ushort)(20-2*(services+1)),m.ReadWord(0x302));Equal((ushort)2,m.ReadWord(0x300));
+            // Synthetic host boundary ONLY: no claim to execute4B8C or deliver coins.
+            vm.ServicePayout(native=>{Equal((ushort)0x4B8C,native);m.WriteWord(0x300,0);services++;});
+        } else vm.Step();
+    }
+    Equal(5,services);Equal((ushort)10,m.ReadWord(0x302));Equal((ushort)0x800,m.Control.Pointer);Equal((ushort)0x1234,m.Control.ResumeCursor);Equal(0,m.Data.Count);
+});
+Check("Collection combined bank route preserves ordered services and lamp requests", () => {
+    var m=new Machine();m.Control=new(m,0x800);m.Control.Push(0x1234);m.WriteWord(0x302,12);m.WriteWord(0x300,2);m.WriteWord(0x2FC,24);m.WriteWord(0x2FE,6);
+    var lamps=new List<LampRequest>();var services=new List<ushort>();var vm=new AddersCollectionTransfer(m,evidence,0xA942,lamps.Add);
+    while(!vm.Completed) {
+        if(vm.PendingPayout is not null)vm.ServicePayout(native=>{
+            services.Add(native);
+            if(native==0x4B8C){Equal((ushort)14,m.ReadWord(0x300));Equal((ushort)24,m.ReadWord(0x2FC));m.WriteWord(0x300,0);}
+            else {Equal((ushort)30,m.ReadWord(0x2FE));m.WriteWord(0x2FE,0);}
+        });else vm.Step();
+    }
+    Equal("4B8C,4B39",string.Join(',',services.Select(x=>x.ToString("X4"))));Equal((ushort)0,m.ReadWord(0x302));Equal((ushort)0,m.ReadWord(0x2FC));Equal(2,lamps.Count);Equal((byte)0x18,lamps[0].Id);Equal((byte)0x8F,lamps[0].Pattern);Equal((byte)0x80,lamps[1].Pattern);Equal(0,m.Data.Count);
+});
+Check("Collection even token remainder executes repeated two-unit transfers", () => {
+    foreach(ushort bank in new ushort[]{2,4,6,8,12,14,16,18}) {
+        var m=new Machine();m.Control=new(m,0x800);m.Control.Push(0x1234);m.WriteWord(0x302,bank);int services=0;
+        var vm=new AddersCollectionTransfer(m,evidence,0xA9D5,_=>{});
+        while(!vm.Completed){if(vm.PendingPayout is not null)vm.ServicePayout(native=>{Equal((ushort)0x4B8C,native);Equal((ushort)2,m.ReadWord(0x300));m.WriteWord(0x300,0);services++;});else vm.Step();}
+        Equal(bank%10/2,services);Equal((ushort)(bank/10*10),m.ReadWord(0x302));Equal(0,m.Data.Count);
+    }
+});
+Check("Collection listing tokens match preserved ROM encoding checkpoint", () => {
+    using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","vm-encoding-checkpoint.json")));
+    foreach(var region in doc.RootElement.GetProperty("regions").EnumerateArray()) {
+        byte[] bytes=Convert.FromHexString(region.GetProperty("bytes_hex").GetString()!);int start=region.GetProperty("address").GetInt32();
+        var script=new RecoveredScript(Path.Combine(evidence,"VM-SCRIPTS",region.GetProperty("body").GetString()+".txt"));
+        foreach(var instruction in script.Instructions) {
+            int offset=instruction.Site-start;Equal(instruction.Token,(ushort)((bytes[offset]<<8)|bytes[offset+1]));
+            if(instruction.Operation=="vm_push_inline_byte_literal")Equal(instruction.Value,(ushort?)bytes[offset+2]);
+            if(instruction.Operation=="vm_push_inline_word_literal")Equal(instruction.Value,(ushort?)((bytes[offset+2]<<8)|bytes[offset+3]));
+        }
+    }
+});
+Check("Collection preserves add versus store and Forth true parity", () => {
+    foreach(var row in new[]{(Entry:(ushort)0xA983,Bank:(ushort)24,Pending:(ushort)7,After:(ushort)11,Left:(ushort)20),(Entry:(ushort)0xA9A0,Bank:(ushort)30,Pending:(ushort)7,After:(ushort)10,Left:(ushort)20),(Entry:(ushort)0xA9A0,Bank:(ushort)40,Pending:(ushort)7,After:(ushort)20,Left:(ushort)20)}) {
+        var m=new Machine();m.Control=new(m,0x800);m.Control.Push(0x1234);m.WriteWord(0x2FC,row.Bank);m.WriteWord(0x2FE,row.Pending);
+        var vm=new AddersCollectionTransfer(m,evidence,row.Entry,_=>{});while(vm.PendingPayout is null && !vm.Completed)vm.Step();
+        Equal(row.Left,m.ReadWord(0x2FC));Equal(row.After,m.ReadWord(0x2FE));
+        try {vm.ServicePayout(_=>throw new IOException("Synthetic failed hardware service"));throw new Exception("Service failure swallowed");}catch(IOException){}
+        Equal((ushort?)0x4B39,vm.PendingPayout);
+    }
+});
 Check("Timer1 dispatch matches64 native normal and ignored SWI2 guard paths", () => {
     using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","timer1-dispatch-timing.json")));var durations=new HashSet<ulong>();int count=0;foreach(var row in doc.RootElement.GetProperty("rows").EnumerateArray()){
         var m=new Machine();foreach(var r in doc.RootElement.GetProperty("native_regions").EnumerateArray())Convert.FromHexString(r.GetProperty("bytes_hex").GetString()!).CopyTo(m.Memory,r.GetProperty("address").GetInt32());ushort saved=row.GetProperty("case").GetProperty("savedU").GetUInt16();var native=row.GetProperty("instructions");ulong start=native[0].GetProperty("cycle").GetUInt64();var observed=new List<OutputScanInstruction>();var execution=new Mpu4Timer1DispatchExecution(m,start,()=>saved);execution.ObserveInstruction=observed.Add;while(!execution.Completed)execution.AdvanceTo(execution.NextEventCycle);Equal(native.GetArrayLength(),observed.Count);for(int i=0;i<observed.Count;i++){Equal(native[i].GetProperty("pc").GetUInt16(),observed[i].Address);Equal(native[i].GetProperty("cycle").GetUInt64(),observed[i].Started);Equal(true,native[i].GetProperty("context_hex").GetString()!.StartsWith(observed[i].Bytes,StringComparison.Ordinal));}Equal(row.GetProperty("end").GetProperty("cycle").GetUInt64(),execution.Cycle);durations.Add(execution.Cycle-start);count++;

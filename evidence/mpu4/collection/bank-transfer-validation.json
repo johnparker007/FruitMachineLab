@@ -1,0 +1,302 @@
+{
+  "checks": 30,
+  "mismatches": [],
+  "amounts_seen": [
+    2,
+    4,
+    6,
+    8,
+    10,
+    20
+  ],
+  "examples": [
+    {
+      "run": "payout-drain6",
+      "entry": 43395,
+      "before": [
+        24,
+        0
+      ],
+      "amount": 4,
+      "expected": [
+        20,
+        4
+      ],
+      "actual": [
+        20,
+        4
+      ],
+      "match": true
+    },
+    {
+      "run": "payout-drain6",
+      "entry": 43424,
+      "before": [
+        20,
+        0
+      ],
+      "amount": 20,
+      "expected": [
+        0,
+        20
+      ],
+      "actual": [
+        0,
+        20
+      ],
+      "match": true
+    },
+    {
+      "run": "payout-drain6",
+      "entry": 43395,
+      "before": [
+        26,
+        0
+      ],
+      "amount": 6,
+      "expected": [
+        20,
+        6
+      ],
+      "actual": [
+        20,
+        6
+      ],
+      "match": true
+    },
+    {
+      "run": "payout-drain6",
+      "entry": 43424,
+      "before": [
+        20,
+        0
+      ],
+      "amount": 20,
+      "expected": [
+        0,
+        20
+      ],
+      "actual": [
+        0,
+        20
+      ],
+      "match": true
+    },
+    {
+      "run": "payout-drain2",
+      "entry": 43395,
+      "before": [
+        8,
+        0
+      ],
+      "amount": 8,
+      "expected": [
+        0,
+        8
+      ],
+      "actual": [
+        0,
+        8
+      ],
+      "match": true
+    },
+    {
+      "run": "payout-drain2",
+      "entry": 43424,
+      "before": [
+        30,
+        0
+      ],
+      "amount": 10,
+      "expected": [
+        20,
+        10
+      ],
+      "actual": [
+        20,
+        10
+      ],
+      "match": true
+    },
+    {
+      "run": "payout-drain2",
+      "entry": 43424,
+      "before": [
+        20,
+        0
+      ],
+      "amount": 20,
+      "expected": [
+        0,
+        20
+      ],
+      "actual": [
+        0,
+        20
+      ],
+      "match": true
+    },
+    {
+      "run": "payout-drain2",
+      "entry": 43424,
+      "before": [
+        10,
+        0
+      ],
+      "amount": 10,
+      "expected": [
+        0,
+        10
+      ],
+      "actual": [
+        0,
+        10
+      ],
+      "match": true
+    },
+    {
+      "run": "payout-drain4-long",
+      "entry": 43395,
+      "before": [
+        22,
+        0
+      ],
+      "amount": 2,
+      "expected": [
+        20,
+        2
+      ],
+      "actual": [
+        20,
+        2
+      ],
+      "match": true
+    },
+    {
+      "run": "payout-drain4-long",
+      "entry": 43424,
+      "before": [
+        20,
+        0
+      ],
+      "amount": 20,
+      "expected": [
+        0,
+        20
+      ],
+      "actual": [
+        0,
+        20
+      ],
+      "match": true
+    },
+    {
+      "run": "payout-focus6-adaptive",
+      "entry": 43395,
+      "before": [
+        26,
+        0
+      ],
+      "amount": 6,
+      "expected": [
+        20,
+        6
+      ],
+      "actual": [
+        20,
+        6
+      ],
+      "match": true
+    },
+    {
+      "run": "payout-focus6-adaptive",
+      "entry": 43424,
+      "before": [
+        20,
+        0
+      ],
+      "amount": 20,
+      "expected": [
+        0,
+        20
+      ],
+      "actual": [
+        0,
+        20
+      ],
+      "match": true
+    },
+    {
+      "run": "payout-output6",
+      "entry": 43424,
+      "before": [
+        20,
+        0
+      ],
+      "amount": 20,
+      "expected": [
+        0,
+        20
+      ],
+      "actual": [
+        0,
+        20
+      ],
+      "match": true
+    },
+    {
+      "run": "payout-output6",
+      "entry": 43424,
+      "before": [
+        10,
+        0
+      ],
+      "amount": 10,
+      "expected": [
+        0,
+        10
+      ],
+      "actual": [
+        0,
+        10
+      ],
+      "match": true
+    },
+    {
+      "run": "payout-ready98",
+      "entry": 43395,
+      "before": [
+        6,
+        0
+      ],
+      "amount": 6,
+      "expected": [
+        0,
+        6
+      ],
+      "actual": [
+        0,
+        6
+      ],
+      "match": true
+    },
+    {
+      "run": "payout-ready98",
+      "entry": 43395,
+      "before": [
+        16,
+        0
+      ],
+      "amount": 6,
+      "expected": [
+        10,
+        6
+      ],
+      "actual": [
+        10,
+        6
+      ],
+      "match": true
+    }
+  ]
+}

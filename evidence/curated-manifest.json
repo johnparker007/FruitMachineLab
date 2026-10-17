@@ -40,6 +40,11 @@
     "sha256": "E644AF1E94D3128A98611511442407E97FBE7FBA36C59B0026982C99DFA66403"
   },
   {
+    "path": "docs/recovery/COLLECTION-TRANSFER-PASS.md",
+    "bytes": 7449,
+    "sha256": "CB5510D23B26C7636FF36EA896B65EBF4D996768C8E2DDE4D13011A562C5FA52"
+  },
+  {
     "path": "docs/recovery/DEEP-ANALYSIS.txt",
     "bytes": 11777,
     "sha256": "94193AE9A6ECCD694AA46A1CF3EB780B8B5D530C1DC526EA485407874A9223A1"
@@ -303,6 +308,16 @@
     "path": "docs/recovery/VM-BATCH-RECOVERY.txt",
     "bytes": 7591,
     "sha256": "5239BF49F35DDC956133AC033318187688F8A4AA2E900FB339008926568A956B"
+  },
+  {
+    "path": "evidence/mpu4/collection/bank-transfer-validation.json",
+    "bytes": 4512,
+    "sha256": "231EFC42EF3F02A693E59EC32C2EFD02242D39CAF79AF7E2850E4A070CB7A0CB"
+  },
+  {
+    "path": "evidence/mpu4/collection/vm-encoding-checkpoint.json",
+    "bytes": 3920,
+    "sha256": "F0BFCCB903BEF789E9AC8CEE44FEC09186B7BA67B3B69FA6AA7C36CC38D0746E"
   },
   {
     "path": "evidence/mpu4/maps/board-availability-boundary.json",

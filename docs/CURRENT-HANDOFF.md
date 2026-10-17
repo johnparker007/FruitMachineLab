@@ -1,5 +1,16 @@
 # Current handoff
 
+17 October collection pass: AddersCollectionTransfer executes five recovered
+bank/token transfer entries, stopping explicitly before native4B39/4B8C. Six new
+verification groups cover16 retained natural cash examples and labelled synthetic
+continuation tests. No GUI collection or physical payout is claimed.
+
+Bounded IRQ decision: nineteen windows still require captured outer timer1 entry;
+atomic native/VM boundaries prevent autonomous outer acceptance. Preserve the
+working adapter and prioritise collection service/gameplay. Next: native4B39/4B8C,
+4C25/4CBE and6858, then AAA1/AA2B paid-play input routing. See
+[collection pass and runtime dependency audit](recovery/COLLECTION-TRANSFER-PASS.md).
+
 17 October outer-dispatch/counter milestone: Live no longer reads shared-timing
 Events, including scan entry. Mpu4Timer1DispatchExecution stages FE70→28FE from
 the still-retained ACCEPTED outer IRQ entry. Original cpu-interrupts export now

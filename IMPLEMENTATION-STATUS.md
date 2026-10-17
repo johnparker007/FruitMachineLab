@@ -1,5 +1,16 @@
 # Implementation and evidence boundaries
 
+17 October orchestrator planning checkpoint: accepted `0fe3713` passes 384 groups
+in the complete intended headless snapshot. Tone setup CPU work is source-derived;
+finish CPU work and IRQ occupancy remain captured. General21 found that Live's
+logical scheduler lacks native task/channel/rhythm/tail ownership, so cancellation
+cost cannot yet be derived from actual Live state. Uncommitted FEC9 wrapper work
+has a known failing check and is not part of that accepted baseline. Callback is
+paused by John. The revised [roadmap](docs/PROJECT-ROADMAP.md) separates fixture/
+wrapper certification, headless native tone ownership, selected Live integration,
+finish CPU timing and causal IRQ occupancy. No worker restart or sound repair is
+claimed by this planning update. Older group counts below are historical.
+
 17 October A1 capture-policy increment: `SkillCashLiveSession` now classifies its
 direct evidence reads by exact consumer field and applies a fail-closed
 `RuntimeEvidencePolicy` at that real constructor boundary. Default compatibility

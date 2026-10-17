@@ -7,6 +7,53 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { if(args.Length>1 && !name.Contains(args[1],StringComparison.OrdinalIgnoreCase))return;action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Payout native debit display accounting and checksums match32 MAME cases",()=>Equal(32,AddersPayoutVerification.DebitMatrix(evidence)));
+Check("Payout native cash and token services match16 MAME accounting and output paths",()=>Equal(16,AddersPayoutVerification.ServiceMatrix(evidence)));
+Check("Payout collection router VM matches16 MAME bank accounting display and output paths",()=>Equal(16,AddersPayoutVerification.ServiceMatrix(evidence,true)));
+Check("Payout output waits observe65 counter changes per edge and preserve shared latch bits",()=>{
+    var m=new Machine();SkillCashData.LoadFeature(m);AddersPayoutDisplay.LoadRomData(m,evidence);m.Memory[0x36B]=1;m.Memory[0x36C]=2;m.Memory[0x6E]=250;
+    byte port=0x30;var writes=new List<byte>();var messages=new List<byte>();
+    var vm=new AddersPayoutExecution(m,0x6858,()=>throw new Exception("Unexpected debit"),()=>port,v=>{port=v;writes.Add(v);},messages.Add);
+    while(!vm.Waiting)vm.Step();Equal((byte)0x31,port);Equal((byte)0,m.Memory[0x36B]);Equal((byte)1,m.Memory[0x36C]);
+    for(int n=0;n<100;n++)vm.Step();Equal(1,writes.Count);
+    for(int n=0;n<64;n++){m.Memory[0x6E]++;vm.Step();}Equal(1,writes.Count);
+    port|=0x40;m.Memory[0x6E]++;vm.Step();Equal((byte)0x70,port);Equal(2,writes.Count);Equal(true,vm.Waiting);
+    for(int n=0;n<64;n++){m.Memory[0x6E]++;vm.Step();}Equal(false,vm.Completed);
+    m.Memory[0x6E]++;vm.Step();Equal(true,vm.Completed);Equal(1,messages.Count);Equal((byte)0x42,messages[0]);
+});
+Check("Payout collection router drains all six normal routes without state replacement",()=>{
+    foreach(var balances in new ushort[][]{[24,0,0,0],[20,0,0,0],[0,0,14,0],[0,0,20,0],[0,10,0,0],[0,0,0,4],[24,10,22,4]}) {
+        var m=new Machine{DataStackBase=0x600};m.Control=new(m,0x800);SkillCashData.LoadFeature(m);SkillCashData.LoadAlpha(m);AddersPayoutDisplay.LoadRomData(m,evidence);
+        var alpha=new Mpu4Alpha(m);alpha.Reset();var scheduler=new Mpu4ChoiceStreamScheduler(m,0);byte port=0x30;int edges=0,rounds=0;
+        ushort[] addresses=[0x2FC,0x2FE,0x302,0x300];for(int n=0;n<4;n++)m.WriteWord(addresses[n],balances[n]);
+        while(addresses.Any(p=>m.ReadWord(p)!=0)) {
+            if(++rounds>30)throw new Exception("Collection router failed to drain balances");m.Control.Push(0xBEEF);
+            var vm=new AddersCollectionExecution(m,evidence,0xAA2B,_=>{},alpha,scheduler,()=>port,v=>{port=v;edges++;});int budget=100000;
+            while(!vm.Completed && --budget>0){if(vm.Waiting)m.Memory[0x6E]++;vm.Step();}
+            Equal(true,vm.Completed);Equal(0,m.Data.Count);Equal((ushort)0x800,m.Control.Pointer);Equal((ushort)0xBEEF,m.Control.ResumeCursor);Equal((byte)0,m.Memory[0x2B]);
+        }
+        Equal(true,edges>0);Equal((byte)0x30,port);for(ushort p=0x2F0;p<0x309;p++)Equal(unchecked((byte)~m.Memory[p]),m.Memory[p+0x19]);
+    }
+});
+Check("Payout collection pause prevents VM and output progress",()=>{
+    var m=new Machine{DataStackBase=0x600};m.Control=new(m,0x800);m.Control.Push(0xBEEF);SkillCashData.LoadFeature(m);SkillCashData.LoadAlpha(m);AddersPayoutDisplay.LoadRomData(m,evidence);m.WriteWord(0x2FC,2);
+    var alpha=new Mpu4Alpha(m);alpha.Reset();var scheduler=new Mpu4ChoiceStreamScheduler(m,0);byte port=0x30;int edges=0;
+    var vm=new AddersCollectionExecution(m,evidence,0xAA2B,_=>{},alpha,scheduler,()=>port,v=>{port=v;edges++;});
+    while(!vm.Waiting)vm.Step();vm.Pause();byte[] before=m.Memory.ToArray();var address=vm.Address;for(int n=0;n<500;n++)vm.Step();
+    Equal(true,before.SequenceEqual(m.Memory));Equal(address,vm.Address);Equal(1,edges);
+    vm.Resume();int budget=10000;while(!vm.Completed && --budget>0){if(vm.Waiting)m.Memory[0x6E]++;vm.Step();}
+    Equal(true,vm.Completed);Equal(2,edges);Equal((ushort)0,m.ReadWord(0x2FC));Equal((ushort)0,m.ReadWord(0x2FE));
+});
+Check("Payout token level change uses recovered tail flush and compensation rules",()=>{
+    // Synthetic exposed level change after the first pulse; static code path,
+    // not a natural MAME timing equivalence claim.
+    var m=new Machine{DataStackBase=0x600};m.Control=new(m,0x800);SkillCashData.LoadFeature(m);SkillCashData.LoadAlpha(m);AddersPayoutDisplay.LoadRomData(m,evidence);m.WriteWord(0x300,8);m.Memory[0x7D2]=0;m.WriteWord(0x7D3,0x1000);
+    var alpha=new Mpu4Alpha(m);alpha.Reset();byte port=0x30;var writes=new List<byte>();var channels=new List<ushort>();
+    var vm=new AddersPayoutExecution(m,0x4B8C,()=>AddersPayoutDisplay.Refresh(m,evidence,alpha),()=>port,v=>{port=v;writes.Add(v);},message=>AddersPayoutSerial.Enqueue(m,message));
+    vm.ObserveDebit=(record,_)=>channels.Add(record.Address);while(!vm.Waiting)vm.Step();m.Memory[0]=4;
+    int budget=10000;while(!vm.Completed && --budget>0){if(vm.Waiting)m.Memory[0x6E]++;vm.Step();}
+    Equal(true,vm.Completed);Equal(4,vm.Debits);Equal(true,channels.All(at=>at==0x4AEC));Equal(8,writes.Count);Equal((ushort)0,m.ReadWord(0x300));Equal((byte)7,m.Memory[0x370]);Equal((ushort)0x0E0C,m.ReadWord(0x7D3));
+});
 Check("Collection cash transfer scripts match retained natural MAME examples", () => {
     using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","bank-transfer-validation.json")));
     int count=0;

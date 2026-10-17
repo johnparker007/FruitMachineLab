@@ -5,9 +5,10 @@ the bounded nineteen-window audit leaves autonomous outer IRQ acceptance open.
 Do not expand this into another timing campaign. Atomic native/VM execution
 boundaries remain a substantial gap, but do not block gameplay recovery.
 
-Next implement collection native4B39/4B8C and4C25/4CBE through6858, then connect
-AAA1/AA2B to the paid-play prompt. Five bank/token VM transfer entries are now
-executable with explicit native payout suspension; no GUI collection is claimed.
+Collection native4B39/4B8C,4C25/4CBE and6858 now execute in a composed headless
+AA2B path, verified against64 isolated MAME cases with explicit timing exclusions.
+Next connect AAA1/AA2B to the paid-play Collect prompt and host service clock.
+No GUI collection is claimed. See recovery/COLLECTION-PAYOUT-PASS.md.
 Prioritise continuous playable games, followed by cross-game validation and the
 agreed layout work. Symbolic ASM/reassembly and script editing remain deferred.
 See [collection pass and dependency audit](recovery/COLLECTION-TRANSFER-PASS.md).

@@ -40,9 +40,14 @@
     "sha256": "E644AF1E94D3128A98611511442407E97FBE7FBA36C59B0026982C99DFA66403"
   },
   {
+    "path": "docs/recovery/COLLECTION-PAYOUT-PASS.md",
+    "bytes": 11427,
+    "sha256": "6AB14EB51149C4A802042DA0E6A235BFB800D137CA8109846FB605874BD20F52"
+  },
+  {
     "path": "docs/recovery/COLLECTION-TRANSFER-PASS.md",
-    "bytes": 7449,
-    "sha256": "CB5510D23B26C7636FF36EA896B65EBF4D996768C8E2DDE4D13011A562C5FA52"
+    "bytes": 7729,
+    "sha256": "32D90110BA7547D3F954499D8DF4C9FF366300247386235EDBA319E501936392"
   },
   {
     "path": "docs/recovery/DEEP-ANALYSIS.txt",
@@ -315,9 +320,44 @@
     "sha256": "231EFC42EF3F02A693E59EC32C2EFD02242D39CAF79AF7E2850E4A070CB7A0CB"
   },
   {
+    "path": "evidence/mpu4/collection/debit-matrix-debugger.cmd",
+    "bytes": 20552,
+    "sha256": "5ED04BA2CA7358E19A218139C05CBE6E1DC5680A90D3E3AF719FD3D55A0CEADA"
+  },
+  {
+    "path": "evidence/mpu4/collection/debit-matrix.json",
+    "bytes": 269628,
+    "sha256": "28CA8E34A32DBBE7084C9871DB6B6D00D35B8E0421248790237BB6D33EE33B0C"
+  },
+  {
+    "path": "evidence/mpu4/collection/payout-data.json",
+    "bytes": 4358,
+    "sha256": "9ED9AC37EBF00253D1BD4F9DD170A8F1A31C3264B404012A2D3D1E527731137A"
+  },
+  {
+    "path": "evidence/mpu4/collection/router-matrix-debugger.cmd",
+    "bytes": 9771,
+    "sha256": "1ED4D982EA39A5D42FE958CD070441C015F72ED305A753A6837C19F8E59EC65E"
+  },
+  {
+    "path": "evidence/mpu4/collection/router-matrix.json",
+    "bytes": 143068,
+    "sha256": "A909CE2A05529DB27FE62475736564E67B77E0EE1EBC4ED46141204337713BB9"
+  },
+  {
+    "path": "evidence/mpu4/collection/service-matrix-debugger.cmd",
+    "bytes": 8827,
+    "sha256": "78B6D74391FB64E1028C718D3E9000A8A753E7A49AFB8DFCE18DE1331C725BE7"
+  },
+  {
+    "path": "evidence/mpu4/collection/service-matrix.json",
+    "bytes": 141819,
+    "sha256": "DB4CA227A480986AD076D59C3F3C7259E0A058FEFEBB200802B4AF31FC3642DA"
+  },
+  {
     "path": "evidence/mpu4/collection/vm-encoding-checkpoint.json",
-    "bytes": 3920,
-    "sha256": "F0BFCCB903BEF789E9AC8CEE44FEC09186B7BA67B3B69FA6AA7C36CC38D0746E"
+    "bytes": 8650,
+    "sha256": "DA267448D5EBCF574E1EF23B44D7BA8095D4F24666DD47D7B11B1AEAC2A619CE"
   },
   {
     "path": "evidence/mpu4/maps/board-availability-boundary.json",
@@ -835,6 +875,36 @@
     "sha256": "83094B4F5F51B469F6F1870837F5F226F620397E8FFFCDA6EB3F2FEED1D57402"
   },
   {
+    "path": "evidence/mpu4/native/4b39.json",
+    "bytes": 2988,
+    "sha256": "D9E75D10BD3A97A4124D851D745CBBE9A32B85F831F06F66171D4282BF970BC1"
+  },
+  {
+    "path": "evidence/mpu4/native/4b8c.json",
+    "bytes": 3152,
+    "sha256": "43EC40B1F014016B157968FB7BA1DA0F2CFAF8221FAB4D74D7669B465A9BAB23"
+  },
+  {
+    "path": "evidence/mpu4/native/4c25.json",
+    "bytes": 1163,
+    "sha256": "9EFE773D84795C06EF71E0CF8EFCF6E4D56D14092521B2CD24FA90769619DB27"
+  },
+  {
+    "path": "evidence/mpu4/native/4c91.json",
+    "bytes": 1856,
+    "sha256": "B7E735550A8340D1FBA785F922D4F99291B1F8DA7C5741BCA3C2D1A0485FF767"
+  },
+  {
+    "path": "evidence/mpu4/native/4cbe.json",
+    "bytes": 3951,
+    "sha256": "F1DD99954DA4F253935F5C59CB71378956A81B77620C51F4E5D662113D3184C2"
+  },
+  {
+    "path": "evidence/mpu4/native/4cf8.json",
+    "bytes": 2583,
+    "sha256": "38A7193CC3E0291D68FE286C9EBEF534FD744403ADB4033574D47B7869B5F40A"
+  },
+  {
     "path": "evidence/mpu4/native/4d8f.json",
     "bytes": 1390,
     "sha256": "00B6932DEB86E5A5BCAD416CEE42845651DDDB42673D0F35617FB4E5F00A9EDC"
@@ -870,6 +940,11 @@
     "sha256": "682FA5C033B0F19E79277B11CFF642B0DD45AAE0555389A57A370CC4C4BBFF89"
   },
   {
+    "path": "evidence/mpu4/native/511b.json",
+    "bytes": 4402,
+    "sha256": "7C462504E578B08EDFED72AC959005C5F105E7B72274E3BDBED3AB0766B09C3B"
+  },
+  {
     "path": "evidence/mpu4/native/5429.json",
     "bytes": 1994,
     "sha256": "574FF01598C9B4559B23625B4E3447FBD47DE29F0831C23C373C17FF51D0F977"
@@ -883,6 +958,16 @@
     "path": "evidence/mpu4/native/57db.json",
     "bytes": 1165,
     "sha256": "E63AFFDA2C36F03CBA85CB3253500DD887DF42224BB3D664953FD3441D4BAF97"
+  },
+  {
+    "path": "evidence/mpu4/native/57f7.json",
+    "bytes": 1229,
+    "sha256": "6550861384D3940DDBD55CFC8452080AE85EBE50C2DD4B6D6C5AA3B6E0610772"
+  },
+  {
+    "path": "evidence/mpu4/native/59a4.json",
+    "bytes": 1491,
+    "sha256": "21641F8DDD4CD16285C4DA4C14746583AB7105B000F6DB83FC13BCC18E18D8B0"
   },
   {
     "path": "evidence/mpu4/native/59bb.json",
@@ -943,6 +1028,11 @@
     "path": "evidence/mpu4/native/5cd0.json",
     "bytes": 2082,
     "sha256": "E3119F369E9D294B2CD8C2C022A2A19BB3F26F741C25FA1C3A9EC099A7B92CE5"
+  },
+  {
+    "path": "evidence/mpu4/native/60ab.json",
+    "bytes": 1283,
+    "sha256": "81B70B76DA8A6222C397E2548D700F4F8273289B258CCF3C8139F552A93E5A55"
   },
   {
     "path": "evidence/mpu4/native/60c8.json",
@@ -1020,6 +1110,16 @@
     "sha256": "668F958055ED9F68D0EFCC732CEB3ADDA746B95F7BF1EAD698D6340F8F51FB31"
   },
   {
+    "path": "evidence/mpu4/native/6858.json",
+    "bytes": 3179,
+    "sha256": "C60E7017140990B214F1EBD03376EA50EBBFA7925423D21CECF6FDD300D38DB2"
+  },
+  {
+    "path": "evidence/mpu4/native/68e0.json",
+    "bytes": 1156,
+    "sha256": "EA4287C6F0E968B22A27A71D6D7BD36E4C28A82C45C9FECE0F9FE83ACC1A280D"
+  },
+  {
     "path": "evidence/mpu4/native/68f1.json",
     "bytes": 1657,
     "sha256": "98AA15547FBD9A6EC48D5C712F537041E8ACCC44962469437F8BC15DB3BC0100"
@@ -1063,6 +1163,21 @@
     "path": "evidence/mpu4/native/6fb8.json",
     "bytes": 1024,
     "sha256": "6EEA9F8BF1CE4D30EE84A97E9AF76343471BA54A1D8E162CDBE5DA51C150940A"
+  },
+  {
+    "path": "evidence/mpu4/native/6fc1.json",
+    "bytes": 687,
+    "sha256": "D44DA97FA74570B04B02AB19787AFB7175086AB81D069B23FAF1E39FB2465F47"
+  },
+  {
+    "path": "evidence/mpu4/native/6fec.json",
+    "bytes": 1365,
+    "sha256": "9AED24437FD2C930C14093D5A5340ACEA06EFA4DA260016CE2530D657BC45409"
+  },
+  {
+    "path": "evidence/mpu4/native/7019.json",
+    "bytes": 1581,
+    "sha256": "778E0926CCC25F6F1AC4EF36144AF840AD423AB7EE0543A4759B9FC5DD694D67"
   },
   {
     "path": "evidence/mpu4/native/7055.json",

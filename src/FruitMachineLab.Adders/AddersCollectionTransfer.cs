@@ -15,9 +15,10 @@ public sealed class AddersCollectionTransfer
     public ushort? PendingPayout => NextInstruction?.Native is 0x4B39 or 0x4B8C
         ? NextInstruction.Native : null;
 
-    public AddersCollectionTransfer(Machine machine, string evidenceDirectory, ushort entry, Action<LampRequest> lampOutput)
+    public AddersCollectionTransfer(Machine machine, string evidenceDirectory, ushort entry, Action<LampRequest> lampOutput,
+        Func<Instruction,Machine,bool>? additionalHandler=null)
     {
-        if(entry is not (0xA983 or 0xA9A0 or 0xA9D5 or 0xAA04 or 0xA942))
+        if(entry is not (0xAA2B or 0xA983 or 0xA9A0 or 0xA9D5 or 0xAA04 or 0xA942))
             throw new ArgumentOutOfRangeException(nameof(entry), "Unrecovered collection entry");
         if(machine.Control is null)
             throw new ArgumentException("Collection requires an existing physical VM control stack", nameof(machine));
@@ -26,12 +27,13 @@ public sealed class AddersCollectionTransfer
         RecoveredScript Resolve(ushort body) => new(Path.Combine(evidenceDirectory,"VM-SCRIPTS",$"{body:X4}.txt"));
         executor = new ScriptExecutor(machine) {
             ResolveScript=Resolve,
+            InputConditionCell=selector=>Mpu4InputConditions.Evaluate(machine,(byte)selector),
             WordHandler=(instruction,m) => {
                 if(instruction.Native is 0x4B39 or 0x4B8C) {
                     if(!completingPayout)throw new InvalidOperationException("Payout service must complete before VM continuation");
                     return true;
                 }
-                return lamps.HandleWord(instruction);
+                return lamps.HandleWord(instruction) || additionalHandler?.Invoke(instruction,m)==true;
             }
         };
         executor.Begin(Resolve(entry));

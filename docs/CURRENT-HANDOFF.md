@@ -1,5 +1,20 @@
 # Current handoff
 
+17 October native collection milestone: AddersCollectionExecution composes AA2B
+with translated4B39/4B8C,4CBE accounting/display, token compensation, serial queues
+and6858 triac pulses.32 isolated MAME debit cases,16 service cases and16 full
+router cases match selected RAM and output/debit sequences. These are synthetic
+masked-IRQ experiments; reference waits are explicitly skipped. Component waits
+observe65 changes of006E per edge; host owns time. No captured event/state replay
+drives the new path. Sound reset free-list/cache effects are also recovered for
+collection. See [payout recovery](recovery/COLLECTION-PAYOUT-PASS.md).
+
+Next connect AAA1/Collect prompt and AA2B to Live paid play, preserving the explicit
+native execution/clock ownership boundary. No new collection GUI is connected yet.
+Manager-option variants and service-mode tone/delay remain explicit boundaries.
+Whole-machine outer IRQ acceptance remains deferred; no timing campaign is needed
+before gameplay integration. Previous transfer-only notes below are historical.
+
 17 October collection pass: AddersCollectionTransfer executes five recovered
 bank/token transfer entries, stopping explicitly before native4B39/4B8C. Six new
 verification groups cover16 retained natural cash examples and labelled synthetic

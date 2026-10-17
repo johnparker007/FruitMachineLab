@@ -5,6 +5,14 @@ Local clone: C:\projects\GitRepos\FruitMachineLab
 
 ## Current status
 
+Headless collection now composes AA2B with native cash/token payout, accounting,
+display and output waits. Filter verifier with Payout for the new oracle matrices
+and component tests. Capture-PayoutDebit.ps1 / Curate-PayoutDebit.ps1 reproduce32
+isolated debit cases; Capture-PayoutService.ps1 / Curate-PayoutService.ps1 cover16
+service cases, or use -Collection on capture for16 router cases. All reference
+service/router waits are explicitly skipped; no natural timing claim. See
+recovery/COLLECTION-PAYOUT-PASS.md for parameters, checkpoints and exclusions.
+
 Live no longer consumes shared-timing Events (including scan-entry timestamps).
 Timer1 dispatch and idle post-panel counter/sense work are staged; accepted
 outer IRQ entry/occupancy and active motor/sound work remain explicit adapters.

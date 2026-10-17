@@ -1,5 +1,14 @@
 # Implementation and evidence boundaries
 
+Native collection now executes headlessly through AA2B, cash/token denomination
+selection, debit/accounting, display refresh and triac output pulses.64 isolated
+MAME cases (32 debit,16 service,16 router) match selected RAM and output sequences;
+service/router waits were explicitly skipped in those reference experiments.
+The C# polling waits require65 observed006E changes per edge; instruction timing
+and whole-machine IRQ independence are not claimed. The Live GUI is unchanged.
+See [payout pass](docs/recovery/COLLECTION-PAYOUT-PASS.md) for scope and exclusions.
+The following transfer-only checkpoint is retained as historical context.
+
 17 October collection pass: AddersCollectionTransfer now executes five recovered
 bank/token transfer entries, stopping explicitly before native4B39/4B8C. Six new
 verification groups cover16 retained natural cash examples and labelled synthetic

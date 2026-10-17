@@ -1,5 +1,10 @@
 # Collection transfer and bounded IRQ audit — 17 October 2026
 
+Historical transfer-only checkpoint: the subsequent
+[payout pass](COLLECTION-PAYOUT-PASS.md) composes AA2B with native payout/output.
+Its newer gameplay scope supersedes the next-step notes below; the bounded outer
+IRQ audit and runtime recording dependencies remain applicable.
+
 ## Decision and actual gameplay frontier
 
 The nineteen natural windows do **not** yet execute without captured outer IRQ

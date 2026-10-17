@@ -7,6 +7,23 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { if(args.Length>1 && !name.Contains(args[1],StringComparison.OrdinalIgnoreCase))return;action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Payout input condition staged flags and instructions match64 MAME cases",()=>{
+    using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","input-condition-timing.json")));var catalog=doc.RootElement.GetProperty("catalog");int count=0;
+    foreach(var row in doc.RootElement.GetProperty("rows").EnumerateArray()){
+        var m=new Machine();Convert.FromHexString(row.GetProperty("before_hex").GetString()!).CopyTo(m.Memory,0);foreach(var r in doc.RootElement.GetProperty("rom_regions").EnumerateArray())Convert.FromHexString(r.GetProperty("bytes_hex").GetString()!).CopyTo(m.Memory,r.GetProperty("address").GetInt32());
+        var plan=new Mpu4InputConditionPlan(m,0x100);ulong start=row.GetProperty("start_cycle").GetUInt64();using var e=new NativeRoutineExecution(plan.Instructions(),start,0x4C34,()=>true);var observed=new List<OutputScanInstruction>();e.ObserveInstruction=observed.Add;while(!e.Completed)e.AdvanceTo(e.NextEventCycle);
+        var expected=row.GetProperty("steps");Equal(expected.GetArrayLength(),observed.Count);for(int n=0;n<observed.Count;n++){var r=catalog[expected[n][0].GetInt32()];Equal(r.GetProperty("pc").GetUInt16(),observed[n].Address);Equal(start+expected[n][1].GetUInt64(),observed[n].Started);Equal(true,r.GetProperty("context_hex").GetString()!.StartsWith(observed[n].Bytes,StringComparison.Ordinal));}
+        byte flags=row.GetProperty("end").GetProperty("cc").GetByte();Equal((flags&4)!=0,plan.Zero);Equal((flags&1)!=0,plan.Carry);Equal(Mpu4InputConditions.Evaluate(m,row.GetProperty("case").GetProperty("selector").GetByte()),plan.CellValue);Equal(row.GetProperty("end").GetProperty("cycle").GetUInt64(),e.Cycle);
+        byte[] ram=Convert.FromHexString(row.GetProperty("after_hex").GetString()!);Equal(true,m.Memory.AsSpan(0,0x6E0).SequenceEqual(ram.AsSpan(0,0x6E0)));count++;
+    }Equal(64,count);
+});
+Check("Payout input condition retains sampled flags across suspension and faults invalid selectors",()=>{
+    var m=new Machine();SkillCashData.LoadFeature(m);m.Memory[0x100]=4;m.Memory[0]=4;var plan=new Mpu4InputConditionPlan(m,0x100);using var e=new NativeRoutineExecution(plan.Instructions(),0,0x4C34,()=>false);
+    while(e.Address!=0x6806)e.AdvanceTo(e.NextEventCycle);ulong due=e.NextEventCycle;e.SuspendUntil(e.Cycle+111);Equal(due+111,e.NextEventCycle);m.Memory[0]=0;
+    while(!e.Completed)e.AdvanceTo(e.NextEventCycle);Equal(false,plan.Zero);Equal(false,plan.Carry);Equal((ushort)1,plan.CellValue);
+    m.Memory[0x100]=0x3F;var invalid=new Mpu4InputConditionPlan(m,0x100);using var bad=new NativeRoutineExecution(invalid.Instructions(),0,0x4C34,()=>false);
+    try{while(!bad.Completed)bad.AdvanceTo(bad.NextEventCycle);throw new Exception("SWI3 accepted");}catch(NotSupportedException){}Equal(true,bad.Fault is not null);try{bad.AdvanceTo(bad.Cycle+1);throw new Exception("Faulted selector resumed");}catch(InvalidOperationException){}
+});
 Check("Payout display timing rejects changed native bytes and literal encodings",()=>{
     var m=new Machine{DataStackBase=0x600};AddersPayoutDisplayTiming.LoadRomData(m,evidence);Convert.FromHexString("34203184AEA16E91").CopyTo(m.Memory,0xF8);
     var literal=new Instruction(0xA7AB,0x81D9,"vm_push_word_body_word",0x2F1,null);ulong cycles=AddersPayoutDisplayTiming.Cycles(literal,m,(_,_)=>throw new Exception("Unrelated alpha adapter used"));Equal(true,cycles>0);

@@ -1,5 +1,11 @@
 # Current handoff
 
+Next eight-batch cycle, batch1 complete: staged67EC input-condition plan matches64
+original-ROM cases (all PCs/cycles/Z/C, aliases/bounds). Typed native plan clock
+will compose selected cash/tail callers next. No Live change. See
+[caller timing pass](recovery/PAYOUT-CALLER-TIMING-PASS.md). John explicitly
+authorized commits/pushes throughout these eight substantial batches.
+
 17 October COMPOSED TIMED DEBIT checkpoint: AddersTimedPayoutDebitExecution owns
 4CBE -> staged NVRAM -> native76BF -> incremental A8F9 -> native return -> timed
 accounts/checksums ->6858 output.32 original-ROM comparisons reach6858 at the exact

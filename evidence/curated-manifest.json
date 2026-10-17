@@ -210,6 +210,11 @@
     "sha256": "AD6B05EB3DB02331CB6E780241757CDC7398747E8DF32E6987A4A94955DAB0C4"
   },
   {
+    "path": "docs/recovery/PAYOUT-CALLER-TIMING-PASS.md",
+    "bytes": 2116,
+    "sha256": "36B580E937F39991C477BDECB91BBE9E27B0B6BBC6CA23FCD1BF65B8D7EAF08F"
+  },
+  {
     "path": "docs/recovery/PAYOUT-DEBIT-TIMING-PASS.md",
     "bytes": 13294,
     "sha256": "B2CAE4803DA33327651C3F3D26CED0F3AD1D3BAD7DD8392F3D01F2AF20BC01D6"
@@ -368,6 +373,16 @@
     "path": "evidence/mpu4/collection/display-vm-data.json",
     "bytes": 2924,
     "sha256": "899AB973D632EEC675D537330AD954DF3AAFDD8D1570E041C498EA11803D9202"
+  },
+  {
+    "path": "evidence/mpu4/collection/input-condition-timing-debugger.cmd",
+    "bytes": 36886,
+    "sha256": "06193B95BBDA0E28A51E391555D7863E1DB2D392E03A2CF5144830A2216F49F0"
+  },
+  {
+    "path": "evidence/mpu4/collection/input-condition-timing.json",
+    "bytes": 660213,
+    "sha256": "59B54683C79171250A38612CFE6E80A2DB13188F875DC06206308BD52C490A7C"
   },
   {
     "path": "evidence/mpu4/collection/native-vm-gateway-debugger.cmd",

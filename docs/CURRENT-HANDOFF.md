@@ -1,5 +1,9 @@
 # Current handoff
 
+Sixteen-batch cycle batch15:5429/5434 wait prefixes match32 original-ROM helper
+boundaries, bytes/cycles/full RAM. Full helper/transport remains open. Final batch
+will verify component return contracts/integration and full regression/handoff.
+
 Sixteen-batch cycle batch14:5429 wait staged with explicit helper ownership and
 source byte checkpoint; no automatic ACK/completion. Synthetic busy test passes.
 Next native boundary comparison and final regression. Helpers/full flags/transport

@@ -80,3 +80,12 @@ register/flags are not reconstructed by this plan: NativeRoutineCall carries the
 declared caller condition context, not an asserted complete NZVC result. Helpers
 must be separately composed with a valid register contract before Live use.
 Next original-ROM boundary captures; full wait/transport timing remains open.
+
+Capture-SerialWait/shared curator serial-wait now preserve32 original-ROM wait
+prefixes to the FIRST helper or idle return, without skipping a helper. Explicit
+5434 entry states exercise X/A zero/1000/F000 thresholds and75 low bits. All
+emitted byte/cycle/full2KB RAM/boundary PC match, including native S-2 return word.
+These are isolated synthetic boundaries, not natural serial wait timing. Native
+helper flags/outputs remain outside scope, as does physical completion. Raw
+pointer FruitMachineLab-serial-wait.txt. Verifier also stops at the typed handoff,
+and checks that instruction effects do not occur a cycle early.

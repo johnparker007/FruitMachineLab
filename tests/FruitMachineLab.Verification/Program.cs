@@ -36,6 +36,15 @@ Check("Native sound collection bindings use actual list and prohibit dual owners
     var second=new Machine();var secondSound=new AddersNativeSound(second);secondSound.Reset();var duplicate=new Mpu4ChoiceStreamScheduler(second,0);duplicate.Queue(0x8784);
     var both=new AddersCollectionWordBindings(second,_=>{},new(second),duplicate,nativeSound:secondSound);try{both.Handle(empty,second);throw new Exception("Dual sound owner accepted");}catch(InvalidOperationException){}
 });
+Check("Native sound timed actions queue cancel reset on one clock and own disposal",()=>{
+    var m=new Machine();using var d=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","sound-prompt.json")));
+    foreach(var r in d.RootElement.GetProperty("rom_regions").EnumerateArray())Convert.FromHexString(r.GetProperty("bytes_hex").GetString()!).CopyTo(m.Memory,r.GetProperty("address").GetInt32());
+    using var sound=new AddersNativeSound(m);ulong cycle=0;
+    void Run(ushort entry,ushort x){m.WriteWord(0x700,0x4C34);sound.BeginCall(entry,cycle,0x700,0x600,x,0x1A0,0x89,0xAB,true);while(sound.Servicing)sound.AdvanceTo(sound.NextEventCycle);cycle=sound.Cycle;}
+    Run(0x5B77,0x8784);Run(0x5C18,0x8784);Equal(true,sound.Active);Run(0x5CD0,0x8784);Equal((ushort)1,m.ReadWord(0x45));Run(0x5C7A,0x8784);Run(0x5B77,0x8784);
+    Equal(false,sound.Active);Equal(5,sound.CompletedCalls);Equal(true,cycle>1000);Equal((ushort)0x1A0,m.ReadWord(0x49));
+    sound.Dispose();try{sound.BeginService(cycle,0x700,0,0,0,true);throw new Exception("Disposed sound restarted");}catch(ObjectDisposedException){}
+});
 Check("Sound operation yield matches48 original-ROM instruction paths",()=>Equal(48,AddersSoundOperationVerification.Yield(evidence)));
 Check("Sound operation child matches32 original-ROM instruction paths",()=>Equal(32,AddersSoundOperationVerification.Child(evidence)));
 Check("Sound operation instrument matches48 original-ROM instruction paths",()=>Equal(48,AddersSoundOperationVerification.Instrument(evidence)));

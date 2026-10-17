@@ -3,10 +3,11 @@ namespace FruitMachineLab.Adders;
 
 // Explicit bounded owner of native task memory and one5CD0 service invocation.
 // Host chooses when service is called; this class invents no IRQ/cadence.
-public sealed class AddersNativeSound(Machine machine,Action<byte,byte>? ymWrite=null)
+public sealed class AddersNativeSound(Machine machine,Action<byte,byte>? ymWrite=null) : IDisposable
 {
     private NativeRoutineExecution? running;
     private AddersSoundServicePlan? plan;
+    private bool disposed;
     public bool Owns(Machine state)=>ReferenceEquals(machine,state);
     public bool Active=>machine.ReadWord(0x47)!=0;
     public bool Servicing=>running is not null;
@@ -16,8 +17,9 @@ public sealed class AddersNativeSound(Machine machine,Action<byte,byte>? ymWrite
     public bool Paused {get;private set;}
     public string? Fault {get;private set;}
     public int CompletedTasks {get;private set;}
+    public int CompletedCalls {get;private set;}
     public Action<OutputScanInstruction>? ObserveInstruction {get;set;}
-    private void Foreground(){if(Fault is not null)throw new InvalidOperationException(Fault);if(Servicing)throw new InvalidOperationException("Native sound service owns task memory");}
+    private void Foreground(){ObjectDisposedException.ThrowIf(disposed,this);if(Fault is not null)throw new InvalidOperationException(Fault);if(Servicing)throw new InvalidOperationException("Native sound service owns task memory");}
     public bool Queue(ushort stream){Foreground();return AddersSoundQueueMemory.Queue(machine,stream);}
     public bool Cancel(ushort stream){Foreground();return AddersSoundLifecycleMemory.Cancel(machine,stream,ymWrite);}
     public bool Reset()
@@ -28,17 +30,29 @@ public sealed class AddersNativeSound(Machine machine,Action<byte,byte>? ymWrite
     }
     public void BeginService(ulong cycle,ushort stack,ushort u,ushort x,ushort y,bool irqMasked)
     {
+        BeginCall(0x5CD0,cycle,stack,u,x,y,0,0,irqMasked);
+    }
+    // Native helper entry only: VM->native wrapper costs/frames remain caller-owned.
+    public void BeginCall(ushort entry,ulong cycle,ushort stack,ushort u,ushort x,ushort y,byte a,byte b,bool irqMasked)
+    {
         Foreground();if(Paused)throw new InvalidOperationException("Native sound is paused");if(cycle<Cycle)throw new ArgumentOutOfRangeException(nameof(cycle));
-        Cycle=cycle;plan=new(machine,stack,u,x,y,ymWrite:ymWrite);running=new(plan.Instructions(),cycle,0x4C34,()=>irqMasked);
+        IEnumerable<NativeRoutineWork> instructions=entry switch {
+            0x5CD0=>(plan=new(machine,stack,u,x,y,ymWrite:ymWrite)).Instructions(),
+            0x5C18=>new AddersSoundQueuePlan(machine,x,stack,y,a,b).Instructions(),
+            0x5C7A=>new AddersSoundCancelPlan(machine,x,stack,y,u,a,b,ymWrite).Instructions(),
+            0x5B77=>new AddersSoundResetPlan(machine,stack,x,y,a,b,ymWrite).Instructions(),
+            _=>throw new NotSupportedException("Unrecovered native sound entry")};
+        Cycle=cycle;running=new(instructions,cycle,0x4C34,()=>irqMasked);
         running.ObserveInstruction=i=>ObserveInstruction?.Invoke(i);
     }
     public void AdvanceTo(ulong cycle)
     {
-        if(Paused)return;if(Fault is not null)throw new InvalidOperationException(Fault);
+        ObjectDisposedException.ThrowIf(disposed,this);if(Paused)return;if(Fault is not null)throw new InvalidOperationException(Fault);
         var execution=running ?? throw new InvalidOperationException("No native sound service is active");
-        try{execution.AdvanceTo(cycle);Cycle=execution.Cycle;if(execution.Completed){CompletedTasks+=plan!.CompletedTasks;execution.Dispose();running=null;plan=null;}}
+        try{execution.AdvanceTo(cycle);Cycle=execution.Cycle;if(execution.Completed){CompletedTasks+=plan?.CompletedTasks ?? 0;CompletedCalls++;execution.Dispose();running=null;plan=null;}}
         catch(Exception e){Cycle=execution.Cycle;Fault=e.Message;Paused=true;execution.Dispose();throw;}
     }
     public void Pause()=>Paused=true;
     public void Resume(){if(Fault is not null)throw new InvalidOperationException(Fault);Paused=false;}
+    public void Dispose(){running?.Dispose();disposed=true;Paused=true;}
 }

@@ -324,3 +324,10 @@ cycles/bytes/full2KB RAM (including disabled return and cache-hit paths on repea
 calls). Capture-SoundReset and curator -Operation reset preserve the data table
 separately from annotations. Direct STD timing now covered. Raw sound-reset.txt.
 No register/cache update is performed before its instruction completes.
+
+AddersNativeSound.BeginCall now owns selected foreground5C18/5C7A/5B77 or5CD0
+under the same instruction clock, output callback and mutation/fault/pause guards.
+VM bridge/frame costs remain caller-owned: this is a native helper entry API,
+not a shortcut around776F. A composed synthetic reset->queue->service->cancel->
+reset check verifies five completed calls/one tick/free-list restoration. Disposal
+releases the enumerator and refuses restart. No service period is supplied.

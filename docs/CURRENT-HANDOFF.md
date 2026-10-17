@@ -1,5 +1,9 @@
 # Current handoff
 
+Sixteen-batch cycle batch10: native sound owner composes timed foreground and
+background actions on one clock. VM wrapper remains caller-owned. Next busy
+serial investigation, retaining Live acceptance/helper boundaries.
+
 Sixteen-batch cycle batch9: full foreground5B77 reset timing matches32 ROM paths.
 Queue/cancel/reset and background prompt service are all explicitly staged.
 Next compose owner actions; semantic bindings still carry explicit helper budgets.

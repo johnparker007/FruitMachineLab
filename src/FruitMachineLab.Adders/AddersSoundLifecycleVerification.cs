@@ -13,6 +13,7 @@ public static class AddersSoundLifecycleVerification
             var m=new Machine();Convert.FromHexString(row.GetProperty("before_hex").GetString()!).CopyTo(m.Memory,0);
             if(kind=="release")AddersSoundLifecycleMemory.ReleaseChannels(m,0x1A0);
             else if(kind=="cancel")AddersSoundLifecycleMemory.Cancel(m,0x8784);
+            else if(kind=="finish"){AddersSoundLifecycleMemory.FinishRoot(m,0x1A0);m.Memory[0x44]--;}
             else throw new NotSupportedException(kind);
             byte[] expected=Convert.FromHexString(row.GetProperty("after_hex").GetString()!);
             // Only caller-owned native stack scratch is outside this memory helper.

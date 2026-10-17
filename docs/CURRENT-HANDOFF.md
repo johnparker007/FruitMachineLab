@@ -1,5 +1,9 @@
 # Current handoff
 
+Five-batch cycle batch3: root C0 completion matches16 ROM cases, preserves same-
+clock rescan, and passes600 synthetic allocations/completions without pool loss.
+Next stage sound release timing; Live list ownership remains unresolved.
+
 Five-batch cycle batch2: native cancellation5C7A matches16 MAME memory paths;
 middle/duplicate/absent/disabled/cyclic cases have synthetic checks. Native and
 logical owners are still separate. Next C0 completion and scheduling ownership.

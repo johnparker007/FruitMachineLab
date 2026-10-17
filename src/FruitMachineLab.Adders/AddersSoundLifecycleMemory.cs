@@ -6,6 +6,22 @@ namespace FruitMachineLab.Adders;
 // separate owners. Validation rejects unsupported/corrupt chains before mutation.
 public static class AddersSoundLifecycleMemory
 {
+    // Native5E6D root C0 path only, after5CEC has unlinked this due task.
+    // Nested sound call frames require a different return continuation.
+    public static void FinishRoot(Machine m,ushort task,Action<byte,byte>? ymWrite=null)
+    {
+        ValidateTask(task);
+        if(m.ReadWord((ushort)(task+6))!=task+0x25)throw new NotSupportedException("Sound C0 has a nonempty native frame");
+        var seen=new HashSet<ushort>();
+        foreach(ushort head in new ushort[]{m.ReadWord(0x47),m.ReadWord(0x49)})
+            for(ushort at=head;at!=0;at=m.ReadWord(at)){
+                ValidateTask(at);if(at==task || !seen.Add(at))throw new InvalidDataException("Sound completion has conflicting list ownership");
+            }
+        ValidateRelease(m,task);ReleaseChannels(m,task,ymWrite);
+        m.WriteWord(task,m.ReadWord(0x49));m.WriteWord(0x49,task);
+        //5E8C continues5CDE at the SAME clock;44 decrement belongs to the
+        // scheduler exit5D38, not to this C0 handler.
+    }
     // Native5C7A/5CB5 removes the FIRST matching root. The sound-disabled
     // gate60C8 returns before touching lists. No logical scheduler is modified.
     public static bool Cancel(Machine m,ushort stream,Action<byte,byte>? ymWrite=null)

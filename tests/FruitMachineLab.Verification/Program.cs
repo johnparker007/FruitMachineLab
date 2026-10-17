@@ -9,6 +9,20 @@ void Check(string name, Action action) { if(args.Length>1 && !name.Contains(args
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
 Check("Sound lifecycle release matches16 original-ROM channel cases",()=>Equal(16,AddersSoundLifecycleVerification.Matrix(evidence,"release")));
 Check("Sound lifecycle cancel matches16 original-ROM channel cases",()=>Equal(16,AddersSoundLifecycleVerification.Matrix(evidence,"cancel")));
+Check("Sound lifecycle root completion matches16 original-ROM channel cases",()=>Equal(16,AddersSoundLifecycleVerification.Matrix(evidence,"finish")));
+Check("Sound lifecycle root reuse preserves six-record pool through100 completions",()=>{
+    var m=new Machine();AddersSoundResetMemory.Apply(m);m.Memory[0x50]=16;
+    for(int n=0;n<100;n++){
+        for(int i=0;i<6;i++)Equal(true,AddersSoundQueueMemory.Queue(m,(ushort)(0x9000+i)));
+        Equal(false,AddersSoundQueueMemory.Queue(m,0xFFFF));
+        while(m.ReadWord(0x47)!=0){ushort at=m.ReadWord(0x47);m.WriteWord(0x47,m.ReadWord(at));AddersSoundLifecycleMemory.FinishRoot(m,at);}
+        var free=new HashSet<ushort>();for(ushort at=m.ReadWord(0x49);at!=0;at=m.ReadWord(at))Equal(true,free.Add(at));Equal(6,free.Count);
+    }
+    Equal(true,AddersSoundQueueMemory.Queue(m,0x9000));ushort active=m.ReadWord(0x47);byte[] before=m.Memory.ToArray();
+    try{AddersSoundLifecycleMemory.FinishRoot(m,active);throw new Exception("Linked task completed twice");}catch(InvalidDataException){}Equal(true,before.SequenceEqual(m.Memory));
+    m.WriteWord(0x47,m.ReadWord(active));m.WriteWord((ushort)(active+6),(ushort)(active+0x23));before=m.Memory.ToArray();
+    try{AddersSoundLifecycleMemory.FinishRoot(m,active);throw new Exception("Nested frame discarded");}catch(NotSupportedException){}Equal(true,before.SequenceEqual(m.Memory));
+});
 Check("Sound lifecycle cancellation handles first match absent disabled and corrupt lists",()=>{
     var m=new Machine();AddersSoundResetMemory.Apply(m);m.Memory[0x50]=16;
     foreach(ushort stream in new ushort[]{0x9000,0x8784,0x9000})Equal(true,AddersSoundQueueMemory.Queue(m,stream));

@@ -37,3 +37,16 @@ channels. Native44 nesting guard returns to its incoming value. The disabled
 Sixteen original-ROM full-memory cases pass. Separate synthetic tests cover a
 middle record, duplicate roots, absent/disabled calls and cyclic-list rejection.
 No timing or logical/native scheduler synchronization is inferred from these.
+
+## Root completion5E6D
+
+FinishRoot covers C0 only with an empty native stack (+6 == task+25), after the
+due task has been removed by5CEC. It releases once at5E6D->5E2C, branches from
+5E74 directly to5E85, pushes onto0049 and continues5CDE without advancing0045.
+The5E83 release is alarm-fallthrough, not a second normal root release. Native44
+decrement is scheduler exit5D38 and deliberately outside FinishRoot.
+
+All16 selected root calls match RAM. A synthetic100-round test fills/drains all
+six records600 times in total, checking free-list uniqueness each round. Duplicate
+ownership and nonempty native frames fail before mutation. This does not yet
+join logical sound frames to native records or establish complete sound playback.

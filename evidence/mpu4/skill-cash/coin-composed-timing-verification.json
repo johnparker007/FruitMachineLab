@@ -1,0 +1,12 @@
+{
+  "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-coin-composed-426ee052fabf4b7eb2a24b2b1f590baf",
+  "debug_sha256": "50F4C5C4A69D0555355A5ED5D262954116E1A575ACCAF47811D3AE8990816A5F",
+  "cases_sha256": "75451514E120B03B89850E151F8DB48B43EC7D76A0CC1A3841582A6DABFD031D",
+  "rom_sha1": "402D1518BB78FDC489B06C2AABC771E5CE151847",
+  "provenance": {
+    "classification": "Synthetic original4592 service or composed438C idle route; injected RAM and all-output PIA latches, IRQ/FIRQ masked, ROM unpatched. Stops before alarm/helper or after return. No natural coin pin or whole-game claim",
+    "composed": true,
+    "mame_sha256": "0FCE5A88DF4F9D9B1FBF1405812C00848036E615993780978D967DA34204CB7A"
+  },
+  "cases": 64
+}

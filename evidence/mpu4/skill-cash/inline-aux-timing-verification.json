@@ -1,0 +1,16 @@
+{
+  "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-inline-aux-5cc1d18e2e89441485d2f9bb34023171",
+  "debug_sha256": "3B4D7E9A7AD7B6E590345B7DD320BC6FC4DCE2A80910268CEDA032AD26E13348",
+  "cases_sha256": "9B215B43DCA2420D3A37F4B5CD29C036C7646EDA5F4D079D84549E9F986476F0",
+  "rom_sha1": "402D1518BB78FDC489B06C2AABC771E5CE151847",
+  "provenance": {
+    "classification": "Synthetic isolated original46D3 calls with RAM inline byte/return frame and masked IRQ/FIRQ; original ROM table, boundary selectors included; not natural gameplay",
+    "mame_sha256": "0FCE5A88DF4F9D9B1FBF1405812C00848036E615993780978D967DA34204CB7A"
+  },
+  "cases": 64,
+  "excluded": {
+    "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-inline-aux-00a368d4247c4a6198b863a4ef51aa13",
+    "debug_sha256": "14E5CC22B70C5A56CCF3EA4886120E60EE5B7E571F33BD54126A96D632197C73",
+    "reason": "Attempted inline-byte injection at0800 device/unmapped address instead of RAM. Selector contents not established; excluded after native/translated path mismatch. Accepted run uses0500 RAM."
+  }
+}

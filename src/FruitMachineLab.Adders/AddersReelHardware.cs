@@ -21,8 +21,12 @@ public sealed class AddersReelHardware
     public void WriteDrive()
     {
         int drive=m.Memory[0x6C]==0 && (m.Memory[0x6E]&1)!=0 ? 0 : m.ReadWord(0x6F);
-        motors[0].Drive((byte)((drive>>8)&15));motors[1].Drive((byte)((drive>>12)&15));
-        motors[2].Drive((byte)(drive&15));motors[3].Drive((byte)((drive>>4)&15));
+        WriteDriveBank(0xD02,(byte)(drive>>8));WriteDriveBank(0xE00,(byte)drive);
+    }
+    public void WriteDriveBank(ushort address,byte value)
+    {
+        int first=address switch{0xD02=>0,0xE00=>2,_=>throw new ArgumentOutOfRangeException(nameof(address))};
+        motors[first].Drive((byte)(value&15));motors[first+1].Drive((byte)(value>>4));
     }
     public byte ReadOptics()
     {

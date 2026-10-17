@@ -1,0 +1,11 @@
+{
+  "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-panel-continuation-a480f1faa8e74f69b1545096572a4843",
+  "debug_sha256": "A38B3DB534D01FA69EFD1D492002422F94AC4101BC0DEE4849C38155239D3F64",
+  "cases_sha256": "043B5238F14321A1644E8F7876220393ED0DA507932D0739DF2FF4DEAFC12F55",
+  "rom_sha1": "402D1518BB78FDC489B06C2AABC771E5CE151847",
+  "provenance": {
+    "classification": "Synthetic original438C composed caller: inline46D3 branch or19B8/1A05/1A58, masked IRQ/FIRQ, injected RAM/PIA level, unpatched ROM flags. Stops before280C,7CCF,43E9 or44C3; not full coin validation/gameplay",
+    "mame_sha256": "0FCE5A88DF4F9D9B1FBF1405812C00848036E615993780978D967DA34204CB7A"
+  },
+  "cases": 64
+}

@@ -1,0 +1,11 @@
+{
+  "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-coin-idle-9cbd36f36fcd4d5497100e32a619b803",
+  "debug_sha256": "CEF7EAA72D5C44C23A3CC361233BCC5E087BBA6CAE8432CA075F919FD1B873E0",
+  "cases_sha256": "132900155AEB6A32C8BEC209383C65255534A1131CAA1606B96FDD1EA56B43F5",
+  "rom_sha1": "402D1518BB78FDC489B06C2AABC771E5CE151847",
+  "provenance": {
+    "classification": "Synthetic bounded43E9 calls, injected A/RAM, IRQ/FIRQ masked, original ROM coin records. Stops before active pulse/alarm/post-table service; no gameplay claim",
+    "mame_sha256": "0FCE5A88DF4F9D9B1FBF1405812C00848036E615993780978D967DA34204CB7A"
+  },
+  "cases": 64
+}

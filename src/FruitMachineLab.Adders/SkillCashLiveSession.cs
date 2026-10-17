@@ -18,6 +18,11 @@ public sealed class SkillCashLiveSession
     private readonly Mpu4ChoiceStreamScheduler scheduler;
     private readonly Mpu4Alpha alpha;
     private Mpu4OutputScanExecution? outputScan;
+    private Mpu4InputServiceExecution? inputService;
+    public ulong? NextInputServiceEvent=>inputService?.NextEventCycle;
+    public ushort? InputServiceAddress=>inputService?.Address;
+    public Action<OutputScanInstruction>? ObserveInputServiceInstruction {get;set;}
+    public Action<OutputScanAccess>? ObserveInputServiceAccess {get;set;}
     public ulong? NextOutputScanEvent=>outputScan?.NextEventCycle;
     public ushort? OutputScanAddress=>outputScan?.Address;
     public Action<OutputScanInstruction>? ObserveOutputScanInstruction {get;set;}
@@ -293,7 +298,7 @@ public sealed class SkillCashLiveSession
         ulong target=checked(Cycle+cycles);int budget=200_000;
         try {
             while(!Paused && !Completed && Cycle<=target) {
-                ulong irq=outputScan?.NextEventCycle ?? checked(serviceEpoch+services[serviceIndex].Scan);
+                ulong irq=inputService?.NextEventCycle ?? outputScan?.NextEventCycle ?? checked(serviceEpoch+services[serviceIndex].Scan);
                 ulong next=Math.Min(occupancy.NextStart,Math.Min(nextVm,Math.Min(irq,nextCallback)));if(next>target){Cycle=target;break;}Cycle=next;
                 if(occupancy.NextStart==next) {
                     ulong end=occupancy.NextEnd;
@@ -305,7 +310,7 @@ public sealed class SkillCashLiveSession
                 }
                 if(nextCallback==next) {
                     if(timer3Dispatch is null && lampCallback is null){
-                        if(outputScan is not null)throw new NotSupportedException("Timer3 preemption inside generated output scan requires surrounding IRQ execution");
+                        if(outputScan is not null || inputService is not null)throw new NotSupportedException("Timer3 preemption inside generated scan/input service requires surrounding IRQ execution");
                         timer3Dispatch=new(Machine,Cycle);ObserveTimer3DispatchEntry?.Invoke(Cycle);
                     }
                     if(timer3Dispatch is not null){
@@ -324,22 +329,29 @@ public sealed class SkillCashLiveSession
                 }
                 if(irq==next) {
                     if(lampCallback is not null || timer3Dispatch is not null)throw new NotSupportedException("Scan preemption inside timer3 dispatch/callback is not recovered");
-                    if(outputScan is null){
+                    if(outputScan is null && inputService is null){
                         outputScan=new(Machine,Cycle);
                         outputScan.ObserveInstruction=instruction=>ObserveOutputScanInstruction?.Invoke(instruction);
                         outputScan.ObserveAccess=access=>{if(access.Write && access.Address is 0xA00 or 0xA02 or 0xE01 or 0xB01 or 0xF01)RecordLatch();ObserveOutputScanAccess?.Invoke(access);};
                         outputScan.ObserveArm=(at,arm)=>{if(arm.Timer!=40)throw new NotSupportedException("Live timer pulse differs from retained IRQ template");ObserveTimer3Arm?.Invoke(at,arm);};
                         nextCallback=checked(serviceEpoch+services[serviceIndex].Timer3Irq);
                     }
-                    outputScan.AdvanceTo(Cycle);
-                    if(outputScan.Completed){
+                    outputScan?.AdvanceTo(Cycle);
+                    if(outputScan?.Completed==true){
                         outputScan.Dispose();outputScan=null;Scans++;
+                        inputService=new(Machine,Cycle,Panel.ReadPort);
+                        inputService.ObserveInstruction=instruction=>ObserveInputServiceInstruction?.Invoke(instruction);
+                        inputService.ObserveAccess=access=>{if(access.Hardware && access.Write && access.Address is 0xD02 or 0xE00)reelHardware?.WriteDriveBank(access.Address,checked((byte)access.Value!.Value));ObserveInputServiceAccess?.Invoke(access);};
+                    }
+                    inputService?.AdvanceTo(Cycle);
+                    if(inputService?.Completed==true){
+                        if(inputService.Continuation!=0x438C)throw new NotSupportedException($"Input-service continuation {inputService.Continuation:X4} is outside the selected Live path");
+                        inputService.Dispose();inputService=null;
                         // Post-scan phases retain their explicit atomic service
                         // adapter until the surrounding IRQ is translated.
-                        Panel.Sample(checked((byte)Machine.ReadWord(0x28)));
+                        Panel.Accumulate(checked((byte)Machine.ReadWord(0x28)));
                         if(reelMotion is not null) {
-                            Machine.Memory[0x6E]++;
-                            reelHardware!.WriteDrive();reelMotion.Service((_,_)=>reelHardware.ReadOptics(),stream=>scheduler.Queue(stream));
+                            reelMotion.Service((_,_)=>reelHardware!.ReadOptics(),stream=>scheduler.Queue(stream));
                             if(motionInitializing){reelMotion.Activate();motionInitializing=false;motionNativeReady=true;}
                         }
                         Machine.WriteWord(0x2D,Cell.Add(Machine.ReadWord(0x2D),1));Machine.WriteWord(0x2F,Cell.Add(Machine.ReadWord(0x2F),1));
@@ -353,7 +365,7 @@ public sealed class SkillCashLiveSession
                     // A generated scan may outlast the captured outer occupancy
                     // when current state takes a different native path. VM work
                     // cannot run inside it; wait for actual instruction progress.
-                    if(outputScan is not null){nextVm=outputScan.NextEventCycle;continue;}
+                    if(inputService is not null || outputScan is not null){nextVm=inputService?.NextEventCycle ?? outputScan!.NextEventCycle;continue;}
                     if(lampCallback is not null || timer3Dispatch is not null)throw new NotSupportedException("VM execution inside timer3 dispatch/callback is not recovered");
                     if(--budget==0)throw new InvalidOperationException("Live dispatch budget exceeded");
                     var instruction=executor.NextInstruction!;

@@ -1,5 +1,205 @@
 # Current handoff
 
+17 October coin-service composition: Mpu4CoinServiceExecution stages4592 through
+ordinary RTS4645→4395, with explicit PIA read/write callbacks and original46D3
+inline tests87/89/80/81. Stops BEFORE JSR4604(48DA alarm) and4621(46F1 helper).
+CoinIdle optional continueService composes it; PanelAccumulation optional
+continueCoinService joins43E9 idle→4395→19B8/1A05/1A58→280C. Older bounded modes
+remain defaults.43E5 taken44C3 and active coin-validation paths remain open.
+
+64 isolated4592 and64 composed438C original-ROM cases match every instruction
+encoding/start/completion, output latches and return boundaries; composed cases
+use zero coin/auxiliary inputs and original C6=19B8, FF34/FF40/FF46/FF4C=FF.
+The matrix covers 16-bit sum wrap,10000 threshold,2F0 limit50, both selected
+0370/0372 thresholds and option-input paths. It injects all-output PIA latches,
+not natural coin pins. Source-derived cost and iterator state remain generated.
+
+All three nested levels propagate suspension, including an active46D3 child.
+Engine experiments verify251-cycle suspended continuation, separate0F02 reads
+with a changed second value, and retained TST condition when338 changes during
+an interruption. No device callbacks run during suspension. These experiments
+are labelled synthetic; CPU register/frame restoration remains the owner contract.
+
+Next: obtain natural0C02/0F02 PIA control/direction/latch/read state and enough
+post438C motor/counter/scheduler code to extend the19-window IRQ proof through
+full outer service. Selected idle return4395 is now recovered.43E5 taken44C3,
+active pulse counters/alarms and helper46F1 remain explicit unsupported routes;
+do not generalize the idle path into full coin insertion/startup. C6/config
+seeds must remain evidence-backed before Live attachment. Live/GUI scheduling
+is unchanged in this batch. Capture-CoinServiceTiming.ps1 -Composed selects the
+second matrix; Curate-CoinServiceTiming.ps1 selects fixture stem from provenance.
+%TEMP%/FruitMachineLab-coin-service.txt and coin-composed.txt point to accepted
+raw directories; coin-service-suite.log holds full regression results. Preserve
+all prior uncommitted work. No installs/configuration changes/commits/pushes.
+Validation:250 full headless groups pass; both solutions build with zero
+warnings/errors.1112 curated entries verify; whitespace check passes. Live/WPF
+call sites unchanged, so prior GUI checks were not repeated. All owned MAME
+captures exited. No expectations were rebaselined to hide mismatches.
+
+17 October bounded coin-idle batch: Mpu4CoinIdleExecution now stages43E9's
+idle branch, clears10/11/8B/DF and8A, clears2A bits06, and walks seven nine-byte
+records40E9..4127 against counters12..18.64 original-ROM injected cases match
+every instruction encoding/start/completion, affected RAM and six boundaries:
+43F1 (active pulse state),4426 (candidate bit1),44AB (candidate bit2/alarm),
+4519 (positive prior counter),4562 (active record),4592 (post-table service).
+These are explicit stops, not complete coin validation or return4395 yet.
+The captured matrix includes zero, positive and signed-negative counters and
+F0 special-record matching. Pending state survives nested suspension; partial
+instruction suspension is rejected (engine-only test, not a new natural trace).
+
+Pinned MAME source establishes0C02 as IC5 PIA portB/AUX2, not IC4 optics0B02.
+m4addr inherits active-high AUX2 coin bits10/20/40/80. ControlB bit2 selects
+port versus DDR; port data mixes output latch and pins by DDRB, with IRQ/strobe
+and driver read-side effects. Earlier isolated matrices used DDRB=FF and an
+injected output latch: they prove native code, NOT natural pin levels. Actual
+PIA state/level for the19 natural windows is still missing. Do not insert zero
+or wire reel optics here.13 pinned source identities now include6821pia.cpp
+and mpu4mod4yam.cpp; reproducible exporter extends the existing semantic map.
+
+Next: recover4592 onward and required46D3 inline calls, active-counter handling
+as needed, then compose43E9 into438C. Full no-coin return4395 and subsequent
+motor/counter/scheduler service remain prerequisites to attaching generated IRQ
+timing to Live. C6/ROM configuration seeds still need explicit evidence.
+Current batch changes verification components only; Live/GUI behaviour and its
+remaining captured boundaries are unchanged. Capture-/Curate-CoinIdleTiming.ps1
+and coin-idle-timing*.json preserve exact bytes, state and external provenance.
+%TEMP%/FruitMachineLab-coin-idle.txt points to accepted64-case raw evidence;
+coin-idle-suite.log holds full validation. Preserve preceding uncommitted work.
+Validation:245 full headless groups pass; both solution builds report zero
+warnings/errors.1108 curated entries verify and whitespace check passes. No
+Live/WPF call sites changed, so existing GUI passes were not repeated. Owned
+MAME captures exited. No installations/config changes, commits or pushes.
+
+17 October composed panel continuation: optional inlineAuxMask now composes46D3
+inside43E1, skips43E4 and executes43E5 LBNE from its returned Z. Active child and
+parent suspend together. Optional continuePanelService executes1A05/1A58 and
+returns to280C, or exposes original7CCF reset boundary. Defaults preserve older
+prefix fixtures.64 composed original-ROM cases (16 coin/48 panel) match all
+native encodings/times, latches/filter/counters and all four continuations:
+280C/43E9/44C3/7CCF. Capture-/Curate-PanelContinuationTiming.ps1 reproduce
+panel-continuation-timing*.json with exact ROM regions/config bytes and provenance.
+
+Do not fix1A05's BITA00 (B becomes0 with original FF4C=FF), counter88/E2 wrap,
+or the write-before-JMP7CCF reset transition. No reset/startup is executed by
+this slice. FF46/FF4C=FF are explicit ROM state, not default RAM assumptions.
+An engine-only nested suspension test changes the later RAM7 input during IRQ
+and verifies the composed child reads it after return; synthetic selector80 is
+labelled separately from real43E4=88. No fabricated hardware data is introduced.
+
+The19-window IRQ proof now resumes NON-COIN service through1A05/1A58 to280C,
+matching every suffix instruction time. Coin suffixes still stop before0C02
+read, whose actual value is unavailable in that capture. Live call sites and
+retained IRQ/remaining atomic service are unchanged. Next recover the no-coin
+43E9→4395/return path and its actual auxiliary source, then compose normal motor/
+counter/scheduler service as needed to attach generated IRQ timing to Live.
+Check the C6 callback and ROM config seeds before attachment; current Live input
+adapter assumes accumulation and does not establish a general C6 dispatch model.
+Preserve all preceding uncommitted changes. No installations/config changes,
+commits/pushes, original ROM/MAME/Ghidra changes or assembler/editor work.
+Validation:243 full headless groups pass; both solution builds have zero warnings
+or errors.1106 curated entries verify; whitespace check passes. No expectations
+were rebaselined. Live/WPF call sites are unchanged, so prior GUI passes were
+not repeated. %TEMP%/FruitMachineLab-panel-continuation.txt points to the accepted
+64-case capture; panel-continuation-suite.log uses the same prefix. All owned
+capture processes exited; the working tree was not clean at this turn's start.
+
+17 October resumable IRQ/inline helper batch:19-window proof now generates full
+IRQ entry→dispatch→lamp callback→FEF2/FF13 return (251 cycles from acceptance)
+and resumes the interrupted panel operation. Mpu4OrdinaryIrqReturnExecution
+generates the bank0/full-frame26-cycle epilogue; SuspendUntil preserves pending
+opcode/locals and rejects partial-instruction suspension. Resumed instruction
+addresses/times match parent traces until1A05 or the0C02 read boundary. CPU frame
+restoration itself remains the explicit owner contract, not an instruction CPU.
+
+Mpu4InlineAuxTestExecution now recovers46D3 separately: consume one inline byte,
+advance saved return, test RAM6/7 masks with SIGNED B indexing, preserve A/B/X,
+return N/Z (V0/C0).64 native cases match58/73-cycle paths, saved return, flags and
+preserved registers, including high selectors/negative aliases. Capture-/Curate-
+InlineAuxTiming.ps1 reproduce inline-aux-timing*.json. Accepted inline byte is at
+RAM0500; an initial invalid0800 injection run is excluded with hash/reason.
+
+Next COMPOSE this staged helper into the43E1 coin caller, skip inline43E4=88 and
+dispatch43E5 from its flags, then recover1A05/1A58 as needed. Do not treat46D3's
+name as a value-returning helper or fix negative table aliases. Live delivery
+and the remaining atomic post-prefix service are unchanged. Nested return is
+verified against19 windows; changed gameplay paths and full outer service still
+need coverage before replacing Live's retained schedule. Preserve all preceding
+uncommitted work. No installs/config changes, commits/pushes or original ROM/
+MAME/Ghidra/workspace changes. Ghidra export access remains unavailable.
+Validation:241 full headless groups pass; both solution builds have zero warnings
+or errors.1104 curated entries verify; whitespace check passes. Live/WPF call
+sites did not change this batch, so prior eight GUI passes were not repeated.
+External pointers: %TEMP%/FruitMachineLab-inline-aux.txt (accepted),
+FruitMachineLab-inline-aux-excluded.txt and FruitMachineLab-inline-resume-suite.log.
+All owned capture processes exited. No expectations were rebaselined.
+
+17 October coin-decode/timing proof: Mpu4PanelAccumulationExecution now translates
+439F through43E1 JSR46D3. It retains selector11/table71EE, port5 rotation, explicit
+0C02 high-nibble merge and original89/2A two-sample filter. An absent auxiliary
+reader fails explicitly.64 original-ROM isolated cases match all native bytes,
+instruction times, output filter bytes and continuation. Capture-/Curate-
+CoinDecodeTiming.ps1 reproduce coin-decode-timing*.json; exact ROM regions/data
+and provenance are exported. No coin insertion/credit/alarm behaviour is claimed.
+
+The timing proof now generates ALL19 captured IRQ acceptances, not just the first
+three. Execute scan→FEBA/27D2→438C/439F or19B8/1A87 until the timer asserts at an
+instruction boundary, then add ordinary19-cycle entry. Recorded interrupted PC,
+start time and FE70 entry are comparisons only for every window. These cases all
+interrupt before0C02 read; no synthetic auxiliary level is needed in that proof.
+Captured scan ENTRY, explicit RAM/callback/mask/phase seeds and clock coordinate
+remain prerequisites. The remaining16 windows repeat/extend the first pattern;
+this is coverage of the existing19-window campaign, not independent new gameplay.
+
+Live is unchanged by this continuation: it retains FE70/outer occupancy and the
+atomic post-prefix adapter. Do not force the verifier's helper into Live without
+handling nested IRQ suspension/return and the actual continuations. Next recover
+46D3's inline mask/test and1A05/1A58 as needed for resumable post-interrupt service,
+then attach generated acceptance to Live with exact nested-return timing.43E4's
+byte88 is saved as unresolved inline material, not misdecoded as EORA; natural
+execution resumes at43E5 after46D3. Generic callback/bank/priority variants remain
+open. Preserve the preceding uncommitted input-service batch too; the working tree
+was not clean at turn start. No installs/config changes, commits or pushes.
+Validation:238 full headless verification groups pass; both solutions build
+with zero warnings/errors.1102 manifest entries verify; whitespace check passes.
+Live/WPF call sites are unchanged by this continuation, so the prior eight GUI
+passes were not repeated. Accepted capture: %TEMP%/FruitMachineLab-coin-decode.txt;
+full suite: FruitMachineLab-coin-decode-suite.log. All owned capture processes exited.
+
+16 October input-service prefix milestone: Live now executes FEBA/FEBC/FEBE/FEC0
+and27D2→2809 incrementally after the scan. Previous reel phases reach D02/E00
+at separate native stores. Physical input is read through Panel.ReadPort at27EC,
+then stored at27EF (and duplicated to4/5 for column0/1). It is no longer sampled
+atomically alongside motor service.6E increments in the native prefix; duplicate
+increment/drive calls were removed from the remaining adapter. The prefix ends
+at438C entry; sticky accumulation, motor/counter/scheduler work remains atomic.
+
+64 isolated original-ROM cases verify exact instruction encoding/time, all eight
+sample bytes, drive values, busy and wrap behaviour, and continuation/stack shape.
+19 natural post-scan paths match instruction timing using explicitly constrained
+counter parity (not a complete natural RAM seed). Runtime:
+Mpu4InputServiceExecution.cs; Capture-/Curate-InputServiceTiming.ps1 reproduce
+input-service-timing*.json, including exact ROM regions and external provenance.
+Next translate438C/439F and19B8→1A87 with the input callback binding and coin path
+kept explicit.4167 and busyFECE are exposed by the runtime but unsupported Live
+continuations. No IRQ/scan entry adapter was removed in this batch, and the
+previous strict phase-clock Live attachment remains deliberately absent.
+
+Bounded timing proof added too: Mpu4PanelAccumulationExecution translates the
+non-coin438C dispatch through callback19B8/1A87, stopping before439F, unknown
+callbacks or1A05. First three natural windows now GENERATE the interrupted
+instruction/acceptance time by advancing scan→prefix→accumulation until phase-clock
+IRQ is asserted at instruction completion, then adding19 entry cycles. All three
+handler times and interrupted PCs match capture; no captured interrupted PC/time
+schedules this generated acceptance. Explicit state seeds/callback19B8 and scan
+entry/phase coordinate remain. This helper is verification-only; fourth-window
+439F coin decoding and1A05 onward still block generalized Live acceptance.
+Validation:236 headless groups and all eight WPF modes pass; both solution
+builds have zero warnings/errors. No expectations rebaselined;1100 curated
+entries verify. %TEMP%/FruitMachineLab-input-timing.txt points to the accepted64
+native-case run; input-suite-final.log and input-gui.txt use the same prefix.
+All owned MAME/smoke processes exited. No installs/configuration changes,
+commits/pushes or original-workspace changes; the tree was clean at turn start.
+
 16 October staged output-scan milestone: Live now executes28FE,19C2/19FA and70EF
 incrementally, including bank blanking, column/control changes, frame writes,
 signed sweep, PTM arm bus events and digit output. Captured scan ENTRY/event3

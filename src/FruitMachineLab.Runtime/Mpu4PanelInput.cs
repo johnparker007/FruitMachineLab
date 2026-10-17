@@ -21,9 +21,15 @@ public sealed class Mpu4PanelInput(Machine machine)
     }
     public void Sample(byte column)
     {
-        if(column>7)throw new ArgumentOutOfRangeException(nameof(column));
-        byte value=ports[column];machine.Memory[column]=value;
+        byte value=ReadPort(column);machine.Memory[column]=value;
         if(column<2)machine.Memory[column+4]=value;
+        Accumulate(column);
+    }
+    public byte ReadPort(byte column)=>column<=7 ? ports[column] : throw new ArgumentOutOfRangeException(nameof(column));
+    public void Accumulate(byte column)
+    {
+        if(column>7)throw new ArgumentOutOfRangeException(nameof(column));
+        byte value=machine.Memory[column];
         machine.Memory[0x8E+column]|=value;machine.Memory[0x96+column]&=value;
     }
     public void Release(){SetStart(false);SetTake(false);for(int n=0;n<3;n++)SetNudge(n,false);}

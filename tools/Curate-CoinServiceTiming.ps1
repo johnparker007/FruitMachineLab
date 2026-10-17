@@ -1,0 +1,16 @@
+param([Parameter(Mandatory=$true)][string]$RunDirectory,[Parameter(Mandatory=$true)][string]$RomPath)
+$ErrorActionPreference='Stop';$target="$PSScriptRoot/../evidence/mpu4/skill-cash";if((Get-Content "$RunDirectory/exit-code.txt" -Raw).Trim() -ne '0'){throw 'Capture did not exit cleanly'};if((Get-FileHash $RomPath -Algorithm SHA1).Hash -ne '402D1518BB78FDC489B06C2AABC771E5CE151847'){throw 'Unexpected ROM'}
+$rom=[IO.File]::ReadAllBytes($RomPath);$cases=@(Get-Content "$RunDirectory/cases.json" -Raw|ConvertFrom-Json);$rows=[Collections.Generic.List[object]]::new();$active=$null
+$provenance=Get-Content "$RunDirectory/provenance.json" -Raw|ConvertFrom-Json;$composed=$provenance.composed;$return=if($composed){0x280C}else{0x4395};$stem=if($composed){'coin-composed-timing'}else{'coin-service-timing'}
+foreach($line in (Get-Content "$RunDirectory/debug.log")){
+ if($line -notmatch '^S([SIF]) '){continue};$kind=$Matches[1];$fields=@{};foreach($match in [regex]::Matches($line,'([a-z0-9_]+)=([0-9A-F]+)')){$fields[$match.Groups[1].Value]=[Convert]::ToUInt64($match.Groups[2].Value,16)}
+ if($kind -eq 'S'){if($null -ne $active){throw 'Unfinished case'};$active=[ordered]@{case=$cases[[int]$fields.id];instructions=[Collections.Generic.List[object]]::new()}}
+ if($null -eq $active -or $fields.id -ne $active.case.id){throw 'Missing/mismatched case'}
+ if($kind -in @('S','I')){if($line -notmatch 'bytes=([0-9A-F]{10})'){throw 'Missing context'};$hex=$Matches[1];$pc=[int]$fields.pc;$bytes=[Convert]::FromHexString($hex);for($n=0;$n -lt 5;$n++){if($bytes[$n] -ne $rom[$pc+$n]){throw 'ROM context differs'}};$active.instructions.Add([ordered]@{pc=$pc;cycle=$fields.cycle;context_hex=$hex})}
+ else{$stack=if($fields.pc -eq $return){0x702}elseif($composed){0x6FE}else{0x700};if($fields.pc -notin @($return,0x4604,0x4621) -or $fields.s -ne $stack){throw 'Unexpected continuation/stack'};$active['end']=$fields;$active.instructions=@($active.instructions.ToArray());$rows.Add($active);$active=$null}
+}
+if($null -ne $active -or $rows.Count -ne 64 -or $cases.Count -ne 64){throw 'Truncated coin service capture'}
+$regions=@(foreach($r in @(@(0x4592,180),@(0x7226,32),@(0xFF34,1),@(0xFF40,1))){[ordered]@{address=$r[0];bytes_hex=[Convert]::ToHexString($rom[$r[0]..($r[0]+$r[1]-1)])}})
+if($composed){$regions+=@(foreach($r in @(@(0x438C,372),@(0x71EE,4),@(0x19B8,10),@(0x1A05,47),@(0x1A58,47),@(0x1A87,28),@(0x40E9,63),@(0x4510,9),@(0x4587,11),@(0xFF46,1),@(0xFF4C,1))){[ordered]@{address=$r[0];bytes_hex=[Convert]::ToHexString($rom[$r[0]..($r[0]+$r[1]-1)])}})}
+[ordered]@{classification='Synthetic bounded4592 or composed438C idle calls with unpatched ROM flags and inline operands. Five-byte contexts are not instruction lengths; exported regions include unresolved/unexecuted bytes.';native_regions=$regions;rows=@($rows.ToArray())}|ConvertTo-Json -Depth 8|Set-Content "$target/$stem.json"
+[ordered]@{source_run=$RunDirectory;debug_sha256=(Get-FileHash "$RunDirectory/debug.log").Hash;cases_sha256=(Get-FileHash "$RunDirectory/cases.json").Hash;rom_sha1=(Get-FileHash $RomPath -Algorithm SHA1).Hash;provenance=$provenance;cases=$rows.Count}|ConvertTo-Json -Depth 5|Set-Content "$target/$stem-verification.json";Write-Output "Curated64 $stem calls"

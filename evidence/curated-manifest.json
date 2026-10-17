@@ -206,8 +206,8 @@
   },
   {
     "path": "docs/recovery/PTM-CLOCK-FOUNDATION-PASS.md",
-    "bytes": 63343,
-    "sha256": "F3B327623D00C2C3CCDB1D9AFFE62901CCEF7E20FE042BBA7757B09A9451CF6A"
+    "bytes": 91928,
+    "sha256": "21B91D6C3481413CE1098EDF5770CE07F91748C9A5C9988B0AA00A27AF8BEA0E"
   },
   {
     "path": "docs/recovery/README.txt",
@@ -356,8 +356,8 @@
   },
   {
     "path": "evidence/mpu4/maps/mame-timing-source.json",
-    "bytes": 12746,
-    "sha256": "3BE7002A6F6F92C28C533F71B835EAE151EE37366590143A14F8CEAD2D3B0B6D"
+    "bytes": 20616,
+    "sha256": "F3879A1ADDD5B9F63C928C95E60CFA117C1212E9E6AA30973FBF13EC4AA1B146"
   },
   {
     "path": "evidence/mpu4/maps/nudge-availability-data.json",
@@ -1610,6 +1610,46 @@
     "sha256": "92B8D229B72EE87EED80408412686CE1352CE736D8E776537F52F316DEC1AF8D"
   },
   {
+    "path": "evidence/mpu4/skill-cash/coin-composed-timing-verification.json",
+    "bytes": 752,
+    "sha256": "DB8DD30DF42F5408EB5043252A6F02614AB6BD4D21028EF8750920B5783D2DC3"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/coin-composed-timing.json",
+    "bytes": 2027638,
+    "sha256": "5129B2FE3D7D5F1280D156558B8B5646444F6954AD6254B9F0398CAFCDFD6EB3"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/coin-decode-timing-verification.json",
+    "bytes": 693,
+    "sha256": "B3171B2610C2BC67B59DFB7B5F9FEB60E3CAB80B3034E04A0157CB4534CA3445"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/coin-decode-timing.json",
+    "bytes": 333257,
+    "sha256": "981C2CBDFAE0898884A331DB80ABD40ABF355C931BE610CF3EB07A45C7399CD5"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/coin-idle-timing-verification.json",
+    "bytes": 669,
+    "sha256": "51BCD49A35B5A9BCA8D7DDDADB7CDFBA7D49046F559E935B97FE2688E2647D5C"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/coin-idle-timing.json",
+    "bytes": 411063,
+    "sha256": "793C3AB5D4B7DB3BF2927E0C639E34FE56981C55E13ACF63B65FE56810650771"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/coin-service-timing-verification.json",
+    "bytes": 752,
+    "sha256": "0DDFE21F7EDD8B1926A648E02FB0ACD3B546D7409325B1966E4CD1173B34FECA"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/coin-service-timing.json",
+    "bytes": 311406,
+    "sha256": "D6E539587BE3F1E67E0446F57244C9ABE2E434457F2AB11B79D06BDB58C2AB5B"
+  },
+  {
     "path": "evidence/mpu4/skill-cash/compensation-calls.json",
     "bytes": 124766,
     "sha256": "80485CB9077B32A9AFDB2DC8582E9DF1ABB8B5486E9729563E69433BA3C68B1B"
@@ -1768,6 +1808,26 @@
     "path": "evidence/mpu4/skill-cash/initial-state.txt",
     "bytes": 178,
     "sha256": "48B4302E710F8C36E0B464A973563B54D826300F69F0CD5367A8E1869EB76FC6"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/inline-aux-timing-verification.json",
+    "bytes": 1113,
+    "sha256": "821D0B5DAC54BA651CBB5D3893E234D88468CBD101A8ADAD62AA85BF7DC354EB"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/inline-aux-timing.json",
+    "bytes": 124821,
+    "sha256": "B8935C4ED8074F901EECB6C72C4E2ECC2ADE3BD664A732D5A26FC1C34DFC1A22"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/input-service-timing-verification.json",
+    "bytes": 699,
+    "sha256": "20D807E5EBDF18ED5E407CF9666A0941B5536A8D23DD9C10446256995DA92FD0"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/input-service-timing.json",
+    "bytes": 170294,
+    "sha256": "57245E61886B52A8D1995FD1C6C7340703C1D8AFFEFDCE9A1FED5A859DDBB686"
   },
   {
     "path": "evidence/mpu4/skill-cash/input.lua",
@@ -2598,6 +2658,16 @@
     "path": "evidence/mpu4/skill-cash/paid-spin-native.json",
     "bytes": 520687,
     "sha256": "51EECFCA763234F47F694D97C6786CE45F75B6B72C26750937545838B9D06756"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/panel-continuation-timing-verification.json",
+    "bytes": 726,
+    "sha256": "730C2A6CC00975C848783FAE609FF0C03D7E96EA0F24C81C326DCAF979D3EEC4"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/panel-continuation-timing.json",
+    "bytes": 310676,
+    "sha256": "B7312566B3A35F4FF8D1E041EF5C493A165DFCC9AA64451A89DEE1760AE9028D"
   },
   {
     "path": "evidence/mpu4/skill-cash/ptm-instruction-boundaries-verification.json",

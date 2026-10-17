@@ -1,5 +1,15 @@
 # Project direction and handoff
 
+17 October continuation: selected idle coin service now reaches4395 and panel
+return280C, with128 native cases. Next establish natural PIA state and complete
+the required outer-service work before replacing Live's retained IRQ schedule.
+Active coin insertion/alarms remain separate evidence gaps, not guessed paths.
+
+17 October checkpoint: continue gameplay timing recovery through43E9's seven
+coin records and4592 service suffix. Preserve actual IC5 PIA control/direction/
+input evidence before replacing the Live adapter; static source mapping alone
+does not establish captured pin state. Full playable machine remains priority.
+
 Updated 15 October 2026 from John's agreed priorities. This document records
 direction, not evidence that future milestones have been implemented.
 
@@ -11,6 +21,22 @@ details and evidence boundaries. Check the working tree before editing: chat his
 is not authority for which changes John has committed or pushed.
 
 ## Priority order
+
+Composed continuation checkpoint:46D3 caller and1A05/1A58 are verified together.
+Recover the ordinary no-coin43E9 return and explicit auxiliary/state seeds next,
+then join this service to Live's generated interrupt path without guessing reset.
+
+17 October nested-return checkpoint: full selected IRQ interruption/resume timing
+is verified in19 windows;46D3 is separately recovered. Compose its inline call and
+remaining service continuations before attaching this to Live scheduling.
+
+17 October:439F decode prefix extends the generated IRQ-acceptance proof to all19
+natural windows. Recover the remaining continuations and nested return so this
+can move from verification into Live; avoid another captured-delay substitution.
+
+Input-service continuation: FEBA/27D2 acquisition and previous reel-drive writes
+now execute incrementally in Live. Next recover438C/439F and19B8/1A87 timing and
+callback selection; keep coin handling and CPU interrupt acceptance explicit.
 
 16 October timing checkpoint: the Live output scan and timer arm now execute in
 stages from native code. Recorded scan entry and FE70 entry/occupancy remain.

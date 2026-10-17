@@ -1,0 +1,7855 @@
+{
+  "classification": "Synthetic original-ROM FEBA/27D2 prefix. Injected RAM/PIA values, masked IRQ/FIRQ; continuation is not executed. Five-byte contexts are not instruction lengths.",
+  "native_regions": [
+    {
+      "address": 65210,
+      "bytes_hex": "0D2C2610032CBD27D2"
+    },
+    {
+      "address": 10194,
+      "bytes_hex": "0C6E0D6C260A966E462405CC00002002DC6FB70D02F70E009E28B60F00A78900008C000122063004A78900007D032F2706BD4167160003BD438C"
+    },
+    {
+      "address": 17292,
+      "bytes_hex": "962985032603BD439F7D00C62704AD9F00C639"
+    },
+    {
+      "address": 6584,
+      "bytes_hex": "BD1A87BD1A05BD1A5839"
+    },
+    {
+      "address": 6791,
+      "bytes_hex": "BE0028A68900003402AA89008EA789008E3502A4890096A789009639"
+    }
+  ],
+  "rows": [
+    {
+      "case": {
+        "id": 0,
+        "column": 0,
+        "busy": 0,
+        "active": 0,
+        "counter": 0,
+        "alternate": 0,
+        "input": 90,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 4,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 10,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 13,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 19,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 27,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 33,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 39,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10200,
+          "cycle": 42,
+          "context_hex": "966E462405"
+        },
+        {
+          "pc": 10202,
+          "cycle": 46,
+          "context_hex": "462405CC00"
+        },
+        {
+          "pc": 10203,
+          "cycle": 48,
+          "context_hex": "2405CC0000"
+        },
+        {
+          "pc": 10205,
+          "cycle": 51,
+          "context_hex": "CC00002002"
+        },
+        {
+          "pc": 10208,
+          "cycle": 54,
+          "context_hex": "2002DC6FB7"
+        },
+        {
+          "pc": 10212,
+          "cycle": 57,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 62,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 67,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 72,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 77,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 85,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 89,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10232,
+          "cycle": 92,
+          "context_hex": "3004A78900"
+        },
+        {
+          "pc": 10234,
+          "cycle": 97,
+          "context_hex": "A78900007D"
+        },
+        {
+          "pc": 10238,
+          "cycle": 105,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 112,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 115,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 0,
+        "bank0": 0,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 1,
+        "cycle": 123,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 0,
+        "port0": 90,
+        "port5": 85,
+        "port4": 90,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 1,
+        "column": 0,
+        "busy": 0,
+        "active": 0,
+        "counter": 1,
+        "alternate": 0,
+        "input": 129,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 123,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 129,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 132,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 138,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 146,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 152,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 158,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10200,
+          "cycle": 161,
+          "context_hex": "966E462405"
+        },
+        {
+          "pc": 10202,
+          "cycle": 165,
+          "context_hex": "462405CC00"
+        },
+        {
+          "pc": 10203,
+          "cycle": 167,
+          "context_hex": "2405CC0000"
+        },
+        {
+          "pc": 10210,
+          "cycle": 170,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 175,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 180,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 185,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 190,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 195,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 203,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 207,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10232,
+          "cycle": 210,
+          "context_hex": "3004A78900"
+        },
+        {
+          "pc": 10234,
+          "cycle": 215,
+          "context_hex": "A78900007D"
+        },
+        {
+          "pc": 10238,
+          "cycle": 223,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 230,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 233,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 1,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 2,
+        "cycle": 241,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 129,
+        "port5": 85,
+        "port4": 129,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 2,
+        "column": 0,
+        "busy": 0,
+        "active": 1,
+        "counter": 0,
+        "alternate": 0,
+        "input": 90,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 241,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 247,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 250,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 256,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 264,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 270,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 276,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10210,
+          "cycle": 279,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 284,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 289,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 294,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 299,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 304,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 312,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 316,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10232,
+          "cycle": 319,
+          "context_hex": "3004A78900"
+        },
+        {
+          "pc": 10234,
+          "cycle": 324,
+          "context_hex": "A78900007D"
+        },
+        {
+          "pc": 10238,
+          "cycle": 332,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 339,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 342,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 2,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 1,
+        "cycle": 350,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 90,
+        "port5": 85,
+        "port4": 90,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 3,
+        "column": 0,
+        "busy": 0,
+        "active": 1,
+        "counter": 1,
+        "alternate": 0,
+        "input": 129,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 350,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 356,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 359,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 365,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 373,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 379,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 385,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10210,
+          "cycle": 388,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 393,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 398,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 403,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 408,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 413,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 421,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 425,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10232,
+          "cycle": 428,
+          "context_hex": "3004A78900"
+        },
+        {
+          "pc": 10234,
+          "cycle": 433,
+          "context_hex": "A78900007D"
+        },
+        {
+          "pc": 10238,
+          "cycle": 441,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 448,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 451,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 3,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 2,
+        "cycle": 459,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 129,
+        "port5": 85,
+        "port4": 129,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 4,
+        "column": 0,
+        "busy": 0,
+        "active": 0,
+        "counter": 255,
+        "alternate": 0,
+        "input": 90,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 459,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 465,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 468,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 474,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 482,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 488,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 494,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10200,
+          "cycle": 497,
+          "context_hex": "966E462405"
+        },
+        {
+          "pc": 10202,
+          "cycle": 501,
+          "context_hex": "462405CC00"
+        },
+        {
+          "pc": 10203,
+          "cycle": 503,
+          "context_hex": "2405CC0000"
+        },
+        {
+          "pc": 10210,
+          "cycle": 506,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 511,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 516,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 521,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 526,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 531,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 539,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 543,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10232,
+          "cycle": 546,
+          "context_hex": "3004A78900"
+        },
+        {
+          "pc": 10234,
+          "cycle": 551,
+          "context_hex": "A78900007D"
+        },
+        {
+          "pc": 10238,
+          "cycle": 559,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 566,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 569,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 4,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 0,
+        "cycle": 577,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 90,
+        "port5": 85,
+        "port4": 90,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 5,
+        "column": 0,
+        "busy": 0,
+        "active": 0,
+        "counter": 255,
+        "alternate": 0,
+        "input": 129,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 577,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 583,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 586,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 592,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 600,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 606,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 612,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10200,
+          "cycle": 615,
+          "context_hex": "966E462405"
+        },
+        {
+          "pc": 10202,
+          "cycle": 619,
+          "context_hex": "462405CC00"
+        },
+        {
+          "pc": 10203,
+          "cycle": 621,
+          "context_hex": "2405CC0000"
+        },
+        {
+          "pc": 10210,
+          "cycle": 624,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 629,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 634,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 639,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 644,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 649,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 657,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 661,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10232,
+          "cycle": 664,
+          "context_hex": "3004A78900"
+        },
+        {
+          "pc": 10234,
+          "cycle": 669,
+          "context_hex": "A78900007D"
+        },
+        {
+          "pc": 10238,
+          "cycle": 677,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 684,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 687,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 5,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 0,
+        "cycle": 695,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 129,
+        "port5": 85,
+        "port4": 129,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 6,
+        "column": 0,
+        "busy": 0,
+        "active": 1,
+        "counter": 255,
+        "alternate": 1,
+        "input": 90,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 695,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 701,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 704,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 710,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 718,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 724,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 730,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10210,
+          "cycle": 733,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 738,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 743,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 748,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 753,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 758,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 766,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 770,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10232,
+          "cycle": 773,
+          "context_hex": "3004A78900"
+        },
+        {
+          "pc": 10234,
+          "cycle": 778,
+          "context_hex": "A78900007D"
+        },
+        {
+          "pc": 10238,
+          "cycle": 786,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 793,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10243,
+          "cycle": 796,
+          "context_hex": "BD41671600"
+        }
+      ],
+      "end": {
+        "id": 6,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 16743,
+        "port6": 85,
+        "counter": 0,
+        "cycle": 804,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 90,
+        "port5": 85,
+        "port4": 90,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 7,
+        "column": 0,
+        "busy": 1,
+        "active": 1,
+        "counter": 255,
+        "alternate": 0,
+        "input": 129,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 804,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 810,
+          "context_hex": "2610032CBD"
+        }
+      ],
+      "end": {
+        "id": 7,
+        "bank0": 0,
+        "busy": 1,
+        "pc": 65230,
+        "port6": 85,
+        "counter": 255,
+        "cycle": 813,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 0,
+        "port0": 85,
+        "port5": 85,
+        "port4": 85,
+        "port7": 85,
+        "port1": 85,
+        "s": 1792
+      }
+    },
+    {
+      "case": {
+        "id": 8,
+        "column": 1,
+        "busy": 0,
+        "active": 0,
+        "counter": 0,
+        "alternate": 0,
+        "input": 90,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 813,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 819,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 822,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 828,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 836,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 842,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 848,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10200,
+          "cycle": 851,
+          "context_hex": "966E462405"
+        },
+        {
+          "pc": 10202,
+          "cycle": 855,
+          "context_hex": "462405CC00"
+        },
+        {
+          "pc": 10203,
+          "cycle": 857,
+          "context_hex": "2405CC0000"
+        },
+        {
+          "pc": 10205,
+          "cycle": 860,
+          "context_hex": "CC00002002"
+        },
+        {
+          "pc": 10208,
+          "cycle": 863,
+          "context_hex": "2002DC6FB7"
+        },
+        {
+          "pc": 10212,
+          "cycle": 866,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 871,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 876,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 881,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 886,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 894,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 898,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10232,
+          "cycle": 901,
+          "context_hex": "3004A78900"
+        },
+        {
+          "pc": 10234,
+          "cycle": 906,
+          "context_hex": "A78900007D"
+        },
+        {
+          "pc": 10238,
+          "cycle": 914,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 921,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 924,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 8,
+        "bank0": 0,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 1,
+        "cycle": 932,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 0,
+        "port0": 85,
+        "port5": 90,
+        "port4": 85,
+        "port7": 85,
+        "port1": 90,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 9,
+        "column": 1,
+        "busy": 0,
+        "active": 0,
+        "counter": 1,
+        "alternate": 0,
+        "input": 129,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 932,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 938,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 941,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 947,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 955,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 961,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 967,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10200,
+          "cycle": 970,
+          "context_hex": "966E462405"
+        },
+        {
+          "pc": 10202,
+          "cycle": 974,
+          "context_hex": "462405CC00"
+        },
+        {
+          "pc": 10203,
+          "cycle": 976,
+          "context_hex": "2405CC0000"
+        },
+        {
+          "pc": 10210,
+          "cycle": 979,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 984,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 989,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 994,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 999,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 1004,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 1012,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 1016,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10232,
+          "cycle": 1019,
+          "context_hex": "3004A78900"
+        },
+        {
+          "pc": 10234,
+          "cycle": 1024,
+          "context_hex": "A78900007D"
+        },
+        {
+          "pc": 10238,
+          "cycle": 1032,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 1039,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 1042,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 9,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 2,
+        "cycle": 1050,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 129,
+        "port4": 85,
+        "port7": 85,
+        "port1": 129,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 10,
+        "column": 1,
+        "busy": 0,
+        "active": 1,
+        "counter": 0,
+        "alternate": 0,
+        "input": 90,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 1050,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 1056,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 1059,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 1065,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 1073,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 1079,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 1085,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10210,
+          "cycle": 1088,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 1093,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 1098,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 1103,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 1108,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 1113,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 1121,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 1125,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10232,
+          "cycle": 1128,
+          "context_hex": "3004A78900"
+        },
+        {
+          "pc": 10234,
+          "cycle": 1133,
+          "context_hex": "A78900007D"
+        },
+        {
+          "pc": 10238,
+          "cycle": 1141,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 1148,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 1151,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 10,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 1,
+        "cycle": 1159,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 90,
+        "port4": 85,
+        "port7": 85,
+        "port1": 90,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 11,
+        "column": 1,
+        "busy": 0,
+        "active": 1,
+        "counter": 1,
+        "alternate": 0,
+        "input": 129,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 1159,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 1165,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 1168,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 1174,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 1182,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 1188,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 1194,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10210,
+          "cycle": 1197,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 1202,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 1207,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 1212,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 1217,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 1222,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 1230,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 1234,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10232,
+          "cycle": 1237,
+          "context_hex": "3004A78900"
+        },
+        {
+          "pc": 10234,
+          "cycle": 1242,
+          "context_hex": "A78900007D"
+        },
+        {
+          "pc": 10238,
+          "cycle": 1250,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 1257,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 1260,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 11,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 2,
+        "cycle": 1268,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 129,
+        "port4": 85,
+        "port7": 85,
+        "port1": 129,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 12,
+        "column": 1,
+        "busy": 0,
+        "active": 0,
+        "counter": 255,
+        "alternate": 0,
+        "input": 90,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 1268,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 1274,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 1277,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 1283,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 1291,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 1297,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 1303,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10200,
+          "cycle": 1306,
+          "context_hex": "966E462405"
+        },
+        {
+          "pc": 10202,
+          "cycle": 1310,
+          "context_hex": "462405CC00"
+        },
+        {
+          "pc": 10203,
+          "cycle": 1312,
+          "context_hex": "2405CC0000"
+        },
+        {
+          "pc": 10210,
+          "cycle": 1315,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 1320,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 1325,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 1330,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 1335,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 1340,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 1348,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 1352,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10232,
+          "cycle": 1355,
+          "context_hex": "3004A78900"
+        },
+        {
+          "pc": 10234,
+          "cycle": 1360,
+          "context_hex": "A78900007D"
+        },
+        {
+          "pc": 10238,
+          "cycle": 1368,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 1375,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 1378,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 12,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 0,
+        "cycle": 1386,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 90,
+        "port4": 85,
+        "port7": 85,
+        "port1": 90,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 13,
+        "column": 1,
+        "busy": 0,
+        "active": 0,
+        "counter": 255,
+        "alternate": 0,
+        "input": 129,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 1386,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 1392,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 1395,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 1401,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 1409,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 1415,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 1421,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10200,
+          "cycle": 1424,
+          "context_hex": "966E462405"
+        },
+        {
+          "pc": 10202,
+          "cycle": 1428,
+          "context_hex": "462405CC00"
+        },
+        {
+          "pc": 10203,
+          "cycle": 1430,
+          "context_hex": "2405CC0000"
+        },
+        {
+          "pc": 10210,
+          "cycle": 1433,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 1438,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 1443,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 1448,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 1453,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 1458,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 1466,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 1470,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10232,
+          "cycle": 1473,
+          "context_hex": "3004A78900"
+        },
+        {
+          "pc": 10234,
+          "cycle": 1478,
+          "context_hex": "A78900007D"
+        },
+        {
+          "pc": 10238,
+          "cycle": 1486,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 1493,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 1496,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 13,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 0,
+        "cycle": 1504,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 129,
+        "port4": 85,
+        "port7": 85,
+        "port1": 129,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 14,
+        "column": 1,
+        "busy": 0,
+        "active": 1,
+        "counter": 255,
+        "alternate": 1,
+        "input": 90,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 1504,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 1510,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 1513,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 1519,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 1527,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 1533,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 1539,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10210,
+          "cycle": 1542,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 1547,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 1552,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 1557,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 1562,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 1567,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 1575,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 1579,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10232,
+          "cycle": 1582,
+          "context_hex": "3004A78900"
+        },
+        {
+          "pc": 10234,
+          "cycle": 1587,
+          "context_hex": "A78900007D"
+        },
+        {
+          "pc": 10238,
+          "cycle": 1595,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 1602,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10243,
+          "cycle": 1605,
+          "context_hex": "BD41671600"
+        }
+      ],
+      "end": {
+        "id": 14,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 16743,
+        "port6": 85,
+        "counter": 0,
+        "cycle": 1613,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 90,
+        "port4": 85,
+        "port7": 85,
+        "port1": 90,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 15,
+        "column": 1,
+        "busy": 1,
+        "active": 1,
+        "counter": 255,
+        "alternate": 0,
+        "input": 129,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 1613,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 1619,
+          "context_hex": "2610032CBD"
+        }
+      ],
+      "end": {
+        "id": 15,
+        "bank0": 0,
+        "busy": 1,
+        "pc": 65230,
+        "port6": 85,
+        "counter": 255,
+        "cycle": 1622,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 0,
+        "port0": 85,
+        "port5": 85,
+        "port4": 85,
+        "port7": 85,
+        "port1": 85,
+        "s": 1792
+      }
+    },
+    {
+      "case": {
+        "id": 16,
+        "column": 2,
+        "busy": 0,
+        "active": 0,
+        "counter": 0,
+        "alternate": 0,
+        "input": 90,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 1622,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 1628,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 1631,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 1637,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 1645,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 1651,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 1657,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10200,
+          "cycle": 1660,
+          "context_hex": "966E462405"
+        },
+        {
+          "pc": 10202,
+          "cycle": 1664,
+          "context_hex": "462405CC00"
+        },
+        {
+          "pc": 10203,
+          "cycle": 1666,
+          "context_hex": "2405CC0000"
+        },
+        {
+          "pc": 10205,
+          "cycle": 1669,
+          "context_hex": "CC00002002"
+        },
+        {
+          "pc": 10208,
+          "cycle": 1672,
+          "context_hex": "2002DC6FB7"
+        },
+        {
+          "pc": 10212,
+          "cycle": 1675,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 1680,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 1685,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 1690,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 1695,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 1703,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 1707,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 1710,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 1717,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 1720,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 16,
+        "bank0": 0,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 1,
+        "cycle": 1728,
+        "port2": 90,
+        "port3": 85,
+        "bank1": 0,
+        "port0": 85,
+        "port5": 85,
+        "port4": 85,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 17,
+        "column": 2,
+        "busy": 0,
+        "active": 0,
+        "counter": 1,
+        "alternate": 0,
+        "input": 129,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 1728,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 1734,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 1737,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 1743,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 1751,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 1757,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 1763,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10200,
+          "cycle": 1766,
+          "context_hex": "966E462405"
+        },
+        {
+          "pc": 10202,
+          "cycle": 1770,
+          "context_hex": "462405CC00"
+        },
+        {
+          "pc": 10203,
+          "cycle": 1772,
+          "context_hex": "2405CC0000"
+        },
+        {
+          "pc": 10210,
+          "cycle": 1775,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 1780,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 1785,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 1790,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 1795,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 1800,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 1808,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 1812,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 1815,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 1822,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 1825,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 17,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 2,
+        "cycle": 1833,
+        "port2": 129,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 85,
+        "port4": 85,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 18,
+        "column": 2,
+        "busy": 0,
+        "active": 1,
+        "counter": 0,
+        "alternate": 0,
+        "input": 90,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 1833,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 1839,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 1842,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 1848,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 1856,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 1862,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 1868,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10210,
+          "cycle": 1871,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 1876,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 1881,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 1886,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 1891,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 1896,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 1904,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 1908,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 1911,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 1918,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 1921,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 18,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 1,
+        "cycle": 1929,
+        "port2": 90,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 85,
+        "port4": 85,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 19,
+        "column": 2,
+        "busy": 0,
+        "active": 1,
+        "counter": 1,
+        "alternate": 0,
+        "input": 129,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 1929,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 1935,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 1938,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 1944,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 1952,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 1958,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 1964,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10210,
+          "cycle": 1967,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 1972,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 1977,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 1982,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 1987,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 1992,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 2000,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 2004,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 2007,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 2014,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 2017,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 19,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 2,
+        "cycle": 2025,
+        "port2": 129,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 85,
+        "port4": 85,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 20,
+        "column": 2,
+        "busy": 0,
+        "active": 0,
+        "counter": 255,
+        "alternate": 0,
+        "input": 90,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 2025,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 2031,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 2034,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 2040,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 2048,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 2054,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 2060,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10200,
+          "cycle": 2063,
+          "context_hex": "966E462405"
+        },
+        {
+          "pc": 10202,
+          "cycle": 2067,
+          "context_hex": "462405CC00"
+        },
+        {
+          "pc": 10203,
+          "cycle": 2069,
+          "context_hex": "2405CC0000"
+        },
+        {
+          "pc": 10210,
+          "cycle": 2072,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 2077,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 2082,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 2087,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 2092,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 2097,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 2105,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 2109,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 2112,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 2119,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 2122,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 20,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 0,
+        "cycle": 2130,
+        "port2": 90,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 85,
+        "port4": 85,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 21,
+        "column": 2,
+        "busy": 0,
+        "active": 0,
+        "counter": 255,
+        "alternate": 0,
+        "input": 129,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 2130,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 2136,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 2139,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 2145,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 2153,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 2159,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 2165,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10200,
+          "cycle": 2168,
+          "context_hex": "966E462405"
+        },
+        {
+          "pc": 10202,
+          "cycle": 2172,
+          "context_hex": "462405CC00"
+        },
+        {
+          "pc": 10203,
+          "cycle": 2174,
+          "context_hex": "2405CC0000"
+        },
+        {
+          "pc": 10210,
+          "cycle": 2177,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 2182,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 2187,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 2192,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 2197,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 2202,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 2210,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 2214,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 2217,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 2224,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 2227,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 21,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 0,
+        "cycle": 2235,
+        "port2": 129,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 85,
+        "port4": 85,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 22,
+        "column": 2,
+        "busy": 0,
+        "active": 1,
+        "counter": 255,
+        "alternate": 1,
+        "input": 90,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 2235,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 2241,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 2244,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 2250,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 2258,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 2264,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 2270,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10210,
+          "cycle": 2273,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 2278,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 2283,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 2288,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 2293,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 2298,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 2306,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 2310,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 2313,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 2320,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10243,
+          "cycle": 2323,
+          "context_hex": "BD41671600"
+        }
+      ],
+      "end": {
+        "id": 22,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 16743,
+        "port6": 85,
+        "counter": 0,
+        "cycle": 2331,
+        "port2": 90,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 85,
+        "port4": 85,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 23,
+        "column": 2,
+        "busy": 1,
+        "active": 1,
+        "counter": 255,
+        "alternate": 0,
+        "input": 129,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 2331,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 2337,
+          "context_hex": "2610032CBD"
+        }
+      ],
+      "end": {
+        "id": 23,
+        "bank0": 0,
+        "busy": 1,
+        "pc": 65230,
+        "port6": 85,
+        "counter": 255,
+        "cycle": 2340,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 0,
+        "port0": 85,
+        "port5": 85,
+        "port4": 85,
+        "port7": 85,
+        "port1": 85,
+        "s": 1792
+      }
+    },
+    {
+      "case": {
+        "id": 24,
+        "column": 3,
+        "busy": 0,
+        "active": 0,
+        "counter": 0,
+        "alternate": 0,
+        "input": 90,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 2340,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 2346,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 2349,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 2355,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 2363,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 2369,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 2375,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10200,
+          "cycle": 2378,
+          "context_hex": "966E462405"
+        },
+        {
+          "pc": 10202,
+          "cycle": 2382,
+          "context_hex": "462405CC00"
+        },
+        {
+          "pc": 10203,
+          "cycle": 2384,
+          "context_hex": "2405CC0000"
+        },
+        {
+          "pc": 10205,
+          "cycle": 2387,
+          "context_hex": "CC00002002"
+        },
+        {
+          "pc": 10208,
+          "cycle": 2390,
+          "context_hex": "2002DC6FB7"
+        },
+        {
+          "pc": 10212,
+          "cycle": 2393,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 2398,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 2403,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 2408,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 2413,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 2421,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 2425,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 2428,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 2435,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 2438,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 24,
+        "bank0": 0,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 1,
+        "cycle": 2446,
+        "port2": 85,
+        "port3": 90,
+        "bank1": 0,
+        "port0": 85,
+        "port5": 85,
+        "port4": 85,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 25,
+        "column": 3,
+        "busy": 0,
+        "active": 0,
+        "counter": 1,
+        "alternate": 0,
+        "input": 129,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 2446,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 2452,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 2455,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 2461,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 2469,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 2475,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 2481,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10200,
+          "cycle": 2484,
+          "context_hex": "966E462405"
+        },
+        {
+          "pc": 10202,
+          "cycle": 2488,
+          "context_hex": "462405CC00"
+        },
+        {
+          "pc": 10203,
+          "cycle": 2490,
+          "context_hex": "2405CC0000"
+        },
+        {
+          "pc": 10210,
+          "cycle": 2493,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 2498,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 2503,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 2508,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 2513,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 2518,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 2526,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 2530,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 2533,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 2540,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 2543,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 25,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 2,
+        "cycle": 2551,
+        "port2": 85,
+        "port3": 129,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 85,
+        "port4": 85,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 26,
+        "column": 3,
+        "busy": 0,
+        "active": 1,
+        "counter": 0,
+        "alternate": 0,
+        "input": 90,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 2551,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 2557,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 2560,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 2566,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 2574,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 2580,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 2586,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10210,
+          "cycle": 2589,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 2594,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 2599,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 2604,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 2609,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 2614,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 2622,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 2626,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 2629,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 2636,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 2639,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 26,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 1,
+        "cycle": 2647,
+        "port2": 85,
+        "port3": 90,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 85,
+        "port4": 85,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 27,
+        "column": 3,
+        "busy": 0,
+        "active": 1,
+        "counter": 1,
+        "alternate": 0,
+        "input": 129,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 2647,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 2653,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 2656,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 2662,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 2670,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 2676,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 2682,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10210,
+          "cycle": 2685,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 2690,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 2695,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 2700,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 2705,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 2710,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 2718,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 2722,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 2725,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 2732,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 2735,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 27,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 2,
+        "cycle": 2743,
+        "port2": 85,
+        "port3": 129,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 85,
+        "port4": 85,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 28,
+        "column": 3,
+        "busy": 0,
+        "active": 0,
+        "counter": 255,
+        "alternate": 0,
+        "input": 90,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 2743,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 2749,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 2752,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 2758,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 2766,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 2772,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 2778,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10200,
+          "cycle": 2781,
+          "context_hex": "966E462405"
+        },
+        {
+          "pc": 10202,
+          "cycle": 2785,
+          "context_hex": "462405CC00"
+        },
+        {
+          "pc": 10203,
+          "cycle": 2787,
+          "context_hex": "2405CC0000"
+        },
+        {
+          "pc": 10210,
+          "cycle": 2790,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 2795,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 2800,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 2805,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 2810,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 2815,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 2823,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 2827,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 2830,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 2837,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 2840,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 28,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 0,
+        "cycle": 2848,
+        "port2": 85,
+        "port3": 90,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 85,
+        "port4": 85,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 29,
+        "column": 3,
+        "busy": 0,
+        "active": 0,
+        "counter": 255,
+        "alternate": 0,
+        "input": 129,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 2848,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 2854,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 2857,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 2863,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 2871,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 2877,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 2883,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10200,
+          "cycle": 2886,
+          "context_hex": "966E462405"
+        },
+        {
+          "pc": 10202,
+          "cycle": 2890,
+          "context_hex": "462405CC00"
+        },
+        {
+          "pc": 10203,
+          "cycle": 2892,
+          "context_hex": "2405CC0000"
+        },
+        {
+          "pc": 10210,
+          "cycle": 2895,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 2900,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 2905,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 2910,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 2915,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 2920,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 2928,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 2932,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 2935,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 2942,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 2945,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 29,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 0,
+        "cycle": 2953,
+        "port2": 85,
+        "port3": 129,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 85,
+        "port4": 85,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 30,
+        "column": 3,
+        "busy": 0,
+        "active": 1,
+        "counter": 255,
+        "alternate": 1,
+        "input": 90,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 2953,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 2959,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 2962,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 2968,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 2976,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 2982,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 2988,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10210,
+          "cycle": 2991,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 2996,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 3001,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 3006,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 3011,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 3016,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 3024,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 3028,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 3031,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 3038,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10243,
+          "cycle": 3041,
+          "context_hex": "BD41671600"
+        }
+      ],
+      "end": {
+        "id": 30,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 16743,
+        "port6": 85,
+        "counter": 0,
+        "cycle": 3049,
+        "port2": 85,
+        "port3": 90,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 85,
+        "port4": 85,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 31,
+        "column": 3,
+        "busy": 1,
+        "active": 1,
+        "counter": 255,
+        "alternate": 0,
+        "input": 129,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 3049,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 3055,
+          "context_hex": "2610032CBD"
+        }
+      ],
+      "end": {
+        "id": 31,
+        "bank0": 0,
+        "busy": 1,
+        "pc": 65230,
+        "port6": 85,
+        "counter": 255,
+        "cycle": 3058,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 0,
+        "port0": 85,
+        "port5": 85,
+        "port4": 85,
+        "port7": 85,
+        "port1": 85,
+        "s": 1792
+      }
+    },
+    {
+      "case": {
+        "id": 32,
+        "column": 4,
+        "busy": 0,
+        "active": 0,
+        "counter": 0,
+        "alternate": 0,
+        "input": 90,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 3058,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 3064,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 3067,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 3073,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 3081,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 3087,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 3093,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10200,
+          "cycle": 3096,
+          "context_hex": "966E462405"
+        },
+        {
+          "pc": 10202,
+          "cycle": 3100,
+          "context_hex": "462405CC00"
+        },
+        {
+          "pc": 10203,
+          "cycle": 3102,
+          "context_hex": "2405CC0000"
+        },
+        {
+          "pc": 10205,
+          "cycle": 3105,
+          "context_hex": "CC00002002"
+        },
+        {
+          "pc": 10208,
+          "cycle": 3108,
+          "context_hex": "2002DC6FB7"
+        },
+        {
+          "pc": 10212,
+          "cycle": 3111,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 3116,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 3121,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 3126,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 3131,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 3139,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 3143,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 3146,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 3153,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 3156,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 32,
+        "bank0": 0,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 1,
+        "cycle": 3164,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 0,
+        "port0": 85,
+        "port5": 85,
+        "port4": 90,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 33,
+        "column": 4,
+        "busy": 0,
+        "active": 0,
+        "counter": 1,
+        "alternate": 0,
+        "input": 129,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 3164,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 3170,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 3173,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 3179,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 3187,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 3193,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 3199,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10200,
+          "cycle": 3202,
+          "context_hex": "966E462405"
+        },
+        {
+          "pc": 10202,
+          "cycle": 3206,
+          "context_hex": "462405CC00"
+        },
+        {
+          "pc": 10203,
+          "cycle": 3208,
+          "context_hex": "2405CC0000"
+        },
+        {
+          "pc": 10210,
+          "cycle": 3211,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 3216,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 3221,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 3226,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 3231,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 3236,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 3244,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 3248,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 3251,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 3258,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 3261,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 33,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 2,
+        "cycle": 3269,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 85,
+        "port4": 129,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 34,
+        "column": 4,
+        "busy": 0,
+        "active": 1,
+        "counter": 0,
+        "alternate": 0,
+        "input": 90,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 3269,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 3275,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 3278,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 3284,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 3292,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 3298,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 3304,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10210,
+          "cycle": 3307,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 3312,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 3317,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 3322,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 3327,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 3332,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 3340,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 3344,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 3347,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 3354,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 3357,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 34,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 1,
+        "cycle": 3365,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 85,
+        "port4": 90,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 35,
+        "column": 4,
+        "busy": 0,
+        "active": 1,
+        "counter": 1,
+        "alternate": 0,
+        "input": 129,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 3365,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 3371,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 3374,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 3380,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 3388,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 3394,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 3400,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10210,
+          "cycle": 3403,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 3408,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 3413,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 3418,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 3423,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 3428,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 3436,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 3440,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 3443,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 3450,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 3453,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 35,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 2,
+        "cycle": 3461,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 85,
+        "port4": 129,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 36,
+        "column": 4,
+        "busy": 0,
+        "active": 0,
+        "counter": 255,
+        "alternate": 0,
+        "input": 90,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 3461,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 3467,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 3470,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 3476,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 3484,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 3490,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 3496,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10200,
+          "cycle": 3499,
+          "context_hex": "966E462405"
+        },
+        {
+          "pc": 10202,
+          "cycle": 3503,
+          "context_hex": "462405CC00"
+        },
+        {
+          "pc": 10203,
+          "cycle": 3505,
+          "context_hex": "2405CC0000"
+        },
+        {
+          "pc": 10210,
+          "cycle": 3508,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 3513,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 3518,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 3523,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 3528,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 3533,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 3541,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 3545,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 3548,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 3555,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 3558,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 36,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 0,
+        "cycle": 3566,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 85,
+        "port4": 90,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 37,
+        "column": 4,
+        "busy": 0,
+        "active": 0,
+        "counter": 255,
+        "alternate": 0,
+        "input": 129,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 3566,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 3572,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 3575,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 3581,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 3589,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 3595,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 3601,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10200,
+          "cycle": 3604,
+          "context_hex": "966E462405"
+        },
+        {
+          "pc": 10202,
+          "cycle": 3608,
+          "context_hex": "462405CC00"
+        },
+        {
+          "pc": 10203,
+          "cycle": 3610,
+          "context_hex": "2405CC0000"
+        },
+        {
+          "pc": 10210,
+          "cycle": 3613,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 3618,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 3623,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 3628,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 3633,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 3638,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 3646,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 3650,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 3653,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 3660,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 3663,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 37,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 0,
+        "cycle": 3671,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 85,
+        "port4": 129,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 38,
+        "column": 4,
+        "busy": 0,
+        "active": 1,
+        "counter": 255,
+        "alternate": 1,
+        "input": 90,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 3671,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 3677,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 3680,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 3686,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 3694,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 3700,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 3706,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10210,
+          "cycle": 3709,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 3714,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 3719,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 3724,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 3729,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 3734,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 3742,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 3746,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 3749,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 3756,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10243,
+          "cycle": 3759,
+          "context_hex": "BD41671600"
+        }
+      ],
+      "end": {
+        "id": 38,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 16743,
+        "port6": 85,
+        "counter": 0,
+        "cycle": 3767,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 85,
+        "port4": 90,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 39,
+        "column": 4,
+        "busy": 1,
+        "active": 1,
+        "counter": 255,
+        "alternate": 0,
+        "input": 129,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 3767,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 3773,
+          "context_hex": "2610032CBD"
+        }
+      ],
+      "end": {
+        "id": 39,
+        "bank0": 0,
+        "busy": 1,
+        "pc": 65230,
+        "port6": 85,
+        "counter": 255,
+        "cycle": 3776,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 0,
+        "port0": 85,
+        "port5": 85,
+        "port4": 85,
+        "port7": 85,
+        "port1": 85,
+        "s": 1792
+      }
+    },
+    {
+      "case": {
+        "id": 40,
+        "column": 5,
+        "busy": 0,
+        "active": 0,
+        "counter": 0,
+        "alternate": 0,
+        "input": 90,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 3776,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 3782,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 3785,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 3791,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 3799,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 3805,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 3811,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10200,
+          "cycle": 3814,
+          "context_hex": "966E462405"
+        },
+        {
+          "pc": 10202,
+          "cycle": 3818,
+          "context_hex": "462405CC00"
+        },
+        {
+          "pc": 10203,
+          "cycle": 3820,
+          "context_hex": "2405CC0000"
+        },
+        {
+          "pc": 10205,
+          "cycle": 3823,
+          "context_hex": "CC00002002"
+        },
+        {
+          "pc": 10208,
+          "cycle": 3826,
+          "context_hex": "2002DC6FB7"
+        },
+        {
+          "pc": 10212,
+          "cycle": 3829,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 3834,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 3839,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 3844,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 3849,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 3857,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 3861,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 3864,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 3871,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 3874,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 40,
+        "bank0": 0,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 1,
+        "cycle": 3882,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 0,
+        "port0": 85,
+        "port5": 90,
+        "port4": 85,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 41,
+        "column": 5,
+        "busy": 0,
+        "active": 0,
+        "counter": 1,
+        "alternate": 0,
+        "input": 129,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 3882,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 3888,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 3891,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 3897,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 3905,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 3911,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 3917,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10200,
+          "cycle": 3920,
+          "context_hex": "966E462405"
+        },
+        {
+          "pc": 10202,
+          "cycle": 3924,
+          "context_hex": "462405CC00"
+        },
+        {
+          "pc": 10203,
+          "cycle": 3926,
+          "context_hex": "2405CC0000"
+        },
+        {
+          "pc": 10210,
+          "cycle": 3929,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 3934,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 3939,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 3944,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 3949,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 3954,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 3962,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 3966,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 3969,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 3976,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 3979,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 41,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 2,
+        "cycle": 3987,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 129,
+        "port4": 85,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 42,
+        "column": 5,
+        "busy": 0,
+        "active": 1,
+        "counter": 0,
+        "alternate": 0,
+        "input": 90,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 3987,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 3993,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 3996,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 4002,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 4010,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 4016,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 4022,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10210,
+          "cycle": 4025,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 4030,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 4035,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 4040,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 4045,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 4050,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 4058,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 4062,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 4065,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 4072,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 4075,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 42,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 1,
+        "cycle": 4083,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 90,
+        "port4": 85,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 43,
+        "column": 5,
+        "busy": 0,
+        "active": 1,
+        "counter": 1,
+        "alternate": 0,
+        "input": 129,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 4083,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 4089,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 4092,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 4098,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 4106,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 4112,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 4118,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10210,
+          "cycle": 4121,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 4126,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 4131,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 4136,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 4141,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 4146,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 4154,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 4158,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 4161,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 4168,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 4171,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 43,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 2,
+        "cycle": 4179,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 129,
+        "port4": 85,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 44,
+        "column": 5,
+        "busy": 0,
+        "active": 0,
+        "counter": 255,
+        "alternate": 0,
+        "input": 90,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 4179,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 4185,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 4188,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 4194,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 4202,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 4208,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 4214,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10200,
+          "cycle": 4217,
+          "context_hex": "966E462405"
+        },
+        {
+          "pc": 10202,
+          "cycle": 4221,
+          "context_hex": "462405CC00"
+        },
+        {
+          "pc": 10203,
+          "cycle": 4223,
+          "context_hex": "2405CC0000"
+        },
+        {
+          "pc": 10210,
+          "cycle": 4226,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 4231,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 4236,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 4241,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 4246,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 4251,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 4259,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 4263,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 4266,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 4273,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 4276,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 44,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 0,
+        "cycle": 4284,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 90,
+        "port4": 85,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 45,
+        "column": 5,
+        "busy": 0,
+        "active": 0,
+        "counter": 255,
+        "alternate": 0,
+        "input": 129,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 4284,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 4290,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 4293,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 4299,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 4307,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 4313,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 4319,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10200,
+          "cycle": 4322,
+          "context_hex": "966E462405"
+        },
+        {
+          "pc": 10202,
+          "cycle": 4326,
+          "context_hex": "462405CC00"
+        },
+        {
+          "pc": 10203,
+          "cycle": 4328,
+          "context_hex": "2405CC0000"
+        },
+        {
+          "pc": 10210,
+          "cycle": 4331,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 4336,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 4341,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 4346,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 4351,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 4356,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 4364,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 4368,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 4371,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 4378,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 4381,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 45,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 0,
+        "cycle": 4389,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 129,
+        "port4": 85,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 46,
+        "column": 5,
+        "busy": 0,
+        "active": 1,
+        "counter": 255,
+        "alternate": 1,
+        "input": 90,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 4389,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 4395,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 4398,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 4404,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 4412,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 4418,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 4424,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10210,
+          "cycle": 4427,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 4432,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 4437,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 4442,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 4447,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 4452,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 4460,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 4464,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 4467,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 4474,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10243,
+          "cycle": 4477,
+          "context_hex": "BD41671600"
+        }
+      ],
+      "end": {
+        "id": 46,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 16743,
+        "port6": 85,
+        "counter": 0,
+        "cycle": 4485,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 90,
+        "port4": 85,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 47,
+        "column": 5,
+        "busy": 1,
+        "active": 1,
+        "counter": 255,
+        "alternate": 0,
+        "input": 129,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 4485,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 4491,
+          "context_hex": "2610032CBD"
+        }
+      ],
+      "end": {
+        "id": 47,
+        "bank0": 0,
+        "busy": 1,
+        "pc": 65230,
+        "port6": 85,
+        "counter": 255,
+        "cycle": 4494,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 0,
+        "port0": 85,
+        "port5": 85,
+        "port4": 85,
+        "port7": 85,
+        "port1": 85,
+        "s": 1792
+      }
+    },
+    {
+      "case": {
+        "id": 48,
+        "column": 6,
+        "busy": 0,
+        "active": 0,
+        "counter": 0,
+        "alternate": 0,
+        "input": 90,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 4494,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 4500,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 4503,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 4509,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 4517,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 4523,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 4529,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10200,
+          "cycle": 4532,
+          "context_hex": "966E462405"
+        },
+        {
+          "pc": 10202,
+          "cycle": 4536,
+          "context_hex": "462405CC00"
+        },
+        {
+          "pc": 10203,
+          "cycle": 4538,
+          "context_hex": "2405CC0000"
+        },
+        {
+          "pc": 10205,
+          "cycle": 4541,
+          "context_hex": "CC00002002"
+        },
+        {
+          "pc": 10208,
+          "cycle": 4544,
+          "context_hex": "2002DC6FB7"
+        },
+        {
+          "pc": 10212,
+          "cycle": 4547,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 4552,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 4557,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 4562,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 4567,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 4575,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 4579,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 4582,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 4589,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 4592,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 48,
+        "bank0": 0,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 90,
+        "counter": 1,
+        "cycle": 4600,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 0,
+        "port0": 85,
+        "port5": 85,
+        "port4": 85,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 49,
+        "column": 6,
+        "busy": 0,
+        "active": 0,
+        "counter": 1,
+        "alternate": 0,
+        "input": 129,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 4600,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 4606,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 4609,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 4615,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 4623,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 4629,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 4635,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10200,
+          "cycle": 4638,
+          "context_hex": "966E462405"
+        },
+        {
+          "pc": 10202,
+          "cycle": 4642,
+          "context_hex": "462405CC00"
+        },
+        {
+          "pc": 10203,
+          "cycle": 4644,
+          "context_hex": "2405CC0000"
+        },
+        {
+          "pc": 10210,
+          "cycle": 4647,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 4652,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 4657,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 4662,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 4667,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 4672,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 4680,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 4684,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 4687,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 4694,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 4697,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 49,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 129,
+        "counter": 2,
+        "cycle": 4705,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 85,
+        "port4": 85,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 50,
+        "column": 6,
+        "busy": 0,
+        "active": 1,
+        "counter": 0,
+        "alternate": 0,
+        "input": 90,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 4705,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 4711,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 4714,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 4720,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 4728,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 4734,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 4740,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10210,
+          "cycle": 4743,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 4748,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 4753,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 4758,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 4763,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 4768,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 4776,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 4780,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 4783,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 4790,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 4793,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 50,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 90,
+        "counter": 1,
+        "cycle": 4801,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 85,
+        "port4": 85,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 51,
+        "column": 6,
+        "busy": 0,
+        "active": 1,
+        "counter": 1,
+        "alternate": 0,
+        "input": 129,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 4801,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 4807,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 4810,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 4816,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 4824,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 4830,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 4836,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10210,
+          "cycle": 4839,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 4844,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 4849,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 4854,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 4859,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 4864,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 4872,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 4876,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 4879,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 4886,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 4889,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 51,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 129,
+        "counter": 2,
+        "cycle": 4897,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 85,
+        "port4": 85,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 52,
+        "column": 6,
+        "busy": 0,
+        "active": 0,
+        "counter": 255,
+        "alternate": 0,
+        "input": 90,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 4897,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 4903,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 4906,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 4912,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 4920,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 4926,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 4932,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10200,
+          "cycle": 4935,
+          "context_hex": "966E462405"
+        },
+        {
+          "pc": 10202,
+          "cycle": 4939,
+          "context_hex": "462405CC00"
+        },
+        {
+          "pc": 10203,
+          "cycle": 4941,
+          "context_hex": "2405CC0000"
+        },
+        {
+          "pc": 10210,
+          "cycle": 4944,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 4949,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 4954,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 4959,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 4964,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 4969,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 4977,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 4981,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 4984,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 4991,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 4994,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 52,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 90,
+        "counter": 0,
+        "cycle": 5002,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 85,
+        "port4": 85,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 53,
+        "column": 6,
+        "busy": 0,
+        "active": 0,
+        "counter": 255,
+        "alternate": 0,
+        "input": 129,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 5002,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 5008,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 5011,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 5017,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 5025,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 5031,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 5037,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10200,
+          "cycle": 5040,
+          "context_hex": "966E462405"
+        },
+        {
+          "pc": 10202,
+          "cycle": 5044,
+          "context_hex": "462405CC00"
+        },
+        {
+          "pc": 10203,
+          "cycle": 5046,
+          "context_hex": "2405CC0000"
+        },
+        {
+          "pc": 10210,
+          "cycle": 5049,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 5054,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 5059,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 5064,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 5069,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 5074,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 5082,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 5086,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 5089,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 5096,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 5099,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 53,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 129,
+        "counter": 0,
+        "cycle": 5107,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 85,
+        "port4": 85,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 54,
+        "column": 6,
+        "busy": 0,
+        "active": 1,
+        "counter": 255,
+        "alternate": 1,
+        "input": 90,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 5107,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 5113,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 5116,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 5122,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 5130,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 5136,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 5142,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10210,
+          "cycle": 5145,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 5150,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 5155,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 5160,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 5165,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 5170,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 5178,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 5182,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 5185,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 5192,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10243,
+          "cycle": 5195,
+          "context_hex": "BD41671600"
+        }
+      ],
+      "end": {
+        "id": 54,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 16743,
+        "port6": 90,
+        "counter": 0,
+        "cycle": 5203,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 85,
+        "port4": 85,
+        "port7": 85,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 55,
+        "column": 6,
+        "busy": 1,
+        "active": 1,
+        "counter": 255,
+        "alternate": 0,
+        "input": 129,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 5203,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 5209,
+          "context_hex": "2610032CBD"
+        }
+      ],
+      "end": {
+        "id": 55,
+        "bank0": 0,
+        "busy": 1,
+        "pc": 65230,
+        "port6": 85,
+        "counter": 255,
+        "cycle": 5212,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 0,
+        "port0": 85,
+        "port5": 85,
+        "port4": 85,
+        "port7": 85,
+        "port1": 85,
+        "s": 1792
+      }
+    },
+    {
+      "case": {
+        "id": 56,
+        "column": 7,
+        "busy": 0,
+        "active": 0,
+        "counter": 0,
+        "alternate": 0,
+        "input": 90,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 5212,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 5218,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 5221,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 5227,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 5235,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 5241,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 5247,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10200,
+          "cycle": 5250,
+          "context_hex": "966E462405"
+        },
+        {
+          "pc": 10202,
+          "cycle": 5254,
+          "context_hex": "462405CC00"
+        },
+        {
+          "pc": 10203,
+          "cycle": 5256,
+          "context_hex": "2405CC0000"
+        },
+        {
+          "pc": 10205,
+          "cycle": 5259,
+          "context_hex": "CC00002002"
+        },
+        {
+          "pc": 10208,
+          "cycle": 5262,
+          "context_hex": "2002DC6FB7"
+        },
+        {
+          "pc": 10212,
+          "cycle": 5265,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 5270,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 5275,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 5280,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 5285,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 5293,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 5297,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 5300,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 5307,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 5310,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 56,
+        "bank0": 0,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 1,
+        "cycle": 5318,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 0,
+        "port0": 85,
+        "port5": 85,
+        "port4": 85,
+        "port7": 90,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 57,
+        "column": 7,
+        "busy": 0,
+        "active": 0,
+        "counter": 1,
+        "alternate": 0,
+        "input": 129,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 5318,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 5324,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 5327,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 5333,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 5341,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 5347,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 5353,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10200,
+          "cycle": 5356,
+          "context_hex": "966E462405"
+        },
+        {
+          "pc": 10202,
+          "cycle": 5360,
+          "context_hex": "462405CC00"
+        },
+        {
+          "pc": 10203,
+          "cycle": 5362,
+          "context_hex": "2405CC0000"
+        },
+        {
+          "pc": 10210,
+          "cycle": 5365,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 5370,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 5375,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 5380,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 5385,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 5390,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 5398,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 5402,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 5405,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 5412,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 5415,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 57,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 2,
+        "cycle": 5423,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 85,
+        "port4": 85,
+        "port7": 129,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 58,
+        "column": 7,
+        "busy": 0,
+        "active": 1,
+        "counter": 0,
+        "alternate": 0,
+        "input": 90,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 5423,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 5429,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 5432,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 5438,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 5446,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 5452,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 5458,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10210,
+          "cycle": 5461,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 5466,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 5471,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 5476,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 5481,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 5486,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 5494,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 5498,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 5501,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 5508,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 5511,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 58,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 1,
+        "cycle": 5519,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 85,
+        "port4": 85,
+        "port7": 90,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 59,
+        "column": 7,
+        "busy": 0,
+        "active": 1,
+        "counter": 1,
+        "alternate": 0,
+        "input": 129,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 5519,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 5525,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 5528,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 5534,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 5542,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 5548,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 5554,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10210,
+          "cycle": 5557,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 5562,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 5567,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 5572,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 5577,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 5582,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 5590,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 5594,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 5597,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 5604,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 5607,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 59,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 2,
+        "cycle": 5615,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 85,
+        "port4": 85,
+        "port7": 129,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 60,
+        "column": 7,
+        "busy": 0,
+        "active": 0,
+        "counter": 255,
+        "alternate": 0,
+        "input": 90,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 5615,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 5621,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 5624,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 5630,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 5638,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 5644,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 5650,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10200,
+          "cycle": 5653,
+          "context_hex": "966E462405"
+        },
+        {
+          "pc": 10202,
+          "cycle": 5657,
+          "context_hex": "462405CC00"
+        },
+        {
+          "pc": 10203,
+          "cycle": 5659,
+          "context_hex": "2405CC0000"
+        },
+        {
+          "pc": 10210,
+          "cycle": 5662,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 5667,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 5672,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 5677,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 5682,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 5687,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 5695,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 5699,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 5702,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 5709,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 5712,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 60,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 0,
+        "cycle": 5720,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 85,
+        "port4": 85,
+        "port7": 90,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 61,
+        "column": 7,
+        "busy": 0,
+        "active": 0,
+        "counter": 255,
+        "alternate": 0,
+        "input": 129,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 5720,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 5726,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 5729,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 5735,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 5743,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 5749,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 5755,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10200,
+          "cycle": 5758,
+          "context_hex": "966E462405"
+        },
+        {
+          "pc": 10202,
+          "cycle": 5762,
+          "context_hex": "462405CC00"
+        },
+        {
+          "pc": 10203,
+          "cycle": 5764,
+          "context_hex": "2405CC0000"
+        },
+        {
+          "pc": 10210,
+          "cycle": 5767,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 5772,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 5777,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 5782,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 5787,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 5792,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 5800,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 5804,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 5807,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 5814,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10249,
+          "cycle": 5817,
+          "context_hex": "BD438CBD64"
+        }
+      ],
+      "end": {
+        "id": 61,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 17292,
+        "port6": 85,
+        "counter": 0,
+        "cycle": 5825,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 85,
+        "port4": 85,
+        "port7": 129,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 62,
+        "column": 7,
+        "busy": 0,
+        "active": 1,
+        "counter": 255,
+        "alternate": 1,
+        "input": 90,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 5825,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 5831,
+          "context_hex": "2610032CBD"
+        },
+        {
+          "pc": 65214,
+          "cycle": 5834,
+          "context_hex": "032CBD27D2"
+        },
+        {
+          "pc": 65216,
+          "cycle": 5840,
+          "context_hex": "BD27D2BD6B"
+        },
+        {
+          "pc": 10194,
+          "cycle": 5848,
+          "context_hex": "0C6E0D6C26"
+        },
+        {
+          "pc": 10196,
+          "cycle": 5854,
+          "context_hex": "0D6C260A96"
+        },
+        {
+          "pc": 10198,
+          "cycle": 5860,
+          "context_hex": "260A966E46"
+        },
+        {
+          "pc": 10210,
+          "cycle": 5863,
+          "context_hex": "DC6FB70D02"
+        },
+        {
+          "pc": 10212,
+          "cycle": 5868,
+          "context_hex": "B70D02F70E"
+        },
+        {
+          "pc": 10215,
+          "cycle": 5873,
+          "context_hex": "F70E009E28"
+        },
+        {
+          "pc": 10218,
+          "cycle": 5878,
+          "context_hex": "9E28B60F00"
+        },
+        {
+          "pc": 10220,
+          "cycle": 5883,
+          "context_hex": "B60F00A789"
+        },
+        {
+          "pc": 10223,
+          "cycle": 5888,
+          "context_hex": "A78900008C"
+        },
+        {
+          "pc": 10227,
+          "cycle": 5896,
+          "context_hex": "8C00012206"
+        },
+        {
+          "pc": 10230,
+          "cycle": 5900,
+          "context_hex": "22063004A7"
+        },
+        {
+          "pc": 10238,
+          "cycle": 5903,
+          "context_hex": "7D032F2706"
+        },
+        {
+          "pc": 10241,
+          "cycle": 5910,
+          "context_hex": "2706BD4167"
+        },
+        {
+          "pc": 10243,
+          "cycle": 5913,
+          "context_hex": "BD41671600"
+        }
+      ],
+      "end": {
+        "id": 62,
+        "bank0": 165,
+        "busy": 255,
+        "pc": 16743,
+        "port6": 85,
+        "counter": 0,
+        "cycle": 5921,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 60,
+        "port0": 85,
+        "port5": 85,
+        "port4": 85,
+        "port7": 90,
+        "port1": 85,
+        "s": 1788
+      }
+    },
+    {
+      "case": {
+        "id": 63,
+        "column": 7,
+        "busy": 1,
+        "active": 1,
+        "counter": 255,
+        "alternate": 0,
+        "input": 129,
+        "drive": 42300
+      },
+      "instructions": [
+        {
+          "pc": 65210,
+          "cycle": 5921,
+          "context_hex": "0D2C261003"
+        },
+        {
+          "pc": 65212,
+          "cycle": 5927,
+          "context_hex": "2610032CBD"
+        }
+      ],
+      "end": {
+        "id": 63,
+        "bank0": 0,
+        "busy": 1,
+        "pc": 65230,
+        "port6": 85,
+        "counter": 255,
+        "cycle": 5930,
+        "port2": 85,
+        "port3": 85,
+        "bank1": 0,
+        "port0": 85,
+        "port5": 85,
+        "port4": 85,
+        "port7": 85,
+        "port1": 85,
+        "s": 1792
+      }
+    }
+  ]
+}

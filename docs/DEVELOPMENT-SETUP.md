@@ -5,6 +5,43 @@ Local clone: C:\projects\GitRepos\FruitMachineLab
 
 ## Current status
 
+Coin service suffix4592 and composed438C idle return now have64 native cases
+each. Reproduce Capture-CoinServiceTiming.ps1 with the standard isolated capture
+parameters; add `-Composed` for the full idle caller. Curate-CoinServiceTiming.ps1
+uses RunDirectory/RomPath and selects the evidence stem from capture provenance.
+Verifier filters: `"Coin service"` and `"Composed idle"`. Live is unchanged.
+
+Bounded coin-idle continuation43E9 now has64 original-ROM native cases. Reproduce
+with tools/Capture-CoinIdleTiming.ps1 (fresh isolated RunDirectory, MameExecutable,
+RomDirectory), then tools/Curate-CoinIdleTiming.ps1 (RunDirectory, RomPath).
+Targeted verifier filter: `"Coin idle"`. No installed tool/config changes needed.
+
+Composed panel/inline continuations now have64 original-ROM cases, reproduced
+with Capture-/Curate-PanelContinuationTiming.ps1 (same standard parameters).
+Optional modes keep older prefix verifiers intact. Non-coin IRQ suffixes now
+reach280C through1A05/1A58; coin43E9/44C3 and reset7CCF remain explicit boundaries.
+Live scheduling is unchanged; see CURRENT-HANDOFF.md for state-seeding caveats.
+
+46D3 now has a separate staged implementation with64 native tests (58/73 cycles,
+signed index aliases, adjusted inline return and flags/register preservation).
+Capture-/Curate-InlineAuxTiming.ps1 reproduce it; curator also accepts
+ExcludedRunDirectory.19-window proof now includes the full nested IRQ return
+and resumed native instruction times. See handoff for remaining caller composition
+and Live scheduling boundaries.
+
+Timing verifier now generates IRQ acceptance for all19 natural windows after
+adding the439F decode prefix.64 isolated original-ROM cases verify its filter
+semantics/timing. Reproduce with Capture-/Curate-CoinDecodeTiming.ps1 using the
+same parameters as the input-service tools. An explicit0C02 reader is required
+past the known prefix;46D3/1A05 continuations and Live IRQ integration remain open.
+
+Live now stages the post-scan FEBA/27D2 input/drive prefix too.64 isolated native
+cases and19 natural prefix timing windows verify it. Reproduce with
+Capture-InputServiceTiming.ps1 (MameExecutable/RomDirectory/fresh RunDirectory),
+then Curate-InputServiceTiming.ps1 (RunDirectory/RomPath). Start acquisition and
+reel-drive stores occur at generated instruction times;438C and later service
+still use an explicit adapter. See the handoff for remaining IRQ timing work.
+
 Live output scanning is now instruction-staged, including lamp blanking/frame
 writes, timer arm and digit output. It retains scan entry/event3, not scan return
 or recorded arm events.64 isolated ROM calls,19 natural instruction windows and

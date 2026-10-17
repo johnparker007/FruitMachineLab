@@ -1,0 +1,11 @@
+{
+  "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-coin-decode-4c490fd4c7bf45c59cd0ea2e94e9f05e",
+  "debug_sha256": "146FEB9F2288BEB3D22780F8D49F14F2CDD2D19D2BC9A044BC466A0898CA2914",
+  "cases_sha256": "9EEE73A734F917CC1C3960ABA17AAC4949347245BAB9E48DC7E575586CE18449",
+  "rom_sha1": "402D1518BB78FDC489B06C2AABC771E5CE151847",
+  "provenance": {
+    "classification": "Synthetic438C->439F decode prefix only, stops before46D3 executes. Original ROM/table, masked IRQ/FIRQ, injected RAM and PIA output-mode auxiliary read, not coin insertion gameplay",
+    "mame_sha256": "0FCE5A88DF4F9D9B1FBF1405812C00848036E615993780978D967DA34204CB7A"
+  },
+  "cases": 64
+}

@@ -1,5 +1,39 @@
 # Implementation and evidence boundaries
 
+Ordinary idle coin service now returns4395 and composes with panel service to
+280C.128 original-ROM cases verify suffix/composed instruction timing and PIA
+latch outputs. All nested helpers suspend together; repeated hardware reads and
+sampled TST conditions are preserved. Natural PIA state, active coin/alarm paths
+and remaining outer service still prevent attaching this component to Live.
+
+Bounded43E9 coin-idle execution now checks seven original coin records with
+64 native cases verifying instruction timing and RAM. Active pulse/alarm and
+post-table service remain explicit continuations.0C02 has been mapped to IC5
+PIA AUX2, including DDR/control dependency; natural captured levels remain open.
+This component is not yet attached to Live or a complete coin-input system.
+
+The inline test is now composed into43E1/43E5, and optional1A05/1A58 panel service
+reaches280C or original reset7CCF.64 native composed cases verify all four exits
+and state/timing. Parent/child nested suspension is tested. This remains a staged
+verification component; Live's remaining adapter is not silently replaced.
+
+The19-window verifier now runs complete selected251-cycle nested interruptions
+and resumes native panel execution.46D3's separate staged inline auxiliary test
+matches64 native calls, including flag-only result and signed-index aliases.
+Coin caller composition/1A05 and generalized Live IRQ scheduling remain open.
+
+The verifier now generates all19 natural IRQ acceptance times from translated
+scan/input/panel instructions and the phase clock.439F's prefix/filter has64
+independent original-ROM cases. This remains bounded verification: scan entry
+and explicit state seeds are retained; Live IRQ scheduling is unchanged.46D3's
+inline test,1A05 and nested service continuation remain open.
+
+Live FEBA/27D2 prefix now stages previous reel-drive writes, physical mux input
+read and RAM acquisition before the438C boundary.64 original-ROM synthetic cases
+and19 natural instruction timing windows match. Later sticky accumulation,
+motor/counter/scheduler work remains atomic. Scan/IRQ entry and outer occupancy
+are still retained; this is not complete autonomous IRQ scheduling.
+
 Live now stages28FE output scan,19C2/19FA sweep and70EF timer arm from translated
 native instructions. Lamp blanks, frame writes and arm happen as execution
 advances; Pause freezes between individual stores. Scan ENTRY is retained, while

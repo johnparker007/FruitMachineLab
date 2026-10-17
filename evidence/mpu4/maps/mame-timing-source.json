@@ -47,6 +47,18 @@
       "url": "https://github.com/mamedev/mame/blob/2843a3deb81cf93735244044894196ccfbea4d20/src/mame/barcrest/mpu4.cpp"
     },
     {
+      "path": "src/mame/barcrest/mpu4mod4yam.cpp",
+      "git_blob": "c13a99b2816f01c26a3ddf377a1339effe7ec0c7",
+      "bytes": 166506,
+      "url": "https://github.com/mamedev/mame/blob/2843a3deb81cf93735244044894196ccfbea4d20/src/mame/barcrest/mpu4mod4yam.cpp"
+    },
+    {
+      "path": "src/devices/machine/6821pia.cpp",
+      "git_blob": "c7233fc5845551ef4fa4699545edfa64e67b4658",
+      "bytes": 26980,
+      "url": "https://github.com/mamedev/mame/blob/2843a3deb81cf93735244044894196ccfbea4d20/src/devices/machine/6821pia.cpp"
+    },
+    {
       "path": "src/emu/schedule.cpp",
       "git_blob": "a475fd9b515ea6df6ff033f3643ecf6adf4b52c8",
       "bytes": 28970,
@@ -280,5 +292,122 @@
     ],
     "scope": "Translated28FE scan,19C2/19FA sweep and70EF arm;64 isolated native paths,19 natural instruction/arm windows,6103 native final-output digest",
     "qualification": "Live retains scan ENTRY event3 and FE70 IRQ entry, not scan return/event4 or arm/event5. Word store high/low bus events at completion-1/completion. Strict scan->phase->dispatch connection passes19 natural windows; changed Live paths can place retained IRQ before generated assertion, so hardware bridge remains verification-only."
+  },
+  "input_service_execution": {
+    "implementation": "src/FruitMachineLab.Runtime/Mpu4InputServiceExecution.cs",
+    "live": "src/FruitMachineLab.Adders/SkillCashLiveSession.cs",
+    "panel": "src/FruitMachineLab.Runtime/Mpu4PanelInput.cs",
+    "reel_hardware": "src/FruitMachineLab.Adders/AddersReelHardware.cs",
+    "synthetic_evidence": "skill-cash/input-service-timing.json",
+    "verification": "skill-cash/input-service-timing-verification.json",
+    "natural_evidence": "skill-cash/ptm-outer-timing.json",
+    "source_symbols": [
+      "INC8",
+      "COM8",
+      "ROR8",
+      "LD16",
+      "ST8",
+      "INDEXED",
+      "JSR",
+      "BRANCH"
+    ],
+    "scope": "FEBA wrapper and27D2 prefix through entry438C, alternate4167 or busyFECE;64 synthetic original-ROM cases,19 natural path/timing comparisons",
+    "qualification": "Live acquisition/sample stores/previous drive writes are staged; accumulation/motor/counter/scheduler continuation remains atomic. Verification includes439F prefix and19 generated IRQ acceptances, while generalized Live IRQ scheduling and whole coin validation remain open. Natural prefix parity seeds are not complete natural RAM-state equality.",
+    "bounded_accumulation": {
+      "implementation": "src/FruitMachineLab.Runtime/Mpu4PanelAccumulationExecution.cs",
+      "entry": 17292,
+      "callback": 6584,
+      "helper": 6791,
+      "open_boundaries": [
+        18131,
+        6661
+      ],
+      "coin_evidence": "skill-cash/coin-decode-timing.json",
+      "coin_verification": "skill-cash/coin-decode-timing-verification.json",
+      "scope": "Verification-only dispatch, OR/AND accumulation and439F decode/filter prefix.64 original coin-prefix calls match. All19 natural windows generate interrupted instruction and19-cycle IRQ entry from scan-entry/explicit state seeds and phase-clock expiry; captured last instruction is comparison-only.",
+      "qualification": "0C02 requires an explicit hardware reader; no guessed value. Stops before46D3 inline auxiliary test, unknown callbacks or1A05. Live retains IRQ entry and remaining atomic service; this is not coin insertion or autonomous whole-machine scheduling."
+    },
+    "inline_auxiliary": {
+      "implementation": "src/FruitMachineLab.Runtime/Mpu4InlineAuxTestExecution.cs",
+      "evidence": "skill-cash/inline-aux-timing.json",
+      "verification": "skill-cash/inline-aux-timing-verification.json",
+      "entry": 18131,
+      "cycles": [
+        58,
+        73
+      ],
+      "inline_bytes": 1,
+      "restored": "A B X; Y/U unchanged",
+      "result": "Final AND N/Z, V0/C0, not an A result",
+      "index": "signed B after ((inline &7F)<<1), including negative aliases; no native bounds check",
+      "scope": "64 isolated original-ROM calls, RAM inline byte and saved return checked; not composed into the complete coin caller yet"
+    },
+    "nested_return": {
+      "implementation": "src/FruitMachineLab.Runtime/Mpu4OrdinaryIrqReturnExecution.cs",
+      "caller": "src/FruitMachineLab.Runtime/Mpu4PanelAccumulationExecution.cs:SuspendUntil",
+      "evidence": [
+        "skill-cash/ptm-service-timing.json",
+        "skill-cash/ptm-outer-timing.json"
+      ],
+      "scope": "Bank0/full-frame FEF2->FF13 epilogue26 cycles;19 generated251-cycle nested interruptions including entry/dispatch/callback/return, then native continuation timing compared",
+      "qualification": "Caller locals preserved; frame/register restoration remains CPU-owner contract. Non-coin suffix now reaches280C; coin comparison stops before actual0C02 read. No whole-handler/Live IRQ claim."
+    },
+    "composed_continuation": {
+      "implementation": "src/FruitMachineLab.Runtime/Mpu4PanelAccumulationExecution.cs",
+      "child": "src/FruitMachineLab.Runtime/Mpu4InlineAuxTestExecution.cs",
+      "evidence": "skill-cash/panel-continuation-timing.json",
+      "verification": "skill-cash/panel-continuation-timing-verification.json",
+      "scope": "64 original composed callers:16 coin inline branches,48 non-coin panel paths including1A05/1A58; all opcode encodings/times, final latch/filter/guard state and exits match",
+      "continuations": [
+        10252,
+        17385,
+        17603,
+        31951
+      ],
+      "qualification": "Explicit optional operand and continuation modes preserve older prefix fixtures. Original BITA00, counter wrap and reset jump retained. Parent suspension propagates to active inline child. Non-coin19-window suffixes now continue to280C; coin hardware read remains explicit. No Live attachment."
+    },
+    "coin_idle": {
+      "implementation": "src/FruitMachineLab.Runtime/Mpu4CoinIdleExecution.cs",
+      "evidence": "skill-cash/coin-idle-timing.json",
+      "verification": "skill-cash/coin-idle-timing-verification.json",
+      "scope": "64 bounded original43E9 calls, seven nine-byte records40E9..4127, six explicit continuations; all encodings/times and affected RAM match",
+      "qualification": "Synthetic injected A/RAM, no complete coin validation or Live attachment. Entry A is a preserved caller register, not an implicit reread of2A. IRQ suspension is an engine experiment."
+    },
+    "coin_service": {
+      "implementation": "src/FruitMachineLab.Runtime/Mpu4CoinServiceExecution.cs",
+      "evidence": [
+        "skill-cash/coin-service-timing.json",
+        "skill-cash/coin-composed-timing.json"
+      ],
+      "verification": [
+        "skill-cash/coin-service-timing-verification.json",
+        "skill-cash/coin-composed-timing-verification.json"
+      ],
+      "scope": "64 isolated4592 suffix calls plus64 composed438C idle callers; original inline46D3 selectors87/89/80/81, wrapped sum threshold, lockout/output writes and return4395 then panel280C",
+      "continuations": [
+        10252,
+        17301,
+        17924,
+        17953
+      ],
+      "qualification": "Original FF34/FF40=FF configuration only is native-backed. Alarms48DA and helper46F1 stop before their JSR. Active coin paths43F1/4426/44AB/4519/4562 and43E5 taken44C3 remain open. Synthetic PIA DDR=FF/latches do not establish natural pin state. All nested iterators suspend together; two0F02 reads remain separate. Not attached to Live."
+    },
+    "auxiliary_source": {
+      "classification": "Static deduction from pinned upstream source; actual captured PIA state remains unavailable",
+      "address": 3074,
+      "device": "PIA6821 IC5 portB / AUX2",
+      "source_symbols": [
+        "mpu4_memmap",
+        "pia_ic5_portb_r",
+        "get_in_b_value",
+        "port_b_r",
+        "read",
+        "INPUT_PORTS_START(m4addr)",
+        "INPUT_PORTS_START(mpu4)"
+      ],
+      "input_bits": "Inherited AUX2 coin1..4 active high10/20/40/80; m4addr does not override AUX2",
+      "read_contract": "ControlB bit2 clear selects DDRB; otherwise (outputB & DDRB) | ((AUX2 | auxiliary_internal) & ~DDRB). Port read clears IRQB flags and may change CB2 strobe; coinlock read-side effects remain driver-specific.",
+      "qualification": "Not reel optics (IC4 portB0B02). No zero-level assumption, credit mechanism or PIA model added. The earlier synthetic matrices configure DDRB=FF and inject the output latch, so do not establish natural coin pin levels."
+    }
   }
 }

@@ -1,0 +1,11 @@
+{
+  "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-input-timing-7e8f58018efc49c283bb08bd90ebe756",
+  "debug_sha256": "DDDAC052700E573E3C5EDA51068CA2FE8F1AD74949C6B366AAA8D2F41928128B",
+  "cases_sha256": "E96A910E92E326E08A79A542D5E69D8D0FF1B2EDFCC5CA02EA9FC324CC9AF90E",
+  "rom_sha1": "402D1518BB78FDC489B06C2AABC771E5CE151847",
+  "provenance": {
+    "classification": "Synthetic original FEBA/27D2 prefix, IRQ/FIRQ masked, injected RAM and PIA output-mode input substitute; stops before438C/4167/FECE executes, not natural input hardware or whole handler",
+    "mame_sha256": "0FCE5A88DF4F9D9B1FBF1405812C00848036E615993780978D967DA34204CB7A"
+  },
+  "cases": 64
+}

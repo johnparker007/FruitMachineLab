@@ -1,5 +1,122 @@
 # MC6840 timer clock foundation and phase findings
 
+## 17 October: ordinary coin-service return and composed438C caller
+
+`Mpu4CoinServiceExecution` recovers4592..4645's ordinary service path. It starts
+with explicit machine RAM/ROM state and device callbacks, not a CPU instruction
+interpreter. Bit80 of2B takes45FE (A=0F); bit40 reaches4602 (A=2F) and stops
+before4604 JSR48DA. Bit20 reaches461F (A=20) and stops before4621 JSR46F1. Those
+helpers' names are not complete semantics; neither body is silently replaced.
+Other paths test2F0 against50, consume46D3 inline87 at45A8, perform wrapped
+16-bit sum `[02FC]+[0302]` then compare2710, and consume inline89 at45C2.
+The sum wraps BEFORE the unsigned10000 test; native FFFF+2 cases preserve that
+reference behaviour. No inferred saturating arithmetic or bug correction.
+
+45D2 starts A20, compares0370 against73 and0372 againstCD, conditionally tests
+inline80 at45E5 and clearsA.0339 controls inline81 at45F1, followed by RAM0 bit02
+and optional OR08. Original ROM FF40=FF participates in preceding paths. Output
+tail462B tests0338, optionally FF34 (originalFF), and conditionally masksA withDF.
+TST results are sampled at their instruction completion and retained across
+suspension, rather than rereading RAM after the conditional branch.
+
+4637 writesA to actual0C02.463A reads0F02 and XORsA,463D masks20,463F reads0F02
+AGAIN and XORs,4642 writes0F02,4645 returns to4395. This is two device reads with
+separate instruction events; replacing them with one cached value changes the
+ROM behaviour if the device changes between reads. No flat-memory hardware
+substitute is used. Device write callbacks fire at generated store completion.
+Actual electrical bus subcycle/read side effects remain the device-owner scope.
+
+CoinIdle optionally composes this service, and PanelAccumulation optionally joins
+43E9 idle through4395 into19B8/1A05/1A58 and280C. Existing bounded defaults remain
+unchanged.43E5 taken44C3, active pulse43F1/4426/44AB/4519/4562 and alarm/helper
+routes remain explicit boundaries. The generic CPU register/S-frame restoration
+contract is unchanged; this is a selected translated helper, not full6809 state.
+Suspension propagates parent→idle→service→active inline child. Wrapper long-branch
+metadata comes from the generated child event duration, not recorded timing.
+
+Capture-CoinServiceTiming.ps1 reproduces64 isolated4592 native calls; -Composed
+reproduces64 original438C idle callers. The curator selects coin-service-timing
+or coin-composed-timing from recorded provenance. Every executed address/opcode,
+instruction start/completion, final hardware output latch and continuation match.
+Composed cases return280C or stop4604/4621, with original native S checked by
+the curator. Isolated cases return4395 or stop at those same helper calls. RAM
+is unchanged in the isolated suffix; composed output/latch and panel accumulation
+are checked. Threshold/wrap/inline/guard branches are deliberately varied.
+
+These are synthetic masked-IRQ/FIRQ native experiments, with injected RAM and
+PIA DDR=FF/output latches. Composed cases intentionally hold coin/auxiliary inputs
+zero. They do not establish natural input pins or initial PIA state, whole-machine
+coin insertion, changed ROM option bytes, or Live timing equivalence. Original
+FF34/FF40=FF branches are native-backed; other configuration values remain static
+translations. Exact4592..4645 bytes, inline operands, mask records, config bytes,
+caller regions and per-instruction contexts are exported with ROM hash checks,
+external raw hashes and implementation links in the existing source/evidence map.
+Unexecuted regions/inline data are included without a lossless-ASM claim.
+
+Engine-only synthetic experiments separately verify251-cycle nested suspension
+of the entire composed call, distinct0F02 values across the two reads, no device
+calls before their generated completion, and retained TST flags when0338 changes
+during an interruption. These are not extra natural MAME observations.
+
+Remaining prerequisite: capture natural IC5/IC8 PIA control/direction/latch/read
+state, complete required outer motor/counter/scheduler service, then extend the
+19-window IRQ proof and attach selected generated scheduling to Live. No Live
+or GUI call sites change here. ROMs, MAME/Ghidra settings/projects and the original
+workspace remain untouched. Ghidra export access is still unavailable. No new
+assembler/editor/export system, installations/configuration changes or commits.
+Validation:250 full headless groups pass; full/headless solutions build with
+zero warnings/errors.1112 curated entries verify; whitespace check passes.
+Live/WPF unchanged; prior GUI passes retained. All owned captures exited.
+
+## 17 October: bounded43E9 idle validation and actual AUX2 source
+
+`Mpu4CoinIdleExecution` translates43E9 through the idle pulse-validation path
+and the seven nine-byte records40E9..4127, stopping before4592's later service.
+Capture-/Curate-CoinIdleTiming.ps1 reproduce64 synthetic original-ROM calls;
+coin-idle-timing.json preserves exact regions and five-byte instruction contexts,
+with ROM SHA1 and external capture hashes in its verification sibling. Contexts
+are not instruction lengths, and this is not a complete lossless assembly export.
+
+Entry A is the caller's retained register; reading2A instead would change early
+BITA02/BITA04 branches.8A selects an active pulse-state path (43F1) when nonzero.
+The idle route clears10/11,8B,DF and8A, then clears2A bits06. X starts40E9,
+Y starts12; each record is nine bytes, its input mask at+8. MaskF0 tests all
+four high inputs together; other records skip when2A high nibble isF0, otherwise
+test their selected bit. Active matching goes4562. Counter,Y negative values
+are retained/skipped. Nonnegative values are cleared, and their prior value
+determines whether to continue (zero) or stop before4519 (positive). X advances
+9 andY1 until4128 (seven records). No record relocation/generalization attempted.
+
+All64 injected cases match original instruction addresses, opcode encodings,
+start and completion times, affected RAM and explicit continuations43F1/4426/
+44AB/4519/4562/4592. Counter0/01/7F/FF and sticky00/01/02/04/10/80/F0/FF exercise
+the bounded paths. IRQ/FIRQ are masked; these are synthetic native experiments,
+not natural play or proof of complete coin validation. A separate engine test
+checks instruction-boundary suspension, pending state and rejected mid-opcode
+suspension. No captured timing drives this execution. Live is unchanged.
+
+Static pinned-source audit: mpu4.cpp maps0C00..03 to IC5 PIA; its portB callback
+reads AUX2 OR internal auxiliary state, optionally performs coinlock/hopper work.
+mpu4mod4yam.cpp's m4addr inputs include mpu4 without overriding AUX2: coin1..4
+are active high10/20/40/80. Reel optics instead belong to IC4 portB0B02.
+6821pia.cpp `read` selects DDRB at offset2 unless ControlB bit2 selects portB;
+`get_in_b_value` returns `(outB & DDRB) | (pins & ~DDRB)`, with all-output shortcut.
+`port_b_r` clears IRQB1/B2 and may restore CB2 strobe. Driver callback side effects
+therefore cannot be assumed to happen on every direction-register or all-output
+read. Existing synthetic coin matrices explicitly set DDRB=FF and inject outB;
+they establish code behaviour, not physical coin levels. The natural19-window
+capture still lacks actual PIA state/read value. Zero is not an evidence-backed
+replacement. The existing source map/exporter now records13 blob identities,
+including6821pia.cpp/mpu4mod4yam.cpp; no user source checkout/settings changed.
+
+Remaining:4592 service and required inline tests, then join43E9 into438C and
+complete ordinary4395 return and motor/counter/scheduler work before generated
+IRQ timing can replace Live's retained boundaries. Ghidra export access remains
+unavailable; no assembler/editor tooling, ROM changes or new documentation system.
+Validation:245 full headless groups pass; full/headless solution builds have
+zero warnings/errors.1108 curated entries verify; whitespace check passes.
+Live/WPF unchanged, prior GUI checks retained. All owned captures exited.
+
 16 October 2026. This timing pass establishes independently checked timer clock
 primitives and finds a real obstacle to replacing Live's captured scheduling:
 timer3's internal phase cannot be assumed to start low at every latch write.
@@ -948,3 +1065,302 @@ remains unavailable as previously documented. No assembler/editor/relocator work
 Validation:233 headless groups and all eight WPF smoke modes pass; both solution
 builds have zero warnings/errors.1098 curated entries verify. No expectations
 were rebaselined. No installs/configuration changes, commits or pushes occurred.
+
+## Staged input/drive service and first generated acceptances — 16 October 2026
+
+Live now follows the completed28FE RTS with `Mpu4InputServiceExecution`: FEBA
+TST2C, FEBC busy branch, FEBE COM2C and FEC0 JSR27D2, then the native prefix
+through2809 JSR438C. It increments6E with byte wrap, preserves the6C/6E alternating
+drive gate and writes the previous6F/70 phase bytes separately to D02/E00. The
+stepper adapter now accepts one bank at each native store; the old combined
+WriteDrive API remains for existing verifiers. No hardware data port is silently
+represented as ordinary RAM in the new prefix.
+
+27EC reads current physical mux input through `Panel.ReadPort(column)` at the
+generated LDA0F00 completion.27EF stores that captured byte separately, and
+columns0/1 duplicate it to4/5 via27F8/27FA. A release after LDA but before STA
+does not change the byte already read. The Live test presses Start before the
+read, pauses between read/store (releasing the physical control), verifies all
+memory/VM/time/cursor state freezes, then resumes to the delayed80 RAM store.
+Sticky accumulation remains later and separate; it consumes the RAM sample,
+never rereads physical input. Other existing physical-input tests remain strict.
+
+The prefix stops at438C entry, or4167 when032F is nonzero, orFECE when2C was
+already busy. The latter two continuations are exposed by the runtime but fail
+explicitly in Live, whose selected path requires438C. The source's temporary
+2C=FF service guard persists until the remaining service adapter clears it.
+Live's duplicate6E increment and combined drive call were removed. Motor service,
+sticky input accumulation, counters and scheduler still run atomically at the
+438C boundary; this does not claim that their internal native timing is resolved.
+The VM waits for the generated prefix to finish, just as it waits for the scan.
+Captured FE70 delivery and scan entry/outer occupancy remain unchanged. Timer3
+preemption inside an unfinished generated prefix remains an explicit boundary.
+
+`Capture-InputServiceTiming.ps1` / `Curate-InputServiceTiming.ps1` reproduce64
+isolated original-ROM cases across eight columns and eight state variants:
+busy entry, active/alternating drive, counter255 wrap, alternate4167 entry, both
+input patterns and0/1 duplication. Every instruction address/encoding/start time,
+end time, continuation PC/native S, sampled RAM byte and final hardware drive
+value matches. The native calls stop BEFORE continuation executes. Synthetic
+PIA output-mode injection supplies known0F00 values; this is not proof of the
+electrical input mux or a natural button campaign. Original user settings/ROMs
+are untouched; fresh capture directories isolate runtime state. Provenance and
+raw/case/MAME hashes are in `input-service-timing-verification.json`.
+
+Nineteen existing natural post-scan prefix paths also match generated instruction
+times. Their test uses counter parity constrained by the captured BCC carry,
+not a recovered complete natural RAM seed. This distinction is deliberate; the
+64 isolated cases independently prove byte semantics and hardware write values.
+The exact ROM regions at FEBA,27D2,438C,19B8 and1A87 are exported with the new
+fixture under the original SHA1 guard. Five-byte instruction contexts remain
+contexts, not asserted instruction lengths. The existing source map links these
+regions and native references to runtime, tests and this report. Ghidra export
+access remains unavailable; nothing essential is left only in a local project.
+
+An additional bounded `Mpu4PanelAccumulationExecution` translates438C's
+column&3 test and non-coin path, the C6 high-byte callback guard/indirect call,
+known19B8→1A87 and the original OR/AND accumulation at8E+column/96+column.
+It preserves1A87's saved A between the OR and AND operations. It stops before
+439F coin decoding, an unknown indirect callback or1A05; it does not invent a
+return through those routines. This helper is verification-only, not attached
+to Live's remaining atomic service adapter.
+
+This closes a genuine CPU-boundary proof for the FIRST THREE natural windows.
+Starting with the existing explicit stopped timer phase, clock coordinate,
+captured scan ENTRY and constrained RAM/callback19B8 seeds, execute the generated
+scan and prefix, then accumulation one instruction at a time. Advance the phase
+clock to each completed instruction; the first pending IRQ at an unmasked
+boundary gives acceptance, and the verified ordinary19-cycle entry gives FE70.
+All three generated handler times and interrupted instruction PCs/start times
+match capture. The recorded last instruction is a comparison target here, not
+a scheduler input. Generated entry then drives the existing selected timer3
+dispatch/acknowledgement model. Full CPU register/frame reconstruction is not
+claimed; priority/mask assumptions are those observed in these selected windows.
+
+The fourth window enters439F coin decoding before expiry, so the proof stops
+there. Later1A05/1A58, motor/scheduler and outer handler paths are also open.
+Do not extend these three cases by choosing an old acceptance delay or forcing
+timer status. Next translate the missing dispatch/coin/accumulation continuation
+with source and independent native evidence, keeping normal playable-machine
+scope. No new startup/credit-insertion gameplay or whole CPU emulation was added.
+Validation:236 headless verification groups and all eight WPF smoke modes pass;
+both solutions build with zero warnings/errors.1100 curated entries verify;
+whitespace check passes. No expected outputs/digests were rebaselined. All owned
+capture/smoke processes exited. No installs/configuration changes, commits or pushes.
+
+## 439F decode/filter prefix and19 generated acceptances — 17 October 2026
+
+The existing `Mpu4PanelAccumulationExecution` now follows the438C column&3=0
+branch through439F's input decoding/filter prefix, stopping at43E1 JSR46D3's
+destination. This is not recovery of the complete coin-validation routine,
+credit insertion, held-switch alarm or payout behaviour.
+
+439F loads RAM0005, masks bit7, and selects input condition11's four-byte mask
+record at71EE (original ROM00 00 10 00).43B0 walks leading zero masks using Y as
+the port index; the original four-slot bound and all-zero CLRB path are preserved.
+The selected input bit becomes bit7 before LSLA/ADCA0 rotates the seven-bit
+RAM0005 value and selected bit into a byte. The implementation preserves actual
+instruction boundaries and branch costs, not a precomputed path.
+
+43C8 reads0C02 only through an explicitly supplied hardware-value callback. The
+code merges its high nibble with the rotated low nibble, then retains the exact
+89/2A two-sample filter sequence: candidate B, old byte89 and old filtered2A
+produce `(candidate & old89) | ((candidate | old89) & old2A)`;2A receives that
+result and89 receives candidate. A missing reader fails before either filter
+byte is changed. Do not replace that boundary with zero or read it as ordinary
+RAM. The two original pushed A bytes are represented by saved locals; native
+CPU stack contents/CC/register-frame reconstruction are not claimed.
+
+`Capture-CoinDecodeTiming.ps1` / `Curate-CoinDecodeTiming.ps1` reproduce64 isolated
+original-ROM calls from438C, using columns0/4, both selected-mask levels, varied
+RAM0005/89/2A and auxiliary bytes. IRQ/FIRQ are masked. Synthetic PIA output-mode
+injection supplies a known0C02 read without changing user settings; the original
+ROM and condition table remain unpatched. Every executed instruction address,
+exact encoding, start time, final time,89/2A result, A/B result and continuation
+matches. The native S=06FC is also checked at46D3 entry;46D3 itself is not run.
+This proves those controlled prefix cases, not a physical coin-input campaign.
+The original table's zero-leading-mask path and selected-bit branch are covered;
+the all-zero-table path is a preserved static deduction, not a new natural case.
+
+`coin-decode-timing.json` retains exact SHA1-guarded ROM regions at438C,439F,
+71EE and43E4, plus selected five-byte contexts. The curator and verification
+metadata preserve source-run, debugger, case and executable hashes.43E4's88
+is retained as unresolved inline material: natural execution after46D3 resumes
+at43E5, whose10 26 00 DA is LBNE44C3 (fallthrough43E9). Do not misdecode the
+inline88 as an EORA opcode or invent46D3's saved-return-PC convention. The name
+`test_aux_input_mask_inline` in the existing function index is not a complete
+calling-convention proof. This next boundary remains explicit.
+
+The existing19-window chain now GENERATES ALL19 interrupted instruction/IRQ
+acceptance times. Its scan entry, clock coordinate, stopped timer snapshot,
+explicit RAM/callback seeds and original mask data remain prerequisites. Execute
+the generated scan and FEBA/27D2 prefix, then438C→19B8/1A87 or439F as selected
+by the current column. At each completed instruction, advance the phase clock;
+the first asserted timer3 IRQ at the selected unmasked CPU boundary gives
+acceptance. Add the independently verified19-cycle ordinary IRQ entry. All19
+generated FE70 entries, interrupted PCs and instruction-start times match the
+natural capture, then drive the existing dispatch/acknowledgement model.
+
+Captured last-instruction PC/time and handler time are comparisons only in this
+chain; none supplies a generated deadline. All19 interrupts fall before43C8,
+so this proof needs no guessed auxiliary input. The remaining windows repeat
+the original campaign pattern; they are not independent new game campaigns or
+a complete CPU/register/interrupt-priority model. Same-time event ordering beyond
+these observed cases is not generalized. No validation expectations were weakened.
+
+Live retains captured FE70 delivery and outer occupancy, plus the atomic service
+after the staged input prefix. This verification helper has not been silently
+attached to Live. Next handle46D3 and1A05/1A58 continuations and suspend/resume
+the interrupted native operation through the generated nested IRQ return. Only
+then replace Live delivery using this instruction-boundary model, with changed
+player/game paths checked as well as the reference campaign. Preserve the earlier
+uncommitted input-service batch with this continuation. No installations,
+configuration changes, commits/pushes, original ROM/MAME/Ghidra/workspace changes.
+The documented Ghidra export-access gap remains; no assembler/editor was added.
+Validation:238 full headless groups pass; both solution builds have zero warnings
+or errors.1102 curated entries verify; whitespace check passes. No expectations
+were rebaselined. No new Live/WPF call-site changes justified repeating the eight
+GUI modes already passed by the preceding batch. All owned captures exited.
+
+## Inline auxiliary calling convention and resumable nested return — 17 October 2026
+
+`Mpu4InlineAuxTestExecution` separately translates46D3→46EF. PSHS16 saves A/B/X
+(four bytes), LDX4,S obtains the original saved return PC, LDB,X+ consumes one
+inline byte, and STX4,S advances that saved return. PULS96 restores A/B/X and PC.
+The final AND supplies N/Z, with V=0 and C=0; the caller does NOT receive the
+masked value in A. Native Y/U are unchanged. Full CPU frame bytes and unrelated
+CC bits remain outside this translated helper's result contract.
+
+The selector's high bit is ignored, then LSLB doubles the low seven bits. LDA
+B,X uses a SIGNED byte offset from7226. Thus selector40 addresses71A6,7F
+addresses7224, and high-bit variants alias these. There is no native range check.
+The second path adds one to X and tests RAM7 after a zero RAM6 masked result.
+Preserve these negative aliases rather than replacing them with unsigned indexing
+or adding a guessed trap. Raw ROM71A6–72A5 is exported for all possible referenced
+bytes; this is not a claim that the entire region is one valid semantic table.
+The ordinary coin caller's inline88 selects08 and addresses7236/7237.
+
+The short first-port-nonzero path costs58 cycles; the second-port path costs73.
+64 original-ROM experiments cover selectors00/08/3F/40/7F/80/88/FF, zero/full
+RAM6/7, and differing initial CC. Every instruction address/encoding/start time,
+final cycle, low N/Z/V/C flags, native preserved A/B/X/Y/U and adjusted return
+0501/S0702 matches. The routine is staged: input bytes are read at the native
+AND completions, not computed as an early result. Caller RAM/ROM masks must be
+provided explicitly through the machine state; no new input semantics are guessed.
+
+Capture-/Curate-InlineAuxTiming.ps1 reproduce the accepted run and exact guarded
+46D3 bytes/referenced ROM range in `inline-aux-timing.json`; metadata preserves
+raw/case/executable hashes. An initial attempt incorrectly injected the inline
+byte at0800, which is not ordinary RAM. A selector08 path mismatch exposed the
+fixture error; that run is excluded with hash/reason, even though MAME exited0.
+The accepted script uses inline0500 RAM and stops before0501 executes. This
+experiment changes isolated runtime state only, not user ROM files or settings.
+
+`Mpu4OrdinaryIrqReturnExecution` translates the selected FEF2 BRAFF08, FF08
+LDA3,S, FF0A BEQFF13 and full FF13 RTI. It requires saved bank0 and saved CC E=1;
+bank-restoration/short-frame paths fail explicitly. The four instructions cost
+3+5+3+15=26 cycles after callback completion. Actual CPU frame/register restoration
+remains the caller's contract; this is not an RTI instruction interpreter.
+
+`Mpu4PanelAccumulationExecution.SuspendUntil` now preserves translated locals,
+the pending opcode and its cost across a nested IRQ. It rejects a partially
+executed instruction or reversed time. It shifts the pending instruction's start
+to the generated resume cycle; no caller instructions run during that interval.
+Engine tests verify those guards and reject unsupported bank/short-frame returns.
+
+The19-window proof now continues beyond acceptance: generated entry/dispatch,
+lamp callback and the26-cycle epilogue produce251 cycles from acceptance through
+resumption. Every epilogue instruction/start/completion and final resume cycle
+matches the natural callback-tail fixture. Suspend the caller until that generated
+resume, then execute its remaining known instructions. Those instruction PCs and
+start/completion times match the natural parent suffix up to1A05 entry or BEFORE
+0C02 read. No auxiliary level is fabricated for this continuation proof. Masks
+are explicitly seeded FF from the existing captured feature-entry state; this
+is still a bounded state/timing proof, not full natural RAM equality or startup.
+
+Next compose the separately verified46D3 helper into43E1, advance past inline
+43E4=88 to43E5 and use its flags for the long branch, then recover1A05/1A58 as
+required. Live still retains recorded delivery and its post-prefix atomic adapter.
+No silent attachment or guessing of the unresolved caller was made. The existing
+source map links both new runtime components to native evidence and verification.
+Prior uncommitted work is preserved. Ghidra export access remains unavailable;
+no original ROM/MAME/Ghidra changes, installations/configuration, commits/pushes
+or assembler/editor work occurred. Raw traces remain outside tracked files.
+Validation:241 full headless groups pass; both solution builds have zero warnings
+or errors.1104 curated entries verify; whitespace check passes. No expectations
+were rebaselined. Live/WPF call sites are unchanged; prior GUI modes were not
+repeated. All owned capture processes exited.
+
+## Composed inline caller and panel service — 17 October 2026
+
+`Mpu4PanelAccumulationExecution` now optionally composes the already verified
+46D3 helper at43E1. The caller supplies the explicit inline operand (original
+43E4=88); it is not executed as an opcode. The child consumes it, advances the
+return to43E5, preserves the caller's translated A/B/X and supplies Z.43E5's
+LBNE44C3 takes six cycles when nonzero or five when falling through43E9. Both
+are explicit continuation boundaries; later coin validation is not invented.
+Prefix mode still stops at46D3 when no operand was supplied, preserving prior
+native fixtures and limiting accidental scope expansion.
+
+Parent instruction deadlines and the active inline child now suspend together
+through `SuspendUntil`. Child input reads still occur at their native instruction
+completion. An engine-only experiment uses synthetic selector80 (not real88),
+stops before the second-port portion, suspends for251 cycles, changes RAM7 during
+that interval, and resumes. Its instruction sequence/times equal the baseline
+with exactly that251-cycle insertion, and its branch observes the later value.
+This is a controlled engine experiment, not a new natural IRQ/input capture.
+
+Optional `continuePanelService` follows the non-coin callback19B8 through1A87,
+1A05 and1A58, then19C1/439E RTS to280C. Unknown callbacks still expose their
+destination; default prefix mode still stops at1A05.1A05/1A58 only perform their
+checks when column byte29=7. Original ROM flag bytes FF4C/FF46 are explicit
+machine data, both FF in this ROM; callers must load them, not mistake new zeroed
+RAM for ROM configuration. The zero-flag alternative paths are static translations,
+not claimed to be covered by the unpatched native matrix below.
+
+1A05 starts B=FF and tests FF4C. With original nonzero FF4C it executes LDA0004
+and BITA#00; that test is always zero, so CLRB runs. This odd zero mask is retained,
+not repaired. B is compared with stored0339. Equality clears counter88. A different
+value increments88 with byte wrap; below10 it returns, otherwise it stores B to
+0339 and JMPs7CCF.1A58 derives00/FF from RAM5 bit08 (or forcesFF if FF46=0),
+compares it with032F, and uses E2's corresponding equality clear/difference
+increment/threshold10. At threshold it stores the new032F byte before JMP7CCF.
+The existing function index labels7CCF `reset_and_game_entry`; the slice exposes
+that destination without attempting reset/startup. CounterFF→00 wrap and the
+write-before-jump effects are preserved.
+
+Capture-/Curate-PanelContinuationTiming.ps1 reproduce64 isolated ORIGINAL
+composed calls from438C:16 coin paths and48 non-coin panel paths. The matrix
+uses original ROM/table/configuration bytes, masked IRQ/FIRQ and explicit RAM/
+PIA input values. It covers both inline outcomes, OR/AND latches, column-seven
+equality clears, below-threshold differences, threshold reset jumps and counter
+wrap. Every native instruction encoding/address/start time, final cycle,
+continuation PC, native S and final filter/latch/counter/stored state matches.
+All four exits280C/43E9/44C3/7CCF occur. The experiment stops before those
+destinations execute; it is not gameplay, physical door operation or coin insertion.
+
+`panel-continuation-timing.json` includes exact ROM regions for1A05,1A58,19B8,
+inline43E4/branch43E5 and the configuration bytes. Five-byte native contexts
+remain contexts, not inferred instruction lengths. Verification metadata records
+raw/case/executable hashes and source run. The existing timing-source export
+links caller/child implementations and evidence. This extends the same recovery
+system; no separate assembly/editor/export framework was introduced.
+
+The existing19-window proof now resumes all15 non-coin paths through1A05/1A58
+to280C, comparing each resumed instruction start/completion against the parent
+trace. Its four coin paths still stop BEFORE0C02 read, whose actual value is
+not provided by this capture; the native matrix supplies explicit synthetic
+values only for independent combined-call verification. Captured scan entry,
+state seeds and the selected IRQ mask/priority contract remain prerequisites.
+
+No Live/WPF scheduling call sites change in this continuation. The source proof
+must not be silently attached to Live with missing C6/ROM-config seeds or later
+coin/motor/scheduler semantics. Next recover the ordinary no-coin43E9→4395 return
+path and its actual auxiliary source, then join normal service and generated IRQ
+execution. Earlier uncommitted work remains preserved. No installs/configuration
+changes, commits/pushes, original ROM/MAME/Ghidra changes, full startup or symbolic
+assembler work. The Ghidra export-access gap is unchanged; bulky logs stay external.
+Validation:243 full headless groups pass; both solution builds have zero warnings
+or errors.1106 curated entries verify; whitespace check passes. No expectations
+were rebaselined. Live/WPF call sites are unchanged, so no repeated GUI suite was
+needed. All owned capture processes exited.

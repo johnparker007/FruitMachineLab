@@ -1,5 +1,11 @@
 # Current handoff
 
+Paused at John's wrap-up request before proposed revisions. Nine of16 milestones
+complete, latest250d882. Full regression353 groups PASS; isolated desktop solution
+build zero warnings/errors;1249 curated entries verify. No GUI behaviour changed.
+Next proposed receive parity/framing and timer2 lifecycle work is subject to John's
+next steering. Do not treat this as completion of the16-batch request.
+
 Next16 cycle batch9:6AA3 data-bit prefix and6AB6 sampling continuation match64
 ROM boundaries including PIA streams, count underflow and parity-count wrap.
 Next6AC1 parity/6AEB framing, then init/service and timer2 lifecycle. This cycle

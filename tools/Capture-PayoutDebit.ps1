@@ -7,6 +7,8 @@ Copy-Item -LiteralPath $SeedRam -Destination "$run/seed.bin"
 $commands=[Collections.Generic.List[string]]::new();$cases=[Collections.Generic.List[object]]::new();$id=0
 if($InstructionTiming){
  $commands.Add('temp0=0');$commands.Add('bpset 76bf,temp0==1');$commands.Add('bpset 4cd1,temp0==0');$commands.Add('bpset 6858');$pcs=[Collections.Generic.HashSet[int]]::new()
+ $commands.Add('bpset fc,temp0==0,{printf "DV y=%04X token=%04X cycle=%016X u=%04X top=%04X second=%04X s=%04X\n",y,w@y,totalcycles,u,w@u,w@(u+2),s;go}')
+ $commands.Add('bpset 76f6,temp0==0,{printf "DG cycle=%016X s=%04X u=%04X\n",totalcycles,s,u;go}')
  foreach($entry in @('4cbe','6e06','6e0d','57f7','59a4','6fec','6fc1','68e0')){
   $native=Get-Content "$PSScriptRoot/../evidence/mpu4/native/$entry.json" -Raw|ConvertFrom-Json
   foreach($match in [regex]::Matches($native.assembly,'(?m)^([0-9a-f]{4}) ')){[void]$pcs.Add([Convert]::ToInt32($match.Groups[1].Value,16))}
@@ -23,7 +25,7 @@ foreach($record in @(0x4ACA,0x4ADB,0x4AEC,0x4AFD)){foreach($mode in @(0,128)){fo
   $go=$commands.Count-3
   if($commands[$go] -ne 'g 0x6858'){throw 'Unexpected debit command layout'}
   $commands.RemoveAt($go)
-  $insert=@('printf "DS pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4)','temp0=1','g 0x76bf','temp0=0',"save $name-display-entry.bin,0,800",'printf "DX pc=%04X cycle=%016X x=%04X u=%04X\n",pc,totalcycles,x,u','g 0x4cd1',"save $name-display-return.bin,0,800",'printf "DR pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4)','temp0=1','g 0x6858','temp0=0','printf "DF pc=%04X cycle=%016X u=%04X\n",pc,totalcycles,u')
+  $insert=@('printf "DS pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4)','temp0=1','g 0x76bf','temp0=0',"save $name-display-entry.bin,0,800",'printf "DX pc=%04X cycle=%016X x=%04X u=%04X a=%02X b=%02X dp=%02X cc=%02X y=%04X s=%04X\n",pc,totalcycles,x,u,a,b,dp,cc,y,s','g 0x4cd1',"save $name-display-return.bin,0,800",'printf "DR pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4)','temp0=1','g 0x6858','temp0=0','printf "DF pc=%04X cycle=%016X u=%04X\n",pc,totalcycles,u')
   foreach($item in $insert){$commands.Insert($go,$item);$go++}
  }
 }}}}

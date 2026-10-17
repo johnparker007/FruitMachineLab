@@ -7,6 +7,61 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { if(args.Length>1 && !name.Contains(args[1],StringComparison.OrdinalIgnoreCase))return;action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Payout display timing rejects changed native bytes and literal encodings",()=>{
+    var m=new Machine{DataStackBase=0x600};AddersPayoutDisplayTiming.LoadRomData(m,evidence);Convert.FromHexString("34203184AEA16E91").CopyTo(m.Memory,0xF8);
+    var literal=new Instruction(0xA7AB,0x81D9,"vm_push_word_body_word",0x2F1,null);ulong cycles=AddersPayoutDisplayTiming.Cycles(literal,m,(_,_)=>throw new Exception("Unrelated alpha adapter used"));Equal(true,cycles>0);
+    try{AddersPayoutDisplayTiming.Cycles(literal with{Value=0x2F0},m,(_,_)=>1);throw new Exception("Changed literal accepted");}catch(InvalidDataException){}
+    m.Memory[0x794F]^=1;try{AddersPayoutDisplayTiming.Cycles(literal,m,(_,_)=>1);throw new Exception("Changed native bytes accepted");}catch(InvalidDataException){}
+    try{AddersPayoutDisplayTiming.Cycles(new(0xA812,0x773C,"vm_execute_alpha_stream",null,null),m,(_,_)=>0);throw new Exception("Zero alpha CPU budget accepted");}catch(NotSupportedException){}
+});
+Check("Payout composed timed debit reaches original6858 in32 MAME paths without injected CPU state",()=>{
+    using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","debit-timing.json")));int count=0;
+    foreach(var row in doc.RootElement.GetProperty("rows").EnumerateArray()){
+        var m=new Machine{DataStackBase=0x600};m.Control=new(m,0x800);Convert.FromHexString(row.GetProperty("before_hex").GetString()!).CopyTo(m.Memory,0);SkillCashData.LoadFeature(m);SkillCashData.LoadAlpha(m);AddersPayoutDisplay.LoadRomData(m,evidence);AddersPayoutDisplayTiming.LoadRomData(m,evidence);m.WriteWord(0x790,0x4C34);
+        var expected=row.GetProperty("display_vm");ulong AlphaCost(Instruction i,Machine _){var found=expected.EnumerateArray().Select((v,n)=>(v,n)).Single(p=>p.v.GetProperty("y").GetUInt16()==i.Site);return expected[found.n+1].GetProperty("cycle").GetUInt64()-found.v.GetProperty("cycle").GetUInt64();}
+        using var e=new AddersTimedPayoutDebitExecution(m,evidence,new(m),row.GetProperty("start_cycle").GetUInt64(),row.GetProperty("case").GetProperty("record").GetUInt16(),0x790,0x50,0x4C34,AlphaCost,()=>0x30,_=>throw new Exception("6858 executed before native comparison"));
+        while(e.Phase!="Outputs")e.AdvanceTo(e.NextEventCycle);Equal(row.GetProperty("end").GetProperty("cycle").GetUInt64(),e.Cycle);Equal((ushort)0x6858,e.Address);
+        byte[] ram=Convert.FromHexString(row.GetProperty("after_hex").GetString()!);foreach(int p in Enumerable.Range(0,0x700).Where(p=>p is not (>=0x5C0 and <=0x5FF)).Concat(Enumerable.Range(0x7C9,0x1F)))if(m.Memory[p]!=ram[p])throw new Exception($"Composed debit case{count} RAM{p:X4}: expected{ram[p]:X2}, actual{m.Memory[p]:X2}");count++;
+    }Equal(32,count);
+});
+Check("Payout composed timed debit owns outputs once and suspends inside display and pulse",()=>{
+    Machine Seed(){var m=new Machine{DataStackBase=0x600};m.Control=new(m,0x800);SkillCashData.LoadFeature(m);SkillCashData.LoadAlpha(m);AddersPayoutDisplay.LoadRomData(m,evidence);AddersPayoutDisplayTiming.LoadRomData(m,evidence);m.WriteWord(0x790,0x4C34);m.WriteWord(0x2FE,20);m.Memory[0x55]=0x1F;m.Memory[0x2C]=0x7A;return m;}
+    var a=Seed();var b=Seed();byte pa=0x30,pb=0x30;var wa=new List<byte>();var wb=new List<byte>();
+    using var baseline=new AddersTimedPayoutDebitExecution(a,evidence,new(a),0,0x4ACA,0x790,0,0x4C34,(_,_)=>1000,()=>pa,v=>{pa=v;wa.Add(v);});
+    using var shifted=new AddersTimedPayoutDebitExecution(b,evidence,new(b),0,0x4ACA,0x790,0,0x4C34,(_,_)=>1000,()=>pb,v=>{pb=v;wb.Add(v);});int na=0,nb=0;
+    void Advance(AddersTimedPayoutDebitExecution e,Machine m,ref int polls){if(e.Address==0x717C && (++polls&1)!=0)m.Memory[0x6E]++;e.AdvanceTo(e.NextEventCycle);}
+    while(!baseline.Completed)Advance(baseline,a,ref na);
+    while(shifted.Address!=0xA7B4)Advance(shifted,b,ref nb);byte[] before=b.Memory.ToArray();ulong due=shifted.NextEventCycle;shifted.AdvanceTo(shifted.Cycle);Equal(true,before.SequenceEqual(b.Memory));shifted.SuspendUntil(shifted.Cycle+233);Equal(due+233,shifted.NextEventCycle);
+    while(shifted.Address!=0x717E)Advance(shifted,b,ref nb);before=b.Memory.ToArray();shifted.SuspendUntil(shifted.Cycle+137);Equal(true,before.SequenceEqual(b.Memory));while(!shifted.Completed)Advance(shifted,b,ref nb);
+    Equal(baseline.Cycle+370,shifted.Cycle);Equal(true,a.Memory.SequenceEqual(b.Memory));Equal(true,wa.SequenceEqual(wb));Equal(2,wb.Count);Equal((byte)0x31,wb[0]);Equal((byte)0x30,wb[1]);Equal((ushort)18,b.ReadWord(0x2FE));Equal((byte)0,b.Memory[0x36B]);Equal((byte)0x7A,b.Memory[0x2C]);Equal((ushort)0x800,b.Control!.Pointer);
+});
+Check("Payout incremental display matches32 original VM paths with explicit alpha timing adapter",()=>{
+    using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","debit-timing.json")));int count=0;
+    foreach(var row in doc.RootElement.GetProperty("rows").EnumerateArray()){
+        var m=new Machine{DataStackBase=0x600};m.Control=new(m,0x800);var caller=m.Control;Convert.FromHexString(row.GetProperty("display_entry_hex").GetString()!).CopyTo(m.Memory,0);SkillCashData.LoadFeature(m);SkillCashData.LoadAlpha(m);AddersPayoutDisplay.LoadRomData(m,evidence);AddersPayoutDisplayTiming.LoadRomData(m,evidence);
+        var entry=row.GetProperty("display_entry");var expected=row.GetProperty("display_vm");int adapterCalls=0;var actual=new List<PayoutDisplayVmWord>();
+        ulong AlphaCost(Instruction i,Machine _){adapterCalls++;var matches=expected.EnumerateArray().Select((v,n)=>(v,n)).Where(p=>p.v.GetProperty("y").GetUInt16()==i.Site).ToArray();Equal(1,matches.Length);int n=matches[0].n;return expected[n+1].GetProperty("cycle").GetUInt64()-expected[n].GetProperty("cycle").GetUInt64();}
+        using var display=new AddersPayoutDisplayExecution(m,evidence,new(m),entry.GetProperty("cycle").GetUInt64(),new(entry.GetProperty("a").GetByte(),entry.GetProperty("b").GetByte(),entry.GetProperty("dp").GetByte(),entry.GetProperty("cc").GetByte(),0xA8F9,entry.GetProperty("y").GetUInt16(),0x600,entry.GetProperty("s").GetUInt16()),AlphaCost);
+        display.ObserveVmWord=actual.Add;int budget=10000;while(!display.Completed && --budget>0)display.AdvanceTo(display.NextEventCycle);Equal(true,display.Completed);Equal(expected.GetArrayLength()-1,actual.Count);
+        for(int n=0;n<actual.Count;n++){Equal(expected[n].GetProperty("y").GetUInt16(),actual[n].Instruction.Site);Equal(expected[n].GetProperty("token").GetUInt16(),actual[n].Instruction.Token);Equal(expected[n].GetProperty("cycle").GetUInt64(),actual[n].Started);Equal(expected[n+1].GetProperty("cycle").GetUInt64(),actual[n].Completed);Equal(expected[n].GetProperty("u").GetUInt16(),actual[n].DataPointer);Equal(expected[n].GetProperty("s").GetUInt16(),actual[n].StackPointer);}
+        Equal(actual.Count(v=>v.AlphaTimingAdapter),adapterCalls);Equal(row.GetProperty("display_return_cycle").GetUInt64(),display.Cycle);Equal((ushort)0x4CD1,display.Continuation);Equal(true,ReferenceEquals(caller,m.Control));Equal(0,m.Data.Count);
+        byte[] ram=Convert.FromHexString(row.GetProperty("display_return_hex").GetString()!);foreach(int p in Enumerable.Range(0,0x700).Where(p=>p is not (>=0x5C0 and <=0x5FF)).Concat(Enumerable.Range(0x7C9,0x1F)))if(m.Memory[p]!=ram[p])throw new Exception($"Incremental display case{count} RAM{p:X4}: expected{ram[p]:X2}, actual{m.Memory[p]:X2}");count++;
+    }Equal(32,count);
+});
+Check("Payout incremental display pause holds pending VM and alpha effects",()=>{
+    Machine Seed(){var m=new Machine{DataStackBase=0x600};m.Control=new(m,0x800);SkillCashData.LoadFeature(m);SkillCashData.LoadAlpha(m);AddersPayoutDisplay.LoadRomData(m,evidence);AddersPayoutDisplayTiming.LoadRomData(m,evidence);m.WriteWord(0x790,0x4CD1);m.WriteWord(0x2FC,123);m.Memory[0x55]=0x1F;return m;}
+    var a=Seed();var b=Seed();var expected=new List<PayoutDisplayVmWord>();var actual=new List<PayoutDisplayVmWord>();var sa=new List<byte>();var sb=new List<byte>();
+    using var baseline=new AddersPayoutDisplayExecution(a,evidence,new(a,sa.Add),0,new(1,2,0,0,0xA8F9,0x4ACA,0x600,0x790),(_,_)=>1000);
+    using var paused=new AddersPayoutDisplayExecution(b,evidence,new(b,sb.Add),0,new(1,2,0,0,0xA8F9,0x4ACA,0x600,0x790),(_,_)=>1000);baseline.ObserveVmWord=expected.Add;paused.ObserveVmWord=actual.Add;
+    while(!baseline.Completed)baseline.AdvanceTo(baseline.NextEventCycle);
+    while(paused.Address!=0xA7B4)paused.AdvanceTo(paused.NextEventCycle);byte[] before=b.Memory.ToArray();int sounds=sb.Count;ulong at=paused.Cycle;ulong due=paused.NextEventCycle;int split=actual.Count;
+    paused.AdvanceTo(at+500);Equal(due,paused.NextEventCycle);Equal(true,before.SequenceEqual(b.Memory));Equal(sounds,sb.Count);Equal(split,actual.Count);
+    // Pause means no AdvanceTo call: same virtual clock, frames, deadline and RAM.
+    Equal(at+500,paused.Cycle);Equal(true,before.SequenceEqual(b.Memory));
+    try{paused.SuspendUntil(paused.Cycle+99);throw new Exception("Partial VM word accepted instruction IRQ");}catch(InvalidOperationException){}
+    paused.AdvanceTo(due);while(paused.Phase!="ReturnDispatch")paused.AdvanceTo(paused.NextEventCycle);ulong finish=paused.NextEventCycle;paused.SuspendUntil(paused.Cycle+137);Equal(finish+137,paused.NextEventCycle);
+    while(!paused.Completed)paused.AdvanceTo(paused.NextEventCycle);Equal(baseline.Cycle+137,paused.Cycle);Equal(true,a.Memory.SequenceEqual(b.Memory));Equal(true,sa.SequenceEqual(sb));Equal(expected.Count,actual.Count);
+});
 Check("Native VM gateway stages entry and return against eight original MAME paths",()=>{
     using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","native-vm-gateway.json")));var catalog=doc.RootElement.GetProperty("catalog");int count=0;
     foreach(var row in doc.RootElement.GetProperty("rows").EnumerateArray()){
@@ -37,10 +92,10 @@ Check("Payout debit staged native spans match32 MAME paths around explicit displ
     using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","debit-timing.json")));var catalog=doc.RootElement.GetProperty("catalog");int count=0;
     foreach(var row in doc.RootElement.GetProperty("rows").EnumerateArray()) {
         var m=new Machine{DataStackBase=0x600};m.Control=new(m,0x800);Convert.FromHexString(row.GetProperty("before_hex").GetString()!).CopyTo(m.Memory,0);SkillCashData.LoadFeature(m);SkillCashData.LoadAlpha(m);AddersPayoutDisplay.LoadRomData(m,evidence);
-        ulong start=row.GetProperty("start_cycle").GetUInt64();var observed=new List<OutputScanInstruction>();using var vm=new AddersPayoutDebitExecution(m,start,row.GetProperty("case").GetProperty("record").GetUInt16(),0x600,0x50);vm.ObserveInstruction=observed.Add;
+        ulong start=row.GetProperty("start_cycle").GetUInt64();var observed=new List<OutputScanInstruction>();using var vm=new AddersPayoutDebitExecution(m,start,row.GetProperty("case").GetProperty("record").GetUInt16(),0x600,0x50,0x790);vm.ObserveInstruction=observed.Add;
         void Instructions(string phase){var expected=row.GetProperty(phase);Equal(expected.GetArrayLength(),observed.Count);for(int n=0;n<observed.Count;n++){var reference=catalog[expected[n][0].GetInt32()];if(reference.GetProperty("pc").GetUInt16()!=observed[n].Address || start+expected[n][1].GetUInt64()!=observed[n].Started)throw new Exception($"Debit case{count} {phase} instruction{n}: expected{reference.GetProperty("pc").GetUInt16():X4}@{expected[n][1]}, actual{observed[n].Address:X4}@{observed[n].Started-start}");Equal(true,reference.GetProperty("context_hex").GetString()!.StartsWith(observed[n].Bytes,StringComparison.Ordinal));}observed.Clear();}
         void Ram(string key,bool display){byte[] ram=Convert.FromHexString(row.GetProperty(key).GetString()!);foreach(int p in Enumerable.Range(0,0x700).Where(p=>!display || p is not (>=0xF0 and <=0xFF) and not (>=0x5C0 and <=0x5FF)) .Concat(Enumerable.Range(0x7C9,0x1F)))if(m.Memory[p]!=ram[p])throw new Exception($"Debit case{count} {key} RAM{p:X4}: expected{ram[p]:X2}, actual{m.Memory[p]:X2}");}
-        while(!vm.WaitingForDisplay)vm.AdvanceTo(vm.NextEventCycle);Instructions("prefix");Equal(row.GetProperty("display_entry").GetProperty("cycle").GetUInt64(),vm.Cycle);Equal((ushort)0xA8F9,vm.DisplayBody);Ram("display_entry_hex",false);
+        while(!vm.WaitingForDisplay)vm.AdvanceTo(vm.NextEventCycle);Instructions("prefix");Equal(row.GetProperty("display_entry").GetProperty("cycle").GetUInt64(),vm.Cycle);Equal((ushort)0xA8F9,vm.DisplayBody);var d=row.GetProperty("display_entry");Equal(new NativeVmRegisters(d.GetProperty("a").GetByte(),d.GetProperty("b").GetByte(),d.GetProperty("dp").GetByte(),d.GetProperty("cc").GetByte(),d.GetProperty("x").GetUInt16(),d.GetProperty("y").GetUInt16(),d.GetProperty("u").GetUInt16(),d.GetProperty("s").GetUInt16()),vm.DisplayRegisters);Ram("display_entry_hex",false);
         AddersPayoutDisplay.Refresh(m,evidence,new(m));Ram("display_return_hex",true);
         vm.ReturnFromDisplay(row.GetProperty("display_return_cycle").GetUInt64(),m.DataPointer,0x4CD1);while(!vm.Completed)vm.AdvanceTo(vm.NextEventCycle);Instructions("suffix");Equal(row.GetProperty("end").GetProperty("cycle").GetUInt64(),vm.Cycle);Ram("after_hex",true);count++;
     }Equal(32,count);

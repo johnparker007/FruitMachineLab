@@ -2,6 +2,8 @@ temp0=0
 bpset 76bf,temp0==1
 bpset 4cd1,temp0==0
 bpset 6858
+bpset fc,temp0==0,{printf "DV y=%04X token=%04X cycle=%016X u=%04X top=%04X second=%04X s=%04X\n",y,w@y,totalcycles,u,w@u,w@(u+2),s;go}
+bpset 76f6,temp0==0,{printf "DG cycle=%016X s=%04X u=%04X\n",totalcycles,s,u;go}
 bpset 4CC1,temp0==1,{printf "DI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
 bpset 4CC3,temp0==1,{printf "DI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
 bpset 4CC5,temp0==1,{printf "DI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
@@ -179,7 +181,7 @@ temp0=1
 g 0x76bf
 temp0=0
 save debit-0-display-entry.bin,0,800
-printf "DX pc=%04X cycle=%016X x=%04X u=%04X\n",pc,totalcycles,x,u
+printf "DX pc=%04X cycle=%016X x=%04X u=%04X a=%02X b=%02X dp=%02X cc=%02X y=%04X s=%04X\n",pc,totalcycles,x,u,a,b,dp,cc,y,s
 g 0x4cd1
 save debit-0-display-return.bin,0,800
 printf "DR pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4)
@@ -232,7 +234,7 @@ temp0=1
 g 0x76bf
 temp0=0
 save debit-1-display-entry.bin,0,800
-printf "DX pc=%04X cycle=%016X x=%04X u=%04X\n",pc,totalcycles,x,u
+printf "DX pc=%04X cycle=%016X x=%04X u=%04X a=%02X b=%02X dp=%02X cc=%02X y=%04X s=%04X\n",pc,totalcycles,x,u,a,b,dp,cc,y,s
 g 0x4cd1
 save debit-1-display-return.bin,0,800
 printf "DR pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4)
@@ -285,7 +287,7 @@ temp0=1
 g 0x76bf
 temp0=0
 save debit-2-display-entry.bin,0,800
-printf "DX pc=%04X cycle=%016X x=%04X u=%04X\n",pc,totalcycles,x,u
+printf "DX pc=%04X cycle=%016X x=%04X u=%04X a=%02X b=%02X dp=%02X cc=%02X y=%04X s=%04X\n",pc,totalcycles,x,u,a,b,dp,cc,y,s
 g 0x4cd1
 save debit-2-display-return.bin,0,800
 printf "DR pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4)
@@ -338,7 +340,7 @@ temp0=1
 g 0x76bf
 temp0=0
 save debit-3-display-entry.bin,0,800
-printf "DX pc=%04X cycle=%016X x=%04X u=%04X\n",pc,totalcycles,x,u
+printf "DX pc=%04X cycle=%016X x=%04X u=%04X a=%02X b=%02X dp=%02X cc=%02X y=%04X s=%04X\n",pc,totalcycles,x,u,a,b,dp,cc,y,s
 g 0x4cd1
 save debit-3-display-return.bin,0,800
 printf "DR pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4)
@@ -391,7 +393,7 @@ temp0=1
 g 0x76bf
 temp0=0
 save debit-4-display-entry.bin,0,800
-printf "DX pc=%04X cycle=%016X x=%04X u=%04X\n",pc,totalcycles,x,u
+printf "DX pc=%04X cycle=%016X x=%04X u=%04X a=%02X b=%02X dp=%02X cc=%02X y=%04X s=%04X\n",pc,totalcycles,x,u,a,b,dp,cc,y,s
 g 0x4cd1
 save debit-4-display-return.bin,0,800
 printf "DR pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4)
@@ -444,7 +446,7 @@ temp0=1
 g 0x76bf
 temp0=0
 save debit-5-display-entry.bin,0,800
-printf "DX pc=%04X cycle=%016X x=%04X u=%04X\n",pc,totalcycles,x,u
+printf "DX pc=%04X cycle=%016X x=%04X u=%04X a=%02X b=%02X dp=%02X cc=%02X y=%04X s=%04X\n",pc,totalcycles,x,u,a,b,dp,cc,y,s
 g 0x4cd1
 save debit-5-display-return.bin,0,800
 printf "DR pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4)
@@ -497,7 +499,7 @@ temp0=1
 g 0x76bf
 temp0=0
 save debit-6-display-entry.bin,0,800
-printf "DX pc=%04X cycle=%016X x=%04X u=%04X\n",pc,totalcycles,x,u
+printf "DX pc=%04X cycle=%016X x=%04X u=%04X a=%02X b=%02X dp=%02X cc=%02X y=%04X s=%04X\n",pc,totalcycles,x,u,a,b,dp,cc,y,s
 g 0x4cd1
 save debit-6-display-return.bin,0,800
 printf "DR pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4)
@@ -550,7 +552,7 @@ temp0=1
 g 0x76bf
 temp0=0
 save debit-7-display-entry.bin,0,800
-printf "DX pc=%04X cycle=%016X x=%04X u=%04X\n",pc,totalcycles,x,u
+printf "DX pc=%04X cycle=%016X x=%04X u=%04X a=%02X b=%02X dp=%02X cc=%02X y=%04X s=%04X\n",pc,totalcycles,x,u,a,b,dp,cc,y,s
 g 0x4cd1
 save debit-7-display-return.bin,0,800
 printf "DR pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4)
@@ -603,7 +605,7 @@ temp0=1
 g 0x76bf
 temp0=0
 save debit-8-display-entry.bin,0,800
-printf "DX pc=%04X cycle=%016X x=%04X u=%04X\n",pc,totalcycles,x,u
+printf "DX pc=%04X cycle=%016X x=%04X u=%04X a=%02X b=%02X dp=%02X cc=%02X y=%04X s=%04X\n",pc,totalcycles,x,u,a,b,dp,cc,y,s
 g 0x4cd1
 save debit-8-display-return.bin,0,800
 printf "DR pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4)
@@ -656,7 +658,7 @@ temp0=1
 g 0x76bf
 temp0=0
 save debit-9-display-entry.bin,0,800
-printf "DX pc=%04X cycle=%016X x=%04X u=%04X\n",pc,totalcycles,x,u
+printf "DX pc=%04X cycle=%016X x=%04X u=%04X a=%02X b=%02X dp=%02X cc=%02X y=%04X s=%04X\n",pc,totalcycles,x,u,a,b,dp,cc,y,s
 g 0x4cd1
 save debit-9-display-return.bin,0,800
 printf "DR pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4)
@@ -709,7 +711,7 @@ temp0=1
 g 0x76bf
 temp0=0
 save debit-10-display-entry.bin,0,800
-printf "DX pc=%04X cycle=%016X x=%04X u=%04X\n",pc,totalcycles,x,u
+printf "DX pc=%04X cycle=%016X x=%04X u=%04X a=%02X b=%02X dp=%02X cc=%02X y=%04X s=%04X\n",pc,totalcycles,x,u,a,b,dp,cc,y,s
 g 0x4cd1
 save debit-10-display-return.bin,0,800
 printf "DR pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4)
@@ -762,7 +764,7 @@ temp0=1
 g 0x76bf
 temp0=0
 save debit-11-display-entry.bin,0,800
-printf "DX pc=%04X cycle=%016X x=%04X u=%04X\n",pc,totalcycles,x,u
+printf "DX pc=%04X cycle=%016X x=%04X u=%04X a=%02X b=%02X dp=%02X cc=%02X y=%04X s=%04X\n",pc,totalcycles,x,u,a,b,dp,cc,y,s
 g 0x4cd1
 save debit-11-display-return.bin,0,800
 printf "DR pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4)
@@ -815,7 +817,7 @@ temp0=1
 g 0x76bf
 temp0=0
 save debit-12-display-entry.bin,0,800
-printf "DX pc=%04X cycle=%016X x=%04X u=%04X\n",pc,totalcycles,x,u
+printf "DX pc=%04X cycle=%016X x=%04X u=%04X a=%02X b=%02X dp=%02X cc=%02X y=%04X s=%04X\n",pc,totalcycles,x,u,a,b,dp,cc,y,s
 g 0x4cd1
 save debit-12-display-return.bin,0,800
 printf "DR pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4)
@@ -868,7 +870,7 @@ temp0=1
 g 0x76bf
 temp0=0
 save debit-13-display-entry.bin,0,800
-printf "DX pc=%04X cycle=%016X x=%04X u=%04X\n",pc,totalcycles,x,u
+printf "DX pc=%04X cycle=%016X x=%04X u=%04X a=%02X b=%02X dp=%02X cc=%02X y=%04X s=%04X\n",pc,totalcycles,x,u,a,b,dp,cc,y,s
 g 0x4cd1
 save debit-13-display-return.bin,0,800
 printf "DR pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4)
@@ -921,7 +923,7 @@ temp0=1
 g 0x76bf
 temp0=0
 save debit-14-display-entry.bin,0,800
-printf "DX pc=%04X cycle=%016X x=%04X u=%04X\n",pc,totalcycles,x,u
+printf "DX pc=%04X cycle=%016X x=%04X u=%04X a=%02X b=%02X dp=%02X cc=%02X y=%04X s=%04X\n",pc,totalcycles,x,u,a,b,dp,cc,y,s
 g 0x4cd1
 save debit-14-display-return.bin,0,800
 printf "DR pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4)
@@ -974,7 +976,7 @@ temp0=1
 g 0x76bf
 temp0=0
 save debit-15-display-entry.bin,0,800
-printf "DX pc=%04X cycle=%016X x=%04X u=%04X\n",pc,totalcycles,x,u
+printf "DX pc=%04X cycle=%016X x=%04X u=%04X a=%02X b=%02X dp=%02X cc=%02X y=%04X s=%04X\n",pc,totalcycles,x,u,a,b,dp,cc,y,s
 g 0x4cd1
 save debit-15-display-return.bin,0,800
 printf "DR pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4)
@@ -1027,7 +1029,7 @@ temp0=1
 g 0x76bf
 temp0=0
 save debit-16-display-entry.bin,0,800
-printf "DX pc=%04X cycle=%016X x=%04X u=%04X\n",pc,totalcycles,x,u
+printf "DX pc=%04X cycle=%016X x=%04X u=%04X a=%02X b=%02X dp=%02X cc=%02X y=%04X s=%04X\n",pc,totalcycles,x,u,a,b,dp,cc,y,s
 g 0x4cd1
 save debit-16-display-return.bin,0,800
 printf "DR pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4)
@@ -1080,7 +1082,7 @@ temp0=1
 g 0x76bf
 temp0=0
 save debit-17-display-entry.bin,0,800
-printf "DX pc=%04X cycle=%016X x=%04X u=%04X\n",pc,totalcycles,x,u
+printf "DX pc=%04X cycle=%016X x=%04X u=%04X a=%02X b=%02X dp=%02X cc=%02X y=%04X s=%04X\n",pc,totalcycles,x,u,a,b,dp,cc,y,s
 g 0x4cd1
 save debit-17-display-return.bin,0,800
 printf "DR pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4)
@@ -1133,7 +1135,7 @@ temp0=1
 g 0x76bf
 temp0=0
 save debit-18-display-entry.bin,0,800
-printf "DX pc=%04X cycle=%016X x=%04X u=%04X\n",pc,totalcycles,x,u
+printf "DX pc=%04X cycle=%016X x=%04X u=%04X a=%02X b=%02X dp=%02X cc=%02X y=%04X s=%04X\n",pc,totalcycles,x,u,a,b,dp,cc,y,s
 g 0x4cd1
 save debit-18-display-return.bin,0,800
 printf "DR pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4)
@@ -1186,7 +1188,7 @@ temp0=1
 g 0x76bf
 temp0=0
 save debit-19-display-entry.bin,0,800
-printf "DX pc=%04X cycle=%016X x=%04X u=%04X\n",pc,totalcycles,x,u
+printf "DX pc=%04X cycle=%016X x=%04X u=%04X a=%02X b=%02X dp=%02X cc=%02X y=%04X s=%04X\n",pc,totalcycles,x,u,a,b,dp,cc,y,s
 g 0x4cd1
 save debit-19-display-return.bin,0,800
 printf "DR pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4)
@@ -1239,7 +1241,7 @@ temp0=1
 g 0x76bf
 temp0=0
 save debit-20-display-entry.bin,0,800
-printf "DX pc=%04X cycle=%016X x=%04X u=%04X\n",pc,totalcycles,x,u
+printf "DX pc=%04X cycle=%016X x=%04X u=%04X a=%02X b=%02X dp=%02X cc=%02X y=%04X s=%04X\n",pc,totalcycles,x,u,a,b,dp,cc,y,s
 g 0x4cd1
 save debit-20-display-return.bin,0,800
 printf "DR pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4)
@@ -1292,7 +1294,7 @@ temp0=1
 g 0x76bf
 temp0=0
 save debit-21-display-entry.bin,0,800
-printf "DX pc=%04X cycle=%016X x=%04X u=%04X\n",pc,totalcycles,x,u
+printf "DX pc=%04X cycle=%016X x=%04X u=%04X a=%02X b=%02X dp=%02X cc=%02X y=%04X s=%04X\n",pc,totalcycles,x,u,a,b,dp,cc,y,s
 g 0x4cd1
 save debit-21-display-return.bin,0,800
 printf "DR pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4)
@@ -1345,7 +1347,7 @@ temp0=1
 g 0x76bf
 temp0=0
 save debit-22-display-entry.bin,0,800
-printf "DX pc=%04X cycle=%016X x=%04X u=%04X\n",pc,totalcycles,x,u
+printf "DX pc=%04X cycle=%016X x=%04X u=%04X a=%02X b=%02X dp=%02X cc=%02X y=%04X s=%04X\n",pc,totalcycles,x,u,a,b,dp,cc,y,s
 g 0x4cd1
 save debit-22-display-return.bin,0,800
 printf "DR pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4)
@@ -1398,7 +1400,7 @@ temp0=1
 g 0x76bf
 temp0=0
 save debit-23-display-entry.bin,0,800
-printf "DX pc=%04X cycle=%016X x=%04X u=%04X\n",pc,totalcycles,x,u
+printf "DX pc=%04X cycle=%016X x=%04X u=%04X a=%02X b=%02X dp=%02X cc=%02X y=%04X s=%04X\n",pc,totalcycles,x,u,a,b,dp,cc,y,s
 g 0x4cd1
 save debit-23-display-return.bin,0,800
 printf "DR pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4)
@@ -1451,7 +1453,7 @@ temp0=1
 g 0x76bf
 temp0=0
 save debit-24-display-entry.bin,0,800
-printf "DX pc=%04X cycle=%016X x=%04X u=%04X\n",pc,totalcycles,x,u
+printf "DX pc=%04X cycle=%016X x=%04X u=%04X a=%02X b=%02X dp=%02X cc=%02X y=%04X s=%04X\n",pc,totalcycles,x,u,a,b,dp,cc,y,s
 g 0x4cd1
 save debit-24-display-return.bin,0,800
 printf "DR pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4)
@@ -1504,7 +1506,7 @@ temp0=1
 g 0x76bf
 temp0=0
 save debit-25-display-entry.bin,0,800
-printf "DX pc=%04X cycle=%016X x=%04X u=%04X\n",pc,totalcycles,x,u
+printf "DX pc=%04X cycle=%016X x=%04X u=%04X a=%02X b=%02X dp=%02X cc=%02X y=%04X s=%04X\n",pc,totalcycles,x,u,a,b,dp,cc,y,s
 g 0x4cd1
 save debit-25-display-return.bin,0,800
 printf "DR pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4)
@@ -1557,7 +1559,7 @@ temp0=1
 g 0x76bf
 temp0=0
 save debit-26-display-entry.bin,0,800
-printf "DX pc=%04X cycle=%016X x=%04X u=%04X\n",pc,totalcycles,x,u
+printf "DX pc=%04X cycle=%016X x=%04X u=%04X a=%02X b=%02X dp=%02X cc=%02X y=%04X s=%04X\n",pc,totalcycles,x,u,a,b,dp,cc,y,s
 g 0x4cd1
 save debit-26-display-return.bin,0,800
 printf "DR pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4)
@@ -1610,7 +1612,7 @@ temp0=1
 g 0x76bf
 temp0=0
 save debit-27-display-entry.bin,0,800
-printf "DX pc=%04X cycle=%016X x=%04X u=%04X\n",pc,totalcycles,x,u
+printf "DX pc=%04X cycle=%016X x=%04X u=%04X a=%02X b=%02X dp=%02X cc=%02X y=%04X s=%04X\n",pc,totalcycles,x,u,a,b,dp,cc,y,s
 g 0x4cd1
 save debit-27-display-return.bin,0,800
 printf "DR pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4)
@@ -1663,7 +1665,7 @@ temp0=1
 g 0x76bf
 temp0=0
 save debit-28-display-entry.bin,0,800
-printf "DX pc=%04X cycle=%016X x=%04X u=%04X\n",pc,totalcycles,x,u
+printf "DX pc=%04X cycle=%016X x=%04X u=%04X a=%02X b=%02X dp=%02X cc=%02X y=%04X s=%04X\n",pc,totalcycles,x,u,a,b,dp,cc,y,s
 g 0x4cd1
 save debit-28-display-return.bin,0,800
 printf "DR pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4)
@@ -1716,7 +1718,7 @@ temp0=1
 g 0x76bf
 temp0=0
 save debit-29-display-entry.bin,0,800
-printf "DX pc=%04X cycle=%016X x=%04X u=%04X\n",pc,totalcycles,x,u
+printf "DX pc=%04X cycle=%016X x=%04X u=%04X a=%02X b=%02X dp=%02X cc=%02X y=%04X s=%04X\n",pc,totalcycles,x,u,a,b,dp,cc,y,s
 g 0x4cd1
 save debit-29-display-return.bin,0,800
 printf "DR pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4)
@@ -1769,7 +1771,7 @@ temp0=1
 g 0x76bf
 temp0=0
 save debit-30-display-entry.bin,0,800
-printf "DX pc=%04X cycle=%016X x=%04X u=%04X\n",pc,totalcycles,x,u
+printf "DX pc=%04X cycle=%016X x=%04X u=%04X a=%02X b=%02X dp=%02X cc=%02X y=%04X s=%04X\n",pc,totalcycles,x,u,a,b,dp,cc,y,s
 g 0x4cd1
 save debit-30-display-return.bin,0,800
 printf "DR pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4)
@@ -1822,7 +1824,7 @@ temp0=1
 g 0x76bf
 temp0=0
 save debit-31-display-entry.bin,0,800
-printf "DX pc=%04X cycle=%016X x=%04X u=%04X\n",pc,totalcycles,x,u
+printf "DX pc=%04X cycle=%016X x=%04X u=%04X a=%02X b=%02X dp=%02X cc=%02X y=%04X s=%04X\n",pc,totalcycles,x,u,a,b,dp,cc,y,s
 g 0x4cd1
 save debit-31-display-return.bin,0,800
 printf "DR pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4)

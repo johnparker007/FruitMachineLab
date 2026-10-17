@@ -211,8 +211,8 @@
   },
   {
     "path": "docs/recovery/PAYOUT-DEBIT-TIMING-PASS.md",
-    "bytes": 7364,
-    "sha256": "51DE4D25487474C026F4179FA45BE13A324E88C56DCD5BF28ECED3383EACFC2A"
+    "bytes": 13294,
+    "sha256": "B2CAE4803DA33327651C3F3D26CED0F3AD1D3BAD7DD8392F3D01F2AF20BC01D6"
   },
   {
     "path": "docs/recovery/PAYOUT-OUTPUT-SERVICE-TIMING-PASS.md",
@@ -346,23 +346,28 @@
   },
   {
     "path": "evidence/mpu4/collection/debit-matrix-debugger.cmd",
-    "bytes": 55693,
-    "sha256": "AA03BF494E46488190E1A2E409BD9D1ECA4A8171F589B012F25BD7155F2B403B"
+    "bytes": 57768,
+    "sha256": "BD5BB43D97ADDC7932941AD27EF3B5856E62C41907F54D621870D9787DF8D470"
   },
   {
     "path": "evidence/mpu4/collection/debit-matrix.json",
     "bytes": 269719,
-    "sha256": "755646B2FA6DA316FB13EB1C12EEB8D8BA74E0AB4876B3B48BEC699A74F36DE4"
+    "sha256": "4933BD1479243123EF358758FBE6FB6268BC65C911876520141B7B803DE4EDDF"
   },
   {
     "path": "evidence/mpu4/collection/debit-timing-debugger.cmd",
-    "bytes": 55693,
-    "sha256": "AA03BF494E46488190E1A2E409BD9D1ECA4A8171F589B012F25BD7155F2B403B"
+    "bytes": 57768,
+    "sha256": "BD5BB43D97ADDC7932941AD27EF3B5856E62C41907F54D621870D9787DF8D470"
   },
   {
     "path": "evidence/mpu4/collection/debit-timing.json",
-    "bytes": 951319,
-    "sha256": "EE2A89E87B92D2A86ED7BAEFDF8424BE28A456E74EC38449078A47256AE360AA"
+    "bytes": 1164243,
+    "sha256": "A322501A25FB147CBCB253C7D101E31EAAF15219227D8FE1F2176FC85D791CDB"
+  },
+  {
+    "path": "evidence/mpu4/collection/display-vm-data.json",
+    "bytes": 2924,
+    "sha256": "899AB973D632EEC675D537330AD954DF3AAFDD8D1570E041C498EA11803D9202"
   },
   {
     "path": "evidence/mpu4/collection/native-vm-gateway-debugger.cmd",

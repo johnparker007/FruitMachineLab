@@ -12,10 +12,12 @@ public sealed class AddersPayoutDebitExecution : IDisposable
     private sealed record Display:Work;
     private readonly Machine m;
     private readonly ushort record,u;
+    private readonly ushort? nativeStack;
     private readonly IEnumerator<Work> steps;
     private Step? pending;
     private Mpu4NvramExecution? nvram;
     private byte a,b,mask;
+    private byte cc;
     private ushort x;
     private bool zero,negative,carry,lower;
     private ulong next;
@@ -26,19 +28,22 @@ public sealed class AddersPayoutDebitExecution : IDisposable
     public string? Fault {get;private set;}
     public ushort Address=>nvram?.Address ?? (WaitingForDisplay ? (ushort)0x76BF : pending?.Address ?? 0x6858);
     public ushort DisplayBody=>x;
+    public NativeVmRegisters DisplayRegisters=>WaitingForDisplay && nativeStack.HasValue
+        ? new(a,b,0,cc,x,record,u,Cell.Subtract(nativeStack.Value,2))
+        : throw new InvalidOperationException("Display registers require its handoff and an explicit native S owner");
     public bool IrqMasked=>nvram?.IrqMasked ?? (mask&0x10)!=0;
     public Action<OutputScanInstruction>? ObserveInstruction {get;set;}
     public Action<OutputScanAccess>? ObserveAccess {get;set;}
-    public AddersPayoutDebitExecution(Machine machine,ulong start,ushort recordAddress,ushort dataPointer,byte initialInterruptMask)
+    public AddersPayoutDebitExecution(Machine machine,ulong start,ushort recordAddress,ushort dataPointer,byte initialInterruptMask,ushort? nativeStackPointer=null)
     {
-        _=AddersPayoutRecord.Read(machine,recordAddress);m=machine;record=recordAddress;u=dataPointer;Cycle=start;mask=(byte)(initialInterruptMask&0x50);
+        _=AddersPayoutRecord.Read(machine,recordAddress);m=machine;record=recordAddress;u=dataPointer;nativeStack=nativeStackPointer;Cycle=start;cc=initialInterruptMask;mask=(byte)(initialInterruptMask&0x50);
         steps=Run().GetEnumerator();Next();
     }
     private static ulong Cost(Step s)=>(ulong)M6809InstructionTiming.Decode(Convert.FromHexString(s.Bytes),s.Branch).Cycles;
     private void Next()
     {
         if(!steps.MoveNext()){Completed=true;pending=null;next=ulong.MaxValue;return;}
-        if(steps.Current is Nvram){pending=null;nvram=new(m,Cycle,u,mask,0x4CCB);nvram.ObserveInstruction=i=>ObserveInstruction?.Invoke(i);nvram.ObserveAccess=v=>ObserveAccess?.Invoke(v);return;}
+        if(steps.Current is Nvram){pending=null;nvram=new(m,Cycle,u,cc,0x4CCB);nvram.ObserveInstruction=i=>ObserveInstruction?.Invoke(i);nvram.ObserveAccess=v=>ObserveAccess?.Invoke(v);return;}
         if(steps.Current is Display){pending=null;WaitingForDisplay=true;next=ulong.MaxValue;return;}
         pending=(Step)steps.Current;next=checked(Cycle+Cost(pending));
     }
@@ -48,7 +53,7 @@ public sealed class AddersPayoutDebitExecution : IDisposable
         if(Fault is not null)throw new InvalidOperationException(Fault);
         if(WaitingForDisplay)throw new InvalidOperationException("Native76BF display owns execution until ReturnFromDisplay");
         try{while(!Completed && !WaitingForDisplay && NextEventCycle<=cycle){
-            if(nvram is not null){nvram.AdvanceTo(nvram.NextEventCycle);Cycle=nvram.Cycle;if(!nvram.Completed)continue;nvram.Dispose();nvram=null;Next();continue;}
+            if(nvram is not null){nvram.AdvanceTo(nvram.NextEventCycle);Cycle=nvram.Cycle;if(!nvram.Completed)continue;cc=nvram.ReturnConditionCode;nvram.Dispose();nvram=null;Next();continue;}
             var s=pending!;ulong from=next-Cost(s);Cycle=next;s.Effect?.Invoke();ObserveInstruction?.Invoke(new(s.Address,s.Bytes,from,Cycle));Next();
         }
         // Do not consume caller time beyond a newly reached owner handoff.
@@ -77,10 +82,11 @@ public sealed class AddersPayoutDebitExecution : IDisposable
     {
         yield return new Step(0x4CBE,"ECB805",()=>D=m.ReadWord(m.ReadWord(Cell.Add(record,5))));
         yield return new Step(0x4CC1,"E023",()=>{byte v=m.Memory[record+3];carry=b<v;b=unchecked((byte)(b-v));});
-        yield return new Step(0x4CC3,"8200",()=>a=unchecked((byte)(a-(carry ? 1 : 0))));
+        yield return new Step(0x4CC3,"8200",()=>{int borrow=carry ? 1 : 0;bool c=a<borrow;a=unchecked((byte)(a-borrow));cc=(byte)((cc&0xF0)|(c ? 1 : 0));});
         yield return new Step(0x4CC5,"EDB805",()=>Word(m.ReadWord(Cell.Add(record,5)),D));
         yield return new Step(0x4CC8,"BD6E06");yield return new Nvram();
-        yield return new Step(0x4CCB,"BE7D36",()=>x=m.ReadWord(0x7D36));yield return new Step(0x4CCE,"BD76BF");yield return new Display();
+        yield return new Step(0x4CCB,"BE7D36",()=>{x=m.ReadWord(0x7D36);cc=(byte)((cc&0xF1)|((short)x<0 ? 8 : 0)|(x==0 ? 4 : 0));});
+        yield return new Step(0x4CCE,"BD76BF",()=>{if(nativeStack is ushort s)Word(Cell.Subtract(s,2),0x4CD1);});yield return new Display();
         yield return new Step(0x4CD1,"E623",()=>b=m.Memory[record+3]);yield return new Step(0x4CD3,"AE27",()=>{x=m.ReadWord(Cell.Add(record,7));zero=x==0;});
         yield return new Step(0x4CD5,"2703");if(!zero){yield return new Step(0x4CD7,"BD57F7");foreach(var w in Account())yield return w;}
         yield return new Step(0x4CDA,"AE29",()=>x=m.ReadWord(Cell.Add(record,9)));yield return new Step(0x4CDC,"BD57F7");foreach(var w in Account())yield return w;

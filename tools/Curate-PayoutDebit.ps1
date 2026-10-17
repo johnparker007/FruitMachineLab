@@ -33,10 +33,12 @@ Write-Output 'Curated32 native payout debits plus exact ROM data/instruction ran
 if((Get-Content "$RunDirectory/provenance.json" -Raw|ConvertFrom-Json).instruction_timing){
  $catalog=[Collections.Generic.List[object]]::new();$indexes=@{};$timed=[Collections.Generic.List[object]]::new();$active=$null;$phase='';$caseIndex=0
  foreach($line in $log -split '\r?\n'){
-  if($line -notmatch '^D([SIXRF]) '){continue};$kind=$Matches[1];$fields=@{}
+  if($line -notmatch '^D([SIXRFVG]) '){continue};$kind=$Matches[1];$fields=@{}
   foreach($match in [regex]::Matches($line,'([a-z0-9_]+)=([0-9A-F]+)')){$fields[$match.Groups[1].Value]=[Convert]::ToUInt64($match.Groups[2].Value,16)}
-  if($kind -eq 'S'){if($null -ne $active){throw 'Unfinished timed debit'};$active=[ordered]@{case=$rows[$caseIndex].case;before_hex=$rows[$caseIndex].before_hex;after_hex=$rows[$caseIndex].after_hex;start_cycle=$fields.cycle;prefix=[Collections.Generic.List[object]]::new();suffix=[Collections.Generic.List[object]]::new()};$phase='prefix'}
+  if($kind -eq 'S'){if($null -ne $active){throw 'Unfinished timed debit'};$active=[ordered]@{case=$rows[$caseIndex].case;before_hex=$rows[$caseIndex].before_hex;after_hex=$rows[$caseIndex].after_hex;start_cycle=$fields.cycle;prefix=[Collections.Generic.List[object]]::new();suffix=[Collections.Generic.List[object]]::new();display_vm=[Collections.Generic.List[object]]::new()};$phase='prefix'}
   if($null -eq $active){throw 'Unexpected timing marker'}
+  if($kind -eq 'V'){if($phase -ne 'display'){throw 'VM outside display owner'};$active.display_vm.Add($fields);continue}
+  if($kind -eq 'G'){if($phase -ne 'display'){throw 'Gateway return outside display owner'};$active['gateway_return_cycle']=$fields.cycle;continue}
   if($kind -eq 'X'){if($fields.pc -ne 0x76BF -or $fields.u -ne 0x600 -or $fields.x -ne 0xA8F9){throw 'Wrong display entry'};$active['display_entry']=$fields;$phase='display';continue}
   if($kind -eq 'R'){if($phase -ne 'display' -or $fields.pc -ne 0x4CD1){throw 'Wrong display return'};$active['display_return_cycle']=$fields.cycle;$phase='suffix'}
   if($kind -in @('S','I','R')){
@@ -48,11 +50,16 @@ if((Get-Content "$RunDirectory/provenance.json" -Raw|ConvertFrom-Json).instructi
   }elseif($kind -eq 'F'){
    if($phase -ne 'suffix' -or $fields.pc -ne 0x6858 -or $fields.u -ne 0x600){throw 'Wrong timed debit exit'}
    foreach($side in @('entry','return')){$ram=[IO.File]::ReadAllBytes("$RunDirectory/$($active.case.id)-display-$side.bin");if($ram.Length -ne 2048){throw 'Missing display boundary RAM'};$active["display_${side}_hex"]=[Convert]::ToHexString($ram)}
-   $active['end']=$fields;$active.prefix=@($active.prefix.ToArray());$active.suffix=@($active.suffix.ToArray());$timed.Add($active);$active=$null;$caseIndex++
+   $active['end']=$fields;$active.prefix=@($active.prefix.ToArray());$active.suffix=@($active.suffix.ToArray());$active.display_vm=@($active.display_vm.ToArray());$timed.Add($active);$active=$null;$caseIndex++
   }
  }
  if($null -ne $active -or $timed.Count -ne 32){throw 'Incomplete timed debit matrix'}
  [ordered]@{classification='32 synthetic original4CBE paths with timed native spans around the real76BF/A8F9 display owner. Display duration is verification-only, not a runtime pacing input.';catalog=@($catalog.ToArray());rows=@($timed.ToArray());capture=(Get-Content "$RunDirectory/provenance.json" -Raw|ConvertFrom-Json);raw_sha256=(Get-FileHash "$RunDirectory/debug.log").Hash}|ConvertTo-Json -Depth 9|Set-Content "$target/debit-timing.json"
  Copy-Item "$RunDirectory/debugger.cmd" "$target/debit-timing-debugger.cmd"
+ $preserved=@(foreach($span in @(@(0x7574,10),@(0x765F,6),@(0x767F,19),@(0x786B,0x1D),@(0x790D,0x18),@(0x792F,0x24),@(0x7946,0xF),@(0x796E,11),@(0x7979,11),@(0x7982,10),@(0x7A3F,0x14),@(0x8414,0x10),@(0xA7A9,0x166))){[ordered]@{address=$span[0];bytes_hex=[Convert]::ToHexString($rom[$span[0]..($span[0]+$span[1]-1)])}})
+ # Exact token headers used by the display closure, including shared constants.
+ $tokens=@(0x81B0,0x81D9,0x82CE,0x82D6,0x8222,0x82D2,0x8226,0x8306,0x84D4,0x84E0)
+ foreach($at in $tokens){$preserved+=,[ordered]@{address=$at;bytes_hex=[Convert]::ToHexString($rom[$at..($at+5)])}}
+ [ordered]@{rom_sha1=(Get-FileHash $RomPath -Algorithm SHA1).Hash;scope='Selected display VM native handlers, headers, complete script/inline data span. Exact bytes, not lossless symbolic assembly.';regions=$preserved}|ConvertTo-Json -Depth 5|Set-Content "$target/display-vm-data.json"
  Write-Output 'Curated32 timed debit prefix/suffix paths with explicit display handoffs'
 }

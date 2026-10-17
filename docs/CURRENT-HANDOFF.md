@@ -1,5 +1,28 @@
 # Current handoff
 
+17 October COMPOSED TIMED DEBIT checkpoint: AddersTimedPayoutDebitExecution owns
+4CBE -> staged NVRAM -> native76BF -> incremental A8F9 -> native return -> timed
+accounts/checksums ->6858 output.32 original-ROM comparisons reach6858 at the exact
+cycle/RAM without injecting intermediate CPU/RAM state or return timestamps.
+Only alpha773C CPU budgets remain an explicit helper adapter in these comparisons;
+ordinary display VM costs are checked/source-derived at WORD boundaries. This is
+not instruction-level acceptance inside a VM word. One synthetic composed output
+run verifies exactly one pulse pair and suspension in display/polling. No Live GUI
+collection is connected yet. Next stage selected4B39/4B8C and4C25/4CF8/4Dxx caller/
+compensation ownership, then host integration alongside the documented sound-pool
+lifecycle gap. Do not start an unrelated IRQ campaign. See
+[debit/display timing pass](recovery/PAYOUT-DEBIT-TIMING-PASS.md).
+
+Final validation:290 full verification groups pass; headless and isolated WPF
+builds have zero warnings/errors.1167 curated entries verify by length/SHA256.
+No GUI code changed and the already-open app was left running. All owned capture
+and verification runs exited; the one excluded debugger experiment was explicitly
+terminated by isolated process identity. No installations/config changes.
+John has explicitly authorized autonomous commits/pushes for these four batches.
+Final suite log: %TEMP%/FruitMachineLab-composed-payout-final.log. Build pointer:
+FruitMachineLab-composed-payout-build.txt. Continue from the next gameplay boundary
+above; no manual GUI test or commit is required for this headless batch.
+
 17 October native gateway checkpoint: Mpu4NativeVmGatewayExecution stages76BF
 entry and76F6 return with real S frames/F2, optional trampoline copy and explicit
 080C characteriser owner. Eight original-ROM paths match instructions, cycles,

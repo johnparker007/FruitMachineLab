@@ -1,5 +1,14 @@
 # Implementation and evidence boundaries
 
+Selected4CBE payout debit now composes timed NVRAM, real native VM gateway,
+incremental A8F9 display, accounting/checksums and6858 outputs.32 original-ROM paths
+match exact cycles/selected RAM through6858 without intermediate state injection.
+Ordinary display word costs are source-derived; alpha helper CPU budgets remain
+an explicit adapter, and VM words are not internally instruction-staged. Selected
+cash/token caller/compensation timing and sound-pool lifecycle remain before Live
+collection integration. See [debit/display pass](docs/recovery/PAYOUT-DEBIT-TIMING-PASS.md).
+Current full suite:290 groups; headless and isolated WPF builds are clean.
+
 Normal6858 output service is now fully staged through queue/checksum/positive
 serial notification and pulse polling. Eight isolated original-ROM comparisons
 match complete instruction timing and selected RAM/output observations. Counter

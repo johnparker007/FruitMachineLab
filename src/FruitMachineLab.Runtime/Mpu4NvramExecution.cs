@@ -11,6 +11,9 @@ public sealed class Mpu4NvramExecution : IDisposable
     private byte a,b,mask;
     private ushort x,u;
     private bool negative,lower;
+    private readonly byte incomingCc;
+    private byte returnCc,additionFlags;
+    public byte ReturnConditionCode=>Completed ? returnCc : throw new InvalidOperationException("NVRAM CC is available only at native return");
     public ulong Cycle {get;private set;}
     public ulong NextEventCycle {get;private set;}
     public bool Completed {get;private set;}
@@ -23,7 +26,7 @@ public sealed class Mpu4NvramExecution : IDisposable
     public Action<OutputScanAccess>? ObserveAccess {get;set;}
     public Mpu4NvramExecution(Machine machine,ulong start,ushort dataPointer,byte initialInterruptMask,ushort continuation)
     {
-        m=machine;Cycle=start;u=dataPointer;mask=(byte)(initialInterruptMask&0x50);Continuation=continuation;
+        m=machine;Cycle=start;u=dataPointer;incomingCc=initialInterruptMask;mask=(byte)(initialInterruptMask&0x50);Continuation=continuation;
         steps=Run().GetEnumerator();Next();
     }
     private static ulong Cost(Step s)=>(ulong)M6809InstructionTiming.Decode(Convert.FromHexString(s.Bytes),s.Branch).Cycles;
@@ -45,7 +48,7 @@ public sealed class Mpu4NvramExecution : IDisposable
     private void Write(ushort at,byte value){m.Memory[at]=value;ObserveAccess?.Invoke(new(Cycle,at,value,true,false));}
     private IEnumerable<Step> Run()
     {
-        yield return new(0x6E06,"7D0323",()=>negative=(sbyte)m.Memory[0x323]<0);
+        yield return new(0x6E06,"7D0323",()=>{byte value=m.Memory[0x323];negative=(sbyte)value<0;returnCc=(byte)((incomingCc&0xF1)|(negative ? 8 : 0)|(value==0 ? 4 : 0));});
         yield return new(0x6E09,"102BFFF8",Branch:negative);
         if(negative){yield return new(0x6E05,"39");yield break;}
         byte guard=0,savedMask=mask;
@@ -66,9 +69,9 @@ public sealed class Mpu4NvramExecution : IDisposable
         yield return new(0x6E4D,"B6002C",()=>a=m.Memory[0x2C]);yield return new(0x6E50,"3402",()=>guard=a);
         yield return new(0x6E52,"8601",()=>a=1);yield return new(0x6E54,"B7002C",()=>Write(0x2C,a));
         yield return new(0x6E57,"B60322",()=>a=m.Memory[0x322]);yield return new(0x6E5A,"A0C4",()=>a=unchecked((byte)(a-m.Memory[u])));
-        yield return new(0x6E5C,"A7C4",()=>Write(u,a));yield return new(0x6E5E,"EBC0",()=>{b=unchecked((byte)(b+m.Memory[u]));u++;});
+        yield return new(0x6E5C,"A7C4",()=>Write(u,a));yield return new(0x6E5E,"EBC0",()=>{byte delta=m.Memory[u];int sum=b+delta;additionFlags=(byte)((sum>255 ? 1 : 0)|((b&15)+(delta&15)>15 ? 0x20 : 0));b=(byte)sum;u++;});
         yield return new(0x6E60,"F70322",()=>Write(0x322,b));yield return new(0x6E63,"3504",()=>b=guard);
-        yield return new(0x6E65,"F7002C",()=>Write(0x2C,b));yield return new(0x6E68,"3596");
+        yield return new(0x6E65,"F7002C",()=>{Write(0x2C,b);returnCc=(byte)((incomingCc&0xD0)|additionFlags|((sbyte)b<0 ? 8 : 0)|(b==0 ? 4 : 0));});yield return new(0x6E68,"3596");
     }
     public void Dispose()=>steps.Dispose();
 }

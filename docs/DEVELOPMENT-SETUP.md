@@ -5,6 +5,14 @@ Local clone: C:\projects\GitRepos\FruitMachineLab
 
 ## Current status
 
+Payout debit/display: Capture-PayoutDebit.ps1 -InstructionTiming now observes
+native prefix/suffix plus display NEXT and gateway return. Curate-PayoutDebit.ps1
+exports debit-timing and display-vm-data alongside the semantic matrix. New
+Capture-/Curate-PayoutNvramTiming.ps1 use standard isolated parameters; native
+gateway capture additionally needs SeedRam. Filters: "Payout NVRAM", "Payout debit",
+"Payout incremental display", "Payout composed", "Native VM gateway". See
+recovery/PAYOUT-DEBIT-TIMING-PASS.md for source costs versus alpha adapter scope.
+
 Complete normal payout output service: add -OutputService to
 Capture-PayoutPulseTiming.ps1; Curate-PayoutPulseTiming.ps1 selects the eight-case
 output-service-timing matrix from provenance. Filters: "Payout complete" and

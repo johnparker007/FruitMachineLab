@@ -15,7 +15,7 @@ public static class M6809InstructionTiming
         if(op is 0x10 or 0x11)
         {
             Require(bytes,2);
-            if(op==0x11){result=bytes[1]==0x8C ? new(4,5) : throw new NotSupportedException("Only selected CMPS prefix11 timing is covered");}
+            if(op==0x11){result=bytes[1]==0x8C ? new(4,5) : bytes[1]==0x9C ? new(3,7) : throw new NotSupportedException("Only selected CMPS prefix11 timing is covered");}
             else if(bytes[1]==0x3F)result=new(2,20); // ordinary SWI2 full frame/vector
             else if(bytes[1] is >=0x21 and <=0x2F){if(branchTaken is null)throw new NotSupportedException("Long conditional timing requires an explicit branch outcome");result=new(4,branchTaken.Value ? 6 : 5);}
             else if(bytes[1] is 0xAE or 0xAF or 0xA3){Require(bytes,3);var idx=Indexed(bytes[2]);result=new(3+idx.OperandBytes,(bytes[1]==0xA3 ? 7 : 6)+idx.ExtraCycles);}

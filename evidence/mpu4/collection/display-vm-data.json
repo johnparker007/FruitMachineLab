@@ -1,0 +1,98 @@
+{
+  "rom_sha1": "402D1518BB78FDC489B06C2AABC771E5CE151847",
+  "scope": "Selected display VM native handlers, headers, complete script/inline data span. Exact bytes, not lossless symbolic assembly.",
+  "regions": [
+    {
+      "address": 30068,
+      "bytes_hex": "7576ECC1102603BB0EFC"
+    },
+    {
+      "address": 30303,
+      "bytes_hex": "76616FD10EFC"
+    },
+    {
+      "address": 30335,
+      "bytes_hex": "76813716A4842604E4012703CCFFFF36060EFC"
+    },
+    {
+      "address": 30827,
+      "bytes_hex": "786DE6D44FEDC40EFC787637103706ED840EFC78803706E3C4EDC40EFC"
+    },
+    {
+      "address": 30989,
+      "bytes_hex": "790FECD4EDC40EFC7917AEC4EC02EDC4EC8436060EFC00F8"
+    },
+    {
+      "address": 31023,
+      "bytes_hex": "793135200EFC7937119CF626F5AE669FF6326820F379464FE68436060EFC794FEC843606"
+    },
+    {
+      "address": 31046,
+      "bytes_hex": "4FE68436060EFC794FEC8436060EFC"
+    },
+    {
+      "address": 31086,
+      "bytes_hex": "3610AEE410AFE431840EFC"
+    },
+    {
+      "address": 31097,
+      "bytes_hex": "797BE6A44F31AB0EFC7984"
+    },
+    {
+      "address": 31106,
+      "bytes_hex": "7984ECC127F331210EFC"
+    },
+    {
+      "address": 31295,
+      "bytes_hex": "CC0000EDC40EFC7A48ECC426F3CCFFFFEDC40EFC"
+    },
+    {
+      "address": 33812,
+      "bytes_hex": "BD796E7915792FBD796E7915767F792F"
+    },
+    {
+      "address": 42921,
+      "bytes_hex": "00F881D9786B7A46798214773C70052020202020207602F020207A797911773C70052020202020207602F02E357A792F00F884E07574A7A9792F00F882CE790D82D6790D787E8222790D787E82D2790D787E8226790D787E792F00F884E07982057B3D793583067874773C7000792003270401307A792F00F878C97B517963067A657A97792F00F878B57B517963037B6178B579DC78C07B597ADA7963037B61756881A6787E7861A8207A007B3D79631499ADA820856F79A6D17B3D7B43792F00F884E07574A7E3A803792F00F8792F00F884E0757478DE78B579DC82127A1C81C8787E78617A00792F00F884E0757478DE78B579DC7A1C81C8787E765F7A00792F00F87B497A4679820D81A6765F81A678C9765F793579630A7DE27B497A4679820A81A678C9765F79790D81B3787E786B81A678C9786181B3787E786B81A67861792F00F87EED786BA8AB792F00F884D4767F757484E0757481B0765FA7D9A869792F00F8"
+    },
+    {
+      "address": 33200,
+      "bytes_hex": "794622794F6C"
+    },
+    {
+      "address": 33241,
+      "bytes_hex": "794F02F17946"
+    },
+    {
+      "address": 33486,
+      "bytes_hex": "794F02FC794F"
+    },
+    {
+      "address": 33494,
+      "bytes_hex": "794F02FA7946"
+    },
+    {
+      "address": 33314,
+      "bytes_hex": "794F02FE794F"
+    },
+    {
+      "address": 33490,
+      "bytes_hex": "794F0302794F"
+    },
+    {
+      "address": 33318,
+      "bytes_hex": "794F0300794F"
+    },
+    {
+      "address": 33542,
+      "bytes_hex": "794F0327794F"
+    },
+    {
+      "address": 34004,
+      "bytes_hex": "8414000100A0"
+    },
+    {
+      "address": 34016,
+      "bytes_hex": "841B0200719F"
+    }
+  ]
+}

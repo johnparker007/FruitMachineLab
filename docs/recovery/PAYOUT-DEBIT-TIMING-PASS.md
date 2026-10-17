@@ -109,3 +109,89 @@ historical exports, not a fresh local Ghidra synchronization. Their partial/body
 size imperfections remain; byte-checked ranges supply the instruction/data truth.
 Original workspace is unchanged. External pointer native-vm-gateway.txt identifies
 the accepted raw directory. No excluded gateway run was needed.
+
+## Incremental display and composed debit checkpoint
+
+AddersPayoutDisplayExecution now runs A8F9 incrementally inside the staged gateway.
+Each recovered VM word keeps its pending CPU budget and commits semantic effects
+at completion. Pause (no advancement) preserves VM, native frames, pending work
+and virtual clock. Partial advancement into an alpha word leaves its output and
+RAM untouched until completion. Source timing is at VM-word granularity here;
+this is NOT instruction-level interrupt acceptance within each VM word. IRQ
+suspension rejects a partial word instead of inventing a CPU instruction boundary.
+Gateway native instructions remain independently staged.
+
+AddersPayoutDisplayTiming derives ordinary selected word costs from original
+encodings, current cells and selected return frames: NEXT, threaded and body-
+address calls, constants, two-word fetch, mask/conditional returns, zero test,
+fetch/store/add, clear, branches and return. Header/body/literal encodings and
+native instruction bytes are checked before using each plan. Unknown words,
+changed encodings and return through an active loop fail explicitly. Embedded
+return stream76ED and its FC/FE dispatch are charged before native76F6 resumes.
+
+Alpha773C retains an EXPLICIT caller-provided CPU-budget adapter. It is not a
+default constant or automatic lookup of a recorded execution path. A zero budget
+is rejected. This pass does not resolve native alpha character output/PIA timing;
+software alpha output is still atomic at that helper boundary. Verification uses
+the observed budget of just that helper on each selected row and labels it as
+an adapter. Other VM costs are source-derived. No new runtime timing table is
+loaded. A future Live host can retain its existing qualified alpha timing adapter
+while these source paths replace the surrounding costs.
+
+Capture-PayoutDebit.ps1 -InstructionTiming now also observes every display NEXT
+entry (site/token/U/S/cells) and76F6 return. The accepted32-row export matches every
+generated VM site/token/start/completion/U/S, final display cycle and software RAM.
+One standalone display test seeds observed gateway-entry registers/RAM to isolate
+the display owner. The stronger AddersTimedPayoutDebitExecution comparison starts
+at the original pre-debit checkpoint and supplies NO intermediate snapshots,
+registers or gateway/display-return timestamps. It composes debit, NVRAM, gateway,
+incremental VM and accounting and reaches6858 at the exact original cycle in all32
+cases. Alpha helper budgets are the remaining observed inputs. Final RAM excludes
+only semantic U scratch05C0..05FF and caller-owned native S residue;00F0..00FF now
+matches. Persistent accounts07C9..07E7 remain checked.
+
+The debit owner now derives the display-entry A/B/CC/X/Y/U itself. NVRAM exposes
+its return CC only after completion: original TST mode flags on early return, or
+final ADDB half-carry/carry and guard-store N/Z on normal return. Display LDX then
+sets N/Z/V while retaining carry/half-carry. All32 generated entry register sets
+match MAME, including normal/service mode and balance borrow. When the caller
+supplies native S, JSR4CCE writes the real4CD1 return word. Other transient native
+S residues are not silently synthesized. The gateway exposes full restored
+registers only at native return; intermediate arithmetic flags are not advertised
+as a complete CPU snapshot.
+
+AddersTimedPayoutDebitExecution owns precisely one4CBE debit and6858 output service;
+it does not also invoke semantic Outputs. A separate synthetic composed run waits
+for real polling counter changes, emits exactly one on/off pair, restores the
+guard/VM caller and matches an uninterrupted run after suspension in both display
+and pulse. Counter changes there are synthetic, not natural IRQ scheduling or
+physical coin delivery evidence. The existing eight output-service MAME cases
+remain the independent output instruction oracle. All32 debit comparisons stop
+before6858 output begins, avoiding the old seeded255-byte queues becoming a claim
+of naturally paid coins. Filters: "Payout incremental display", "Payout composed",
+"Payout display timing", "Payout debit", "Native VM gateway", "Payout NVRAM".
+
+Preservation: display-vm-data.json exports exact selected native handlers, headers,
+script/inline data and original ROM SHA1. Existing curators/checkpoint conventions
+are extended. Newly observed rows preserve VM token values and operand cells;
+all source-timing plans are checked against ROM bytes. Existing annotations and
+the new byte ranges are reconstructions, not original source or a verified
+byte-identical rebuild. Raw final display capture pointer is
+%TEMP%/FruitMachineLab-payout-display-vm.txt. Earlier successful timing-only and
+VM-observer captures remain external; the single failed initial capture above
+remains excluded. The final script reproduces all current observations.
+
+Remaining gameplay work: stage the selected4B39/4B8C cash/token selection and
+4C25/4CF8/4Dxx caller/compensation paths, then connect the composed payout owner to
+the existing Live host service clock without duplicate effects. Preserve the
+explicit alpha boundary and sound-pool lifecycle/characteriser ownership gaps.
+No new GUI collection mode, complete native CPU ownership, natural payout run or
+whole-machine autonomous IRQ acceptance is claimed. Do not restart a broad IRQ
+campaign or postpone gameplay for a complete symbolic assembler.
+
+Final validation:290 full verification groups pass, including all existing Live
+and MAME replay checks; the22-group Payout filter also passes after extending the
+exact script-byte range. Headless and isolated WPF builds have zero warnings/errors.
+1167 curated files verify by length/SHA256. GUI code is unchanged; the already-open
+user app was preserved. Four independently verified checkpoints are committed and
+pushed under John's explicit authorization. No installations/configuration changes.

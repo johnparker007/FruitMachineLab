@@ -27,7 +27,9 @@ public sealed class Mpu4NativeVmGatewayExecution : IDisposable
     public ushort Body=>y;
     public ushort DataPointer=>r.U;
     public bool IrqMasked=>(r.ConditionCode&0x10)!=0;
-    public NativeVmRegisters Registers=>r with{A=a,B=b,X=x,Y=y,S=s};
+    // Intermediate arithmetic flags are not exposed as a complete CPU snapshot.
+    public NativeVmRegisters Registers=>Completed ? r with{A=a,B=b,X=x,Y=y,S=s}
+        : throw new InvalidOperationException("Full restored registers are available only at native return");
     public Action<OutputScanInstruction>? ObserveInstruction {get;set;}
     public Action<OutputScanAccess>? ObserveAccess {get;set;}
     public Mpu4NativeVmGatewayExecution(Machine machine,ulong start,NativeVmRegisters registers,Action<byte>? writeVmMode=null)

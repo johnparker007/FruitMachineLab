@@ -1,5 +1,14 @@
 # Project direction and handoff
 
+17 October composed debit checkpoint:4CBE/NVRAM, native VM gateway, incremental
+A8F9 display, accounts and6858 output now compose under one headless CPU owner.
+32 original-ROM paths match through6858; alpha helper budgets stay explicit,
+ordinary display VM costs are source-derived at word boundaries. Next finish
+selected cash/token caller and compensation timing, then Live collection with
+sound-pool ownership. No whole-machine IRQ or new GUI payout claim. Keep this
+narrowly tied to playable gameplay; symbolic tools and unrelated timing stay later.
+See recovery/PAYOUT-DEBIT-TIMING-PASS.md.
+
 17 October output-service checkpoint: full normal6858 now composes queue scan,
 7032 checksum, positive511B serial and timed pulse/7172 polling, verified against
 eight synthetic original-ROM instruction paths. Next time4CBE debit/NVRAM/display

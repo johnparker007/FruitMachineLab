@@ -98,6 +98,12 @@ focused review; do not dispatch the entire migration as one prompt.
    the natural tone path and selected labelled synthetic alternatives. No parallel
    fabricated task or captured end-state injection. This can be proved headlessly
    before solving every timer1 service; stage 1 alone does not establish ownership.
+   **Certified** for one headless owner in
+   `docs/recovery/TONE-LIFECYCLE-CERTIFICATION.md`: entry-gap-checked 485 captured
+   instruction boundaries, two declared service ticks and full RAM/channel/tail
+   comparison. Only the initial `C6` channel sentinel and zero-count `C4` loop are
+   covered; the active-channel/finite-count variants are rejected explicitly.
+   Gate 3's Live ownership design remains open.
 3. **Design then connect the selected Live owner.** Specify entry-state source,
    required foreground and service instruction boundaries, pause/resume, task
    handoff and exactly one mutating owner. Explain how existing logical background

@@ -6443,5 +6443,20 @@
     "path": "evidence/mpu4/collection/timer1-scheduler-call-verification.json",
     "bytes": 5924,
     "sha256": "E371D801956DA3077ECB80310B47F40123CCE2378B14CF7B8EE12184D8849FFE"
+  },
+  {
+    "path": "docs/recovery/TONE-LIFECYCLE-CERTIFICATION.md",
+    "bytes": 4652,
+    "sha256": "57AAA67CB4E58C5AA0804992B0A3732C7F6A61030A9EB86ABF933538B44672FE"
+  },
+  {
+    "path": "evidence/mpu4/collection/tone-lifecycle.json",
+    "bytes": 183542,
+    "sha256": "723A0456CC5B82C14B5DEEB6CA80219DFF5D71113E0CAEC34C6A5E525C03AA31"
+  },
+  {
+    "path": "evidence/mpu4/collection/tone-lifecycle-verification.json",
+    "bytes": 5719,
+    "sha256": "AE966EF6E1098D23D21FAC4207544DDE33F1A31DF90AF295F724750D0367851C"
   }
 ]

@@ -20,11 +20,21 @@ wrapper has fresh isolated original-ROM captures with recorded initial registers
 full 2 KB RAM, every instruction boundary and the fixed FECC continuation.
 Natural scheduler-a/b remain an empty-return comparison only. Missing-region,
 corruption and wrong-return controls pass in the intended snapshot. Gate 2 is
-the next planned gate: one headless native tone owner. Tone finish remains
-separately blocked on real native task/channel/rhythm/tail ownership in Live;
-do not manufacture that state to fit a cost. See the roadmap for the five gates
+also certified for one headless native tone owner: actual 59EB is queued through
+5C18 into the real 0047/0049 list, served through two explicitly timed 5CD0
+ticks to the CE wait, then cancelled by 5C7A with captured channel/tail/rhythm
+state. Entry PC/source/interval is now checked explicitly, and declared caller
+writes are limited to registers/return word0700, counter0044, enable719B and
+clock0045/0046; no other intermediate RAM edit is permitted. Only the initial C6
+sentinel and zero-count C4 loop are covered; active-channel/finite-count variants
+are rejected. Natural nudge-tone supplies only the command order. No timer1
+cadence, outer IRQ, finish CPU work or Live ownership is claimed; Gate 3 remains
+open.
+Tone finish remains separately blocked on real native task ownership in Live; do
+not manufacture that state to fit a cost. See the roadmap for the five gates
 and exact acceptance/stopping conditions. Raw captures remain untracked; the
-curated fixture is `evidence/mpu4/collection/timer1-scheduler-call.json`.
+curated fixtures are `evidence/mpu4/collection/timer1-scheduler-call.json` and
+`evidence/mpu4/collection/tone-lifecycle.json`.
 
 The notes below are the historical pilot checkpoint. Statements such as "no
 implementation batch" describe that earlier checkpoint, not current project state.

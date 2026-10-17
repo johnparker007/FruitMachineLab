@@ -1,0 +1,116 @@
+{
+    "source_run":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\gate-24\\mame-tone-lifecycle",
+    "debug_sha256":  "CABFFE37DE7123CC07A8E5E388BB2198A54EC1AE9510FDB9490F81C461997448",
+    "debugger_sha256":  "33828825A75AB41DE55A710E3D3FA86F770AFD9DA8C00226DD3BE9572F365565",
+    "arguments_sha256":  "2E76265BB8442762105478D50921A56A71360C498F8A2E0E2E1C95E953A9D3E1",
+    "seed_sha256":  "4B03DC08B8690CA6888A30F634D343735AA60BB80D5981C3AC63ADCBFB083C05",
+    "rom_sha1":  "402D1518BB78FDC489B06C2AABC771E5CE151847",
+    "provenance":  {
+                       "classification":  "Synthetic isolated original-ROM 59EB lifecycle: reset list, native5C18 queue, two externally timed5CD0 service ticks (second at due-1), native5C7A cancel; masked IRQ. Host writes are only PC/registers, return word0700=4C34, counter44=0, enable719B=0 and declared 45/46 clocks; no other intermediate RAM edits and no captured end state is injected.",
+                       "mame_sha256":  "0FCE5A88DF4F9D9B1FBF1405812C00848036E615993780978D967DA34204CB7A"
+                   },
+    "rom_regions":  [
+                        {
+                            "address":  23019,
+                            "sha256":  "C0063C97538A35F1134926ACD5785380DEEB7E7C744F8CCF70CD671BBA495BC1"
+                        },
+                        {
+                            "address":  22883,
+                            "sha256":  "EBBC9B4A9045D6F72BEA7B4C8E2DE72F03EBC8472919D990B9B4C0FA90775495"
+                        },
+                        {
+                            "address":  23576,
+                            "sha256":  "12CB5246C15D5216E0B69E9D4F1830CDD6CEF3C1DD127F6DDCEC8AC7F795C959"
+                        },
+                        {
+                            "address":  24100,
+                            "sha256":  "83AA92B48BE86A53961E1D3F97D2E4A301543959255706950AC55CCBDA8C3282"
+                        },
+                        {
+                            "address":  24242,
+                            "sha256":  "AB73FE8CAAE6130CE9AFC0FB237293E974B3AA4D94525112C76FBB872CD608A8"
+                        },
+                        {
+                            "address":  24456,
+                            "sha256":  "6A77EA6537936C64ABFB90F2A5F92E895498EFA58B754721E62AFEE76692D032"
+                        },
+                        {
+                            "address":  24649,
+                            "sha256":  "8D1AB7C93F1C778640843DC9B1A3270273682A4DF85ADD404D728F011813341C"
+                        },
+                        {
+                            "address":  24718,
+                            "sha256":  "FC70ECB3137E1521A12498D9B8E5B9BD661E4E94C20230CE4EBDE4321629A9AD"
+                        },
+                        {
+                            "address":  24747,
+                            "sha256":  "FE0B84420CFD42686C3845D8A99577418AC708BB50CF1442CAFC50C3467E5343"
+                        },
+                        {
+                            "address":  24776,
+                            "sha256":  "516E9C4DC58E815F571024B6D6636D4C00E90D22EB6956FCA154994C5170B1A2"
+                        }
+                    ],
+    "phases":  [
+                   {
+                       "id":  0,
+                       "name":  "queue",
+                       "start_cycle":  4,
+                       "cycles":  262,
+                       "instructions":  51,
+                       "end":  {
+                                   "pc":  19508,
+                                   "cycle":  266,
+                                   "s":  1794,
+                                   "u":  1536,
+                                   "x":  23019,
+                                   "y":  416
+                               }
+                   },
+                   {
+                       "id":  1,
+                       "name":  "service1",
+                       "start_cycle":  266,
+                       "cycles":  1367,
+                       "instructions":  297,
+                       "end":  {
+                                   "pc":  19508,
+                                   "cycle":  1633,
+                                   "s":  1794,
+                                   "u":  0,
+                                   "x":  71,
+                                   "y":  416
+                               }
+                   },
+                   {
+                       "id":  2,
+                       "name":  "service2",
+                       "start_cycle":  1633,
+                       "cycles":  381,
+                       "instructions":  76,
+                       "end":  {
+                                   "pc":  19508,
+                                   "cycle":  2014,
+                                   "s":  1794,
+                                   "u":  0,
+                                   "x":  71,
+                                   "y":  416
+                               }
+                   },
+                   {
+                       "id":  3,
+                       "name":  "cancel",
+                       "start_cycle":  2014,
+                       "cycles":  308,
+                       "instructions":  61,
+                       "end":  {
+                                   "pc":  19508,
+                                   "cycle":  2322,
+                                   "s":  1794,
+                                   "u":  1536,
+                                   "x":  23019,
+                                   "y":  416
+                               }
+                   }
+               ]
+}

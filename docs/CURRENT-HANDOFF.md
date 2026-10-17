@@ -1,5 +1,9 @@
 # Current handoff
 
+Next16 cycle batch1: native69A9 bit-image builder matches32 ROM paths using
+actual C01 values. Next693E byte frames then timer2/receive callbacks. No Live
+or wire-clock claim yet. See serial service pass.
+
 SIXTEEN-BATCH CYCLE COMPLETE —344 full verification groups pass (baseline325).
 Actual8784 Collect prompt runs natively, including C1 frames, rhythm/melodic
 channels, C2 children, native5CF3 yields and release. AddersNativeSound owns timed

@@ -119,3 +119,14 @@ reset, complete helper register/flags at5429 handoffs and selected negative/exte
 packets/callbacks when actually encountered. MAME logger source is an external
 behavioral reference, not permission to inject a successful ACK at a guessed time.
 Keep work proportional to playable Adders; no assembler/audio/unrelated IRQ work.
+
+## Transport cycle:69A9 bit images
+
+AddersSerialBitPlan stages69A9: FF sentinel bypasses the PIA read; otherwise bit0
+selects CA2 low/high in an image of actual IC7 control C01. The image preserves
+low unrelated bits, forces control3C and clears bit08 for zero.32 synthetic native
+calls match bytes/cycles/full RAM with actual MAME C01 read values. No byte/baud
+timing is inferred yet. New transport tools reuse the same catalog/RAM schema and
+collection location. Curator normalizes a single legacy flattened span so source
+regions cannot silently expand backwards; initial bad export was rejected by the
+opcode comparison and replaced, with no raw capture changes. Raw serial-bit.txt.

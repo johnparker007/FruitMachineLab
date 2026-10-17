@@ -1,5 +1,10 @@
 # Current handoff
 
+Five-batch cycle batch4: staged5E2C/60AB release matches32 original-ROM paths,
+instruction cycles/bytes/full2KB RAM;96 lifecycle cases now include cache-hit
+variants. Early-effect and unmasked suspension checks pass. Next compose root
+return/same-clock rescan; no Live instruction-acceptance claim.
+
 Five-batch cycle batch3: root C0 completion matches16 ROM cases, preserves same-
 clock rescan, and passes600 synthetic allocations/completions without pool loss.
 Next stage sound release timing; Live list ownership remains unresolved.

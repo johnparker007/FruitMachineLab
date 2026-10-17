@@ -50,3 +50,24 @@ All16 selected root calls match RAM. A synthetic100-round test fills/drains all
 six records600 times in total, checking free-list uniqueness each round. Duplicate
 ownership and nonempty native frames fail before mutation. This does not yet
 join logical sound frames to native records or establish complete sound playback.
+
+## Instruction-staged release checkpoint
+
+The capture now also observes5E2C/60AB instruction entries and adds unchanged-cache
+variants:96 cases total,32 per entry. AddersSoundReleasePlan matches all32 release
+paths, exact original encodings, cycle offsets, all2KB RAM including native stack,
+and changed-cache notification order. Every instruction is advanced to one cycle
+before its completion to verify no early RAM or output effect. Source costs use
+the existing MC6809 timing decoder; no captured durations feed the plan.
+
+Task Y/DP0 and caller U/X/S are explicit. PSHS/JSR scratch is written to real S;
+this is not a complete CPU register/flags interface.60B4 address-port write is
+timed but not exposed as a separate peripheral callback; callback at60B9 reports
+the completed register/value pair. Audio/peripheral bus ownership remains external.
+Suspension accepts only an unmasked instruction boundary; masked and partial
+instruction attempts fail. This does not establish Live IRQ acceptance.
+
+The clean instruction capture ba5b4dd1f023412a91df22198421e5ae replaces the earlier
+48-case memory-only fixture. Curated catalogs deduplicate exact ROM contexts;
+per-path arrays reference catalog indexes and relative cycles. Re-export is
+deterministic. No Ghidra/tool/configuration changes were made.

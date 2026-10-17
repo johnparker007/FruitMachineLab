@@ -7,9 +7,19 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { if(args.Length>1 && !name.Contains(args[1],StringComparison.OrdinalIgnoreCase))return;action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
-Check("Sound lifecycle release matches16 original-ROM channel cases",()=>Equal(16,AddersSoundLifecycleVerification.Matrix(evidence,"release")));
-Check("Sound lifecycle cancel matches16 original-ROM channel cases",()=>Equal(16,AddersSoundLifecycleVerification.Matrix(evidence,"cancel")));
-Check("Sound lifecycle root completion matches16 original-ROM channel cases",()=>Equal(16,AddersSoundLifecycleVerification.Matrix(evidence,"finish")));
+Check("Sound lifecycle release matches32 original-ROM channel cases",()=>Equal(32,AddersSoundLifecycleVerification.Matrix(evidence,"release")));
+Check("Sound lifecycle staged release matches32 original-ROM instruction paths",()=>Equal(32,AddersSoundLifecycleVerification.TimedRelease(evidence)));
+Check("Sound lifecycle staged release supports only unmasked instruction-boundary suspension",()=>{
+    var m=new Machine();m.Memory[0x1AA]=0xFF;m.Memory[0x4C]=0xFF;
+    using var e=new NativeRoutineExecution(new AddersSoundReleasePlan(m,0x1A0,0x700,0x600,0x8784).Instructions(),100,0x4C34,()=>false);
+    byte[] before=m.Memory.ToArray();ulong due=e.NextEventCycle;e.SuspendUntil(150);Equal(due+50,e.NextEventCycle);Equal(true,before.SequenceEqual(m.Memory));
+    e.AdvanceTo(e.NextEventCycle-1);try{e.SuspendUntil(e.Cycle+10);throw new Exception("Partial instruction suspended");}catch(InvalidOperationException){}
+    while(!e.Completed)e.AdvanceTo(e.NextEventCycle);Equal((ulong)195,e.Cycle);
+    using var masked=new NativeRoutineExecution(new AddersSoundReleasePlan(new(),0x1A0,0x700,0x600,0x8784).Instructions(),0,0x4C34,()=>true);
+    try{masked.SuspendUntil(10);throw new Exception("Masked release suspended");}catch(InvalidOperationException){}
+});
+Check("Sound lifecycle cancel matches32 original-ROM channel cases",()=>Equal(32,AddersSoundLifecycleVerification.Matrix(evidence,"cancel")));
+Check("Sound lifecycle root completion matches32 original-ROM channel cases",()=>Equal(32,AddersSoundLifecycleVerification.Matrix(evidence,"finish")));
 Check("Sound lifecycle root reuse preserves six-record pool through100 completions",()=>{
     var m=new Machine();AddersSoundResetMemory.Apply(m);m.Memory[0x50]=16;
     for(int n=0;n<100;n++){

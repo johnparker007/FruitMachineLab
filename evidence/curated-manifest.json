@@ -6388,5 +6388,15 @@
     "path": "evidence/mpu4/integrity/variant-unrepaired.txt",
     "bytes": 1974,
     "sha256": "6276A679A98A8AFEB5358A5A6106622F9F50553445F56FB6C6C75C8D056E13A4"
+  },
+  {
+    "path": "docs/recovery/VM-DEFINITION-9A64-PASS.md",
+    "bytes": 3257,
+    "sha256": "FA9D96972DFC6E19EDE1D7E66DB19D68BAD362C529B39E6B2F62D3C9B391D94A"
+  },
+  {
+    "path": "evidence/mpu4/definitions/conditionally-set-or-clear-memory-mask-9a64.vm.json",
+    "bytes": 1496,
+    "sha256": "E2467D2308798FC4D49841797F0BB4D4F8C4CDA84E39E6EEB5A768A3DCCF3EBE"
   }
 ]

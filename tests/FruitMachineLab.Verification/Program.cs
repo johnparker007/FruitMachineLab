@@ -2828,6 +2828,54 @@ Check("Recorded dispatch tokens agree with recovered listings", () => {
     if(checkedSites<100) throw new Exception("Insufficient dispatch comparisons");
     Console.WriteLine($"  {checkedSites} recorded dispatches checked");
 });
+Check("Live runtime evidence policy default compatibility preserves constructed session", () => {
+    var implicitCompatibility=new SkillCashLiveSession(evidence);
+    var explicitCompatibility=new SkillCashLiveSession(evidence,evidencePolicy:RuntimeEvidencePolicy.Compatibility);
+    Equal(true,implicitCompatibility.Machine.Memory.SequenceEqual(explicitCompatibility.Machine.Memory));
+    Equal(implicitCompatibility.VmAddress,explicitCompatibility.VmAddress);
+    Equal(implicitCompatibility.Cycle,explicitCompatibility.Cycle);
+});
+Check("Live runtime evidence policy strict rejects recorded tone and IRQ timing at the actual load boundary", () => {
+    foreach(var policy in new[]{RuntimeEvidencePolicy.CaptureFree(),RuntimeEvidencePolicy.CaptureFree(allowDeclaredCheckpoint:true)}) {
+        try { new SkillCashLiveSession(evidence,evidencePolicy:policy); throw new Exception("Strict live construction consumed recorded timing"); }
+        catch(NotSupportedException error) {
+            foreach(var token in new[]{"calibrated-delay-timing.json","natural.phases","recorded timing","source-derived"})
+                if(!error.Message.Contains(token))throw new Exception($"Recorded timing diagnostic lacks {token}: {error.Message}");
+        }
+    }
+});
+Check("Live runtime evidence policy allows source-backed static definitions and ROM data", () => {
+    var policy=RuntimeEvidencePolicy.CaptureFree();
+    using var literals=System.Text.Json.JsonDocument.Parse(policy.ReadText(evidence,RuntimeEvidenceRequirements.VmLiteralTiming));
+    if(literals.RootElement.GetProperty("tokens").GetArrayLength()==0)throw new Exception("Static literal membership missing");
+    using var motor=System.Text.Json.JsonDocument.Parse(policy.ReadText(evidence,RuntimeEvidenceRequirements.DiceMotionData));
+    if(motor.RootElement.GetProperty("ranges").EnumerateObject().Count()==0)throw new Exception("Static ROM ranges missing");
+});
+Check("Live runtime evidence policy requires explicit declared-checkpoint permission", () => {
+    try { RuntimeEvidencePolicy.CaptureFree().ReadText(evidence,RuntimeEvidenceRequirements.FeatureCheckpoint); throw new Exception("Checkpoint read without explicit permission"); }
+    catch(NotSupportedException error) {
+        foreach(var token in new[]{"feature-replay.json","declared checkpoint","initial","explicit permission","checkpoint contract"})
+            if(!error.Message.Contains(token))throw new Exception($"Checkpoint diagnostic lacks {token}: {error.Message}");
+    }
+    var allowed=RuntimeEvidencePolicy.CaptureFree(allowDeclaredCheckpoint:true).ReadText(evidence,RuntimeEvidenceRequirements.FeatureCheckpoint);
+    if(!allowed.Contains("\"initial\""))throw new Exception("Explicit checkpoint permission did not read the declared state");
+});
+Check("Live runtime evidence policy rejects recorded lamp results even with checkpoint permission", () => {
+    try { RuntimeEvidencePolicy.CaptureFree(allowDeclaredCheckpoint:true).ReadText(evidence,RuntimeEvidenceRequirements.LampFrames); throw new Exception("Recorded lamp responses were accepted"); }
+    catch(NotSupportedException error) {
+        foreach(var token in new[]{"lamp-frames.json","responses","recorded result","PAL"})
+            if(!error.Message.Contains(token))throw new Exception($"Recorded result diagnostic lacks {token}: {error.Message}");
+    }
+});
+Check("Live runtime evidence policy names captured fields in a mixed static checkpoint file", () => {
+    try { RuntimeEvidencePolicy.CaptureFree().ReadText(evidence,RuntimeEvidenceRequirements.IrqServiceData); throw new Exception("Mixed checkpoint file was treated as wholly static"); }
+    catch(NotSupportedException error) {
+        foreach(var token in new[]{"irq-service-data.json","timer3","ranges","declared checkpoint"})
+            if(!error.Message.Contains(token))throw new Exception($"Mixed-source diagnostic lacks {token}: {error.Message}");
+    }
+    var allowed=RuntimeEvidencePolicy.CaptureFree(allowDeclaredCheckpoint:true).ReadText(evidence,RuntimeEvidenceRequirements.IrqServiceData);
+    if(!allowed.Contains("\"ranges\""))throw new Exception("Static ROM ranges were dropped when checkpoint was permitted");
+});
 if(passed==0)throw new ArgumentException("No verification groups matched the requested filter");
 Console.WriteLine($"{passed} verification groups passed. Feature, alpha software and IRQ latch replay verified; electrical timing, audio synthesis and general scheduling remain incomplete.");
 return 0;

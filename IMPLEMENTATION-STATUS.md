@@ -1,5 +1,18 @@
 # Implementation and evidence boundaries
 
+17 October A1 capture-policy increment: `SkillCashLiveSession` now classifies its
+direct evidence reads by exact consumer field and applies a fail-closed
+`RuntimeEvidencePolicy` at that real constructor boundary. Default compatibility
+is unchanged. Strict capture-free mode allows static decoded/ROM data, permits
+declared checkpoints only with explicit permission, and rejects recorded timing,
+IRQ occupancy and results (including mixed static/checkpoint files) with precise
+file/field/replacement diagnostics. Current Live still fails early because it
+needs those captures; capture-free gameplay is not claimed. Six new groups pass in
+a clean `HEAD` snapshot: full suite 376 (370 baseline plus six), zero build
+warnings/errors. Other runtime loaders remain unenforced (A1 partial). See
+[A1 capture policy](docs/recovery/A1-CAPTURE-POLICY-PASS.md). Uncommitted stopped
+sound work was preserved untouched and excluded from the snapshot.
+
 17 October natural ROM-integrity boot oracle: a fresh isolated original-ROM
 MAME 0.281 cold boot with declared-absent NVRAM/configuration and no input
 playback reaches reset `7CD1`, init `6750`, checksum `66A5`/`66DB`, computes the

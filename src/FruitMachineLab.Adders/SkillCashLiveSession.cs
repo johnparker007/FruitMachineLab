@@ -57,6 +57,7 @@ public sealed class SkillCashLiveSession
     private bool motionNativeReady;
     private readonly Dictionary<ushort,RecoveredScript> scripts=new();
     private readonly string evidence;
+    private readonly RuntimeEvidencePolicy evidencePolicy;
     private readonly Dictionary<string,ulong> siteCosts,tokenCosts;
     private readonly HashSet<ushort> threadedCallTokens=new();
     private readonly Dictionary<ushort,(string Operation,ushort Value,ulong Cycles)> literalCosts=new();
@@ -105,19 +106,19 @@ public sealed class SkillCashLiveSession
     public Action<Instruction,Machine>? ObserveDispatch {get;set;}
     public Action<AlphaState>? ObserveAlpha {get;set;}
     public Action<LampRequest>? ObserveLamp {get;set;}
-    public SkillCashLiveSession(string evidenceDirectory,bool includeCaller=false,bool boardSelection=false,string? boardLink=null,bool continueBoard=false)
+    public SkillCashLiveSession(string evidenceDirectory,bool includeCaller=false,bool boardSelection=false,string? boardLink=null,bool continueBoard=false,RuntimeEvidencePolicy? evidencePolicy=null)
     {
         if(boardLink is not null && boardLink is not ("ladder" or "snake"))throw new ArgumentException("Unknown board link",nameof(boardLink));
         if(boardLink is not null)boardSelection=true;
         ContinueBoard=continueBoard;BoardLinkEntry=boardLink;boardAdvancing=boardLink is not null;
         IncludesCaller=includeCaller || boardSelection;StartsAtBoardSelection=boardSelection;
-        evidence=evidenceDirectory;
-        using(var literals=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"maps","vm-literal-timing.json"))))
+        evidence=evidenceDirectory;this.evidencePolicy=evidencePolicy ?? RuntimeEvidencePolicy.Compatibility;
+        using(var literals=JsonDocument.Parse(ReadEvidence(RuntimeEvidenceRequirements.VmLiteralTiming)))
             foreach(var item in literals.RootElement.GetProperty("tokens").EnumerateArray()){
                 string operation=item.GetProperty("operation").GetString()!;
                 literalCosts.Add(item.GetProperty("token").GetUInt16(),(operation,item.GetProperty("value").GetUInt16(),operation=="vm_push_word_body_word" ? Mpu4VmPrimitiveTiming.BodyWordCycles : Mpu4VmPrimitiveTiming.BodyByteCycles));
             }
-        using(var tone=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","calibrated-delay-timing.json")))){
+        using(var tone=JsonDocument.Parse(ReadEvidence(RuntimeEvidenceRequirements.CalibratedDelayTiming))){
             // Queue/cancel allocation still uses observed CPU-only budgets.
             // The wait is generated from ROM loop counts, never capture duration.
             var p=tone.RootElement.GetProperty("natural").GetProperty("phases");
@@ -128,23 +129,23 @@ public sealed class SkillCashLiveSession
         }
         Lamps=SkillCashPlayback.LoadLamps(evidence);
         var options=new JsonSerializerOptions{PropertyNameCaseInsensitive=true};
-        var feature=JsonSerializer.Deserialize<FeatureCapture>(File.ReadAllText(Path.Combine(evidence,"skill-cash","feature-replay.json")),options)!;
-        var timing=JsonSerializer.Deserialize<SharedTimingCapture>(File.ReadAllText(Path.Combine(evidence,"skill-cash","shared-timing.json")),options)!;
-        using(var costs=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","cpu-interrupts.json")))) {
+        var feature=JsonSerializer.Deserialize<FeatureCapture>(ReadEvidence(RuntimeEvidenceRequirements.FeatureCheckpoint),options)!;
+        var timing=JsonSerializer.Deserialize<SharedTimingCapture>(ReadEvidence(RuntimeEvidenceRequirements.SharedTimingScanCheckpoint),options)!;
+        using(var costs=JsonDocument.Parse(ReadEvidence(RuntimeEvidenceRequirements.CpuInterruptCosts))) {
             siteCosts=costs.RootElement.GetProperty("sites").EnumerateObject().ToDictionary(x=>x.Name,x=>x.Value.GetUInt64());
             tokenCosts=costs.RootElement.GetProperty("tokens").EnumerateObject().ToDictionary(x=>x.Name,x=>x.Value.GetUInt64());
         }
-        using(var costs=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","jackpot-probe.json")))) {
+        using(var costs=JsonDocument.Parse(ReadEvidence(RuntimeEvidenceRequirements.JackpotProbeCosts))) {
             foreach(var item in costs.RootElement.GetProperty("sites").EnumerateObject())siteCosts.TryAdd(item.Name,item.Value.GetUInt64());
             foreach(var item in costs.RootElement.GetProperty("tokens").EnumerateObject())tokenCosts.TryAdd(item.Name,item.Value.GetUInt64());
         }
-        using(var data=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"maps","skill-cash-extension-data.json"))))
+        using(var data=JsonDocument.Parse(ReadEvidence(RuntimeEvidenceRequirements.ExtensionTimingAliases)))
             foreach(var alias in data.RootElement.GetProperty("equivalent_timing_tokens").EnumerateObject())tokenCosts.Add(alias.Name,tokenCosts[alias.Value.GetString()!]);
         SeedFeature(feature);SeedScan(timing);SkillCashData.LoadExtensions(Machine,evidence);
         ushort initialClock=feature.Initial["clock"];
         if(includeCaller) {
             initialClock=SkillCashCallerState.Apply(Machine,evidence,true);
-            using var caller=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","board-result.json")));
+            using var caller=JsonDocument.Parse(ReadEvidence(RuntimeEvidenceRequirements.BoardResultCosts));
             foreach(var item in caller.RootElement.GetProperty("sites").EnumerateObject())siteCosts.TryAdd(item.Name,item.Value.GetUInt64());
             foreach(var item in caller.RootElement.GetProperty("tokens").EnumerateObject())tokenCosts.TryAdd(item.Name,item.Value.GetUInt64());
         }
@@ -155,34 +156,34 @@ public sealed class SkillCashLiveSession
             if(boardLink is not null)initialClock=BoardLinkState.Apply(Machine,evidence,boardLink);
             boardVisited.Add(Machine.Memory[0xC9]);
             foreach(string file in new[]{"ladder-link.json","snake-link.json","ladder-link-next.json","snake-link-next.json","board-movement-next.json","ladder-availability.json","nudge-entry.json","nudge-prompt.json","nudge-request.json","nudge-motion-vm.json","nudge-return.json","nudge-sequence.json","nudge-result.json","nudge-exit.json","nudge-win-transfer.json","nudge-tail.json","nudge-accounting.json","nudge-bank-return.json","nudge-cycle-init.json","nudge-ic8.json","nudge-background.json","nudge-status.json","nudge-services.json","nudge-preplay.json","nudge-eligibility.json","nudge-start.json","nudge-stake.json","nudge-tone.json","nudge-spin-flags.json","nudge-spin-gates.json","nudge-final-selection.json","nudge-spin-preparation.json","nudge-paid-spin.json","nudge-spin-result.json","nudge-paid-nudge.json","nudge-paid-step.json","nudge-paid-result.json","nudge-paid-return.json","nudge-paid-next-prompt.json","paid-flag-accounting.json","paid-flag-announcement.json","paid-flag-reel-plan.json","paid-flag-table.json","paid-flag-bootstrap.json","paid-flag-motion.json","paid-flag-board.json"}) {
-                using var linkCosts=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash",file)));
+                using var linkCosts=JsonDocument.Parse(ReadEvidence(RuntimeEvidenceRequirements.BoardLinkCosts(file)));
                 foreach(var item in linkCosts.RootElement.GetProperty("sites").EnumerateObject())siteCosts.TryAdd(item.Name,item.Value.GetUInt64());
                 foreach(var item in linkCosts.RootElement.GetProperty("tokens").EnumerateObject())tokenCosts.TryAdd(item.Name,item.Value.GetUInt64());
             }
-            using(var nudgeData=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"maps","nudge-preparation-data.json"))))
+            using(var nudgeData=JsonDocument.Parse(ReadEvidence(RuntimeEvidenceRequirements.NudgePreparationAliases)))
                 foreach(var alias in nudgeData.RootElement.GetProperty("equivalent_timing_tokens").EnumerateObject())tokenCosts.TryAdd(alias.Name,tokenCosts[alias.Value.GetString()!]);
-            using var motionData=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"maps","dice-motion-data.json")));
+            using var motionData=JsonDocument.Parse(ReadEvidence(RuntimeEvidenceRequirements.DiceMotionData));
             foreach(var range in motionData.RootElement.GetProperty("ranges").EnumerateObject())Convert.FromHexString(range.Value.GetString()!).CopyTo(Machine.Memory,Convert.ToUInt16(range.Name,16));
             reelMotion=new(Machine);reelHardware=new(Machine);
-            using var diceData=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"maps","dice-request-data.json")));
+            using var diceData=JsonDocument.Parse(ReadEvidence(RuntimeEvidenceRequirements.DiceRequestData));
             foreach(var token in diceData.RootElement.GetProperty("threaded_call_pacing").GetProperty("tokens").EnumerateArray())threadedCallTokens.Add(Convert.ToUInt16(token.GetString(),16));
             foreach(var alias in diceData.RootElement.GetProperty("equivalent_timing_tokens").EnumerateObject())tokenCosts.TryAdd(alias.Name,tokenCosts[alias.Value.GetString()!]);
-            using var selection=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","board-selection.json")));
+            using var selection=JsonDocument.Parse(ReadEvidence(RuntimeEvidenceRequirements.BoardLinkCosts("board-selection.json")));
             foreach(var item in selection.RootElement.GetProperty("sites").EnumerateObject())siteCosts.TryAdd(item.Name,item.Value.GetUInt64());
             foreach(var item in selection.RootElement.GetProperty("tokens").EnumerateObject())tokenCosts.TryAdd(item.Name,item.Value.GetUInt64());
-            using var dice=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","dice-requests.json")));
+            using var dice=JsonDocument.Parse(ReadEvidence(RuntimeEvidenceRequirements.BoardLinkCosts("dice-requests.json")));
             foreach(var item in dice.RootElement.GetProperty("sites").EnumerateObject())siteCosts.TryAdd(item.Name,item.Value.GetUInt64());
             foreach(var item in dice.RootElement.GetProperty("tokens").EnumerateObject())tokenCosts.TryAdd(item.Name,item.Value.GetUInt64());
-            using var motionCosts=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","dice-motion-vm.json")));
+            using var motionCosts=JsonDocument.Parse(ReadEvidence(RuntimeEvidenceRequirements.BoardLinkCosts("dice-motion-vm.json")));
             foreach(var item in motionCosts.RootElement.GetProperty("sites").EnumerateObject())siteCosts.TryAdd(item.Name,item.Value.GetUInt64());
             foreach(var item in motionCosts.RootElement.GetProperty("tokens").EnumerateObject())tokenCosts.TryAdd(item.Name,item.Value.GetUInt64());
-            using var movementCosts=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","board-movement.json")));
+            using var movementCosts=JsonDocument.Parse(ReadEvidence(RuntimeEvidenceRequirements.BoardLinkCosts("board-movement.json")));
             foreach(var item in movementCosts.RootElement.GetProperty("sites").EnumerateObject())siteCosts.TryAdd(item.Name,item.Value.GetUInt64());
             foreach(var item in movementCosts.RootElement.GetProperty("tokens").EnumerateObject())tokenCosts.TryAdd(item.Name,item.Value.GetUInt64());
-            using var nudgeCosts=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","nudge-pot-probe.json")));
+            using var nudgeCosts=JsonDocument.Parse(ReadEvidence(RuntimeEvidenceRequirements.BoardLinkCosts("nudge-pot-probe.json")));
             foreach(var item in nudgeCosts.RootElement.GetProperty("sites").EnumerateObject())siteCosts.TryAdd(item.Name,item.Value.GetUInt64());
             foreach(var item in nudgeCosts.RootElement.GetProperty("tokens").EnumerateObject())tokenCosts.TryAdd(item.Name,item.Value.GetUInt64());
-            using var movementData=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"maps","board-movement-data.json")));
+            using var movementData=JsonDocument.Parse(ReadEvidence(RuntimeEvidenceRequirements.BoardMovementData));
             foreach(var alias in movementData.RootElement.GetProperty("equivalent_timing_tokens").EnumerateObject())tokenCosts.TryAdd(alias.Name,tokenCosts[alias.Value.GetString()!]);
         }
         Panel=new(Machine);byte[] other=new byte[8];
@@ -193,7 +194,7 @@ public sealed class SkillCashLiveSession
         // Original ROM data and selected feature-entry service checkpoint.
         // Natural passive PIA observation: IC5 ctl3C/DDR0F/out20,
         // IC8 ctl34/DDRFF/out30; no auxiliary coin input held in this scope.
-        using(var serviceData=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"maps","irq-service-data.json")))){
+        using(var serviceData=JsonDocument.Parse(ReadEvidence(RuntimeEvidenceRequirements.IrqServiceData))){
             var seed=serviceData.RootElement;
             foreach(var region in seed.GetProperty("ranges").EnumerateObject())Convert.FromHexString(region.Value.GetString()!).CopyTo(Machine.Memory,Convert.ToInt32(region.Name,16));
             if(seed.GetProperty("c5_control").GetByte()!=0x3C || seed.GetProperty("c5_direction").GetByte()!=15 || seed.GetProperty("c8_control").GetByte()!=0x34 || seed.GetProperty("c8_direction").GetByte()!=255)throw new NotSupportedException("Unsupported selected service PIA configuration");
@@ -205,12 +206,12 @@ public sealed class SkillCashLiveSession
         Machine.Memory[0x91]&=0x7F;
         alpha=new(Machine);scheduler=new(Machine,initialClock);
         if(boardSelection)scheduler.RestoreQueuedNativeTasks(boardLink is null ? null : at=>BoardLinkState.ResolveSoundContinuation(Machine,at));
-        var response=JsonSerializer.Deserialize<LampFrameCapture>(File.ReadAllText(Path.Combine(evidence,"skill-cash","lamp-frames.json")),options)!;
+        var response=JsonSerializer.Deserialize<LampFrameCapture>(ReadEvidence(RuntimeEvidenceRequirements.LampFrames),options)!;
         var frames=new Mpu4LampFrames(Machine,response.Responses.Select(x=>checked((byte)x)).ToArray());
         var requests=new Mpu4LampRequests(Machine,request=>{frames.Apply(request.Id,request.Pattern);LampRequests++;ObserveLamp?.Invoke(request);});
         // Accepted outer IRQ entry/occupancy remains the explicit CPU adapter.
         // The scan-entry timestamp table is no longer consumed: FE70->28FE is code.
-        using(var interrupts=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","cpu-interrupts.json")))){
+        using(var interrupts=JsonDocument.Parse(ReadEvidence(RuntimeEvidenceRequirements.CpuInterruptSchedule))){
             var intervals=interrupts.RootElement.GetProperty("intervals").EnumerateArray().Select(row=>row.EnumerateArray().Select(x=>x.GetUInt64()).ToArray()).ToArray();
             foreach(var row in interrupts.RootElement.GetProperty("timer1_handler_entries").EnumerateArray())services.Add(row.GetUInt64());
             if(services.Count==0)throw new InvalidDataException("Missing outer IRQ service template");
@@ -254,6 +255,7 @@ public sealed class SkillCashLiveSession
         else executor.Begin(Resolve(includeCaller ? (ushort)0xE2FC : (ushort)0xC721),10_000_000);
     }
     private readonly ulong servicePeriod;
+    private string ReadEvidence(RuntimeEvidenceRequirement requirement)=>evidencePolicy.ReadText(evidence,requirement);
     private RecoveredScript Resolve(ushort address)
     {
         if(!scripts.TryGetValue(address,out var script)){script=new(Path.Combine(evidence,"VM-SCRIPTS",address.ToString("X4")+".txt"));scripts.Add(address,script);}return script;
@@ -285,7 +287,7 @@ public sealed class SkillCashLiveSession
         var pulse=Convert.FromHexString(initial["pulse"]);m.Memory[0xE8]=pulse[0];m.Memory[0xE9]=pulse[1];m.Memory[0xEA]=pulse[2];m.WriteWord(0x32D,(ushort)((pulse[3]<<8)|pulse[4]));
         var ports=Convert.FromHexString(initial["ports"]);int[] addresses=[0xA00,0xA02,0xB00,0xE01,0xB01,0xF01];for(int n=0;n<6;n++)m.Memory[addresses[n]]=ports[n];
         var options=new JsonSerializerOptions{PropertyNameCaseInsensitive=true};
-        var lamps=JsonSerializer.Deserialize<LampFrameCapture>(File.ReadAllText(Path.Combine(evidence,"skill-cash","lamp-frames.json")),options)!;
+        var lamps=JsonSerializer.Deserialize<LampFrameCapture>(ReadEvidence(RuntimeEvidenceRequirements.LampFrames),options)!;
         Convert.FromHexString(lamps.Initial).CopyTo(m.Memory,0x100);
     }
     public void Resume(){if(!Completed && Fault is null)Paused=false;}

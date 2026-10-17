@@ -46,8 +46,10 @@ listing decode/rebuild path before the PC executor can consume them reliably.
 
 Locations below are repository-relative. This inventories the current execution
 owners and groups repeated fields by their consumer; it does not treat every byte
-in a capture file as a runtime dependency. A1 still needs a mechanical enforcement
-boundary before newly added reads can be certified automatically.
+in a capture file as a runtime dependency. `SkillCashLiveSession`'s direct reads
+now have field-level classifications and a strict `RuntimeEvidencePolicy`; strict
+construction fails early until recorded timing/results have causal replacements.
+Reads through other helpers and owners below remain unenforced.
 
 | Consumer / recorded information | Correctness and runtime classification | Causal replacement / priority / difficulty |
 | --- | --- | --- |

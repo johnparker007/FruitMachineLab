@@ -7,6 +7,32 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { if(args.Length>1 && !name.Contains(args[1],StringComparison.OrdinalIgnoreCase))return;action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Payout NVRAM staged refresh matches24 native MAME instruction and RAM paths",()=>{
+    using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","nvram-timing.json")));var catalog=doc.RootElement.GetProperty("catalog");int count=0;
+    foreach(var row in doc.RootElement.GetProperty("rows").EnumerateArray()) {
+        var m=new Machine();Convert.FromHexString(row.GetProperty("before_hex").GetString()!).CopyTo(m.Memory,0);ulong start=row.GetProperty("start_cycle").GetUInt64();var observed=new List<OutputScanInstruction>();
+        using var execution=new Mpu4NvramExecution(m,start,0x600,0x50,0x4CCB);execution.ObserveInstruction=observed.Add;
+        while(!execution.Completed)execution.AdvanceTo(execution.NextEventCycle);
+        var expected=row.GetProperty("steps");Equal(expected.GetArrayLength(),observed.Count);
+        for(int n=0;n<observed.Count;n++){var reference=catalog[expected[n][0].GetInt32()];Equal(reference.GetProperty("pc").GetUInt16(),observed[n].Address);Equal(start+expected[n][1].GetUInt64(),observed[n].Started);Equal(true,reference.GetProperty("context_hex").GetString()!.StartsWith(observed[n].Bytes,StringComparison.Ordinal));}
+        Equal(row.GetProperty("end").GetProperty("cycle").GetUInt64(),execution.Cycle);Equal((ushort)0x600,execution.DataPointer);
+        byte[] ram=Convert.FromHexString(row.GetProperty("after_hex").GetString()!);foreach(int p in Enumerable.Range(0,0x780))if(m.Memory[p]!=ram[p])throw new Exception($"NVRAM case{count} RAM{p:X4}: expected{ram[p]:X2}, actual{m.Memory[p]:X2}");count++;
+    }Equal(24,count);
+});
+Check("Payout NVRAM guard is not IRQ mask and checksum preserves intervening updates",()=>{
+    foreach(ushort cut in new ushort[]{0x6E24,0x6E3B,0x6E57}) {
+        var m=new Machine();for(int p=0x2F0;p<0x309;p++)m.Memory[p]=(byte)(p*17);m.Memory[0x2C]=0x7A;m.Memory[0x322]=0xA5;
+        using var vm=new Mpu4NvramExecution(m,0,0x600,0,0x4CCB);while(vm.Address!=cut)vm.AdvanceTo(vm.NextEventCycle);
+        Equal(false,vm.IrqMasked);byte[] before=m.Memory.ToArray();ulong due=vm.NextEventCycle;vm.AdvanceTo(vm.Cycle);Equal(true,before.SequenceEqual(m.Memory));
+        vm.SuspendUntil(vm.Cycle+137);Equal(due+137,vm.NextEventCycle);Equal(true,before.SequenceEqual(m.Memory));
+        m.Memory[0x322]=unchecked((byte)(m.Memory[0x322]+9));while(!vm.Completed)vm.AdvanceTo(vm.NextEventCycle);
+        byte sum=0;for(int p=0x2F0;p<0x309;p++){sum=unchecked((byte)(sum-m.Memory[p]));Equal(unchecked((byte)~m.Memory[p]),m.Memory[p+0x19]);}
+        Equal(unchecked((byte)(sum-0x32+9)),m.Memory[0x322]);Equal((byte)0x7A,m.Memory[0x2C]);Equal((byte)9,m.Memory[0x5FF]);Equal((ushort)0x600,vm.DataPointer);
+    }
+    var masked=new Machine();using var e=new Mpu4NvramExecution(masked,0,0x600,0x50,0x4CCB);
+    try{e.SuspendUntil(10);throw new Exception("Masked NVRAM accepted IRQ");}catch(InvalidOperationException){}
+    e.AdvanceTo(1);try{e.SuspendUntil(10);throw new Exception("Partial instruction accepted IRQ");}catch(InvalidOperationException){}
+});
 Check("Payout complete output service matches eight MAME instruction RAM and write paths",()=>{
     using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","output-service-timing.json")));var catalog=doc.RootElement.GetProperty("catalog");int count=0;
     foreach(var row in doc.RootElement.GetProperty("rows").EnumerateArray()) {

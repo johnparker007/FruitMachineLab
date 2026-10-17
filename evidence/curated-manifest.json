@@ -210,6 +210,11 @@
     "sha256": "AD6B05EB3DB02331CB6E780241757CDC7398747E8DF32E6987A4A94955DAB0C4"
   },
   {
+    "path": "docs/recovery/PAYOUT-DEBIT-TIMING-PASS.md",
+    "bytes": 2166,
+    "sha256": "3554FF0659AD0965E08B3CB9CBDA97B6B9E013551447E8456FFA06699AE24949"
+  },
+  {
     "path": "docs/recovery/PAYOUT-OUTPUT-SERVICE-TIMING-PASS.md",
     "bytes": 7201,
     "sha256": "C94485326DC79DDD471756040DC183C9B4DAD16CDC220FE0C74BDD57312EFBBF"
@@ -348,6 +353,16 @@
     "path": "evidence/mpu4/collection/debit-matrix.json",
     "bytes": 269628,
     "sha256": "28CA8E34A32DBBE7084C9871DB6B6D00D35B8E0421248790237BB6D33EE33B0C"
+  },
+  {
+    "path": "evidence/mpu4/collection/nvram-timing-debugger.cmd",
+    "bytes": 22100,
+    "sha256": "97C9381A4273FAA41FA0B38C62094E16F18033B71DF8A40857E4120860A1D6C0"
+  },
+  {
+    "path": "evidence/mpu4/collection/nvram-timing.json",
+    "bytes": 327200,
+    "sha256": "A71C30A17890C04B5CCB6FCB7D24E61A927212A38399CDC3F9E51DAAD012679F"
   },
   {
     "path": "evidence/mpu4/collection/output-service-timing-debugger.cmd",

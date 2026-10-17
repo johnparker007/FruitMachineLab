@@ -1,5 +1,11 @@
 # Current handoff
 
+17 October staged NVRAM checkpoint:24 original-ROM cases match every instruction,
+cycle and RAM0000..077F including U scratch. Software guard and CPU mask remain
+separate; synthetic suspension preserves IRQ checksum delta. Next4CBE wrapper and
+post-display accounts;76BF/display ownership remains explicit. See
+[debit timing pass](recovery/PAYOUT-DEBIT-TIMING-PASS.md). Live unchanged.
+
 17 October full output-service milestone: Mpu4PayoutOutputExecution stages normal
 6858 queue search/decrement,7032 checksum, positive511B serial and the nested
 pulse/polling component through return. Eight fresh MAME cases match every native

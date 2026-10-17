@@ -251,8 +251,8 @@
   },
   {
     "path": "docs/recovery/SERIAL-SERVICE-PASS.md",
-    "bytes": 3080,
-    "sha256": "C0D4B4A2993C8A7CBAD2046DC198C47549D5F1D33B030D7D58FA81B6444BCAF4"
+    "bytes": 3838,
+    "sha256": "5057F3C43D3BA3D343EAA71E6EB4E21C6359151F97A83BC38F573C4CF77884F8"
   },
   {
     "path": "docs/recovery/SERVICE-AND-ATTRACT-RECOVERY.txt",
@@ -463,6 +463,16 @@
     "path": "evidence/mpu4/collection/router-matrix.json",
     "bytes": 143068,
     "sha256": "A909CE2A05529DB27FE62475736564E67B77E0EE1EBC4ED46141204337713BB9"
+  },
+  {
+    "path": "evidence/mpu4/collection/serial-frame-debugger.cmd",
+    "bytes": 22858,
+    "sha256": "4C32E8FCD49B46A897CAD53C2888246321CBB2C085AEC6D4CA8ADBC25608AD43"
+  },
+  {
+    "path": "evidence/mpu4/collection/serial-frame.json",
+    "bytes": 333843,
+    "sha256": "495E9D15A1227B2269166B05154DD850A8502D2F7A91EE2D66D74D9FDE69FCF1"
   },
   {
     "path": "evidence/mpu4/collection/serial-reply-debugger.cmd",

@@ -50,3 +50,15 @@ register write or elapsed retry duration is invented. Native byte-result2 return
 without clearing a partial frame. Capture-SerialTransfer and shared curator mode
 serial-transfer preserve source5330..5428 and before/after2KB. Raw pointer:
 FruitMachineLab-serial-transfer.txt. Busy5429 remains unconnected to Live.
+
+## Positive queue frame51B1
+
+AddersSerialFramePlan stages selected positive-message51B1..5282:84 gate, empty
+pointer reset, existing-frame exclusion, original read-pointer range, queue debit/
+checksum,2D/2E door substitution and73 mode,38D reader initialization, disabled/
+null5744 hook and duplicated short outgoing byte at38F. Thirty-two original-ROM
+synthetic cases match all cycles/bytes/full RAM with message1/2D/2E/5F. Opcode
+negative/complement/decrement costs are covered. Negative two-byte queue messages,
+enabled nonnull5744 hooks and >=60 extended packets stop explicitly, not silently
+drop data. Capture-SerialFrame/shared curator serial-frame preserve code/pointers
+and data regions under existing collection conventions. Raw serial-frame.txt.

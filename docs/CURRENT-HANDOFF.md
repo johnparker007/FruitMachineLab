@@ -1,5 +1,9 @@
 # Current handoff
 
+Sixteen-batch cycle batch13: positive51B1 frame builder matches32 instruction/RAM
+paths. Negative/extended/hook paths remain explicit. Next5429 busy-loop ownership,
+without manufacturing transport ACKs or replacing source waits.
+
 Sixteen-batch cycle batch12:5330 transfer state/parser composition matches32
 native instruction/RAM paths, including ACK/retry preparation. Actual70C9 PTM
 retry reset remains explicit. Next queue->frame51B1 and busy5429 ownership.

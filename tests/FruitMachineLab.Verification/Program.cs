@@ -10,6 +10,7 @@ void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exc
 Check("Sound operation native calls preserve frames across24 ROM ticks",()=>Equal(24,AddersSoundOperationVerification.Calls(evidence)));
 Check("Serial reply parser matches32 original-ROM instruction and RAM paths",()=>Equal(32,AddersSoundOperationVerification.Verify(evidence,"serial-reply",(m,row)=>new AddersSerialReplyPlan(m,row.GetProperty("case").GetProperty("value").GetByte(),0x700).Instructions(),0x53AE,0x4C34)));
 Check("Serial transfer state matches32 original-ROM instruction and RAM paths",()=>Equal(32,AddersSoundOperationVerification.Verify(evidence,"serial-transfer",(m,row)=>new AddersSerialTransferPlan(m,0x700).Instructions(),0x5330,0x4C34)));
+Check("Serial positive queue frame matches32 original-ROM instruction and RAM paths",()=>Equal(32,AddersSoundOperationVerification.Verify(evidence,"serial-frame",(m,row)=>new AddersSerialFramePlan(m,0x700,0x1234,0x89,0xAB).Instructions(),0x51B1,0x4C34)));
 Check("Sound operation foreground queue matches32 original-ROM paths",()=>Equal(32,AddersSoundOperationVerification.Queue(evidence)));
 Check("Sound operation foreground reset matches32 original-ROM paths",()=>Equal(32,AddersSoundOperationVerification.Reset(evidence)));
 Check("Sound lifecycle timed cancellation matches32 original-ROM paths",()=>Equal(32,AddersSoundLifecycleVerification.Timed(evidence,"cancel")));

@@ -251,8 +251,8 @@
   },
   {
     "path": "docs/recovery/SERIAL-SERVICE-PASS.md",
-    "bytes": 8217,
-    "sha256": "3012F367D5E6675919FEC12E28E0BEDEC3C54D2C46079D61C61A97CA18BA40FF"
+    "bytes": 8854,
+    "sha256": "5244186B99A47A9AD0DF419F6912BCD43F566A95705C117A230FF63D880C080A"
   },
   {
     "path": "docs/recovery/SERVICE-AND-ATTRACT-RECOVERY.txt",
@@ -473,6 +473,16 @@
     "path": "evidence/mpu4/collection/serial-bit.json",
     "bytes": 296280,
     "sha256": "32BCE0FF9DC53CD9070AEB22806583DA6F0762F8DC375DCE3DE0EEFDCFA4FE9B"
+  },
+  {
+    "path": "evidence/mpu4/collection/serial-byte-debugger.cmd",
+    "bytes": 20446,
+    "sha256": "9A308413706359DDEDF711657291B436AA88A4EE65A6818A7734C67CFC6EDBDD"
+  },
+  {
+    "path": "evidence/mpu4/collection/serial-byte.json",
+    "bytes": 655082,
+    "sha256": "19D8D611D2364188DCEAE425BF5301E31258F6B6CE9116E3340DFEA558558E31"
   },
   {
     "path": "evidence/mpu4/collection/serial-frame-debugger.cmd",
@@ -1483,6 +1493,51 @@
     "path": "evidence/mpu4/native/68f1.json",
     "bytes": 1657,
     "sha256": "98AA15547FBD9A6EC48D5C712F537041E8ACCC44962469437F8BC15DB3BC0100"
+  },
+  {
+    "path": "evidence/mpu4/native/693e.json",
+    "bytes": 3147,
+    "sha256": "8633ACA862A1CA1F7069402B5080B1E5C1C5AF1BD8F87AC4662905A63E4A33D5"
+  },
+  {
+    "path": "evidence/mpu4/native/69a9.json",
+    "bytes": 1261,
+    "sha256": "D9AA6CD4A5725B69497A8EFCE8409EE4E69CDDC8D55D1FFE0A785AB220D8D8F9"
+  },
+  {
+    "path": "evidence/mpu4/native/69c0.json",
+    "bytes": 3153,
+    "sha256": "09111B7A8D63FFC74D5F8D714135C72B75CC06D9E0F6F212731DA13DF9D342D8"
+  },
+  {
+    "path": "evidence/mpu4/native/69fe.json",
+    "bytes": 850,
+    "sha256": "4D7E9C18D9701524612FCD83680E5E0041A984E91D180CC97698D3597E8E0829"
+  },
+  {
+    "path": "evidence/mpu4/native/6a08.json",
+    "bytes": 1576,
+    "sha256": "7B60FE691A157DD4C37CFD9F267B94401EF4DF22EE726DD92C2E20C06DC75D80"
+  },
+  {
+    "path": "evidence/mpu4/native/6a3b.json",
+    "bytes": 1992,
+    "sha256": "CB9F835C807F948CF89CB777F32829947B1A818DCEC0869386BB17ACE69B0CD9"
+  },
+  {
+    "path": "evidence/mpu4/native/6ac1.json",
+    "bytes": 2599,
+    "sha256": "210C8BD7AC1E9988DEC436D53ECF62B86372820A83E3FF2BF7B9F68DFF547BFA"
+  },
+  {
+    "path": "evidence/mpu4/native/6b0e.json",
+    "bytes": 2203,
+    "sha256": "2FE743F3DC6C6CB82C9613D8D06B3BABD1C3E2F77CD32B764BE746EC3189342B"
+  },
+  {
+    "path": "evidence/mpu4/native/6b4d.json",
+    "bytes": 9879,
+    "sha256": "6A96253372D6FA7B047FDE944F563F69954EA509C63BDF1F314A8E4A2E30C1D0"
   },
   {
     "path": "evidence/mpu4/native/6e06.json",

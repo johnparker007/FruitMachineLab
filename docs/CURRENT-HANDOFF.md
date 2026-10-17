@@ -1,5 +1,8 @@
 # Current handoff
 
+Next16 cycle batch2:693E complete byte-image generation matches32 ROM prefixes
+to69FE. Next native timer2 programming and receive/bit callbacks. No guessed baud.
+
 Next16 cycle batch1: native69A9 bit-image builder matches32 ROM paths using
 actual C01 values. Next693E byte frames then timer2/receive callbacks. No Live
 or wire-clock claim yet. See serial service pass.

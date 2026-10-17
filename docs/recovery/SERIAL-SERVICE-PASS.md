@@ -130,3 +130,12 @@ timing is inferred yet. New transport tools reuse the same catalog/RAM schema an
 collection location. Curator normalizes a single legacy flattened span so source
 regions cannot silently expand backwards; initial bad export was rejected by the
 opcode comparison and replaced, with no raw capture changes. Raw serial-bit.txt.
+
+693E byte preparation now composes69A9, writes actual native stack scratch,
+disables receive edge enable atB03, and emits7/8 data, optional parity,1/2 stop
+images andFF sentinel before typed69FE ownership.32 native frame cases match all
+instruction PCs/cycles/bytes and full RAM. The first observer omitted BSR sites
+inside the shared Bit method; it was excluded and recaptured with those sites.
+Busy71 still stops explicitly pending a timer owner. PIA reads are explicit;
+the current comparison checks RAM and CPU costs, not emitted wire timing. Historical
+native693E/69A9/69C0/69FE/6A08/6A3B/6AC1/6B0E/6B4D annotations are preserved.

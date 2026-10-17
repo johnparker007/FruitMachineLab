@@ -8,6 +8,7 @@ var passed = 0;
 void Check(string name, Action action) { if(args.Length>1 && !name.Contains(args[1],StringComparison.OrdinalIgnoreCase))return;action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
 Check("Serial transport bit images match32 original-ROM instruction paths",()=>Equal(32,AddersSerialTransportVerification.Bit(evidence)));
+Check("Serial transport byte frames match32 original-ROM instruction paths",()=>Equal(32,AddersSerialTransportVerification.Byte(evidence)));
 Check("Sound operation native calls preserve frames across24 ROM ticks",()=>Equal(24,AddersSoundOperationVerification.Calls(evidence)));
 Check("Serial reply parser matches32 original-ROM instruction and RAM paths",()=>Equal(32,AddersSoundOperationVerification.Verify(evidence,"serial-reply",(m,row)=>new AddersSerialReplyPlan(m,row.GetProperty("case").GetProperty("value").GetByte(),0x700).Instructions(),0x53AE,0x4C34)));
 Check("Serial transfer state matches32 original-ROM instruction and RAM paths",()=>Equal(32,AddersSoundOperationVerification.Verify(evidence,"serial-transfer",(m,row)=>new AddersSerialTransferPlan(m,0x700).Instructions(),0x5330,0x4C34)));

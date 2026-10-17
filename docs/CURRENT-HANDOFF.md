@@ -1,5 +1,8 @@
 # Current handoff
 
+Sixteen-batch cycle batch7: foreground5C18 queue fully instruction-staged and
+verified32 MAME calls; next cancel/reset timing, then host ownership composition.
+
 Sixteen-batch cycle batch6: real prompt/requeue and sampled Collect transition
 pass in BOTH collection hosts on one state; four selected debits/eight edges.
 Service cadence/VM budgets remain synthetic. Next remove remaining foreground

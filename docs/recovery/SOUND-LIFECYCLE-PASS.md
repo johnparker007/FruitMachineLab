@@ -298,3 +298,12 @@ configuration. No runtime behaviour was changed. Service uses separate explicit
 S0500, not the foreground VM's S0784. Service cadence, ordinary VM/alpha budgets,
 award seed and pulse counter policy are synthetic. This is integration evidence,
 not natural full-game timing or a GUI claim.
+
+Foreground5C18 now has AddersSoundQueuePlan, including60C8's saved-stack early
+return,5C51 allocation, saturated volume initialization, due=clock+1 and native
+guard/frame effects.32 original-ROM queue calls match all emitted instructions/
+cycles/bytes/full RAM across free/exhausted pools, volume0/1/255 and disabled128,
+including clock wrap. Capture-SoundQueue / shared curator -Operation queue use
+existing conventions. Opcode COMB/ORB/ADDD immediate timing is covered by those
+paths. The allocation sequence is intentionally explicit like C2; neither caller
+inherits a guessed normal C ABI. No Live change. Raw pointer sound-queue.txt.

@@ -316,8 +316,8 @@
   },
   {
     "path": "docs/recovery/SOUND-LIFECYCLE-PASS.md",
-    "bytes": 18958,
-    "sha256": "C645A48B51D877818CECCBBB7EBB9622F19A1A976BFCEF9EE0BF8CA2C30ED312"
+    "bytes": 19598,
+    "sha256": "DCE96DF6C4A85918EBAC4C9D6263789432A9223395604F99E415B2C2E6599A55"
   },
   {
     "path": "docs/recovery/SPECIAL-FEATURE-RECOVERY.txt",
@@ -538,6 +538,16 @@
     "path": "evidence/mpu4/collection/sound-prompt.json",
     "bytes": 2114466,
     "sha256": "3277CF7112CD65F61E5E606A7C6BA926F35684F86929DD56B46D0F94EA7D65CB"
+  },
+  {
+    "path": "evidence/mpu4/collection/sound-queue-debugger.cmd",
+    "bytes": 23094,
+    "sha256": "35D2178C64AB823C224714CF4FD9EFEA65F6F84408B326FF146A4D3056738A50"
+  },
+  {
+    "path": "evidence/mpu4/collection/sound-queue.json",
+    "bytes": 332284,
+    "sha256": "A1DDB567112DC1000AB96C3C8FBC89873B55C7CC661723726C7CC449594AD4A3"
   },
   {
     "path": "evidence/mpu4/collection/sound-rhythm-debugger.cmd",

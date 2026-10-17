@@ -8,6 +8,7 @@ var passed = 0;
 void Check(string name, Action action) { if(args.Length>1 && !name.Contains(args[1],StringComparison.OrdinalIgnoreCase))return;action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
 Check("Sound operation native calls preserve frames across24 ROM ticks",()=>Equal(24,AddersSoundOperationVerification.Calls(evidence)));
+Check("Sound operation foreground queue matches32 original-ROM paths",()=>Equal(32,AddersSoundOperationVerification.Queue(evidence)));
 Check("Sound operation rhythm notes match120 original-ROM paths",()=>Equal(120,AddersSoundOperationVerification.Rhythm(evidence)));
 Check("Sound operation original8784 prompt matches128 preserved ROM ticks",()=>Equal(128,AddersSoundOperationVerification.Prompt(evidence)));
 Check("Sound operation complete8784 prompt drains twelve times without native leaks",()=>Equal(48,AddersSoundOperationVerification.NativeChildLongevity(evidence,true)));

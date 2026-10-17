@@ -135,6 +135,11 @@
     "sha256": "CAB218A225A8D6FFE836C772EA67BA0C20009E60353DB28C92DA694149B0B444"
   },
   {
+    "path": "docs/recovery/NATURAL-PLAY-BOUNDARY-PASS.md",
+    "bytes": 5778,
+    "sha256": "C24B90AD73B3BABEAA086BC5517A89EE8ADBE9A18A9B973649C0D158A8FC4223"
+  },
+  {
     "path": "docs/recovery/NUDGE-AND-AWARD-PATHS.txt",
     "bytes": 805,
     "sha256": "0091D6506FB092A8024C372E27BC8B8781C389D96BCF00E09A857FF0A1451A87"
@@ -2198,6 +2203,16 @@
     "path": "evidence/mpu4/patches/verification.json",
     "bytes": 2030,
     "sha256": "F748207011DBC5FF5AA66DF0A082C0D61A5E4F07FDA4A410564CDCFD3E176CE6"
+  },
+  {
+    "path": "evidence/mpu4/play/natural-award-boundary.json",
+    "bytes": 5079,
+    "sha256": "D5BED246527375201167C8743E1268C43F641492B1D5AAEB8B96EE9C1E581159"
+  },
+  {
+    "path": "evidence/mpu4/play/natural-award-boundary.txt",
+    "bytes": 1641,
+    "sha256": "69F262A01BD8E6E5A6FE5F131B0CF1D4739BFEDDA74F2CE51BD2481140B252BE"
   },
   {
     "path": "evidence/mpu4/skill-cash/actions.csv",

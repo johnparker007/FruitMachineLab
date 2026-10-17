@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "observed": "Natural reset through post-VM attract, controlled coin/start, paid spin setup and natural shared-award table read",
+  "classification": {
+    "natural": "Real MAME 0.281 execution on the unmodified original and the previously generated integrity-repaired image; fresh isolated directories; no PC/RAM/state/ROM injection.",
+    "controlled": "Only MAME ioport field values for AUX2 coin 128 at 35.0s and BLACK2 Start 128 at 37.0-37.2s. These are input events, not passive play.",
+    "static": "The shared table address 75BD and the changed byte 75BE come from the existing ROM patch and prior static recovery.",
+    "hypothesis": "Why the ordinary paid path reads table index 75C0 rather than the patched index 75BE is not established here.",
+    "synthetic": "Curator negative controls alter copied raw artifacts only and are rejected; they are not natural execution evidence."
+  },
+  "mame_sha256": "0fce5a88df4f9d9b1fbf1405812c00848036e615993780978d967da34204cb7a",
+  "original_rom": {"sha1": "402d1518bb78fdc489b06c2aabc771e5ce151847", "sha256": "ebf580381aa6eb6ffb26e2acd40f30aa34b0311f71c6564607c6f48a53bca15c"},
+  "repaired_rom": {"sha1": "ae040f3f130934972b9e651d4dbe36ff24fb4954", "sha256": "66162b920b05c537a5c7bce098d883b0551951ed46aa97cd98600a3d7b789796"},
+  "original_run": {
+    "source_run": "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\general-09\\mame-coinstart-original-3",
+    "debug_log_sha256": "448a223134be90ad571716ff39904fdf19b3864bbb930a32f8b45dfe976d9498",
+    "console_sha256": "7f837f01eea1d571d66fd8fc6287d64e9a8bb16b6356846539122c937ddaefcc",
+    "markers": [
+    "PLAY_RESET pc=7CD1 s=0000 cc=50 cycle=0000000000000007",
+    "PLAY_INIT_ENTRY pc=6750 u=0672 cycle=000000000000002F",
+    "PLAY_ROM_CHECK_RETURN pc=677E y=FFFF u=0672 cycle=0000000000C79D79",
+    "PLAY_VM_ENTRY pc=76C7 x=FDF0 y=02DA u=0672 s=07C6 cycle=00000000029F11C7",
+    "PLAY_MAIN_FIRST_NATIVE pc=496A x=7FBF y=FDF2 u=0672 cycle=00000000029F128C",
+    "PLAY_ATTRACT_LAMP_RANGE pc=4AC0 x=8096 y=FCE4 u=0672 credit2f0=00 cycle=00000000029F1FD0",
+    "PLAY_LAMP_INIT pc=171D x=80DA y=FB31 u=0672 credit2f0=00 cycle=0000000002A2BD3B",
+    "PLAY_REEL_REFRESH pc=2BEB x=8112 y=FADB u=0672 cycle=0000000002A2F455",
+    "PLAY_STATUS_SERVICE pc=482F x=80CE y=FBF3 u=0672 credit2f0=00 cycle=0000000002A4D702",
+    "PLAY_PAID_SPIN_SETUP pc=61D6 x=811A y=F2BB u=0670 cycle=0000000003D399AB",
+    "PLAY_AWARD_TABLE_READ address=75C0 value=14 credit2f0=04 cycle=0000000003EF2A91"
+  ]
+  },
+  "original_repeat": {
+    "source_run": "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\general-09\\mame-coinstart-original-5",
+    "debug_log_sha256": "448a223134be90ad571716ff39904fdf19b3864bbb930a32f8b45dfe976d9498",
+    "markers_identical": true
+  },
+  "repaired_run": {
+    "source_run": "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\general-09\\mame-coinstart-repaired-1",
+    "debug_log_sha256": "448a223134be90ad571716ff39904fdf19b3864bbb930a32f8b45dfe976d9498",
+    "console_sha256": "0cd478f557f50ecb665b3bd1235ef63e6def234fe006768c6c2b31769f2aae9d",
+    "markers": [
+    "PLAY_RESET pc=7CD1 s=0000 cc=50 cycle=0000000000000007",
+    "PLAY_INIT_ENTRY pc=6750 u=0672 cycle=000000000000002F",
+    "PLAY_ROM_CHECK_RETURN pc=677E y=FFFF u=0672 cycle=0000000000C79D79",
+    "PLAY_VM_ENTRY pc=76C7 x=FDF0 y=02DA u=0672 s=07C6 cycle=00000000029F11C7",
+    "PLAY_MAIN_FIRST_NATIVE pc=496A x=7FBF y=FDF2 u=0672 cycle=00000000029F128C",
+    "PLAY_ATTRACT_LAMP_RANGE pc=4AC0 x=8096 y=FCE4 u=0672 credit2f0=00 cycle=00000000029F1FD0",
+    "PLAY_LAMP_INIT pc=171D x=80DA y=FB31 u=0672 credit2f0=00 cycle=0000000002A2BD3B",
+    "PLAY_REEL_REFRESH pc=2BEB x=8112 y=FADB u=0672 cycle=0000000002A2F455",
+    "PLAY_STATUS_SERVICE pc=482F x=80CE y=FBF3 u=0672 credit2f0=00 cycle=0000000002A4D702",
+    "PLAY_PAID_SPIN_SETUP pc=61D6 x=811A y=F2BB u=0670 cycle=0000000003D399AB",
+    "PLAY_AWARD_TABLE_READ address=75C0 value=14 credit2f0=04 cycle=0000000003EF2A91"
+  ]
+  },
+  "differential": {"identical_marker_cycles": true, "identical_award_read": true, "award_address": "75C0", "original_value": "14", "repaired_value": "14", "patched_byte": "75BE", "patched_byte_consumed_on_this_path": false},
+  "negative_controls": [
+    "award_value",
+    "missing_coin",
+    "marker_order",
+    "rom_identity",
+    "rom_unchanged_false",
+    "debug_log_hash",
+    "nonzero_exit",
+    "start_event"
+  ],
+  "limitations": [
+    "One cold reset per image; MAME only; no physical hardware.",
+    "The runtime did not observe the FC99/FCA7 condition-12 preplay block with the selected debugger instrumentation. The observed input-ready evidence is credit present after coin and Start accepted into paid spin setup 61D6.",
+    "The natural lookup read index 75C0, not the patched 75BE, so the 10->12 edit is not exercised by this path.",
+    "No complete paid game, payout, reel result or Skill Cash feature is claimed.",
+    "MAME loader CRC/SHA warnings for the repaired image remain expected and are not a firmware-integrity result."
+  ]
+}

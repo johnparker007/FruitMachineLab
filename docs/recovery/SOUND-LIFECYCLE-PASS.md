@@ -277,3 +277,11 @@ actual native execution/time; faults latch and cannot resume. There is no IRQ
 period or acceptance inference. Selected diagnostic return continuation is4C34.
 Synthetic owner checks exercise pause, single tick, mutation exclusion and disabled
 reset/queue. Logical scheduler/Live are unchanged.
+
+Collection hosts now optionally accept AddersNativeSound through shared bindings.
+In this mode856F reads actual0047, queue/reset affect only native memory, and
+5CCB refuses an early continuation. Existing logical mode keeps its mismatch
+guard. Same-machine/one-owner checks reject a live logical scheduler, foreign
+machine and collection execution during native service/fault. These are semantic
+word boundaries; callers must schedule foreground/native work explicitly.
+Regression tests retain all previous collection paths; no GUI owner is switched.

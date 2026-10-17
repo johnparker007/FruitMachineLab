@@ -21,6 +21,16 @@ Check("Native sound owner preserves pause and rejects competing foreground mutat
     Equal(true,sound.Cancel(0x8784));Equal(true,sound.Reset());Equal(false,sound.Active);Equal((ushort)0x1A0,m.ReadWord(0x49));
     m.Memory[0x719B]=0x80;before=m.Memory.ToArray();Equal(false,sound.Reset());Equal(false,sound.Queue(0x8784));Equal(true,before.SequenceEqual(m.Memory));
 });
+Check("Native sound collection bindings use actual list and prohibit dual ownership",()=>{
+    var m=new Machine();var sound=new AddersNativeSound(m);sound.Reset();var logical=new Mpu4ChoiceStreamScheduler(m,0);
+    var binding=new AddersCollectionWordBindings(m,_=>{},new(m),logical,nativeSound:sound);
+    var empty=new Instruction(0,0x856F,"",null,null);binding.Handle(empty,m);Equal(ushort.MaxValue,m.Pop());
+    var queue=new Instruction(0,0,"",null,null,Native:0x5C18);m.Data.Push(0x8784);binding.Handle(queue,m);Equal(false,logical.Active);Equal(true,sound.Active);binding.Handle(empty,m);Equal((ushort)0,m.Pop());
+    sound.BeginService(0,0x700,0x600,0x8784,0x1A0,true);try{binding.Handle(empty,m);throw new Exception("Concurrent collection accepted");}catch(InvalidOperationException){}
+    var other=new Machine();try{binding.Handle(empty,other);throw new Exception("Cross-machine sound accepted");}catch(InvalidOperationException){}
+    var second=new Machine();var secondSound=new AddersNativeSound(second);secondSound.Reset();var duplicate=new Mpu4ChoiceStreamScheduler(second,0);duplicate.Queue(0x8784);
+    var both=new AddersCollectionWordBindings(second,_=>{},new(second),duplicate,nativeSound:secondSound);try{both.Handle(empty,second);throw new Exception("Dual sound owner accepted");}catch(InvalidOperationException){}
+});
 Check("Sound operation yield matches48 original-ROM instruction paths",()=>Equal(48,AddersSoundOperationVerification.Yield(evidence)));
 Check("Sound operation child matches32 original-ROM instruction paths",()=>Equal(32,AddersSoundOperationVerification.Child(evidence)));
 Check("Sound operation instrument matches48 original-ROM instruction paths",()=>Equal(48,AddersSoundOperationVerification.Instrument(evidence)));

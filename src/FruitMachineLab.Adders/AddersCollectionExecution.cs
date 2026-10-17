@@ -24,11 +24,11 @@ public sealed class AddersCollectionExecution
 
     public AddersCollectionExecution(Machine machine,string evidenceDirectory,ushort entry,
         Action<LampRequest> lampOutput,Mpu4Alpha alpha,Mpu4ChoiceStreamScheduler scheduler,
-        Func<byte> readTriac,Action<byte> writeTriac,Action<byte,byte>? ymWrite=null)
+        Func<byte> readTriac,Action<byte> writeTriac,Action<byte,byte>? ymWrite=null,AddersNativeSound? nativeSound=null)
     {
         this.machine=machine;evidence=evidenceDirectory;this.alpha=alpha;
         this.readTriac=readTriac;this.writeTriac=writeTriac;
-        var bindings=new AddersCollectionWordBindings(machine,lampOutput,alpha,scheduler,ymWrite);
+        var bindings=new AddersCollectionWordBindings(machine,lampOutput,alpha,scheduler,ymWrite,nativeSound);
         transfer=new(machine,evidence,entry,lampOutput,bindings.Handle);
     }
     public void Step()

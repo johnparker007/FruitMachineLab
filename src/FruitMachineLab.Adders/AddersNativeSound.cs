@@ -7,6 +7,7 @@ public sealed class AddersNativeSound(Machine machine,Action<byte,byte>? ymWrite
 {
     private NativeRoutineExecution? running;
     private AddersSoundServicePlan? plan;
+    public bool Owns(Machine state)=>ReferenceEquals(machine,state);
     public bool Active=>machine.ReadWord(0x47)!=0;
     public bool Servicing=>running is not null;
     public ulong Cycle {get;private set;}

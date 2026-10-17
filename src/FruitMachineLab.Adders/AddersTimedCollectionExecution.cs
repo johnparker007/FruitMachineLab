@@ -29,11 +29,11 @@ public sealed class AddersTimedCollectionExecution : IDisposable
     public AddersTimedCollectionExecution(Machine machine,string evidenceDirectory,ushort entry,ulong start,
         Action<LampRequest> lampOutput,Mpu4Alpha alphaOutput,Mpu4ChoiceStreamScheduler scheduler,
         Func<Instruction,Machine,ulong> unresolvedCollectionWordCycles,Func<Instruction,Machine,ulong> unresolvedAlphaCycles,
-        Func<byte> readTriac,Action<byte> writeTriac,byte vmInterruptMask,Action<byte>? writeVmMode=null,Action<byte,byte>? ymWrite=null)
+        Func<byte> readTriac,Action<byte> writeTriac,byte vmInterruptMask,Action<byte>? writeVmMode=null,Action<byte,byte>? ymWrite=null,AddersNativeSound? nativeSound=null)
     {
         if(machine.Control is null || machine.Control.Pointer>0x7C8)throw new NotSupportedException("Timed collection requires a native VM S below accounting RAM07C9");
         m=machine;evidence=evidenceDirectory;alpha=alphaOutput;Cycle=start;vmMask=(byte)(vmInterruptMask&0x50);wordCycles=unresolvedCollectionWordCycles;alphaCycles=unresolvedAlphaCycles;readPort=readTriac;writePort=writeTriac;writeMode=writeVmMode;
-        var bindings=new AddersCollectionWordBindings(m,lampOutput,alpha,scheduler,ymWrite);transfer=new(m,evidence,entry,lampOutput,bindings.Handle);Schedule();
+        var bindings=new AddersCollectionWordBindings(m,lampOutput,alpha,scheduler,ymWrite,nativeSound);transfer=new(m,evidence,entry,lampOutput,bindings.Handle);Schedule();
     }
     private void Schedule()
     {

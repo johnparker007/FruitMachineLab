@@ -1,5 +1,9 @@
 # Current handoff
 
+Sixteen-batch cycle batch5: both collection hosts accept explicit native sound
+bindings without a duplicate logical list. Ownership checks and20 Collect groups
+pass. Next exercise actual prompt/requeue/Collect transition on one state.
+
 Sixteen-batch cycle batch4: explicit AddersNativeSound owner stages one native
 service call, blocks competing foreground mutation and freezes on pause/fault.
 Host supplies cadence/native context; queue/reset remain semantic boundaries.

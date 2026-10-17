@@ -1,5 +1,8 @@
 # Current handoff
 
+Next16 cycle batch3:70C9/70D6 timer2 programming matches16 original-ROM paths.
+Mode62 one-shot needs its own hardware lifecycle; no latch+1 shortcut/IRQ guess.
+
 Next16 cycle batch2:693E complete byte-image generation matches32 ROM prefixes
 to69FE. Next native timer2 programming and receive/bit callbacks. No guessed baud.
 

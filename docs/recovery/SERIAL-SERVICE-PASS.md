@@ -139,3 +139,13 @@ inside the shared Bit method; it was excluded and recaptured with those sites.
 Busy71 still stops explicitly pending a timer owner. PIA reads are explicit;
 the current comparison checks RAM and CPU costs, not emitted wire timing. Historical
 native693E/69A9/69C0/69FE/6A08/6A3B/6AC1/6B0E/6B4D annotations are preserved.
+
+Timer270C9 reset and70D6 arm now stage their real B/CC saves and declared mask,
+status/counter reads, callback3B, control62 at901/shadow3F and ordered latch MSB/
+LSB904/905 writes.16 native original-ROM calls match instructions and full RAM.
+Bus read/write delegates are mandatory; no peripheral register image silently
+stands in for a device. CPU instruction costs are proved; exact intra-instruction
+bus strobe phase/expiry acceptance are not yet inferred. Mode62 is one-shot
+internal16-bit, not the timer1 continuous period model. Zero/FFFF latch cases
+verify programming only. Raw serial-timer.txt; early observer version omitted
+dynamic ORCC entries and was replaced with explicit observations.

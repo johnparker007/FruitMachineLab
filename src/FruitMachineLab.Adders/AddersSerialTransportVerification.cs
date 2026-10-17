@@ -4,6 +4,7 @@ namespace FruitMachineLab.Adders;
 
 public static class AddersSerialTransportVerification
 {
+    public static int Timer(string evidence)=>Verify(evidence,"serial-timer",(m,row)=>new AddersSerialTimerPlan(m,row.GetProperty("case").GetProperty("entry").GetUInt16(),0x700,0x69C0,row.GetProperty("case").GetProperty("period").GetUInt16(),0xAB,row.GetProperty("case").GetProperty("cc").GetByte(),at=>row.GetProperty("start").GetProperty(at==0x901 ? "io" : "rx").GetByte(),(_,_)=>{}).Instructions());
     public static int Byte(string evidence)=>Verify(evidence,"serial-byte",(m,row)=>new AddersSerialBytePlan(m,0x700,0x1234,0x4567,0x89,row.GetProperty("case").GetProperty("value").GetByte(),at=>row.GetProperty("start").GetProperty(at==0xC01 ? "io" : "rx").GetByte(),(_,_)=>{}).Instructions());
     public static int Bit(string evidence)=>Verify(evidence,"serial-bit",(m,row)=>new AddersSerialBitPlan(m,row.GetProperty("case").GetProperty("value").GetByte(),_=>row.GetProperty("start").GetProperty("io").GetByte()).Instructions());
     public static int Verify(string evidence,string stem,Func<Machine,JsonElement,IEnumerable<NativeRoutineWork>> plan)

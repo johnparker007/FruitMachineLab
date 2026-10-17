@@ -1,5 +1,14 @@
 # Implementation and evidence boundaries
 
+17 October static ROM-integrity increment: startup 66A5/66DB self-check recovered
+as four 11-byte records at FFB0; the single gate-00 record covers CPU range
+1400-FFFF with expected fields FFD1-FFD5 (`3E 76 1E 26 05`). All three recovered
+algorithms reproduce those fields on the original image; a local tool validates
+identity, table, fields and a synthetic in-memory detection control. No repair,
+re-signing, bypass, ROM change, MAME boot or gameplay claim. See
+[ROM integrity](docs/recovery/ROM-INTEGRITY-PASS.md). This static increment does
+not touch the pre-existing timer1 sound-wrapper work or its failing focused check.
+
 17 October ROM-editing increment: strict declarative patcher generates a separate
 original-identity-checked image, changing only shared award-table byte75BE (10→12).
 Four new headless groups and CLI safety tests pass; full suite357 groups. Recovered

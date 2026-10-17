@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "rom": {
+    "name": "a6ls.p1",
+    "length": 65536,
+    "sha1": "402d1518bb78fdc489b06c2aabc771e5ce151847"
+  },
+  "classification": "Static recovery of the startup ROM self-check. No repair, bypass, re-signing or ROM modification is implemented.",
+  "routine": {
+    "entry": "66A5",
+    "name": "startup_verify_rom_checksums",
+    "verifier_entry": "66DB",
+    "verifier_name": "verify_rom_region_sum_xor",
+    "frame_reserve_entry": "6FA2",
+    "frame_reserve_name": "reserve_rom_checksum_scratch",
+    "init_caller": "6750",
+    "init_caller_name": "initialize_machine_and_game",
+    "outer_gate": {
+      "address": "719B",
+      "mask": "02",
+      "value": "00",
+      "enabled": true,
+      "semantics": "66A5 returns before any record is verified when ROM 719B bit1 is set. The original image has 00, so bit1 is clear and the record loop runs."
+    },
+    "gate_semantics": "66A5 loads error_code=A from record+9 and gate=B from record+10, stores A in its scratch frame, and executes TSTB/BNE to skip verification when B is nonzero. 66DB executes SWI with B=error_code on failure. Only gate=00 records are active."
+  },
+  "table": {
+    "base": "FFB0",
+    "record_size": 11,
+    "record_count": 4,
+    "termination": "FFDC",
+    "fields": {
+      "expected_sum": 0,
+      "expected_xor": 1,
+      "expected_rotate_add": 2,
+      "expected_rotate_sub_xor_a": 3,
+      "expected_rotate_sub_xor_b": 4,
+      "start_word": 5,
+      "end_word": 7,
+      "error_code": 9,
+      "gate": 10
+    },
+    "word_encoding": "big-endian; for this selected image file offsets equal CPU addresses (see maps/rom-layout.json)"
+  },
+  "algorithms": {
+    "sum_xor": {
+      "fields": ["expected_sum", "expected_xor"],
+      "excluded_bytes": "FFD1-FFD5",
+      "description": "8-bit additive sum and XOR over the inclusive start..end range. After processing FFD0 the pointer increments to FFD1 and is redirected to FFD6, so FFD1..FFD5 are excluded."
+    },
+    "rotate_add": {
+      "field": "expected_rotate_add",
+      "excluded_bytes": "FFD3-FFD5",
+      "description": "Instruction-exact 66DB loop: ROLB; ADCA ,X; RORB. The carry entering the next ROLB is the carry from CMPX #FFD3 (address comparison) after the increment, including the FFD3->FFD6 redirect. Only accumulator A is compared."
+    },
+    "rotate_sub_xor": {
+      "fields": ["expected_rotate_sub_xor_a", "expected_rotate_sub_xor_b"],
+      "excluded_bytes": "FFD4-FFD5",
+      "description": "Instruction-exact 66DB loop: LSLB; ADCB #0; SUBB ,X; PSHS B; TFR A,B; three ASRB/RORA pairs; PULS B; EORA ,X. After processing FFD3 the pointer increments to FFD4 and is redirected to FFD6. A and B are compared."
+    }
+  },
+  "records": [
+    {
+      "base": "FFB0",
+      "start": "1400",
+      "end": "5FFF",
+      "error_code": "15",
+      "gate": "FF",
+      "enabled": false,
+      "expected_hex": "FFFFFFFFFF"
+    },
+    {
+      "base": "FFBB",
+      "start": "1400",
+      "end": "7FFF",
+      "error_code": "14",
+      "gate": "FF",
+      "enabled": false,
+      "expected_hex": "FFFFFFFFFF"
+    },
+    {
+      "base": "FFC6",
+      "start": "1400",
+      "end": "FFFF",
+      "error_code": "13",
+      "gate": "FF",
+      "enabled": false,
+      "expected_hex": "FFFFFFFFFF"
+    },
+    {
+      "base": "FFD1",
+      "start": "1400",
+      "end": "FFFF",
+      "error_code": "12",
+      "gate": "00",
+      "enabled": true,
+      "expected_hex": "3E761E2605",
+      "verified": {
+        "sum_xor": {
+          "expected": { "sum": "3E", "xor": "76" },
+          "computed": { "sum": "3E", "xor": "76" },
+          "match": true
+        },
+        "rotate_add": {
+          "expected": "1E",
+          "computed": "1E",
+          "match": true
+        },
+        "rotate_sub_xor": {
+          "expected": { "a": "26", "b": "05" },
+          "computed": { "a": "26", "b": "05" },
+          "match": true
+        }
+      }
+    }
+  ],
+  "provenance": {
+    "rom_sha1": "402d1518bb78fdc489b06c2aabc771e5ce151847",
+    "assembly": [
+      "evidence/mpu4/native/66a5.json",
+      "evidence/mpu4/native/66db.json"
+    ],
+    "index": [
+      "docs/recovery/FUNCTION-INDEX.txt:286",
+      "docs/recovery/FUNCTION-INDEX.txt:287"
+    ],
+    "source_note": "Saved assembly exported from the documented local original workspace prerequisite-pass, now curated in native evidence. Computed values come from tools/Verify-RomIntegrity.ps1 emulating the saved instructions."
+  },
+  "limitations": [
+    "Only the gate-00 record is active. The three gate-FF records are reported as stored, not treated as active checks.",
+    "This certifies the self-check algorithm, range, fields and original expected values for the original image only. It does not repair, regenerate, bypass or re-sign a modified image.",
+    "Loader CRC/SHA warnings and the 68F1 characteriser challenge checks are separate integrity mechanisms and are not covered.",
+    "No natural MAME boot, gameplay or executable-semantics claim is made by this static report."
+  ]
+}

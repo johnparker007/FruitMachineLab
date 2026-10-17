@@ -19,7 +19,7 @@
     "cells":"big-endian 16 bit, odd alignment allowed",
     "references":"absolute code-pointer headers and execution-token addresses; inline branch payloads have relative encodings",
     "free_space":"none certified",
-    "integrity":"startup ROM sum/XOR checks identified, algorithm/repair not yet certified",
+    "integrity":"startup 66A5/66DB self-check recovered: table FFB0, active range 1400-FFFF, fields FFD1-FFD5; see maps/rom-integrity.json. Repair/regeneration not implemented",
     "banking":"generic MPU4 supports banking; selected patch restricted to original single 64KiB image",
     "ram":"0000-07FF includes stacks, counters and NVRAM; F8-FF dispatch template; F4/F6 local/loop pointers"
   }

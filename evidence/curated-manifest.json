@@ -245,6 +245,11 @@
     "sha256": "116816983F30E222C10D291B3F7B9104AA993C2172095B952910FD264CFB1054"
   },
   {
+    "path": "docs/recovery/ROM-INTEGRITY-PASS.md",
+    "bytes": 7579,
+    "sha256": "779D515A9C23A33D63AE64166839936864289FCACC4C3B92362D1D24AC495D3A"
+  },
+  {
     "path": "docs/recovery/SCRIPT-CLASSIFICATION.txt",
     "bytes": 8931,
     "sha256": "E746D61540F6C608FD8568DFBC9982C0F594814730AFD86429E220B4999E2D5D"
@@ -865,9 +870,14 @@
     "sha256": "7F151F4C350B3C07DDB9D746FE2C6BF82E5D9EA865C9EE7954CB8EBF64C73731"
   },
   {
+    "path": "evidence/mpu4/maps/rom-integrity.json",
+    "bytes": 5014,
+    "sha256": "241B9DEE4DD384254798842BE7584215ABB42BB2F8B9F04610D81473ED04A5DB"
+  },
+  {
     "path": "evidence/mpu4/maps/rom-layout.json",
-    "bytes": 2128,
-    "sha256": "1D9F16C905C7EFBA2AF70412AB988D87AEA3179F6108F0A88ECE0AA947401A09"
+    "bytes": 2213,
+    "sha256": "2F671D5C90F96E28D0135495912467F84940164736822799BEDB4ACDE1932ED9"
   },
   {
     "path": "evidence/mpu4/maps/skill-cash-alpha-scan-data.json",
@@ -1533,6 +1543,16 @@
     "path": "evidence/mpu4/native/667b.json",
     "bytes": 1176,
     "sha256": "3846F96F195DB55DF7D2BED6DB7BF9EC499421D6022FE11DD1C5FD1D0505C6D1"
+  },
+  {
+    "path": "evidence/mpu4/native/66a5.json",
+    "bytes": 1798,
+    "sha256": "96201A51BA503646791E1F36A90D5F577A47FCC5E65C0CA769FA541254645622"
+  },
+  {
+    "path": "evidence/mpu4/native/66db.json",
+    "bytes": 5581,
+    "sha256": "D3AE0A6FD5A0989E72B162720E98716F5B1485ACF844A5A701460CF44308BA4A"
   },
   {
     "path": "evidence/mpu4/native/67e2.json",

@@ -11,6 +11,18 @@ wrapper certification, headless native tone ownership, selected Live integration
 finish CPU timing and causal IRQ occupancy. No worker restart or sound repair is
 claimed by this planning update. Older group counts below are historical.
 
+17 October gate1 FEC9 certification: the preserved `FEC9 JSR5CD0 -> FECC CLR2C
+-> FECE` wrapper is independently captured, curated and verified against the
+original ROM. Two synthetic original-ROM cases (empty and queued `8784`) use the
+captured before state (`S=0700`, `U=0600`, `X=8784`, `Y=01A0`), masked IRQ,
+full 2 KB RAM, every instruction PC/encoding/start/end cycle and the fixed
+`FECC` continuation. Natural `scheduler-a/b` prove only their observed empty
+return. Five groups pass in the dirty checkout; the clean intended snapshot is
+389 groups (384 baseline plus five), zero build warnings/errors. Missing-region,
+corrupt-stream and wrong-return controls are negative tests. No timer cadence,
+IRQ ownership, `6B4D`/`58BB`, Live integration or native tone ownership is
+claimed. See [certification](docs/recovery/TIMER1-SCHEDULER-CALL-CERTIFICATION.md).
+
 17 October A1 capture-policy increment: `SkillCashLiveSession` now classifies its
 direct evidence reads by exact consumer field and applies a fail-closed
 `RuntimeEvidencePolicy` at that real constructor boundary. Default compatibility

@@ -28,12 +28,13 @@ public sealed class AddersNativeSound(Machine machine,Action<byte,byte>? ymWrite
         machine.Memory[0x4D]=0;machine.Memory[0x4E]=16;machine.Memory[0x4F]=0;machine.Memory[0x50]=16;
         AddersSoundResetMemory.Apply(machine,ymWrite);return true;
     }
-    public void BeginService(ulong cycle,ushort stack,ushort u,ushort x,ushort y,bool irqMasked)
+    public void BeginService(ulong cycle,ushort stack,ushort u,ushort x,ushort y,bool irqMasked,ushort returnAddress=0x4C34)
     {
-        BeginCall(0x5CD0,cycle,stack,u,x,y,0,0,irqMasked);
+        BeginCall(0x5CD0,cycle,stack,u,x,y,0,0,irqMasked,returnAddress);
     }
     // Native helper entry only: VM->native wrapper costs/frames remain caller-owned.
-    public void BeginCall(ushort entry,ulong cycle,ushort stack,ushort u,ushort x,ushort y,byte a,byte b,bool irqMasked)
+    // returnAddress is the caller's continuation word (default preserves 4C34).
+    public void BeginCall(ushort entry,ulong cycle,ushort stack,ushort u,ushort x,ushort y,byte a,byte b,bool irqMasked,ushort returnAddress=0x4C34)
     {
         Foreground();if(Paused)throw new InvalidOperationException("Native sound is paused");if(cycle<Cycle)throw new ArgumentOutOfRangeException(nameof(cycle));
         IEnumerable<NativeRoutineWork> instructions=entry switch {
@@ -42,7 +43,7 @@ public sealed class AddersNativeSound(Machine machine,Action<byte,byte>? ymWrite
             0x5C7A=>new AddersSoundCancelPlan(machine,x,stack,y,u,a,b,ymWrite).Instructions(),
             0x5B77=>new AddersSoundResetPlan(machine,stack,x,y,a,b,ymWrite).Instructions(),
             _=>throw new NotSupportedException("Unrecovered native sound entry")};
-        Cycle=cycle;running=new(instructions,cycle,0x4C34,()=>irqMasked);
+        Cycle=cycle;running=new(instructions,cycle,returnAddress,()=>irqMasked);
         running.ObserveInstruction=i=>ObserveInstruction?.Invoke(i);
     }
     public void AdvanceTo(ulong cycle)

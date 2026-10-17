@@ -15,12 +15,16 @@ retries or a monetary cap. Commit/push review remains with ORCHESTRATOR, even
 though John authorizes it. Broad worker shell/external access does not override
 preservation, no-installation or no-unrelated-configuration rules.
 
-The next planned gate is independent certification of the preserved FEC9 wrapper,
-including complete ROM fixtures and independently captured initial-frame state.
-It requires explicit resumption of the revised plan; do not retry based solely
-on a timer wake-up. Tone finish is separately blocked on real native sound task/
-channel/rhythm/tail ownership in Live. Do not manufacture that state to fit a cost.
-See the roadmap for five gates and exact acceptance/stopping conditions.
+Gate 1 is now certified under the resumed revised plan: the preserved FEC9
+wrapper has fresh isolated original-ROM captures with recorded initial registers,
+full 2 KB RAM, every instruction boundary and the fixed FECC continuation.
+Natural scheduler-a/b remain an empty-return comparison only. Missing-region,
+corruption and wrong-return controls pass in the intended snapshot. Gate 2 is
+the next planned gate: one headless native tone owner. Tone finish remains
+separately blocked on real native task/channel/rhythm/tail ownership in Live;
+do not manufacture that state to fit a cost. See the roadmap for the five gates
+and exact acceptance/stopping conditions. Raw captures remain untracked; the
+curated fixture is `evidence/mpu4/collection/timer1-scheduler-call.json`.
 
 The notes below are the historical pilot checkpoint. Statements such as "no
 implementation batch" describe that earlier checkpoint, not current project state.

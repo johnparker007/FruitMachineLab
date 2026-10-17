@@ -1,5 +1,20 @@
 # Current handoff
 
+17 October full output-service milestone: Mpu4PayoutOutputExecution stages normal
+6858 queue search/decrement,7032 checksum, positive511B serial and the nested
+pulse/polling component through return. Eight fresh MAME cases match every native
+instruction/start cycle, final cycle, RAM0000..06DF and output writes. Counter
+policy is synthetic; no captured timing drives execution. Parent/child suspension
+and fail-closed unsupported mode are tested.279 full verification groups pass.
+See [output-service pass](recovery/PAYOUT-OUTPUT-SERVICE-TIMING-PASS.md).
+
+Next selected boundary is4CBE debit/NVRAM/display plus VM native gateway ownership,
+then timed collection host integration. Replace semantic Outputs, never run both
+writers. Sound-pool lifecycle remains separately explicit; no new GUI collection
+or whole-machine IRQ autonomy is claimed. Headless build passed; normal WPF output
+was locked by the already-open app, so an isolated temporary WPF build passed with
+zero warnings/errors without closing that app. No installs/config changes/pushes.
+
 17 October preplay Collect milestone: AB1B/AAF2/AAA1 now compose with collection.
 32 synthetic original-ROM gate paths match selected RAM, flag and payout outputs.
 Collect aliases Take (BLACK2 bit01); condition1C reads sampled0003, not sticky0091.

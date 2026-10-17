@@ -210,6 +210,11 @@
     "sha256": "AD6B05EB3DB02331CB6E780241757CDC7398747E8DF32E6987A4A94955DAB0C4"
   },
   {
+    "path": "docs/recovery/PAYOUT-OUTPUT-SERVICE-TIMING-PASS.md",
+    "bytes": 7201,
+    "sha256": "C94485326DC79DDD471756040DC183C9B4DAD16CDC220FE0C74BDD57312EFBBF"
+  },
+  {
     "path": "docs/recovery/PREPLAY-START-STAKE-PASS.md",
     "bytes": 8418,
     "sha256": "88839040705104F4EC1095471C3606378F57906E0ABDA1536A45960F2A0CEAD0"
@@ -343,6 +348,16 @@
     "path": "evidence/mpu4/collection/debit-matrix.json",
     "bytes": 269628,
     "sha256": "28CA8E34A32DBBE7084C9871DB6B6D00D35B8E0421248790237BB6D33EE33B0C"
+  },
+  {
+    "path": "evidence/mpu4/collection/output-service-timing-debugger.cmd",
+    "bytes": 27865,
+    "sha256": "17EF14C4F90831843ED533CEC771D979E80A813B3D88E33431014856A27B9AEE"
+  },
+  {
+    "path": "evidence/mpu4/collection/output-service-timing.json",
+    "bytes": 1012848,
+    "sha256": "C3C434AC04070F48D72B7F4702266E38EEFD873366984C961A0214C4E1A0B822"
   },
   {
     "path": "evidence/mpu4/collection/payout-data.json",

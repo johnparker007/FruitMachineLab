@@ -5,6 +5,12 @@ Local clone: C:\projects\GitRepos\FruitMachineLab
 
 ## Current status
 
+Complete normal payout output service: add -OutputService to
+Capture-PayoutPulseTiming.ps1; Curate-PayoutPulseTiming.ps1 selects the eight-case
+output-service-timing matrix from provenance. Filters: "Payout complete" and
+"Payout output". The original pulse-only capture mode remains available. See
+recovery/PAYOUT-OUTPUT-SERVICE-TIMING-PASS.md for synthetic-counter/timing scope.
+
 Collect gates: Capture-CollectGate.ps1 with standard MAME/RomDirectory/SeedRam and
 fresh RunDirectory; Curate-PayoutService.ps1 selects the32-case gate matrix from
 provenance. Pulse timing: Capture-/Curate-PayoutPulseTiming.ps1 (standard isolated

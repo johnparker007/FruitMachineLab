@@ -7,6 +7,41 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { if(args.Length>1 && !name.Contains(args[1],StringComparison.OrdinalIgnoreCase))return;action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Payout complete output service matches eight MAME instruction RAM and write paths",()=>{
+    using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","output-service-timing.json")));var catalog=doc.RootElement.GetProperty("catalog");int count=0;
+    foreach(var row in doc.RootElement.GetProperty("rows").EnumerateArray()) {
+        var c=row.GetProperty("case");var m=new Machine();Convert.FromHexString(row.GetProperty("before_hex").GetString()!).CopyTo(m.Memory,0);SkillCashData.LoadFeature(m);AddersPayoutDisplay.LoadRomData(m,evidence);
+        byte port=c.GetProperty("port").GetByte();ulong start=row.GetProperty("start_cycle").GetUInt64();var observed=new List<OutputScanInstruction>();var writes=new List<(ulong,byte)>();
+        using var execution=new Mpu4PayoutOutputExecution(m,start,0x50,0x4C34,()=>port,v=>port=v);execution.ObserveInstruction=observed.Add;execution.ObserveAccess=a=>{if(a.Hardware && a.Write)writes.Add((a.Cycle-start,checked((byte)a.Value!.Value)));};int polls=0,budget=50000;
+        while(!execution.Completed && --budget>0){if(execution.Address==0x717C && (++polls&1)!=0)m.Memory[0x6E]++;execution.AdvanceTo(execution.NextEventCycle);}
+        Equal(true,execution.Completed);var expected=row.GetProperty("steps");Equal(expected.GetArrayLength(),observed.Count);
+        for(int n=0;n<observed.Count;n++){var reference=catalog[expected[n][0].GetInt32()];if(reference.GetProperty("pc").GetUInt16()!=observed[n].Address || start+expected[n][1].GetUInt64()!=observed[n].Started)throw new Exception($"Output case{c.GetProperty("id")} instruction{n}: expected{reference.GetProperty("pc").GetUInt16():X4}@{expected[n][1]}, actual{observed[n].Address:X4}@{observed[n].Started-start}");Equal(true,reference.GetProperty("context_hex").GetString()!.StartsWith(observed[n].Bytes,StringComparison.Ordinal));}
+        Equal(row.GetProperty("end").GetProperty("cycle").GetUInt64(),execution.Cycle);Equal(row.GetProperty("end").GetProperty("port").GetByte(),port);Equal(row.GetProperty("end").GetProperty("polls").GetInt32(),polls);
+        byte[] ram=Convert.FromHexString(row.GetProperty("after_hex").GetString()!);foreach(int p in Enumerable.Range(0,0x6E0))if(m.Memory[p]!=ram[p])throw new Exception($"Output case{c.GetProperty("id")} RAM{p:X4}: expected{ram[p]:X2}, actual{m.Memory[p]:X2}");
+        var stores=observed.Where(i=>i.Address is 0x68AB or 0x68BF).ToArray();Equal(row.GetProperty("writes").GetArrayLength(),writes.Count);for(int n=0;n<writes.Count;n++){Equal(row.GetProperty("writes")[n][0].GetUInt64(),stores[n].Started-start);Equal(stores[n].Completed-start,writes[n].Item1);Equal(row.GetProperty("writes")[n][1].GetByte(),writes[n].Item2);}count++;
+    }Equal(8,count);
+});
+Check("Payout output service suspends parent and pulse clocks without duplicate outputs",()=>{
+    foreach(ushort cut in new ushort[]{0x700F,0x717E}) {
+        Machine Seed(){var m=new Machine();SkillCashData.LoadFeature(m);AddersPayoutDisplay.LoadRomData(m,evidence);m.Memory[0x36B]=1;m.Memory[0x36C]=2;m.Memory[0x2B]=0x20;m.Memory[0x2C]=0x7A;return m;}
+        var a=Seed();var b=Seed();byte pa=0x30,pb=0x30;var expected=new List<OutputScanInstruction>();var actual=new List<OutputScanInstruction>();var wa=new List<byte>();var wb=new List<byte>();
+        using var baseline=new Mpu4PayoutOutputExecution(a,0,0,0x4C34,()=>pa,v=>{pa=v;wa.Add(v);});using var paused=new Mpu4PayoutOutputExecution(b,0,0,0x4C34,()=>pb,v=>{pb=v;wb.Add(v);});baseline.ObserveInstruction=expected.Add;paused.ObserveInstruction=actual.Add;int na=0,nb=0;bool injectedA=false,injectedB=false;
+        void Advance(Mpu4PayoutOutputExecution e,Machine m,ref int polls,ref bool injected){if(e.Address==0x700F && !injected){m.Memory[0x36B]++;injected=true;}if(e.Address==0x717C && (++polls&1)!=0)m.Memory[0x6E]++;e.AdvanceTo(e.NextEventCycle);}
+        while(!baseline.Completed)Advance(baseline,a,ref na,ref injectedA);
+        while(paused.Address!=cut)Advance(paused,b,ref nb,ref injectedB);int index=actual.Count;paused.SuspendUntil(paused.Cycle+233);
+        while(!paused.Completed)Advance(paused,b,ref nb,ref injectedB);
+        Equal(expected.Count,actual.Count);for(int n=0;n<actual.Count;n++){Equal(expected[n].Address,actual[n].Address);Equal(expected[n].Started+(n<index ? 0UL : 233UL),actual[n].Started);Equal(expected[n].Completed+(n<index ? 0UL : 233UL),actual[n].Completed);}
+        Equal(true,a.Memory.SequenceEqual(b.Memory));Equal(true,wa.SequenceEqual(wb));Equal(4,wb.Count);Equal((byte)0x7A,b.Memory[0x2C]);Equal((byte)0,b.Memory[0x36B]);Equal((byte)0x30,pb);
+    }
+});
+Check("Payout output service remains faulted at unsupported service mode",()=>{
+    var m=new Machine();SkillCashData.LoadFeature(m);AddersPayoutDisplay.LoadRomData(m,evidence);m.Memory[0x36B]=1;m.Memory[0x323]=0x80;m.Memory[0x2B]=0;
+    using var e=new Mpu4PayoutOutputExecution(m,0,0,0x4C34,()=>0x30,_=>throw new Exception("Unsupported service mode issued output"));
+    try{for(int n=0;n<1000 && !e.Completed;n++)e.AdvanceTo(e.NextEventCycle);throw new Exception("Unsupported path accepted");}catch(NotSupportedException){}
+    Equal(true,e.Fault is not null);byte[] before=m.Memory.ToArray();ulong stopped=e.Cycle;
+    try{e.AdvanceTo(e.NextEventCycle);throw new Exception("Faulted execution resumed");}catch(InvalidOperationException){}
+    Equal(stopped,e.Cycle);Equal(true,before.SequenceEqual(m.Memory));Equal(false,e.Completed);
+});
 Check("Payout native debit display accounting and checksums match32 MAME cases",()=>Equal(32,AddersPayoutVerification.DebitMatrix(evidence)));
 Check("Collect preplay credit and input gates match32 original MAME VM paths",()=>Equal(32,AddersPayoutVerification.ServiceMatrix(evidence,collectGate:true)));
 Check("Collect shared Take input is sampled as a level through the recovered preplay gate",()=>{

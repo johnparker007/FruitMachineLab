@@ -1,5 +1,12 @@
 # Project direction and handoff
 
+17 October output-service checkpoint: full normal6858 now composes queue scan,
+7032 checksum, positive511B serial and timed pulse/7172 polling, verified against
+eight synthetic original-ROM instruction paths. Next time4CBE debit/NVRAM/display
+and native VM ownership, then attach timed collection to Live. Existing sound-pool
+lifecycle gap stays explicit. No comprehensive IRQ campaign or zero-cost adapter.
+See recovery/PAYOUT-OUTPUT-SERVICE-TIMING-PASS.md.
+
 17 October Collect integration checkpoint: actual AB1B/AAA1 input gates and finite
 prompt allocation now execute;32 synthetic ROM cases validate them. The staged
 payout pulse/polling suffix matches8 native instruction paths. Next compose its

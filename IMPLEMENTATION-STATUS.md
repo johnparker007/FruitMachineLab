@@ -1,5 +1,13 @@
 # Implementation and evidence boundaries
 
+Normal6858 output service is now fully staged through queue/checksum/positive
+serial notification and pulse polling. Eight isolated original-ROM comparisons
+match complete instruction timing and selected RAM/output observations. Counter
+inputs remain explicitly synthetic in those tests.279 regression groups pass.
+Live collection still awaits timed4CBE debit/display/gateway composition and the
+documented sound ownership work. See
+[output-service pass](docs/recovery/PAYOUT-OUTPUT-SERVICE-TIMING-PASS.md).
+
 Preplay Collect now runs through AB1B/AAF2/AAA1 in the headless collection engine,
 with32 original-ROM synthetic gate comparisons and the actual shared Take input.
 Finite native prompt allocation is translated; ongoing physical sound-pool lifecycle

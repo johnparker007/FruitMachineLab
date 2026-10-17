@@ -1,5 +1,9 @@
 # Current handoff
 
+Next16 cycle batch7: receive edge6A3B and post-arm6A6B match32 original-ROM
+boundaries. Fresh serial6917..6BDE and timer70C9..70EE disassemblies retained
+with reproducible -SerialCheckpoint export. Next start-bit/sample callbacks.
+
 Next16 cycle batch6:128 hardware access streams match actual MAME values/order;
 no intra-instruction bus-phase claim. Next receive edge/sample callbacks.
 

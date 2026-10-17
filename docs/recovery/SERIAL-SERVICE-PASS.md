@@ -122,6 +122,16 @@ Keep work proportional to playable Adders; no assembler/audio/unrelated IRQ work
 
 ## Transport cycle:69A9 bit images
 
+Receive edge6A3B now clears vector81, preserves the active-receive guard, disables
+the PIA edge and computes floor(period/2)-110 with 16-bit wraparound before the
+typed70D6 call. The separately observed6A6B tail initializes seven/eight data bits.
+32 synthetic original-ROM boundaries verify bytes, instruction timing and full
+RAM. Busy status drains B03/B02 and returns. Timer execution, complete register
+handoff and IRQ delivery remain unresolved integration boundaries. Raw pointer:
+%TEMP%/FruitMachineLab-serial-receive-edge.txt. SerialCheckpoint disassembly export
+adds the contiguous transport and timer listings, including previously unexported
+6A81/6AA3 callbacks. These listings alone are not claimed lossless source.
+
 AddersSerialBitPlan stages69A9: FF sentinel bypasses the PIA read; otherwise bit0
 selects CA2 low/high in an image of actual IC7 control C01. The image preserves
 low unrelated bits, forces control3C and clears bit08 for zero.32 synthetic native

@@ -251,8 +251,8 @@
   },
   {
     "path": "docs/recovery/SERIAL-SERVICE-PASS.md",
-    "bytes": 10918,
-    "sha256": "3817C97AD22B40589EBEE2CE7067D3142C9954657B60884BB418D6890D191901"
+    "bytes": 11646,
+    "sha256": "B0575F5934804E54E1AC4D1C87C6D5D67375664498A7F926539E21A68ADE8FF5"
   },
   {
     "path": "docs/recovery/SERVICE-AND-ATTRACT-RECOVERY.txt",
@@ -503,6 +503,16 @@
     "path": "evidence/mpu4/collection/serial-receive-arm.json",
     "bytes": 147091,
     "sha256": "2B3C402DE31902BCD87885F99AD937AC53979FAA662B3B92060301AB1F963B81"
+  },
+  {
+    "path": "evidence/mpu4/collection/serial-receive-edge-debugger.cmd",
+    "bytes": 17590,
+    "sha256": "ACC488015EBE0203D968E9B55A1F7BF462202BB88764C67F249F1424138073BE"
+  },
+  {
+    "path": "evidence/mpu4/collection/serial-receive-edge.json",
+    "bytes": 298631,
+    "sha256": "6BDC141EB8C156ED846D29E467B27325C80A01288A08D2935CD1B068FB910F91"
   },
   {
     "path": "evidence/mpu4/collection/serial-reply-debugger.cmd",
@@ -2043,6 +2053,16 @@
     "path": "evidence/mpu4/native/fe70.json",
     "bytes": 5172,
     "sha256": "7CB84898967D93505AF7A8F71B9AE9F94B14BE53A8194BDED9EABBB533976DFD"
+  },
+  {
+    "path": "evidence/mpu4/native/serial-timer-native.txt",
+    "bytes": 507,
+    "sha256": "197FBE65A4CC3AB2B4F736C5DC433E7A26C81263ED1DF401A1CA39BB1B194448"
+  },
+  {
+    "path": "evidence/mpu4/native/serial-transport-native.txt",
+    "bytes": 9837,
+    "sha256": "27C506D980E93B725BF2AAC924E5C97E2744C3E4A1D715F9ED71D1B221A62FDE"
   },
   {
     "path": "evidence/mpu4/native/sound-native-provenance.json",

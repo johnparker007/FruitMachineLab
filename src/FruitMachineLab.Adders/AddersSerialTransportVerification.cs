@@ -4,6 +4,7 @@ namespace FruitMachineLab.Adders;
 
 public static class AddersSerialTransportVerification
 {
+    public static int Edge(string evidence)=>Verify(evidence,"serial-receive-edge",(m,row)=>new AddersSerialReceiveEdgePlan(m,0x700,at=>row.GetProperty("start").GetProperty(at==0xB03 ? "io" : "rx").GetByte(),(_,_)=>{},row.GetProperty("case").GetProperty("entry").GetUInt16()).Instructions());
     public static int Bus(string evidence,string stem)
     {
         return Verify(evidence,stem,(m,row)=>BusInstructions(m,row,stem));

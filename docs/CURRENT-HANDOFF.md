@@ -1,5 +1,9 @@
 # Current handoff
 
+Five-batch cycle batch2: native cancellation5C7A matches16 MAME memory paths;
+middle/duplicate/absent/disabled/cyclic cases have synthetic checks. Native and
+logical owners are still separate. Next C0 completion and scheduling ownership.
+
 Five-batch cycle batch1: native5E2C release matches16 original-ROM cases.
 Cancel/root evidence is curated, not implemented yet. Live ownership remains
 explicit. See recovery/SOUND-LIFECYCLE-PASS.md. Commits/pushes authorized by John.

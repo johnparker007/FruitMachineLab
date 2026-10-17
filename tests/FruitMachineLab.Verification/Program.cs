@@ -8,6 +8,17 @@ var passed = 0;
 void Check(string name, Action action) { if(args.Length>1 && !name.Contains(args[1],StringComparison.OrdinalIgnoreCase))return;action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
 Check("Sound lifecycle release matches16 original-ROM channel cases",()=>Equal(16,AddersSoundLifecycleVerification.Matrix(evidence,"release")));
+Check("Sound lifecycle cancel matches16 original-ROM channel cases",()=>Equal(16,AddersSoundLifecycleVerification.Matrix(evidence,"cancel")));
+Check("Sound lifecycle cancellation handles first match absent disabled and corrupt lists",()=>{
+    var m=new Machine();AddersSoundResetMemory.Apply(m);m.Memory[0x50]=16;
+    foreach(ushort stream in new ushort[]{0x9000,0x8784,0x9000})Equal(true,AddersSoundQueueMemory.Queue(m,stream));
+    ushort head=m.ReadWord(0x47),middle=m.ReadWord(head),last=m.ReadWord(middle),free=m.ReadWord(0x49);
+    Equal(true,AddersSoundLifecycleMemory.Cancel(m,0x8784));Equal(head,m.ReadWord(0x47));Equal(last,m.ReadWord(head));Equal(middle,m.ReadWord(0x49));Equal(free,m.ReadWord(middle));
+    Equal(true,AddersSoundLifecycleMemory.Cancel(m,0x9000));Equal(last,m.ReadWord(0x47));Equal(head,m.ReadWord(0x49));
+    byte[] before=m.Memory.ToArray();Equal(true,AddersSoundLifecycleMemory.Cancel(m,0xFFFF));Equal(true,before.SequenceEqual(m.Memory));
+    m.Memory[0x719B]=0x80;before=m.Memory.ToArray();Equal(false,AddersSoundLifecycleMemory.Cancel(m,0x9000));Equal(true,before.SequenceEqual(m.Memory));
+    m.Memory[0x719B]=0;m.WriteWord(last,last);before=m.Memory.ToArray();try{AddersSoundLifecycleMemory.Cancel(m,0xFFFF);throw new Exception("Cyclic list accepted");}catch(InvalidDataException){}Equal(true,before.SequenceEqual(m.Memory));
+});
 Check("Payout timed collection handles100 seeded transactions with physical Collect sampling",()=>{
     var m=new Machine{DataStackBase=0x600};m.Control=new(m,0x784);SkillCashData.LoadFeature(m);SkillCashData.LoadAlpha(m);AddersPayoutCallerData.Load(m,evidence);Convert.FromHexString("34203184AEA16E91").CopyTo(m.Memory,0xF8);m.Memory[0x55]=0x1F;var scheduler=new Mpu4ChoiceStreamScheduler(m,0);scheduler.Reset();AddersSoundResetMemory.Apply(m);var panel=new Mpu4PanelInput(m);byte port=0x30;ulong clock=0;int polls=0,totalDebits=0,totalWrites=0;
     int Poll(){m.Control.Push(0xBEEF);using var e=new AddersTimedCollectionExecution(m,evidence,0xAAA1,clock,_=>{},new(m),scheduler,(_,_)=>10,(_,_)=>1000,()=>port,v=>{port=v;totalWrites++;},0,_=>{});int budget=1000000;

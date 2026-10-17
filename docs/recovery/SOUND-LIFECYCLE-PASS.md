@@ -27,3 +27,13 @@ isolated temporary runs exited normally. Original tools/settings are preserved.
 
 Next: cancellation/root completion, then task lifecycle ownership. Live unchanged;
 the native/logical sound-list mismatch guard remains required.
+
+## Cancellation5C7A/5CB5
+
+Cancel now walks0047 using a predecessor LINK address (not just a task pointer),
+removes the first root matching input X, pushes it onto free0049, then releases
+channels. Native44 nesting guard returns to its incoming value. The disabled
+719B bit80 gate60C8 does nothing; absent roots also leave memory unchanged.
+Sixteen original-ROM full-memory cases pass. Separate synthetic tests cover a
+middle record, duplicate roots, absent/disabled calls and cyclic-list rejection.
+No timing or logical/native scheduler synchronization is inferred from these.

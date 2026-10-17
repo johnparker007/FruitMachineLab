@@ -11,7 +11,9 @@ public static class AddersSoundLifecycleVerification
         foreach(var row in doc.RootElement.GetProperty("rows").EnumerateArray()){
             if(row.GetProperty("case").GetProperty("kind").GetString()!=kind)continue;
             var m=new Machine();Convert.FromHexString(row.GetProperty("before_hex").GetString()!).CopyTo(m.Memory,0);
-            AddersSoundLifecycleMemory.ReleaseChannels(m,0x1A0);
+            if(kind=="release")AddersSoundLifecycleMemory.ReleaseChannels(m,0x1A0);
+            else if(kind=="cancel")AddersSoundLifecycleMemory.Cancel(m,0x8784);
+            else throw new NotSupportedException(kind);
             byte[] expected=Convert.FromHexString(row.GetProperty("after_hex").GetString()!);
             // Only caller-owned native stack scratch is outside this memory helper.
             foreach(int p in Enumerable.Range(0,0x6F0).Concat(Enumerable.Range(0x702,0xFE)))

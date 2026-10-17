@@ -1,0 +1,20 @@
+{
+  "classification": "Static original-ROM byte checkpoint, not a complete CPU/flag reconstruction",
+  "rom_sha1": "402D1518BB78FDC489B06C2AABC771E5CE151847",
+  "regions": [
+    {
+      "address": 21545,
+      "bytes_hex": "0D7D1027FF7E86FF8EFFFF30862607BD2CB38E00004F8CF0002608D675C40F27020F758C100022048D1E0F750D7D26058D0F16FF4FBD6EF77D03232ACE0F7320CA"
+    }
+  ],
+  "entry": 21545,
+  "loop_entry": 21556,
+  "helpers": [
+    11443,
+    21617,
+    21610,
+    28407
+  ],
+  "implementation": "src/FruitMachineLab.Adders/AddersSerialWaitPlan.cs",
+  "scope": "Native wait instructions and helper ownership; no transport ACK, helper execution or complete NZVC register contract"
+}

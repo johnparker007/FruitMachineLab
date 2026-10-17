@@ -11,6 +11,14 @@ Check("Sound operation native calls preserve frames across24 ROM ticks",()=>Equa
 Check("Serial reply parser matches32 original-ROM instruction and RAM paths",()=>Equal(32,AddersSoundOperationVerification.Verify(evidence,"serial-reply",(m,row)=>new AddersSerialReplyPlan(m,row.GetProperty("case").GetProperty("value").GetByte(),0x700).Instructions(),0x53AE,0x4C34)));
 Check("Serial transfer state matches32 original-ROM instruction and RAM paths",()=>Equal(32,AddersSoundOperationVerification.Verify(evidence,"serial-transfer",(m,row)=>new AddersSerialTransferPlan(m,0x700).Instructions(),0x5330,0x4C34)));
 Check("Serial positive queue frame matches32 original-ROM instruction and RAM paths",()=>Equal(32,AddersSoundOperationVerification.Verify(evidence,"serial-frame",(m,row)=>new AddersSerialFramePlan(m,0x700,0x1234,0x89,0xAB).Instructions(),0x51B1,0x4C34)));
+Check("Serial wait retains busy state and requires balanced helper ownership",()=>{
+    var m=new Machine();m.Memory[0x7D]=0xFF;
+    using var e=new NativeRoutineExecution(new AddersSerialWaitPlan(m,0x700,0x4567,0x50).Instructions(),0,0x4C34,()=>true);
+    while(e.Call is null)e.AdvanceTo(e.NextEventCycle);Equal((ushort)0x6EF7,e.Call!.Entry);Equal((ushort)0x5461,m.ReadWord(0x6FE));Equal((byte)0xFF,m.Memory[0x7D]);
+    try{e.AdvanceTo(e.Cycle+1);throw new Exception("Busy helper bypassed");}catch(InvalidOperationException){}
+    ulong time=e.Cycle;e.ReturnFromCall(time+100,0x5461);while(e.Call is null)e.AdvanceTo(e.NextEventCycle);Equal((ushort)0x6EF7,e.Call!.Entry);Equal((byte)0xFF,m.Memory[0x7D]);
+    m.Memory[0x7D]=0;e.ReturnFromCall(e.Cycle+100,0x5461);while(e.Call is null)e.AdvanceTo(e.NextEventCycle);Equal((ushort)0x546A,e.Call!.Entry);e.ReturnFromCall(e.Cycle+100,0x545B);while(!e.Completed)e.AdvanceTo(e.NextEventCycle);Equal((ushort)0x4C34,e.Address);
+});
 Check("Sound operation foreground queue matches32 original-ROM paths",()=>Equal(32,AddersSoundOperationVerification.Queue(evidence)));
 Check("Sound operation foreground reset matches32 original-ROM paths",()=>Equal(32,AddersSoundOperationVerification.Reset(evidence)));
 Check("Sound lifecycle timed cancellation matches32 original-ROM paths",()=>Equal(32,AddersSoundLifecycleVerification.Timed(evidence,"cancel")));

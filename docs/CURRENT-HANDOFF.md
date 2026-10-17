@@ -1,5 +1,10 @@
 # Current handoff
 
+Sixteen-batch cycle batch14:5429 wait staged with explicit helper ownership and
+source byte checkpoint; no automatic ACK/completion. Synthetic busy test passes.
+Next native boundary comparison and final regression. Helpers/full flags/transport
+remain unconnected to Live; do not present it as complete busy serial support.
+
 Sixteen-batch cycle batch13: positive51B1 frame builder matches32 instruction/RAM
 paths. Negative/extended/hook paths remain explicit. Next5429 busy-loop ownership,
 without manufacturing transport ACKs or replacing source waits.

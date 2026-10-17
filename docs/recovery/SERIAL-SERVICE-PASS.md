@@ -62,3 +62,21 @@ negative/complement/decrement costs are covered. Negative two-byte queue message
 enabled nonnull5744 hooks and >=60 extended packets stop explicitly, not silently
 drop data. Capture-SerialFrame/shared curator serial-frame preserve code/pointers
 and data regions under existing collection conventions. Raw serial-frame.txt.
+
+## Native wait5429
+
+AddersSerialWaitPlan stages5429..5468 with typed handoffs for2CB3 timeout lamp,
+5471 timeout alpha,546A completion reset and6EF7 door check. Native JSR return
+words are written to S-2; advancement blocks until balanced ReturnFromCall.
+Entry5434 supports explicit isolated boundary experiments with X/A, not a Live
+startup alternative. X decrements by signed A, becomes zero/A0 after full timeout,
+clears75 at F000 only when low bits are set, and formats at <=1000. Busy7D must
+actually change externally; there is no ACK/time injection or automatic success.
+
+Static serial-wait-data preserves exact bytes/entries/helper references and links.
+A synthetic ownership test proves two busy iterations remain busy, blocks helper
+bypass, and reaches alpha reset only after external7D clear. Full helper CPU
+register/flags are not reconstructed by this plan: NativeRoutineCall carries the
+declared caller condition context, not an asserted complete NZVC result. Helpers
+must be separately composed with a valid register contract before Live use.
+Next original-ROM boundary captures; full wait/transport timing remains open.

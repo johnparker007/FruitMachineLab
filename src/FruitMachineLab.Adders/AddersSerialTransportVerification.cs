@@ -4,6 +4,25 @@ namespace FruitMachineLab.Adders;
 
 public static class AddersSerialTransportVerification
 {
+    public static int Bus(string evidence,string stem)
+    {
+        return Verify(evidence,stem,(m,row)=>BusInstructions(m,row,stem));
+    }
+    private static IEnumerable<NativeRoutineWork> BusInstructions(Machine m,JsonElement row,string stem)
+    {
+        var accesses=row.GetProperty("accesses").EnumerateArray().ToArray();int index=0;
+        byte Access(ushort at,byte? value){if(index>=accesses.Length)throw new InvalidDataException("Unexpected serial bus access");var expected=accesses[index++];byte b=expected.GetProperty("value").GetByte();if(at!=expected.GetProperty("address").GetUInt16() || value.HasValue!=(expected.GetProperty("write").GetInt32()!=0) || (value.HasValue && value.Value!=b))throw new InvalidDataException("Serial bus order/value differs");return b;}
+        byte Read(ushort at)=>Access(at,null);void Write(ushort at,byte b)=>Access(at,b);var c=row.GetProperty("case");
+        IEnumerable<NativeRoutineWork> plan=stem switch {
+            "serial-bit"=>new AddersSerialBitPlan(m,c.GetProperty("value").GetByte(),Read).Instructions(),
+            "serial-byte"=>new AddersSerialBytePlan(m,0x700,0x1234,0x4567,0x89,c.GetProperty("value").GetByte(),Read,Write).Instructions(),
+            "serial-timer"=>new AddersSerialTimerPlan(m,c.GetProperty("entry").GetUInt16(),0x700,0x69C0,c.GetProperty("period").GetUInt16(),0xAB,c.GetProperty("cc").GetByte(),Read,Write).Instructions(),
+            "serial-receive-arm"=>new AddersSerialReceiveArmPlan(m,0x700,0x1234,0x4567,0x89,0xAB,Read,Write).Instructions(),
+            "serial-transmit"=>new AddersSerialTransmitPlan(m,0x700,0x4567,c.GetProperty("entry").GetUInt16()){Write=Write}.Instructions(),
+            _=>throw new NotSupportedException(stem)};
+        foreach(var op in plan){if(op is NativeRoutineCall && index!=accesses.Length)throw new InvalidDataException($"{stem} missing access before helper: {index}/{accesses.Length}");yield return op;if(op is NativeRoutineCall)break;}
+        if(index!=accesses.Length)throw new InvalidDataException("Missing serial bus accesses");
+    }
     public static int Transmit(string evidence)=>Verify(evidence,"serial-transmit",(m,row)=>new AddersSerialTransmitPlan(m,0x700,0x4567,row.GetProperty("case").GetProperty("entry").GetUInt16()).Instructions());
     public static int ReceiveArm(string evidence)=>Verify(evidence,"serial-receive-arm",(m,row)=>new AddersSerialReceiveArmPlan(m,0x700,0x1234,0x4567,0x89,0xAB,at=>row.GetProperty("start").GetProperty(at==0xB03 ? "io" : "rx").GetByte(),(_,_)=>{}).Instructions());
     public static int Timer(string evidence)=>Verify(evidence,"serial-timer",(m,row)=>new AddersSerialTimerPlan(m,row.GetProperty("case").GetProperty("entry").GetUInt16(),0x700,0x69C0,row.GetProperty("case").GetProperty("period").GetUInt16(),0xAB,row.GetProperty("case").GetProperty("cc").GetByte(),at=>row.GetProperty("start").GetProperty(at==0x901 ? "io" : "rx").GetByte(),(_,_)=>{}).Instructions());

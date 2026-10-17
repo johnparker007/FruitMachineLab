@@ -108,6 +108,14 @@
           37
         ]
       ],
+      "accesses": [
+        {
+          "address": 3073,
+          "value": 0,
+          "write": 0,
+          "cycle": 12
+        }
+      ],
       "cycles": 42,
       "end": {
         "pc": 19508,
@@ -179,6 +187,14 @@
           10,
           37
         ]
+      ],
+      "accesses": [
+        {
+          "address": 3073,
+          "value": 4,
+          "write": 0,
+          "cycle": 12
+        }
       ],
       "cycles": 42,
       "end": {
@@ -252,6 +268,14 @@
           37
         ]
       ],
+      "accesses": [
+        {
+          "address": 3073,
+          "value": 52,
+          "write": 0,
+          "cycle": 12
+        }
+      ],
       "cycles": 42,
       "end": {
         "pc": 19508,
@@ -324,6 +348,14 @@
           37
         ]
       ],
+      "accesses": [
+        {
+          "address": 3073,
+          "value": 60,
+          "write": 0,
+          "cycle": 12
+        }
+      ],
       "cycles": 42,
       "end": {
         "pc": 19508,
@@ -391,6 +423,14 @@
           10,
           35
         ]
+      ],
+      "accesses": [
+        {
+          "address": 3073,
+          "value": 0,
+          "write": 0,
+          "cycle": 12
+        }
       ],
       "cycles": 40,
       "end": {
@@ -460,6 +500,14 @@
           35
         ]
       ],
+      "accesses": [
+        {
+          "address": 3073,
+          "value": 4,
+          "write": 0,
+          "cycle": 12
+        }
+      ],
       "cycles": 40,
       "end": {
         "pc": 19508,
@@ -528,6 +576,14 @@
           35
         ]
       ],
+      "accesses": [
+        {
+          "address": 3073,
+          "value": 52,
+          "write": 0,
+          "cycle": 12
+        }
+      ],
       "cycles": 40,
       "end": {
         "pc": 19508,
@@ -595,6 +651,14 @@
           10,
           35
         ]
+      ],
+      "accesses": [
+        {
+          "address": 3073,
+          "value": 60,
+          "write": 0,
+          "cycle": 12
+        }
       ],
       "cycles": 40,
       "end": {
@@ -668,6 +732,14 @@
           37
         ]
       ],
+      "accesses": [
+        {
+          "address": 3073,
+          "value": 0,
+          "write": 0,
+          "cycle": 12
+        }
+      ],
       "cycles": 42,
       "end": {
         "pc": 19508,
@@ -739,6 +811,14 @@
           10,
           37
         ]
+      ],
+      "accesses": [
+        {
+          "address": 3073,
+          "value": 4,
+          "write": 0,
+          "cycle": 12
+        }
       ],
       "cycles": 42,
       "end": {
@@ -812,6 +892,14 @@
           37
         ]
       ],
+      "accesses": [
+        {
+          "address": 3073,
+          "value": 52,
+          "write": 0,
+          "cycle": 12
+        }
+      ],
       "cycles": 42,
       "end": {
         "pc": 19508,
@@ -884,6 +972,14 @@
           37
         ]
       ],
+      "accesses": [
+        {
+          "address": 3073,
+          "value": 60,
+          "write": 0,
+          "cycle": 12
+        }
+      ],
       "cycles": 42,
       "end": {
         "pc": 19508,
@@ -951,6 +1047,14 @@
           10,
           35
         ]
+      ],
+      "accesses": [
+        {
+          "address": 3073,
+          "value": 0,
+          "write": 0,
+          "cycle": 12
+        }
       ],
       "cycles": 40,
       "end": {
@@ -1020,6 +1124,14 @@
           35
         ]
       ],
+      "accesses": [
+        {
+          "address": 3073,
+          "value": 4,
+          "write": 0,
+          "cycle": 12
+        }
+      ],
       "cycles": 40,
       "end": {
         "pc": 19508,
@@ -1088,6 +1200,14 @@
           35
         ]
       ],
+      "accesses": [
+        {
+          "address": 3073,
+          "value": 52,
+          "write": 0,
+          "cycle": 12
+        }
+      ],
       "cycles": 40,
       "end": {
         "pc": 19508,
@@ -1155,6 +1275,14 @@
           10,
           35
         ]
+      ],
+      "accesses": [
+        {
+          "address": 3073,
+          "value": 60,
+          "write": 0,
+          "cycle": 12
+        }
       ],
       "cycles": 40,
       "end": {
@@ -1228,6 +1356,14 @@
           37
         ]
       ],
+      "accesses": [
+        {
+          "address": 3073,
+          "value": 0,
+          "write": 0,
+          "cycle": 12
+        }
+      ],
       "cycles": 42,
       "end": {
         "pc": 19508,
@@ -1299,6 +1435,14 @@
           10,
           37
         ]
+      ],
+      "accesses": [
+        {
+          "address": 3073,
+          "value": 4,
+          "write": 0,
+          "cycle": 12
+        }
       ],
       "cycles": 42,
       "end": {
@@ -1372,6 +1516,14 @@
           37
         ]
       ],
+      "accesses": [
+        {
+          "address": 3073,
+          "value": 52,
+          "write": 0,
+          "cycle": 12
+        }
+      ],
       "cycles": 42,
       "end": {
         "pc": 19508,
@@ -1444,6 +1596,14 @@
           37
         ]
       ],
+      "accesses": [
+        {
+          "address": 3073,
+          "value": 60,
+          "write": 0,
+          "cycle": 12
+        }
+      ],
       "cycles": 42,
       "end": {
         "pc": 19508,
@@ -1511,6 +1671,14 @@
           10,
           35
         ]
+      ],
+      "accesses": [
+        {
+          "address": 3073,
+          "value": 0,
+          "write": 0,
+          "cycle": 12
+        }
       ],
       "cycles": 40,
       "end": {
@@ -1580,6 +1748,14 @@
           35
         ]
       ],
+      "accesses": [
+        {
+          "address": 3073,
+          "value": 4,
+          "write": 0,
+          "cycle": 12
+        }
+      ],
       "cycles": 40,
       "end": {
         "pc": 19508,
@@ -1648,6 +1824,14 @@
           35
         ]
       ],
+      "accesses": [
+        {
+          "address": 3073,
+          "value": 52,
+          "write": 0,
+          "cycle": 12
+        }
+      ],
       "cycles": 40,
       "end": {
         "pc": 19508,
@@ -1715,6 +1899,14 @@
           10,
           35
         ]
+      ],
+      "accesses": [
+        {
+          "address": 3073,
+          "value": 60,
+          "write": 0,
+          "cycle": 12
+        }
       ],
       "cycles": 40,
       "end": {
@@ -1788,6 +1980,14 @@
           37
         ]
       ],
+      "accesses": [
+        {
+          "address": 3073,
+          "value": 0,
+          "write": 0,
+          "cycle": 12
+        }
+      ],
       "cycles": 42,
       "end": {
         "pc": 19508,
@@ -1859,6 +2059,14 @@
           10,
           37
         ]
+      ],
+      "accesses": [
+        {
+          "address": 3073,
+          "value": 4,
+          "write": 0,
+          "cycle": 12
+        }
       ],
       "cycles": 42,
       "end": {
@@ -1932,6 +2140,14 @@
           37
         ]
       ],
+      "accesses": [
+        {
+          "address": 3073,
+          "value": 52,
+          "write": 0,
+          "cycle": 12
+        }
+      ],
       "cycles": 42,
       "end": {
         "pc": 19508,
@@ -2004,6 +2220,14 @@
           37
         ]
       ],
+      "accesses": [
+        {
+          "address": 3073,
+          "value": 60,
+          "write": 0,
+          "cycle": 12
+        }
+      ],
       "cycles": 42,
       "end": {
         "pc": 19508,
@@ -2052,6 +2276,7 @@
           21
         ]
       ],
+      "accesses": [],
       "cycles": 26,
       "end": {
         "pc": 19508,
@@ -2100,6 +2325,7 @@
           21
         ]
       ],
+      "accesses": [],
       "cycles": 26,
       "end": {
         "pc": 19508,
@@ -2148,6 +2374,7 @@
           21
         ]
       ],
+      "accesses": [],
       "cycles": 26,
       "end": {
         "pc": 19508,
@@ -2196,6 +2423,7 @@
           21
         ]
       ],
+      "accesses": [],
       "cycles": 26,
       "end": {
         "pc": 19508,
@@ -2218,11 +2446,13 @@
     "stem": "serial-bit",
     "count": 32,
     "regions": [
-      27049,
-      27071
+      [
+        27049,
+        27071
+      ]
     ],
     "classification": "Synthetic original serial bit-buffer calls; actual PIA control read, no line timing claim",
     "mame_sha256": "0FCE5A88DF4F9D9B1FBF1405812C00848036E615993780978D967DA34204CB7A"
   },
-  "raw_sha256": "4C7C9BA2CE447ABA6E268D17B5D4B2877B0AE542E491330D6263702EC6B6F85D"
+  "raw_sha256": "ABE30E64652F2A2385B492E0DA13CE5EECA3E2FFD8811E910A685AD2E24AF41D"
 }

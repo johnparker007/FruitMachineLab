@@ -129,6 +129,26 @@
           65
         ]
       ],
+      "accesses": [
+        {
+          "address": 2818,
+          "value": 0,
+          "write": 0,
+          "cycle": 40
+        },
+        {
+          "address": 2819,
+          "value": 0,
+          "write": 0,
+          "cycle": 53
+        },
+        {
+          "address": 2819,
+          "value": 1,
+          "write": 1,
+          "cycle": 60
+        }
+      ],
       "cycles": 78,
       "end": {
         "pc": 19508,
@@ -209,6 +229,26 @@
           12,
           65
         ]
+      ],
+      "accesses": [
+        {
+          "address": 2818,
+          "value": 132,
+          "write": 0,
+          "cycle": 40
+        },
+        {
+          "address": 2819,
+          "value": 4,
+          "write": 0,
+          "cycle": 53
+        },
+        {
+          "address": 2819,
+          "value": 5,
+          "write": 1,
+          "cycle": 60
+        }
       ],
       "cycles": 78,
       "end": {
@@ -291,6 +331,26 @@
           65
         ]
       ],
+      "accesses": [
+        {
+          "address": 2818,
+          "value": 132,
+          "write": 0,
+          "cycle": 40
+        },
+        {
+          "address": 2819,
+          "value": 52,
+          "write": 0,
+          "cycle": 53
+        },
+        {
+          "address": 2819,
+          "value": 53,
+          "write": 1,
+          "cycle": 60
+        }
+      ],
       "cycles": 78,
       "end": {
         "pc": 19508,
@@ -372,6 +432,26 @@
           65
         ]
       ],
+      "accesses": [
+        {
+          "address": 2818,
+          "value": 132,
+          "write": 0,
+          "cycle": 40
+        },
+        {
+          "address": 2819,
+          "value": 60,
+          "write": 0,
+          "cycle": 53
+        },
+        {
+          "address": 2819,
+          "value": 61,
+          "write": 1,
+          "cycle": 60
+        }
+      ],
       "cycles": 78,
       "end": {
         "pc": 19508,
@@ -409,6 +489,7 @@
           9
         ]
       ],
+      "accesses": [],
       "cycles": 14,
       "end": {
         "pc": 19508,
@@ -446,6 +527,7 @@
           9
         ]
       ],
+      "accesses": [],
       "cycles": 14,
       "end": {
         "pc": 19508,
@@ -483,6 +565,7 @@
           9
         ]
       ],
+      "accesses": [],
       "cycles": 14,
       "end": {
         "pc": 19508,
@@ -520,6 +603,7 @@
           9
         ]
       ],
+      "accesses": [],
       "cycles": 14,
       "end": {
         "pc": 19508,
@@ -557,6 +641,7 @@
           9
         ]
       ],
+      "accesses": [],
       "cycles": 14,
       "end": {
         "pc": 19508,
@@ -594,6 +679,7 @@
           9
         ]
       ],
+      "accesses": [],
       "cycles": 14,
       "end": {
         "pc": 19508,
@@ -631,6 +717,7 @@
           9
         ]
       ],
+      "accesses": [],
       "cycles": 14,
       "end": {
         "pc": 19508,
@@ -668,6 +755,7 @@
           9
         ]
       ],
+      "accesses": [],
       "cycles": 14,
       "end": {
         "pc": 19508,
@@ -705,6 +793,7 @@
           9
         ]
       ],
+      "accesses": [],
       "cycles": 14,
       "end": {
         "pc": 19508,
@@ -742,6 +831,7 @@
           9
         ]
       ],
+      "accesses": [],
       "cycles": 14,
       "end": {
         "pc": 19508,
@@ -779,6 +869,7 @@
           9
         ]
       ],
+      "accesses": [],
       "cycles": 14,
       "end": {
         "pc": 19508,
@@ -816,6 +907,7 @@
           9
         ]
       ],
+      "accesses": [],
       "cycles": 14,
       "end": {
         "pc": 19508,
@@ -846,5 +938,5 @@
     "classification": "Synthetic original receive IRQ arm, actual PIA reads, no line timing",
     "mame_sha256": "0FCE5A88DF4F9D9B1FBF1405812C00848036E615993780978D967DA34204CB7A"
   },
-  "raw_sha256": "7F20E9B5A772AA4B19D3531B6FD0BA01403F9CB79C40F97C387C7D17E92C7203"
+  "raw_sha256": "DB18B4F88132A0E2397A2F57093419E4328E0256553E8DF027665426FF40BCD8"
 }

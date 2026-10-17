@@ -4,6 +4,7 @@ New-Item -ItemType Directory $run|Out-Null;foreach($name in @('cfg','nvram','inp
 $cmd=[Collections.Generic.List[string]]::new();$cases=[Collections.Generic.List[object]]::new();$cmd.Add('bpset 4c34');foreach($at in @('70cb','70d8')){$cmd.Add(('bpset {0},1,{{printf "OI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}}' -f $at))}
 $body=Get-Content "$PSScriptRoot/../src/FruitMachineLab.Adders/AddersSerialTimerPlan.cs" -Raw
 foreach($pc in ([regex]::Matches($body,'new NativeRoutineStep\(0x([0-9A-F]{4}),"')|ForEach-Object {[Convert]::ToInt32($_.Groups[1].Value,16)}|Sort-Object -Unique)){$cmd.Add(('bpset {0:X},1,{{printf "OI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}}' -f $pc))}
+foreach($address in @(0x901,0x904,0x905,0xB02,0xB03,0xC01)){foreach($direction in @('r','w')){$flag=if($direction -eq 'w'){1}else{0};$cmd.Add(('wpset {0:X},1,{1},1,{{printf "OA address={0:X4} value=%02X write={2:X} cycle=%016X\n",wpdata,totalcycles;go}}' -f $address,$direction,$flag))}}
 foreach($entry in @(0x70C9,0x70D6)){foreach($period in @(0,1,0x1234,0xFFFF)){foreach($cc in @(0,0x50)){
 $id=$cases.Count;$cases.Add([ordered]@{id=$id;entry=$entry;period=$period;cc=$cc;end=0x4C34;stack=0x702})
 $cmd.Add(('pc=0x{0:X};a=0x89;b=0xab;x=0x69c0;y=0x{1:X};u=0x600;s=0x700;dp=0;cc=0x{2:X};w@700=0x4c34;w@3b=0;b@3f=0;b@901=0' -f $entry,$period,$cc))

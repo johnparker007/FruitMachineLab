@@ -1,5 +1,8 @@
 # Current handoff
 
+Next16 cycle batch6:128 hardware access streams match actual MAME values/order;
+no intra-instruction bus-phase claim. Next receive edge/sample callbacks.
+
 Next16 cycle batch5: TX69C0 and69D7 completion tail match32 ROM boundaries.
 Next verify actual hardware access values/order, then receive sampling.
 

@@ -65,6 +65,18 @@ bpset 69B9,1,{printf "OI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,to
 bpset 69BB,1,{printf "OI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
 bpset 69BD,1,{printf "OI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
 bpset 69BF,1,{printf "OI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
+wpset 901,1,r,1,{printf "OA address=0901 value=%02X write=0 cycle=%016X\n",wpdata,totalcycles;go}
+wpset 901,1,w,1,{printf "OA address=0901 value=%02X write=1 cycle=%016X\n",wpdata,totalcycles;go}
+wpset 904,1,r,1,{printf "OA address=0904 value=%02X write=0 cycle=%016X\n",wpdata,totalcycles;go}
+wpset 904,1,w,1,{printf "OA address=0904 value=%02X write=1 cycle=%016X\n",wpdata,totalcycles;go}
+wpset 905,1,r,1,{printf "OA address=0905 value=%02X write=0 cycle=%016X\n",wpdata,totalcycles;go}
+wpset 905,1,w,1,{printf "OA address=0905 value=%02X write=1 cycle=%016X\n",wpdata,totalcycles;go}
+wpset B02,1,r,1,{printf "OA address=0B02 value=%02X write=0 cycle=%016X\n",wpdata,totalcycles;go}
+wpset B02,1,w,1,{printf "OA address=0B02 value=%02X write=1 cycle=%016X\n",wpdata,totalcycles;go}
+wpset B03,1,r,1,{printf "OA address=0B03 value=%02X write=0 cycle=%016X\n",wpdata,totalcycles;go}
+wpset B03,1,w,1,{printf "OA address=0B03 value=%02X write=1 cycle=%016X\n",wpdata,totalcycles;go}
+wpset C01,1,r,1,{printf "OA address=0C01 value=%02X write=0 cycle=%016X\n",wpdata,totalcycles;go}
+wpset C01,1,w,1,{printf "OA address=0C01 value=%02X write=1 cycle=%016X\n",wpdata,totalcycles;go}
 pc=0x693e;a=0x89;b=0x0;x=0x1234;y=0x4567;u=0x600;s=0x700;dp=0;cc=0x50;w@700=0x4c34;w@78=0x37c;b@c01=4;b@b03=4;b@71=0;b@38e=0x0
 save operation-0-before.bin,0,800
 printf "OS pc=%04X cycle=%016X io=%02X rx=%02X\n",pc,totalcycles,b@c01,b@b03

@@ -251,8 +251,8 @@
   },
   {
     "path": "docs/recovery/SERIAL-SERVICE-PASS.md",
-    "bytes": 10345,
-    "sha256": "162D1ACE3798100235AAE3D70B1F8D7D4210E1A39FE7522EB4929A83E0D9E2C1"
+    "bytes": 10918,
+    "sha256": "3817C97AD22B40589EBEE2CE7067D3142C9954657B60884BB418D6890D191901"
   },
   {
     "path": "docs/recovery/SERVICE-AND-ATTRACT-RECOVERY.txt",
@@ -466,23 +466,23 @@
   },
   {
     "path": "evidence/mpu4/collection/serial-bit-debugger.cmd",
-    "bytes": 11934,
-    "sha256": "C40CB54C1D64954AD53543E61116DB3D5EFC7659F147B970B13E68E428BDF118"
+    "bytes": 13122,
+    "sha256": "EA9EA631AB363F8A768E917721857F1F4A0706DAFCC01A0A7FB7E271017D9B15"
   },
   {
     "path": "evidence/mpu4/collection/serial-bit.json",
-    "bytes": 296280,
-    "sha256": "32BCE0FF9DC53CD9070AEB22806583DA6F0762F8DC375DCE3DE0EEFDCFA4FE9B"
+    "bytes": 300608,
+    "sha256": "924D239232F9FC9F6E7553F3A632BE7079DDA1EF39B4307292C766A0F028C117"
   },
   {
     "path": "evidence/mpu4/collection/serial-byte-debugger.cmd",
-    "bytes": 20446,
-    "sha256": "9A308413706359DDEDF711657291B436AA88A4EE65A6818A7734C67CFC6EDBDD"
+    "bytes": 21634,
+    "sha256": "86CA1E40F1A59B53125189CCB2E6E7C96DF7B3A14B8327E82FD39C440C0435FE"
   },
   {
     "path": "evidence/mpu4/collection/serial-byte.json",
-    "bytes": 655082,
-    "sha256": "19D8D611D2364188DCEAE425BF5301E31258F6B6CE9116E3340DFEA558558E31"
+    "bytes": 704346,
+    "sha256": "22D445572A1236F9EDCAE130A17ECE3D68F435DC327C79F5CB1DBB6B0650B204"
   },
   {
     "path": "evidence/mpu4/collection/serial-frame-debugger.cmd",
@@ -496,13 +496,13 @@
   },
   {
     "path": "evidence/mpu4/collection/serial-receive-arm-debugger.cmd",
-    "bytes": 7558,
-    "sha256": "88EFE83015DFA637513D129BC40512A1E0B24AE03FD882BC5ABA31162598F66B"
+    "bytes": 8746,
+    "sha256": "D7862869E03484264B95E595E69616546F8AC42EBF2F970B0FF3B04E5C0E5954"
   },
   {
     "path": "evidence/mpu4/collection/serial-receive-arm.json",
-    "bytes": 145245,
-    "sha256": "B89401952D6CAEC561BA9004C6335D7A2A25655C385B677BED992347CF5D3065"
+    "bytes": 147091,
+    "sha256": "2B3C402DE31902BCD87885F99AD937AC53979FAA662B3B92060301AB1F963B81"
   },
   {
     "path": "evidence/mpu4/collection/serial-reply-debugger.cmd",
@@ -516,13 +516,13 @@
   },
   {
     "path": "evidence/mpu4/collection/serial-timer-debugger.cmd",
-    "bytes": 7294,
-    "sha256": "9147356E7F51A73951DD09846B637EF567482AA56B12FC034C9FECA47A19D957"
+    "bytes": 8482,
+    "sha256": "96432A03BEC850D2F9F1230538385FA5D2184A13F231478CA943F523FE38F01A"
   },
   {
     "path": "evidence/mpu4/collection/serial-timer.json",
-    "bytes": 147049,
-    "sha256": "2EA85501573AD51C284E0B816D32044671741D91D5D24321864A884AD6AD89ED"
+    "bytes": 153315,
+    "sha256": "F9B5E27360FAF775BA855833DBB34F27B87BD0AB2DB4D6D14AC1AC190A9E0428"
   },
   {
     "path": "evidence/mpu4/collection/serial-transfer-debugger.cmd",
@@ -536,13 +536,13 @@
   },
   {
     "path": "evidence/mpu4/collection/serial-transmit-debugger.cmd",
-    "bytes": 15294,
-    "sha256": "55962AA31BFAE01607EBF66A7B2A63FF95E373CA4AA36E01A9B0FE678548BC34"
+    "bytes": 18858,
+    "sha256": "4F11AED4ED18A01E245363EA112384320AD14053ED2E71E80744AE51F1832AD5"
   },
   {
     "path": "evidence/mpu4/collection/serial-transmit.json",
-    "bytes": 292478,
-    "sha256": "C01EE68E6845BE5CF38AFB39262067FA1573E8CD64EE15A22DC912A5E04A9A32"
+    "bytes": 297190,
+    "sha256": "6C15CF3059C10F267ECDC8D67A8BF99ECA015679E7694770C56E557AA8EDCC0A"
   },
   {
     "path": "evidence/mpu4/collection/serial-wait-data.json",

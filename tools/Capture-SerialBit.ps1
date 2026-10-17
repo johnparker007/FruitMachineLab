@@ -4,6 +4,7 @@ New-Item -ItemType Directory $run|Out-Null;foreach($name in @('cfg','nvram','inp
 $cmd=[Collections.Generic.List[string]]::new();$cases=[Collections.Generic.List[object]]::new();$cmd.Add('bpset 4c34')
 $body=Get-Content "$PSScriptRoot/../src/FruitMachineLab.Adders/AddersSerialBitPlan.cs" -Raw
 foreach($pc in ([regex]::Matches($body,'new NativeRoutineStep\(0x([0-9A-F]{4}),"')|ForEach-Object {[Convert]::ToInt32($_.Groups[1].Value,16)}|Sort-Object -Unique)){$cmd.Add(('bpset {0:X},1,{{printf "OI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}}' -f $pc))}
+foreach($address in @(0x901,0x904,0x905,0xB02,0xB03,0xC01)){foreach($direction in @('r','w')){$flag=if($direction -eq 'w'){1}else{0};$cmd.Add(('wpset {0:X},1,{1},1,{{printf "OA address={0:X4} value=%02X write={2:X} cycle=%016X\n",wpdata,totalcycles;go}}' -f $address,$direction,$flag))}}
 foreach($value in @(0,1,2,3,0x80,0x81,0xFE,0xFF)){foreach($control in @(0,4,0x34,0x3C)){
 $id=$cases.Count;$cases.Add([ordered]@{id=$id;entry=0x69A9;value=$value;control=$control;end=0x4C34;stack=0x702})
 $cmd.Add(('pc=0x69a9;a=0x{0:X};b=0xab;x=0x1234;y=0x4567;u=0x600;s=0x700;dp=0;cc=0x50;w@700=0x4c34;w@78=0x37c;b@c01=0x{1:X}' -f $value,$control))

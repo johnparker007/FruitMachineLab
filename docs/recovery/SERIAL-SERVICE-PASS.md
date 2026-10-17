@@ -161,3 +161,11 @@ branches to next-byte6BA7, receive6A08 or caller return according to actual stat
 32 original-ROM prefix/tail paths match all instruction cycles/bytes/full RAM.
 Reset/rearm and tail destinations remain typed handoffs; no elapsed timer duration
 or full CPU flags are inferred. Raw serial-transmit.txt.
+
+Peripheral watchpoints now verify ordered address/value/read-write accesses across
+all128 bit/byte/timer/arm/TX cases. STY programs MSB904 before LSB905; native control
+and PIA images are checked, not ignored. Exact access cycles are retained but not
+asserted equal to instruction-completion adapters (bus strobes occur inside the
+instruction). One TX observer had duplicate watchpoints and was recaptured;
+duplicate events were not discarded to force a match. These selected bus streams
+do not prove device timing/IRQ delivery. Existing raw pointers now select bus runs.

@@ -97,6 +97,14 @@
           21
         ]
       ],
+      "accesses": [
+        {
+          "address": 2305,
+          "value": 0,
+          "write": 1,
+          "cycle": 12
+        }
+      ],
       "cycles": 30,
       "end": {
         "pc": 19508,
@@ -145,6 +153,14 @@
           4,
           21
         ]
+      ],
+      "accesses": [
+        {
+          "address": 2305,
+          "value": 0,
+          "write": 1,
+          "cycle": 12
+        }
       ],
       "cycles": 30,
       "end": {
@@ -195,6 +211,14 @@
           21
         ]
       ],
+      "accesses": [
+        {
+          "address": 2305,
+          "value": 0,
+          "write": 1,
+          "cycle": 12
+        }
+      ],
       "cycles": 30,
       "end": {
         "pc": 19508,
@@ -243,6 +267,14 @@
           4,
           21
         ]
+      ],
+      "accesses": [
+        {
+          "address": 2305,
+          "value": 0,
+          "write": 1,
+          "cycle": 12
+        }
       ],
       "cycles": 30,
       "end": {
@@ -293,6 +325,14 @@
           21
         ]
       ],
+      "accesses": [
+        {
+          "address": 2305,
+          "value": 0,
+          "write": 1,
+          "cycle": 12
+        }
+      ],
       "cycles": 30,
       "end": {
         "pc": 19508,
@@ -341,6 +381,14 @@
           4,
           21
         ]
+      ],
+      "accesses": [
+        {
+          "address": 2305,
+          "value": 0,
+          "write": 1,
+          "cycle": 12
+        }
       ],
       "cycles": 30,
       "end": {
@@ -391,6 +439,14 @@
           21
         ]
       ],
+      "accesses": [
+        {
+          "address": 2305,
+          "value": 0,
+          "write": 1,
+          "cycle": 12
+        }
+      ],
       "cycles": 30,
       "end": {
         "pc": 19508,
@@ -439,6 +495,14 @@
           4,
           21
         ]
+      ],
+      "accesses": [
+        {
+          "address": 2305,
+          "value": 0,
+          "write": 1,
+          "cycle": 12
+        }
       ],
       "cycles": 30,
       "end": {
@@ -505,6 +569,38 @@
           43
         ]
       ],
+      "accesses": [
+        {
+          "address": 2305,
+          "value": 0,
+          "write": 0,
+          "cycle": 10
+        },
+        {
+          "address": 2308,
+          "value": 255,
+          "write": 0,
+          "cycle": 15
+        },
+        {
+          "address": 2305,
+          "value": 98,
+          "write": 1,
+          "cycle": 27
+        },
+        {
+          "address": 2308,
+          "value": 0,
+          "write": 1,
+          "cycle": 36
+        },
+        {
+          "address": 2309,
+          "value": 0,
+          "write": 1,
+          "cycle": 36
+        }
+      ],
       "cycles": 52,
       "end": {
         "pc": 19508,
@@ -569,6 +665,38 @@
           13,
           43
         ]
+      ],
+      "accesses": [
+        {
+          "address": 2305,
+          "value": 0,
+          "write": 0,
+          "cycle": 10
+        },
+        {
+          "address": 2308,
+          "value": 0,
+          "write": 0,
+          "cycle": 15
+        },
+        {
+          "address": 2305,
+          "value": 98,
+          "write": 1,
+          "cycle": 27
+        },
+        {
+          "address": 2308,
+          "value": 0,
+          "write": 1,
+          "cycle": 36
+        },
+        {
+          "address": 2309,
+          "value": 0,
+          "write": 1,
+          "cycle": 36
+        }
       ],
       "cycles": 52,
       "end": {
@@ -635,6 +763,38 @@
           43
         ]
       ],
+      "accesses": [
+        {
+          "address": 2305,
+          "value": 0,
+          "write": 0,
+          "cycle": 10
+        },
+        {
+          "address": 2308,
+          "value": 0,
+          "write": 0,
+          "cycle": 15
+        },
+        {
+          "address": 2305,
+          "value": 98,
+          "write": 1,
+          "cycle": 27
+        },
+        {
+          "address": 2308,
+          "value": 0,
+          "write": 1,
+          "cycle": 36
+        },
+        {
+          "address": 2309,
+          "value": 1,
+          "write": 1,
+          "cycle": 36
+        }
+      ],
       "cycles": 52,
       "end": {
         "pc": 19508,
@@ -699,6 +859,38 @@
           13,
           43
         ]
+      ],
+      "accesses": [
+        {
+          "address": 2305,
+          "value": 0,
+          "write": 0,
+          "cycle": 10
+        },
+        {
+          "address": 2308,
+          "value": 0,
+          "write": 0,
+          "cycle": 15
+        },
+        {
+          "address": 2305,
+          "value": 98,
+          "write": 1,
+          "cycle": 27
+        },
+        {
+          "address": 2308,
+          "value": 0,
+          "write": 1,
+          "cycle": 36
+        },
+        {
+          "address": 2309,
+          "value": 1,
+          "write": 1,
+          "cycle": 36
+        }
       ],
       "cycles": 52,
       "end": {
@@ -765,6 +957,38 @@
           43
         ]
       ],
+      "accesses": [
+        {
+          "address": 2305,
+          "value": 0,
+          "write": 0,
+          "cycle": 10
+        },
+        {
+          "address": 2308,
+          "value": 0,
+          "write": 0,
+          "cycle": 15
+        },
+        {
+          "address": 2305,
+          "value": 98,
+          "write": 1,
+          "cycle": 27
+        },
+        {
+          "address": 2308,
+          "value": 18,
+          "write": 1,
+          "cycle": 36
+        },
+        {
+          "address": 2309,
+          "value": 52,
+          "write": 1,
+          "cycle": 36
+        }
+      ],
       "cycles": 52,
       "end": {
         "pc": 19508,
@@ -829,6 +1053,38 @@
           13,
           43
         ]
+      ],
+      "accesses": [
+        {
+          "address": 2305,
+          "value": 0,
+          "write": 0,
+          "cycle": 10
+        },
+        {
+          "address": 2308,
+          "value": 18,
+          "write": 0,
+          "cycle": 15
+        },
+        {
+          "address": 2305,
+          "value": 98,
+          "write": 1,
+          "cycle": 27
+        },
+        {
+          "address": 2308,
+          "value": 18,
+          "write": 1,
+          "cycle": 36
+        },
+        {
+          "address": 2309,
+          "value": 52,
+          "write": 1,
+          "cycle": 36
+        }
       ],
       "cycles": 52,
       "end": {
@@ -895,6 +1151,38 @@
           43
         ]
       ],
+      "accesses": [
+        {
+          "address": 2305,
+          "value": 0,
+          "write": 0,
+          "cycle": 10
+        },
+        {
+          "address": 2308,
+          "value": 18,
+          "write": 0,
+          "cycle": 15
+        },
+        {
+          "address": 2305,
+          "value": 98,
+          "write": 1,
+          "cycle": 27
+        },
+        {
+          "address": 2308,
+          "value": 255,
+          "write": 1,
+          "cycle": 36
+        },
+        {
+          "address": 2309,
+          "value": 255,
+          "write": 1,
+          "cycle": 36
+        }
+      ],
       "cycles": 52,
       "end": {
         "pc": 19508,
@@ -960,6 +1248,38 @@
           43
         ]
       ],
+      "accesses": [
+        {
+          "address": 2305,
+          "value": 0,
+          "write": 0,
+          "cycle": 10
+        },
+        {
+          "address": 2308,
+          "value": 255,
+          "write": 0,
+          "cycle": 15
+        },
+        {
+          "address": 2305,
+          "value": 98,
+          "write": 1,
+          "cycle": 27
+        },
+        {
+          "address": 2308,
+          "value": 255,
+          "write": 1,
+          "cycle": 36
+        },
+        {
+          "address": 2309,
+          "value": 255,
+          "write": 1,
+          "cycle": 36
+        }
+      ],
       "cycles": 52,
       "end": {
         "pc": 19508,
@@ -990,5 +1310,5 @@
     "classification": "Synthetic original timer2 reset/arm, explicit native context; no IRQ acceptance claim",
     "mame_sha256": "0FCE5A88DF4F9D9B1FBF1405812C00848036E615993780978D967DA34204CB7A"
   },
-  "raw_sha256": "F0DB8017846A969C848F0494B953BA89060839C59F8E4E41DC34A33F5E24003F"
+  "raw_sha256": "7BA85077B7EC60A9DDD539A66BA2D6FD2B812BC052B129A3D7F2010AE146387B"
 }

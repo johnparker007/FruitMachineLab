@@ -5,11 +5,13 @@ $rom=[IO.File]::ReadAllBytes($RomPath);$p=Get-Content "$RunDirectory/provenance.
 if($cases.Count -ne $p.count){throw 'Wrong catalog'}
 $rows=[Collections.Generic.List[object]]::new();$catalog=[Collections.Generic.List[object]]::new();$indexes=@{};$active=$null;$id=0
 foreach($line in Get-Content "$RunDirectory/debug.log"){
- if($line -match '(?i)^error '){throw 'Debugger error'};if($line -notmatch '^O([SIF]) '){continue};$kind=$Matches[1];$f=[ordered]@{}
+ if($line -match '(?i)^error '){throw 'Debugger error'};if($line -notmatch '^O([SIFA]) '){continue};$kind=$Matches[1];$f=[ordered]@{}
  foreach($match in [regex]::Matches($line,'([a-z]+)=([0-9A-F]+)')){if($match.Groups[1].Value -ne 'bytes'){$f[$match.Groups[1].Value]=[Convert]::ToUInt64($match.Groups[2].Value,16)}}
  if($kind -eq 'S'){
   if($null -ne $active -or $id -ge $cases.Count -or $f.pc -ne $cases[$id].entry){throw 'Wrong start'}
-  $active=[ordered]@{case=$cases[$id];start_cycle=$f.cycle;start=$f;steps=[Collections.Generic.List[object]]::new()}
+  $active=[ordered]@{case=$cases[$id];start_cycle=$f.cycle;start=$f;steps=[Collections.Generic.List[object]]::new();accesses=[Collections.Generic.List[object]]::new()}
+ }elseif($kind -eq 'A'){
+  if($null -ne $active){$active.accesses.Add([ordered]@{address=$f.address;value=$f.value;write=$f.write;cycle=$f.cycle-$active.start_cycle})}
  }elseif($kind -eq 'I'){
   if($null -eq $active -or $line -notmatch 'bytes=([0-9A-F]{10})'){throw 'Missing instruction'};$hex=$Matches[1];$pc=[int]$f.pc
   if([Convert]::ToHexString($rom[$pc..($pc+4)]) -ne $hex){throw 'ROM differs'}

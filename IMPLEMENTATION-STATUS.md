@@ -1,5 +1,14 @@
 # Implementation and evidence boundaries
 
+Preplay Collect now runs through AB1B/AAF2/AAA1 in the headless collection engine,
+with32 original-ROM synthetic gate comparisons and the actual shared Take input.
+Finite native prompt allocation is translated; ongoing physical sound-pool lifecycle
+remains explicit. The payout pulse/wait suffix is now separately instruction-staged,
+verified against8 synthetic MAME paths with real polling (no skipped waits there).
+Live integration still needs source-derived foreground/gateway timing ownership;
+no new GUI mode or whole-machine timing independence is claimed. See
+[Collect/pulse pass](docs/recovery/COLLECT-PREPLAY-AND-PULSE-PASS.md).
+
 Native collection now executes headlessly through AA2B, cash/token denomination
 selection, debit/accounting, display refresh and triac output pulses.64 isolated
 MAME cases (32 debit,16 service,16 router) match selected RAM and output sequences;

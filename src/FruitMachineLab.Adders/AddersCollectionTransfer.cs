@@ -18,7 +18,7 @@ public sealed class AddersCollectionTransfer
     public AddersCollectionTransfer(Machine machine, string evidenceDirectory, ushort entry, Action<LampRequest> lampOutput,
         Func<Instruction,Machine,bool>? additionalHandler=null)
     {
-        if(entry is not (0xAA2B or 0xA983 or 0xA9A0 or 0xA9D5 or 0xAA04 or 0xA942))
+        if(entry is not (0xAB1B or 0xAAA1 or 0xAAF2 or 0xAA2B or 0xA983 or 0xA9A0 or 0xA9D5 or 0xAA04 or 0xA942))
             throw new ArgumentOutOfRangeException(nameof(entry), "Unrecovered collection entry");
         if(machine.Control is null)
             throw new ArgumentException("Collection requires an existing physical VM control stack", nameof(machine));

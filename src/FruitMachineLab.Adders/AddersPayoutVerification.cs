@@ -5,9 +5,9 @@ namespace FruitMachineLab.Adders;
 
 public static class AddersPayoutVerification
 {
-    public static int ServiceMatrix(string evidence,bool collection=false)
+    public static int ServiceMatrix(string evidence,bool collection=false,bool collectGate=false)
     {
-        using var doc=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection",collection ? "router-matrix.json" : "service-matrix.json")));
+        using var doc=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection",collectGate ? "collect-gate-matrix.json" : collection ? "router-matrix.json" : "service-matrix.json")));
         int count=0;
         foreach(var row in doc.RootElement.GetProperty("rows").EnumerateArray()) {
             var m=new Machine{DataStackBase=0x600};m.Control=new(m,0x800);
@@ -15,11 +15,11 @@ public static class AddersPayoutVerification
             SkillCashData.LoadFeature(m);SkillCashData.LoadAlpha(m);AddersPayoutDisplay.LoadRomData(m,evidence);
             var alpha=new Mpu4Alpha(m);byte triac=0x30;var writes=new List<byte>();var debits=new List<(ushort Record,ushort Balance)>();
             AddersPayoutExecution? execution=null;AddersCollectionExecution? router=null;
-            if(collection) {
+            if(collection || collectGate) {
                 using var framesDoc=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","lamp-frames.json")));
                 var frames=new Mpu4LampFrames(m,framesDoc.RootElement.GetProperty("responses").EnumerateArray().Select(x=>x.GetByte()).ToArray());
                 m.Control.Push(0x4C34);
-                router=new(m,evidence,0xAA2B,r=>frames.Apply(r.Id,r.Pattern),alpha,new(m,m.ReadWord(0x45)),()=>triac,v=>{triac=v;writes.Add(v);});
+                router=new(m,evidence,row.GetProperty("case").GetProperty("entry").GetUInt16(),r=>frames.Apply(r.Id,r.Pattern),alpha,new(m,m.ReadWord(0x45)),()=>triac,v=>{triac=v;writes.Add(v);});
                 router.ObserveDebit=(record,balance)=>debits.Add((record.Address,balance));
             } else {
             execution=new AddersPayoutExecution(m,row.GetProperty("case").GetProperty("entry").GetUInt16(),
@@ -38,6 +38,7 @@ public static class AddersPayoutVerification
             if((router?.Debits ?? execution!.Debits)!=row.GetProperty("debits").GetArrayLength())throw new InvalidDataException("Payout debit count differs");
             if(!debits.SequenceEqual(row.GetProperty("debits").EnumerateArray().Select(x=>(x.GetProperty("record").GetUInt16(),x.GetProperty("balance").GetUInt16()))))throw new InvalidDataException("Payout denomination/balance sequence differs");
             if(!writes.SequenceEqual(row.GetProperty("triac_writes").EnumerateArray().Select(x=>x.GetByte())))throw new InvalidDataException("Payout triac writes differ");
+            if(collectGate && (m.Data.Count!=1 || m.Data.Peek()!=row.GetProperty("result").GetUInt16()))throw new InvalidDataException("Preplay credit/collect result differs");
             count++;
         }
         return count;

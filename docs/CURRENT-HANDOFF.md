@@ -1,5 +1,21 @@
 # Current handoff
 
+17 October preplay Collect milestone: AB1B/AAF2/AAA1 now compose with collection.
+32 synthetic original-ROM gate paths match selected RAM, flag and payout outputs.
+Collect aliases Take (BLACK2 bit01); condition1C reads sampled0003, not sticky0091.
+Finite sound-prompt allocation5C18/5C51 and due wrap are recovered; physical/logical
+active-list mismatch stops explicitly because background pool lifecycle is not
+fully mirrored. See [Collect/pulse pass](recovery/COLLECT-PREPLAY-AND-PULSE-PASS.md).
+
+Bounded Live timing prerequisite: Mpu4PayoutPulseExecution stages68A0..68C9 and
+real7172 polling. Eight synthetic MAME cases match every PC/start cycle/encoding,
+final cycle/counter/port and write values. Synthetic counter changes are NOT
+natural IRQ evidence; watchpoint timestamps mark store start, model writes commit
+at completion. No captured timing drives this component. Live remains unchanged:
+80E4/80F4 lack foreground CPU budgets; next compose prefix/debit/display/gateway
+ownership and staged pulse with the host, never zero-cost/doubled payout effects.
+Do not restart comprehensive IRQ recovery or advertise a new GUI collection mode.
+
 17 October native collection milestone: AddersCollectionExecution composes AA2B
 with translated4B39/4B8C,4CBE accounting/display, token compensation, serial queues
 and6858 triac pulses.32 isolated MAME debit cases,16 service cases and16 full

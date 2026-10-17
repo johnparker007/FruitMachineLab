@@ -30,6 +30,17 @@ public sealed class AddersCollectionExecution
         this.readTriac=readTriac;this.writeTriac=writeTriac;
         var lamps=new Mpu4LampRequests(machine,lampOutput);
         transfer=new(machine,evidence,entry,lampOutput,(instruction,m)=> {
+            if(instruction.Token==0x856F) {
+                bool nativeActive=m.ReadWord(0x47)!=0;
+                if(nativeActive!=scheduler.Active)throw new NotSupportedException("Collect prompt native sound list differs from logical scheduler; background pool lifecycle requires recovery");
+                m.Data.Push(Cell.Flag(!nativeActive));return true;
+            }
+            if(instruction.Native==0x5C18) {
+                ushort stream=m.Pop();
+                if(AddersSoundQueueMemory.Queue(m,stream) && !scheduler.Queue(stream))
+                    throw new InvalidOperationException("Sound queue memory and scheduler disagree");
+                return true;
+            }
             bool handled=AddersNativeWords.Handle(instruction,m,lamps,scheduler,alpha);
             if(handled && instruction.Native==0x5B77)AddersSoundResetMemory.Apply(m,ymWrite);
             return handled;

@@ -1,5 +1,12 @@
 # Project direction and handoff
 
+17 October Collect integration checkpoint: actual AB1B/AAA1 input gates and finite
+prompt allocation now execute;32 synthetic ROM cases validate them. The staged
+payout pulse/polling suffix matches8 native instruction paths. Next compose its
+native prefix/debit/display/gateway timing with Live, plus sound-pool lifecycle
+ownership, before exposing collection there. No zero-cost native payout adapter
+or new captured timing table. See recovery/COLLECT-PREPLAY-AND-PULSE-PASS.md.
+
 17 October priority reset (supersedes the timing-first next-step notes below):
 the bounded nineteen-window audit leaves autonomous outer IRQ acceptance open.
 Do not expand this into another timing campaign. Atomic native/VM execution

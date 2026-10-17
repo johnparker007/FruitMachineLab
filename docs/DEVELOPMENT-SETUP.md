@@ -5,6 +5,13 @@ Local clone: C:\projects\GitRepos\FruitMachineLab
 
 ## Current status
 
+Collect gates: Capture-CollectGate.ps1 with standard MAME/RomDirectory/SeedRam and
+fresh RunDirectory; Curate-PayoutService.ps1 selects the32-case gate matrix from
+provenance. Pulse timing: Capture-/Curate-PayoutPulseTiming.ps1 (standard isolated
+capture; curator takes RunDirectory/RomPath) exports8 compact native instruction
+paths with synthetic counter changes. Filters: Collect and "Payout staged".
+See recovery/COLLECT-PREPLAY-AND-PULSE-PASS.md for actual Live integration limits.
+
 Headless collection now composes AA2B with native cash/token payout, accounting,
 display and output waits. Filter verifier with Payout for the new oracle matrices
 and component tests. Capture-PayoutDebit.ps1 / Curate-PayoutDebit.ps1 reproduce32

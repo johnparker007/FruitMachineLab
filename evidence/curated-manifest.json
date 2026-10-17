@@ -40,6 +40,11 @@
     "sha256": "E644AF1E94D3128A98611511442407E97FBE7FBA36C59B0026982C99DFA66403"
   },
   {
+    "path": "docs/recovery/COLLECT-PREPLAY-AND-PULSE-PASS.md",
+    "bytes": 9166,
+    "sha256": "232D0707772B29CD4E6DC7BBFF13B7F67B7AF5A439FDEFD0488EC9795B496EF9"
+  },
+  {
     "path": "docs/recovery/COLLECTION-PAYOUT-PASS.md",
     "bytes": 11427,
     "sha256": "6AB14EB51149C4A802042DA0E6A235BFB800D137CA8109846FB605874BD20F52"
@@ -320,6 +325,16 @@
     "sha256": "231EFC42EF3F02A693E59EC32C2EFD02242D39CAF79AF7E2850E4A070CB7A0CB"
   },
   {
+    "path": "evidence/mpu4/collection/collect-gate-matrix-debugger.cmd",
+    "bytes": 18331,
+    "sha256": "7F09FB0B60DE4FAACD3159F695F96DF8F5D11A29C9E5B1E816EAFA005FF665B7"
+  },
+  {
+    "path": "evidence/mpu4/collection/collect-gate-matrix.json",
+    "bytes": 275455,
+    "sha256": "EC962542F02C5FB5A3ED4AE49F36A34A0F0380310F34FCA3A54CD9C27084031A"
+  },
+  {
     "path": "evidence/mpu4/collection/debit-matrix-debugger.cmd",
     "bytes": 20552,
     "sha256": "5ED04BA2CA7358E19A218139C05CBE6E1DC5680A90D3E3AF719FD3D55A0CEADA"
@@ -331,8 +346,18 @@
   },
   {
     "path": "evidence/mpu4/collection/payout-data.json",
-    "bytes": 4358,
-    "sha256": "9ED9AC37EBF00253D1BD4F9DD170A8F1A31C3264B404012A2D3D1E527731137A"
+    "bytes": 5516,
+    "sha256": "4ABA646C6300799544268F18E14B28E5B8F04824B7F2298DC5F6063481BE1E31"
+  },
+  {
+    "path": "evidence/mpu4/collection/pulse-timing-debugger.cmd",
+    "bytes": 9229,
+    "sha256": "3B5970C912BC65E3E93E0C21D39CB5C6C9A3056E237F6F3F878F77A8CA066FA1"
+  },
+  {
+    "path": "evidence/mpu4/collection/pulse-timing.json",
+    "bytes": 468203,
+    "sha256": "D74F714EDC823CE7E7F51C30C7AE6EB891A9D67E60D7BE3AF3595B27938B92BC"
   },
   {
     "path": "evidence/mpu4/collection/router-matrix-debugger.cmd",
@@ -356,8 +381,8 @@
   },
   {
     "path": "evidence/mpu4/collection/vm-encoding-checkpoint.json",
-    "bytes": 8650,
-    "sha256": "DA267448D5EBCF574E1EF23B44D7BA8095D4F24666DD47D7B11B1AEAC2A619CE"
+    "bytes": 11349,
+    "sha256": "074E3D0C1EBB6D3338BFDFFD84FAD7DA276497CFD6D53BA01A2111DCDEF9DF35"
   },
   {
     "path": "evidence/mpu4/maps/board-availability-boundary.json",

@@ -1,6 +1,6 @@
 {
   "rom_sha1": "402D1518BB78FDC489B06C2AABC771E5CE151847",
-  "classification": "Exact ROM ranges. Records4ACA..4B0D, triac masks/messages, display pointer and option constants. Native regions preserve bytes, not a lossless symbolic listing.",
+  "classification": "Exact ROM ranges. Records4ACA..4B0D, triac masks/messages, display pointer, shared Collect input and option constants. Native regions preserve bytes, not a lossless symbolic listing.",
   "ranges": [
     {
       "address": 19146,
@@ -23,12 +23,24 @@
       "bytes_hex": "A8F9"
     },
     {
+      "address": 33847,
+      "bytes_hex": "00380085"
+    },
+    {
+      "address": 33964,
+      "bytes_hex": "010000A0"
+    },
+    {
       "address": 34024,
-      "bytes_hex": "1000719F"
+      "bytes_hex": "1000719F841B2000719F"
     },
     {
       "address": 34076,
       "bytes_hex": "8424FF368424FF3A8424"
+    },
+    {
+      "address": 34617,
+      "bytes_hex": "2B844B2F884B268B4B2B844B2F884B268B4B2D864B2A834B268B4BD02B8464C085685FBB4BBE21BE21BE21BE335FBB4BBE21BE21BE21BE335FBB4BBE21BE21BE21BE33D05F5BBE64C08568C5E0C28739C510C70CC28739C5C0C7F4C28739C1875BCEFFCEFFC08568"
     },
     {
       "address": 65332,
@@ -61,6 +73,10 @@
       "bytes_hex": "BD60C88D130F4D0F4F34028610974E861097503582BD60C834360C444F5FDD478E01A09F493184308825AFA48C027E25F4EDA48E027E4F974B4CA780810525F9974C86FFA7848E5BCEEC81BD60AB8C5C1825F60A4435B6"
     },
     {
+      "address": 23576,
+      "bytes_hex": "BD60C834360C448D30272A860DD6503D4D2702C6FF5454545453C40FCAA0E72B6F2C6F2D6FA8106FA8128610A72EDC45C30001ED220A4435B6109E492723AFA813AF28AEA49F499E47AFA4109F478E5D3BAF246FA8116F2F30A825AF2686FFA72A39"
+    },
+    {
       "address": 24747,
       "bytes_hex": "34108E0284A1852709F70880A785B7088112359034108E0284E68535903404F6719BC58026023584326339"
     },
@@ -88,5 +104,17 @@
       "address": 29042,
       "bytes_hex": "8D1634063404C605966E916E27FC5A26F735045A26EE35863404F6719BC58026023584350432623900"
     }
-  ]
+  ],
+  "collect_input": {
+    "selector": 28,
+    "rom_address": 29210,
+    "bytes_hex": "00000001",
+    "mux_column": 3,
+    "bit": 1,
+    "active_high": true,
+    "shared_label": "Collect / Take Feature",
+    "mame_ref": "mame0281",
+    "mame_path": "src/mame/barcrest/mpu4mod4yam.cpp",
+    "sampling": "Condition1C reads sampled byte0003 level. OR latch0091 is separate. Physical release clears the sampled bit at the next acquisition."
+  }
 }

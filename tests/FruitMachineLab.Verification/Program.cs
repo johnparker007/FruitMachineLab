@@ -8,6 +8,51 @@ var passed = 0;
 void Check(string name, Action action) { if(args.Length>1 && !name.Contains(args[1],StringComparison.OrdinalIgnoreCase))return;action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
 Check("Payout native debit display accounting and checksums match32 MAME cases",()=>Equal(32,AddersPayoutVerification.DebitMatrix(evidence)));
+Check("Collect preplay credit and input gates match32 original MAME VM paths",()=>Equal(32,AddersPayoutVerification.ServiceMatrix(evidence,collectGate:true)));
+Check("Collect shared Take input is sampled as a level through the recovered preplay gate",()=>{
+    var m=new Machine{DataStackBase=0x600};m.Control=new(m,0x800);SkillCashData.LoadFeature(m);SkillCashData.LoadAlpha(m);AddersPayoutDisplay.LoadRomData(m,evidence);
+    m.WriteWord(0x2FC,24);var alpha=new Mpu4Alpha(m);alpha.Reset();var scheduler=new Mpu4ChoiceStreamScheduler(m,0);var panel=new Mpu4PanelInput(m);byte port=0x30;
+    void Poll() {m.Control.Push(0xBEEF);var vm=new AddersCollectionExecution(m,evidence,0xAB1B,_=>{},alpha,scheduler,()=>port,v=>port=v);int budget=20000;while(!vm.Completed && --budget>0){if(vm.Waiting)m.Memory[0x6E]++;vm.Step();}Equal(true,vm.Completed);Equal((ushort)0,m.Pop());Equal((ushort)0x800,m.Control.Pointer);}
+    Poll();Equal((ushort)24,m.ReadWord(0x2FC));Equal(1,scheduler.ActiveTasks);
+    panel.SetCollect(true);Equal(true,panel.TakePressed);Equal((ushort)0,Mpu4InputConditions.Evaluate(m,0x1C));Poll();Equal((ushort)24,m.ReadWord(0x2FC));
+    panel.Sample(3);Equal(ushort.MaxValue,Mpu4InputConditions.Evaluate(m,0x1C));Poll();Equal((ushort)20,m.ReadWord(0x2FC));
+    panel.SetCollect(false);Equal(ushort.MaxValue,Mpu4InputConditions.Evaluate(m,0x1C));panel.Sample(3);Equal((ushort)0,Mpu4InputConditions.Evaluate(m,0x1C));Equal((byte)1,(byte)(m.Memory[0x91]&1));Poll();Equal((ushort)20,m.ReadWord(0x2FC));
+    panel.SetTake(true);Equal(true,panel.CollectPressed);panel.Sample(3);Poll();Equal((ushort)0,m.ReadWord(0x2FC));panel.Release();panel.Sample(3);Equal(false,panel.CollectPressed);Equal((ushort)0,Mpu4InputConditions.Evaluate(m,0x1C));
+});
+Check("Collect sound prompt uses the finite native pool and unsigned due wrap",()=>{
+    foreach(var volume in new[]{(Value:(byte)0,Expected:(byte)0xAF),(Value:(byte)16,Expected:(byte)0xA2),(Value:(byte)255,Expected:(byte)0xA0)}) {
+        var m=new Machine();AddersPayoutDisplay.LoadRomData(m,evidence);AddersSoundResetMemory.Apply(m);m.Memory[0x50]=volume.Value;m.WriteWord(0x45,65535);
+        for(int n=0;n<6;n++){Equal(true,AddersSoundQueueMemory.Queue(m,0x8784));ushort at=m.ReadWord(0x47);Equal((ushort)0,m.ReadWord((ushort)(at+2)));Equal(volume.Expected,m.Memory[at+0xB]);}
+        Equal((ushort)0,m.ReadWord(0x49));byte[] before=m.Memory.ToArray();Equal(false,AddersSoundQueueMemory.Queue(m,0x8784));Equal(true,before.SequenceEqual(m.Memory));
+    }
+});
+Check("Collect prompt rejects an unsynchronised native sound list",()=>{
+    // Synthetic inconsistent host state; do not silently replace the ROM gate.
+    var m=new Machine{DataStackBase=0x600};m.Control=new(m,0x800);m.Control.Push(0xBEEF);SkillCashData.LoadFeature(m);SkillCashData.LoadAlpha(m);AddersPayoutDisplay.LoadRomData(m,evidence);m.WriteWord(0x2FC,24);m.WriteWord(0x47,0x1A0);
+    var vm=new AddersCollectionExecution(m,evidence,0xAB1B,_=>{},new(m),new(m,0),()=>0x30,_=>{});
+    try{for(int n=0;n<1000 && !vm.Completed;n++)vm.Step();throw new Exception("Inconsistent sound list accepted");}catch(NotSupportedException e){Equal(true,e.Message.Contains("sound list"));}
+    Equal((ushort)0x1A0,m.ReadWord(0x47));Equal((ushort)24,m.ReadWord(0x2FC));
+});
+Check("Payout staged pulse and real polling instructions match eight native MAME paths",()=>{
+    using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","pulse-timing.json")));var catalog=doc.RootElement.GetProperty("catalog");int count=0;
+    foreach(var row in doc.RootElement.GetProperty("rows").EnumerateArray()) {
+        var c=row.GetProperty("case");var m=new Machine();m.Memory[0x6E]=c.GetProperty("counter").GetByte();byte port=c.GetProperty("port").GetByte();ulong start=row.GetProperty("start_cycle").GetUInt64();var observed=new List<OutputScanInstruction>();var writes=new List<(ulong,byte)>();
+        using var execution=new Mpu4PayoutPulseExecution(m,start,c.GetProperty("mask").GetByte(),0x50,()=>port,v=>port=v);
+        execution.ObserveInstruction=observed.Add;execution.ObserveAccess=a=>{if(a.Write)writes.Add((a.Cycle-start,checked((byte)a.Value!.Value)));};int polls=0,budget=20000;
+        while(!execution.Completed && --budget>0){if(execution.Address==0x717C && (++polls&1)!=0)m.Memory[0x6E]++;execution.AdvanceTo(execution.NextEventCycle);}
+        Equal(true,execution.Completed);var expected=row.GetProperty("steps");Equal(expected.GetArrayLength(),observed.Count);
+        for(int n=0;n<observed.Count;n++){var reference=catalog[expected[n][0].GetInt32()];Equal(reference.GetProperty("pc").GetUInt16(),observed[n].Address);Equal(start+expected[n][1].GetUInt64(),observed[n].Started);Equal(true,reference.GetProperty("context_hex").GetString()!.StartsWith(observed[n].Bytes,StringComparison.Ordinal));}
+        Equal(row.GetProperty("end").GetProperty("cycle").GetUInt64(),execution.Cycle);Equal(row.GetProperty("end").GetProperty("counter").GetByte(),m.Memory[0x6E]);Equal(row.GetProperty("end").GetProperty("port").GetByte(),port);Equal(259,polls);
+        var stores=observed.Where(i=>i.Address is 0x68AB or 0x68BF).ToArray();Equal(2,writes.Count);for(int n=0;n<2;n++){Equal(row.GetProperty("writes")[n][0].GetUInt64(),stores[n].Started-start);Equal(stores[n].Completed-start,writes[n].Item1);Equal(row.GetProperty("writes")[n][1].GetByte(),writes[n].Item2);}count++;
+    }Equal(8,count);
+});
+Check("Payout staged pulse masks write sections and retains compare flags across suspension",()=>{
+    var m=new Machine();byte port=0x30;using var vm=new Mpu4PayoutPulseExecution(m,0,1,0,()=>port,v=>port=v);
+    while(vm.Address!=0x68A8)vm.AdvanceTo(vm.NextEventCycle);Equal(true,vm.IrqMasked);
+    try{vm.SuspendUntil(vm.Cycle+137);throw new Exception("Masked write accepted IRQ suspension");}catch(InvalidOperationException){}
+    while(vm.Address!=0x717E)vm.AdvanceTo(vm.NextEventCycle);Equal(false,vm.IrqMasked);m.Memory[0x6E]++;ulong due=vm.NextEventCycle;vm.SuspendUntil(vm.Cycle+137);Equal(due+137,vm.NextEventCycle);
+    vm.AdvanceTo(vm.NextEventCycle);Equal((ushort)0x717C,vm.Address);vm.AdvanceTo(vm.NextEventCycle);vm.AdvanceTo(vm.NextEventCycle);Equal((ushort)0x7180,vm.Address);
+});
 Check("Payout native cash and token services match16 MAME accounting and output paths",()=>Equal(16,AddersPayoutVerification.ServiceMatrix(evidence)));
 Check("Payout collection router VM matches16 MAME bank accounting display and output paths",()=>Equal(16,AddersPayoutVerification.ServiceMatrix(evidence,true)));
 Check("Payout output waits observe65 counter changes per edge and preserve shared latch bits",()=>{

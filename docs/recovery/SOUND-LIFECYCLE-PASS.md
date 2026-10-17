@@ -307,3 +307,12 @@ including clock wrap. Capture-SoundQueue / shared curator -Operation queue use
 existing conventions. Opcode COMB/ORB/ADDD immediate timing is covered by those
 paths. The allocation sequence is intentionally explicit like C2; neither caller
 inherits a guessed normal C ABI. No Live change. Raw pointer sound-queue.txt.
+
+Native5C7A cancellation now stages60C8, saved caller frame,5CB5 predecessor-link
+search, unlink/free and5E2C release. The lifecycle capture seeds A89/BAB explicitly
+and observes cancellation instructions;32 cases now verify full stack/cycles/RAM,
+not only memory effects. All retained lifecycle cases still pass. The obsolete
+unsupported-note synthetic check now uses a nonzero gate: rhythm was recovered,
+so rejecting it would no longer test a real gap. No reference behaviour changed.
+Raw pointer FruitMachineLab-sound-cancel.txt. Disabled/missing/middle cancellation
+timing variants remain separate from these selected found-head cases.

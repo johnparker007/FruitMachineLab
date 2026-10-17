@@ -2,12 +2,12 @@ param([Parameter(Mandatory=$true)][string]$MameExecutable,[Parameter(Mandatory=$
 $ErrorActionPreference='Stop';$run=[IO.Path]::GetFullPath($RunDirectory);if(Test-Path $run){throw 'Use a fresh isolated directory'}
 New-Item -ItemType Directory $run|Out-Null;foreach($name in @('cfg','nvram','inp','snap','comments','state','diff')){New-Item -ItemType Directory "$run/$name"|Out-Null}
 $commands=[Collections.Generic.List[string]]::new();$cases=[Collections.Generic.List[object]]::new();$commands.Add('bpset 4c34')
-$body=(Get-Content "$PSScriptRoot/../src/FruitMachineLab.Adders/AddersYmCachedWritePlan.cs" -Raw)+(Get-Content "$PSScriptRoot/../src/FruitMachineLab.Adders/AddersSoundReleasePlan.cs" -Raw)+(Get-Content "$PSScriptRoot/../src/FruitMachineLab.Adders/AddersSoundServicePlan.cs" -Raw)
+$body=(Get-Content "$PSScriptRoot/../src/FruitMachineLab.Adders/AddersSoundCancelPlan.cs" -Raw)+(Get-Content "$PSScriptRoot/../src/FruitMachineLab.Adders/AddersYmCachedWritePlan.cs" -Raw)+(Get-Content "$PSScriptRoot/../src/FruitMachineLab.Adders/AddersSoundReleasePlan.cs" -Raw)+(Get-Content "$PSScriptRoot/../src/FruitMachineLab.Adders/AddersSoundServicePlan.cs" -Raw)
 foreach($pc in ([regex]::Matches($body,'new NativeRoutineStep\(0x([0-9A-F]{4}),"')|ForEach-Object {[Convert]::ToInt32($_.Groups[1].Value,16)}|Sort-Object -Unique)){$commands.Add(('bpset {0:X},1,{{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}}' -f $pc))}
 foreach($kind in @('release','cancel','finish','scheduler','nested')){foreach($rhythm in @(0,0x21)){foreach($count in @(0,1,3,6)){foreach($tail in @(0,1)){foreach($unchanged in @(0,1)){
 $id=$cases.Count;$entry=switch($kind){release{0x5E2C} cancel{0x5C7A} finish{0x5E6D} scheduler{0x5CD0} nested{0x5E6D}}
 $cases.Add([ordered]@{id=$id;kind=$kind;entry=$entry;rhythm=$rhythm;channels=$count;tail=$tail;unchanged=$unchanged})
-$commands.Add(('pc=0x{0:X};s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x{1:X};b@1af=0x55' -f $entry,$rhythm))
+$commands.Add(('pc=0x{0:X};s=0x700;u=0x600;a=0x89;b=0xab;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x{1:X};b@1af=0x55' -f $entry,$rhythm))
 # Channel chains use each valid id exactly once; nonempty free-list cases reserve channel5.
 $owned=$count;if($tail -eq 1 -and $count -eq 6){$owned=5};$cases[$id].channels=$owned
 $commands.Add(('b@1aa=0x{0:X};b@4b=0x{1:X};b@4c=0x{1:X}' -f $(if($owned){0}else{255}),$(if($tail){5}else{255})))

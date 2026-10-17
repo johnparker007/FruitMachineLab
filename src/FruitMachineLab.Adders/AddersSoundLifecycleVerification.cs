@@ -17,7 +17,7 @@ public static class AddersSoundLifecycleVerification
             var writes=new List<(byte,byte)>();var expectedWrites=new List<(byte,byte)>();
             var semantic=new Machine();m.Memory.CopyTo(semantic.Memory,0);AddersSoundLifecycleMemory.ReleaseChannels(semantic,0x1A0,(r,v)=>expectedWrites.Add((r,v)));
             ushort entry=row.GetProperty("case").GetProperty("entry").GetUInt16();
-            IEnumerable<NativeRoutineWork> plan=kind=="release"
+            IEnumerable<NativeRoutineWork> plan=kind=="cancel" ? new AddersSoundCancelPlan(m,0x8784,0x700,0x1A0,0x600,0x89,0xAB,(r,v)=>writes.Add((r,v))).Instructions() : kind=="release"
                 ? new AddersSoundReleasePlan(m,0x1A0,0x700,0x600,0x8784,(r,v)=>writes.Add((r,v))).Instructions()
                 : new AddersSoundServicePlan(m,0x700,0x600,0x8784,0x1A0,entry,(r,v)=>writes.Add((r,v))).Instructions();
             using var execution=new NativeRoutineExecution(plan,0,0x4C34,()=>true);

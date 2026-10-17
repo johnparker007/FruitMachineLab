@@ -1,5 +1,8 @@
 # Current handoff
 
+Sixteen-batch cycle batch8:5C7A/5CB5 cancellation instruction timing/full stack
+matches32 original-ROM paths;12 lifecycle groups pass. Next foreground reset.
+
 Sixteen-batch cycle batch7: foreground5C18 queue fully instruction-staged and
 verified32 MAME calls; next cancel/reset timing, then host ownership composition.
 

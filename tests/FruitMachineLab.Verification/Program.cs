@@ -9,6 +9,7 @@ void Check(string name, Action action) { if(args.Length>1 && !name.Contains(args
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
 Check("Sound operation native calls preserve frames across24 ROM ticks",()=>Equal(24,AddersSoundOperationVerification.Calls(evidence)));
 Check("Sound operation foreground queue matches32 original-ROM paths",()=>Equal(32,AddersSoundOperationVerification.Queue(evidence)));
+Check("Sound lifecycle timed cancellation matches32 original-ROM paths",()=>Equal(32,AddersSoundLifecycleVerification.Timed(evidence,"cancel")));
 Check("Sound operation rhythm notes match120 original-ROM paths",()=>Equal(120,AddersSoundOperationVerification.Rhythm(evidence)));
 Check("Sound operation original8784 prompt matches128 preserved ROM ticks",()=>Equal(128,AddersSoundOperationVerification.Prompt(evidence)));
 Check("Sound operation complete8784 prompt drains twelve times without native leaks",()=>Equal(48,AddersSoundOperationVerification.NativeChildLongevity(evidence,true)));
@@ -50,9 +51,9 @@ Check("Sound lifecycle native service guards idle tick and explicit unsupported 
     var m=new Machine();m.Memory[0x44]=0xFF;m.Memory[0x2C]=0x7A;m.WriteWord(0x45,0xFFFF);
     byte[] before=m.Memory.ToArray();using(var e=new NativeRoutineExecution(new AddersSoundServicePlan(m,0x700,0x600,0x8784,0x1A0).Instructions(),0,0x4C34,()=>false)){while(!e.Completed)e.AdvanceTo(e.NextEventCycle);Equal((ulong)12,e.Cycle);Equal(true,before.SequenceEqual(m.Memory));}
     m.Memory[0x44]=0;using(var e=new NativeRoutineExecution(new AddersSoundServicePlan(m,0x700,0x600,0x8784,0x1A0).Instructions(),0,0x4C34,()=>false)){while(!e.Completed)e.AdvanceTo(e.NextEventCycle);Equal((ushort)0,m.ReadWord(0x45));Equal((byte)0,m.Memory[0x2C]);Equal((byte)0,m.Memory[0x44]);}
-    AddersSoundResetMemory.Apply(m);m.Memory[0x50]=16;m.Memory[0x9000]=0xBB;Equal(true,AddersSoundQueueMemory.Queue(m,0x9000));
+    AddersSoundResetMemory.Apply(m);m.Memory[0x50]=16;m.Memory[0x9000]=0x60;m.Memory[0x9001]=5;Equal(true,AddersSoundQueueMemory.Queue(m,0x9000));m.Memory[m.ReadWord(0x47)+0x10]=1;
     var plan=new AddersSoundServicePlan(m,0x700,0x600,0x8784,0x1A0);using var unknown=new NativeRoutineExecution(plan.Instructions(),0,0x4C34,()=>false);
-    try{while(!unknown.Completed)unknown.AdvanceTo(unknown.NextEventCycle);throw new Exception("Native sound note silently approximated");}catch(NotSupportedException ex){Equal(true,ex.Message.Contains("channel acquisition"));}
+    try{while(!unknown.Completed)unknown.AdvanceTo(unknown.NextEventCycle);throw new Exception("Native sound note silently approximated");}catch(NotSupportedException ex){Equal(true,ex.Message.Contains("gate"));}
     Equal(true,unknown.Fault is not null);Equal(0,plan.CompletedTasks);Equal((ushort)0x1C5,m.ReadWord(0x49));
 });
 Check("Sound lifecycle staged release supports only unmasked instruction-boundary suspension",()=>{
@@ -74,7 +75,7 @@ Check("Sound lifecycle root reuse preserves six-record pool through100 completio
         while(m.ReadWord(0x47)!=0){ushort at=m.ReadWord(0x47);m.WriteWord(0x47,m.ReadWord(at));AddersSoundLifecycleMemory.FinishRoot(m,at);}
         var free=new HashSet<ushort>();for(ushort at=m.ReadWord(0x49);at!=0;at=m.ReadWord(at))Equal(true,free.Add(at));Equal(6,free.Count);
     }
-    Equal(true,AddersSoundQueueMemory.Queue(m,0x9000));ushort active=m.ReadWord(0x47);byte[] before=m.Memory.ToArray();
+    Equal(true,AddersSoundQueueMemory.Queue(m,0x9000));m.Memory[m.ReadWord(0x47)+0x10]=1;ushort active=m.ReadWord(0x47);byte[] before=m.Memory.ToArray();
     try{AddersSoundLifecycleMemory.FinishRoot(m,active);throw new Exception("Linked task completed twice");}catch(InvalidDataException){}Equal(true,before.SequenceEqual(m.Memory));
     m.WriteWord(0x47,m.ReadWord(active));m.WriteWord((ushort)(active+6),(ushort)(active+0x23));before=m.Memory.ToArray();
     try{AddersSoundLifecycleMemory.FinishRoot(m,active);throw new Exception("Nested frame discarded");}catch(NotSupportedException){}Equal(true,before.SequenceEqual(m.Memory));

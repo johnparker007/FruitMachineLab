@@ -122,6 +122,15 @@ Keep work proportional to playable Adders; no assembler/audio/unrelated IRQ work
 
 ## Transport cycle:69A9 bit images
 
+Start-bit6A81 matches16 synthetic ROM calls, including ordered PIA accesses,
+four periods and high/low samples. High restores vector6A3B/edge enable and hands
+off to70C9; low hands6AA3/full38B period to70D6. No helper is skipped. Capture
+drives the PIA output latch through DDR80 to obtain both actual read polarities;
+this is a synthetic peripheral stimulus, not a captured physical receive waveform.
+The initial capture predicted input values from control alone and was rejected
+at boundary validation; fresh corrected evidence replaces it. Raw pointer:
+%TEMP%/FruitMachineLab-serial-start-bit.txt. Full CPU flags remain outside scope.
+
 Receive edge6A3B now clears vector81, preserves the active-receive guard, disables
 the PIA edge and computes floor(period/2)-110 with 16-bit wraparound before the
 typed70D6 call. The separately observed6A6B tail initializes seven/eight data bits.

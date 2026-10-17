@@ -13,6 +13,7 @@ Check("Serial transport timer2 helpers match16 original-ROM instruction paths",(
 Check("Serial transport receive arm matches16 original-ROM instruction paths",()=>Equal(16,AddersSerialTransportVerification.ReceiveArm(evidence)));
 Check("Serial transport TX callback matches32 original-ROM boundaries",()=>Equal(32,AddersSerialTransportVerification.Transmit(evidence)));
 Check("Serial transport receive edge matches32 original-ROM boundaries",()=>Equal(32,AddersSerialTransportVerification.Edge(evidence)));
+Check("Serial transport start-bit sampling matches16 original-ROM boundaries",()=>Equal(16,AddersSerialTransportVerification.StartBit(evidence)));
 Check("Serial transport bus reads and writes match128 MAME native paths",()=>{
     Equal(32,AddersSerialTransportVerification.Bus(evidence,"serial-bit"));Equal(32,AddersSerialTransportVerification.Bus(evidence,"serial-byte"));Equal(16,AddersSerialTransportVerification.Bus(evidence,"serial-timer"));Equal(16,AddersSerialTransportVerification.Bus(evidence,"serial-receive-arm"));Equal(32,AddersSerialTransportVerification.Bus(evidence,"serial-transmit"));
 });

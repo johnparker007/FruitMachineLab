@@ -1,5 +1,9 @@
 # Current handoff
 
+Next16 cycle batch8: start-bit6A81 matches16 original-ROM paths and hardware
+access streams. High rejects/rearms edge; low selects6AA3/full period. Next data
+sampling6AA3/6AB6 then parity/framing; timer2 lifecycle still not owned.
+
 Next16 cycle batch7: receive edge6A3B and post-arm6A6B match32 original-ROM
 boundaries. Fresh serial6917..6BDE and timer70C9..70EE disassemblies retained
 with reproducible -SerialCheckpoint export. Next start-bit/sample callbacks.

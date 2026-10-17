@@ -251,8 +251,8 @@
   },
   {
     "path": "docs/recovery/SERIAL-SERVICE-PASS.md",
-    "bytes": 11646,
-    "sha256": "B0575F5934804E54E1AC4D1C87C6D5D67375664498A7F926539E21A68ADE8FF5"
+    "bytes": 12285,
+    "sha256": "85BB611BC253E31633295F3717047D10643D97EBE223D7EFDEE6B3CDCD0EBFD2"
   },
   {
     "path": "docs/recovery/SERVICE-AND-ATTRACT-RECOVERY.txt",
@@ -523,6 +523,16 @@
     "path": "evidence/mpu4/collection/serial-reply.json",
     "bytes": 301734,
     "sha256": "6A2983B289D156C46EDAD629B2D5A03B7D38A0D7258A936BFE79198BFA0C1E96"
+  },
+  {
+    "path": "evidence/mpu4/collection/serial-start-bit-debugger.cmd",
+    "bytes": 8526,
+    "sha256": "3CB3BC263271AAC953C23C98A5FBBED9CF44DA6EE2C803EB040A7B1AAEA3EF59"
+  },
+  {
+    "path": "evidence/mpu4/collection/serial-start-bit.json",
+    "bytes": 151059,
+    "sha256": "83A03E774427DDE0C4DE532366D90ADD204645C9D3FC85DFCD538153AB9E9EA6"
   },
   {
     "path": "evidence/mpu4/collection/serial-timer-debugger.cmd",

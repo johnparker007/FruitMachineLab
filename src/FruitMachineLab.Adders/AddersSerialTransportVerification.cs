@@ -5,6 +5,7 @@ namespace FruitMachineLab.Adders;
 public static class AddersSerialTransportVerification
 {
     public static int StartBit(string evidence)=>Bus(evidence,"serial-start-bit");
+    public static int DataBit(string evidence)=>Bus(evidence,"serial-data-bit");
     public static int Edge(string evidence)=>Verify(evidence,"serial-receive-edge",(m,row)=>new AddersSerialReceiveEdgePlan(m,0x700,at=>row.GetProperty("start").GetProperty(at==0xB03 ? "io" : "rx").GetByte(),(_,_)=>{},row.GetProperty("case").GetProperty("entry").GetUInt16()).Instructions());
     public static int Bus(string evidence,string stem)
     {
@@ -22,6 +23,7 @@ public static class AddersSerialTransportVerification
             "serial-receive-arm"=>new AddersSerialReceiveArmPlan(m,0x700,0x1234,0x4567,0x89,0xAB,Read,Write).Instructions(),
             "serial-transmit"=>new AddersSerialTransmitPlan(m,0x700,0x4567,c.GetProperty("entry").GetUInt16()){Write=Write}.Instructions(),
             "serial-start-bit"=>new AddersSerialStartBitPlan(m,0x700,0x4567,Read,Write).Instructions(),
+            "serial-data-bit"=>new AddersSerialDataBitPlan(m,0x700,Read,c.GetProperty("entry").GetUInt16()).Instructions(),
             _=>throw new NotSupportedException(stem)};
         foreach(var op in plan){if(op is NativeRoutineCall && index!=accesses.Length)throw new InvalidDataException($"{stem} missing access before helper: {index}/{accesses.Length}");yield return op;if(op is NativeRoutineCall)break;}
         if(index!=accesses.Length)throw new InvalidDataException("Missing serial bus accesses");

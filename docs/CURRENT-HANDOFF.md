@@ -1,5 +1,10 @@
 # Current handoff
 
+Next16 cycle batch9:6AA3 data-bit prefix and6AB6 sampling continuation match64
+ROM boundaries including PIA streams, count underflow and parity-count wrap.
+Next6AC1 parity/6AEB framing, then init/service and timer2 lifecycle. This cycle
+is NOT complete; nine milestones so far. No new Live transport ownership claim.
+
 Next16 cycle batch8: start-bit6A81 matches16 original-ROM paths and hardware
 access streams. High rejects/rearms edge; low selects6AA3/full period. Next data
 sampling6AA3/6AB6 then parity/framing; timer2 lifecycle still not owned.

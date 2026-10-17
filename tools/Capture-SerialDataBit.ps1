@@ -1,0 +1,16 @@
+param([Parameter(Mandatory=$true)][string]$MameExecutable,[Parameter(Mandatory=$true)][string]$RomDirectory,[Parameter(Mandatory=$true)][string]$RunDirectory)
+$ErrorActionPreference='Stop';$run=[IO.Path]::GetFullPath($RunDirectory);if(Test-Path $run){throw 'Use a fresh isolated directory'}
+New-Item -ItemType Directory $run|Out-Null;foreach($name in @('cfg','nvram','inp','snap','comments','state','diff')){New-Item -ItemType Directory "$run/$name"|Out-Null}
+$cmd=[Collections.Generic.List[string]]::new();$cases=[Collections.Generic.List[object]]::new();$cmd.Add('bpset 4c34');$cmd.Add('bpset 70d6');$cmd.Add('bpset 70c9')
+$body=Get-Content "$PSScriptRoot/../src/FruitMachineLab.Adders/AddersSerialDataBitPlan.cs" -Raw
+foreach($pc in ([regex]::Matches($body,'new NativeRoutineStep\(0x([0-9A-F]{4}),"')|ForEach-Object {[Convert]::ToInt32($_.Groups[1].Value,16)}|Sort-Object -Unique)){$cmd.Add(('bpset {0:X},1,{{printf "OI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}}' -f $pc))}
+foreach($address in @(0x901,0x904,0x905,0xB02,0xB03,0xC01)){foreach($direction in @('r','w')){$flag=if($direction -eq 'w'){1}else{0};$cmd.Add(('wpset {0:X},1,{1},1,{{printf "OA address={0:X4} value=%02X write={2:X} cycle=%016X\n",wpdata,totalcycles;go}}' -f $address,$direction,$flag))}}
+foreach($entry in @(0x6AA3,0x6AB6)){foreach($count in @(0,1,2,8)){foreach($level in @(0,0x80)){foreach($image in @(0,0x55,0x80,0xFF)){
+$id=$cases.Count;$end=if($entry -eq 0x6AA3){0x70D6}else{0x4C34};$stack=if($entry -eq 0x6AA3){0x6FE}else{0x702};$cases.Add([ordered]@{id=$id;entry=$entry;count=$count;level=$level;image=$image;end=$end;stack=$stack})
+$cmd.Add(('pc=0x{0:X};a=0x89;b=0xab;x=0x1234;y=0x4567;u=0x600;s=0x700;dp=0;cc=0x50;w@700=0x4c34;b@b03=0;b@b02=0x80;b@b03=4;b@b02=0x{1:X};w@38b=0x599;b@75=0x{2:X};b@74=0x{3:X};b@77=0xff' -f $entry,$level,$count,$image))
+$cmd.Add("save operation-$id-before.bin,0,800");$cmd.Add('printf "OS pc=%04X cycle=%016X io=%02X rx=%02X\n",pc,totalcycles,b@b03,b@b02');$cmd.Add('go');$cmd.Add('printf "OF pc=%04X cycle=%016X s=%04X\n",pc,totalcycles,s');$cmd.Add("save operation-$id-after.bin,0,800")
+}}}}
+$cmd.Add('quit');$cmd|Set-Content "$run/debugger.cmd";$cases|ConvertTo-Json|Set-Content "$run/cases.json"
+[ordered]@{stem='serial-data-bit';count=64;regions=@(,@(0x6AA3,0x6AC0));classification='Synthetic data-bit prefix and post-arm continuation, actual PIA reads';mame_sha256=(Get-FileHash $MameExecutable).Hash}|ConvertTo-Json -Depth 5|Set-Content "$run/provenance.json"
+$args=@('m4addr','-noreadconfig','-rompath',$RomDirectory,'-cfg_directory',"$run/cfg",'-nvram_directory',"$run/nvram",'-input_directory',"$run/inp",'-snapshot_directory',"$run/snap",'-comment_directory',"$run/comments",'-state_directory',"$run/state",'-diff_directory',"$run/diff",'-debug','-debugger','windows','-debugscript',"$run/debugger.cmd",'-debuglog','-video','none','-sound','none','-window','-skip_gameinfo','-nothrottle','-seconds_to_run','30')
+$args|ConvertTo-Json|Set-Content "$run/arguments.json";Push-Location $run;try{& $MameExecutable @args *> console.txt;$code=$LASTEXITCODE;$code|Set-Content exit-code.txt}finally{Pop-Location};if($code -ne 0){throw 'Invalid transport capture'};Write-Output $run

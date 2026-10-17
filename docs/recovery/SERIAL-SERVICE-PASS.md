@@ -122,6 +122,15 @@ Keep work proportional to playable Adders; no assembler/audio/unrelated IRQ work
 
 ## Transport cycle:69A9 bit images
 
+Data-bit6AA3 decrements75 with wraparound and selects6AA3 or6AC1 before70D6;
+6AB6 samples bit7, increments77 for high (including FF->00) and rotates into74.
+64 original-ROM prefix/continuation cases match encodings, cycles, full RAM and
+PIA access streams, including zero count underflow and four byte images. Direct
+ROR06 timing is now covered by these actual ROM comparisons. Prefix and suffix
+are independently entered synthetic contexts; the intervening timer helper is
+not treated as completed. Callback X/full NZVC and physical receive scheduling
+remain integration gaps. Raw pointer: %TEMP%/FruitMachineLab-serial-data-bit.txt.
+
 Start-bit6A81 matches16 synthetic ROM calls, including ordered PIA accesses,
 four periods and high/low samples. High restores vector6A3B/edge enable and hands
 off to70C9; low hands6AA3/full38B period to70D6. No helper is skipped. Capture

@@ -14,6 +14,7 @@ Check("Serial transport receive arm matches16 original-ROM instruction paths",()
 Check("Serial transport TX callback matches32 original-ROM boundaries",()=>Equal(32,AddersSerialTransportVerification.Transmit(evidence)));
 Check("Serial transport receive edge matches32 original-ROM boundaries",()=>Equal(32,AddersSerialTransportVerification.Edge(evidence)));
 Check("Serial transport start-bit sampling matches16 original-ROM boundaries",()=>Equal(16,AddersSerialTransportVerification.StartBit(evidence)));
+Check("Serial transport data-bit sampling matches64 original-ROM boundaries",()=>Equal(64,AddersSerialTransportVerification.DataBit(evidence)));
 Check("Serial transport bus reads and writes match128 MAME native paths",()=>{
     Equal(32,AddersSerialTransportVerification.Bus(evidence,"serial-bit"));Equal(32,AddersSerialTransportVerification.Bus(evidence,"serial-byte"));Equal(16,AddersSerialTransportVerification.Bus(evidence,"serial-timer"));Equal(16,AddersSerialTransportVerification.Bus(evidence,"serial-receive-arm"));Equal(32,AddersSerialTransportVerification.Bus(evidence,"serial-transmit"));
 });

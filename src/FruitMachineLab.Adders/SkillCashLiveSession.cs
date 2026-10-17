@@ -51,7 +51,7 @@ public sealed class SkillCashLiveSession
     private byte tonePhase;
     private ulong toneWaitStarted;
     public (ulong Started,ulong CpuCycles,ulong Deadline)? TimedToneDelay=>tonePhase==2 ? (toneWaitStarted,Mpu4CalibratedDelay.StartToneWaitCycles,nextVm) : null;
-    private readonly ulong toneSetupCycles,toneFinishCycles;
+    private readonly ulong toneFinishCycles;
     public bool TimedToneActive=>tonePhase is >0 and <4;
     private bool motionInitializing,lastVmInlineLiteral;
     private bool motionNativeReady;
@@ -119,12 +119,10 @@ public sealed class SkillCashLiveSession
                 literalCosts.Add(item.GetProperty("token").GetUInt16(),(operation,item.GetProperty("value").GetUInt16(),operation=="vm_push_word_body_word" ? Mpu4VmPrimitiveTiming.BodyWordCycles : Mpu4VmPrimitiveTiming.BodyByteCycles));
             }
         using(var tone=JsonDocument.Parse(ReadEvidence(RuntimeEvidenceRequirements.CalibratedDelayTiming))){
-            // Queue/cancel allocation still uses observed CPU-only budgets.
-            // The wait is generated from ROM loop counts, never capture duration.
+            // Setup is generated from the native bridge/wrapper/queue instruction
+            // paths. Only the remaining finish phase keeps its recorded IRQ adapter.
             var p=tone.RootElement.GetProperty("natural").GetProperty("phases");
             if(p.GetArrayLength()!=3)throw new InvalidDataException("Invalid timed-tone phase evidence");
-            toneSetupCycles=p[0].GetProperty("cpu_cycles").GetUInt64();
-            // Other native phases retain their existing body-only IRQ adapter.
             toneFinishCycles=p[2].GetProperty("cpu_cycles").GetUInt64()+p[2].GetProperty("outer_irqs").GetUInt64()*(M6809IrqEntry.EntryCycles+15);
         }
         Lamps=SkillCashPlayback.LoadLamps(evidence);
@@ -393,7 +391,10 @@ public sealed class SkillCashLiveSession
                     }
                     if(instruction.Native==0x5A14 && tonePhase<4){
                         if((Machine.Memory[0x719B]&0x80)!=0)throw new NotSupportedException("Live disabled-tone pacing requires separate verification");
-                        if(tonePhase==0){tonePhase=1;nextVm=checked(Cycle+toneSetupCycles);}
+                        if(tonePhase==0){
+                            if(instruction.Token!=0x80A4)throw new NotSupportedException($"Start-tone setup token {instruction.Token:X4} lacks a source-derived bridge");
+                            tonePhase=1;nextVm=checked(Cycle+AddersToneSetupTiming.Cycles(Machine));
+                        }
                         else if(tonePhase==1){AddersTimedTone.Begin(Machine,scheduler);tonePhase=2;toneWaitStarted=Cycle;nextVm=delayOccupancy.CompletionAfterCpuWork(Cycle,Mpu4CalibratedDelay.StartToneWaitCycles);}
                         else{AddersTimedTone.End(Machine,scheduler);tonePhase=4;nextVm=checked(Cycle+toneFinishCycles);}
                         continue;

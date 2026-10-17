@@ -1,8 +1,8 @@
 [
   {
     "path": "docs/recovery/A1-CAPTURE-POLICY-PASS.md",
-    "bytes": 8302,
-    "sha256": "DCBE88AEC12DF48FFAE2F38AD3D864C08BF36F0D78FE602CEC82F2DD8DB1393D"
+    "bytes": 10990,
+    "sha256": "EF7A162992472B0BF51C055A7F2E0CA2344F2E57DBFCF2896FDFE40650F9CB07"
   },
   {
     "path": "docs/recovery/BACKGROUND-SERVICES-PREPLAY-PASS.md",
@@ -246,8 +246,8 @@
   },
   {
     "path": "docs/recovery/PTM-CLOCK-FOUNDATION-PASS.md",
-    "bytes": 104252,
-    "sha256": "6A26CF3E288A07A5185790B3E33CC4A418A97B17688D7F78873769B2D615B493"
+    "bytes": 107782,
+    "sha256": "4C07710316827E45AEB78B0BA3B3311A0BF721616EEC61666D05B4BE856D8F30"
   },
   {
     "path": "docs/recovery/README.txt",
@@ -851,8 +851,8 @@
   },
   {
     "path": "evidence/mpu4/maps/mame-timing-source.json",
-    "bytes": 23556,
-    "sha256": "141049BD1822A65AB52EEED52A4E5364B9B4D9F20EDBD11C712EC4699A5F5F27"
+    "bytes": 24013,
+    "sha256": "4809101BE5B0D1E011FC685796E8E7B4F87FD2E3D503192B99FF891DA2632C89"
   },
   {
     "path": "evidence/mpu4/maps/nudge-availability-data.json",

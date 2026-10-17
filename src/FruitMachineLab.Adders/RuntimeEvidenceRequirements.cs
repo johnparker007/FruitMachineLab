@@ -10,9 +10,9 @@ public static class RuntimeEvidenceRequirements
 
     public static RuntimeEvidenceRequirement CalibratedDelayTiming { get; }=new(
         "skill-cash/calibrated-delay-timing.json",
-        "natural.phases[0].cpu_cycles, natural.phases[2].cpu_cycles, natural.phases[2].outer_irqs",
+        "natural.phases[2].cpu_cycles, natural.phases[2].outer_irqs",
         RuntimeEvidenceClass.RecordedTiming,
-        "source-derived native tone phases and generated IRQ/envelope timing");
+        "source-derived native setup (776F bridge, 5A14/59FF/59D9 and 5C18 queue) plus generated IRQ/envelope timing for the remaining finish phase");
 
     public static RuntimeEvidenceRequirement FeatureCheckpoint { get; }=new(
         "skill-cash/feature-replay.json",

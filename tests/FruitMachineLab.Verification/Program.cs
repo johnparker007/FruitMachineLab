@@ -1002,6 +1002,91 @@ Check("Natural Start tone wait matches generated CPU delay plus full ordinary IR
     ulong before=adapter.NextStart;
     Equal(p[1].GetProperty("end").GetUInt64(),adapter.CompletionAfterCpuWork(p[1].GetProperty("start").GetUInt64(),Mpu4CalibratedDelay.StartToneWaitCycles));Equal(before,adapter.NextStart);
 });
+Check("Start tone setup derives bridge wrapper and queue cycles without phase0 capture", () => {
+    using var tone=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","nudge-tone.json")));
+    var ram=Convert.FromHexString(tone.RootElement.GetProperty("ram_hex").GetString()!);
+    Machine Natural(){var m=new Machine();ram.CopyTo(m.Memory,0);return m;}
+    var natural=Natural();Equal(41UL,AddersToneSetupTiming.BridgeCycles(natural));Equal(67UL,AddersToneSetupTiming.WrapperCycles);Equal(262UL,AddersToneSetupTiming.QueueCycles(natural));Equal(381UL,AddersToneSetupTiming.Cycles(natural));
+    using var recorded=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","calibrated-delay-timing.json")));
+    Equal(recorded.RootElement.GetProperty("natural").GetProperty("phases")[0].GetProperty("cpu_cycles").GetUInt64(),AddersToneSetupTiming.Cycles(Natural()));
+    var mode=Natural();mode.Memory[0xF1]=1;Equal(392UL,AddersToneSetupTiming.Cycles(mode));
+    var volume=Natural();volume.Memory[0x50]=0x14;Equal(383UL,AddersToneSetupTiming.Cycles(volume));
+    var empty=Natural();empty.WriteWord(0x49,0);Equal(211UL,AddersToneSetupTiming.Cycles(empty));
+    var disabled=Natural();disabled.Memory[0x719B]=0x80;Equal(153UL,AddersToneSetupTiming.Cycles(disabled));
+    string At(System.Text.Json.JsonDocument doc,string property,ushort address,int length){
+        foreach(var region in doc.RootElement.GetProperty(property).EnumerateArray()){
+            int start=region.GetProperty("address").GetInt32();string hex=region.GetProperty("bytes_hex").GetString()!;
+            if(address>=start && address+length<=start+hex.Length/2)return hex.Substring((address-start)*2,length*2);
+        }
+        throw new Exception($"Curated evidence lacks {address:X4}+{length} in {property}");
+    }
+    ulong DecodeCost(string hex,bool? taken=null)=>(ulong)M6809InstructionTiming.Decode(Convert.FromHexString(hex),taken).Cycles;
+    using var words=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","vm-word-timing.json")));
+    string next=words.RootElement.GetProperty("rows").EnumerateArray().First().GetProperty("before_hex").GetString()!.Substring(0xFC*2,8);
+    Equal("AEA16E91",next);ulong nextCost=DecodeCost(next[..4])+DecodeCost(next[4..]);
+    using var payout=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","payout-word-data.json")));
+    var bridgeSteps=new (ushort Address,string Bytes)[]{(0x776F,"96F1"),(0x7771,"2707"),(0x7773,"8A01"),(0x7775,"97F1"),(0x7777,"B7080C"),(0x777A,"3420"),(0x777C,"AD94")};
+    ulong BridgeCost(bool mode){
+        ulong total=nextCost;
+        foreach(var step in bridgeSteps){
+            string exact=At(payout,"regions",step.Address,step.Bytes.Length/2);Equal(step.Bytes,exact);
+            bool? taken=step.Address==0x7771 ? !mode : null;
+            if(mode || (step.Address!=0x7773 && step.Address!=0x7775 && step.Address!=0x7777))total+=DecodeCost(exact,taken);
+        }
+        return total;
+    }
+    Equal(41UL,BridgeCost(false));Equal(52UL,BridgeCost(true));
+    Equal(BridgeCost(false),AddersToneSetupTiming.BridgeCycles(natural));Equal(BridgeCost(true),AddersToneSetupTiming.BridgeCycles(mode));
+    using var prompt=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","sound-prompt.json")));
+    var wrapperSteps=new (ushort Address,string Bytes,bool? Taken)[]{(0x5A14,"3406",null),(0x5A16,"8691",null),(0x5A18,"C602",null),(0x5A1A,"8DE3",null),(0x59FF,"3406",null),(0x5A01,"1F89",null),(0x5A03,"8DD4",null),(0x59D9,"3416",null),(0x59DB,"C060",null),(0x59DD,"2A02",true),(0x59E1,"D74D",null),(0x59E3,"8E59EB",null),(0x59E6,"BD5C18",null)};
+    ulong wrapperCost=0;
+    foreach(var step in wrapperSteps){string exact=At(prompt,"rom_regions",step.Address,step.Bytes.Length/2);Equal(step.Bytes,exact);wrapperCost+=DecodeCost(exact,step.Taken);}
+    string returnBytes=At(prompt,"rom_regions",0x59E9,2);Equal("3596",returnBytes);ulong returnCost=DecodeCost(returnBytes);Equal(11UL,returnCost);
+    Equal(67UL,wrapperCost);Equal(wrapperCost,AddersToneSetupTiming.WrapperCycles);
+    using var queueDoc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","sound-queue.json")));
+    ulong QueueCost(Machine state,ulong expected){
+        var copy=new Machine();Array.Copy(state.Memory,copy.Memory,copy.Memory.Length);
+        var plan=new AddersSoundQueuePlan(copy,0x59EB,0x700,copy.ReadWord(0x49),0x91,0x31);
+        ulong total=0;int mul=0,branches=0;
+        foreach(var work in plan.Instructions()){
+            if(work is not NativeRoutineStep step)throw new Exception("Tone queue plan produced a non-instruction");
+            string exact=At(queueDoc,"rom_regions",step.Address,step.Bytes.Length/2);Equal(step.Bytes,exact);
+            var timing=M6809InstructionTiming.Decode(Convert.FromHexString(exact));total+=(ulong)timing.Cycles;
+            if(step.Bytes=="3D"){mul++;Equal(11,timing.Cycles);}
+            byte opcode=Convert.FromHexString(step.Bytes)[0];if(opcode is >=0x20 and <=0x2F)branches++;
+            step.Effect?.Invoke();
+        }
+        Equal(expected,total);
+        if(expected==262UL){Equal(1,mul);Equal(4,branches);}
+        if(expected==34UL){Equal(0,mul);Equal(1,branches);}
+        return total;
+    }
+    Equal(AddersToneSetupTiming.QueueCycles(natural),QueueCost(natural,262UL));
+    Equal(AddersToneSetupTiming.QueueCycles(empty),QueueCost(empty,92UL));
+    Equal(AddersToneSetupTiming.QueueCycles(volume),QueueCost(volume,264UL));
+    Equal(AddersToneSetupTiming.QueueCycles(disabled),QueueCost(disabled,34UL));
+    Equal(11,M6809InstructionTiming.Decode(Convert.FromHexString("3D")).Cycles);
+    Equal(3,M6809InstructionTiming.Decode(Convert.FromHexString("2602"),true).Cycles);
+    Equal(3,M6809InstructionTiming.Decode(Convert.FromHexString("2602"),false).Cycles);
+    Equal(6,M6809InstructionTiming.Decode(Convert.FromHexString("10270000"),true).Cycles);
+    Equal(5,M6809InstructionTiming.Decode(Convert.FromHexString("10270000"),false).Cycles);
+    bool missing=false;try{M6809InstructionTiming.Decode(Convert.FromHexString("10270000"));}catch(NotSupportedException){missing=true;}Equal(true,missing);
+    Equal(false,RuntimeEvidenceRequirements.CalibratedDelayTiming.Fields.Contains("phases[0]"));
+    Equal(true,RuntimeEvidenceRequirements.CalibratedDelayTiming.Fields.Contains("phases[2]"));
+});
+Check("Start tone setup timing is clone-only and rejects invalid task state", () => {
+    using var tone=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","nudge-tone.json")));
+    var ram=Convert.FromHexString(tone.RootElement.GetProperty("ram_hex").GetString()!);
+    Machine Natural(){var m=new Machine();ram.CopyTo(m.Memory,0);return m;}
+    var natural=Natural();natural.Data.Push(0x1234);natural.Data.Push(0x5678);natural.DataStackBase=0x7F0;natural.LocalFrame=0x4444;
+    var memory=natural.Memory.ToArray();var data=natural.Data.ToArray();var dataBase=natural.DataStackBase;var localFrame=natural.LocalFrame;
+    Equal(381UL,AddersToneSetupTiming.Cycles(natural));
+    Equal(true,memory.SequenceEqual(natural.Memory));Equal(true,data.SequenceEqual(natural.Data));Equal(dataBase,natural.DataStackBase);Equal(localFrame,natural.LocalFrame);Equal(2,natural.Data.Count);
+    var invalid=Natural();invalid.WriteWord(0x49,0x1234);var invalidMemory=invalid.Memory.ToArray();
+    bool rejected=false;
+    try{AddersToneSetupTiming.QueueCycles(invalid);}catch(NotSupportedException error){rejected=error.Message.Contains("not in the recovered sound task pool",StringComparison.Ordinal);}
+    Equal(true,rejected);Equal(true,invalidMemory.SequenceEqual(invalid.Memory));
+});
 Check("CPU work deadline crosses IRQ envelopes and period boundaries without consuming events", () => {
     var adapter=new CapturedInterruptOccupancy(100,new[]{new ulong[]{20,10},new ulong[]{60,20}});
     Equal(50UL,adapter.CompletionAfterCpuWork(10,30));Equal(135UL,adapter.CompletionAfterCpuWork(50,55));

@@ -33,7 +33,7 @@ wholly static.
 | Evidence file | Consumed fields | Class |
 | --- | --- | --- |
 | `maps/vm-literal-timing.json` | `tokens.operation/token/value` | Static definition |
-| `skill-cash/calibrated-delay-timing.json` | `natural.phases[0].cpu_cycles`, `natural.phases[2].cpu_cycles/outer_irqs` | Recorded timing |
+| `skill-cash/calibrated-delay-timing.json` | `natural.phases[2].cpu_cycles/outer_irqs` only | Recorded timing |
 | `skill-cash/feature-replay.json` | `initial`, `allocated_frame`, `conditions`, `native[0].before` | Declared checkpoint |
 | `skill-cash/shared-timing.json` | `initial_scan` only | Declared checkpoint |
 | `skill-cash/cpu-interrupts.json` | `sites/tokens`; separately `intervals/timer1_handler_entries` | Recorded timing |
@@ -53,6 +53,32 @@ inputs, reads, anchors and expected results are not consumed at this boundary.
 The `shared-timing.json` requirement notes `events` and `vm_cycle_deltas` are not
 consumed. The timing aliases remain static declarations; the captured costs they
 point at are rejected separately.
+
+General19 removes the start-tone setup phase from that recorded set. Live now
+derives it from the original `80A4`->`776F` bridge, the `5A14`/`59FF`/`59D9`
+wrapper and the foreground `5C18` queue (including the `60C8` gate), using the
+existing ROM-byte native plans and `M6809InstructionTiming`. The natural phase
+budget remains an independent comparison oracle only. The finish phase still
+consumes `natural.phases[2].cpu_cycles/outer_irqs`, so strict construction still
+fails at this file with those remaining fields named. The settlement of the
+tone queue uses the actual native free-list head; a zero head takes the real
+empty-list branch rather than an assumed timing value. Exhausted-pool and
+prior-list variants remain explicit boundaries.
+
+Review20 verifies the fixed setup bytes independently. The `00FC` RAM NEXT
+template `AEA16E91`, bridge bytes at `776F`..`777D`, wrapper/call bytes at
+`59D9`/`59FF`/`5A14` and return `3596` at `59E9` are read from curated
+`collection/vm-word-timing.json`, `collection/payout-word-data.json` and
+`collection/sound-prompt.json` at those exact addresses; costs are decoded from
+those bytes. The queue uses the existing `AddersSoundQueuePlan`, and every
+yielded queue step is checked at its exact `collection/sound-queue.json`
+address. `3D` MUL costs 11 cycles and short/long branch outcomes come from the
+actual plan state, not a recorded duration. Timing runs on a memory clone; a
+test confirms the original Machine memory, data stack, data-stack base and local
+frame are unchanged, and a non-zero head outside the recovered task pool is
+rejected explicitly. Interrupt occupancy, the disabled-tone duration,
+queue/cancel ownership outside setup and native allocation/task ownership remain
+excluded. No full-machine or capture-free gameplay claim is made.
 
 ## SkillCashData static load consumers
 
@@ -119,9 +145,21 @@ but the same recorded data still has other verification consumers by design.
   plus valid temporary copies matching compiled bytes. Clean `HEAD` (`a0deb81`)
   snapshot plus only intended files builds with zero warnings/errors and passes
   382 groups.
-- `e443040` and `a0deb81` were not amended or committed to. Uncommitted stopped
-  FEC9 sound files/tests/evidence were preserved untouched and excluded from all
-  snapshot suites; they were not retried.
+- General19 added one group for the source-derived tone setup: the natural
+  `nudge-tone` state yields 41 bridge + 67 wrapper + 262 queue + 11 return = 381
+  cycles, matching the recorded phase as an oracle; synthetic `F1=1`, volume
+  `14`, zero native head and disabled gate cases are labelled. The requirement
+  inventory no longer names `phases[0]`. Its clean-suite log ended mid-run, so
+  its 383-group claim was not accepted without a completed run.
+- Review20 adds exact-address byte/cost checks for the fixed setup instructions,
+  exact source-plan queue checks, decoded MUL/branch assertions and a clone-only
+  mutation/rejection group. A fresh clean `HEAD` (`a7fcb93`) snapshot plus only
+  the intended setup/Live/requirements/test/docs/source-map files (excluding the
+  two pre-existing stopped FEC9 checks) builds with zero warnings/errors and
+  passes all 384 groups (382 baseline plus two).
+- `e443040`, `a0deb81` and `a7fcb93` were not amended or committed to. Uncommitted
+  stopped FEC9 sound files/tests/evidence were preserved untouched and excluded
+  from all snapshot suites; they were not retried.
 
 ## Limits
 

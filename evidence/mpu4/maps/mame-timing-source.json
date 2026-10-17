@@ -210,6 +210,8 @@
     "live": "src/FruitMachineLab.Adders/SkillCashLiveSession.cs",
     "occupancy": "src/FruitMachineLab.Runtime/CapturedInterruptOccupancy.cs",
     "evidence": "skill-cash/calibrated-delay-timing.json",
+    "setup_implementation": "src/FruitMachineLab.Adders/AddersToneSetupTiming.cs",
+    "setup_scope": "776F bridge/5A14 wrapper/59D9 call/5C18 queue; natural setup phase381 matches41+67+262+11 source cycles; fixed bytes/costs exact-address checked, queue uses AddersSoundQueuePlan, clone-only",
     "source_symbols": [
       "DEC8",
       "BRANCH",
@@ -219,7 +221,7 @@
       "INDEXED"
     ],
     "scope": "Enabled7159/7164 delay;20 native calls,2068 inner passes; natural fixed-tone wait matches34276 CPU cycles plus23 full outer IRQs",
-    "qualification": "Live tone wait uses source-derived work through recorded IRQ envelopes. Queue/cancel and other VM pacing retain captured adapters; no generated IRQ start claim.",
+    "qualification": "Live setup uses source-derived bridge/wrapper/queue work with actual MUL/branch path selection; wait uses source-derived work through recorded IRQ envelopes. Finish phase, cancel, interrupt occupancy and native allocation/task ownership retain captured or excluded adapters; no full-machine or generated IRQ start claim.",
     "literal_membership": "maps/vm-literal-timing.json",
     "literal_scope": "175 ROM-checked tokens/1048 existing listing references;20 synthetic original-handler calls verify32/33-cycle word/byte costs including NEXT"
   },

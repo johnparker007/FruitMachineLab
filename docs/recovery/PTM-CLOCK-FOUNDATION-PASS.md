@@ -961,6 +961,36 @@ assertion→CPU acceptance→scan/callback scheduling, not another captured wait
 Validation:217 headless groups and all eight WPF smoke modes pass. Both solution
 builds have zero warnings/errors. Test expectations were not rebaselined.
 
+## Start-tone setup continuation - 17 October 2026
+
+Live no longer reads `calibrated-delay-timing.json` `natural.phases[0].cpu_cycles`
+for the start-tone setup. `AddersToneSetupTiming` derives the same selected
+boundary from original instruction bytes and the existing native plans:
+`80A4` NEXT/`776F` bridge (41), `5A14`/`59FF`/`59D9` wrapper and call (67),
+foreground `5C18` queue through `60C8` (262), and the `59E9` return (11). The
+natural phase budget381 remains an independent comparison oracle, not runtime
+input. Synthetic `F1=1` (52-cycle bridge), volume `14` (queue +2), zero native
+head (real empty-list path) and disabled gate cases are labelled; no duration is
+assigned to the disabled tone in Live.
+
+The finish phase still consumes `natural.phases[2].cpu_cycles/outer_irqs`
+through the existing recorded IRQ adapter, so strict construction still fails at
+that file with only the remaining fields named. Queue/cancel ownership outside
+this setup, the finish/cancel bridge return, interrupt occupancy and native
+allocation/task ownership remain captured or excluded boundaries.
+
+Review20 independently reads every fixed bridge, wrapper, call and return byte at
+its exact curated address (`776F`..`777D`, `59D9`/`59FF`/`5A14`, `59E9`) and
+decodes its cost; the `00FC` RAM NEXT template `AEA16E91` is checked separately.
+The queue uses the existing `AddersSoundQueuePlan`, with every yielded step
+matched to its exact `5C18`/`60C8` source byte and `3D` MUL/branch costs checked.
+Timing runs on a memory clone; the original Machine memory and stacks remain
+unchanged, and an out-of-pool task head is rejected explicitly. The General19
+clean run timed out, so Review20 completed a fresh clean `HEAD` (`a7fcb93`)
+snapshot with only the intended files (excluding the two pre-existing stopped
+FEC9 checks): zero warnings/errors and384 groups passed (382 baseline plus two).
+No new MAME run, installation, configuration change, commit or push was made.
+
 ## Generated timer-3 callback output events — 16 October 2026
 
 Live now retains only the captured48FD entry boundary, not the recorded return

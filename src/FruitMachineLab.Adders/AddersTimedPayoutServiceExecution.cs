@@ -1,9 +1,9 @@
 using FruitMachineLab.Runtime;
 namespace FruitMachineLab.Adders;
 
-// Selected normal-mode cash4B39 CPU owner; alpha timing stays an explicit adapter.
+// Selected normal-mode cash4B39/token4B8C CPU owner; alpha timing stays an explicit adapter.
 // Caller arithmetic flags are local plans, not a complete exposed CPU snapshot.
-public sealed class AddersTimedCashPayoutExecution : IDisposable
+public sealed class AddersTimedPayoutServiceExecution : IDisposable
 {
     private readonly Machine m;
     private readonly string evidence;
@@ -24,13 +24,13 @@ public sealed class AddersTimedCashPayoutExecution : IDisposable
     public Action<OutputScanInstruction>? ObserveCallerInstruction {get;set;}
     public Action<OutputScanInstruction>? ObserveInstruction {get;set;}
     public Action<NativeRoutineCall,ulong>? ObserveDebit {get;set;}
-    public AddersTimedCashPayoutExecution(Machine machine,string evidenceDirectory,Mpu4Alpha alphaOutput,
+    public AddersTimedPayoutServiceExecution(Machine machine,string evidenceDirectory,Mpu4Alpha alphaOutput,
         ulong start,ushort stackPointer,byte initialConditionCode,Func<Instruction,Machine,ulong> unresolvedAlphaCycles,
-        Func<byte> readPort,Action<byte> writePort,Action<byte>? writeVmMode=null)
+        Func<byte> readPort,Action<byte> writePort,Action<byte>? writeVmMode=null,ushort entry=0x4B39)
     {
         if((sbyte)machine.Memory[0x323]<0)throw new NotSupportedException("Timed cash caller is selected normal mode only");
         m=machine;evidence=evidenceDirectory;alpha=alphaOutput;Cycle=start;alphaCycles=unresolvedAlphaCycles;readTriac=readPort;writeTriac=writePort;writeMode=writeVmMode;
-        var plan=new AddersCashPayoutPlan(m,stackPointer,initialConditionCode);caller=new(plan.Instructions(),start,m.ReadWord(stackPointer),()=>(initialConditionCode&0x10)!=0);
+        IEnumerable<NativeRoutineWork> plan=entry switch{0x4B39=>new AddersCashPayoutPlan(m,stackPointer,initialConditionCode).Instructions(),0x4B8C=>new AddersTokenPayoutPlan(m,stackPointer,initialConditionCode).Instructions(),_=>throw new NotSupportedException("Unrecovered payout entry")};caller=new(plan,start,m.ReadWord(stackPointer),()=>(initialConditionCode&0x10)!=0);
         caller.ObserveInstruction=i=>{ObserveCallerInstruction?.Invoke(i);ObserveInstruction?.Invoke(i);};
     }
     public void AdvanceTo(ulong cycle)

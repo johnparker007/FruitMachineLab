@@ -97,3 +97,28 @@ Synthetic suspension after SBCA retains the original overflow decision. Existing
 payout spans plus exact6F51..6F78 bytes preserve the selected body; historical
 6F57 Ghidra export is copied from prerequisite-pass, not claimed fresh. Raw pointer
 token-compensation.txt. Filter: "Payout token compensation". Next token caller.
+
+## Batch5: selected token caller and tail-flush composition
+
+AddersTokenPayoutPlan stages4B8C/4CF8/4D45 through both token records, current-ROM
+forced route, compensation and changing-level tail flush. AddersTimedPayoutServiceExecution
+is the demonstrated shared cash/token owner (renamed from the cash-only class).
+No duplicated debit/output implementation was introduced. Unknown entries, service
+mode and manager prompt remain explicit. Original nonzero rather than denomination
+test, possible odd-balance underflow and compensation omission during tail flush
+are preserved. Do not reinterpret level bits as proven physical empty/full pins.
+
+The16-case caller capture now also observes6F57 instructions. All16 cash/token
+paths match every caller instruction/encoding/start cycle, child entry Y/S/time,
+final cycle, poll count and selected RAM/accounts. Alpha CPU budgets remain the
+only observed helper timing inputs; no intermediate memory/CPU snapshots or return
+timestamps drive runtime. Waits are real original polling under the documented
+synthetic counter policy. The shared owner has only the selected normal-mode ABI;
+it does not export all transient CPU flags left by output service.
+
+A separate synthetic level-change experiment matches the established semantic
+reference: first token debit changes the sampled level, tail flush drains the rest,
+four debit/output pairs occur but500 compensation happens only once. Suspension
+inside6F57 retains the FF software guard and original completion state. This is
+not a captured natural input transition. Filters: "Payout timed callers" and
+"Payout timed token". Both pass; headless build is clean.

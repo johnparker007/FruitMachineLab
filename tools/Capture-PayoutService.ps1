@@ -14,7 +14,7 @@ else{
  $commands.Add('bpset fc,temp0==1&&temp2==1,{printf "CV id=%02X cycle=%016X y=%04X token=%04X\n",temp1,totalcycles,y,w@y;go}')
  foreach($pc in @(0x4C23,0x4C8A,0x4D07,0x4D4D,0x4D42)){$commands.Add(('bpset {0:X},temp0==1,{{printf "CR id=%02X cycle=%016X pc=%04X\n",temp1,totalcycles,pc;temp2=0;printf "CI id=%02X pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",temp1,pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}}' -f $pc))}
  $pcs=[Collections.Generic.HashSet[int]]::new()
- foreach($entry in @('67e2','67ec','4b39','4b8c','4c25','4c91','4cf8')){$f=Get-Content "$PSScriptRoot/../evidence/mpu4/native/$entry.json" -Raw|ConvertFrom-Json;foreach($match in [regex]::Matches($f.assembly,'(?m)^([0-9a-f]{4}) ')){[void]$pcs.Add([Convert]::ToInt32($match.Groups[1].Value,16))}}
+ foreach($entry in @('67e2','67ec','4b39','4b8c','4c25','4c91','4cf8','6f57')){$f=Get-Content "$PSScriptRoot/../evidence/mpu4/native/$entry.json" -Raw|ConvertFrom-Json;foreach($match in [regex]::Matches($f.assembly,'(?m)^([0-9a-f]{4}) ')){[void]$pcs.Add([Convert]::ToInt32($match.Groups[1].Value,16))}};[void]$pcs.Add(0x6F51)
  foreach($match in [regex]::Matches((Get-Content "$PSScriptRoot/../src/FruitMachineLab.Runtime/Mpu4QueueChecksumPlan.cs" -Raw),'new NativeRoutineStep\(0x([0-9A-F]{4}),"')){[void]$pcs.Add([Convert]::ToInt32($match.Groups[1].Value,16))}
  foreach($pc in ($pcs|Sort-Object|Where-Object {$_ -notin @(0x4B39,0x4B8C,0x4C23,0x4C8A,0x4D07,0x4D4D,0x4D42)})){$commands.Add(('bpset {0:X},temp0==1&&temp2==0,{{printf "CI id=%02X pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",temp1,pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}}' -f $pc))}
 }

@@ -1,5 +1,11 @@
 # Current handoff
 
+Eight-batch cycle batch5 complete: shared AddersTimedPayoutServiceExecution now
+composes both cash and token callers; all16 real-polling MAME paths match. Changed
+token level/tail flush has a separate synthetic proof (compensate only first debit).
+Next recover VM->native776F bridge before attaching payout to the VM/Live host.
+Sound-pool lifecycle and alpha helper timing remain explicit. See caller pass.
+
 Eight-batch cycle batch4 complete: both token-compensation tails and6F57 now stage
 through original signed24 clamp, guard overwrite and accounting complements.
 32 native MAME paths match. Next4B8C/4CF8 token caller composition, then gameplay

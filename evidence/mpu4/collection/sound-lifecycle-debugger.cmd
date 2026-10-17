@@ -1,4 +1,29 @@
 bpset 4c34
+bpset 5CD0,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
+bpset 5CD2,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
+bpset 5CD4,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
+bpset 5CD6,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
+bpset 5CD8,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
+bpset 5CDA,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
+bpset 5CDC,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
+bpset 5CDE,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
+bpset 5CE1,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
+bpset 5CE3,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
+bpset 5CE5,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
+bpset 5CE8,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
+bpset 5CEA,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
+bpset 5CEC,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
+bpset 5CEE,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
+bpset 5CF0,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
+bpset 5D38,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
+bpset 5D3A,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
+bpset 5D3B,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
+bpset 5D3D,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
+bpset 5D3F,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
+bpset 5D41,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
+bpset 5D44,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
+bpset 5D45,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
+bpset 5D46,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
 bpset 5E2C,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
 bpset 5E2E,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
 bpset 5E31,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
@@ -29,6 +54,18 @@ bpset 5E65,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,to
 bpset 5E67,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
 bpset 5E69,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
 bpset 5E6B,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
+bpset 5E6D,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
+bpset 5E6F,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
+bpset 5E72,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
+bpset 5E74,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
+bpset 5E76,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
+bpset 5E78,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
+bpset 5E7A,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
+bpset 5E7C,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
+bpset 5E85,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
+bpset 5E87,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
+bpset 5E89,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
+bpset 5E8C,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
 bpset 60AB,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
 bpset 60AD,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
 bpset 60B0,1,{printf "LI pc=%04X cycle=%016X bytes=%02X%02X%02X%02X%02X\n",pc,totalcycles,b@pc,b@(pc+1),b@(pc+2),b@(pc+3),b@(pc+4);go}
@@ -1446,4 +1483,996 @@ printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
 go
 printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
 save lifecycle-95-after.bin,0,800
+pc=0x5CD0;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x0;b@1af=0x55
+b@1aa=0xFF;b@4b=0xFF;b@4c=0xFF
+b@27E=0xFF;b@2A4=0xF0
+b@27F=0xFF;b@2A5=0xF1
+b@280=0xFF;b@2A6=0xF2
+b@281=0xFF;b@2A7=0xF3
+b@282=0xFF;b@2A8=0xF4
+b@283=0xFF;b@2A9=0xF5
+b@292=0xFF
+w@47=0x1a0;w@45=0x1233;w@1a2=0x1234;w@1c7=0x9999;w@1a4=0x5d3b;w@1a8=0x879e;w@1c9=0x5d3b;w@1cb=0x1ea;w@1cd=0x879e;b@1cf=0xff;b@1d4=0;b@1d6=0
+save lifecycle-96-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-96-after.bin,0,800
+pc=0x5CD0;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x0;b@1af=0x55
+b@1aa=0xFF;b@4b=0xFF;b@4c=0xFF
+b@27E=0xFF;b@2A4=0xE0
+b@27F=0xFF;b@2A5=0xE1
+b@280=0xFF;b@2A6=0xE2
+b@281=0xFF;b@2A7=0xE3
+b@282=0xFF;b@2A8=0xE4
+b@283=0xFF;b@2A9=0xE5
+b@292=0xFF
+w@47=0x1a0;w@45=0x1233;w@1a2=0x1234;w@1c7=0x9999;w@1a4=0x5d3b;w@1a8=0x879e;w@1c9=0x5d3b;w@1cb=0x1ea;w@1cd=0x879e;b@1cf=0xff;b@1d4=0;b@1d6=0
+save lifecycle-97-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-97-after.bin,0,800
+pc=0x5CD0;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x0;b@1af=0x55
+b@1aa=0xFF;b@4b=0x5;b@4c=0x5
+b@27E=0xFF;b@2A4=0xF0
+b@27F=0xFF;b@2A5=0xF1
+b@280=0xFF;b@2A6=0xF2
+b@281=0xFF;b@2A7=0xF3
+b@282=0xFF;b@2A8=0xF4
+b@283=0xFF;b@2A9=0xF5
+b@292=0xFF
+w@47=0x1a0;w@45=0x1233;w@1a2=0x1234;w@1c7=0x1234;w@1a4=0x5d3b;w@1a8=0x879e;w@1c9=0x5d3b;w@1cb=0x1ea;w@1cd=0x879e;b@1cf=0xff;b@1d4=0;b@1d6=0
+save lifecycle-98-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-98-after.bin,0,800
+pc=0x5CD0;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x0;b@1af=0x55
+b@1aa=0xFF;b@4b=0x5;b@4c=0x5
+b@27E=0xFF;b@2A4=0xE0
+b@27F=0xFF;b@2A5=0xE1
+b@280=0xFF;b@2A6=0xE2
+b@281=0xFF;b@2A7=0xE3
+b@282=0xFF;b@2A8=0xE4
+b@283=0xFF;b@2A9=0xE5
+b@292=0xFF
+w@47=0x1a0;w@45=0x1233;w@1a2=0x1234;w@1c7=0x1234;w@1a4=0x5d3b;w@1a8=0x879e;w@1c9=0x5d3b;w@1cb=0x1ea;w@1cd=0x879e;b@1cf=0xff;b@1d4=0;b@1d6=0
+save lifecycle-99-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-99-after.bin,0,800
+pc=0x5CD0;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x0;b@1af=0x55
+b@1aa=0x0;b@4b=0xFF;b@4c=0xFF
+b@27E=0xFF;b@2A4=0xF0
+b@27F=0xFF;b@2A5=0xF1
+b@280=0xFF;b@2A6=0xF2
+b@281=0xFF;b@2A7=0xF3
+b@282=0xFF;b@2A8=0xF4
+b@283=0xFF;b@2A9=0xF5
+b@292=0xFF
+w@47=0x1a0;w@45=0x1233;w@1a2=0x1234;w@1c7=0x9999;w@1a4=0x5d3b;w@1a8=0x879e;w@1c9=0x5d3b;w@1cb=0x1ea;w@1cd=0x879e;b@1cf=0xff;b@1d4=0;b@1d6=0
+save lifecycle-100-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-100-after.bin,0,800
+pc=0x5CD0;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x0;b@1af=0x55
+b@1aa=0x0;b@4b=0xFF;b@4c=0xFF
+b@27E=0xFF;b@2A4=0xE0
+b@27F=0xFF;b@2A5=0xE1
+b@280=0xFF;b@2A6=0xE2
+b@281=0xFF;b@2A7=0xE3
+b@282=0xFF;b@2A8=0xE4
+b@283=0xFF;b@2A9=0xE5
+b@292=0xFF
+w@47=0x1a0;w@45=0x1233;w@1a2=0x1234;w@1c7=0x9999;w@1a4=0x5d3b;w@1a8=0x879e;w@1c9=0x5d3b;w@1cb=0x1ea;w@1cd=0x879e;b@1cf=0xff;b@1d4=0;b@1d6=0
+save lifecycle-101-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-101-after.bin,0,800
+pc=0x5CD0;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x0;b@1af=0x55
+b@1aa=0x0;b@4b=0x5;b@4c=0x5
+b@27E=0xFF;b@2A4=0xF0
+b@27F=0xFF;b@2A5=0xF1
+b@280=0xFF;b@2A6=0xF2
+b@281=0xFF;b@2A7=0xF3
+b@282=0xFF;b@2A8=0xF4
+b@283=0xFF;b@2A9=0xF5
+b@292=0xFF
+w@47=0x1a0;w@45=0x1233;w@1a2=0x1234;w@1c7=0x1234;w@1a4=0x5d3b;w@1a8=0x879e;w@1c9=0x5d3b;w@1cb=0x1ea;w@1cd=0x879e;b@1cf=0xff;b@1d4=0;b@1d6=0
+save lifecycle-102-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-102-after.bin,0,800
+pc=0x5CD0;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x0;b@1af=0x55
+b@1aa=0x0;b@4b=0x5;b@4c=0x5
+b@27E=0xFF;b@2A4=0xE0
+b@27F=0xFF;b@2A5=0xE1
+b@280=0xFF;b@2A6=0xE2
+b@281=0xFF;b@2A7=0xE3
+b@282=0xFF;b@2A8=0xE4
+b@283=0xFF;b@2A9=0xE5
+b@292=0xFF
+w@47=0x1a0;w@45=0x1233;w@1a2=0x1234;w@1c7=0x1234;w@1a4=0x5d3b;w@1a8=0x879e;w@1c9=0x5d3b;w@1cb=0x1ea;w@1cd=0x879e;b@1cf=0xff;b@1d4=0;b@1d6=0
+save lifecycle-103-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-103-after.bin,0,800
+pc=0x5CD0;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x0;b@1af=0x55
+b@1aa=0x0;b@4b=0xFF;b@4c=0xFF
+b@27E=0x1;b@2A4=0xF0
+b@27F=0x2;b@2A5=0xF1
+b@280=0xFF;b@2A6=0xF2
+b@281=0xFF;b@2A7=0xF3
+b@282=0xFF;b@2A8=0xF4
+b@283=0xFF;b@2A9=0xF5
+b@292=0xFF
+w@47=0x1a0;w@45=0x1233;w@1a2=0x1234;w@1c7=0x9999;w@1a4=0x5d3b;w@1a8=0x879e;w@1c9=0x5d3b;w@1cb=0x1ea;w@1cd=0x879e;b@1cf=0xff;b@1d4=0;b@1d6=0
+save lifecycle-104-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-104-after.bin,0,800
+pc=0x5CD0;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x0;b@1af=0x55
+b@1aa=0x0;b@4b=0xFF;b@4c=0xFF
+b@27E=0x1;b@2A4=0xE0
+b@27F=0x2;b@2A5=0xE1
+b@280=0xFF;b@2A6=0xE2
+b@281=0xFF;b@2A7=0xE3
+b@282=0xFF;b@2A8=0xE4
+b@283=0xFF;b@2A9=0xE5
+b@292=0xFF
+w@47=0x1a0;w@45=0x1233;w@1a2=0x1234;w@1c7=0x9999;w@1a4=0x5d3b;w@1a8=0x879e;w@1c9=0x5d3b;w@1cb=0x1ea;w@1cd=0x879e;b@1cf=0xff;b@1d4=0;b@1d6=0
+save lifecycle-105-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-105-after.bin,0,800
+pc=0x5CD0;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x0;b@1af=0x55
+b@1aa=0x0;b@4b=0x5;b@4c=0x5
+b@27E=0x1;b@2A4=0xF0
+b@27F=0x2;b@2A5=0xF1
+b@280=0xFF;b@2A6=0xF2
+b@281=0xFF;b@2A7=0xF3
+b@282=0xFF;b@2A8=0xF4
+b@283=0xFF;b@2A9=0xF5
+b@292=0xFF
+w@47=0x1a0;w@45=0x1233;w@1a2=0x1234;w@1c7=0x1234;w@1a4=0x5d3b;w@1a8=0x879e;w@1c9=0x5d3b;w@1cb=0x1ea;w@1cd=0x879e;b@1cf=0xff;b@1d4=0;b@1d6=0
+save lifecycle-106-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-106-after.bin,0,800
+pc=0x5CD0;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x0;b@1af=0x55
+b@1aa=0x0;b@4b=0x5;b@4c=0x5
+b@27E=0x1;b@2A4=0xE0
+b@27F=0x2;b@2A5=0xE1
+b@280=0xFF;b@2A6=0xE2
+b@281=0xFF;b@2A7=0xE3
+b@282=0xFF;b@2A8=0xE4
+b@283=0xFF;b@2A9=0xE5
+b@292=0xFF
+w@47=0x1a0;w@45=0x1233;w@1a2=0x1234;w@1c7=0x1234;w@1a4=0x5d3b;w@1a8=0x879e;w@1c9=0x5d3b;w@1cb=0x1ea;w@1cd=0x879e;b@1cf=0xff;b@1d4=0;b@1d6=0
+save lifecycle-107-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-107-after.bin,0,800
+pc=0x5CD0;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x0;b@1af=0x55
+b@1aa=0x0;b@4b=0xFF;b@4c=0xFF
+b@27E=0x1;b@2A4=0xF0
+b@27F=0x2;b@2A5=0xF1
+b@280=0x3;b@2A6=0xF2
+b@281=0x4;b@2A7=0xF3
+b@282=0x5;b@2A8=0xF4
+b@283=0xFF;b@2A9=0xF5
+b@292=0xFF
+w@47=0x1a0;w@45=0x1233;w@1a2=0x1234;w@1c7=0x9999;w@1a4=0x5d3b;w@1a8=0x879e;w@1c9=0x5d3b;w@1cb=0x1ea;w@1cd=0x879e;b@1cf=0xff;b@1d4=0;b@1d6=0
+save lifecycle-108-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-108-after.bin,0,800
+pc=0x5CD0;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x0;b@1af=0x55
+b@1aa=0x0;b@4b=0xFF;b@4c=0xFF
+b@27E=0x1;b@2A4=0xE0
+b@27F=0x2;b@2A5=0xE1
+b@280=0x3;b@2A6=0xE2
+b@281=0x4;b@2A7=0xE3
+b@282=0x5;b@2A8=0xE4
+b@283=0xFF;b@2A9=0xE5
+b@292=0xFF
+w@47=0x1a0;w@45=0x1233;w@1a2=0x1234;w@1c7=0x9999;w@1a4=0x5d3b;w@1a8=0x879e;w@1c9=0x5d3b;w@1cb=0x1ea;w@1cd=0x879e;b@1cf=0xff;b@1d4=0;b@1d6=0
+save lifecycle-109-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-109-after.bin,0,800
+pc=0x5CD0;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x0;b@1af=0x55
+b@1aa=0x0;b@4b=0x5;b@4c=0x5
+b@27E=0x1;b@2A4=0xF0
+b@27F=0x2;b@2A5=0xF1
+b@280=0x3;b@2A6=0xF2
+b@281=0x4;b@2A7=0xF3
+b@282=0xFF;b@2A8=0xF4
+b@283=0xFF;b@2A9=0xF5
+b@292=0xFF
+w@47=0x1a0;w@45=0x1233;w@1a2=0x1234;w@1c7=0x1234;w@1a4=0x5d3b;w@1a8=0x879e;w@1c9=0x5d3b;w@1cb=0x1ea;w@1cd=0x879e;b@1cf=0xff;b@1d4=0;b@1d6=0
+save lifecycle-110-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-110-after.bin,0,800
+pc=0x5CD0;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x0;b@1af=0x55
+b@1aa=0x0;b@4b=0x5;b@4c=0x5
+b@27E=0x1;b@2A4=0xE0
+b@27F=0x2;b@2A5=0xE1
+b@280=0x3;b@2A6=0xE2
+b@281=0x4;b@2A7=0xE3
+b@282=0xFF;b@2A8=0xE4
+b@283=0xFF;b@2A9=0xE5
+b@292=0xFF
+w@47=0x1a0;w@45=0x1233;w@1a2=0x1234;w@1c7=0x1234;w@1a4=0x5d3b;w@1a8=0x879e;w@1c9=0x5d3b;w@1cb=0x1ea;w@1cd=0x879e;b@1cf=0xff;b@1d4=0;b@1d6=0
+save lifecycle-111-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-111-after.bin,0,800
+pc=0x5CD0;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x21;b@1af=0x55
+b@1aa=0xFF;b@4b=0xFF;b@4c=0xFF
+b@27E=0xFF;b@2A4=0xF0
+b@27F=0xFF;b@2A5=0xF1
+b@280=0xFF;b@2A6=0xF2
+b@281=0xFF;b@2A7=0xF3
+b@282=0xFF;b@2A8=0xF4
+b@283=0xFF;b@2A9=0xF5
+b@292=0xFF
+w@47=0x1a0;w@45=0xFFFF;w@1a2=0x0;w@1c7=0x9999;w@1a4=0x5d3b;w@1a8=0x879e;w@1c9=0x5d3b;w@1cb=0x1ea;w@1cd=0x879e;b@1cf=0xff;b@1d4=0;b@1d6=0
+save lifecycle-112-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-112-after.bin,0,800
+pc=0x5CD0;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x21;b@1af=0x55
+b@1aa=0xFF;b@4b=0xFF;b@4c=0xFF
+b@27E=0xFF;b@2A4=0xE0
+b@27F=0xFF;b@2A5=0xE1
+b@280=0xFF;b@2A6=0xE2
+b@281=0xFF;b@2A7=0xE3
+b@282=0xFF;b@2A8=0xE4
+b@283=0xFF;b@2A9=0xE5
+b@292=0xDE
+w@47=0x1a0;w@45=0xFFFF;w@1a2=0x0;w@1c7=0x9999;w@1a4=0x5d3b;w@1a8=0x879e;w@1c9=0x5d3b;w@1cb=0x1ea;w@1cd=0x879e;b@1cf=0xff;b@1d4=0;b@1d6=0
+save lifecycle-113-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-113-after.bin,0,800
+pc=0x5CD0;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x21;b@1af=0x55
+b@1aa=0xFF;b@4b=0x5;b@4c=0x5
+b@27E=0xFF;b@2A4=0xF0
+b@27F=0xFF;b@2A5=0xF1
+b@280=0xFF;b@2A6=0xF2
+b@281=0xFF;b@2A7=0xF3
+b@282=0xFF;b@2A8=0xF4
+b@283=0xFF;b@2A9=0xF5
+b@292=0xFF
+w@47=0x1a0;w@45=0xFFFF;w@1a2=0x0;w@1c7=0x0;w@1a4=0x5d3b;w@1a8=0x879e;w@1c9=0x5d3b;w@1cb=0x1ea;w@1cd=0x879e;b@1cf=0xff;b@1d4=0;b@1d6=0
+save lifecycle-114-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-114-after.bin,0,800
+pc=0x5CD0;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x21;b@1af=0x55
+b@1aa=0xFF;b@4b=0x5;b@4c=0x5
+b@27E=0xFF;b@2A4=0xE0
+b@27F=0xFF;b@2A5=0xE1
+b@280=0xFF;b@2A6=0xE2
+b@281=0xFF;b@2A7=0xE3
+b@282=0xFF;b@2A8=0xE4
+b@283=0xFF;b@2A9=0xE5
+b@292=0xDE
+w@47=0x1a0;w@45=0xFFFF;w@1a2=0x0;w@1c7=0x0;w@1a4=0x5d3b;w@1a8=0x879e;w@1c9=0x5d3b;w@1cb=0x1ea;w@1cd=0x879e;b@1cf=0xff;b@1d4=0;b@1d6=0
+save lifecycle-115-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-115-after.bin,0,800
+pc=0x5CD0;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x21;b@1af=0x55
+b@1aa=0x0;b@4b=0xFF;b@4c=0xFF
+b@27E=0xFF;b@2A4=0xF0
+b@27F=0xFF;b@2A5=0xF1
+b@280=0xFF;b@2A6=0xF2
+b@281=0xFF;b@2A7=0xF3
+b@282=0xFF;b@2A8=0xF4
+b@283=0xFF;b@2A9=0xF5
+b@292=0xFF
+w@47=0x1a0;w@45=0xFFFF;w@1a2=0x0;w@1c7=0x9999;w@1a4=0x5d3b;w@1a8=0x879e;w@1c9=0x5d3b;w@1cb=0x1ea;w@1cd=0x879e;b@1cf=0xff;b@1d4=0;b@1d6=0
+save lifecycle-116-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-116-after.bin,0,800
+pc=0x5CD0;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x21;b@1af=0x55
+b@1aa=0x0;b@4b=0xFF;b@4c=0xFF
+b@27E=0xFF;b@2A4=0xE0
+b@27F=0xFF;b@2A5=0xE1
+b@280=0xFF;b@2A6=0xE2
+b@281=0xFF;b@2A7=0xE3
+b@282=0xFF;b@2A8=0xE4
+b@283=0xFF;b@2A9=0xE5
+b@292=0xDE
+w@47=0x1a0;w@45=0xFFFF;w@1a2=0x0;w@1c7=0x9999;w@1a4=0x5d3b;w@1a8=0x879e;w@1c9=0x5d3b;w@1cb=0x1ea;w@1cd=0x879e;b@1cf=0xff;b@1d4=0;b@1d6=0
+save lifecycle-117-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-117-after.bin,0,800
+pc=0x5CD0;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x21;b@1af=0x55
+b@1aa=0x0;b@4b=0x5;b@4c=0x5
+b@27E=0xFF;b@2A4=0xF0
+b@27F=0xFF;b@2A5=0xF1
+b@280=0xFF;b@2A6=0xF2
+b@281=0xFF;b@2A7=0xF3
+b@282=0xFF;b@2A8=0xF4
+b@283=0xFF;b@2A9=0xF5
+b@292=0xFF
+w@47=0x1a0;w@45=0xFFFF;w@1a2=0x0;w@1c7=0x0;w@1a4=0x5d3b;w@1a8=0x879e;w@1c9=0x5d3b;w@1cb=0x1ea;w@1cd=0x879e;b@1cf=0xff;b@1d4=0;b@1d6=0
+save lifecycle-118-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-118-after.bin,0,800
+pc=0x5CD0;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x21;b@1af=0x55
+b@1aa=0x0;b@4b=0x5;b@4c=0x5
+b@27E=0xFF;b@2A4=0xE0
+b@27F=0xFF;b@2A5=0xE1
+b@280=0xFF;b@2A6=0xE2
+b@281=0xFF;b@2A7=0xE3
+b@282=0xFF;b@2A8=0xE4
+b@283=0xFF;b@2A9=0xE5
+b@292=0xDE
+w@47=0x1a0;w@45=0xFFFF;w@1a2=0x0;w@1c7=0x0;w@1a4=0x5d3b;w@1a8=0x879e;w@1c9=0x5d3b;w@1cb=0x1ea;w@1cd=0x879e;b@1cf=0xff;b@1d4=0;b@1d6=0
+save lifecycle-119-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-119-after.bin,0,800
+pc=0x5CD0;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x21;b@1af=0x55
+b@1aa=0x0;b@4b=0xFF;b@4c=0xFF
+b@27E=0x1;b@2A4=0xF0
+b@27F=0x2;b@2A5=0xF1
+b@280=0xFF;b@2A6=0xF2
+b@281=0xFF;b@2A7=0xF3
+b@282=0xFF;b@2A8=0xF4
+b@283=0xFF;b@2A9=0xF5
+b@292=0xFF
+w@47=0x1a0;w@45=0xFFFF;w@1a2=0x0;w@1c7=0x9999;w@1a4=0x5d3b;w@1a8=0x879e;w@1c9=0x5d3b;w@1cb=0x1ea;w@1cd=0x879e;b@1cf=0xff;b@1d4=0;b@1d6=0
+save lifecycle-120-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-120-after.bin,0,800
+pc=0x5CD0;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x21;b@1af=0x55
+b@1aa=0x0;b@4b=0xFF;b@4c=0xFF
+b@27E=0x1;b@2A4=0xE0
+b@27F=0x2;b@2A5=0xE1
+b@280=0xFF;b@2A6=0xE2
+b@281=0xFF;b@2A7=0xE3
+b@282=0xFF;b@2A8=0xE4
+b@283=0xFF;b@2A9=0xE5
+b@292=0xDE
+w@47=0x1a0;w@45=0xFFFF;w@1a2=0x0;w@1c7=0x9999;w@1a4=0x5d3b;w@1a8=0x879e;w@1c9=0x5d3b;w@1cb=0x1ea;w@1cd=0x879e;b@1cf=0xff;b@1d4=0;b@1d6=0
+save lifecycle-121-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-121-after.bin,0,800
+pc=0x5CD0;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x21;b@1af=0x55
+b@1aa=0x0;b@4b=0x5;b@4c=0x5
+b@27E=0x1;b@2A4=0xF0
+b@27F=0x2;b@2A5=0xF1
+b@280=0xFF;b@2A6=0xF2
+b@281=0xFF;b@2A7=0xF3
+b@282=0xFF;b@2A8=0xF4
+b@283=0xFF;b@2A9=0xF5
+b@292=0xFF
+w@47=0x1a0;w@45=0xFFFF;w@1a2=0x0;w@1c7=0x0;w@1a4=0x5d3b;w@1a8=0x879e;w@1c9=0x5d3b;w@1cb=0x1ea;w@1cd=0x879e;b@1cf=0xff;b@1d4=0;b@1d6=0
+save lifecycle-122-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-122-after.bin,0,800
+pc=0x5CD0;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x21;b@1af=0x55
+b@1aa=0x0;b@4b=0x5;b@4c=0x5
+b@27E=0x1;b@2A4=0xE0
+b@27F=0x2;b@2A5=0xE1
+b@280=0xFF;b@2A6=0xE2
+b@281=0xFF;b@2A7=0xE3
+b@282=0xFF;b@2A8=0xE4
+b@283=0xFF;b@2A9=0xE5
+b@292=0xDE
+w@47=0x1a0;w@45=0xFFFF;w@1a2=0x0;w@1c7=0x0;w@1a4=0x5d3b;w@1a8=0x879e;w@1c9=0x5d3b;w@1cb=0x1ea;w@1cd=0x879e;b@1cf=0xff;b@1d4=0;b@1d6=0
+save lifecycle-123-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-123-after.bin,0,800
+pc=0x5CD0;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x21;b@1af=0x55
+b@1aa=0x0;b@4b=0xFF;b@4c=0xFF
+b@27E=0x1;b@2A4=0xF0
+b@27F=0x2;b@2A5=0xF1
+b@280=0x3;b@2A6=0xF2
+b@281=0x4;b@2A7=0xF3
+b@282=0x5;b@2A8=0xF4
+b@283=0xFF;b@2A9=0xF5
+b@292=0xFF
+w@47=0x1a0;w@45=0xFFFF;w@1a2=0x0;w@1c7=0x9999;w@1a4=0x5d3b;w@1a8=0x879e;w@1c9=0x5d3b;w@1cb=0x1ea;w@1cd=0x879e;b@1cf=0xff;b@1d4=0;b@1d6=0
+save lifecycle-124-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-124-after.bin,0,800
+pc=0x5CD0;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x21;b@1af=0x55
+b@1aa=0x0;b@4b=0xFF;b@4c=0xFF
+b@27E=0x1;b@2A4=0xE0
+b@27F=0x2;b@2A5=0xE1
+b@280=0x3;b@2A6=0xE2
+b@281=0x4;b@2A7=0xE3
+b@282=0x5;b@2A8=0xE4
+b@283=0xFF;b@2A9=0xE5
+b@292=0xDE
+w@47=0x1a0;w@45=0xFFFF;w@1a2=0x0;w@1c7=0x9999;w@1a4=0x5d3b;w@1a8=0x879e;w@1c9=0x5d3b;w@1cb=0x1ea;w@1cd=0x879e;b@1cf=0xff;b@1d4=0;b@1d6=0
+save lifecycle-125-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-125-after.bin,0,800
+pc=0x5CD0;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x21;b@1af=0x55
+b@1aa=0x0;b@4b=0x5;b@4c=0x5
+b@27E=0x1;b@2A4=0xF0
+b@27F=0x2;b@2A5=0xF1
+b@280=0x3;b@2A6=0xF2
+b@281=0x4;b@2A7=0xF3
+b@282=0xFF;b@2A8=0xF4
+b@283=0xFF;b@2A9=0xF5
+b@292=0xFF
+w@47=0x1a0;w@45=0xFFFF;w@1a2=0x0;w@1c7=0x0;w@1a4=0x5d3b;w@1a8=0x879e;w@1c9=0x5d3b;w@1cb=0x1ea;w@1cd=0x879e;b@1cf=0xff;b@1d4=0;b@1d6=0
+save lifecycle-126-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-126-after.bin,0,800
+pc=0x5CD0;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x21;b@1af=0x55
+b@1aa=0x0;b@4b=0x5;b@4c=0x5
+b@27E=0x1;b@2A4=0xE0
+b@27F=0x2;b@2A5=0xE1
+b@280=0x3;b@2A6=0xE2
+b@281=0x4;b@2A7=0xE3
+b@282=0xFF;b@2A8=0xE4
+b@283=0xFF;b@2A9=0xE5
+b@292=0xDE
+w@47=0x1a0;w@45=0xFFFF;w@1a2=0x0;w@1c7=0x0;w@1a4=0x5d3b;w@1a8=0x879e;w@1c9=0x5d3b;w@1cb=0x1ea;w@1cd=0x879e;b@1cf=0xff;b@1d4=0;b@1d6=0
+save lifecycle-127-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-127-after.bin,0,800
+pc=0x5E6D;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x0;b@1af=0x55
+b@1aa=0xFF;b@4b=0xFF;b@4c=0xFF
+b@27E=0xFF;b@2A4=0xF0
+b@27F=0xFF;b@2A5=0xF1
+b@280=0xFF;b@2A6=0xF2
+b@281=0xFF;b@2A7=0xF3
+b@282=0xFF;b@2A8=0xF4
+b@283=0xFF;b@2A9=0xF5
+b@292=0xFF
+b@44=1
+w@1a6=0x1c3;w@1c3=0x879e
+save lifecycle-128-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-128-after.bin,0,800
+pc=0x5E6D;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x0;b@1af=0x55
+b@1aa=0xFF;b@4b=0xFF;b@4c=0xFF
+b@27E=0xFF;b@2A4=0xE0
+b@27F=0xFF;b@2A5=0xE1
+b@280=0xFF;b@2A6=0xE2
+b@281=0xFF;b@2A7=0xE3
+b@282=0xFF;b@2A8=0xE4
+b@283=0xFF;b@2A9=0xE5
+b@292=0xFF
+b@44=1
+w@1a6=0x1c3;w@1c3=0x879e
+save lifecycle-129-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-129-after.bin,0,800
+pc=0x5E6D;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x0;b@1af=0x55
+b@1aa=0xFF;b@4b=0x5;b@4c=0x5
+b@27E=0xFF;b@2A4=0xF0
+b@27F=0xFF;b@2A5=0xF1
+b@280=0xFF;b@2A6=0xF2
+b@281=0xFF;b@2A7=0xF3
+b@282=0xFF;b@2A8=0xF4
+b@283=0xFF;b@2A9=0xF5
+b@292=0xFF
+b@44=1
+w@1a6=0x1c3;w@1c3=0x879e
+save lifecycle-130-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-130-after.bin,0,800
+pc=0x5E6D;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x0;b@1af=0x55
+b@1aa=0xFF;b@4b=0x5;b@4c=0x5
+b@27E=0xFF;b@2A4=0xE0
+b@27F=0xFF;b@2A5=0xE1
+b@280=0xFF;b@2A6=0xE2
+b@281=0xFF;b@2A7=0xE3
+b@282=0xFF;b@2A8=0xE4
+b@283=0xFF;b@2A9=0xE5
+b@292=0xFF
+b@44=1
+w@1a6=0x1c3;w@1c3=0x879e
+save lifecycle-131-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-131-after.bin,0,800
+pc=0x5E6D;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x0;b@1af=0x55
+b@1aa=0x0;b@4b=0xFF;b@4c=0xFF
+b@27E=0xFF;b@2A4=0xF0
+b@27F=0xFF;b@2A5=0xF1
+b@280=0xFF;b@2A6=0xF2
+b@281=0xFF;b@2A7=0xF3
+b@282=0xFF;b@2A8=0xF4
+b@283=0xFF;b@2A9=0xF5
+b@292=0xFF
+b@44=1
+w@1a6=0x1c3;w@1c3=0x879e
+save lifecycle-132-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-132-after.bin,0,800
+pc=0x5E6D;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x0;b@1af=0x55
+b@1aa=0x0;b@4b=0xFF;b@4c=0xFF
+b@27E=0xFF;b@2A4=0xE0
+b@27F=0xFF;b@2A5=0xE1
+b@280=0xFF;b@2A6=0xE2
+b@281=0xFF;b@2A7=0xE3
+b@282=0xFF;b@2A8=0xE4
+b@283=0xFF;b@2A9=0xE5
+b@292=0xFF
+b@44=1
+w@1a6=0x1c3;w@1c3=0x879e
+save lifecycle-133-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-133-after.bin,0,800
+pc=0x5E6D;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x0;b@1af=0x55
+b@1aa=0x0;b@4b=0x5;b@4c=0x5
+b@27E=0xFF;b@2A4=0xF0
+b@27F=0xFF;b@2A5=0xF1
+b@280=0xFF;b@2A6=0xF2
+b@281=0xFF;b@2A7=0xF3
+b@282=0xFF;b@2A8=0xF4
+b@283=0xFF;b@2A9=0xF5
+b@292=0xFF
+b@44=1
+w@1a6=0x1c3;w@1c3=0x879e
+save lifecycle-134-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-134-after.bin,0,800
+pc=0x5E6D;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x0;b@1af=0x55
+b@1aa=0x0;b@4b=0x5;b@4c=0x5
+b@27E=0xFF;b@2A4=0xE0
+b@27F=0xFF;b@2A5=0xE1
+b@280=0xFF;b@2A6=0xE2
+b@281=0xFF;b@2A7=0xE3
+b@282=0xFF;b@2A8=0xE4
+b@283=0xFF;b@2A9=0xE5
+b@292=0xFF
+b@44=1
+w@1a6=0x1c3;w@1c3=0x879e
+save lifecycle-135-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-135-after.bin,0,800
+pc=0x5E6D;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x0;b@1af=0x55
+b@1aa=0x0;b@4b=0xFF;b@4c=0xFF
+b@27E=0x1;b@2A4=0xF0
+b@27F=0x2;b@2A5=0xF1
+b@280=0xFF;b@2A6=0xF2
+b@281=0xFF;b@2A7=0xF3
+b@282=0xFF;b@2A8=0xF4
+b@283=0xFF;b@2A9=0xF5
+b@292=0xFF
+b@44=1
+w@1a6=0x1c3;w@1c3=0x879e
+save lifecycle-136-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-136-after.bin,0,800
+pc=0x5E6D;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x0;b@1af=0x55
+b@1aa=0x0;b@4b=0xFF;b@4c=0xFF
+b@27E=0x1;b@2A4=0xE0
+b@27F=0x2;b@2A5=0xE1
+b@280=0xFF;b@2A6=0xE2
+b@281=0xFF;b@2A7=0xE3
+b@282=0xFF;b@2A8=0xE4
+b@283=0xFF;b@2A9=0xE5
+b@292=0xFF
+b@44=1
+w@1a6=0x1c3;w@1c3=0x879e
+save lifecycle-137-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-137-after.bin,0,800
+pc=0x5E6D;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x0;b@1af=0x55
+b@1aa=0x0;b@4b=0x5;b@4c=0x5
+b@27E=0x1;b@2A4=0xF0
+b@27F=0x2;b@2A5=0xF1
+b@280=0xFF;b@2A6=0xF2
+b@281=0xFF;b@2A7=0xF3
+b@282=0xFF;b@2A8=0xF4
+b@283=0xFF;b@2A9=0xF5
+b@292=0xFF
+b@44=1
+w@1a6=0x1c3;w@1c3=0x879e
+save lifecycle-138-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-138-after.bin,0,800
+pc=0x5E6D;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x0;b@1af=0x55
+b@1aa=0x0;b@4b=0x5;b@4c=0x5
+b@27E=0x1;b@2A4=0xE0
+b@27F=0x2;b@2A5=0xE1
+b@280=0xFF;b@2A6=0xE2
+b@281=0xFF;b@2A7=0xE3
+b@282=0xFF;b@2A8=0xE4
+b@283=0xFF;b@2A9=0xE5
+b@292=0xFF
+b@44=1
+w@1a6=0x1c3;w@1c3=0x879e
+save lifecycle-139-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-139-after.bin,0,800
+pc=0x5E6D;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x0;b@1af=0x55
+b@1aa=0x0;b@4b=0xFF;b@4c=0xFF
+b@27E=0x1;b@2A4=0xF0
+b@27F=0x2;b@2A5=0xF1
+b@280=0x3;b@2A6=0xF2
+b@281=0x4;b@2A7=0xF3
+b@282=0x5;b@2A8=0xF4
+b@283=0xFF;b@2A9=0xF5
+b@292=0xFF
+b@44=1
+w@1a6=0x1c3;w@1c3=0x879e
+save lifecycle-140-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-140-after.bin,0,800
+pc=0x5E6D;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x0;b@1af=0x55
+b@1aa=0x0;b@4b=0xFF;b@4c=0xFF
+b@27E=0x1;b@2A4=0xE0
+b@27F=0x2;b@2A5=0xE1
+b@280=0x3;b@2A6=0xE2
+b@281=0x4;b@2A7=0xE3
+b@282=0x5;b@2A8=0xE4
+b@283=0xFF;b@2A9=0xE5
+b@292=0xFF
+b@44=1
+w@1a6=0x1c3;w@1c3=0x879e
+save lifecycle-141-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-141-after.bin,0,800
+pc=0x5E6D;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x0;b@1af=0x55
+b@1aa=0x0;b@4b=0x5;b@4c=0x5
+b@27E=0x1;b@2A4=0xF0
+b@27F=0x2;b@2A5=0xF1
+b@280=0x3;b@2A6=0xF2
+b@281=0x4;b@2A7=0xF3
+b@282=0xFF;b@2A8=0xF4
+b@283=0xFF;b@2A9=0xF5
+b@292=0xFF
+b@44=1
+w@1a6=0x1c3;w@1c3=0x879e
+save lifecycle-142-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-142-after.bin,0,800
+pc=0x5E6D;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x0;b@1af=0x55
+b@1aa=0x0;b@4b=0x5;b@4c=0x5
+b@27E=0x1;b@2A4=0xE0
+b@27F=0x2;b@2A5=0xE1
+b@280=0x3;b@2A6=0xE2
+b@281=0x4;b@2A7=0xE3
+b@282=0xFF;b@2A8=0xE4
+b@283=0xFF;b@2A9=0xE5
+b@292=0xFF
+b@44=1
+w@1a6=0x1c3;w@1c3=0x879e
+save lifecycle-143-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-143-after.bin,0,800
+pc=0x5E6D;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x21;b@1af=0x55
+b@1aa=0xFF;b@4b=0xFF;b@4c=0xFF
+b@27E=0xFF;b@2A4=0xF0
+b@27F=0xFF;b@2A5=0xF1
+b@280=0xFF;b@2A6=0xF2
+b@281=0xFF;b@2A7=0xF3
+b@282=0xFF;b@2A8=0xF4
+b@283=0xFF;b@2A9=0xF5
+b@292=0xFF
+b@44=1
+w@1a6=0x1c3;w@1c3=0x879e
+save lifecycle-144-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-144-after.bin,0,800
+pc=0x5E6D;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x21;b@1af=0x55
+b@1aa=0xFF;b@4b=0xFF;b@4c=0xFF
+b@27E=0xFF;b@2A4=0xE0
+b@27F=0xFF;b@2A5=0xE1
+b@280=0xFF;b@2A6=0xE2
+b@281=0xFF;b@2A7=0xE3
+b@282=0xFF;b@2A8=0xE4
+b@283=0xFF;b@2A9=0xE5
+b@292=0xDE
+b@44=1
+w@1a6=0x1c3;w@1c3=0x879e
+save lifecycle-145-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-145-after.bin,0,800
+pc=0x5E6D;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x21;b@1af=0x55
+b@1aa=0xFF;b@4b=0x5;b@4c=0x5
+b@27E=0xFF;b@2A4=0xF0
+b@27F=0xFF;b@2A5=0xF1
+b@280=0xFF;b@2A6=0xF2
+b@281=0xFF;b@2A7=0xF3
+b@282=0xFF;b@2A8=0xF4
+b@283=0xFF;b@2A9=0xF5
+b@292=0xFF
+b@44=1
+w@1a6=0x1c3;w@1c3=0x879e
+save lifecycle-146-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-146-after.bin,0,800
+pc=0x5E6D;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x21;b@1af=0x55
+b@1aa=0xFF;b@4b=0x5;b@4c=0x5
+b@27E=0xFF;b@2A4=0xE0
+b@27F=0xFF;b@2A5=0xE1
+b@280=0xFF;b@2A6=0xE2
+b@281=0xFF;b@2A7=0xE3
+b@282=0xFF;b@2A8=0xE4
+b@283=0xFF;b@2A9=0xE5
+b@292=0xDE
+b@44=1
+w@1a6=0x1c3;w@1c3=0x879e
+save lifecycle-147-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-147-after.bin,0,800
+pc=0x5E6D;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x21;b@1af=0x55
+b@1aa=0x0;b@4b=0xFF;b@4c=0xFF
+b@27E=0xFF;b@2A4=0xF0
+b@27F=0xFF;b@2A5=0xF1
+b@280=0xFF;b@2A6=0xF2
+b@281=0xFF;b@2A7=0xF3
+b@282=0xFF;b@2A8=0xF4
+b@283=0xFF;b@2A9=0xF5
+b@292=0xFF
+b@44=1
+w@1a6=0x1c3;w@1c3=0x879e
+save lifecycle-148-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-148-after.bin,0,800
+pc=0x5E6D;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x21;b@1af=0x55
+b@1aa=0x0;b@4b=0xFF;b@4c=0xFF
+b@27E=0xFF;b@2A4=0xE0
+b@27F=0xFF;b@2A5=0xE1
+b@280=0xFF;b@2A6=0xE2
+b@281=0xFF;b@2A7=0xE3
+b@282=0xFF;b@2A8=0xE4
+b@283=0xFF;b@2A9=0xE5
+b@292=0xDE
+b@44=1
+w@1a6=0x1c3;w@1c3=0x879e
+save lifecycle-149-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-149-after.bin,0,800
+pc=0x5E6D;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x21;b@1af=0x55
+b@1aa=0x0;b@4b=0x5;b@4c=0x5
+b@27E=0xFF;b@2A4=0xF0
+b@27F=0xFF;b@2A5=0xF1
+b@280=0xFF;b@2A6=0xF2
+b@281=0xFF;b@2A7=0xF3
+b@282=0xFF;b@2A8=0xF4
+b@283=0xFF;b@2A9=0xF5
+b@292=0xFF
+b@44=1
+w@1a6=0x1c3;w@1c3=0x879e
+save lifecycle-150-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-150-after.bin,0,800
+pc=0x5E6D;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x21;b@1af=0x55
+b@1aa=0x0;b@4b=0x5;b@4c=0x5
+b@27E=0xFF;b@2A4=0xE0
+b@27F=0xFF;b@2A5=0xE1
+b@280=0xFF;b@2A6=0xE2
+b@281=0xFF;b@2A7=0xE3
+b@282=0xFF;b@2A8=0xE4
+b@283=0xFF;b@2A9=0xE5
+b@292=0xDE
+b@44=1
+w@1a6=0x1c3;w@1c3=0x879e
+save lifecycle-151-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-151-after.bin,0,800
+pc=0x5E6D;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x21;b@1af=0x55
+b@1aa=0x0;b@4b=0xFF;b@4c=0xFF
+b@27E=0x1;b@2A4=0xF0
+b@27F=0x2;b@2A5=0xF1
+b@280=0xFF;b@2A6=0xF2
+b@281=0xFF;b@2A7=0xF3
+b@282=0xFF;b@2A8=0xF4
+b@283=0xFF;b@2A9=0xF5
+b@292=0xFF
+b@44=1
+w@1a6=0x1c3;w@1c3=0x879e
+save lifecycle-152-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-152-after.bin,0,800
+pc=0x5E6D;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x21;b@1af=0x55
+b@1aa=0x0;b@4b=0xFF;b@4c=0xFF
+b@27E=0x1;b@2A4=0xE0
+b@27F=0x2;b@2A5=0xE1
+b@280=0xFF;b@2A6=0xE2
+b@281=0xFF;b@2A7=0xE3
+b@282=0xFF;b@2A8=0xE4
+b@283=0xFF;b@2A9=0xE5
+b@292=0xDE
+b@44=1
+w@1a6=0x1c3;w@1c3=0x879e
+save lifecycle-153-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-153-after.bin,0,800
+pc=0x5E6D;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x21;b@1af=0x55
+b@1aa=0x0;b@4b=0x5;b@4c=0x5
+b@27E=0x1;b@2A4=0xF0
+b@27F=0x2;b@2A5=0xF1
+b@280=0xFF;b@2A6=0xF2
+b@281=0xFF;b@2A7=0xF3
+b@282=0xFF;b@2A8=0xF4
+b@283=0xFF;b@2A9=0xF5
+b@292=0xFF
+b@44=1
+w@1a6=0x1c3;w@1c3=0x879e
+save lifecycle-154-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-154-after.bin,0,800
+pc=0x5E6D;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x21;b@1af=0x55
+b@1aa=0x0;b@4b=0x5;b@4c=0x5
+b@27E=0x1;b@2A4=0xE0
+b@27F=0x2;b@2A5=0xE1
+b@280=0xFF;b@2A6=0xE2
+b@281=0xFF;b@2A7=0xE3
+b@282=0xFF;b@2A8=0xE4
+b@283=0xFF;b@2A9=0xE5
+b@292=0xDE
+b@44=1
+w@1a6=0x1c3;w@1c3=0x879e
+save lifecycle-155-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-155-after.bin,0,800
+pc=0x5E6D;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x21;b@1af=0x55
+b@1aa=0x0;b@4b=0xFF;b@4c=0xFF
+b@27E=0x1;b@2A4=0xF0
+b@27F=0x2;b@2A5=0xF1
+b@280=0x3;b@2A6=0xF2
+b@281=0x4;b@2A7=0xF3
+b@282=0x5;b@2A8=0xF4
+b@283=0xFF;b@2A9=0xF5
+b@292=0xFF
+b@44=1
+w@1a6=0x1c3;w@1c3=0x879e
+save lifecycle-156-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-156-after.bin,0,800
+pc=0x5E6D;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x21;b@1af=0x55
+b@1aa=0x0;b@4b=0xFF;b@4c=0xFF
+b@27E=0x1;b@2A4=0xE0
+b@27F=0x2;b@2A5=0xE1
+b@280=0x3;b@2A6=0xE2
+b@281=0x4;b@2A7=0xE3
+b@282=0x5;b@2A8=0xE4
+b@283=0xFF;b@2A9=0xE5
+b@292=0xDE
+b@44=1
+w@1a6=0x1c3;w@1c3=0x879e
+save lifecycle-157-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-157-after.bin,0,800
+pc=0x5E6D;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x21;b@1af=0x55
+b@1aa=0x0;b@4b=0x5;b@4c=0x5
+b@27E=0x1;b@2A4=0xF0
+b@27F=0x2;b@2A5=0xF1
+b@280=0x3;b@2A6=0xF2
+b@281=0x4;b@2A7=0xF3
+b@282=0xFF;b@2A8=0xF4
+b@283=0xFF;b@2A9=0xF5
+b@292=0xFF
+b@44=1
+w@1a6=0x1c3;w@1c3=0x879e
+save lifecycle-158-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-158-after.bin,0,800
+pc=0x5E6D;s=0x700;u=0x600;x=0x8784;y=0x1a0;dp=0;cc=0x50;w@700=0x4c34;b@719b=0;b@44=0;w@45=0x1234;w@47=0x1c5;w@49=0x1ea;w@1c5=0;w@1c7=0x9999;w@1d8=0x8888;w@1a0=0x1c5;w@1b3=0x8784;w@1a6=0x1c5;b@1b1=0x21;b@1af=0x55
+b@1aa=0x0;b@4b=0x5;b@4c=0x5
+b@27E=0x1;b@2A4=0xE0
+b@27F=0x2;b@2A5=0xE1
+b@280=0x3;b@2A6=0xE2
+b@281=0x4;b@2A7=0xE3
+b@282=0xFF;b@2A8=0xE4
+b@283=0xFF;b@2A9=0xE5
+b@292=0xDE
+b@44=1
+w@1a6=0x1c3;w@1c3=0x879e
+save lifecycle-159-before.bin,0,800
+printf "LS pc=%04X cycle=%016X\n",pc,totalcycles
+go
+printf "LF pc=%04X cycle=%016X s=%04X u=%04X y=%04X\n",pc,totalcycles,s,u,y
+save lifecycle-159-after.bin,0,800
 quit

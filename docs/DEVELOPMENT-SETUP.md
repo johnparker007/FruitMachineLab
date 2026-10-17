@@ -5,6 +5,13 @@ Local clone: C:\projects\GitRepos\FruitMachineLab
 
 ## Current status
 
+Sound lifecycle: tools/Capture-SoundLifecycle.ps1 takes MameExecutable,
+RomDirectory and a fresh RunDirectory; Curate-SoundLifecycle.ps1 takes that
+RunDirectory and RomPath. It exports160 masked-IRQ native calls with selected
+instruction observations. Filter verifier with "Sound lifecycle" (11 groups).
+Native task ownership is bounded; this does not run the complete Collect prompt.
+See recovery/SOUND-LIFECYCLE-PASS.md for evidence and remaining Live boundaries.
+
 Timed payout callers: Capture-PayoutService.ps1 -InstructionTiming observes real
 polling (synthetic counter updates), -VmBridge includes the VM->native wrapper.
 Curate-PayoutCallerTiming.ps1 takes RunDirectory/RomPath and exports distinct

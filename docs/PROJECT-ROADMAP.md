@@ -1,5 +1,11 @@
 # Project direction and handoff
 
+17 October sound lifecycle checkpoint: bounded native release/cancel/root and
+service rescan now have160 synthetic original-ROM paths,128 instruction-timed.
+Live is unchanged: next recover actual8784/8739 prompt instrument/child/yield
+ownership before connecting timed collection. Keep foreground acceptance and
+busy serial explicit; no new audio/general IRQ project. See sound lifecycle pass.
+
 17 October eight-batch payout milestone: selected cash/token callers, compensation,
 VM->native bridge and incremental collection host are implemented and verified.
 307 groups pass, including160 new selected native MAME cases and a100-transaction

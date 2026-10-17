@@ -9,6 +9,18 @@ void Check(string name, Action action) { if(args.Length>1 && !name.Contains(args
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
 Check("Sound lifecycle release matches32 original-ROM channel cases",()=>Equal(32,AddersSoundLifecycleVerification.Matrix(evidence,"release")));
 Check("Sound lifecycle staged release matches32 original-ROM instruction paths",()=>Equal(32,AddersSoundLifecycleVerification.TimedRelease(evidence)));
+Check("Sound lifecycle staged root return matches32 original-ROM instruction paths",()=>Equal(32,AddersSoundLifecycleVerification.Timed(evidence,"finish")));
+Check("Sound lifecycle staged scheduler matches32 original-ROM instruction paths",()=>Equal(32,AddersSoundLifecycleVerification.Timed(evidence,"scheduler")));
+Check("Sound lifecycle staged nested return matches32 original-ROM instruction paths",()=>Equal(32,AddersSoundLifecycleVerification.Timed(evidence,"nested")));
+Check("Sound lifecycle native service guards idle tick and explicit unsupported command",()=>{
+    var m=new Machine();m.Memory[0x44]=0xFF;m.Memory[0x2C]=0x7A;m.WriteWord(0x45,0xFFFF);
+    byte[] before=m.Memory.ToArray();using(var e=new NativeRoutineExecution(new AddersSoundServicePlan(m,0x700,0x600,0x8784,0x1A0).Instructions(),0,0x4C34,()=>false)){while(!e.Completed)e.AdvanceTo(e.NextEventCycle);Equal((ulong)12,e.Cycle);Equal(true,before.SequenceEqual(m.Memory));}
+    m.Memory[0x44]=0;using(var e=new NativeRoutineExecution(new AddersSoundServicePlan(m,0x700,0x600,0x8784,0x1A0).Instructions(),0,0x4C34,()=>false)){while(!e.Completed)e.AdvanceTo(e.NextEventCycle);Equal((ushort)0,m.ReadWord(0x45));Equal((byte)0,m.Memory[0x2C]);Equal((byte)0,m.Memory[0x44]);}
+    AddersSoundResetMemory.Apply(m);m.Memory[0x50]=16;m.Memory[0x9000]=0x60;Equal(true,AddersSoundQueueMemory.Queue(m,0x9000));
+    var plan=new AddersSoundServicePlan(m,0x700,0x600,0x8784,0x1A0);using var unknown=new NativeRoutineExecution(plan.Instructions(),0,0x4C34,()=>false);
+    try{while(!unknown.Completed)unknown.AdvanceTo(unknown.NextEventCycle);throw new Exception("Native sound note silently approximated");}catch(NotSupportedException ex){Equal(true,ex.Message.Contains("channel acquisition"));}
+    Equal(true,unknown.Fault is not null);Equal(0,plan.CompletedTasks);Equal((ushort)0x1C5,m.ReadWord(0x49));
+});
 Check("Sound lifecycle staged release supports only unmasked instruction-boundary suspension",()=>{
     var m=new Machine();m.Memory[0x1AA]=0xFF;m.Memory[0x4C]=0xFF;
     using var e=new NativeRoutineExecution(new AddersSoundReleasePlan(m,0x1A0,0x700,0x600,0x8784).Instructions(),100,0x4C34,()=>false);

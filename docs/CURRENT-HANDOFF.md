@@ -1,5 +1,26 @@
 # Current handoff
 
+FIVE-BATCH CYCLE COMPLETE —318 full verification groups pass, including11 sound
+lifecycle groups. Native5E2C release/60AB cache,5C7A cancel, C0 root/nested return
+and bounded5CD0 service/rescan are recovered.160 synthetic original-ROM cases
+compare memory;128 also match every emitted instruction time/encoding and full
+2KB RAM.600 allocation/completion reuse checks lose no records. Source-derived
+timing uses no capture deadlines. See recovery/SOUND-LIFECYCLE-PASS.md.
+
+NEXT: actual8784/8739 Collect prompt instrument/channel acquisition, C2 child
+allocation and5CF3 yield/cursor/frame ownership. New AddersSoundServicePlan stops
+at notes/unsupported commands; do not replace the logical scheduler globally or
+fabricate0047. Foreground/IRQ acceptance and busy5429 serial remain explicit.
+Live GUI is unchanged; no full sound, prompt, autonomous IRQ or paid-game claim.
+
+Headless/full WPF builds: zero warnings/errors; WPF output isolated in temporary
+directory, user's open app preserved. All owned capture/test runs exited. No
+installations/settings changes; original ROM/MAME/Ghidra/workspace untouched.
+John authorized commits/pushes for all five milestones. Final test log:
+%TEMP%/FruitMachineLab-five-batches-final.log; build pointer five-batches-build.txt;
+clean raw capture pointer FruitMachineLab-sound-service-timing.txt. Curated
+exports are reproducible and manifest verification remains required.
+
 Five-batch cycle batch4: staged5E2C/60AB release matches32 original-ROM paths,
 instruction cycles/bytes/full2KB RAM;96 lifecycle cases now include cache-hit
 variants. Early-effect and unmasked suspension checks pass. Next compose root

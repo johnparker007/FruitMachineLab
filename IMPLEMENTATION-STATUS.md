@@ -1,5 +1,12 @@
 # Implementation and evidence boundaries
 
+Bounded sound lifecycle now covers native release5E2C, cancellation5C7A, C0 root/
+nested return and5CD0 service with same-clock rescan.160 synthetic original-ROM
+cases verify memory;128 also match all emitted instruction times/encodings and
+full2KB RAM. Live is unchanged: actual8784/8739 prompt acquisition/child/yield
+ownership remains open. See [sound lifecycle pass](docs/recovery/SOUND-LIFECYCLE-PASS.md).
+Current full suite:318 groups; headless and isolated WPF builds have no warnings/errors.
+
 Selected cash/token payout now executes through timed4B39/4B8C callers, tail/input
 plans, compensation, original776F VM native bridge and nested76BF incremental
 display. AddersTimedCollectionExecution composes the collection VM with this owner.

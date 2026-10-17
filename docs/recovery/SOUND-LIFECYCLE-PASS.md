@@ -71,3 +71,46 @@ The clean instruction capture ba5b4dd1f023412a91df22198421e5ae replaces the earl
 48-case memory-only fixture. Curated catalogs deduplicate exact ROM contexts;
 per-path arrays reference catalog indexes and relative cycles. Re-export is
 deterministic. No Ghidra/tool/configuration changes were made.
+
+## Native service and nested return checkpoint
+
+AddersSoundServicePlan composes5CD0 entry,44 reentrancy guard,2C clear,0045 clock
+increment,0047 head/deadline equality, due removal, saved callback/U dispatch,
+5D3B command fetch/dictionary,5E6D C0, release, root free or nested word return,
+and same-clock5CDE rescan through5D38/5D3A. Entry5E6D also supports a due task
+already removed by its caller. No general CPU interpreter is introduced.
+
+The final matrix has160 original-ROM synthetic calls:32 release,32 cancel,
+32 root,32 scheduler,32 nested return. Four sets (128 paths) verify every emitted
+PC/cycle/encoding and full2KB RAM including scratch. Cancellation is memory-only.
+Scheduler cases include FFFF->0000 rollover and one/two due tasks; nested cases
+return through real source C0 byte879E and checked table5AE3=5E6D. Native task
+stack pointer+6 and return bytes are read/written directly. Selected nested
+returns require aligned two-byte frames in the record's stack area; odd/unknown
+layouts stop explicitly. U after consumed879E is879F, not incoming0600.
+
+Final clean raw run:1ac0e0bead3f4ac9b79e59a0373d1497. An initial expanded run
+7a2b53e32e29495e95916c3d9d8abeb2 was rejected by an obsolete U==0600 curator
+assertion, then replaced after checking dispatch. No end-state injection was
+introduced. Prefix10 direct STY9F timing was added to the existing decoder and
+is covered by these original-ROM paths.
+
+Synthetic checks also cover reentrant service (no mutation/tick), empty idle
+tick, explicit unsupported-note fault, corruption guards,600 pool allocations/
+completions and instruction-boundary suspension. A note fault does not pretend
+to complete/free its removed due task. These are component checks, not complete
+sound playback, prompt completion or whole paid games.
+
+### Integration boundary and next gameplay work
+
+The logical scheduler and Live remain unchanged. Actual8784 Collect prompt
+begins C5/C2 and uses8739 children. Instrument/channel acquisition, child
+allocation, native5CF3 yield reinsertion and saved cursor/frame ownership must
+still be composed. Do not mirror the logical list into0047 or mark notes done
+without those effects. The new bounded service throws at notes, unknown
+commands/callbacks and unsupported frames.
+
+Next recover the minimum8784/8739 task path and yield ownership, then replace
+the prompt mismatch boundary. Foreground/IRQ ownership and busy5429 serial remain
+needed for full Live collection. Keep gameplay priority; no general audio or
+unrelated IRQ campaign. Fresh synchronized Ghidra export remains unavailable.

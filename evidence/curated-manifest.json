@@ -6408,5 +6408,20 @@
     "path": "evidence/mpu4/definitions/bias-word-signed-value-9ed9.vm.json",
     "bytes": 1502,
     "sha256": "17D310CCE02F3B387BA4A888128AA0515D512D7AFFC3CC048170A9A6E4C07C34"
+  },
+  {
+    "path": "docs/recovery/VM-DEFINITION-9ED9-MAME-INVOCATION-PASS.md",
+    "bytes": 5262,
+    "sha256": "9C4D38D72B9D91138D325CEB88281D0881F79C76BBCA2950D9293C7F6599B9E7"
+  },
+  {
+    "path": "docs/recovery/VM-DEFINITION-IMAGE-CLI-SAFETY-PASS.md",
+    "bytes": 3463,
+    "sha256": "CDC6F5C24A5D41F89D05FB045478A15DF564575EA73F58661065943C44C510B8"
+  },
+  {
+    "path": "evidence/mpu4/collection/vm-definition-9ed9-invocation.json",
+    "bytes": 13133,
+    "sha256": "3BFA4A804EA18DC510C2FB9701BE60FD2CA6DDFC77380A8A98DF35BDAB48AAF5"
   }
 ]

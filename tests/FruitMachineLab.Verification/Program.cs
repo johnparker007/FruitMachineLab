@@ -21,6 +21,9 @@ Check("Inline literal VM definition bounds malformed literal and token mismatch 
 Check("Inline literal VM definition executes signed wrap and return-frame semantics",()=>VmDefinitionVerification.LiteralExecution(evidence));
 Check("Inline literal VM definition changed literal propagates to bytes and decoded execution",()=>VmDefinitionVerification.LiteralChangedOperand(evidence));
 Check("Inline literal VM definition image build preserves unknown bytes and strict original identity",()=>VmDefinitionVerification.LiteralApplyPreservesUnknown(evidence));
+Check("Inline literal VM definition matches all ten recorded original-MAME invocation results",()=>VmDefinitionVerification.LiteralInvocation(evidence));
+Check("Inline literal MAME invocation cases headers and frame invariants match the definition",()=>VmDefinitionVerification.LiteralInvocationInvariants(evidence));
+Check("Inline literal MAME invocation rejects tampered captured results and frames",()=>VmDefinitionVerification.LiteralInvocationTamperRejected(evidence));
 Check("Serial transport bit images match32 original-ROM instruction paths",()=>Equal(32,AddersSerialTransportVerification.Bit(evidence)));
 Check("Serial transport byte frames match32 original-ROM instruction paths",()=>Equal(32,AddersSerialTransportVerification.Byte(evidence)));
 Check("Serial transport timer2 helpers match16 original-ROM instruction paths",()=>Equal(16,AddersSerialTransportVerification.Timer(evidence)));

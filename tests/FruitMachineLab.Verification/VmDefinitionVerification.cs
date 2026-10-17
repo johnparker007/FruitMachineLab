@@ -1,5 +1,7 @@
+using System.Globalization;
 using System.Security.Cryptography;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using FruitMachineLab.Runtime;
 
 internal static class VmDefinitionVerification
@@ -410,6 +412,287 @@ internal static class VmDefinitionVerification
         var tamperedDefinition = definition with {RomSha1 = Convert.ToHexString(SHA1.HashData(tampered))};
         Reject(() => tamperedDefinition.Apply(tampered), "original bytes");
     }
+
+    public static void LiteralInvocation(string evidence)
+    {
+        var original = LoadLiteral(evidence);
+        var changed = original.WithLiteral(0, 0xFF00);
+        VerifyInvocation(original, changed, ParseInvocation(File.ReadAllText(
+            Path.Combine(evidence, "collection", "vm-definition-9ed9-invocation.json"))));
+    }
+
+    public static void LiteralInvocationInvariants(string evidence)
+    {
+        var definition = LoadLiteral(evidence);
+        var changed = definition.WithLiteral(0, 0xFF00);
+        var invocation = ParseInvocation(File.ReadAllText(
+            Path.Combine(evidence, "collection", "vm-definition-9ed9-invocation.json")));
+
+        string originalSpan = Convert.ToHexString(definition.OriginalBytes);
+        string changedSpan = Convert.ToHexString(changed.Encode());
+        Require(invocation.Classification.StartsWith(
+                "Independent MAME original-threaded-interpreter observation", StringComparison.Ordinal),
+            "Invocation classification is not the accepted synthetic MAME observation");
+        Require(invocation.Headers.Count == 5, "Invocation header contract is incomplete");
+        Require(invocation.Headers["body"] == "00F8", "Invocation body header differs");
+        foreach (var pair in new[]
+                 {
+                     (Name: "litword", Token: (ushort)0x795B),
+                     (Name: "add", Token: (ushort)0x787E),
+                     (Name: "xor", Token: (ushort)0x7AAF),
+                     (Name: "ret", Token: (ushort)0x792F)
+                 })
+            Require(invocation.Headers[pair.Name] == $"{pair.Token + 2:X4}",
+                $"Invocation {pair.Name} header does not follow the checked token");
+        Require(invocation.Template.Count == 4 &&
+                invocation.Template["f8"] == "3420" && invocation.Template["fa"] == "3184" &&
+                invocation.Template["fc"] == "AEA1" && invocation.Template["fe"] == "6E91",
+            "Invocation dispatch template differs from the accepted original template");
+
+        string firstDispatch = $"{definition.Address + 2:X4}/{definition.Instructions[0].Token + 2:X4}";
+        string firstDispatchContract =
+            $"Y={definition.Address + 2:X4} X={definition.Instructions[0].Token + 2:X4}";
+        string stopPc = (U16(invocation.Headers["ret"], "headers.ret") + 2).ToString("X4");
+        Require(invocation.ExpectedU == "0600", "Invocation expected U differs");
+        Require(invocation.ExpectedS == "0700", "Invocation expected S differs");
+        Require(invocation.ExpectedReturnFrame == "0782", "Invocation expected return frame differs");
+        Require(invocation.ExpectedFirstDispatch == firstDispatchContract,
+            "Invocation expected first dispatch differs from the checked definition");
+        Require(invocation.EmittedOriginalMatches && invocation.EmittedChangedMatches,
+            "Invocation source image identity flags are not both true");
+        Require(invocation.OriginalSpan == originalSpan && invocation.ChangedSpan == changedSpan,
+            "Invocation image spans differ from the same definition");
+        Require(invocation.ChangedOffsets.SequenceEqual(new[] { 0x9EDC }) &&
+                invocation.ChangedOffsetsHex.SequenceEqual(new[] { "9EDC" }),
+            "Invocation changed offsets are not exactly 9EDC");
+        Require(invocation.Checks.Count > 0 && invocation.Checks.Values.All(value => value),
+            "Invocation evidence check flags are not all true");
+        Require(invocation.Cases.Length == 10 && invocation.CaseCount == 10 &&
+                invocation.MatchedCount == 10 && invocation.DifferenceCount == 5,
+            "Invocation case summary differs from ten cases and five differences");
+
+        var seen = new HashSet<string>();
+        foreach (var row in invocation.Cases)
+        {
+            Require(seen.Add($"{row.Variant}/{row.Input}"),
+                $"Duplicate invocation case {row.Variant}/{row.Input}");
+            Require(row.U == U16(invocation.ExpectedU, "contract.expected_u") &&
+                    row.S == U16(invocation.ExpectedS, "contract.expected_s") &&
+                    row.ReturnFrame == U16(invocation.ExpectedReturnFrame, "contract.expected_return_frame"),
+                $"Invocation case {row.Variant}/{row.Input} changed stack or return-frame contract");
+            Require(row.FirstDispatch == firstDispatch,
+                $"Invocation case {row.Variant}/{row.Input} first dispatch differs");
+            Require(row.Pc == stopPc && row.Y == $"{row.ReturnFrame:X4}",
+                $"Invocation case {row.Variant}/{row.Input} stop PC or Y differs");
+            Require(row.ExitCode == 0 && row.DebugLogSha256.Length == 64,
+                $"Invocation case {row.Variant}/{row.Input} exit or log hash differs");
+            string expectedSpan = row.Variant switch
+            {
+                "Original" => originalSpan,
+                "Changed" => changedSpan,
+                _ => throw new InvalidDataException($"Unknown invocation variant {row.Variant}")
+            };
+            Require(row.RuntimeSpan == expectedSpan,
+                $"Invocation case {row.Variant}/{row.Input} runtime span differs from the definition");
+        }
+    }
+
+    public static void LiteralInvocationTamperRejected(string evidence)
+    {
+        string json = File.ReadAllText(
+            Path.Combine(evidence, "collection", "vm-definition-9ed9-invocation.json"));
+        var resultRoot = JsonNode.Parse(json)!.AsObject();
+        var firstCase = resultRoot["cases"]![0]!.AsObject();
+        firstCase["result"] = firstCase["result"]!.GetValue<string>() == "0000" ? "FFFF" : "0000";
+        Reject(() => LiteralInvocationFromJson(evidence, resultRoot.ToJsonString()),
+            "recorded MAME result");
+
+        var frameRoot = JsonNode.Parse(json)!.AsObject();
+        frameRoot["cases"]![0]!["return_frame"] = "0000";
+        Reject(() => LiteralInvocationFromJson(evidence, frameRoot.ToJsonString()), "return frame");
+    }
+
+    private static void LiteralInvocationFromJson(string evidence, string json)
+    {
+        var original = LoadLiteral(evidence);
+        var changed = original.WithLiteral(0, 0xFF00);
+        VerifyInvocation(original, changed, ParseInvocation(json));
+    }
+
+    private static void VerifyInvocation(
+        Mpu4VmDefinition original, Mpu4VmDefinition changed, InvocationEvidence invocation)
+    {
+        Require(invocation.CaseCount == 10 && invocation.MatchedCount == 10 &&
+                invocation.DifferenceCount == 5 && invocation.Cases.Length == 10,
+            "Invocation case summary differs from ten cases and five differences");
+        Require(invocation.OriginalLength == original.InputLength &&
+                invocation.ChangedLength == original.InputLength,
+            "Invocation image lengths differ from the definition");
+        Require(string.Equals(invocation.OriginalSha1, original.RomSha1,
+                StringComparison.OrdinalIgnoreCase),
+            "Invocation original SHA1 differs from the definition");
+        Require(invocation.OriginalSpan == Convert.ToHexString(original.OriginalBytes) &&
+                invocation.ChangedSpan == Convert.ToHexString(changed.Encode()),
+            "Invocation spans differ from the same definition");
+        Require(invocation.ChangedOffsets.SequenceEqual(new[] { 0x9EDC }) &&
+                invocation.ChangedOffsetsHex.SequenceEqual(new[] { "9EDC" }),
+            "Invocation changed offsets are not exactly 9EDC");
+
+        var originalResults = new Dictionary<ushort, ushort>();
+        var changedResults = new Dictionary<ushort, ushort>();
+        var seen = new HashSet<string>();
+        foreach (var row in invocation.Cases)
+        {
+            Require(seen.Add($"{row.Variant}/{row.Input}"),
+                $"Duplicate invocation case {row.Variant}/{row.Input}");
+            var selected = row.Variant switch
+            {
+                "Original" => original,
+                "Changed" => changed,
+                _ => throw new InvalidDataException($"Unknown invocation variant {row.Variant}")
+            };
+            Require(row.ExitCode == 0 && row.DebugLogSha256.Length == 64,
+                $"Invocation case {row.Variant}/{row.Input} exit or log hash differs");
+            Require(Convert.ToHexString(selected.Encode()) == row.RuntimeSpan,
+                $"Invocation case {row.Variant}/{row.Input} runtime span differs from the definition");
+
+            Machine machine = ExecuteInvocationCase(selected, row.InputValue);
+            machine.SyncDataToMemory();
+            Require(machine.Data.Count == 1,
+                $"C# definition left {machine.Data.Count} result cells for {row.Variant}/{row.Input}");
+            Require(machine.Data.Peek() == row.Result,
+                $"C# definition result {machine.Data.Peek():X4} for {row.Variant}/{row.Input} differs from recorded MAME result {row.Result:X4}");
+            Require(machine.DataPointer == row.U,
+                $"C# definition U {machine.DataPointer:X4} for {row.Variant}/{row.Input} differs from recorded MAME {row.U:X4}");
+            Require(machine.Control is not null &&
+                    machine.Control.Pointer == row.S &&
+                    machine.Control.ResumeCursor == row.ReturnFrame &&
+                    machine.ReadWord(Cell.Subtract(row.S, 2)) == row.ReturnFrame,
+                $"C# definition S or return frame for {row.Variant}/{row.Input} differs from recorded MAME return frame {row.ReturnFrame:X4}");
+            Require(row.Y == $"{row.ReturnFrame:X4}",
+                $"Invocation case {row.Variant}/{row.Input} Y differs from its return frame");
+            Require(row.Pc == (U16(invocation.Headers["ret"], "headers.ret") + 2).ToString("X4"),
+                $"Invocation case {row.Variant}/{row.Input} stop PC differs from the return header");
+            Require(row.FirstDispatch ==
+                    $"{original.Address + 2:X4}/{original.Instructions[0].Token + 2:X4}",
+                $"Invocation case {row.Variant}/{row.Input} first dispatch differs");
+
+            if (row.Variant == "Original") originalResults.Add(row.InputValue, row.Result);
+            else changedResults.Add(row.InputValue, row.Result);
+        }
+
+        Require(originalResults.Count == 5 && changedResults.Count == 5,
+            "Invocation does not contain five original and five changed inputs");
+        int differences = 0;
+        foreach (var pair in originalResults)
+            if (!changedResults.TryGetValue(pair.Key, out ushort changedResult) ||
+                changedResult != pair.Value)
+                differences++;
+        Require(differences == invocation.DifferenceCount,
+            $"Invocation records {invocation.DifferenceCount} differences but the captured results show {differences}");
+    }
+
+    private static InvocationEvidence ParseInvocation(string json)
+    {
+        using var document = JsonDocument.Parse(json);
+        var root = document.RootElement;
+        Require(Int(root, "schema_version") == 1, "Invocation schema differs");
+        string classification = Text(root, "classification");
+        Require(classification.StartsWith(
+                "Independent MAME original-threaded-interpreter observation", StringComparison.Ordinal),
+            "Invocation classification is not the accepted synthetic MAME observation");
+        var source = root.GetProperty("source");
+        var originalRom = source.GetProperty("original_rom");
+        var changedRom = source.GetProperty("changed_rom");
+        var headers = root.GetProperty("headers").EnumerateObject()
+            .ToDictionary(pair => pair.Name, pair => pair.Value.GetString()!);
+        var template = root.GetProperty("dispatch_template").EnumerateObject()
+            .ToDictionary(pair => pair.Name, pair => pair.Value.GetString()!);
+        var contract = root.GetProperty("contract");
+        var checks = root.GetProperty("checks").EnumerateObject()
+            .ToDictionary(pair => pair.Name, pair => pair.Value.GetBoolean());
+        var cases = root.GetProperty("cases").EnumerateArray().Select(row => new InvocationCase(
+            Text(row, "variant"),
+            Text(row, "input"),
+            U16(Text(row, "input"), "input"),
+            U16(Text(row, "result"), "result"),
+            U16(Text(row, "u"), "u"),
+            U16(Text(row, "s"), "s"),
+            U16(Text(row, "return_frame"), "return_frame"),
+            Text(row, "pc"),
+            Text(row, "y"),
+            Text(row, "first_dispatch"),
+            Text(row, "runtime_span"),
+            Int(row, "exit_code"),
+            Text(row, "debug_log_sha256"))).ToArray();
+        return new InvocationEvidence(
+            classification,
+            Int(root, "case_count"),
+            Int(root, "matched_case_count"),
+            Int(root, "original_changed_difference_count"),
+            Text(originalRom, "sha1"), Text(originalRom, "sha256"), Text(originalRom, "span"),
+            Int(originalRom, "length"),
+            Text(changedRom, "sha1"), Text(changedRom, "sha256"), Text(changedRom, "span"),
+            Int(changedRom, "length"),
+            changedRom.GetProperty("changed_offsets").EnumerateArray()
+                .Select(value => value.GetInt32()).ToArray(),
+            Strings(changedRom.GetProperty("changed_offsets_hex")),
+            headers, template,
+            Text(contract, "expected_u"), Text(contract, "expected_s"),
+            Text(contract, "expected_return_frame"), Text(contract, "expected_first_dispatch"),
+            source.GetProperty("emitted_original_sha1_matches").GetBoolean(),
+            source.GetProperty("emitted_changed_sha1_matches").GetBoolean(),
+            checks, cases);
+    }
+
+    private static Machine ExecuteInvocationCase(Mpu4VmDefinition definition, ushort input)
+    {
+        var machine = new Machine { DataStackBase = 0x602, LocalFrame = 0x700 };
+        machine.Data.Push(input);
+        machine.Control = new VmControlStack(machine, 0x700);
+        machine.Control.Push(0x0782);
+        new ScriptExecutor(machine).Run(definition.ToScript());
+        return machine;
+    }
+
+    private static void Require(bool condition, string message)
+    {
+        if (!condition) throw new InvalidDataException(message);
+    }
+
+    private static string Text(JsonElement element, string name) =>
+        element.GetProperty(name).GetString() ??
+        throw new InvalidDataException($"Invocation field {name} is missing");
+
+    private static int Int(JsonElement element, string name) =>
+        element.GetProperty(name).GetInt32();
+
+    private static ushort U16(string value, string name)
+    {
+        if (value.Length != 4)
+            throw new InvalidDataException($"{name} must be four hexadecimal digits");
+        try { return ushort.Parse(value, NumberStyles.HexNumber, CultureInfo.InvariantCulture); }
+        catch (FormatException ex) { throw new InvalidDataException($"{name} is not hexadecimal", ex); }
+    }
+
+    private static string[] Strings(JsonElement element) =>
+        element.EnumerateArray().Select(value => value.GetString() ??
+            throw new InvalidDataException("Invocation array contains a non-string")).ToArray();
+
+    private sealed record InvocationCase(
+        string Variant, string Input, ushort InputValue, ushort Result, ushort U, ushort S,
+        ushort ReturnFrame, string Pc, string Y, string FirstDispatch, string RuntimeSpan,
+        int ExitCode, string DebugLogSha256);
+
+    private sealed record InvocationEvidence(
+        string Classification, int CaseCount, int MatchedCount, int DifferenceCount,
+        string OriginalSha1, string OriginalSha256, string OriginalSpan, int OriginalLength,
+        string ChangedSha1, string ChangedSha256, string ChangedSpan, int ChangedLength,
+        int[] ChangedOffsets, string[] ChangedOffsetsHex,
+        Dictionary<string, string> Headers, Dictionary<string, string> Template,
+        string ExpectedU, string ExpectedS, string ExpectedReturnFrame, string ExpectedFirstDispatch,
+        bool EmittedOriginalMatches, bool EmittedChangedMatches,
+        Dictionary<string, bool> Checks, InvocationCase[] Cases);
 
     private static Machine ExecuteLiteral(Mpu4VmDefinition definition, ushort value)
     {

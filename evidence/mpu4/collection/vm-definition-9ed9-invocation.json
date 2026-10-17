@@ -1,0 +1,253 @@
+{
+    "schema_version":  1,
+    "classification":  "Independent MAME original-threaded-interpreter observation of checked 9ED9 original and changed definitions. Synthetic isolated invocation with explicit PC/register/RAM stack and caller-stream seeding; no natural reset, gameplay or hardware claim.",
+    "evidence_class":  {
+                           "emitted_image":  "Changed image emitted by the existing C# Mpu4VmDefinition.WithLiteral(0, FF00).Apply(original) path",
+                           "not_claimed":  [
+                                               "natural reset",
+                                               "gameplay",
+                                               "firmware integrity repair",
+                                               "relocation",
+                                               "general editor",
+                                               "physical hardware"
+                                           ],
+                           "mame":  "Synthetic original-ROM execution through the original 6809 threaded interpreter, word headers and return frame",
+                           "comparison":  "C# documented results are used only after the MAME observation for comparison"
+                       },
+    "source":  {
+                   "emitted_original_sha1_matches":  true,
+                   "changed_rom":  {
+                                       "changed_offsets_hex":  [
+                                                                   "9EDC"
+                                                               ],
+                                       "sha1":  "51e81cc5f41da2aa659a4d14d277e9e78614eb6b",
+                                       "span":  "795BFF00787E795BFF807AAF792F",
+                                       "changed_offsets":  [
+                                                               40668
+                                                           ],
+                                       "sha256":  "a99d96f8ea8b4770d2d3828125f25894e831726fe44a79a37e0871faba135ed2",
+                                       "length":  65536
+                                   },
+                   "original_rom":  {
+                                        "sha256":  "ebf580381aa6eb6ffb26e2acd40f30aa34b0311f71c6564607c6f48a53bca15c",
+                                        "span":  "795BFF80787E795BFF807AAF792F",
+                                        "sha1":  "402d1518bb78fdc489b06c2aabc771e5ce151847",
+                                        "length":  65536
+                                    },
+                   "definition":  "evidence/mpu4/definitions/bias-word-signed-value-9ed9.vm.json",
+                   "emitted_changed_sha1_matches":  true
+               },
+    "mame":  {
+                 "sha256":  "0fce5a88df4f9d9b1fbf1405812c00848036e615993780978d967da34204cb7a",
+                 "version":  "0.281",
+                 "executable":  "E:\\Arcade\\MAME0266\\mame281.exe"
+             },
+    "seeding":  {
+                    "dispatch_template":  "RAM F8..FF copied from original ROM 7927..792E",
+                    "data_stack":  "U=0600 with input word at 0600..0601",
+                    "interrupts":  "CC=50 (IRQ and FIRQ masked)",
+                    "local_frame":  "F4 not used by this body; no local frame seeded",
+                    "caller_stream":  "RAM 0780=word header 9ED7, 0782=sentinel 792F",
+                    "return_stack":  "S=0700",
+                    "pc":  "0x00FC (original RAM dispatch template entry)"
+                },
+    "contract":  {
+                     "stop":  "PC=7933 after PULS Y, conditioned on Y=0782",
+                     "expected_u":  "0600",
+                     "expected_return_frame":  "0782",
+                     "expected_first_dispatch":  "Y=9EDB X=795D",
+                     "expected_s":  "0700"
+                 },
+    "headers":  {
+                    "ret":  "7931",
+                    "body":  "00F8",
+                    "add":  "7880",
+                    "xor":  "7AB1",
+                    "litword":  "795D"
+                },
+    "dispatch_template":  {
+                              "f8":  "3420",
+                              "fc":  "AEA1",
+                              "fe":  "6E91",
+                              "fa":  "3184"
+                          },
+    "case_count":  10,
+    "matched_case_count":  10,
+    "original_changed_difference_count":  5,
+    "cases":  [
+                  {
+                      "variant":  "Original",
+                      "input":  "0000",
+                      "result":  "0000",
+                      "documented_csharp_result":  "0000",
+                      "u":  "0600",
+                      "s":  "0700",
+                      "return_frame":  "0782",
+                      "pc":  "7933",
+                      "y":  "0782",
+                      "first_dispatch":  "9EDB/795D",
+                      "runtime_span":  "795BFF80787E795BFF807AAF792F",
+                      "exit_code":  0,
+                      "debug_log_sha256":  "dcc77ce3d4e0c2106090ba5dea08422e656ebc0dee8c3bf0a67634ee2022ecd4"
+                  },
+                  {
+                      "variant":  "Original",
+                      "input":  "0080",
+                      "result":  "FF80",
+                      "documented_csharp_result":  "FF80",
+                      "u":  "0600",
+                      "s":  "0700",
+                      "return_frame":  "0782",
+                      "pc":  "7933",
+                      "y":  "0782",
+                      "first_dispatch":  "9EDB/795D",
+                      "runtime_span":  "795BFF80787E795BFF807AAF792F",
+                      "exit_code":  0,
+                      "debug_log_sha256":  "01bc505839049bf1bccc971367f4c008078ae257674677ed308a58cc38dace61"
+                  },
+                  {
+                      "variant":  "Original",
+                      "input":  "0100",
+                      "result":  "FF00",
+                      "documented_csharp_result":  "FF00",
+                      "u":  "0600",
+                      "s":  "0700",
+                      "return_frame":  "0782",
+                      "pc":  "7933",
+                      "y":  "0782",
+                      "first_dispatch":  "9EDB/795D",
+                      "runtime_span":  "795BFF80787E795BFF807AAF792F",
+                      "exit_code":  0,
+                      "debug_log_sha256":  "ae8b78e8b0e684bb6ea2c0fc0a49e329feeec103538e22279e11f3e6378f324d"
+                  },
+                  {
+                      "variant":  "Original",
+                      "input":  "FFFF",
+                      "result":  "00FF",
+                      "documented_csharp_result":  "00FF",
+                      "u":  "0600",
+                      "s":  "0700",
+                      "return_frame":  "0782",
+                      "pc":  "7933",
+                      "y":  "0782",
+                      "first_dispatch":  "9EDB/795D",
+                      "runtime_span":  "795BFF80787E795BFF807AAF792F",
+                      "exit_code":  0,
+                      "debug_log_sha256":  "2f18a8a485aa6e047aa7db449e164528c6d280ddb0f817fb85a8fa2fe8d1157e"
+                  },
+                  {
+                      "variant":  "Original",
+                      "input":  "8000",
+                      "result":  "8000",
+                      "documented_csharp_result":  "8000",
+                      "u":  "0600",
+                      "s":  "0700",
+                      "return_frame":  "0782",
+                      "pc":  "7933",
+                      "y":  "0782",
+                      "first_dispatch":  "9EDB/795D",
+                      "runtime_span":  "795BFF80787E795BFF807AAF792F",
+                      "exit_code":  0,
+                      "debug_log_sha256":  "e8774b786b8a5690d1ae9f34a6d7971a742161aac641e31bf839e42c9b622f46"
+                  },
+                  {
+                      "variant":  "Changed",
+                      "input":  "0000",
+                      "result":  "0080",
+                      "documented_csharp_result":  "0080",
+                      "u":  "0600",
+                      "s":  "0700",
+                      "return_frame":  "0782",
+                      "pc":  "7933",
+                      "y":  "0782",
+                      "first_dispatch":  "9EDB/795D",
+                      "runtime_span":  "795BFF00787E795BFF807AAF792F",
+                      "exit_code":  0,
+                      "debug_log_sha256":  "fc6a04a18ce8cba93dd820a7d1b96c31099bf8a4952e097f566a3e2b721035f0"
+                  },
+                  {
+                      "variant":  "Changed",
+                      "input":  "0080",
+                      "result":  "0000",
+                      "documented_csharp_result":  "0000",
+                      "u":  "0600",
+                      "s":  "0700",
+                      "return_frame":  "0782",
+                      "pc":  "7933",
+                      "y":  "0782",
+                      "first_dispatch":  "9EDB/795D",
+                      "runtime_span":  "795BFF00787E795BFF807AAF792F",
+                      "exit_code":  0,
+                      "debug_log_sha256":  "fa3a66cbd0c7066992037bae96fd44ca7bf38cc6e664d708077539a3decb4553"
+                  },
+                  {
+                      "variant":  "Changed",
+                      "input":  "0100",
+                      "result":  "FF80",
+                      "documented_csharp_result":  "FF80",
+                      "u":  "0600",
+                      "s":  "0700",
+                      "return_frame":  "0782",
+                      "pc":  "7933",
+                      "y":  "0782",
+                      "first_dispatch":  "9EDB/795D",
+                      "runtime_span":  "795BFF00787E795BFF807AAF792F",
+                      "exit_code":  0,
+                      "debug_log_sha256":  "3df790129354fb2e28816a28ea25c89bd9eac507c9a32e0c3c696700ad75dc66"
+                  },
+                  {
+                      "variant":  "Changed",
+                      "input":  "FFFF",
+                      "result":  "017F",
+                      "documented_csharp_result":  "017F",
+                      "u":  "0600",
+                      "s":  "0700",
+                      "return_frame":  "0782",
+                      "pc":  "7933",
+                      "y":  "0782",
+                      "first_dispatch":  "9EDB/795D",
+                      "runtime_span":  "795BFF00787E795BFF807AAF792F",
+                      "exit_code":  0,
+                      "debug_log_sha256":  "eff07d377fdf1e30608a04efa59d0de7b55e0f24ccd37970cc39a4da33db1818"
+                  },
+                  {
+                      "variant":  "Changed",
+                      "input":  "8000",
+                      "result":  "8080",
+                      "documented_csharp_result":  "8080",
+                      "u":  "0600",
+                      "s":  "0700",
+                      "return_frame":  "0782",
+                      "pc":  "7933",
+                      "y":  "0782",
+                      "first_dispatch":  "9EDB/795D",
+                      "runtime_span":  "795BFF00787E795BFF807AAF792F",
+                      "exit_code":  0,
+                      "debug_log_sha256":  "5ab54900e744b166336986a2cff06859e82a430309dcc33d534aa470d4ad5a9a"
+                  }
+              ],
+    "checks":  {
+                   "original_identity":  true,
+                   "changed_only_at_9edc":  true,
+                   "original_span_matches_definition":  true,
+                   "changed_span_matches_definition":  true,
+                   "original_headers_and_template":  true,
+                   "body_entered_through_word_header":  true,
+                   "result_observed_at_u_with_input_consumed":  true,
+                   "return_frame_observed":  true,
+                   "all_ten_mame_results_match_documented_csharp":  true,
+                   "five_original_changed_result_differences":  true,
+                   "wrong_result_negative_rejected":  true,
+                   "extra_changed_byte_negative_rejected":  true,
+                   "natural_classification_negative_rejected":  true
+               },
+    "negative_controls":  [
+                              "In-memory wrong result Original/0080=0000 rejected against documented FF80.",
+                              "Temporary changed image with an extra 9ED9 byte rejected by exact changed-offset checking.",
+                              "Natural-reset classification rejected by the synthetic-only classification guard."
+                          ],
+    "raw_run":  {
+                    "path":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\general-14\\mame",
+                    "capture_sha256":  "6cb4bc01ac82165a84d2bfeca24a1c95032ba149fb2496a8f683759e107446d1"
+                }
+}

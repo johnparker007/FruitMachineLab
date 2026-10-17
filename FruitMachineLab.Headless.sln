@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{07C2787E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FruitMachineLab.RomPatch", "tools\FruitMachineLab.RomPatch\FruitMachineLab.RomPatch.csproj", "{02170585-D2F2-4D9C-AC9B-44A709BD46FE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FruitMachineLab.VmDefinitionImage", "tools\FruitMachineLab.VmDefinitionImage\FruitMachineLab.VmDefinitionImage.csproj", "{C4A98D60-0F8A-479B-9722-EF92CE651F52}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,18 @@ Global
 		{02170585-D2F2-4D9C-AC9B-44A709BD46FE}.Release|x64.Build.0 = Release|Any CPU
 		{02170585-D2F2-4D9C-AC9B-44A709BD46FE}.Release|x86.ActiveCfg = Release|Any CPU
 		{02170585-D2F2-4D9C-AC9B-44A709BD46FE}.Release|x86.Build.0 = Release|Any CPU
+		{C4A98D60-0F8A-479B-9722-EF92CE651F52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4A98D60-0F8A-479B-9722-EF92CE651F52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4A98D60-0F8A-479B-9722-EF92CE651F52}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C4A98D60-0F8A-479B-9722-EF92CE651F52}.Debug|x64.Build.0 = Debug|Any CPU
+		{C4A98D60-0F8A-479B-9722-EF92CE651F52}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C4A98D60-0F8A-479B-9722-EF92CE651F52}.Debug|x86.Build.0 = Debug|Any CPU
+		{C4A98D60-0F8A-479B-9722-EF92CE651F52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4A98D60-0F8A-479B-9722-EF92CE651F52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4A98D60-0F8A-479B-9722-EF92CE651F52}.Release|x64.ActiveCfg = Release|Any CPU
+		{C4A98D60-0F8A-479B-9722-EF92CE651F52}.Release|x64.Build.0 = Release|Any CPU
+		{C4A98D60-0F8A-479B-9722-EF92CE651F52}.Release|x86.ActiveCfg = Release|Any CPU
+		{C4A98D60-0F8A-479B-9722-EF92CE651F52}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -82,5 +96,6 @@ Global
 		{9F631DF9-6AE7-4923-9120-B4ECA4AF22FF} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 		{B70F1B7B-4959-4742-A8A6-48720DF1E1AB} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 		{02170585-D2F2-4D9C-AC9B-44A709BD46FE} = {07C2787E-EAC7-C090-1BA3-A61EC2A24D84}
+		{C4A98D60-0F8A-479B-9722-EF92CE651F52} = {07C2787E-EAC7-C090-1BA3-A61EC2A24D84}
 	EndGlobalSection
 EndGlobal

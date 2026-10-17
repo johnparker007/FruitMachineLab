@@ -133,3 +133,18 @@ Native subtraction opcode93 timing is now supported and exercised by this matrix
 Raw pointer: %TEMP%/FruitMachineLab-sound-yield.txt. The initial curator had an
 array-expression precedence error; no capture was accepted until that was fixed.
 This is bounded component evidence, not natural playback or Live scheduling.
+
+## C2 child allocation5EE3
+
+AddersSoundChildPlan composes5EE3..5F12 and5C51. It consumes a ROM pointer from U,
+saves/restores parent Y via native S, allocates the actual free0049 head, clears
+channel/rhythm ownership, and copies only parent+B/C/D/E/10/12. Child due equals
+CURRENT0045; parent continues5D3B first. Exhaustion consumes the operand but does
+not allocate. Unlike foreground5C18, C2 does not consult719B's sound-disable bit.
+
+Capture-SoundChild.ps1 plus Curate-SoundYield.ps1 -Operation child export32
+original-ROM synthetic instruction/RAM paths, including allocation failure,
+all inherited byte extremes, clock edges and disabled-bit set. Original8787
+operand8739 is byte-checked. Native EXG timing is now covered. Curated sound-child
+artifacts include native stack scratch; no snapshots/deadlines feed execution.
+Raw pointer: %TEMP%/FruitMachineLab-sound-child.txt. Live remains unchanged.

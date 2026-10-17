@@ -1,13 +1,15 @@
-param([Parameter(Mandatory=$true)][string]$RunDirectory,[Parameter(Mandatory=$true)][string]$RomPath)
+param([Parameter(Mandatory=$true)][string]$RunDirectory,[Parameter(Mandatory=$true)][string]$RomPath,[ValidateSet('yield','child')][string]$Operation='yield')
 $ErrorActionPreference='Stop';if((Get-Content "$RunDirectory/exit-code.txt" -Raw).Trim() -ne '0'){throw 'Incomplete capture'}
 if((Get-FileHash $RomPath -Algorithm SHA1).Hash -ne '402D1518BB78FDC489B06C2AABC771E5CE151847'){throw 'Wrong ROM'}
 $rom=[IO.File]::ReadAllBytes($RomPath);$cases=@(Get-Content "$RunDirectory/cases.json" -Raw|ConvertFrom-Json);$rows=[Collections.Generic.List[object]]::new();$catalog=[Collections.Generic.List[object]]::new();$indexes=@{};$active=$null;$id=0
+$entry=if($Operation -eq 'yield'){0x5CF3}else{0x5EE3};$end=if($Operation -eq 'yield'){0x5CDE}else{0x5D3B};$stack=if($Operation -eq 'yield'){0x702}else{0x700};$count=if($Operation -eq 'yield'){48}else{32}
 foreach($line in Get-Content "$RunDirectory/debug.log"){
 if($line -match '(?i)^error '){throw 'Debugger error'};if($line -notmatch '^O([SIF]) '){continue};$kind=$Matches[1];$f=[ordered]@{};foreach($match in [regex]::Matches($line,'([a-z]+)=([0-9A-F]+)')){if($match.Groups[1].Value -ne 'bytes'){$f[$match.Groups[1].Value]=[Convert]::ToUInt64($match.Groups[2].Value,16)}}
-if($kind -eq 'S'){if($null -ne $active -or $f.pc -ne 0x5CF3){throw 'Wrong start'};$active=[ordered]@{case=$cases[$id];start_cycle=$f.cycle;steps=[Collections.Generic.List[object]]::new()}}
+if($kind -eq 'S'){if($null -ne $active -or $f.pc -ne $entry){throw 'Wrong start'};$active=[ordered]@{case=$cases[$id];start_cycle=$f.cycle;steps=[Collections.Generic.List[object]]::new()}}
 elseif($kind -eq 'I'){if($null -eq $active -or $line -notmatch 'bytes=([0-9A-F]{10})'){throw 'Missing instruction'};$hex=$Matches[1];$pc=[int]$f.pc;if([Convert]::ToHexString($rom[$pc..($pc+4)]) -ne $hex){throw 'ROM context differs'};if(!$indexes.ContainsKey($pc)){$indexes[$pc]=$catalog.Count;$catalog.Add([ordered]@{pc=$pc;context_hex=$hex})};$active.steps.Add(@($indexes[$pc],($f.cycle-$active.start_cycle)))}
-else{if($null -eq $active -or $f.pc -ne 0x5CDE -or $f.s -ne 0x702){throw 'Wrong return'};$active['cycles']=$f.cycle-$active.start_cycle;$active['end']=$f;foreach($side in @('before','after')){$ram=[IO.File]::ReadAllBytes("$RunDirectory/operation-$id-$side.bin");if($ram.Length -ne 2048){throw 'Wrong RAM'};$active["${side}_hex"]=[Convert]::ToHexString($ram)};$rows.Add($active);$active=$null;$id++}}
-if($null -ne $active -or $rows.Count -ne 48){throw 'Incomplete matrix'}
-$regions=@([ordered]@{address=0x5CF3;bytes_hex=[Convert]::ToHexString($rom[0x5CF3..0x5D37])})
-$target="$PSScriptRoot/../evidence/mpu4/collection/sound-yield"
+else{if($null -eq $active -or $f.pc -ne $end -or $f.s -ne $stack){throw 'Wrong return'};$active['cycles']=$f.cycle-$active.start_cycle;$active['end']=$f;foreach($side in @('before','after')){$ram=[IO.File]::ReadAllBytes("$RunDirectory/operation-$id-$side.bin");if($ram.Length -ne 2048){throw 'Wrong RAM'};$active["${side}_hex"]=[Convert]::ToHexString($ram)};$rows.Add($active);$active=$null;$id++}}
+if($null -ne $active -or $rows.Count -ne $count){throw 'Incomplete matrix'}
+$spans=if($Operation -eq 'yield'){@(@(0x5CF3,0x5D37))}else{@(@(0x5EE3,0x5F14),@(0x5C51,0x5C79),@(0x8787,0x8788))}
+$regions=@(foreach($span in $spans){[ordered]@{address=$span[0];bytes_hex=[Convert]::ToHexString($rom[$span[0]..$span[1]])}})
+$target="$PSScriptRoot/../evidence/mpu4/collection/sound-$Operation"
 [ordered]@{classification='Synthetic original-ROM instruction/RAM paths, no natural service cadence';catalog=@($catalog.ToArray());rows=@($rows.ToArray());rom_regions=$regions;capture=(Get-Content "$RunDirectory/provenance.json" -Raw|ConvertFrom-Json);raw_sha256=(Get-FileHash "$RunDirectory/debug.log").Hash}|ConvertTo-Json -Depth 9|Set-Content "$target.json";Copy-Item "$RunDirectory/debugger.cmd" "$target-debugger.cmd"

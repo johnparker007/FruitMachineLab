@@ -1,5 +1,9 @@
 # Current handoff
 
+New five-batch cycle batch2: C2/5C51 child allocation matches32 native paths,
+including exhaustion/disabled-bit asymmetry and current-tick due. Next instrument
+cache effects, then native command/service composition. Live unchanged.
+
 New five-batch cycle batch1:5CF3 native yield matches48 instruction/RAM paths.
 Callback stack consumption and stable relative-deadline insertion are recovered.
 Next C2 child allocation; Live remains unchanged. See sound lifecycle pass.

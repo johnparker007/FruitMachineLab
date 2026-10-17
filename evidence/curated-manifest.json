@@ -865,6 +865,11 @@
     "sha256": "7F151F4C350B3C07DDB9D746FE2C6BF82E5D9EA865C9EE7954CB8EBF64C73731"
   },
   {
+    "path": "evidence/mpu4/maps/rom-layout.json",
+    "bytes": 2128,
+    "sha256": "1D9F16C905C7EFBA2AF70412AB988D87AEA3179F6108F0A88ECE0AA947401A09"
+  },
+  {
     "path": "evidence/mpu4/maps/skill-cash-alpha-scan-data.json",
     "bytes": 1068,
     "sha256": "3032AD1D7BA6C02DF1B10AE8C798329A48A15C8BBA4F3D1AA53F976774EF2A28"
@@ -2113,6 +2118,41 @@
     "path": "evidence/mpu4/native/timer-native.txt",
     "bytes": 1978,
     "sha256": "B758D299E4E7F082F88CFA7DA75CDCECCE20C28999B9DD5D559EBF62CC1D19A1"
+  },
+  {
+    "path": "evidence/mpu4/patches/lookup-debugger.cmd",
+    "bytes": 242,
+    "sha256": "454C64998644BE542174651BB9E6474B7D9932B56347F69EDFA2DFF43B17A870"
+  },
+  {
+    "path": "evidence/mpu4/patches/mame-boot-modified.txt",
+    "bytes": 477,
+    "sha256": "D5DCEB4D79454D0176C90EA4D56E1153EDE916659760419C102D810F525ECB69"
+  },
+  {
+    "path": "evidence/mpu4/patches/mame-boot-original.txt",
+    "bytes": 477,
+    "sha256": "568257DAB984E4BC7B8CAA807CB05823E9B5921EF34EB6C4CBBF122E7202FC89"
+  },
+  {
+    "path": "evidence/mpu4/patches/mame-lookup-modified.txt",
+    "bytes": 471,
+    "sha256": "7F3EB80488BE99154F20561C5D8921C12B890C0EBB694B2063DA36460E064F9A"
+  },
+  {
+    "path": "evidence/mpu4/patches/mame-lookup-original.txt",
+    "bytes": 471,
+    "sha256": "7990A600E9BC2C3D68B7AD279562608340459BC842E5496222781896D6446E47"
+  },
+  {
+    "path": "evidence/mpu4/patches/skill-cash-level1-12.json",
+    "bytes": 710,
+    "sha256": "C4AE375EAD65E7C73025F966784CDC599297EEFF803F276330C5D9F367F35DF4"
+  },
+  {
+    "path": "evidence/mpu4/patches/verification.json",
+    "bytes": 2030,
+    "sha256": "F748207011DBC5FF5AA66DF0A082C0D61A5E4F07FDA4A410564CDCFD3E176CE6"
   },
   {
     "path": "evidence/mpu4/skill-cash/actions.csv",

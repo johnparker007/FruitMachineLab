@@ -1,0 +1,14 @@
+{
+  "SchemaVersion": 1,
+  "Description": "Experimental shared award table: level 1 from 10 to 12 internal units. Also changes reel-result consumers; not a Skill Cash-only rule or verified bootable ROM.",
+  "InputLength": 65536,
+  "InputSha1": "402d1518bb78fdc489b06c2aabc771e5ce151847",
+  "Edits": [
+    {
+      "Offset": 30141,
+      "ExpectedHex": "000A1014162F3C",
+      "ReplacementHex": "000C1014162F3C",
+      "Provenance": "Static original-ROM table at 75BD: evidence/mpu4/maps/skill-cash-rom-data.json. C6FC.txt sites C702-C706 index it; AddersNudgeAvailability.Lookup and VM 9FEF/E796/E812 also consume it. Full 64KiB image uses address=file offset. Integrity/startup effects unresolved."
+    }
+  ]
+}

@@ -1,5 +1,16 @@
 # Implementation and evidence boundaries
 
+17 October ROM-editing increment: strict declarative patcher generates a separate
+original-identity-checked image, changing only shared award-table byte75BE (10→12).
+Four new headless groups and CLI safety tests pass; full suite357 groups. Recovered
+PC VM/native lookup and an isolated original-VM MAME invocation observe the changed
+value. Reset boot/play remains unverified: both original and modified12-second
+boot probes missed the chosen initial-stream marker. No integrity bypass or repair,
+relocation, autonomous gameplay or hardware compatibility is claimed. See
+[ROM editing](docs/ROM-EDITING.md), [source audit](docs/ENGINEERING-AUDIT.md) and the
+rewritten [three-workstream roadmap](docs/PROJECT-ROADMAP.md). Older notes below
+retain historical context and do not supersede this scope.
+
 Actual8784 Collect sound now executes natively through C1, rhythm/melodic channels,
 children, yield and release. Both headless collection hosts verify prompt/requeue/
 sampled Collect/payout on one state; native queue/cancel/reset are instruction-

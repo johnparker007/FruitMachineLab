@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "rom": {"name":"a6ls.p1","length":65536,"sha1":"402d1518bb78fdc489b06c2aabc771e5ce151847"},
+  "classification": "Partial static map; entries may overlap. Absence means unknown, never free space. No relocation or integrity certification.",
+  "file_address_rule": "Selected 64KiB maincpu image loaded at region offset 0; CPU ROM window 1000-FFFF uses same offsets. Low image bytes overlap RAM/I/O in CPU view.",
+  "sources": ["docs/recovery/DEEP-ANALYSIS.txt", "docs/recovery/LOGIC-RECOVERY.txt", "evidence/mpu4/maps/skill-cash-rom-data.json", "evidence/mpu4/VM-SCRIPTS/C6FC.txt"],
+  "regions": [
+    {"start":0,"end_inclusive":65535,"kind":"preserve_opaque_by_default"},
+    {"start":30141,"end_inclusive":30147,"kind":"shared_award_table","bytes_hex":"000A1014162F3C"},
+    {"start":50700,"end_inclusive":50708,"kind":"compensation_chance_table","bytes_hex":"000A14283C46505A63"},
+    {"start":30407,"kind":"vm_enter_entry","qualification":"76C7 native interpreter entry, extent not certified"},
+    {"start":31015,"end_inclusive":31022,"kind":"ram_dispatch_template","runtime_copy_start":248},
+    {"start":50940,"kind":"vm_definition","listing":"evidence/mpu4/VM-SCRIPTS/C6FC.txt","qualification":"Listed tokens and embedded operands; not certified relocatable"},
+    {"start":31951,"kind":"native_reset_entry","qualification":"7CCF, extent not certified"},
+    {"start":65136,"kind":"native_irq_entry","qualification":"FE70, extent not certified"},
+    {"start":65008,"kind":"initial_vm_stream","qualification":"FDF0, extent not certified"}
+  ],
+  "constraints": {
+    "cells":"big-endian 16 bit, odd alignment allowed",
+    "references":"absolute code-pointer headers and execution-token addresses; inline branch payloads have relative encodings",
+    "free_space":"none certified",
+    "integrity":"startup ROM sum/XOR checks identified, algorithm/repair not yet certified",
+    "banking":"generic MPU4 supports banking; selected patch restricted to original single 64KiB image",
+    "ram":"0000-07FF includes stacks, counters and NVRAM; F8-FF dispatch template; F4/F6 local/loop pointers"
+  }
+}

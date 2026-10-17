@@ -7,6 +7,10 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { if(args.Length>1 && !name.Contains(args[1],StringComparison.OrdinalIgnoreCase))return;action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("ROM patch validates identity and preserves input and unrelated bytes",()=>RomPatchVerification.Preservation());
+Check("ROM patch rejects wrong identity expected bytes and invalid specifications",()=>RomPatchVerification.Rejections());
+Check("ROM patch specification agrees with curated original award table",()=>RomPatchVerification.Provenance(evidence));
+Check("ROM patch shared award executes in recovered VM and native result helper",()=>RomPatchVerification.Execution(evidence));
 Check("Serial transport bit images match32 original-ROM instruction paths",()=>Equal(32,AddersSerialTransportVerification.Bit(evidence)));
 Check("Serial transport byte frames match32 original-ROM instruction paths",()=>Equal(32,AddersSerialTransportVerification.Byte(evidence)));
 Check("Serial transport timer2 helpers match16 original-ROM instruction paths",()=>Equal(16,AddersSerialTransportVerification.Timer(evidence)));

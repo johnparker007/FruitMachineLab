@@ -1,304 +1,89 @@
-# Project direction and handoff
+# Project roadmap
 
-17 October sixteen-batch milestone: actual8784 Collect sound now runs under a
-native task owner, including C1/rhythm/melodic/children/yield/release. Both headless
-collection hosts exercise prompt completion/requeue and real sampled Collect on
-one state. Foreground queue/cancel/reset are instruction-staged. GUI unchanged.
-Serial53AE/5330/positive51B1 and5429 prefixes now have original-ROM comparisons;
-wire/IRQ timing, retry reset and full helper flags remain explicit. Next integrate
-CPU ownership carefully while finishing the bounded serial transport contract.
-Keep playable machine priority and existing later FML/second-game/source-tool aims.
-See recovery/SOUND-LIFECYCLE-PASS.md and recovery/SERIAL-SERVICE-PASS.md.
+Updated 17 October 2026 after the source audit at `2916fa1`. This replaces older
+timing-first and byte-identical-rebuild priorities. Historical evidence remains in
+[CURRENT-HANDOFF.md](CURRENT-HANDOFF.md), recovery reports and implementation status.
 
-17 October sound follow-on: native yield, C2 children, pitch/attenuation/cache,
-melodic acquisition and gate-free resume now compose. Actual8739 children run
-to completion. Next C1->875B/rhythm closes the remaining actual8784 prompt path,
-then collection ownership integration. Live remains unchanged; cadence/outer IRQ
-and busy serial are explicit. See recovery/SOUND-LIFECYCLE-PASS.md.
+Three goals advance in parallel: autonomous PC gameplay, editable original-VM
+game logic, and modified ROM generation for MAME and eventually physical hardware.
+MAME is the external oracle. Byte-identical reconstruction is diagnostic, not a
+prerequisite. Recorded schedules must not be hidden runtime dependencies.
 
-17 October sound lifecycle checkpoint: bounded native release/cancel/root and
-service rescan now have160 synthetic original-ROM paths,128 instruction-timed.
-Live is unchanged: next recover actual8784/8739 prompt instrument/child/yield
-ownership before connecting timed collection. Keep foreground acceptance and
-busy serial explicit; no new audio/general IRQ project. See sound lifecycle pass.
+Read [the source audit](ENGINEERING-AUDIT.md) for architecture and capture inventory;
+[ROM editing](ROM-EDITING.md) for the first patch milestone. Preserve original
+ROMs/settings/projects; no installations/configuration changes without approval.
 
-17 October eight-batch payout milestone: selected cash/token callers, compensation,
-VM->native bridge and incremental collection host are implemented and verified.
-307 groups pass, including160 new selected native MAME cases and a100-transaction
-synthetic collection longevity test. Live GUI attachment remains next, with
-foreground/service scheduling, actual native sound-list lifecycle and busy serial
-service explicit. Keep these bounded gameplay tasks ahead of a broad IRQ campaign.
-Source-derived native timing coexists with declared VM/alpha helper budgets; do
-not promote synthetic test budgets into machine timing. See caller timing pass.
+## A — Autonomous native execution
 
-17 October composed debit checkpoint:4CBE/NVRAM, native VM gateway, incremental
-A8F9 display, accounts and6858 output now compose under one headless CPU owner.
-32 original-ROM paths match through6858; alpha helper budgets stay explicit,
-ordinary display VM costs are source-derived at word boundaries. Next finish
-selected cash/token caller and compensation timing, then Live collection with
-sound-pool ownership. No whole-machine IRQ or new GUI payout claim. Keep this
-narrowly tied to playable gameplay; symbolic tools and unrelated timing stay later.
-See recovery/PAYOUT-DEBIT-TIMING-PASS.md.
+| Stage | State and acceptance |
+| --- | --- |
+| A1 Capture inventory (P0) | Initial source-backed inventory in ENGINEERING-AUDIT.md extends COLLECTION-TRANSFER-PASS. Maintain runtime reads/classification/replacement strategy and add enforceable capture-free policy. Not centrally enforced yet. |
+| A2 Causal scheduling (P0) | Partial: timer3 phase/assertion, selected instruction acceptance/dispatch/scan/callback generated. Outer timer1 entry/occupancy and atomic helper/VM pacing remain captured. Accept selected game paths with generated scheduling and differential verification. |
+| A3 Ten paid games (P1) | Open: three selected generated games pass using Live capture adapters. Accept ten complete games on one state, no runtime recorded schedules/results or manual repairs. Declared starting snapshot temporarily permitted. |
+| A4 Expanded coverage / 100 games (P1) | Partial gameplay includes paid spins/results, nudges, board links, Skill Cash, accounts and selected headless collection. Accept 100 games across outcomes/features/collection/background services with deterministic accounting/state checks. |
+| A5 Extended stability (P2) | Open: accept 1000 complete games with invariants and no unsupported execution boundaries. Synthetic payout transactions are not played games. |
+| A6 Independent startup | Open: documented reset/init without captured RAM/device snapshots; retain RNG, NVRAM and hardware phase semantics. |
 
-17 October output-service checkpoint: full normal6858 now composes queue scan,
-7032 checksum, positive511B serial and timed pulse/7172 polling, verified against
-eight synthetic original-ROM instruction paths. Next time4CBE debit/NVRAM/display
-and native VM ownership, then attach timed collection to Live. Existing sound-pool
-lifecycle gap stays explicit. No comprehensive IRQ campaign or zero-cost adapter.
-See recovery/PAYOUT-OUTPUT-SERVICE-TIMING-PASS.md.
+Integrate existing native sound/timed collection owners with required foreground
+and service boundaries. Stage CPU work needed for that path and generated
+scheduling, preserving the working adapter until proved. Avoid an unrelated full
+CPU emulation campaign or replacing working VM/motor/timing infrastructure.
 
-17 October Collect integration checkpoint: actual AB1B/AAA1 input gates and finite
-prompt allocation now execute;32 synthetic ROM cases validate them. The staged
-payout pulse/polling suffix matches8 native instruction paths. Next compose its
-native prefix/debit/display/gateway timing with Live, plus sound-pool lifecycle
-ownership, before exposing collection there. No zero-cost native payout adapter
-or new captured timing table. See recovery/COLLECT-PREPLAY-AND-PULSE-PASS.md.
+## B — Editable game representation
 
-17 October priority reset (supersedes the timing-first next-step notes below):
-the bounded nineteen-window audit leaves autonomous outer IRQ acceptance open.
-Do not expand this into another timing campaign. Atomic native/VM execution
-boundaries remain a substantial gap, but do not block gameplay recovery.
+| Stage | State and acceptance |
+| --- | --- |
+| B1 Dictionary/encoding (P0) | Partial addressed VM listings, headers, tokens, branches and selected exact-byte checkpoints. Accept validated definition/reference ownership with opaque regions explicit; labels do not establish complete recovery. |
+| B2 Editable representation (P1) | Initial data-only increment: declarative shared award patch executes in recovered PC and original MAME VM lookups. No editor/compiler. Next bind ROM-backed data/decoded definitions through one validated representation. |
+| B3 Existing definition | Open: replace an in-place word, preserve stack/control flow and verify PC/MAME behaviour from one definition. |
+| B4 References/relocation (P2) | Open: certify absolute tokens, headers, native/shared-body and relative branch references before moving/growing a body. No safe free space declared. |
+| B5 Feature editing (P2) | Open: modify substantial feature from common definitions and verify both targets. |
+| B6 New features (P2) | Open: author/build/execute a feature within hardware constraints without per-change manual machine-code patches. |
 
-Collection native4B39/4B8C,4C25/4CBE and6858 now execute in a composed headless
-AA2B path, verified against64 isolated MAME cases with explicit timing exclusions.
-Next connect AAA1/AA2B to the paid-play Collect prompt and host service clock.
-No GUI collection is claimed. See recovery/COLLECTION-PAYOUT-PASS.md.
-Prioritise continuous playable games, followed by cross-game validation and the
-agreed layout work. Symbolic ASM/reassembly and script editing remain deferred.
-See [collection pass and dependency audit](recovery/COLLECTION-TRANSFER-PASS.md).
+Use recovered VM encoding as the starting representation. Retain provenance,
+sites/tokens and opaque bytes. C# supplies execution/tools, not competing game
+rules. Changed decoded operands require a decode/rebuild path. Do not build a
+polished editor before replacement ROM definitions execute.
 
-17 October next boundary removed: shared scan-entry event timestamps. FE70
-dispatch now generates scan entry; idle motor/counter/sense suffix is staged.
-Next recover2851 validation and FEC3 watchdog/meter/sound service so outer IRQ
-occupancy/acceptance can be generated. Temporary native U inside sound processing
-must be represented before claiming exact ignored-SWI2 timing in arbitrary Live
-paths. Existing physical-input gameplay remains the regression target.
+## C — ROM generation and hardware compatibility
 
-17 October autonomous-timing milestone: remove recorded timer3 IRQ entry from
-Live (done). Next stage the post280C motor/counter/scheduler service and outer
-IRQ ownership/VM instruction boundaries, then remove recorded scan-entry and
-occupancy templates. Keep playable-machine progress and reference verification
-ahead of unrelated symbolic assembly/editor tooling.
+| Stage | State and acceptance |
+| --- | --- |
+| C1 ROM map (P0) | Partial `evidence/mpu4/maps/rom-layout.json`, tables and source-backed entries. Need integrity algorithm, reference inventory and certified region boundaries. Unknown bytes remain preserved. |
+| C2 Minimal patcher (P0) | Implemented: strict identity/expected bytes, equal lengths/no overlaps, separate create-only output, reproducible hashes/diff. Safety/CLI tests and actual original-image generation in ROM-EDITING.md. |
+| C3 Modified ROM in MAME (P1) | Partial: shared award lookup returns12, control10, in original VM. Synthetic invocation verified; reset boot/natural play remain open. Expected MAME loader hash warning retained. |
+| C4 Definition replacement | Open: in-place compiled replacement, boot and execute it. |
+| C5 Compiler/assembler (P2) | Open: reproducible multi-definition builds/fixups/source maps, preserving unknown bootstrap/IRQ/interpreter/data. |
+| C6 Differential verification (P1, expand later) | Initial same-table lookup comparison. Accept controlled original/modified/native gameplay, accounts/outputs and expected differences; identical internal traces not required. |
+| C7 Physical compatibility (P2) | Open: prove reset, timing, persistent state and peripherals on hardware. MAME success cannot complete this stage. |
 
-17 October continuation: selected idle coin service now reaches4395 and panel
-return280C, with128 native cases. Next establish natural PIA state and complete
-the required outer-service work before replacing Live's retained IRQ schedule.
-Active coin insertion/alarms remain separate evidence gaps, not guessed paths.
+## Next three bounded tasks
 
-17 October checkpoint: continue gameplay timing recovery through43E9's seven
-coin records and4592 service suffix. Preserve actual IC5 PIA control/direction/
-input evidence before replacing the Live adapter; static source mapping alone
-does not establish captured pin state. Full playable machine remains priority.
+1. **Certify startup/integrity and demonstrate the patch naturally.** Depends on
+   C2 and initialization listings. Establish original-ROM boot oracle, recover
+   exact sum/XOR ranges/fields and repairs without bypasses. Accept hashes, all
+   changed offsets, startup evidence and modified award in MAME play.
+2. **Integrate collection/native sound with causal ownership for one path.**
+   Depends on timed plans and A1. Supply foreground/IRQ boundaries, real inputs
+   and declared checkpoint; prohibit capture schedules/results. Accept ten paid
+   games with collection, retained accounting and precise boundary diagnostics.
+   Deliver the smallest missing causal service with independent verification
+   first if integrated acceptance remains blocked.
+3. **Build one checked editable VM definition.** Depends on B1/C1 integrity.
+   Start in-place without relocation. Accept one definition producing PC decoded
+   operations and ROM bytes, stack/control-flow tests and execution in both targets.
 
-Updated 15 October 2026 from John's agreed priorities. This document records
-direction, not evidence that future milestones have been implemented.
+## Preservation and product direction
 
-## Read first when continuing
+Retain bytes/addresses, calling/frame/stack effects, input/output contracts and
+evidence classes (static, natural traces, hypotheses, synthetic faults). Unknown
+helpers fail; no guessed semantics, suspected ROM fixes or zero-cost timing.
+Keep binaries, credentials and bulky traces untracked. Hybrid building preserves
+opaque firmware rather than reconstructing every byte before changing a constant.
 
-Read AGENTS.md, DEVELOPMENT-SETUP.md, this roadmap and CURRENT-HANDOFF.md.
-Use ../IMPLEMENTATION-STATUS.md and the linked recovery reports for implementation
-details and evidence boundaries. Check the working tree before editing: chat history
-is not authority for which changes John has committed or pushed.
-
-## Priority order
-
-Composed continuation checkpoint:46D3 caller and1A05/1A58 are verified together.
-Recover the ordinary no-coin43E9 return and explicit auxiliary/state seeds next,
-then join this service to Live's generated interrupt path without guessing reset.
-
-17 October nested-return checkpoint: full selected IRQ interruption/resume timing
-is verified in19 windows;46D3 is separately recovered. Compose its inline call and
-remaining service continuations before attaching this to Live scheduling.
-
-17 October:439F decode prefix extends the generated IRQ-acceptance proof to all19
-natural windows. Recover the remaining continuations and nested return so this
-can move from verification into Live; avoid another captured-delay substitution.
-
-Input-service continuation: FEBA/27D2 acquisition and previous reel-drive writes
-now execute incrementally in Live. Next recover438C/439F and19B8/1A87 timing and
-callback selection; keep coin handling and CPU interrupt acceptance explicit.
-
-16 October timing checkpoint: the Live output scan and timer arm now execute in
-stages from native code. Recorded scan entry and FE70 entry/occupancy remain.
-Next recover post-scan native service/current-instruction boundaries; a strict
-timer attachment exposed retained IRQ entry preceding generated assertion on a
-changed Live path. Preserve that explicit limit instead of forcing a match.
-The playable-machine priorities below remain unchanged.
-
-Dispatch milestone: callback entry and subsequent outputs now derive from native
-software paths after a retained FE70 IRQ entry. Next replace that hardware
-boundary from timer arm/phase and current native-instruction acceptance; do not
-equate moving the captured boundary earlier with eliminating hardware capture.
-
-Callback event milestone: Live no longer depends on recorded callback return
-timestamps. Native instructions generate separate port writes and completion;
-captured entry remains the hardware boundary. Next derive that entry from timer
-arm/phase and CPU acceptance. Keep playback separate and preemption limits explicit.
-
-Live scheduling milestone: recovered native CPU work now determines the Start-tone
-wait's end through explicit full IRQ envelopes. Its captured duration is reference
-evidence only. Next target a timer assertion/IRQ/scan event. Global IRQ pacing
-changes expose routes beyond current coverage and must not be silently substituted.
-
-Conditional timing continuation: seven VM entries now select source-derived costs
-from current stack values, covering14 native paths with376 synthetic native cases
-and12 uninterrupted natural paths. Next couple a generated intra-word boundary
-to IRQ delivery; captured IRQ scheduling remains until independently justified.
-
-Short gateway continuation: the shared00F8 threaded-call entry cost is now
-source-derived in Live for verified headers, with26 natural boundaries checked.
-Continue toward state-dependent helper timing; IRQ adapters remain until causal
-integration is verified. Gameplay priorities are unchanged.
-
-16 October integration checkpoint: four straight-line VM word costs now derive
-from native encodings in Live, with54 natural paths checked. Next derive a
-state-dependent VM/helper path and connect PTM events at generated instruction
-boundaries. Keep captured IRQ adapters until causal comparisons justify replacing
-them; do not turn recorded native paths into the Live execution mechanism.
-
-16 October timing priority: do not defer the shared timing model until all
-gameplay is recovered. PTM-CLOCK-FOUNDATION-PASS.md adds independently verified
-timer clock primitives and shows natural timer3 rearm phase is not universally
-low. Its continuation verifies643 observations across20 natural arms including
-post-shot/disable/rearm phase and exact clock-switch truncation. Next separate
-canonical PTM assertion, CPU acceptance and callback execution, checking gate/
-external-edge assumptions before replacing captured scheduling.
-The IRQ continuation now verifies ordinary19-cycle CPU entry/12-byte frames in
-18 synthetic cases, then354 natural Skill Cash states across20 high-phase arms
-and19 original IRQ/callback pairs. Correct bus coordinates explain the earlier
-latency ambiguity for that prefix. Next resolve instruction completion/input
-delivery and native handler paths, then timer1 contention and later arms.
-Live's captured timing adapters remain explicit until each replacement is proven.
-The native instruction continuation now explains all19 selected timer3 IRQ
-entries from completing the actual instruction plus19 cycles, and all19
-128-cycle handler paths from32 native instructions each. Next cover callback/
-IRQ exit, timer1 scanning and contention/nested paths, then supply those
-boundaries from translated Live helpers. No CPU interpreter/toolchain expansion.
-The service continuation now checks342 callback/exit instruction durations,
-1988 timer1 scan durations and38 saved-PC/RTI returns. Timer3 children are nested
-in timer1 background work; their251-cycle occupancy is already inside the outer
-measured span. Next recover that remaining outer work and provide Live helper/
-VM boundaries; callback-return and scan-return markers must include RTS completion.
-The outer continuation now accounts for all19 completed selected timer1 services
-from7820 own instructions and19 referenced children, with1854 flag/target checks.
-Next provide source-derived common VM dispatch/helper boundaries in Live and
-validate causal scheduling before replacing adapters. Observed native paths
-remain evidence, not a Live replay mechanism. Broaden timing coverage as that
-integration requires rather than pursuing unrelated ISA/toolchain completeness.
-Return to expanding board outcomes after this focused timing milestone; retain
-MAME regression captures and the existing paid-game/feature gameplay tests.
-
-Current checkpoint: Live passes three-flag accounting, planning, native61CF
-motion and board animation, returning to a genuine selection prompt. Physical
-START launches another dice roll with retained state. Next broaden playable
-results/return paths from that re-entered board using targeted natural captures.
-The separate returning path still completes three generated paid games in one
-session. See recovery/FEATURE-ENTRY-MOTION-PASS.md for reference qualifications.
-This remains gameplay recovery; the symbolic editing/rebuild toolchain stays deferred.
-
-The primary milestone is a complete playable Adders & Ladders machine on PC.
-Preservation work below supports that recovery; symbolic toolchain construction
-waits until playable-machine coverage is established.
-
-1. Complete the live Adders & Ladders Skill Cash slice, including unsupported paths
-   and better CPU/IRQ timing. Preserve verified playback as a separate mode.
-2. Expand into normal Adders & Ladders machine play: feature entry/exit, startup,
-   credits, holds, reels, nudges, other features, gambling, collection and accounting.
-   These are scope areas, not an asserted implementation order for every helper.
-3. Integrate graphical layouts alongside that expansion, early enough for useful
-   human testing. John has an existing library importing MFME FML into modern JSON
-   and image data, plus open-source projects rendering those layouts interactively.
-   Inspect and reuse those references instead of building another importer. Their
-   paths/links, licences and the Adders & Ladders layout have not yet been supplied.
-4. Validate hundreds of consecutive real-time games, retaining machine state and
-   accounting between games. Preserve reproducible input logs and checkpoints.
-5. Use a second MPU4 game and its recovery breakdown, supplied by John, to test
-   claimed platform reuse. Generalize after demonstrated reuse, not speculation.
-
-Minimal diagnostic lamps, buttons and text/symbol reels are useful development
-tools, but do not build a polished temporary cabinet. Diagnostic and graphical
-renderers should use the same backend inputs/outputs, with no gameplay in UI code.
-
-## Current recovery frontier
-
-The returning ordinary/no-award route now reaches another Start prompt. Current
-feature boundary is EE16 after three common symbol flag2 bits; recover its0305 /
-07D5 accounting and EDD3 board routing with persistent state. Long-wait2CB3 remains
-explicit. The generated three-game test does not establish broad machine coverage.
-Keep the MAME compatibility adapter distinct from physical PAL recovery. See
-recovery/PAID-CYCLE-RETURN-PASS.md. Complete consecutive playable games remains
-the priority; symbolic editing/reassembly stays deferred with byte preservation.
-Older boundaries below describe preserved prefixes.
-
-Newest boundary is FBF1/native482F after the verified IC8 output and background
-entry windows. Continue status lamps/characteriser/door/NVRAM/Test services toward
-the real paid-game input loop. See recovery/IC8-BACKGROUND-ENTRY-PASS.md. Earlier
-cycle-return details below describe the preserved prefix.
-
-Live completes board exit, award animation, statistics/scaled counters, cash-bank
-commit, bank-limit check and real outer-cycle return. It begins the next cycle
-and stops before the IC8 output update at FAF0. Successful narrow natural windows
-retain accounting RAM and exact comparisons; older prefix/full-logging crash
-qualifications remain. See recovery/NUDGE-CYCLE-RETURN-PASS.md.
-Full machine startup and consecutive complete games remain future milestones.
-
-## Longer-term aims
-
-- After complete playable-machine recovery, pursue a reconstructed development
-  kit: byte-identical baseline ROM rebuild, then editable symbolic native/VM
-  source capable of producing ROMs for hardware tests. This is reconstructed
-  source/tooling, not the original authors' source or tools. Defer the full
-  symbolic 6809 assembler/reassembler, compiler, editor and relocation system.
-
-## Preservation during gameplay recovery
-
-Preserve facts found during current recovery using the existing native exports,
-VM listings, maps, provenance sidecars and dated recovery reports. Do not create
-a parallel documentation system or investigate unrelated routines for coverage.
-For newly recovered/revised code and data, retain exact ROM bytes and addresses
-where checked, token/operand/embedded-data encodings, labels/constants/RAM roles,
-boundaries/entry and calling conventions, stack/frame effects and side effects.
-Record references, pointer/dictionary/header structures, branch targets and layout
-constraints relevant to later reconstruction. Keep unresolved regions, suspected
-bugs and assumptions explicit; preserve original behaviour. Link ROM locations,
-listings, C# code and verification artifacts, distinguishing static deductions,
-natural traces, hypotheses and synthetic experiments.
-
-Use reproducible read-only Ghidra exports for symbols/comments/data definitions
-at meaningful checkpoints when access permits. Keep source exports portable;
-document unavailable access and missing fields rather than implying completeness.
-Decoded listings are not lossless source unless their byte coverage is checked.
-ROM binaries and bulky traces remain outside tracked files. This proportional
-preservation work supports gameplay recovery and must not postpone it.
-
-## Other longer-term aims
-
-- Linked VM/script listings, execution highlighting and evidence-linked structured
-  reconstructions. Build debugging features when they help game recovery.
-- Script editing, compilation and safe replacement are deferred. Preserve decoded
-  instruction/address mappings and separate execution from presentation; do not
-  implement an editor merely to prove future extensibility.
-- Reproducible headless autoplay, eventually millions of consecutive plays. Whole-
-  machine conclusions require whole-machine coverage; repeated feature-entry resets
-  do not establish payout behaviour across persistent machine history.
-- Other platforms, including 68000-family machines. Do not assume their ROMs use
-  MPU4's threaded VM. Recover each execution model from evidence.
-
-The desired backend executes recovered logic and translated helpers directly.
-MAME remains an external behavioural reference. Any necessary emulation fallback
-must be small, explicit and checked; it is not the default execution architecture.
-
-## Documentation maintenance
-
-Keep this roadmap aligned with John's decisions. Update CURRENT-HANDOFF.md at
-substantial batch boundaries with the current result, checks, limitations and next
-concrete work. Keep detailed technical evidence in recovery reports rather than
-growing the handoff into a transcript. Never present historical test counts or
-captured timing adapters as stronger current verification than they provide.
-## Timer3 hardware connection checkpoint — 16 October 2026
-
-Selected native dispatch now drives status/counter acknowledgement and stop in
-the phase-clock verification path;19 natural bus/frozen-counter comparisons pass.
-Live still requires generated scan-arm timing and surrounding native instruction
-boundaries before replacing its recorded FE70 entry. Keep playable-machine work
-the priority; this is a bounded hardware connection, not a full CPU interpreter.
+Windows diagnostics and eventual DX renderer consume common backend inputs/outputs.
+Reuse John's MFME FML importer/layout renderer when paths/licences/assets arrive;
+avoid a polished temporary cabinet. Validate reuse using a second MPU4 game John
+supplies before generalizing. Other platforms, including 68000, need independent
+execution-model recovery. Millions of autoplay games remain a later goal after
+retained-state accounting and meaningful whole-game coverage.

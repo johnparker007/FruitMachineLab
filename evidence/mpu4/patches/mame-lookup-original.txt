@@ -1,0 +1,15 @@
+MAME debugger version 0.281 (mame0281)
+Currently targeting m4addr (Classic Adders & Ladders (Barcrest) (MPU4) (A6L 0.1, set 1))
+>printf "ROM_PATCH_TABLE value=%02X\n",b@75be
+ROM_PATCH_TABLE value=0A
+
+>bpset fc,y==0xc708
+Breakpoint 1 set
+>w@f8=w@7927;w@fa=w@7929;w@fc=w@792b;w@fe=w@792d
+>pc=0xfc;y=0xc6fe;u=0x600;s=0x700;dp=0;cc=0x50;w@f4=0x500;b@501=1
+>go
+Stopped at breakpoint 1
+>printf "ROM_PATCH_LOOKUP y=%04X top=%04X\n",y,w@u
+ROM_PATCH_LOOKUP y=C708 top=000A
+
+>quit

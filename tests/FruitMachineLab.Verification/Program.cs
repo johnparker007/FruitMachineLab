@@ -7,6 +7,19 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { if(args.Length>1 && !name.Contains(args[1],StringComparison.OrdinalIgnoreCase))return;action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Payout tail staged decisions and checksums match32 MAME instruction paths",()=>{
+    using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","tail-timing.json")));var catalog=doc.RootElement.GetProperty("catalog");int count=0;
+    foreach(var row in doc.RootElement.GetProperty("rows").EnumerateArray()){
+        var m=new Machine();Convert.FromHexString(row.GetProperty("before_hex").GetString()!).CopyTo(m.Memory,0);SkillCashData.LoadFeature(m);AddersPayoutDisplay.LoadRomData(m,evidence);var p=new AddersPayoutTailPlan(m,row.GetProperty("case").GetProperty("selector").GetUInt16());ulong start=row.GetProperty("start_cycle").GetUInt64();using var e=new NativeRoutineExecution(p.Instructions(),start,0x4C34,()=>true);var actual=new List<OutputScanInstruction>();e.ObserveInstruction=actual.Add;while(!e.Completed)e.AdvanceTo(e.NextEventCycle);
+        var expected=row.GetProperty("steps");Equal(expected.GetArrayLength(),actual.Count);for(int n=0;n<actual.Count;n++){var r=catalog[expected[n][0].GetInt32()];Equal(r.GetProperty("pc").GetUInt16(),actual[n].Address);Equal(start+expected[n][1].GetUInt64(),actual[n].Started);Equal(true,r.GetProperty("context_hex").GetString()!.StartsWith(actual[n].Bytes,StringComparison.Ordinal));}
+        Equal((row.GetProperty("end").GetProperty("cc").GetByte()&4)==0,p.Allowed);Equal(row.GetProperty("end").GetProperty("cycle").GetUInt64(),e.Cycle);byte[] ram=Convert.FromHexString(row.GetProperty("after_hex").GetString()!);Equal(true,m.Memory.AsSpan(0,0x6E0).SequenceEqual(ram.AsSpan(0,0x6E0)));count++;
+    }Equal(32,count);
+});
+Check("Payout tail checksum suspension preserves sampled A and saved guard",()=>{
+    var m=new Machine();SkillCashData.LoadFeature(m);AddersPayoutDisplay.LoadRomData(m,evidence);m.Memory[0x2C]=0x7A;var p=new AddersPayoutTailPlan(m,0x4ACA);using var e=new NativeRoutineExecution(p.Instructions(),0,0x4C34,()=>false);
+    while(e.Address!=0x700F)e.AdvanceTo(e.NextEventCycle);Equal((byte)1,m.Memory[0x2C]);ulong due=e.NextEventCycle;e.SuspendUntil(e.Cycle+173);Equal(due+173,e.NextEventCycle);m.Memory[0x36D]=9;while(!e.Completed)e.AdvanceTo(e.NextEventCycle);
+    Equal(true,p.Allowed);Equal((byte)0x7A,m.Memory[0x2C]);byte checksum=m.Memory[0x373];AddersPayoutAccounting.RefreshOutputChecksum(m);Equal(checksum,m.Memory[0x373]);
+});
 Check("Payout input condition staged flags and instructions match64 MAME cases",()=>{
     using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","input-condition-timing.json")));var catalog=doc.RootElement.GetProperty("catalog");int count=0;
     foreach(var row in doc.RootElement.GetProperty("rows").EnumerateArray()){

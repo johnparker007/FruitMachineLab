@@ -211,8 +211,8 @@
   },
   {
     "path": "docs/recovery/PAYOUT-CALLER-TIMING-PASS.md",
-    "bytes": 2116,
-    "sha256": "36B580E937F39991C477BDECB91BBE9E27B0B6BBC6CA23FCD1BF65B8D7EAF08F"
+    "bytes": 3252,
+    "sha256": "180806D8713510B9A88437BA34DB8196D65E8D4A63D584F6184AFCC330E71CF6"
   },
   {
     "path": "docs/recovery/PAYOUT-DEBIT-TIMING-PASS.md",
@@ -448,6 +448,16 @@
     "path": "evidence/mpu4/collection/service-matrix.json",
     "bytes": 141819,
     "sha256": "DB4CA227A480986AD076D59C3F3C7259E0A058FEFEBB200802B4AF31FC3642DA"
+  },
+  {
+    "path": "evidence/mpu4/collection/tail-timing-debugger.cmd",
+    "bytes": 31882,
+    "sha256": "9AFDCBC54E0917F8E3D33249F4C35E114E41AD243573E3ED9EFE5004E71452C8"
+  },
+  {
+    "path": "evidence/mpu4/collection/tail-timing.json",
+    "bytes": 416994,
+    "sha256": "AEC8C028EB94F3C4D6FC804934F41D1E2AD416EF66D6DF2B59B3727E9CA00FF9"
   },
   {
     "path": "evidence/mpu4/collection/vm-encoding-checkpoint.json",

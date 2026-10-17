@@ -31,3 +31,21 @@ No lossless symbolic rebuild claim is made. Raw pointer: %TEMP%/FruitMachineLab-
 input-condition.txt. Reproduce capture with MameExecutable/RomDirectory/fresh
 RunDirectory, then curate with RunDirectory/RomPath. Test filter: "Payout input
 condition". Headless build and both new groups pass.
+
+## Batch2: payout tail and reusable queue checksum
+
+AddersPayoutTailPlan stages4C91, flattening the verified67EC input plan and7032
+checksum under the same instruction clock. It retains A across those helpers,
+threshold versus threshold+1 adjustment, saved002C guard and the original FF42
+override/TSTA result. Mpu4QueueChecksumPlan preserves7009/7032 register-local
+operands and instruction-ordered RAM stores; it is reusable by the selected
+cash caller. No payout output occurs in this component.
+
+The existing input capture/curator gain -PayoutTail mode (32 cases) and export
+tail-timing separately, preserving the64-case input fixture. Four records and
+eight injected tail/input settings match every instruction/encoding/start cycle,
+final cycle, allowed/Z and RAM0000..06DF. This is synthetic masked-IRQ evidence,
+not a natural empty/full-pin interpretation. A suspension test mutates another
+queue during checksum, retains sampled A and restores the guard. Existing exact
+payout native spans plus byte-checked instruction contexts cover4C91/7032; no new
+Ghidra-only discovery. Raw pointer payout-tail.txt. Filter: "Payout tail".

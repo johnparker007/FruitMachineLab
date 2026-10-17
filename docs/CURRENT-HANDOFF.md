@@ -1,5 +1,10 @@
 # Current handoff
 
+Eight-batch cycle batch2 complete: staged4C91 tail plus shared7032 checksum match32
+original-ROM paths.67EC input plan is reused under the same instruction clock.
+Next compose cash4B39/4C25/4C7C with the timed debit/display/output owner. See
+recovery/PAYOUT-CALLER-TIMING-PASS.md. No GUI change yet.
+
 Next eight-batch cycle, batch1 complete: staged67EC input-condition plan matches64
 original-ROM cases (all PCs/cycles/Z/C, aliases/bounds). Typed native plan clock
 will compose selected cash/tail callers next. No Live change. See

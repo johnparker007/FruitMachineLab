@@ -73,3 +73,39 @@ Next:76BF/A8F9 incremental execution and native return ownership, then compositi
 
 Validation at this checkpoint:283 full verification groups pass; headless build
 has zero warnings/errors. No installations or configuration changes were needed.
+
+## Native VM gateway checkpoint
+
+Mpu4NativeVmGatewayExecution stages76BF entry/trampoline initialization,76EF save
+and76F6 return. Native S-frame bytes, saved F2, caller register restoration and
+temporary VM root stream76ED are modeled. Embedded word76ED is token76F4;
+76F4 contains code pointer76F6. Neither word is decoded as native instructions.
+RAM F8..FF receives exact7927..792E template only whenF8 is zero, preserving the
+original nonzero check. The selected contract requires DP=0; other pages fail.
+
+VM entry is FC and native return resumes at76F6. The owner must execute the VM,
+root pop and FC/FE dispatch of76F4 before returning ownership. ReturnFromVm
+checks the popped S frame and cursor; it deliberately permits VM results on U,
+which the original native return does not restore. CPU mask remains independent
+of F1. Nonzero F1 clears bit0 on entry and sets bit0 on exit (subject to the
+original nonzero checks).080C is a characteriser hardware write, not RAM; an
+explicit callback is mandatory on that route. Missing owner latches a fault.
+
+Capture-/Curate-NativeVmGateway.ps1 export eight synthetic original-ROM cases
+(initialized/uninitialized trampoline times four F1 values), executing a real
+suppressed A8F9 between native spans. All native instructions/cycles, final
+registers, entry RAM0000..07FF and after-VM RAM excluding only05C0..05FF match.
+That exclusion is semantic VM U-stack scratch, not the gateway native S frames;
+S-frame bytes are compared.080C watchpoint values/start times and modeled store
+completion times match. VM return cycle is verification-only, not runtime pacing.
+Synthetic tests cover paused native frames, rejected unpopped root and explicit
+hardware failure. Filter: "Native VM gateway". Headless build and both groups pass.
+
+Exact76BF..7706 and7927..792E bytes, pointer roles and five-byte observed contexts
+are checked against the original ROM in native-vm-gateway.json. Existing annotated
+Ghidra exports76BF/76C7/76EF/76F6 have been copied reproducibly from the preserved
+prerequisite-pass/saved-functions directory into evidence/mpu4/native. These are
+historical exports, not a fresh local Ghidra synchronization. Their partial/body
+size imperfections remain; byte-checked ranges supply the instruction/data truth.
+Original workspace is unchanged. External pointer native-vm-gateway.txt identifies
+the accepted raw directory. No excluded gateway run was needed.

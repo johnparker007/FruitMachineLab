@@ -1,5 +1,12 @@
 # Current handoff
 
+17 October native gateway checkpoint: Mpu4NativeVmGatewayExecution stages76BF
+entry and76F6 return with real S frames/F2, optional trampoline copy and explicit
+080C characteriser owner. Eight original-ROM paths match instructions, cycles,
+registers and selected RAM. VM body/return-dispatch ownership remains external;
+next compose an incremental display wrapper. Historical Ghidra exports76BF/76C7/
+76EF/76F6 and checked code/data bytes are preserved. See debit timing pass.
+
 17 October staged debit checkpoint: AddersPayoutDebitExecution now covers4CBE and
 4CD1..4CF0 with timed NVRAM/account/meter/output checksums.32 fresh original-ROM
 native spans match around an explicitly external76BF/A8F9 display owner. No

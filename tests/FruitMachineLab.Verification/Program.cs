@@ -7,6 +7,32 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { if(args.Length>1 && !name.Contains(args[1],StringComparison.OrdinalIgnoreCase))return;action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Native VM gateway stages entry and return against eight original MAME paths",()=>{
+    using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","native-vm-gateway.json")));var catalog=doc.RootElement.GetProperty("catalog");int count=0;
+    foreach(var row in doc.RootElement.GetProperty("rows").EnumerateArray()){
+        var m=new Machine{DataStackBase=0x600};Convert.FromHexString(row.GetProperty("before_hex").GetString()!).CopyTo(m.Memory,0);SkillCashData.LoadFeature(m);SkillCashData.LoadAlpha(m);AddersPayoutDisplay.LoadRomData(m,evidence);
+        foreach(var region in doc.RootElement.GetProperty("rom_regions").EnumerateArray())Convert.FromHexString(region.GetProperty("bytes_hex").GetString()!).CopyTo(m.Memory,region.GetProperty("address").GetInt32());
+        ulong start=row.GetProperty("start_cycle").GetUInt64();var observed=new List<OutputScanInstruction>();var writes=new List<(ulong Cycle,byte Value)>();
+        using var gateway=new Mpu4NativeVmGatewayExecution(m,start,new(0x12,0x34,0,0x50,0xA8F9,0xBEEF,0x600,0x790),_=>{});gateway.ObserveInstruction=observed.Add;gateway.ObserveAccess=v=>{if(v.Hardware)writes.Add((v.Cycle,checked((byte)v.Value!.Value)));};
+        void Instructions(string phase){var expected=row.GetProperty(phase);Equal(expected.GetArrayLength(),observed.Count);for(int n=0;n<observed.Count;n++){var reference=catalog[expected[n][0].GetInt32()];Equal(reference.GetProperty("pc").GetUInt16(),observed[n].Address);Equal(start+expected[n][1].GetUInt64(),observed[n].Started);Equal(true,reference.GetProperty("context_hex").GetString()!.StartsWith(observed[n].Bytes,StringComparison.Ordinal));}observed.Clear();}
+        void Ram(string key,bool vm){byte[] ram=Convert.FromHexString(row.GetProperty(key).GetString()!);foreach(int p in Enumerable.Range(0,0x800).Where(p=>!vm || p is not (>=0x5C0 and <=0x5FF)))if(m.Memory[p]!=ram[p])throw new Exception($"Gateway case{count} {key} RAM{p:X4}: expected{ram[p]:X2}, actual{m.Memory[p]:X2}");}
+        while(!gateway.WaitingForVm)gateway.AdvanceTo(gateway.NextEventCycle);Instructions("prefix");Equal(row.GetProperty("vm_entry").GetProperty("cycle").GetUInt64(),gateway.Cycle);Ram("entry_hex",false);
+        m.Control=new(m,gateway.StackPointer);var vm=new ScriptExecutor(m){ResolveScript=at=>new(Path.Combine(evidence,"VM-SCRIPTS",$"{at:X4}.txt"))};vm.Run(new(Path.Combine(evidence,"VM-SCRIPTS","A8F9.txt")));Equal((ushort)0x76ED,m.Control.ResumeCursor);Ram("return_hex",true);
+        gateway.ReturnFromVm(row.GetProperty("vm_return_cycle").GetUInt64(),m.Control.Pointer,m.DataPointer,m.Control.ResumeCursor);while(!gateway.Completed)gateway.AdvanceTo(gateway.NextEventCycle);Instructions("suffix");Ram("after_hex",true);
+        Equal(row.GetProperty("end").GetProperty("cycle").GetUInt64(),gateway.Cycle);Equal((ushort)0x4CD1,gateway.Continuation);Equal(new NativeVmRegisters(0x12,0x34,0,0x50,0xA8F9,0xBEEF,0x600,0x792),gateway.Registers);
+        var stores=row.GetProperty("prefix").EnumerateArray().Concat(row.GetProperty("suffix").EnumerateArray()).Where(v=>catalog[v[0].GetInt32()].GetProperty("pc").GetUInt16() is 0x76E1 or 0x7702).ToArray();Equal(row.GetProperty("writes").GetArrayLength(),writes.Count);
+        for(int n=0;n<writes.Count;n++){Equal(row.GetProperty("writes")[n][1].GetByte(),writes[n].Value);Equal(row.GetProperty("writes")[n][0].GetUInt64(),stores[n][1].GetUInt64());Equal(start+stores[n][1].GetUInt64()+5,writes[n].Cycle);}count++;
+    }Equal(8,count);
+});
+Check("Native VM gateway rejects missing hardware owner and retains paused frames",()=>{
+    var m=new Machine();m.Memory[0xF8]=0x34;m.Memory[0xF1]=8;m.WriteWord(0x790,0x4CD1);
+    using(var bad=new Mpu4NativeVmGatewayExecution(m,0,new(1,2,0,0,0xA8F9,3,0x600,0x790))){try{while(!bad.WaitingForVm)bad.AdvanceTo(bad.NextEventCycle);throw new Exception("080C owner missing");}catch(NotSupportedException){}Equal(true,bad.Fault is not null);try{bad.AdvanceTo(bad.Cycle+100);throw new Exception("Faulted gateway resumed");}catch(InvalidOperationException){}}
+    m.Memory[0xF1]=0;m.WriteWord(0xF2,0x456);using var e=new Mpu4NativeVmGatewayExecution(m,0,new(1,2,0,0,0xA8F9,3,0x600,0x790));
+    while(e.Address!=0x76E9)e.AdvanceTo(e.NextEventCycle);byte[] before=m.Memory.ToArray();ulong due=e.NextEventCycle;e.SuspendUntil(e.Cycle+111);Equal(due+111,e.NextEventCycle);Equal(true,before.SequenceEqual(m.Memory));while(!e.WaitingForVm)e.AdvanceTo(e.NextEventCycle);
+    try{e.AdvanceTo(e.Cycle+100);throw new Exception("Unowned VM advanced");}catch(InvalidOperationException){}
+    try{e.ReturnFromVm(e.Cycle+100,e.StackPointer,0x600,0x76ED);throw new Exception("Unpopped root frame accepted");}catch(InvalidOperationException){}
+    e.ReturnFromVm(e.Cycle+100,Cell.Add(e.StackPointer,2),0x5FE,0x76ED);while(!e.Completed)e.AdvanceTo(e.NextEventCycle);Equal((ushort)0x5FE,e.DataPointer);Equal((ushort)0x456,m.ReadWord(0xF2));Equal((ushort)0x4CD1,e.Continuation);
+});
 Check("Payout debit staged native spans match32 MAME paths around explicit display owner",()=>{
     using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","debit-timing.json")));var catalog=doc.RootElement.GetProperty("catalog");int count=0;
     foreach(var row in doc.RootElement.GetProperty("rows").EnumerateArray()) {

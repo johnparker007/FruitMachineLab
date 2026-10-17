@@ -19,7 +19,7 @@ public static class M6809InstructionTiming
             else if(bytes[1]==0x3F)result=new(2,20); // ordinary SWI2 full frame/vector
             else if(bytes[1] is >=0x21 and <=0x2F){if(branchTaken is null)throw new NotSupportedException("Long conditional timing requires an explicit branch outcome");result=new(4,branchTaken.Value ? 6 : 5);}
             else if(bytes[1] is 0xAE or 0xAF or 0xA3){Require(bytes,3);var idx=Indexed(bytes[2]);result=new(3+idx.OperandBytes,(bytes[1]==0xA3 ? 7 : 6)+idx.ExtraCycles);}
-            else result=bytes[1] switch {0x83 or 0x8C=>new(4,5),0x8E=>new(4,4),0x9E=>new(3,6),0xBE or 0xBF=>new(4,7),_=>throw new NotSupportedException($"MC6809 prefix10 timing for {bytes[1]:X2} is outside the selected paths")};
+            else result=bytes[1] switch {0x83 or 0x8C=>new(4,5),0x8E=>new(4,4),0x9E or 0xDF=>new(3,6),0xBE or 0xBF=>new(4,7),_=>throw new NotSupportedException($"MC6809 prefix10 timing for {bytes[1]:X2} is outside the selected paths")};
         }
         else if(op is >=0x20 and <=0x2F)result=new(2,3);
         else if(op is 0x34 or 0x35 or 0x36 or 0x37)

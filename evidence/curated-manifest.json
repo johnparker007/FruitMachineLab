@@ -211,8 +211,8 @@
   },
   {
     "path": "docs/recovery/PAYOUT-DEBIT-TIMING-PASS.md",
-    "bytes": 4947,
-    "sha256": "E45EDFF092A275297BA5205846E9DD915079AD4E529C586502E2A6B6D40EE599"
+    "bytes": 7364,
+    "sha256": "51DE4D25487474C026F4179FA45BE13A324E88C56DCD5BF28ECED3383EACFC2A"
   },
   {
     "path": "docs/recovery/PAYOUT-OUTPUT-SERVICE-TIMING-PASS.md",
@@ -363,6 +363,16 @@
     "path": "evidence/mpu4/collection/debit-timing.json",
     "bytes": 951319,
     "sha256": "EE2A89E87B92D2A86ED7BAEFDF8424BE28A456E74EC38449078A47256AE360AA"
+  },
+  {
+    "path": "evidence/mpu4/collection/native-vm-gateway-debugger.cmd",
+    "bytes": 10670,
+    "sha256": "3CFBA9E110DAF101BE4AAC1B74BF43A391AE8A71EEFB865DF98DBC0A3AF08E6F"
+  },
+  {
+    "path": "evidence/mpu4/collection/native-vm-gateway.json",
+    "bytes": 152856,
+    "sha256": "7ED4334A9FD5BD27EF3CED890A316EF71848D5296E75B65BE62381B8E0A59302"
   },
   {
     "path": "evidence/mpu4/collection/nvram-timing-debugger.cmd",
@@ -1328,6 +1338,26 @@
     "path": "evidence/mpu4/native/76ab.json",
     "bytes": 3758,
     "sha256": "E203B25A366C8D5578549038EAC024525D16DA9228C5402A119F75C73C9CCC48"
+  },
+  {
+    "path": "evidence/mpu4/native/76bf.json",
+    "bytes": 1701,
+    "sha256": "75D0114BBDCBA08DF28E77C1A859F849B39EF3020CB01F0683C9ECF5FE508B8A"
+  },
+  {
+    "path": "evidence/mpu4/native/76c7.json",
+    "bytes": 1975,
+    "sha256": "AB6CFB58D8B8742AB3C27DBE423857493F67428FB1D0E7FC105E27F2E9AFACBA"
+  },
+  {
+    "path": "evidence/mpu4/native/76ef.json",
+    "bytes": 902,
+    "sha256": "F8B40CD3F02509CD358B8219C271EB049A4CF09E0CC1967FB1F759661D82215C"
+  },
+  {
+    "path": "evidence/mpu4/native/76f6.json",
+    "bytes": 1313,
+    "sha256": "1AC56C8F3818B6086F62C7D52E01CE0AB6CEBD05880AE9B710ABA16C5F63A928"
   },
   {
     "path": "evidence/mpu4/native/7721.json",

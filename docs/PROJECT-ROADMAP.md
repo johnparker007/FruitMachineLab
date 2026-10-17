@@ -1,5 +1,15 @@
 # Project direction and handoff
 
+17 October sixteen-batch milestone: actual8784 Collect sound now runs under a
+native task owner, including C1/rhythm/melodic/children/yield/release. Both headless
+collection hosts exercise prompt completion/requeue and real sampled Collect on
+one state. Foreground queue/cancel/reset are instruction-staged. GUI unchanged.
+Serial53AE/5330/positive51B1 and5429 prefixes now have original-ROM comparisons;
+wire/IRQ timing, retry reset and full helper flags remain explicit. Next integrate
+CPU ownership carefully while finishing the bounded serial transport contract.
+Keep playable machine priority and existing later FML/second-game/source-tool aims.
+See recovery/SOUND-LIFECYCLE-PASS.md and recovery/SERIAL-SERVICE-PASS.md.
+
 17 October sound follow-on: native yield, C2 children, pitch/attenuation/cache,
 melodic acquisition and gate-free resume now compose. Actual8739 children run
 to completion. Next C1->875B/rhythm closes the remaining actual8784 prompt path,

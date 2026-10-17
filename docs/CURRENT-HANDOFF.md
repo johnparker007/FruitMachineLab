@@ -1,5 +1,37 @@
 # Current handoff
 
+SIXTEEN-BATCH CYCLE COMPLETE —344 full verification groups pass (baseline325).
+Actual8784 Collect prompt runs natively, including C1 frames, rhythm/melodic
+channels, C2 children, native5CF3 yields and release. AddersNativeSound owns timed
+queue/cancel/reset/service with pause/mutation/fault guards. Both collection hosts
+accept this explicit owner and verify prompt/requeue/sampled Collect/payout on ONE
+state. No duplicate logical list or fabricated0047. Live GUI unchanged.
+
+Serial53AE parser,5330 handshake, positive51B1 frame and5429 wait prefixes now have
+128 selected original-ROM paths. Preserve53D7 STA checksum quirk and ACK's failure
+to decrement transmit counter3A6. Synthetic100-frame integration injects status/
+ACK bytes only at declared hardware boundaries, not fake machine timing. Native
+5429 helper handoffs are bounded CPU ownership, NOT complete NZVC/helper register
+recovery or working transport. See recovery/SERIAL-SERVICE-PASS.md.
+
+NEXT: single CPU owner for native sound/collection/VM helper bridges/IRQ work;
+serial physical baud/bit/PIA/PTM ownership,70C9 retry reset,5429 helper flags and
+selected remaining packet paths as encountered. No zero-cost helper or automatic
+ACK in Live. Avoid broad unrelated IRQ/audio/assembler work; playable Adders first.
+Sound foreground queue/cancel/reset helpers are source-timed; semantic binding
+budgets and VM wrappers remain explicit integration boundaries.
+
+Final validation:344 full groups,13 Sound operation,12 Sound lifecycle,10 Serial
+groups; native collection/owner tests pass. Headless and isolated WPF builds zero
+warnings/errors.1222 curated entries verify; all15 shared export modes reproduced
+twice. Full log %TEMP%/FruitMachineLab-sixteen-batches-final.log; build pointer
+FruitMachineLab-sixteen-batches-build.txt. No owned runs remain. All16 checkpoints
+committed/pushed with John's authorization. Original ROM/MAME/Ghidra/settings and
+running GUI preserved; no installs/config changes. Source preservation continues
+through existing catalogs, native exports and manifests (not a lossless rebuild
+claim). See recovery/SOUND-LIFECYCLE-PASS.md for sound evidence/raw pointers;
+serial-reply/transfer/frame/wait.txt under TEMP use FruitMachineLab- prefix.
+
 Sixteen-batch cycle batch15:5429/5434 wait prefixes match32 original-ROM helper
 boundaries, bytes/cycles/full RAM. Full helper/transport remains open. Final batch
 will verify component return contracts/integration and full regression/handoff.

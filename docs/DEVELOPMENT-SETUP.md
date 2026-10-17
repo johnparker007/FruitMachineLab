@@ -5,6 +5,17 @@ Local clone: C:\projects\GitRepos\FruitMachineLab
 
 ## Current status
 
+Sixteen-batch sound/serial additions: Capture-SoundCommandService supports -Calls
+and -Prompt; Capture-SoundNote supports -Rhythm. Capture-SoundQueue, SoundReset,
+SerialReply, SerialTransfer, SerialFrame and SerialWait use the standard installed
+MAME/RomDirectory/fresh RunDirectory convention. Existing Curate-SoundYield accepts
+matching -Operation callservice/rhythm/prompt/queue/reset/serial-reply/
+serial-transfer/serial-frame/serial-wait with RunDirectory/RomPath. It shares the
+existing catalog/RAM/manifest convention, not a separate preservation system.
+Filters: "Sound operation", "Sound lifecycle", "Native sound", "Native collection",
+"Serial ". Source costs/typed helpers do not imply physical serial timing or full
+CPU flags. See the sound/serial recovery passes for exact proof and limitations.
+
 Sound follow-on captures: Capture-SoundYield.ps1, SoundChild.ps1, SoundInstrument.ps1,
 SoundCommandService.ps1 (optional -Notes) and SoundNote.ps1 use the standard
 MameExecutable/RomDirectory/fresh RunDirectory parameters. Curate-SoundYield.ps1

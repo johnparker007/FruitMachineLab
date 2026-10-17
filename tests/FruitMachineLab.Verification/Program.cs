@@ -20,6 +20,8 @@ Check("Serial wait retains busy state and requires balanced helper ownership",()
     m.Memory[0x7D]=0;e.ReturnFromCall(e.Cycle+100,0x5461);while(e.Call is null)e.AdvanceTo(e.NextEventCycle);Equal((ushort)0x546A,e.Call!.Entry);e.ReturnFromCall(e.Cycle+100,0x545B);while(!e.Completed)e.AdvanceTo(e.NextEventCycle);Equal((ushort)0x4C34,e.Address);
 });
 Check("Serial wait prefixes match32 original-ROM helper boundaries",()=>Equal(32,AddersSerialVerification.Wait(evidence)));
+Check("Serial reply result B matches all32 captured parser returns",()=>Equal(32,AddersSerialVerification.ReplyResults(evidence)));
+Check("Serial queue frame and explicit ACK compose100 synthetic transactions",()=>Equal(100,AddersSerialVerification.QueueAcknowledgement(evidence)));
 Check("Sound operation foreground queue matches32 original-ROM paths",()=>Equal(32,AddersSoundOperationVerification.Queue(evidence)));
 Check("Sound operation foreground reset matches32 original-ROM paths",()=>Equal(32,AddersSoundOperationVerification.Reset(evidence)));
 Check("Sound lifecycle timed cancellation matches32 original-ROM paths",()=>Equal(32,AddersSoundLifecycleVerification.Timed(evidence,"cancel")));

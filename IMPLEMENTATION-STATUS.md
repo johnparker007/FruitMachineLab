@@ -1,5 +1,16 @@
 # Implementation and evidence boundaries
 
+Actual8784 Collect sound now executes natively through C1, rhythm/melodic channels,
+children, yield and release. Both headless collection hosts verify prompt/requeue/
+sampled Collect/payout on one state; native queue/cancel/reset are instruction-
+staged. Live GUI has not switched owners. Serial reply/handshake/positive frame
+and wait prefixes have native comparisons; transport/IRQ/full helper flags stay
+open. Synthetic100-frame ACK integration does not claim physical wire progress.
+See [sound lifecycle](docs/recovery/SOUND-LIFECYCLE-PASS.md) and
+[serial service](docs/recovery/SERIAL-SERVICE-PASS.md) for current scope; the notes
+below are historical checkpoints and do not supersede this status.
+Current full suite:344 groups; headless and isolated WPF builds have zero warnings/errors.
+
 Native sound now composes yield/ordered reinsertion, C2 allocation, C5 attenuation,
 DB/DC/DD table/cache, melodic channels and gate-zero resume/release.96 preserved
 MAME ticks verify actual8739 children without intermediate state injection; a

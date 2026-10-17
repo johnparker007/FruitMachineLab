@@ -251,8 +251,8 @@
   },
   {
     "path": "docs/recovery/SERIAL-SERVICE-PASS.md",
-    "bytes": 5600,
-    "sha256": "3377308BECD6371CA2581B1304817705061758A602C74DE468B66D003F0CD5F5"
+    "bytes": 7529,
+    "sha256": "7B3B19102BE56B6FC8F7874A3EF4755B6C4ADA73958CF52C5FEA61D1438A6EFB"
   },
   {
     "path": "docs/recovery/SERVICE-AND-ATTRACT-RECOVERY.txt",
@@ -526,8 +526,8 @@
   },
   {
     "path": "evidence/mpu4/collection/sound-callservice.json",
-    "bytes": 297297,
-    "sha256": "3F8C922301C6732768226801AABB4E664D44802828729ED9E5773B28A7FD992C"
+    "bytes": 297351,
+    "sha256": "EC9D7FF78D5252FA8BE824BAD641277342243D399651C49FD930237DE1CFC24D"
   },
   {
     "path": "evidence/mpu4/collection/sound-child-debugger.cmd",
@@ -566,8 +566,8 @@
   },
   {
     "path": "evidence/mpu4/collection/sound-note.json",
-    "bytes": 541161,
-    "sha256": "274E877F38EEADD56DEF931354D16CC5B2016F2392EA302374F70F7FB63E47F5"
+    "bytes": 541171,
+    "sha256": "F01E8552E896FA66C6625BD5889FE1E5850F62B202231FFA72E9FF68A50C35A2"
   },
   {
     "path": "evidence/mpu4/collection/sound-noteservice-debugger.cmd",
@@ -576,8 +576,8 @@
   },
   {
     "path": "evidence/mpu4/collection/sound-noteservice.json",
-    "bytes": 1048354,
-    "sha256": "E9D72A6B3872D832454E7CFCB8318FB305B80BC5C64F1582A622642B6F920E31"
+    "bytes": 1048408,
+    "sha256": "734D293FB3CB999D382EC2B83EE159E53B11770A18ADDA3104C8C89421C0C897"
   },
   {
     "path": "evidence/mpu4/collection/sound-prompt-debugger.cmd",
@@ -616,8 +616,8 @@
   },
   {
     "path": "evidence/mpu4/collection/sound-rhythm.json",
-    "bytes": 1380351,
-    "sha256": "A6A07F684D13C0329D1BF0CF5724704C7EC4576E923E1F871B66AFA83F7EEAAB"
+    "bytes": 1377425,
+    "sha256": "FD0A7322C5C5FBEAD142214D05C0BF9E7D100BB337D82A859E6E0EB90CAA65F4"
   },
   {
     "path": "evidence/mpu4/collection/sound-service-debugger.cmd",
@@ -626,8 +626,8 @@
   },
   {
     "path": "evidence/mpu4/collection/sound-service.json",
-    "bytes": 545787,
-    "sha256": "392930B348AD08C8E53E02228EA4F855DBF137913A81F3BF09BB807B5FB5EBD7"
+    "bytes": 546054,
+    "sha256": "3C2FDC5297098A1C57AB06C904B5734254D4E0C67603BE7B722B5D7F866FEA00"
   },
   {
     "path": "evidence/mpu4/collection/sound-yield-debugger.cmd",

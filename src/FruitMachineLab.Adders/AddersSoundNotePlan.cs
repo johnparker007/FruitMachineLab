@@ -1,8 +1,8 @@
 using FruitMachineLab.Runtime;
 namespace FruitMachineLab.Adders;
 
-// Selected melodic notes,5D48..5DDC and gate-free timed tail. Acquires real
-// channel lists/cache registers before duration yield. Rhythm/gated tails stop.
+// Selected melodic/rhythm notes,5D48..5DDC and gate-free timed tail. Acquires
+// real channel ownership/cache registers; split-gate tails remain explicit.
 public sealed class AddersSoundNotePlan(Machine m,ushort task,ushort cursor,ushort stack,ushort initialX,byte note,Action<byte,byte>? write=null)
 {
     private ushort u=cursor,s=stack,x=initialX;private byte a,b=note;private bool negative,immediate;

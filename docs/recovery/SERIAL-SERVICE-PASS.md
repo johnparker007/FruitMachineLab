@@ -89,3 +89,33 @@ These are isolated synthetic boundaries, not natural serial wait timing. Native
 helper flags/outputs remain outside scope, as does physical completion. Raw
 pointer FruitMachineLab-serial-wait.txt. Verifier also stops at the typed handoff,
 and checks that instruction effects do not occur a cycle early.
+
+## Final component integration and preservation audit
+
+Returned B from53AE is now compared with all32 captured native returns, in
+addition to the instruction/RAM matrix. A synthetic100-transaction check composes
+actual payout enqueue,51B1 short frame,5330 retransmit marking and53AE/5330 ACK
+acceptance. Test code injects receiver75 status and byte06 at an EXPLICIT hardware
+boundary. Only recovered code clears7D/3A5/80. The assertion deliberately retains
+3A6=2: ACK is not fabricated wire progress and does not drain that counter.
+This verifies component contracts, not a100-message physical or MAME serial run.
+
+The shared curator had accumulated overlapping operation selections while adding
+serial modes. Final audit replaced these with one operation table, unique case
+checks and a single region selection. All15 sound/serial modes were reproduced
+twice from retained raw captures with stable hashes and rerun component checks.
+Selected source regions changed where a previous broad fallthrough had retained
+unrelated sound bytes; no runtime ROM/trace behavior was changed. Naming remains
+Curate-SoundYield for compatibility with documented commands; serial evidence uses
+the same collection schema/catalog/manifest and serial-* stems.
+
+## Remaining gameplay boundaries
+
+Native sound prompt and collection integration are verified headlessly. Live still
+needs one CPU owner across ordinary VM/helper budgets,776F native helper bridges
+and accepted IRQ work. Do not attach timed sound by merely shifting whole VM
+words. Serial next needs genuine transport bit/baud/PIA/PTM ownership,70C9 retry
+reset, complete helper register/flags at5429 handoffs and selected negative/extended
+packets/callbacks when actually encountered. MAME logger source is an external
+behavioral reference, not permission to inject a successful ACK at a guessed time.
+Keep work proportional to playable Adders; no assembler/audio/unrelated IRQ work.

@@ -2,7 +2,7 @@ using FruitMachineLab.Runtime;
 namespace FruitMachineLab.Adders;
 
 // Foreground5C18 with disabled60C8 gate and real S saves. One call, not a
-// scheduler tick. The existing5C51 allocator sequence is shared with C2.
+// scheduler tick. Its5C51 sequence follows the same recovered allocator as C2.
 public sealed class AddersSoundQueuePlan(Machine m,ushort stream,ushort stack,ushort initialY,byte initialA,byte initialB)
 {
     private ushort s=stack,x=stream,y=initialY,clock;

@@ -122,3 +122,29 @@ four debit/output pairs occur but500 compensation happens only once. Suspension
 inside6F57 retains the FF software guard and original completion state. This is
 not a captured natural input transition. Filters: "Payout timed callers" and
 "Payout timed token". Both pass; headless build is clean.
+
+## Batch6: VM-to-native payout word bridge
+
+AddersVmPayoutWordPlan/AddersTimedPayoutWordExecution recover80E4/80F4 ->776F.
+They include RAM NEXT, original nonzero F1 bit0 mode changes,080C hardware callback,
+PSHS Y/JSR[,X] frames, real native caller and PULS Y/JMP NEXT. This is distinct
+from the reverse76BF gateway used inside display. No extra logical VM call frame
+is fabricated. Expected site+2 cursor is checked; a changed native return cursor
+stops explicitly. Missing080C owner fails before payout. The VM host must acknowledge
+completion once, never run semantic payout a second time.
+
+Capture-PayoutService.ps1 -VmBridge extends instruction mode with a two-token RAM
+test stream at0110, original ROM headers and full native bridge observation.
+Sixteen synthetic original paths (cash/token, existing inputs/amounts, F1=0/8)
+match every bridge/caller instruction, exact child entry/final cycle/poll count and
+selected RAM, with real nested display and polling. Only alpha helper CPU budgets
+remain observed adapters. Original VM S and data cells survive; synthetic pause
+between saved-Y and JSR retains that frame. Nonzero-mode write sequence also has
+static/source and isolated76BF verification; it is not full characteriser emulation.
+The curator checks RAM FC/FE against NEXT opcodes, never against ROM00FC bytes.
+
+VM-word-timing is separate from native caller timing. payout-word-data preserves
+exact776F..778C and80E4..80F7 bytes, including interleaved native pointer fields.
+No fresh Ghidra access/source reconstruction claim. Raw pointer payout-word.txt.
+Filter: "Payout VM word". Next is VM host integration under the existing service
+clock, retaining sound-pool and alpha-helper boundaries explicitly.

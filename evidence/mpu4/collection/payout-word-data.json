@@ -1,0 +1,14 @@
+{
+  "rom_sha1": "402D1518BB78FDC489B06C2AABC771E5CE151847",
+  "scope": "Exact VM/native payout bridge and token headers;80E4/80F4 point to776F then native4B39/4B8C",
+  "regions": [
+    {
+      "address": 30575,
+      "bytes_hex": "96F127078A0197F1B7080C3420AD94352096F1270784FE97F1B7080C0EFC"
+    },
+    {
+      "address": 32996,
+      "bytes_hex": "776F4B39776F4C34776F5429776F68F1776F4B8C"
+    }
+  ]
+}

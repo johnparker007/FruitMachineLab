@@ -1,5 +1,11 @@
 # Current handoff
 
+Eight-batch cycle batch6 complete: VM80E4/80F4 ->776F native bridge now composes the
+full cash/token service and nested reverse76BF display.16 MAME word paths match
+exact instruction/cycle/RAM scope. Native mode writes require explicit080C owner;
+caller Y/S/data cells remain balanced. Next host integration, without double payout
+or guessed IRQ acceptance. Alpha/helper and sound lifecycle gaps remain explicit.
+
 Eight-batch cycle batch5 complete: shared AddersTimedPayoutServiceExecution now
 composes both cash and token callers; all16 real-polling MAME paths match. Changed
 token level/tail flush has a separate synthetic proof (compensate only first debit).

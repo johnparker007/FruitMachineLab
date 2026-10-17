@@ -285,3 +285,16 @@ guard. Same-machine/one-owner checks reject a live logical scheduler, foreign
 machine and collection execution during native service/fault. These are semantic
 word boundaries; callers must schedule foreground/native work explicitly.
 Regression tests retain all previous collection paths; no GUI owner is switched.
+
+AddersNativeCollectionVerification now composes native8784 with both semantic and
+timed collection hosts on one machine: AAA1 queues only when0047 is empty, polls
+do not restart it, native service drains four tasks, a later poll requeues, and
+physical Collect has no effect until input-group sampling. Accepted Collect
+resets actual sound memory and drains selected24-unit bank through four recovered
+debits/eight output edges, with no duplicate logical owner or VM frames. The test
+initially assumed two-unit denominations; actual routing disproved it (four
+debits, all balances zero), so the expectation now follows this selected seeded
+configuration. No runtime behaviour was changed. Service uses separate explicit
+S0500, not the foreground VM's S0784. Service cadence, ordinary VM/alpha budgets,
+award seed and pulse counter policy are synthetic. This is integration evidence,
+not natural full-game timing or a GUI claim.

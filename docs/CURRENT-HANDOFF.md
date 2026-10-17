@@ -1,5 +1,11 @@
 # Current handoff
 
+Sixteen-batch cycle batch6: real prompt/requeue and sampled Collect transition
+pass in BOTH collection hosts on one state; four selected debits/eight edges.
+Service cadence/VM budgets remain synthetic. Next remove remaining foreground
+sound helper timing boundaries before Live. Native service/VM stack ownership
+must remain explicit; see sound lifecycle pass.
+
 Sixteen-batch cycle batch5: both collection hosts accept explicit native sound
 bindings without a duplicate logical list. Ownership checks and20 Collect groups
 pass. Next exercise actual prompt/requeue/Collect transition on one state.

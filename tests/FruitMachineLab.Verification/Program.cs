@@ -11,6 +11,8 @@ Check("Sound operation native calls preserve frames across24 ROM ticks",()=>Equa
 Check("Sound operation rhythm notes match120 original-ROM paths",()=>Equal(120,AddersSoundOperationVerification.Rhythm(evidence)));
 Check("Sound operation original8784 prompt matches128 preserved ROM ticks",()=>Equal(128,AddersSoundOperationVerification.Prompt(evidence)));
 Check("Sound operation complete8784 prompt drains twelve times without native leaks",()=>Equal(48,AddersSoundOperationVerification.NativeChildLongevity(evidence,true)));
+Check("Native collection prompt drains requeues and sampled Collect pays on one state",()=>Equal(4,AddersNativeCollectionVerification.PromptAndCollect(evidence,false)));
+Check("Native collection timed payout shares prompt state and physical Collect sampling",()=>Equal(4,AddersNativeCollectionVerification.PromptAndCollect(evidence,true)));
 Check("Native sound owner preserves pause and rejects competing foreground mutation",()=>{
     var m=new Machine();using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","sound-prompt.json")));
     foreach(var r in doc.RootElement.GetProperty("rom_regions").EnumerateArray())Convert.FromHexString(r.GetProperty("bytes_hex").GetString()!).CopyTo(m.Memory,r.GetProperty("address").GetInt32());

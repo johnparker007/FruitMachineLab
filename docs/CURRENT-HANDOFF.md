@@ -1,5 +1,9 @@
 # Current handoff
 
+New five-batch cycle batch3: instrument5F5B and shared60AB match48 native paths;
+all lifecycle regressions pass. Yield/C2/instrument are ready for bounded native
+command/service composition. Note/channel acquisition remains explicit.
+
 New five-batch cycle batch2: C2/5C51 child allocation matches32 native paths,
 including exhaustion/disabled-bit asymmetry and current-tick due. Next instrument
 cache effects, then native command/service composition. Live unchanged.

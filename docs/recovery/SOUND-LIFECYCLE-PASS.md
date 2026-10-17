@@ -148,3 +148,22 @@ all inherited byte extremes, clock edges and disabled-bit set. Original8787
 operand8739 is byte-checked. Native EXG timing is now covered. Curated sound-child
 artifacts include native stack scratch; no snapshots/deadlines feed execution.
 Raw pointer: %TEMP%/FruitMachineLab-sound-child.txt. Live remains unchanged.
+
+## Instrument/cache5F5B
+
+AddersSoundInstrumentPlan now stages5F5B..5F7F. Wrapped operand+optional global
+4D+pitch+C+transpose+D indexes the ROM table5A1E using unsigned ABX twice. The
+preceding command selects cache registers (C5/DB/DD subtractC5); no generic
+instrument interpretation replaces those bytes. Both register values come from
+the original table, including aliases beyond its nominal note range. Native60AB
+is shared with release in AddersYmCachedWritePlan; it retains signed cache
+indexing, real stack writes and changed-value timing/callbacks.
+
+Capture-SoundInstrument.ps1 / Curate-SoundYield.ps1 -Operation instrument export
+48 original-ROM synthetic cases: three command aliases, wrapped pitch/global
+flags and cache-hit/miss paths. All instruction bytes/times/full2KB RAM match.
+RAM600 holds the synthetic command/operand; ROM/table bytes are unmodified and
+checked. Existing128 timed lifecycle paths still pass after sharing60AB. Raw
+pointer: %TEMP%/FruitMachineLab-sound-instrument.txt. No audio synthesis or Live
+timing claim. The shared curator's single-span yield export was also checked
+after extending its operation modes; existing yield tests still pass.

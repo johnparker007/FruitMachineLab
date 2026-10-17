@@ -6,6 +6,7 @@ public static class AddersSoundOperationVerification
 {
     public static int Yield(string evidence)=>Verify(evidence,"sound-yield",(m,row)=>new AddersSoundYieldPlan(m,0x1A0,0x879E,0x700,row.GetProperty("case").GetProperty("duration").GetByte()).Instructions(),0x5CF3,0x5CDE);
     public static int Child(string evidence)=>Verify(evidence,"sound-child",(m,row)=>new AddersSoundChildPlan(m,0x1A0,0x8787,0x700).Instructions(),0x5EE3,0x5D3B);
+    public static int Instrument(string evidence)=>Verify(evidence,"sound-instrument",(m,row)=>new AddersSoundInstrumentPlan(m,0x1A0,0x601,0x700).Instructions(),0x5F5B,0x5D3B);
     public static int Verify(string evidence,string stem,Func<Machine,JsonElement,IEnumerable<NativeRoutineWork>> plan,ushort entry,ushort continuation)
     {
         using var doc=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection",stem+".json")));int count=0;

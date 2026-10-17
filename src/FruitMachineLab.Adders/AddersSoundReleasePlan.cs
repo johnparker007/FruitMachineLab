@@ -56,16 +56,7 @@ public sealed class AddersSoundReleasePlan(Machine m,ushort task,ushort stack,us
     }
     private IEnumerable<NativeRoutineWork> CachedWrite()
     {
-        yield return new NativeRoutineStep(0x60AB,"3410",()=>{s-=2;m.WriteWord(s,x);});
-        yield return new NativeRoutineStep(0x60AD,"8E0284",()=>x=0x284);
-        yield return new NativeRoutineStep(0x60B0,"A185",()=>zero=a==m.Memory[x+unchecked((sbyte)b)]);
-        yield return new NativeRoutineStep(0x60B2,"2709");
-        if(!zero){
-            yield return new NativeRoutineStep(0x60B4,"F70880");
-            yield return new NativeRoutineStep(0x60B7,"A785",()=>m.Memory[x+unchecked((sbyte)b)]=a);
-            yield return new NativeRoutineStep(0x60B9,"B70881",()=>ymWrite?.Invoke(b,a));
-            yield return new NativeRoutineStep(0x60BC,"12");
-        }
-        yield return new NativeRoutineStep(0x60BD,"3590",()=>{x=m.ReadWord(s);s+=4;});
+        foreach(var op in new AddersYmCachedWritePlan(m,a,b,x,s,ymWrite).Instructions())yield return op;
+        s+=2;
     }
 }

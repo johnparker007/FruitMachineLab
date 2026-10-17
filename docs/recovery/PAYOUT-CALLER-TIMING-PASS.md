@@ -186,3 +186,71 @@ tests and the18-group Collect regression filter pass. No GUI integration is
 claimed: its retained outer IRQ adapter still needs explicit foreground ownership
 integration, and sound-pool lifecycle remains open. Next verify repeated physical
 Collect transactions and freeze a full regression checkpoint before host UI work.
+
+## Batch8: repeated physical-input transactions and verified handoff
+
+A continuing machine/control/pool state now completes100 explicitly seeded
+collection transactions:299 debits and598 output edges. Each transaction first
+polls with Collect released, then presses without sampling (no payout), then
+samples the actual shared port3 bit and holds it through repeated AAA1 calls.
+AA2B intentionally services ONE prioritized route per invocation; holding Collect
+permits later calls to drain the other balance, rather than changing the ROM
+router into an invented drain-all loop. Release clears the sampled level while
+sticky0091 remains set; a subsequent released poll does not duplicate payout.
+Both token levels, mixed banks, counter/queue wrap, accounting and balanced VM
+frames are exercised without resetting the machine between transactions.
+
+This is a SYNTHETIC component longevity/input test. Awards are deposited by the
+test, ordinary VM/alpha budgets are declared synthetic values and polling counter
+changes are synthetic. The sound scheduler is not ticked between these immediate
+polls; logical/native prompt lists stay consistent through the recovered reset.
+It is not100 paid games, a natural real-time campaign, serial transmission or a
+proof that a player can wait through a prompt's sound completion in Live. Original
+serial enqueue state is retained, including busy/count wrap; no fake background
+acknowledgement is added. Native5429 busy transmission is still a later boundary.
+
+All Adders timed payout entry points now reject a native S above07C8 before
+writing frames, preventing the semantic-only0800 context from overwriting07C9
+accounts. The generic MPU4 gateway remains platform-neutral. Tail comparisons
+now also check all returned N/Z/V/C bits against the32 MAME cases, not just Z.
+The VM-word curator uses ordered fields; independent repeated exports of the
+accepted raw run are byte-identical. No additional MAME campaign was needed.
+
+The sound-lifecycle audit preserves only facts inspected for the current gap:
+**static deductions**, not new runtime proofs.5CD0 removes the due task from0047
+before jumping through callback+4. Sound dispatch table base5963 plus2*C0 gives
+5AE3, whose exact pointer is5E6D. That handler calls channel release5E2C before
+checking return-frame space. Its root termination branch reaches5E85, links the
+task into free head0049 and jumps5CDE. Exact selected bytes/pointer relationships
+are in payout-word-data.lifecycle_followup; historical5E2C annotation is copied
+from prerequisite-pass. No task allocator head is fabricated, and YM/cache/channel
+release plus native frame/list updates are NOT claimed implemented by the logical
+scheduler. This saves the useful inspected facts for the next bounded task.
+
+Final validation:307 full verification groups pass; the39-group Payout subset and
+19-group Collect subset pass. Headless and full solution/WPF builds have zero
+warnings/errors, using isolated temporary output to preserve the user's running
+app. All owned capture processes exited normally in this eight-batch cycle. Raw
+captures remain external, original ROM/workspace/MAME/Ghidra configuration remains
+unchanged. No installations/configuration changes. Each of the eight checkpoints
+is committed and pushed under John's explicit authorization.
+
+## Next gameplay integration
+
+1. Attach the timed collection owner to Live's foreground/service scheduling.
+   Native suspension requires an unmasked instruction boundary; ordinary collection
+   VM words and alpha still expose coarser adapter boundaries. The retained outer
+   accepted-entry/occupancy template is not proof of acceptance in these new paths.
+   Do not silently execute payout inside an IRQ, invent acceptance from a VM-token
+   end, or substitute zero/synthetic budgets for missing Live CPU work.
+2. Implement bounded native sound-task list/free/channel lifecycle for the Collect
+   prompt and its current enclosing states. Existing0047 mismatch guard remains
+   mandatory until that contract is verified. Use the preserved source breadcrumbs;
+   no full audio synthesis or unrelated sound campaign is required.
+3. Preserve/resolve native5429 busy serial service when repeated payouts reach it.
+   Enqueueing is implemented; transmission/acknowledgement is not. Keep this visible
+   before claiming hundreds of complete paid games.
+
+Continue prioritising gameplay, then cross-game validation/FML rendering. No new
+GUI collection mode is claimed here. The original autonomous timer3 and retained
+outer IRQ adapters are unchanged; a broad IRQ/reassembly campaign remains deferred.

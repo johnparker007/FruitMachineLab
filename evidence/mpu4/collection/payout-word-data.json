@@ -10,5 +10,29 @@
       "address": 32996,
       "bytes_hex": "776F4B39776F4C34776F5429776F68F1776F4B8C"
     }
-  ]
+  ],
+  "lifecycle_followup": {
+    "classification": "Static deductions inspected while auditing remaining Collect sound-list gap; not newly executed/verified scheduler lifecycle",
+    "command_table_base": 22883,
+    "command": 192,
+    "pointer_address": 23267,
+    "handler": 24173,
+    "release_channels": 24108,
+    "root_free": 24197,
+    "return_to_due_scan": 23774,
+    "regions": [
+      {
+        "address": 23760,
+        "bytes_hex": "964426660C440F2C0C4626020C45109E472755DC4510A322264EAEA49F47EE286EB8"
+      },
+      {
+        "address": 23267,
+        "bytes_hex": "5E6D"
+      },
+      {
+        "address": 24108,
+        "bytes_hex": "3440CE0284A6A811270B6FA81143A44EC60EBD60AB8E027E6F2FE62A2B21A685A72ACB20A6C584EFBD60ABC020964C2B04E7862002D74BD74C86FFA78520DB35C08DBD30A823AC26250FAE26EE81AF267E5D3BC608113F8DA79E49AFA4109F497E5CDE"
+      }
+    ]
+  }
 }

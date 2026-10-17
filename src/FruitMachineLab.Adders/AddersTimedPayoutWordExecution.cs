@@ -23,7 +23,7 @@ public sealed class AddersTimedPayoutWordExecution : IDisposable
         Func<Instruction,Machine,ulong> unresolvedAlphaCycles,Func<byte> readTriac,Action<byte> writeTriac,Action<byte>? writeVmMode=null)
     {
         m=machine;evidence=evidenceDirectory;alpha=alphaOutput;Cycle=start;alphaCycles=unresolvedAlphaCycles;readPort=readTriac;writePort=writeTriac;writeMode=writeVmMode;
-        ushort s=m.Control?.Pointer ?? throw new NotSupportedException("Payout VM bridge requires native control context");plan=new(m,instruction,s,initialConditionCode,writeMode);bridge=new(plan.Instructions(),start,0xFC,()=>(initialConditionCode&0x10)!=0);bridge.ObserveInstruction=i=>ObserveCallerInstruction?.Invoke(i);
+        ushort s=m.Control?.Pointer ?? throw new NotSupportedException("Payout VM bridge requires native control context");if(s>0x7C8)throw new NotSupportedException("Payout VM S must remain below accounting RAM07C9");plan=new(m,instruction,s,initialConditionCode,writeMode);bridge=new(plan.Instructions(),start,0xFC,()=>(initialConditionCode&0x10)!=0);bridge.ObserveInstruction=i=>ObserveCallerInstruction?.Invoke(i);
     }
     public void AdvanceTo(ulong cycle)
     {

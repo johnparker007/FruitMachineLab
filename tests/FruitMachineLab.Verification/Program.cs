@@ -7,6 +7,28 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { if(args.Length>1 && !name.Contains(args[1],StringComparison.OrdinalIgnoreCase))return;action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Payout timed collection handles100 seeded transactions with physical Collect sampling",()=>{
+    var m=new Machine{DataStackBase=0x600};m.Control=new(m,0x784);SkillCashData.LoadFeature(m);SkillCashData.LoadAlpha(m);AddersPayoutCallerData.Load(m,evidence);Convert.FromHexString("34203184AEA16E91").CopyTo(m.Memory,0xF8);m.Memory[0x55]=0x1F;var scheduler=new Mpu4ChoiceStreamScheduler(m,0);scheduler.Reset();AddersSoundResetMemory.Apply(m);var panel=new Mpu4PanelInput(m);byte port=0x30;ulong clock=0;int polls=0,totalDebits=0,totalWrites=0;
+    int Poll(){m.Control.Push(0xBEEF);using var e=new AddersTimedCollectionExecution(m,evidence,0xAAA1,clock,_=>{},new(m),scheduler,(_,_)=>10,(_,_)=>1000,()=>port,v=>{port=v;totalWrites++;},0,_=>{});int budget=1000000;
+        while(!e.Completed && --budget>0){if(e.Address==0x717C && (++polls&1)!=0)m.Memory[0x6E]++;e.AdvanceTo(e.NextEventCycle);}Equal(true,e.Completed);Equal(false,e.Fault is not null);clock=e.Cycle;Equal((ushort)0x784,m.Control.Pointer);Equal(0,m.Data.Count);totalDebits+=e.Debits;return e.Debits;}
+    int expected=0;
+    for(int n=0;n<100;n++){
+        // Explicit synthetic award deposits, not generated paid games/startup.
+        ushort cash=(ushort)(2+2*(n%3)),tokens=(ushort)(n%2==0 ? 4 : 0);m.WriteWord(0x2FC,cash);m.WriteWord(0x302,tokens);m.Memory[0]=(byte)(n%2==0 ? 4 : 0);m.Memory[6]=0;m.WriteWord(0x2D,0);
+        panel.Release();panel.Sample(3);Equal(0,Poll());Equal(cash,m.ReadWord(0x2FC));Equal(tokens,m.ReadWord(0x302));
+        panel.SetCollect(true);Equal(0,Poll());Equal(cash,m.ReadWord(0x2FC));panel.Sample(3);Equal(ushort.MaxValue,Mpu4InputConditions.Evaluate(m,0x1C));
+        int count=0,rounds=0;while(m.ReadWord(0x2FC)+m.ReadWord(0x2FE)+m.ReadWord(0x300)+m.ReadWord(0x302)!=0 && ++rounds<10)count+=Poll();Equal((cash+tokens)/2,count);expected+=count;Equal((ushort)0,m.ReadWord(0x2FC));Equal((ushort)0,m.ReadWord(0x2FE));Equal((ushort)0,m.ReadWord(0x300));Equal((ushort)0,m.ReadWord(0x302));
+        panel.Release();panel.Sample(3);Equal((ushort)0,Mpu4InputConditions.Evaluate(m,0x1C));Equal((byte)1,(byte)(m.Memory[0x91]&1));Equal(0,Poll());
+    }
+    Equal(expected,totalDebits);Equal(2*expected,totalWrites);Equal((byte)0x30,port);Equal(false,panel.CollectPressed);Equal((ushort)0,m.ReadWord(0x47));Equal(false,scheduler.Active);
+    Console.WriteLine($"  100 seeded collection transactions, {totalDebits} debits/{totalWrites} output edges; synthetic service/VM budgets, not100 paid games");
+});
+Check("Payout timed entry rejects semantic-only stack above persistent accounts",()=>{
+    var m=new Machine{DataStackBase=0x600};m.Control=new(m,0x800);SkillCashData.LoadFeature(m);AddersPayoutCallerData.Load(m,evidence);byte[] before=m.Memory.ToArray();
+    try{using var bad=new AddersTimedCollectionExecution(m,evidence,0xAA2B,0,_=>{},new(m),new(m,0),(_,_)=>1,(_,_)=>1000,()=>0x30,_=>{},0);throw new Exception("Unsafe VM S accepted");}catch(NotSupportedException){}
+    try{using var bad=new AddersTimedPayoutServiceExecution(m,evidence,new(m),0,0x800,0,(_,_)=>1000,()=>0x30,_=>{});throw new Exception("Unsafe native S accepted");}catch(NotSupportedException){}
+    Equal(true,before.SequenceEqual(m.Memory));
+});
 Check("Payout timed collection pause freezes native VM output and virtual clock",()=>{
     var m=new Machine{DataStackBase=0x600};m.Control=new(m,0x784);m.Control.Push(0xBEEF);SkillCashData.LoadFeature(m);SkillCashData.LoadAlpha(m);AddersPayoutCallerData.Load(m,evidence);Convert.FromHexString("34203184AEA16E91").CopyTo(m.Memory,0xF8);m.WriteWord(0x2FC,2);m.Memory[0x55]=0x1F;byte port=0x30;int writes=0;
     using var e=new AddersTimedCollectionExecution(m,evidence,0xAA2B,0,_=>{},new(m),new(m,0),(_,_)=>10,(_,_)=>1000,()=>port,v=>{port=v;writes++;},0);
@@ -89,7 +111,7 @@ Check("Payout tail staged decisions and checksums match32 MAME instruction paths
     foreach(var row in doc.RootElement.GetProperty("rows").EnumerateArray()){
         var m=new Machine();Convert.FromHexString(row.GetProperty("before_hex").GetString()!).CopyTo(m.Memory,0);SkillCashData.LoadFeature(m);AddersPayoutDisplay.LoadRomData(m,evidence);var p=new AddersPayoutTailPlan(m,row.GetProperty("case").GetProperty("selector").GetUInt16());ulong start=row.GetProperty("start_cycle").GetUInt64();using var e=new NativeRoutineExecution(p.Instructions(),start,0x4C34,()=>true);var actual=new List<OutputScanInstruction>();e.ObserveInstruction=actual.Add;while(!e.Completed)e.AdvanceTo(e.NextEventCycle);
         var expected=row.GetProperty("steps");Equal(expected.GetArrayLength(),actual.Count);for(int n=0;n<actual.Count;n++){var r=catalog[expected[n][0].GetInt32()];Equal(r.GetProperty("pc").GetUInt16(),actual[n].Address);Equal(start+expected[n][1].GetUInt64(),actual[n].Started);Equal(true,r.GetProperty("context_hex").GetString()!.StartsWith(actual[n].Bytes,StringComparison.Ordinal));}
-        Equal((row.GetProperty("end").GetProperty("cc").GetByte()&4)==0,p.Allowed);Equal(row.GetProperty("end").GetProperty("cycle").GetUInt64(),e.Cycle);byte[] ram=Convert.FromHexString(row.GetProperty("after_hex").GetString()!);Equal(true,m.Memory.AsSpan(0,0x6E0).SequenceEqual(ram.AsSpan(0,0x6E0)));count++;
+        Equal((row.GetProperty("end").GetProperty("cc").GetByte()&4)==0,p.Allowed);Equal((byte)(row.GetProperty("end").GetProperty("cc").GetByte()&15),p.ReturnFlags);Equal(row.GetProperty("end").GetProperty("cycle").GetUInt64(),e.Cycle);byte[] ram=Convert.FromHexString(row.GetProperty("after_hex").GetString()!);Equal(true,m.Memory.AsSpan(0,0x6E0).SequenceEqual(ram.AsSpan(0,0x6E0)));count++;
     }Equal(32,count);
 });
 Check("Payout tail checksum suspension preserves sampled A and saved guard",()=>{

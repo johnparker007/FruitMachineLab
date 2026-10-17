@@ -1,5 +1,14 @@
 # Project direction and handoff
 
+17 October eight-batch payout milestone: selected cash/token callers, compensation,
+VM->native bridge and incremental collection host are implemented and verified.
+307 groups pass, including160 new selected native MAME cases and a100-transaction
+synthetic collection longevity test. Live GUI attachment remains next, with
+foreground/service scheduling, actual native sound-list lifecycle and busy serial
+service explicit. Keep these bounded gameplay tasks ahead of a broad IRQ campaign.
+Source-derived native timing coexists with declared VM/alpha helper budgets; do
+not promote synthetic test budgets into machine timing. See caller timing pass.
+
 17 October composed debit checkpoint:4CBE/NVRAM, native VM gateway, incremental
 A8F9 display, accounts and6858 output now compose under one headless CPU owner.
 32 original-ROM paths match through6858; alpha helper budgets stay explicit,

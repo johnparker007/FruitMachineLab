@@ -28,6 +28,7 @@ public sealed class AddersTimedPayoutServiceExecution : IDisposable
         ulong start,ushort stackPointer,byte initialConditionCode,Func<Instruction,Machine,ulong> unresolvedAlphaCycles,
         Func<byte> readPort,Action<byte> writePort,Action<byte>? writeVmMode=null,ushort entry=0x4B39)
     {
+        if(stackPointer>0x7C8)throw new NotSupportedException("Payout native S must remain below accounting RAM07C9");
         if((sbyte)machine.Memory[0x323]<0)throw new NotSupportedException("Timed cash caller is selected normal mode only");
         m=machine;evidence=evidenceDirectory;alpha=alphaOutput;Cycle=start;alphaCycles=unresolvedAlphaCycles;readTriac=readPort;writeTriac=writePort;writeMode=writeVmMode;
         IEnumerable<NativeRoutineWork> plan=entry switch{0x4B39=>new AddersCashPayoutPlan(m,stackPointer,initialConditionCode).Instructions(),0x4B8C=>new AddersTokenPayoutPlan(m,stackPointer,initialConditionCode).Instructions(),_=>throw new NotSupportedException("Unrecovered payout entry")};caller=new(plan,start,m.ReadWord(stackPointer),()=>(initialConditionCode&0x10)!=0);

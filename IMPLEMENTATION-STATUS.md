@@ -1,5 +1,15 @@
 # Implementation and evidence boundaries
 
+Selected cash/token payout now executes through timed4B39/4B8C callers, tail/input
+plans, compensation, original776F VM native bridge and nested76BF incremental
+display. AddersTimedCollectionExecution composes the collection VM with this owner.
+160 new selected native MAME cases plus48 retained semantic gate/router cases
+verify the scoped paths.307 groups pass; builds are clean. A100-transaction test
+uses explicit synthetic awards/VM budgets/counters; it is not100 complete games.
+GUI attachment still needs foreground scheduling, native sound-list lifecycle
+and busy serial service; no whole-machine autonomous timing claim. See
+[caller timing/integration pass](docs/recovery/PAYOUT-CALLER-TIMING-PASS.md).
+
 Selected4CBE payout debit now composes timed NVRAM, real native VM gateway,
 incremental A8F9 display, accounting/checksums and6858 outputs.32 original-ROM paths
 match exact cycles/selected RAM through6858 without intermediate state injection.

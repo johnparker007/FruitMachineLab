@@ -1,5 +1,28 @@
 # Current handoff
 
+EIGHT-BATCH CYCLE COMPLETE —307 full verification groups pass;39 Payout and19
+Collect groups pass. Selected normal cash/token callers and both VM native bridges
+now compose through incremental collection VM, debit/display, compensation and
+outputs.160 selected native MAME cases were added, plus48 retained semantic
+router/gate cases.100 seeded component transactions complete on one state with
+299 debits/598 edges and sampled physical Collect/release. This is not100 paid
+games: awards/VM budgets/counter policy are synthetic in that longevity test.
+
+NEXT: Live foreground/service ownership, bounded native sound-list lifecycle,
+then busy5429 serial transmission. GUI is unchanged. Native instruction suspension
+cannot be inferred from retained outer entry/occupancy or VM-word boundaries.
+Do not insert zero/synthetic CPU budgets into Live or fabricate0047. Alpha/helper
+budgets remain explicit. The timed collection host requires S below07C9; old
+semantic0800 is unsafe for native frames. See
+[caller integration/evidence/next steps](recovery/PAYOUT-CALLER-TIMING-PASS.md).
+
+Headless/full WPF solution builds clean in isolated output; user's running app is
+preserved. No installs/config changes. All captures in this cycle exited normally;
+original workspaces/ROM/settings untouched. All eight milestones committed/pushed
+under John's authorization. Final log: %TEMP%/FruitMachineLab-eight-batches-final.log;
+build pointer eight-batches-build.txt. Update-CuratedManifest.ps1 rebuilds/verifies
+the existing curated manifest; -Verify checks it without rewriting.
+
 Eight-batch cycle batch7 complete: AddersTimedCollectionExecution composes real
 collection VM + timed payout word with pause and explicit word/alpha budget and
 IRQ-mask inputs.16 router/32 gate MAME SEMANTIC paths pass (legacy waits skipped;

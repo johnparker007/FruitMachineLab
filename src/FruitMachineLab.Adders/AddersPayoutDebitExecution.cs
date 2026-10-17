@@ -36,6 +36,7 @@ public sealed class AddersPayoutDebitExecution : IDisposable
     public Action<OutputScanAccess>? ObserveAccess {get;set;}
     public AddersPayoutDebitExecution(Machine machine,ulong start,ushort recordAddress,ushort dataPointer,byte initialInterruptMask,ushort? nativeStackPointer=null)
     {
+        if(nativeStackPointer>0x7C8)throw new NotSupportedException("Payout display native S must remain below accounting RAM07C9");
         _=AddersPayoutRecord.Read(machine,recordAddress);m=machine;record=recordAddress;u=dataPointer;nativeStack=nativeStackPointer;Cycle=start;cc=initialInterruptMask;mask=(byte)(initialInterruptMask&0x50);
         steps=Run().GetEnumerator();Next();
     }

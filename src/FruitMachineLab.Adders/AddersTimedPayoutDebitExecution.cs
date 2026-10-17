@@ -32,6 +32,7 @@ public sealed class AddersTimedPayoutDebitExecution : IDisposable
         ulong start,ushort record,ushort nativeStackPointer,byte initialConditionCode,ushort nativeContinuation,
         Func<Instruction,Machine,ulong> unresolvedAlphaCycles,Func<byte> readPort,Action<byte> writePort,Action<byte>? writeVmMode=null)
     {
+        if(nativeStackPointer>0x7C8)throw new NotSupportedException("Payout debit native S must remain below accounting RAM07C9");
         if(machine.ReadWord(nativeStackPointer)!=nativeContinuation)throw new InvalidOperationException("Payout native caller return frame differs");
         m=machine;evidence=evidenceDirectory;alpha=alphaOutput;Cycle=start;mask=(byte)(initialConditionCode&0x50);continuation=nativeContinuation;
         alphaCycles=unresolvedAlphaCycles;readTriac=readPort;writeTriac=writePort;writeMode=writeVmMode;

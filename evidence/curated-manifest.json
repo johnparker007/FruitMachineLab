@@ -211,8 +211,8 @@
   },
   {
     "path": "docs/recovery/PAYOUT-CALLER-TIMING-PASS.md",
-    "bytes": 12352,
-    "sha256": "4D603AAA59B9E744B5A3044BDE621AB176EA097BDE12BBD9AD3C16DC42ADA95A"
+    "bytes": 16960,
+    "sha256": "606F7CF4295098BAA58D254E65E9AEC94A1860C20841C5831A7978AAA320DCEF"
   },
   {
     "path": "docs/recovery/PAYOUT-DEBIT-TIMING-PASS.md",
@@ -431,8 +431,8 @@
   },
   {
     "path": "evidence/mpu4/collection/payout-word-data.json",
-    "bytes": 418,
-    "sha256": "854CA649047D5AC13B8E62B5EAEE9EE09079AF7441F37EBA0A6579D5AD01CC90"
+    "bytes": 1309,
+    "sha256": "6FD4C10021F5CBD6D9CE1E87B4367FC363ACDDC0CF7CEA99243AA112A3C70100"
   },
   {
     "path": "evidence/mpu4/collection/pulse-timing-debugger.cmd",
@@ -497,7 +497,7 @@
   {
     "path": "evidence/mpu4/collection/vm-word-timing.json",
     "bytes": 1041151,
-    "sha256": "1A1653908B3CF3055A96C7AF73DEF198D852E39122531903167A26A793BDA94A"
+    "sha256": "6525E31BF565048BCA86347CEB3C14B1EF6B4026699680E4D283622C1319E10E"
   },
   {
     "path": "evidence/mpu4/maps/board-availability-boundary.json",
@@ -1168,6 +1168,11 @@
     "path": "evidence/mpu4/native/5cd0.json",
     "bytes": 2082,
     "sha256": "E3119F369E9D294B2CD8C2C022A2A19BB3F26F741C25FA1C3A9EC099A7B92CE5"
+  },
+  {
+    "path": "evidence/mpu4/native/5e2c.json",
+    "bytes": 2173,
+    "sha256": "875D0F05D231BAABB006BAA81F9EFB79750A0F58448BD6C6A25850DC2ACE7C60"
   },
   {
     "path": "evidence/mpu4/native/60ab.json",

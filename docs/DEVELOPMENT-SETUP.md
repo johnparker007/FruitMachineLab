@@ -5,6 +5,17 @@ Local clone: C:\projects\GitRepos\FruitMachineLab
 
 ## Current status
 
+Timed payout callers: Capture-PayoutService.ps1 -InstructionTiming observes real
+polling (synthetic counter updates), -VmBridge includes the VM->native wrapper.
+Curate-PayoutCallerTiming.ps1 takes RunDirectory/RomPath and exports distinct
+caller-timing or vm-word-timing. Capture-InputConditionTiming.ps1 has -PayoutTail;
+its curator also handles Capture-TokenCompensationTiming provenance. All use the
+same isolated MAME/RomDirectory/fresh RunDirectory convention. Filters: Payout,
+"Payout timed callers", "Payout VM word", "Payout timed collection". The100 seeded
+transaction check is synthetic component verification, not a whole-game run.
+tools/Update-CuratedManifest.ps1 refreshes and verifies the existing manifest;
+-Verify checks it without rewriting. See recovery/PAYOUT-CALLER-TIMING-PASS.md.
+
 Payout debit/display: Capture-PayoutDebit.ps1 -InstructionTiming now observes
 native prefix/suffix plus display NEXT and gateway return. Curate-PayoutDebit.ps1
 exports debit-timing and display-vm-data alongside the semantic matrix. New

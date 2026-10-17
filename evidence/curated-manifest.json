@@ -6458,5 +6458,10 @@
     "path": "evidence/mpu4/collection/tone-lifecycle-verification.json",
     "bytes": 5719,
     "sha256": "AE966EF6E1098D23D21FAC4207544DDE33F1A31DF90AF295F724750D0367851C"
+  },
+  {
+    "path": "docs/recovery/LIVE-NATIVE-SOUND-OWNERSHIP-PLAN.md",
+    "bytes": 8926,
+    "sha256": "69B2E9C87F9194CFC525AC16E4085FF9F56FF10ED3A96FECB29D70B14F1DE7BD"
   }
 ]

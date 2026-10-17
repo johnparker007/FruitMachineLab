@@ -18,6 +18,11 @@ public sealed class SkillCashLiveSession
     private readonly Mpu4ChoiceStreamScheduler scheduler;
     private readonly Mpu4Alpha alpha;
     private Mpu4TimedPanelService? timedService;
+    private Mpu4Timer1DispatchExecution? outerDispatch;
+    private Mpu4PostPanelExecution? postPanel;
+    public ushort? PostPanelAddress=>postPanel?.Address;
+    public Action<OutputScanInstruction>? ObserveOuterDispatchInstruction {get;set;}
+    public Action<OutputScanInstruction>? ObservePostPanelInstruction {get;set;}
     private readonly Mpu4Timer3PhaseClock timer3;
 
     public ulong? NextInputServiceEvent=>timedService?.NextEventCycle;
@@ -203,19 +208,13 @@ public sealed class SkillCashLiveSession
         var response=JsonSerializer.Deserialize<LampFrameCapture>(File.ReadAllText(Path.Combine(evidence,"skill-cash","lamp-frames.json")),options)!;
         var frames=new Mpu4LampFrames(Machine,response.Responses.Select(x=>checked((byte)x)).ToArray());
         var requests=new Mpu4LampRequests(Machine,request=>{frames.Apply(request.Id,request.Pattern);LampRequests++;ObserveLamp?.Invoke(request);});
-        ulong offset=0;var scanTimes=new List<ulong>();
-        foreach(var row in timing.Events) {
-            offset=checked(offset+row[0]);
-            if(row[1]==3)scanTimes.Add(offset);
-        }
-        // Scan entry remains an explicit outer-IRQ boundary. Timer3 delivery is generated.
-        foreach(ulong at in scanTimes)services.Add(at);
-        if(services.Count==0)throw new InvalidDataException("Missing IRQ service template");
-        // Repeat the observed service/jitter template at the source-backed
-        // timer-1 period (0D70+1). This is not IRQ instruction acceptance emulation.
-        servicePeriod=checked((ulong)services.Count*Mpu4Timer1Clock.Period(Mpu4Timer1Clock.NormalLatch));
+        // Accepted outer IRQ entry/occupancy remains the explicit CPU adapter.
+        // The scan-entry timestamp table is no longer consumed: FE70->28FE is code.
         using(var interrupts=JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","cpu-interrupts.json")))){
             var intervals=interrupts.RootElement.GetProperty("intervals").EnumerateArray().Select(row=>row.EnumerateArray().Select(x=>x.GetUInt64()).ToArray()).ToArray();
+            foreach(var row in interrupts.RootElement.GetProperty("timer1_handler_entries").EnumerateArray())services.Add(row.GetUInt64());
+            if(services.Count==0)throw new InvalidDataException("Missing outer IRQ service template");
+            servicePeriod=checked((ulong)services.Count*Mpu4Timer1Clock.Period(Mpu4Timer1Clock.NormalLatch));
             occupancy=new(servicePeriod,intervals);
             delayOccupancy=CapturedInterruptOccupancy.FromOrdinaryIrqHandlers(servicePeriod,intervals);
         }
@@ -310,7 +309,7 @@ public sealed class SkillCashLiveSession
         ulong target=checked(Cycle+cycles);int budget=200_000;
         try {
             while(!Paused && !Completed && Cycle<=target) {
-                ulong irq=timedService?.NextEventCycle ?? checked(serviceEpoch+services[serviceIndex]);
+                ulong irq=postPanel?.NextEventCycle ?? outerDispatch?.NextEventCycle ?? timedService?.NextEventCycle ?? checked(serviceEpoch+services[serviceIndex]);
                 ulong next=Math.Min(occupancy.NextStart,Math.Min(nextVm,irq));if(next>target){Cycle=target;break;}Cycle=next;
                 if(occupancy.NextStart==next) {
                     ulong end=occupancy.NextEnd;
@@ -321,7 +320,12 @@ public sealed class SkillCashLiveSession
                     occupancy.Consume();
                 }
                 if(irq==next) {
-                    if(timedService is null){
+                    // Retained outer-entry adapter supplies mapped VM U. Temporary
+                    // native U inside atomic motor/sound helpers remains unresolved;
+                    // natural ignored-SWI2 frames are verified, not injected here.
+                    if(timedService is null && outerDispatch is null && postPanel is null){outerDispatch=new(Machine,Cycle,()=>Machine.DataPointer);outerDispatch.ObserveInstruction=i=>ObserveOuterDispatchInstruction?.Invoke(i);}
+                    if(outerDispatch is not null){outerDispatch.AdvanceTo(Cycle);if(!outerDispatch.Completed)continue;outerDispatch=null;
+
                         timedService=new(Machine,Cycle,timer3,TimerTime,Panel.ReadPort,ReadServicePort,WriteServicePort);
                         timedService.ObserveScan=i=>ObserveOutputScanInstruction?.Invoke(i);
                         timedService.ObserveInput=i=>ObserveInputServiceInstruction?.Invoke(i);
@@ -337,26 +341,35 @@ public sealed class SkillCashLiveSession
                         timedService.ObserveCallbackWrite=w=>{RecordLatch();ObserveLampCallbackWrite?.Invoke(w);};
                         timedService.ObserveCallbackComplete=_=>Callbacks++;
                     }
+                    if(timedService is not null){
                     bool scanning=timedService.ScanAddress is not null;timedService.AdvanceTo(Cycle);
                     if(scanning && timedService.ScanAddress is null)Scans++;
                     if(timedService.Completed){
                         timedService.Dispose();timedService=null;
-                        if(reelMotion is not null) {
+                        bool idle=(Machine.Memory[0x6B]&0x80)==0;
+                        if(!idle && reelMotion is null)throw new NotSupportedException("Active motor service needs the selected game motion adapter");
+                        if(!idle && reelMotion is not null) {
+                            // Retained active motor-body timing adapter. Only its
+                            // existing translated effects are atomic; no duration
+                            // is invented for unrecovered6407 onward here.
                             reelMotion.Service((_,_)=>reelHardware!.ReadOptics(),stream=>scheduler.Queue(stream));
-                            if(motionInitializing){reelMotion.Activate();motionInitializing=false;motionNativeReady=true;}
                         }
-                        Machine.WriteWord(0x2D,Cell.Add(Machine.ReadWord(0x2D),1));Machine.WriteWord(0x2F,Cell.Add(Machine.ReadWord(0x2F),1));
-                        Machine.Memory[0x33]=unchecked((byte)(Machine.Memory[0x33]+1));
-                        if(Machine.ReadWord(0x35)!=0)Machine.WriteWord(0x35,Cell.Subtract(Machine.ReadWord(0x35),1));
+                        postPanel=new(Machine,Cycle,()=>reelHardware?.ReadOptics() ?? (byte)0,includeIdleMotor:idle);
+                        postPanel.ObserveInstruction=i=>ObservePostPanelInstruction?.Invoke(i);
+                    }
+                    }
+                    if(postPanel is not null){postPanel.AdvanceTo(Cycle);if(postPanel.Completed){
+                        postPanel.Dispose();postPanel=null;
+                        if(motionInitializing){reelMotion!.Activate();motionInitializing=false;motionNativeReady=true;}
                         scheduler.AdvanceTicks(1);Machine.Memory[0x2C]=0;
                         if(++serviceIndex==services.Count){serviceIndex=0;serviceEpoch=checked(serviceEpoch+servicePeriod);}
-                    }
+                    }}
                 }
                 if(nextVm==next) {
                     // A generated scan may outlast the captured outer occupancy
                     // when current state takes a different native path. VM work
                     // cannot run inside it; wait for actual instruction progress.
-                    if(timedService is not null){nextVm=timedService.NextEventCycle;continue;}
+                    if(timedService is not null || outerDispatch is not null || postPanel is not null){nextVm=postPanel?.NextEventCycle ?? outerDispatch?.NextEventCycle ?? timedService!.NextEventCycle;continue;}
 
                     if(--budget==0)throw new InvalidOperationException("Live dispatch budget exceeded");
                     var instruction=executor.NextInstruction!;

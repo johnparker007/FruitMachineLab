@@ -1,0 +1,16 @@
+{
+  "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-post-panel-6ba16bb82bdc48a5b1578aaed9812560",
+  "debug_sha256": "E76FA01298642D457F8F355083E4B0EF528CE91D4976B6A61E7D842530209113",
+  "cases_sha256": "3E0F42F8742B11FA1A23C2C2E73C3298D7D46715D110C0194A4B375D8D1DC212",
+  "rom_sha1": "402D1518BB78FDC489B06C2AABC771E5CE151847",
+  "provenance": {
+    "classification": "Synthetic bounded280F counter/sense native calls; IRQ/FIRQ masked, RAM/IC4 output latch injected, ROM unpatched. Stops before2851 stack/alarm guards; no full outer-IRQ claim",
+    "mame_sha256": "0FCE5A88DF4F9D9B1FBF1405812C00848036E615993780978D967DA34204CB7A"
+  },
+  "cases": 64,
+  "excluded": {
+    "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-post-panel-5b4ce9456e7f4e0fb058fefbe689f7bb",
+    "debug_sha256": "2181F09FA451CC1D0138E281B844083A8AAE397FF2F7489007CD55B8BE9274A8",
+    "reason": "Initial debugger injection used b@A/b@B, interpreted as register addresses instead of literal RAM0A/0B. Invalid matrix; replaced with explicit0x addresses."
+  }
+}

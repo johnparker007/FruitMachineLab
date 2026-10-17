@@ -422,6 +422,26 @@
     "verification": "skill-cash/pia-service-timing-verification.json",
     "scope": "Natural19-window instruction acceptance, generated19-cycle entry, selected128-cycle dispatch, generated callback/26-cycle epilogue and resumed panel service through280C.20 PIA bus accesses and354 unchanged timer-state samples.",
     "removed_live_dependency": "timer-deadlines.json is no longer loaded. Scan return/arm/callback timestamps remain unused. One entry hardware checkpoint seeds continuous timer phase; no per-arm recorded phase or handler entry.",
-    "remaining": "Recorded scan entry, outer IRQ occupancy and remaining VM native-word costs; atomic post280C motor/counter/scheduler adapter. Selected bank0/control00/63,40-cycle latch, inactive AUX2 coin pins; no full CPU priority/startup/PIA handshake model."
+    "remaining": "Accepted outer timer1 entry/occupancy and remaining VM native costs; active motor/sound and post2851 guards/scheduler. Scan entry now generated from selected dispatch; counter/sense suffix is staged."
+  },
+  "generated_outer_dispatch": {
+    "implementation": "src/FruitMachineLab.Runtime/Mpu4Timer1DispatchExecution.cs",
+    "evidence": [
+      "skill-cash/timer1-dispatch-timing.json",
+      "skill-cash/timer1-guard-timing.json",
+      "skill-cash/ptm-outer-timing.json"
+    ],
+    "scope": "65-cycle selected FE70 timer1 dispatch to28FE, or112 with ignored SWI2 stack guard;64 injected native cases,19 natural normal prefixes and60 passive natural guard frames",
+    "native_regions": "FE66..FEB9;719C=00;SWI2 vectorFFF4=FE66",
+    "removed_dependency": "Live no longer consumes shared-timing Events. Existing cpu-interrupts export now preserves6103 accepted timer1 handler entries in addition to6045 interval unions, including nested services.",
+    "remaining": "Accepted outer IRQ entry/occupancy still captured; current logical VM U supplied by host. Temporary native U inside atomic helper/sound execution is unresolved and may differ from natural guarded frames; no per-entry captured operand injection."
+  },
+  "post_panel_execution": {
+    "implementation": "src/FruitMachineLab.Runtime/Mpu4PostPanelExecution.cs",
+    "evidence": "skill-cash/post-panel-timing.json",
+    "verification": "skill-cash/post-panel-timing-verification.json",
+    "native_regions": "280C..2850 plus6402..6406 idle return",
+    "scope": "64 synthetic counter/sense calls and19 natural idle suffixes. Live stages22-cycle idle motor call, counters2D/2F/31/33/timer35 and IC4 bit0 sense. Counter31 retains0100/7FFF holds, byte wrap and sampled level semantics.",
+    "remaining": "Busy6407 motor body remains existing atomic adapter under captured occupancy.2851 stack/alarm guard and following FEC3..6B4D/58BB/5CD0 scheduler service remain explicit boundaries."
   }
 }

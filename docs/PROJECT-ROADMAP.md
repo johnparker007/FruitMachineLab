@@ -1,5 +1,12 @@
 # Project direction and handoff
 
+17 October next boundary removed: shared scan-entry event timestamps. FE70
+dispatch now generates scan entry; idle motor/counter/sense suffix is staged.
+Next recover2851 validation and FEC3 watchdog/meter/sound service so outer IRQ
+occupancy/acceptance can be generated. Temporary native U inside sound processing
+must be represented before claiming exact ignored-SWI2 timing in arbitrary Live
+paths. Existing physical-input gameplay remains the regression target.
+
 17 October autonomous-timing milestone: remove recorded timer3 IRQ entry from
 Live (done). Next stage the post280C motor/counter/scheduler service and outer
 IRQ ownership/VM instruction boundaries, then remove recorded scan-entry and

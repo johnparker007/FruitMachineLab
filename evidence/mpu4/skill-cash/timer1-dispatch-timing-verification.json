@@ -1,0 +1,16 @@
+{
+  "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-timer1-dispatch-f2f8983d56da4c869373f0697cc5beb5",
+  "debug_sha256": "A1A560DDDD04B5BF0612CDBDD43CAD777C08CBD3A1F55CA74A2DA22FA768832B",
+  "cases_sha256": "3228662DC5A733712069A122A1BB61917A4679919733A88BC89F7F3A8AB5A182",
+  "rom_sha1": "402D1518BB78FDC489B06C2AABC771E5CE151847",
+  "provenance": {
+    "classification": "Synthetic original timer1 FE70 dispatch; bank0/noIC4, masked CPU IRQ/FIRQ, injected saved-U frame and pending timer1 flag from hardware control02/latch1 (IRQ disabled to prevent recursive short-period IRQ after ANDCC). SWI2 handler and ROM option unpatched. Stop before28FE",
+    "mame_sha256": "0FCE5A88DF4F9D9B1FBF1405812C00848036E615993780978D967DA34204CB7A"
+  },
+  "cases": 64,
+  "excluded": {
+    "source_run": "C:\\Users\\John\\AppData\\Local\\Temp\\FruitMachineLab-timer1-dispatch-9d096f1139b44e98990f59c64fec052d",
+    "debug_sha256": "CC97AC27BBBC2860F4B911BF6E42F39447DFCA2EE9AFA708F3FBA1A20379BE4E",
+    "reason": "Initial latch1/control42 experiment allowed repeated physical IRQs after native ANDCC, preempting the selected isolated path. Owned run aborted; accepted experiment keeps the flag but disables timer1 IRQ with control02."
+  }
+}

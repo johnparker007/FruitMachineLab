@@ -5,6 +5,13 @@ Local clone: C:\projects\GitRepos\FruitMachineLab
 
 ## Current status
 
+Live no longer consumes shared-timing Events (including scan-entry timestamps).
+Timer1 dispatch and idle post-panel counter/sense work are staged; accepted
+outer IRQ entry/occupancy and active motor/sound work remain explicit adapters.
+New captures: Capture-/Curate-PostPanelTiming.ps1 and Timer1DispatchTiming.ps1.
+Natural ignored SWI2 evidence: Capture-SkillCash -FullFeature -PtmInstructionTiming,
+then Curate-Timer1GuardTiming.ps1. See CURRENT-HANDOFF.md for scopes/excluded runs.
+
 Live now generates timer3 assertion/acceptance/entry/callback/return locally;
 timer-deadlines.json is no longer a Live dependency. Remaining outer scan/VM
 pacing adapters are explicit. Reproduce natural PIA checkpoints with

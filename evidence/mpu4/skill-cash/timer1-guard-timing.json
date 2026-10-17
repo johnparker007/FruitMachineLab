@@ -1,0 +1,545 @@
+{
+  "classification": "Natural original full Skill Cash campaign, passive FE66 observer. All60 ignored SWI2 returns match independently retained112-cycle entry-to-scan observations.354 original timer samples unchanged. Saved U and SWI return frame observed without hardware-register reads.",
+  "rows": [
+    {
+      "handler_cycle": 3511912894,
+      "vector_cycle": 3511912971,
+      "saved_u": 36597,
+      "swi_saved_s": 1884,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3511913006
+    },
+    {
+      "handler_cycle": 3512091825,
+      "vector_cycle": 3512091902,
+      "saved_u": 36597,
+      "swi_saved_s": 1884,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3512091937
+    },
+    {
+      "handler_cycle": 3512270755,
+      "vector_cycle": 3512270832,
+      "saved_u": 36597,
+      "swi_saved_s": 1878,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3512270867
+    },
+    {
+      "handler_cycle": 3512449691,
+      "vector_cycle": 3512449768,
+      "saved_u": 36615,
+      "swi_saved_s": 1863,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3512449803
+    },
+    {
+      "handler_cycle": 3512628621,
+      "vector_cycle": 3512628698,
+      "saved_u": 36615,
+      "swi_saved_s": 1884,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3512628733
+    },
+    {
+      "handler_cycle": 3512807554,
+      "vector_cycle": 3512807631,
+      "saved_u": 36615,
+      "swi_saved_s": 1862,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3512807666
+    },
+    {
+      "handler_cycle": 3512986486,
+      "vector_cycle": 3512986563,
+      "saved_u": 36615,
+      "swi_saved_s": 1863,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3512986598
+    },
+    {
+      "handler_cycle": 3518753603,
+      "vector_cycle": 3518753680,
+      "saved_u": 36597,
+      "swi_saved_s": 1882,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3518753715
+    },
+    {
+      "handler_cycle": 3518973826,
+      "vector_cycle": 3518973903,
+      "saved_u": 36615,
+      "swi_saved_s": 1880,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3518973938
+    },
+    {
+      "handler_cycle": 3519194049,
+      "vector_cycle": 3519194126,
+      "saved_u": 36615,
+      "swi_saved_s": 1884,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3519194161
+    },
+    {
+      "handler_cycle": 3519414273,
+      "vector_cycle": 3519414350,
+      "saved_u": 36594,
+      "swi_saved_s": 1863,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3519414385
+    },
+    {
+      "handler_cycle": 3519634497,
+      "vector_cycle": 3519634574,
+      "saved_u": 36597,
+      "swi_saved_s": 1861,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3519634609
+    },
+    {
+      "handler_cycle": 3519854723,
+      "vector_cycle": 3519854800,
+      "saved_u": 36614,
+      "swi_saved_s": 1880,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3519854835
+    },
+    {
+      "handler_cycle": 3520074943,
+      "vector_cycle": 3520075020,
+      "saved_u": 36615,
+      "swi_saved_s": 1884,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3520075055
+    },
+    {
+      "handler_cycle": 3520295171,
+      "vector_cycle": 3520295248,
+      "saved_u": 36594,
+      "swi_saved_s": 1878,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3520295283
+    },
+    {
+      "handler_cycle": 3520515391,
+      "vector_cycle": 3520515468,
+      "saved_u": 36597,
+      "swi_saved_s": 1861,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3520515503
+    },
+    {
+      "handler_cycle": 3520735618,
+      "vector_cycle": 3520735695,
+      "saved_u": 36615,
+      "swi_saved_s": 1886,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3520735730
+    },
+    {
+      "handler_cycle": 3520955841,
+      "vector_cycle": 3520955918,
+      "saved_u": 36615,
+      "swi_saved_s": 1861,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3520955953
+    },
+    {
+      "handler_cycle": 3521176066,
+      "vector_cycle": 3521176143,
+      "saved_u": 36594,
+      "swi_saved_s": 1886,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3521176178
+    },
+    {
+      "handler_cycle": 3521396288,
+      "vector_cycle": 3521396365,
+      "saved_u": 36597,
+      "swi_saved_s": 1878,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3521396400
+    },
+    {
+      "handler_cycle": 3521616516,
+      "vector_cycle": 3521616593,
+      "saved_u": 36614,
+      "swi_saved_s": 1884,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3521616628
+    },
+    {
+      "handler_cycle": 3521836737,
+      "vector_cycle": 3521836814,
+      "saved_u": 36615,
+      "swi_saved_s": 1878,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3521836849
+    },
+    {
+      "handler_cycle": 3522056964,
+      "vector_cycle": 3522057041,
+      "saved_u": 36594,
+      "swi_saved_s": 1886,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3522057076
+    },
+    {
+      "handler_cycle": 3522277184,
+      "vector_cycle": 3522277261,
+      "saved_u": 36597,
+      "swi_saved_s": 1882,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3522277296
+    },
+    {
+      "handler_cycle": 3522497408,
+      "vector_cycle": 3522497485,
+      "saved_u": 36614,
+      "swi_saved_s": 1863,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3522497520
+    },
+    {
+      "handler_cycle": 3522717633,
+      "vector_cycle": 3522717710,
+      "saved_u": 36615,
+      "swi_saved_s": 1876,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3522717745
+    },
+    {
+      "handler_cycle": 3522937856,
+      "vector_cycle": 3522937933,
+      "saved_u": 36594,
+      "swi_saved_s": 1880,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3522937968
+    },
+    {
+      "handler_cycle": 3523158083,
+      "vector_cycle": 3523158160,
+      "saved_u": 36597,
+      "swi_saved_s": 1880,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3523158195
+    },
+    {
+      "handler_cycle": 3523378308,
+      "vector_cycle": 3523378385,
+      "saved_u": 36614,
+      "swi_saved_s": 1863,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3523378420
+    },
+    {
+      "handler_cycle": 3523598532,
+      "vector_cycle": 3523598609,
+      "saved_u": 36615,
+      "swi_saved_s": 1884,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3523598644
+    },
+    {
+      "handler_cycle": 3523818756,
+      "vector_cycle": 3523818833,
+      "saved_u": 36594,
+      "swi_saved_s": 1863,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3523818868
+    },
+    {
+      "handler_cycle": 3524038976,
+      "vector_cycle": 3524039053,
+      "saved_u": 36597,
+      "swi_saved_s": 1861,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3524039088
+    },
+    {
+      "handler_cycle": 3524259203,
+      "vector_cycle": 3524259280,
+      "saved_u": 36615,
+      "swi_saved_s": 1878,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3524259315
+    },
+    {
+      "handler_cycle": 3524479425,
+      "vector_cycle": 3524479502,
+      "saved_u": 36615,
+      "swi_saved_s": 1882,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3524479537
+    },
+    {
+      "handler_cycle": 3528078711,
+      "vector_cycle": 3528078788,
+      "saved_u": 34575,
+      "swi_saved_s": 1876,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3528078823
+    },
+    {
+      "handler_cycle": 3528171616,
+      "vector_cycle": 3528171693,
+      "saved_u": 34575,
+      "swi_saved_s": 1882,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3528171728
+    },
+    {
+      "handler_cycle": 3528336790,
+      "vector_cycle": 3528336867,
+      "saved_u": 34575,
+      "swi_saved_s": 1884,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3528336902
+    },
+    {
+      "handler_cycle": 3528436573,
+      "vector_cycle": 3528436650,
+      "saved_u": 34575,
+      "swi_saved_s": 1878,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3528436685
+    },
+    {
+      "handler_cycle": 3528601741,
+      "vector_cycle": 3528601818,
+      "saved_u": 34575,
+      "swi_saved_s": 1880,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3528601853
+    },
+    {
+      "handler_cycle": 3528694654,
+      "vector_cycle": 3528694731,
+      "saved_u": 34575,
+      "swi_saved_s": 1882,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3528694766
+    },
+    {
+      "handler_cycle": 3528863257,
+      "vector_cycle": 3528863334,
+      "saved_u": 34575,
+      "swi_saved_s": 1876,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3528863369
+    },
+    {
+      "handler_cycle": 3528956170,
+      "vector_cycle": 3528956247,
+      "saved_u": 34575,
+      "swi_saved_s": 1880,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3528956282
+    },
+    {
+      "handler_cycle": 3529121338,
+      "vector_cycle": 3529121415,
+      "saved_u": 34575,
+      "swi_saved_s": 1880,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3529121450
+    },
+    {
+      "handler_cycle": 3529214243,
+      "vector_cycle": 3529214320,
+      "saved_u": 34570,
+      "swi_saved_s": 1882,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3529214355
+    },
+    {
+      "handler_cycle": 3529217681,
+      "vector_cycle": 3529217758,
+      "saved_u": 34577,
+      "swi_saved_s": 1880,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3529217793
+    },
+    {
+      "handler_cycle": 3529379410,
+      "vector_cycle": 3529379487,
+      "saved_u": 34570,
+      "swi_saved_s": 1882,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3529379522
+    },
+    {
+      "handler_cycle": 3529382848,
+      "vector_cycle": 3529382925,
+      "saved_u": 34577,
+      "swi_saved_s": 1880,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3529382960
+    },
+    {
+      "handler_cycle": 3529472314,
+      "vector_cycle": 3529472391,
+      "saved_u": 34575,
+      "swi_saved_s": 1881,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3529472426
+    },
+    {
+      "handler_cycle": 3529475756,
+      "vector_cycle": 3529475833,
+      "saved_u": 34577,
+      "swi_saved_s": 1878,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3529475868
+    },
+    {
+      "handler_cycle": 3529637485,
+      "vector_cycle": 3529637562,
+      "saved_u": 34575,
+      "swi_saved_s": 1881,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3529637597
+    },
+    {
+      "handler_cycle": 3529640927,
+      "vector_cycle": 3529641004,
+      "saved_u": 34577,
+      "swi_saved_s": 1878,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3529641039
+    },
+    {
+      "handler_cycle": 3529730395,
+      "vector_cycle": 3529730472,
+      "saved_u": 34575,
+      "swi_saved_s": 1876,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3529730507
+    },
+    {
+      "handler_cycle": 3529895561,
+      "vector_cycle": 3529895638,
+      "saved_u": 34575,
+      "swi_saved_s": 1876,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3529895673
+    },
+    {
+      "handler_cycle": 3529988467,
+      "vector_cycle": 3529988544,
+      "saved_u": 34575,
+      "swi_saved_s": 1882,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3529988579
+    },
+    {
+      "handler_cycle": 3530153639,
+      "vector_cycle": 3530153716,
+      "saved_u": 34575,
+      "swi_saved_s": 1880,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3530153751
+    },
+    {
+      "handler_cycle": 3530246544,
+      "vector_cycle": 3530246621,
+      "saved_u": 34570,
+      "swi_saved_s": 1882,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3530246656
+    },
+    {
+      "handler_cycle": 3530249983,
+      "vector_cycle": 3530250060,
+      "saved_u": 34577,
+      "swi_saved_s": 1882,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3530250095
+    },
+    {
+      "handler_cycle": 3530411708,
+      "vector_cycle": 3530411785,
+      "saved_u": 34570,
+      "swi_saved_s": 1882,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3530411820
+    },
+    {
+      "handler_cycle": 3530415155,
+      "vector_cycle": 3530415232,
+      "saved_u": 34577,
+      "swi_saved_s": 1880,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3530415267
+    },
+    {
+      "handler_cycle": 3530514939,
+      "vector_cycle": 3530515016,
+      "saved_u": 34575,
+      "swi_saved_s": 1876,
+      "return_pc": 65207,
+      "option": 0,
+      "generated_scan_cycle": 3530515051
+    }
+  ]
+}

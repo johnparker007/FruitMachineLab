@@ -206,8 +206,8 @@
   },
   {
     "path": "docs/recovery/PTM-CLOCK-FOUNDATION-PASS.md",
-    "bytes": 97694,
-    "sha256": "66ABB182683BA12389ECD7188BBC9C22B8357173B6DB50193D66A56A50250BA0"
+    "bytes": 104252,
+    "sha256": "6A26CF3E288A07A5185790B3E33CC4A418A97B17688D7F78873769B2D615B493"
   },
   {
     "path": "docs/recovery/README.txt",
@@ -356,13 +356,13 @@
   },
   {
     "path": "evidence/mpu4/maps/irq-service-data.json",
-    "bytes": 1677,
-    "sha256": "81BE96FF7C265E12DB64ED9809131C1EB83EB71DBB1AD2A9C0F31596D7188646"
+    "bytes": 1696,
+    "sha256": "632BC0B18CF012C4C09061AB22462BF986CEE49A11B9918DC4D2DB6CCF842058"
   },
   {
     "path": "evidence/mpu4/maps/mame-timing-source.json",
-    "bytes": 21833,
-    "sha256": "F2DF8E5E7DB2E5225CB1666DD84BD39A3031F56343526C71E0D5CED9391D149B"
+    "bytes": 23556,
+    "sha256": "141049BD1822A65AB52EEED52A4E5364B9B4D9F20EDBD11C712EC4699A5F5F27"
   },
   {
     "path": "evidence/mpu4/maps/nudge-availability-data.json",
@@ -1676,8 +1676,8 @@
   },
   {
     "path": "evidence/mpu4/skill-cash/cpu-interrupts.json",
-    "bytes": 99751,
-    "sha256": "1A44238D763DE69060DE37F4AB3F9BD97C0723694D6B3801AB2076BD30C11879"
+    "bytes": 151640,
+    "sha256": "9E6BAC24A0FC5222742B1A1B359D11B79599AEB972EEFE9411A66FE8BD92CDEC"
   },
   {
     "path": "evidence/mpu4/skill-cash/debugger.cmd",
@@ -2685,6 +2685,16 @@
     "sha256": "B61DC1B885221DF287673153DA0944C78865B3B4E06E0D1DCBB6419AB27AECD6"
   },
   {
+    "path": "evidence/mpu4/skill-cash/post-panel-timing-verification.json",
+    "bytes": 1091,
+    "sha256": "1363D0E476CE580EE6874D6787D326356648529BCBFE125549F0EAC7E82E84AE"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/post-panel-timing.json",
+    "bytes": 205509,
+    "sha256": "8716336978AB690AF23AA7435FA4C39E0FADEA445D1CCBA823A8EADEA9E2F31B"
+  },
+  {
     "path": "evidence/mpu4/skill-cash/ptm-instruction-boundaries-verification.json",
     "bytes": 3804,
     "sha256": "8D0DEB3F1378C28EC2478DFA120AE8DA42745471D084BDB34013FCE7EC7A0EA6"
@@ -2786,8 +2796,8 @@
   },
   {
     "path": "evidence/mpu4/skill-cash/ptm-skill-cpu.lua",
-    "bytes": 5934,
-    "sha256": "8E6C97B5DACBD8FA20931D066C7A5A4265583589C955274F8AFFB7E942CA9B51"
+    "bytes": 6932,
+    "sha256": "AB9C8E61CEC1E1DE69F43E5CB95EF531DCFE47C3045DFDE531F25147F82E03D0"
   },
   {
     "path": "evidence/mpu4/skill-cash/reel-request-matrix.json",
@@ -2903,6 +2913,26 @@
     "path": "evidence/mpu4/skill-cash/timer-deadlines.json",
     "bytes": 158937,
     "sha256": "C5B7007A5594D198CF6F13186384D3756F420C1116E0B9B2B04DC028674048ED"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/timer1-dispatch-timing-verification.json",
+    "bytes": 1265,
+    "sha256": "3DB9EEBBD11A37453184E4DDA80D175EFD43A1BE39449F3244E4D359D2718621"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/timer1-dispatch-timing.json",
+    "bytes": 156312,
+    "sha256": "6DE1E8D989A3C11519FFF8352680507DF11858EB41A46EF202F9D677E1F70C37"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/timer1-guard-timing-verification.json",
+    "bytes": 3120,
+    "sha256": "EE3C37F174BD57801AD3DC56CC5A5D1329F17E9014E5B8DCD126C8409852BF6E"
+  },
+  {
+    "path": "evidence/mpu4/skill-cash/timer1-guard-timing.json",
+    "bytes": 13994,
+    "sha256": "41DA65F1E0DDD91EEEC6F08C3EE8E0CC0D4C42BB8C0B44D576785EA3D9E2C5E3"
   },
   {
     "path": "evidence/mpu4/skill-cash/vm-call-gateway-timing.json",

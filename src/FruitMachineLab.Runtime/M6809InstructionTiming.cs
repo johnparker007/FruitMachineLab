@@ -16,6 +16,7 @@ public static class M6809InstructionTiming
         {
             Require(bytes,2);
             if(op==0x11){result=bytes[1]==0x8C ? new(4,5) : throw new NotSupportedException("Only selected CMPS prefix11 timing is covered");}
+            else if(bytes[1]==0x3F)result=new(2,20); // ordinary SWI2 full frame/vector
             else if(bytes[1] is >=0x21 and <=0x2F){if(branchTaken is null)throw new NotSupportedException("Long conditional timing requires an explicit branch outcome");result=new(4,branchTaken.Value ? 6 : 5);}
             else if(bytes[1] is 0xAE or 0xAF or 0xA3){Require(bytes,3);var idx=Indexed(bytes[2]);result=new(3+idx.OperandBytes,(bytes[1]==0xA3 ? 7 : 6)+idx.ExtraCycles);}
             else result=bytes[1] switch {0x83 or 0x8C=>new(4,5),0x8E=>new(4,4),0x9E=>new(3,6),0xBE or 0xBF=>new(4,7),_=>throw new NotSupportedException($"MC6809 prefix10 timing for {bytes[1]:X2} is outside the selected paths")};
@@ -27,10 +28,10 @@ public static class M6809InstructionTiming
             for(int bit=0;bit<8;bit++)if((bytes[1]&(1<<bit))!=0)pushed+=bit<4 ? 1 : 2;
             result=new(2,5+pushed);
         }
-        else if(op is 0x30 or 0x31 or 0x32 or 0x33 or 0xA1 or 0xA3 or 0xA4 or 0xA6 or 0xA7 or 0xA8 or 0xAA or 0xE0 or 0xE1 or 0xE4 or 0xE5 or 0xE6 or 0xE7 or 0xEB or 0xAC or 0xAE or 0xAF or 0xAD or 0xEC or 0xED or 0xEE or 0xEF or 0x6A or 0x6D or 0x6E or 0x6F)
+        else if(op is 0x30 or 0x31 or 0x32 or 0x33 or 0xA1 or 0xA3 or 0xA4 or 0xA6 or 0xA7 or 0xA8 or 0xAA or 0xE0 or 0xE1 or 0xE4 or 0xE5 or 0xE6 or 0xE7 or 0xEB or 0xAC or 0xAE or 0xAF or 0xAD or 0xEC or 0xED or 0xEE or 0xEF or 0x6A or 0x6C or 0x6D or 0x6E or 0x6F)
         {
             Require(bytes,2);var indexed=Indexed(bytes[1]);
-            int basis=op is 0xAE or 0xAF or 0xEC or 0xED or 0xEE or 0xEF ? 5 : op==0xAD ? 7 : op is 0xA3 or 0x6A or 0x6D or 0x6F or 0xAC ? 6 : op==0x6E ? 3 : 4;
+            int basis=op is 0xAE or 0xAF or 0xEC or 0xED or 0xEE or 0xEF ? 5 : op==0xAD ? 7 : op is 0xA3 or 0x6A or 0x6C or 0x6D or 0x6F or 0xAC ? 6 : op==0x6E ? 3 : 4;
             result=new(2+indexed.OperandBytes,basis+indexed.ExtraCycles);
         }
         else result=op switch {

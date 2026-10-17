@@ -11,6 +11,20 @@ local function sample(event,address,data)
  f:write(string.format('%s,%04X,%04X,%02X,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%02X,%04X,%04X,%04X\n',event,cpu.state['PC'].value,address,data,m.time.seconds,m.time.attoseconds,item(ptm,'m_output',2),item(ptm,'m_control_reg',0),item(ptm,'m_control_reg',1),item(ptm,'m_control_reg',2),item(ptm,'m_latch',2),item(ptm,'m_counter',2),item(ptm,'m_enabled',2),item(ptm,'m_single_fired',2),item(ptm,'m_status_reg'),item(ptm,'m_status_read_since_int'),item(ptm,'m_irq'),item(ptm,'m_gate',2),item(ptm,'m_clk',2),item(cpu,'m_irq_line'),cpu.state['CC'].value,s,resume,cpu.state['Y'].value))
 end
 local function install()
+local guards=assert(io.open('timer1-swi2.csv','w'));guards:setvbuf('no')
+guards:write('seconds,attoseconds,s,returnpc,savedu,registeru,option\n')
+local guardActive=false
+_G.fml_timer1_guard_scope=mem:install_read_tap(0xfc,0xfc,'fml-timer1-guard-scope',function(address,data)
+ if _G.fml_ptm_observer_read or cpu.state['PC'].value~=0xfd then return end
+ if cpu.state['Y'].value==0xc721 then guardActive=true end
+ if cpu.state['Y'].value==0xc767 then guardActive=false end
+end)
+_G.fml_timer1_guard=mem:install_read_tap(0xfe66,0xfe66,'fml-timer1-guard',function(address,data)
+ if not guardActive or _G.fml_ptm_observer_read or cpu.state['PC'].value~=0xfe67 then return end
+ local s=cpu.state['S'].value
+ _G.fml_ptm_observer_read=true;local ret=mem:read_u16(s+10);local saved=mem:read_u16(s+20);local option=mem:read_u8(0x719c);_G.fml_ptm_observer_read=false
+ guards:write(string.format('%d,%d,%04X,%04X,%04X,%04X,%02X\n',m.time.seconds,m.time.attoseconds,s,ret,saved,cpu.state['U'].value,option))
+end)
 -- Passive device-state checkpoint: read save-state items and ordinary RAM,
 -- never read a PIA register merely to observe it (that would acknowledge IRQs).
 local pf=assert(io.open('pia-service.csv','w'));pf:setvbuf('no')

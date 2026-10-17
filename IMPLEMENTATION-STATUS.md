@@ -1,5 +1,12 @@
 # Implementation and evidence boundaries
 
+Live scan entry is now generated from selected FE70 timer1 dispatch, rather than
+shared-timing Events. Normal65-cycle and ignored-SWI2 112-cycle paths are verified;
+60 natural guard frames preserve the original signed-ROM-pointer quirk. Idle
+motor return and post-panel counters/sense are staged. Accepted outer IRQ entry,
+occupancy, active motor/sound bodies and temporary native register state remain
+explicit timing/state adapters. This is not yet whole-machine autonomous timing.
+
 Live timer3 delivery is now generated: continuous phase clock, instruction-boundary
 acceptance, IRQ entry, dispatch, lamp callback and return. timer-deadlines.json is
 no longer loaded. The connected service matches19 natural windows through280C,

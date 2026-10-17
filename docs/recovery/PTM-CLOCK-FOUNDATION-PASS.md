@@ -1,5 +1,98 @@
 # MC6840 timer clock foundation and phase findings
 
+## 17 October: generated outer dispatch and post-panel counters
+
+Live no longer consumes any shared-timing Events, including scan entry. Its
+retained accepted outer IRQ entry now starts `Mpu4Timer1DispatchExecution`, which
+generates FE70..FEB7 and28FE entry from original native instruction costs. Bank0,
+no IC4 priority, no timer2 priority and pending timer1 remain explicit contracts.
+The original cpu-interrupts export now retains6103 timer1_handler_entries in
+addition to6045 interval unions; union merging had hidden58 nested timer1 services.
+Existing intervals, cost dictionaries, initial/duration/busy cycles, entry and
+depth fields were checked unchanged on export. No duplicate timeline system was
+created. Accepted outer IRQ timing is STILL observational, not generated hardware
+assertion/CPU acceptance, and the new dispatch must not be described otherwise.
+
+The ordinary dispatch costs65 cycles. Saved U at8,S is compared SIGNED against
+0525; a failed BGE executes original FEB5 SWI2. With ROM719C=00, its vectorFFF4
+pointsFE66: LDA719C, BITA01, untaken LBNE, full RTI toFEB7. SWI2 costs20 cycles,
+the selected handler27 more, so scan entry is112 cycles. This preserves an odd
+but real reference behaviour: valid temporary ROM pointers in U (e.g.8EF5) are
+negative for this check, but the configured software-interrupt handler ignores
+the alarm. No unsigned comparison, skipped software interrupt or patched ROM.
+The enabled719C alarm path remains an explicit unsupported boundary. Full native
+S-frame/register writes/restoration are an owner contract, not a6809 interpreter.
+
+64 isolated original-ROM dispatch cases match every address/opcode, instruction
+start/completion, native final S and saved-U frame, covering65/112 and signed
+threshold extremes. A pending timer1 flag is established with control02/latch1;
+its IRQ enable is deliberately OFF so ANDCC does not recursively accept repeated
+one-tick physical IRQs. This is a labelled synthetic code-path experiment, not
+a claim to naturally enter a handler with IRQ disabled. An initial control42
+experiment did recurse after ANDCC, was aborted, and is excluded with raw hash.
+Nineteen existing natural normal prefixes independently match all instruction
+times, without captured scan entry serving as the execution schedule.
+
+A new PASSIVE full-feature observation records FE66 opcode fetch, actual saved
+outer U, current CPU U, SWI saved return and ROM option. It uses ordinary RAM and
+CPU state, not extra hardware-register reads. All60 natural112-cycle dispatches
+match: FE66 starts handler+77, saved returnFEB7, option00 and equal saved/current
+ROM U pointers. The354 original timer samples retain their identical SHA256.
+Curate-Timer1GuardTiming.ps1 joins these observations to the independent original
+IRQ/scan log and rejects count, phase, timing or frame mismatches. These records
+are proof data, not operands injected into Live.
+
+Live's accepted-entry adapter currently supplies its mapped logical VM U. It
+does NOT reconstruct temporary native U inside atomic sound/motor helpers or
+inject captured U to reproduce those60 frames. Consequently this is not a full
+native-frame/timing equivalence claim. Reconstructing CPU ownership/register
+state while staging sound execution is a prerequisite for exact arbitrary-entry
+guard timing and eventual removal of accepted-entry/occupancy templates.
+
+`Mpu4PostPanelExecution` now generates280F..2851 counter/sense work. It preserves
+16-bit wrap at2D/2F, INC33 byte wrap, nonzero35 countdown, and31's original holds:
+increment candidates0101/8000 are not stored, leaving0100/7FFF unchanged. The old
+atomic adapter omitted31; it is now recovered behaviour, not a ROM bug fix.
+2837 reads actual IC4 portB through a device callback. LSRA samples undercurrent
+bit0; with clear sense, zero filter stays zero and1..3 clears; otherwise the
+selected byte8+column increments with byte wrap. Live's selected ordinary-machine
+sense model leaves undercurrent inactive, while keeping the dynamic optic upper
+bits. Arbitrary electrical fault/current-sense generation is not implemented.
+Effects occur at generated instruction completion; this is not a per-byte RAM
+bus simulator. State is preserved if paused between LEAX and STX or read/store.
+
+The idle motor predecessor is generated too: JSR6403/TST6B/BPL6402/RTS takes22
+cycles. Busy6407 onward still invokes the existing atomic translated game adapter
+under retained outer occupancy, without inventing a motor-body duration. The
+post-panel kernel then stages its known instructions from that explicit boundary.
+It stops before2851 stack/alarm validation. FEC3 watchdog/meter/sound service and
+native sound task timing remain later boundaries; scheduler tick/2C cleanup are
+still an explicit adapter after this generated suffix. Active motor service with
+no game adapter stops rather than silently pretending the body is implemented.
+
+64 new injected native counter/sense cases verify exact encodings/times and RAM,
+including wraps/held limits and both sense levels.19 natural idle suffixes match
+every instruction start/completion. The first synthetic matrix used debugger
+b@A/b@B as register addresses rather than literal0A/0B; it is excluded with hash,
+and the reproducible script now uses explicit0x addresses. New exact ROM regions,
+SWI2 vector/options, implementation links and qualification fields extend the
+existing timing-source map and curated evidence conventions. Ghidra export
+access remains unavailable; no assembler/compiler/editor tooling was introduced.
+
+The Live mutation test removes all shared event rows AND the timer3 deadline
+file, and compares RAM, output events and VM counts. Live Pause is also checked
+between a post-panel LEAX and its STX. Reference-time player inputs still match
+18 VM/frame/accounting checkpoints,44 alpha states and final lamp frames; poll
+count145687→145627 and duration12.317→12.316 virtual seconds remain documented
+differences, not rebased full-state equivalence. The synthetic jackpot duration
+is23.781 seconds (previous23.777), with unchanged award. Next stage2851/FEC3 and
+watchdog/meter/sound CPU ownership, active motor paths and remaining VM native
+work before removing accepted outer entry/occupancy. No user installations,
+configuration, ROMs, original workspace, MAME checkout/settings or Ghidra changed.
+Final validation:257 full headless groups pass; both solution builds have zero
+warnings/errors. All eight WPF modes pass.1121 curated entries verify and
+whitespace check passes. All owned MAME/GUI/verification processes exited.
+
 ## 17 October: generated timer3 acceptance connected to Live
 
 Live now runs `Mpu4TimedPanelService`: generated28FE scan, FEBA/27D2 input,

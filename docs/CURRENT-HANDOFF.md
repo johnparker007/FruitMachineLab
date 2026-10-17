@@ -1,5 +1,63 @@
 # Current handoff
 
+17 October outer-dispatch/counter milestone: Live no longer reads shared-timing
+Events, including scan entry. Mpu4Timer1DispatchExecution stages FE70→28FE from
+the still-retained ACCEPTED outer IRQ entry. Original cpu-interrupts export now
+preserves6103 timer1_handler_entries;6045 merged occupancy intervals had hidden
+58 nested timer1 services. Existing cost tables/occupancy fields were checked
+unchanged. This is a moved/generated boundary, NOT generated outer acceptance.
+
+Dispatch is65 cycles, or112 with native ignored SWI2 stack guard.64 injected
+native cases and19 natural normal prefixes match all encodings/times. A fresh
+passive full-feature observer independently confirms all60 natural ignored SWI2
+calls, with actual saved U/CPU U, full-frame returnFEB7, vectorFE66 and ROM719C00.
+SWI2=20 cycles, FE66 LDA/BITA/untakenLBNE/fullRTI=27 more. Original signed BGE
+guard sees ROM U pointers (e.g.8EF5) as negative; do not fix or bypass that quirk.
+The enabled719C alarm path remains unsupported. Natural60-frame proof and native
+64-case proof remain separate from Live's current logical VM U at the retained
+outer-entry adapter: temporary native U during atomic sound/motor helpers is
+NOT reconstructed. Live must not inject captured U operands to force a match.
+
+Mpu4PostPanelExecution now stages280F..2851 counter/sense service and optional
+22-cycle idle6403 call.64 native cases cover counter wrap,31's holds0100/7FFF,
+35 countdown and IC4 undercurrent bit0/filter byte8+column.19 natural idle
+suffixes match every instruction time. Live counter/sense updates are no longer
+atomic at panel completion; Pause between LEAX and STX is tested. Busy6407 motor
+body still uses the existing explicit atomic game adapter under retained CPU
+occupancy. No motor-body duration is invented; do not claim all motor timing is
+generated.2851 stack/alarm guards and FEC3/6B4D/58BB/5CD0 remain outside this owner.
+
+Reference-time player run still matches18 VM/frame/accounting checkpoints,44
+alpha states and final lamps. Poll count changed145687→145627, duration12.317→
+12.316 virtual seconds; these differences are retained/documented, not rebaselined
+into a full CPU-state/timing equivalence claim. The new source dispatch consumes
+logical VM U; restoring temporary native register/frame state inside sound
+helpers is coupled to the remaining atomic scheduler/outer acceptance work.
+
+Next priority: stage post2851 validation and FEC3 watchdog/meter/sound service,
+then active6407 motor/native VM CPU boundaries as needed to remove outer entry/
+occupancy. Timer1 hardware period alone does not establish instruction acceptance.
+Do not replace missing CPU boundaries with VM-token completion. Retain bank0/
+IC4/timer2 guards, no guessed software helper semantics, no captured operand
+substitution, no assembler/editor or unrelated recovery work.
+
+Reproduce Capture-/Curate-PostPanelTiming.ps1 and Timer1DispatchTiming.ps1
+(standard MameExecutable/RomDirectory/fresh RunDirectory; curator RunDirectory/
+RomPath). Both curators accept ExcludedRunDirectory. Invalid initial register-
+address injection and too-short enabled IRQ experiments are excluded with hashes.
+Capture-SkillCash -FullFeature -PtmInstructionTiming plus Curate-Timer1GuardTiming
+reproduce60 natural guards;354 previous timer samples retain their original hash.
+Temp pointers: FruitMachineLab-post-panel.txt, timer1-dispatch.txt,
+timer1-guard-natural.txt and outer-service-gui.txt. Final suite log prefix:
+FruitMachineLab-outer-service-final-suite.log. No installations/config changes,
+commits/pushes or original ROM/MAME/Ghidra/workspace changes.
+FINAL validation:257 full headless groups pass; both solution builds have zero
+warnings/errors. All eight WPF modes pass (nudge, availability, Skill Cash,
+jackpot, roll, link, board-cycle and playback).1121 curated entries verify;
+whitespace check passes. All owned MAME/GUI/verification processes exited.
+The initial too-short timer1 experiment was explicitly stopped by its owned
+process identity; it is excluded, and the accepted64-case run exits normally.
+
 17 October GENERATED TIMER3 LIVE milestone: Mpu4TimedPanelService now owns
 scan→FEBA input→438C panel and nested timer3 CPU ownership. Live no longer loads
 timer-deadlines.json or uses recorded timer3 handler entry. Continuous phase

@@ -316,3 +316,11 @@ unsupported-note synthetic check now uses a nonzero gate: rhythm was recovered,
 so rejecting it would no longer test a real gap. No reference behaviour changed.
 Raw pointer FruitMachineLab-sound-cancel.txt. Disabled/missing/middle cancellation
 timing variants remain separate from these selected found-head cases.
+
+AddersSoundResetPlan stages full5B77/60C8/5B8F, actual native S frames, task/channel
+free-list initialization, ROM5BCE register/value pairs through60AB and global
+pitch/choice/rate/volume reset.32 synthetic original-ROM paths compare all emitted
+cycles/bytes/full2KB RAM (including disabled return and cache-hit paths on repeated
+calls). Capture-SoundReset and curator -Operation reset preserve the data table
+separately from annotations. Direct STD timing now covered. Raw sound-reset.txt.
+No register/cache update is performed before its instruction completes.

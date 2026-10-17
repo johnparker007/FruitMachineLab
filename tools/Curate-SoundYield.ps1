@@ -1,4 +1,4 @@
-param([Parameter(Mandatory=$true)][string]$RunDirectory,[Parameter(Mandatory=$true)][string]$RomPath,[ValidateSet('yield','child','instrument','service','note','noteservice','callservice','rhythm','prompt','queue')][string]$Operation='yield')
+param([Parameter(Mandatory=$true)][string]$RunDirectory,[Parameter(Mandatory=$true)][string]$RomPath,[ValidateSet('yield','child','instrument','service','note','noteservice','callservice','rhythm','prompt','queue','reset')][string]$Operation='yield')
 $ErrorActionPreference='Stop';if((Get-Content "$RunDirectory/exit-code.txt" -Raw).Trim() -ne '0'){throw 'Incomplete capture'}
 if((Get-FileHash $RomPath -Algorithm SHA1).Hash -ne '402D1518BB78FDC489B06C2AABC771E5CE151847'){throw 'Wrong ROM'}
 $rom=[IO.File]::ReadAllBytes($RomPath);$cases=@(Get-Content "$RunDirectory/cases.json" -Raw|ConvertFrom-Json);$rows=[Collections.Generic.List[object]]::new();$catalog=[Collections.Generic.List[object]]::new();$indexes=@{};$active=$null;$id=0
@@ -8,6 +8,7 @@ if($Operation -eq 'callservice'){$entry=0x5CD0;$end=0x4C34;$stack=0x702;$count=2
 if($Operation -eq 'rhythm'){$entry=0x5D48;$count=120}
 if($Operation -eq 'prompt'){$entry=0x5CD0;$end=0x4C34;$stack=0x702;$count=128}
 if($Operation -eq 'queue'){$entry=0x5C18;$end=0x4C34;$stack=0x702;$count=32}
+if($Operation -eq 'reset'){$entry=0x5B77;$end=0x4C34;$stack=0x702;$count=32}
 foreach($line in Get-Content "$RunDirectory/debug.log"){
 if($line -match '(?i)^error '){throw 'Debugger error'};if($line -notmatch '^O([SIF]) '){continue};$kind=$Matches[1];$f=[ordered]@{};foreach($match in [regex]::Matches($line,'([a-z]+)=([0-9A-F]+)')){if($match.Groups[1].Value -ne 'bytes'){$f[$match.Groups[1].Value]=[Convert]::ToUInt64($match.Groups[2].Value,16)}}
 if($kind -eq 'S'){if($null -ne $active -or $f.pc -ne $entry){throw 'Wrong start'};$active=[ordered]@{case=$cases[$id];start_cycle=$f.cycle;steps=[Collections.Generic.List[object]]::new()}}
@@ -16,8 +17,9 @@ else{if($Operation -in @('note','rhythm')){$end=if($cases[$id].note -ge 0x60){0x
 if($null -ne $active -or $rows.Count -ne $count){throw 'Incomplete matrix'}
 $spans=@();switch($Operation){yield{$spans+=,@(0x5CF3,0x5D37)} child{$spans=@(@(0x5EE3,0x5F14),@(0x5C51,0x5C79),@(0x8787,0x8788))} instrument{$spans=@(@(0x5F5B,0x5F81),@(0x60AB,0x60BE),@(0x5A1E,0x5C1D))} service{$spans=@(@(0x5C18,0x60E0),@(0x5963,0x5C17))}}
 if($Operation -in @('note','rhythm')){$spans=@(@(0x5CF3,0x5E2B),@(0x60AB,0x60BE),@(0x5A1E,0x5AE2))}
-if($Operation -in @('noteservice','callservice','rhythm','prompt','queue')){$spans=@(@(0x5C18,0x60E0),@(0x5963,0x5C17),@(0x8739,0x879E))}
+if($Operation -in @('noteservice','callservice','rhythm','prompt','queue','reset')){$spans=@(@(0x5C18,0x60E0),@(0x5963,0x5C17),@(0x8739,0x879E))}
 if($Operation -eq 'queue'){$spans=@(@(0x5C18,0x5C79),@(0x60C8,0x60D5))}
+if($Operation -eq 'reset'){$spans=@(@(0x5B77,0x5C17),@(0x60AB,0x60D5))}
 $regions=@(foreach($span in $spans){[ordered]@{address=$span[0];bytes_hex=[Convert]::ToHexString($rom[$span[0]..$span[1]])}})
 $target="$PSScriptRoot/../evidence/mpu4/collection/sound-$Operation"
 [ordered]@{classification='Synthetic original-ROM instruction/RAM paths, no natural service cadence';catalog=@($catalog.ToArray());rows=@($rows.ToArray());rom_regions=$regions;capture=(Get-Content "$RunDirectory/provenance.json" -Raw|ConvertFrom-Json);raw_sha256=(Get-FileHash "$RunDirectory/debug.log").Hash}|ConvertTo-Json -Depth 9|Set-Content "$target.json";Copy-Item "$RunDirectory/debugger.cmd" "$target-debugger.cmd"

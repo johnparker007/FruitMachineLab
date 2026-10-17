@@ -1,5 +1,9 @@
 # Current handoff
 
+Sixteen-batch cycle batch9: full foreground5B77 reset timing matches32 ROM paths.
+Queue/cancel/reset and background prompt service are all explicitly staged.
+Next compose owner actions; semantic bindings still carry explicit helper budgets.
+
 Sixteen-batch cycle batch8:5C7A/5CB5 cancellation instruction timing/full stack
 matches32 original-ROM paths;12 lifecycle groups pass. Next foreground reset.
 

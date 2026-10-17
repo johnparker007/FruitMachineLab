@@ -4,6 +4,7 @@ namespace FruitMachineLab.Adders;
 
 public static class AddersSoundOperationVerification
 {
+    public static int Reset(string evidence)=>Verify(evidence,"sound-reset",(m,row)=>new AddersSoundResetPlan(m,0x700,0x8784,0x1A0,0x89,0xAB).Instructions(),0x5B77,0x4C34);
     public static int Queue(string evidence)=>Verify(evidence,"sound-queue",(m,row)=>new AddersSoundQueuePlan(m,0x8784,0x700,0x1A0,0x89,0xAB).Instructions(),0x5C18,0x4C34);
     public static int Prompt(string evidence)=>Verify(evidence,"sound-prompt",(m,row)=>new AddersSoundServicePlan(m,0x700,0x600,0x8784,0x1A0).Instructions(),0x5CD0,0x4C34,true);
     public static int Rhythm(string evidence)=>Verify(evidence,"sound-rhythm",(m,row)=>new AddersSoundNotePlan(m,0x1A0,0x601,0x700,0x8784,row.GetProperty("case").GetProperty("note").GetByte()).Instructions(),0x5D48,0x5CDE);

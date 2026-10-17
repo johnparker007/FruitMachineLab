@@ -9,6 +9,7 @@ void Check(string name, Action action) { if(args.Length>1 && !name.Contains(args
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
 Check("Sound operation native calls preserve frames across24 ROM ticks",()=>Equal(24,AddersSoundOperationVerification.Calls(evidence)));
 Check("Sound operation foreground queue matches32 original-ROM paths",()=>Equal(32,AddersSoundOperationVerification.Queue(evidence)));
+Check("Sound operation foreground reset matches32 original-ROM paths",()=>Equal(32,AddersSoundOperationVerification.Reset(evidence)));
 Check("Sound lifecycle timed cancellation matches32 original-ROM paths",()=>Equal(32,AddersSoundLifecycleVerification.Timed(evidence,"cancel")));
 Check("Sound operation rhythm notes match120 original-ROM paths",()=>Equal(120,AddersSoundOperationVerification.Rhythm(evidence)));
 Check("Sound operation original8784 prompt matches128 preserved ROM ticks",()=>Equal(128,AddersSoundOperationVerification.Prompt(evidence)));

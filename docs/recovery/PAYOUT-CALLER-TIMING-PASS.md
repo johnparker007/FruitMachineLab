@@ -78,3 +78,22 @@ adds only the requested411 cycles. A labelled synthetic option change reaches
 the manager boundary and fails without inventing a prompt. ROM files are unchanged.
 Caller byte spans already exist in payout-data; new export preserves67E2's exact
 inline wrapper too. Raw pointer payout-caller.txt. Filters: "Payout cash".
+
+## Batch4: token compensation and accounting complement timing
+
+AddersTokenCompensationPlan stages both identical-byte tails4D07/4D51 at their
+distinct ROM addresses plus6F57. It preserves subtraction of500 from the low word,
+borrow into the signed high byte and original overflow clamp80 WITHOUT replacing
+the already-subtracted low word.002C is overwritten FF then0, not restored.
+Normal mode refreshes15 accounting complements/checksum; negative mode skips
+that refresh but still performs the compensation subtraction.
+
+Capture-TokenCompensationTiming.ps1 covers32 synthetic original-ROM cases: both
+tails, normal/service mode and eight unsigned/signed24 boundaries. The existing
+native-matrix curator detects token_compensation provenance and exports separate
+token-compensation-timing evidence. All instructions, encodings, cycles, lower
+RAM and persistent accounting bytes match. Native S scratch remains excluded.
+Synthetic suspension after SBCA retains the original overflow decision. Existing
+payout spans plus exact6F51..6F78 bytes preserve the selected body; historical
+6F57 Ghidra export is copied from prerequisite-pass, not claimed fresh. Raw pointer
+token-compensation.txt. Filter: "Payout token compensation". Next token caller.

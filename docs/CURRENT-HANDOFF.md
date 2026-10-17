@@ -1,5 +1,10 @@
 # Current handoff
 
+Eight-batch cycle batch4 complete: both token-compensation tails and6F57 now stage
+through original signed24 clamp, guard overwrite and accounting complements.
+32 native MAME paths match. Next4B8C/4CF8 token caller composition, then gameplay
+integration. See recovery/PAYOUT-CALLER-TIMING-PASS.md.
+
 Eight-batch cycle batch3 complete: selected normal cash4B39 now composes timed
 tail/debit/VM display/payout outputs. Eight MAME paths match exact caller/child/
 final cycles and RAM with real synthetic-counter polling (no skipped waits).

@@ -7,6 +7,19 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { if(args.Length>1 && !name.Contains(args[1],StringComparison.OrdinalIgnoreCase))return;action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("Payout token compensation staged signed24 tails match32 MAME instruction paths",()=>{
+    using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","token-compensation-timing.json")));var catalog=doc.RootElement.GetProperty("catalog");int count=0;
+    foreach(var row in doc.RootElement.GetProperty("rows").EnumerateArray()){
+        var m=new Machine();Convert.FromHexString(row.GetProperty("before_hex").GetString()!).CopyTo(m.Memory,0);ushort entry=row.GetProperty("case").GetProperty("entry").GetUInt16();ulong start=row.GetProperty("start_cycle").GetUInt64();var p=new AddersTokenCompensationPlan(m,entry);using var e=new NativeRoutineExecution(p.Instructions(),start,Cell.Add(entry,32),()=>true);var actual=new List<OutputScanInstruction>();e.ObserveInstruction=actual.Add;while(!e.Completed)e.AdvanceTo(e.NextEventCycle);
+        var expected=row.GetProperty("steps");Equal(expected.GetArrayLength(),actual.Count);for(int n=0;n<actual.Count;n++){var r=catalog[expected[n][0].GetInt32()];Equal(r.GetProperty("pc").GetUInt16(),actual[n].Address);Equal(start+expected[n][1].GetUInt64(),actual[n].Started);Equal(true,r.GetProperty("context_hex").GetString()!.StartsWith(actual[n].Bytes,StringComparison.Ordinal));}Equal(row.GetProperty("end").GetProperty("cycle").GetUInt64(),e.Cycle);
+        byte[] ram=Convert.FromHexString(row.GetProperty("after_hex").GetString()!);Equal(true,m.Memory.AsSpan(0,0x6E0).SequenceEqual(ram.AsSpan(0,0x6E0)));Equal(true,m.Memory.AsSpan(0x7C9,0x1F).SequenceEqual(ram.AsSpan(0x7C9,0x1F)));count++;
+    }Equal(32,count);
+});
+Check("Payout token compensation suspension preserves overflow and software guard semantics",()=>{
+    var m=new Machine();m.Memory[0x7D2]=0x80;m.WriteWord(0x7D3,0);m.Memory[0x2C]=0x7A;var p=new AddersTokenCompensationPlan(m,0x4D07);using var e=new NativeRoutineExecution(p.Instructions(),0,0x4D27,()=>false);
+    while(e.Address!=0x4D1A)e.AdvanceTo(e.NextEventCycle);Equal((byte)0x80,m.Memory[0x7D2]);ulong due=e.NextEventCycle;e.SuspendUntil(e.Cycle+199);Equal(due+199,e.NextEventCycle);while(!e.Completed)e.AdvanceTo(e.NextEventCycle);
+    Equal((byte)0x80,m.Memory[0x7D2]);Equal((ushort)0xFE0C,m.ReadWord(0x7D3));Equal((byte)0,m.Memory[0x2C]);
+});
 Check("Payout cash caller suspension preserves nested tail display and polling work",()=>{
     Machine Seed(){var m=new Machine{DataStackBase=0x600};m.Control=new(m,0x800);SkillCashData.LoadFeature(m);SkillCashData.LoadAlpha(m);AddersPayoutCallerData.Load(m,evidence);m.WriteWord(0x790,0x4C34);m.WriteWord(0x2FE,24);m.Memory[0x55]=0x1F;m.Memory[0x2C]=0x7A;return m;}
     var a=Seed();var b=Seed();byte pa=0x30,pb=0x30;var wa=new List<byte>();var wb=new List<byte>();using var baseline=new AddersTimedCashPayoutExecution(a,evidence,new(a),0,0x790,0,(_,_)=>1000,()=>pa,v=>{pa=v;wa.Add(v);});using var shifted=new AddersTimedCashPayoutExecution(b,evidence,new(b),0,0x790,0,(_,_)=>1000,()=>pb,v=>{pb=v;wb.Add(v);});int na=0,nb=0;

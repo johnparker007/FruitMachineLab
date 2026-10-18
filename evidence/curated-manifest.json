@@ -315,6 +315,11 @@
     "sha256": "6F676044D4791DA0693A6FF278359399A79DBA46DF9F97523ACEECF7E2C1AB57"
   },
   {
+    "path": "docs/recovery/RECOVER52-58BB-EMPTY-METER-PULSE-PASS.md",
+    "bytes": 3869,
+    "sha256": "317A33711A7771A1ED2C841DC291AC6B286740A8BA314750CE95FD178CA1F293"
+  },
+  {
     "path": "docs/recovery/ROM-INTEGRITY-PASS.md",
     "bytes": 11370,
     "sha256": "56F77D370C1678BEFB0443084F897FA0EAC45F765B9C21278E94E35932A62794"
@@ -493,6 +498,11 @@
     "path": "evidence/mpu4/collection/matched-service-window-capture36.json",
     "bytes": 750810,
     "sha256": "AC60AC5EDE6A962B1FB90DFB8389EF85C6AFE304A25DD24CC7C753A2F59FDB82"
+  },
+  {
+    "path": "evidence/mpu4/collection/meter-pulse-58bb-empty.json",
+    "bytes": 2220,
+    "sha256": "8F2A8CABB60E4D9F48EDEC47E2B8235D2F3438B9793D6F9A509FE52A90F4F8E2"
   },
   {
     "path": "evidence/mpu4/collection/native-service-rom-regions-capture36.json",

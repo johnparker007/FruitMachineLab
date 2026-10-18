@@ -1,8 +1,38 @@
-# Supervised worker checkpoint — 17 October 2026
+# Supervised worker direction — 18 October 2026
 
-## Current planning checkpoint
+## Active mandate: IL / ROM compiler / MAME debugger
 
-The operational plan is now [PROJECT-ROADMAP.md](PROJECT-ROADMAP.md), section
+The [replacement roadmap](PROJECT-ROADMAP.md) supersedes the old native-runtime
+restart gates. Freeze autonomous C# execution indefinitely, potentially
+permanently. Do not dispatch IRQ/sound ownership, finish timing, capture-free
+gameplay or C# peripheral simulation work from old gates, task files or durable
+checkpoints. Preserve their source, tests, evidence and resumption context in
+[the historical roadmap](history/PRE-IL-MAME-ROADMAP.md).
+
+Future authorized worker priorities are lossless original-VM decoding/encoding,
+source maps, integrity-correct ROM builds and MAME Lua debugging. Keep the IL
+independent of the native C# executor. First prove one byte-identical decoded
+definition, one meaningful edit naturally executed after repaired boot, and
+Lua-observed CPU/VM state resolved to IL. Then prove bounded extension allocation,
+a new composite word and a native 6809 primitive through the original VM ABI.
+Controlled paused RAM/register writes are planned, logged experiments; injected
+state cannot establish natural execution of a compiled edit.
+
+This documentation update does not inspect or change live process/schedule
+state, dispatch a task, resume a callback or rewrite durable checkpoints.
+Review the new plan with John before implementation dispatch. On an authorized
+future resumption, reconcile actual process/checkpoint state against this mandate;
+never automatically execute a historical nextTask. Use narrow allowed-file tasks,
+explicit evidence/acceptance, independent review, zero automatic retries and the
+two-unsuccessful-attempt stop rule. Historical push permissions do not authorize
+commits/pushes here. No installations/configuration changes without approval.
+
+## Historical checkpoints — priorities and authorization superseded
+
+## Historical planning checkpoint — 17 October 2026
+
+The former operational plan is archived in
+[PRE-IL-MAME-ROADMAP.md](history/PRE-IL-MAME-ROADMAP.md), section
 "Restart plan: sound ownership before finish timing". John paused the callback;
 no worker is running and this planning update does not unpause or restart it.
 Last accepted commit before planning is `0fe3713`, full intended snapshot384groups.

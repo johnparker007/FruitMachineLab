@@ -1,209 +1,172 @@
-# Project roadmap
+# Project roadmap — lossless IL, ROM compiler and MAME debugger
 
-Updated 18 October 2026 through `eb7a40a` (415 groups). The suffix proof is
-accepted; the IRQ prefix and gate 3 remain open. The source audit at `2916fa1` remains
-historical context. This replaces older timing-first and byte-identical-rebuild
-priorities. Historical evidence remains in [CURRENT-HANDOFF.md](CURRENT-HANDOFF.md),
-recovery reports and implementation status. The historical exact-snapshot sound
-certification remains valid history; the separate fresh capture33/36 oracle and
-verify37/38 component checks do not silently supersede it or complete gate 3.
+Decision: 18 October 2026. This replaces the previous parallel native-runtime,
+editable-VM and ROM-generation priorities. Autonomous C# gameplay execution is
+frozen indefinitely, potentially permanently. Do not finish the old sound/IRQ
+gates first. Existing implementation, tests, captures and evidence are preserved.
 
-Three goals advance in parallel: autonomous PC gameplay, editable original-VM
-game logic, and modified ROM generation for MAME and eventually physical hardware.
-MAME is the external oracle. Byte-identical reconstruction is diagnostic, not a
-prerequisite. Recorded schedules must not be hidden runtime dependencies.
+The objective is an extensible source-level editing, compilation and live-debugging
+environment for original MPU4 ROMs. MAME runs the original interpreter, CPU and
+machine services; original MPU4 hardware is the final compatibility target.
 
-Read [the source audit](ENGINEERING-AUDIT.md) for architecture and capture inventory;
-[ROM editing](ROM-EDITING.md) for the first patch milestone. Preserve original
-ROMs/settings/projects; no installations/configuration changes without approval.
+## Architecture
 
-## A — Autonomous native execution
+Original ROM -> lossless recovered IL -> edits/new words -> original image plus
+compiled patches/extension region -> integrity repair -> MAME execution and
+Lua/source-map debugging -> physical hardware validation.
 
-| Stage | State and acceptance |
+The IL represents the original VM's encodings and semantics. It retains original
+addresses/spans/bytes, execution tokens, operands, reference kinds and provenance.
+The compiler and debugger consume this representation independently of the C#
+native executor. Existing helpers may serve as optional verification oracles;
+new words do not require C# execution implementations.
+
+For unchanged supported definitions, Compile(Decode(ROM)) must reproduce the
+original bytes. Overlaying these definitions with preserved opaque regions must
+leave the complete original image identical. Raw-byte passthrough alone does not
+certify a definition as editable. Keep certified decoding and opaque preservation
+explicit. Unsupported edits fail; a label is not a recovered contract.
+
+Prefer same-size edits, then additions in end-of-ROM extension space. Original
+code/data remain at their existing addresses except for explicit patches. A
+bounded linker records code/data/header allocations and fixups, then redirects
+supported VM entries/references or emits safe native hooks. A header code-pointer
+redirect is not assumed to relocate every word type: verify each header/body/
+caller convention. General relocation, ROM expansion and bank switching wait.
+
+John's practical code-cave experience supports a pragmatic first allocator:
+confirm a usable range once per ROM revision, record expected contents, mapping,
+known uses and checksum coverage, then enforce bounds and nonoverlap. FF/00 scans
+can suggest candidates. Complete whole-ROM disassembly is not a prerequisite;
+padding appearance alone is insufficient. No range is certified by this plan.
+
+Preserve 16-bit wraparound, signed operations, FFFF/0000 flags, VM stack/frame
+contracts and original timing/randomness. Existing firmware behaviour stays the
+reference unless an explicitly declared modification changes it.
+
+## Reusable assets and current gaps
+
+Paths in this table are repository-relative.
+
+| Asset | Reuse and limits |
 | --- | --- |
-| A1 Capture inventory (P0) | Initial source-backed inventory in ENGINEERING-AUDIT.md extends COLLECTION-TRANSFER-PASS. `SkillCashLiveSession` direct reads are field-classified and fail closed under an optional strict policy; default compatibility remains. The same policy now covers `SkillCashData` extension/feature/alpha/scan static range loads, with compiled fallbacks for callers that pass no evidence directory. Other verification/caller/board and scheduling reads remain unenforced. See `docs/recovery/A1-CAPTURE-POLICY-PASS.md`. |
-| A2 Causal scheduling (P0) | Partial: timer3 phase/assertion, selected instruction acceptance/dispatch/scan/callback generated. The captured `FEC3..FECE` suffix is composed on one machine (415 groups), but `FE70..FEC3` remains open. Outer timer1 entry/occupancy and atomic helper/VM pacing remain captured. Accept selected game paths with generated scheduling and differential verification. |
-| A3 Ten paid games (P1) | Open: three selected generated games pass using Live capture adapters. Accept ten complete games on one state, no runtime recorded schedules/results or manual repairs. Declared starting snapshot temporarily permitted. |
-| A4 Expanded coverage / 100 games (P1) | Partial gameplay includes paid spins/results, nudges, board links, Skill Cash, accounts and selected headless collection. Accept 100 games across outcomes/features/collection/background services with deterministic accounting/state checks. |
-| A5 Extended stability (P2) | Open: accept 1000 complete games with invariants and no unsupported execution boundaries. Synthetic payout transactions are not played games. |
-| A6 Independent startup | Open: documented reset/init without captured RAM/device snapshots; retain RNG, NVRAM and hardware phase semantics. |
+| evidence/mpu4/VM-SCRIPTS, docs/recovery/DEEP-ANALYSIS.txt and evidence/mpu4/maps | Addressed listings and interpreter/header/token evidence. Not a general dictionary decoder or complete reference inventory. |
+| src/FruitMachineLab.Runtime/Mpu4VmDefinition.cs | Strict definition plans, encoding and selected decoded operations; checked 9A64 branches and 9ED9 word literals. Extend decoding from original bytes rather than equating JSON loading with ROM decoding. |
+| evidence/mpu4/definitions | Original spans, hashes and provenance for those two checked definitions. Exact-byte emission is already demonstrated for these bounded plans. |
+| src/FruitMachineLab.Runtime/RomPatch.cs and tools/FruitMachineLab.RomPatch | Identity/expected-byte validation, fixed-size overlays, create-only output and hashes/diff. No allocator or general compiler. |
+| tools/FruitMachineLab.VmDefinitionImage | Narrow fixed 9ED9 literal edit and identity emitter, with CLI safety tests. No general editing or integrity repair. |
+| tools/Verify-RomIntegrity.ps1, tools/Capture-RomIntegrityVariant.ps1 and integrity maps/reports | Recover original ordered integrity algorithms. Natural startup repair demonstrated for the shared-award edit; general repair for definition/extension edits remains to validate. |
+| tools/Capture-VmDefinitionLiteralInvocation.ps1 and its curator | Ten independent original/modified 9ED9 MAME cases, but synthetic seeded invocation, not natural gameplay or repaired boot. |
+| Existing MAME capture scripts and Lua under evidence/mpu4/skill-cash | Reuse isolation, register/RAM observations and provenance conventions. A persistent live-debugger protocol and IL stepping/source maps are missing. |
+| Native runtime, WPF viewer and verification fixtures | Preserve regression/research assets. No requirement to remove their captured adapters or connect new IL to their executor. |
 
-Integrate existing native sound/timed collection owners with required foreground
-and service boundaries. Stage CPU work needed for that path and generated
-scheduling, preserving the working adapter until proved. Avoid an unrelated full
-CPU emulation campaign or replacing working VM/motor/timing infrastructure.
+The documented last full headless baseline is 415 groups at the integrate59
+checkpoint. This pivot records existing evidence; it does not claim a new test
+run or completed compiler/debugger work. See [implementation status](../IMPLEMENTATION-STATUS.md),
+[ROM editing](ROM-EDITING.md) and the dated [source audit](ENGINEERING-AUDIT.md).
 
-## B — Editable game representation
+Natural award-image boot/controlled paid setup is recorded, but the observed
+table read was 75C0, not the edited 75BE. Do not report changed-award consumption
+as proved. Similarly, synthetic 9ED9 results do not close natural execution.
 
-| Stage | State and acceptance |
+## Replacement milestones
+
+The following are planned acceptance stages, with reused partial evidence noted
+above. M0 is the documentation proposal; implementation stages remain open.
+
+| Stage | Priority and acceptance |
 | --- | --- |
-| B1 Dictionary/encoding (P0) | Partial addressed VM listings, headers, tokens, branches and selected exact-byte checkpoints. Accept validated definition/reference ownership with opaque regions explicit; labels do not establish complete recovery. |
-| B2 Editable representation (P1) | Checked definitions for 9A64 branches and 9ED9 word literals produce PC operations and exact ROM bytes from one plan. Original-span/identity/size checks preserve unknown bytes. No general dictionary/compiler/editor. See VM-DEFINITION-*-PASS reports. |
-| B3 Existing definition | Partial: one emitted 9ED9 literal edit matches ten synthetic original-interpreter MAME cases, including stack/return contracts. Natural execution of that edited definition remains open; no general replacement coverage. |
-| B4 References/relocation (P2) | Open: certify absolute tokens, headers, native/shared-body and relative branch references before moving/growing a body. No safe free space declared. |
-| B5 Feature editing (P2) | Open: modify substantial feature from common definitions and verify both targets. |
-| B6 New features (P2) | Open: author/build/execute a feature within hardware constraints without per-change manual machine-code patches. |
+| M0 — Focused implementation proposal | P0, this documentation deliverable. Identify reuse, gaps, candidate definition, integrity scope and Lua observation boundary. Obtain John's review and name allowed files before implementation dispatch. |
+| M1 — Lossless supported decoding | P0. Decode one evidenced definition from ROM bytes into independent IL, re-encode identically and preserve the rest of the image. Check original identity, token/operand boundaries, references and unsupported/corrupt inputs. |
+| M2 — First IL-to-MAME proof | P0. Change one meaningful operand from M1, repair integrity, boot and naturally execute it in MAME. Compare original/control results and unchanged stack/frame contracts. Use Lua to observe PC/Y/U/S and map the executed instruction to an IL line. No PC/RAM seeding to claim natural execution. |
+| M3 — Basic build/run and debugger | P1. One action builds a reproducible ROM, reports diff/hashes, repairs integrity and launches an isolated MAME session. Generated maps are bound to the exact ROM/build. Support pause/resume, breakpoints, instruction stepping and VM call step-into/over/out across native words, nesting and interrupts with explicit unsupported cases. Minimal editor only. |
+| M4 — Extension linker and new composite word | P1. Use a revision-specific confirmed mapped extension range. Allocate a new word/header/body, resolve references and call it from an existing definition through the original interpreter in natural MAME execution. Record allocation/fixup map; prove collision/overflow rejection. |
+| M5 — Growable definitions and hooks | P1. Emit a larger replacement in extension space and redirect only supported entries/callers. For native hooks preserve complete displaced instructions, PC-relative meaning, incoming targets, registers/CC, stack discipline and JMP/JSR return semantics. Prove one gameplay modification, then two simultaneous modifications with deterministic allocation/composition. |
+| M6 — New 6809 primitive | P1, after M4 and ABI proof. Assemble a minimal new native routine, expose a new VM word and naturally call it through original dispatch. Verify inputs/outputs, preserved registers, control/data stacks and return convention. No interpreter-loop changes unless separately justified. |
+| M7 — Controlled live experiments | P1, after read-only debugger boundaries work. Paused, explicit RAM/stack/register/CC edits where supported, with address/register, old/new value, source location and build identity logged. Resume/observe; turn useful experiments into compiled edits and repeat natural fresh-boot acceptance. |
+| M8 — Hardware compatibility | Required final acceptance. On original MPU4 hardware verify reset, checksums, edited/new-word behaviour, accounting/persistent state, timing and relevant peripherals. MAME success alone cannot complete this milestone. |
+| M9 — Broader compiler/editor | Later. Expand certified definitions, references, assembly debugging and feature authoring from demonstrated needs. General relocation and other games/platforms need separate evidence. |
 
-Use recovered VM encoding as the starting representation. Retain provenance,
-sites/tokens and opaque bytes. C# supplies execution/tools, not competing game
-rules. Changed decoded operands require a decode/rebuild path. Do not build a
-polished editor before replacement ROM definitions execute.
+New callable functions include original words, new composite words made from
+supported VM words, and new native 6809 primitives. Prefer extending the
+dictionary using existing dispatch. Exact header formats, address constraints,
+entry/return conventions and stack effects must be established before emission.
+No new-word or primitive support is claimed today.
 
-## C — ROM generation and hardware compatibility
+## Minimum next implementation slice for review
 
-| Stage | State and acceptance |
-| --- | --- |
-| C1 ROM map (P0) | Partial layout/reference ownership. Original active startup integrity algorithms/ranges/fields recovered and observed in MAME; ordered regeneration proved for the narrow shared-award edit. Other region boundaries/reference inventory remain open. |
-| C2 Minimal patcher (P0) | Implemented: strict identity/expected bytes, equal lengths/no overlaps, separate create-only output, reproducible hashes/diff. Safety/CLI tests and actual original-image generation in ROM-EDITING.md. |
-| C3 Modified ROM in MAME (P1) | Partial: original and integrity-repaired award images naturally reach VM entry and controlled coin/Start paid setup. Unrepaired patch fails the original checker. Natural observed table read was 75C0, not edited 75BE; changed award consumption remains unproved. Synthetic lookup returns12/control10. Loader warning retained. |
-| C4 Definition replacement | Open: in-place compiled replacement, boot and execute it. |
-| C5 Compiler/assembler (P2) | Open: reproducible multi-definition builds/fixups/source maps, preserving unknown bootstrap/IRQ/interpreter/data. |
-| C6 Differential verification (P1, expand later) | Initial same-table lookup comparison. Accept controlled original/modified/native gameplay, accounts/outputs and expected differences; identical internal traces not required. |
-| C7 Physical compatibility (P2) | Open: prove reset, timing, persistent state and peripherals on hardware. MAME success cannot complete this stage. |
+1. Select the smallest definition with an evidenced natural caller and an
+   observable operand effect. Evaluate 9ED9 first because exact emission and
+   synthetic comparisons exist; choose another if natural reachability makes it
+   a poor slice. Record the selection and its evidence before implementation.
+2. Add only the decoder/IL fields needed for that definition, without a dependency
+   on ScriptExecutor. Reuse existing token/span evidence and checked encoding.
+   Generate the smallest map from original/emitted sites to IL instructions.
+3. Compose the explicit edit with the existing patch validation and extend the
+   recovered integrity calculation only over validated ranges/field order.
+   Produce separate create-only images, exact diffs, hashes and build/map identity.
+4. Adapt isolated MAME launching and Lua observations to a natural fresh-boot
+   control and changed run. Observe validated dispatch/return boundaries, PC,
+   VM cursor Y, data pointer U, control pointer S and relevant stack/RAM values.
+   PC alone does not identify the IL instruction; account for token-fetch phase.
+5. Prove byte-identical unchanged build, intended changed bytes plus integrity
+   fields only, original/control versus changed observable effect, source-map
+   correctness and stack/frame preservation. Reject wrong ROM/unsupported
+   encodings/stale maps. Save commands, exit codes and concise evidence.
+6. Report the first mismatch or missing evidence. Do not expand to allocation,
+   a polished editor, general relocation or native-runtime recovery to bypass it.
 
-## Restart plan: sound ownership before finish timing
+These are proposed implementation tasks, not dispatched work. This documentation
+update does not run MAME, change schedules or start a broad implementation campaign.
 
-John paused the callback. This is a planning checkpoint, not permission to resume
-the stopped boundary automatically. Last accepted commit: `3e19734`; complete
-clean-snapshot verification: **401 groups**, zero build warnings/errors. The
-earlier uncommitted FEC9 work was accepted through `99c7ef4`/`85fce7f`; the old
-"dirty checkout with a failing check" note is historical, not the current state.
-The accepted fresh-oracle evidence is a separate lineage from the historical
-nudge-tone/zero-cache exact snapshot and does not replace those expectations.
+## Debugger and validation contracts
 
-Two blockers must be kept separate. The early FEC9 attempts exhausted their old
-40-step runs; their queued-case verifier also lacks ROM regions required by the
-actual stream. That fixture explanation remains a diagnosis to validate, not an
-accepted repair. Later investigation found that Live's logical scheduler does not
-maintain the native tone task/channel/rhythm/tail state required by cancellation.
-Increasing the step limit does not resolve either correctness boundary.
+Inspect mode provides observations, breakpoints and stepping. Experiment mode
+explicitly mutates paused state and records every edit. Check available APIs in
+the installed MAME version during implementation; do not promise unverified
+register-write or stepping support. Preserve interrupt/native context and reject
+ambiguous source locations rather than guessing. New primitives may expose
+assembly locations alongside IL calls.
 
-Execute these gates in order when work is resumed. Each is one worker task plus
-focused review; do not dispatch the entire migration as one prompt.
+Keep source maps tied to ROM hash and build identity, including relocated/new
+words. Label natural traces, static deductions, hypotheses and synthetic probes.
+Save states and debugger setups can accelerate iteration but are separate from
+fresh-boot natural acceptance. Never count injected state as compiled behaviour.
+Keep MAME loader hash warnings separate from original firmware integrity checks;
+repair the latter without bypassing the checker.
 
-1. **Certify the preserved FEC9 wrapper in isolation.** Recheck capture provenance
-   and initial registers/stack independently. Inventory every ROM read required by
-   the captured 8784 path before re-curating; verify against the original identity.
-   The current verifier must not derive its starting S from the expected end S or
-   its return contract from expected after-RAM. Seed from captured initial state.
-   Check that FECC is the actual supported return target; reject other targets
-   rather than proceeding to a hardcoded FECC. Compare empty/queued cases against
-   every observed PC/encoding/cycle, full 2KB RAM and balanced frame. Add corruption
-   controls and retain existing prompt/lifecycle comparisons. Natural scheduler-a/b
-   proves only its observed empty-list return. No cadence/outer IRQ or Live claim.
-   Accept only after the full intended snapshot passes; otherwise stop with the
-   first independently reproduced mismatch. A new focused attempt requires the
-   resumed plan's authorization; old incomplete runs are not silently erased.
-2. **Prove one headless native tone owner.** Reuse `AddersNativeSound` and existing
-   native queue/service/cancel/release plans. Queue actual 59EB into real 0047/0049
-   task memory, service until the original wait/finish boundary, then cancel on
-   the same state. Declare the checkpoint and externally supplied service calls.
-   Those calls may establish a bounded component proof, never autonomous timing.
-   Capture/compare actual list, channel, rhythm, tail, stack and return state for
-   the natural tone path and selected labelled synthetic alternatives. No parallel
-   fabricated task or captured end-state injection. This can be proved headlessly
-   before solving every timer1 service; stage 1 alone does not establish ownership.
-   **Historical gate-2 certification** remains in
-   `docs/recovery/TONE-LIFECYCLE-CERTIFICATION.md`: entry-gap-checked 485 captured
-   instruction boundaries, two declared service ticks and full RAM/channel/tail
-   comparison on the zero-YM-cache reset snapshot. Only the initial `C6` channel
-   sentinel and zero-count `C4` loop are covered; active-channel/finite-count
-   variants remain rejected. It is retained as historical component evidence and
-   is not silently replaced. A separate fresh oracle now adds capture36's first
-   `FC4D..5A1C` window and verify37/38's 25 independent outer `5CD0/FECC`
-   reproductions (full 2 KB, cycles, instruction completion, semantic negatives
-   and raw-file pins). Capture33's `FECC/FECE` is a nested IRQ return and remains
-   separate. This proves per-call components, not continuous same-state execution.
-   Gate 3's Live ownership design remains open.
-3. **Design then connect the selected Live owner.** Specify entry-state source,
-   required foreground and service instruction boundaries, pause/resume, task
-   handoff and exactly one mutating owner. Explain how existing logical background
-   tasks coexist or transfer without duplication. Preserve compatibility until the
-   selected path is independently proved. If 6B4D/58BB or IRQ scheduling is required,
-   identify and recover that prerequisite separately; do not skip it. Do not use
-   captured task trajectories to claim a causal replacement. **18 October
-   reconciliation:** safe Live handoff is still not possible. The fresh queue
-   frame, 25 matched service pairs and cancel/return frames are available, but the
-   foreground/IRQ writes between each `FECC` and the next `sv` entry are not
-   recovered. Do not implement a continuous adapter that reseeds at each return or
-   guesses those writes. The next prerequisite is a foreground delta ownership
-   analysis of `queue->sv00`, every `fecc[i]->sv[i+1]`, `fecc24->cancel`,
-   `cancel->5A10` and `5A10->5A1C`; every byte must be attributed to the sound
-   owner, recovered IRQ/wrapper code, recovered foreground code or another known
-   owner. Stop at the first unknown byte. Only then implement the single-owner
-   queue/service/cancel adapter specified in
-   `docs/recovery/LIVE-NATIVE-SOUND-OWNERSHIP-PLAN.md` (entry `queue.bin` at
-   `5C18`, no logical scheduler, no reseed, captured host ABI, same-machine
-   intermediate comparisons and meaningful negatives). A `FC4D` start remains a
-   separate prerequisite.
+Measure compile latency and the complete edit/run/debug loop. The discussion's
+0.1-second compile time and engineering-hour estimates are hypotheses, not
+benchmarks, deadlines or acceptance promises.
 
-   **18 October suffix/prefix boundary:** integrate58/59 accepted the one-machine
-   `FEC3..FECE` suffix at 415 groups; this is not gate 3. Existing executable
-   components cover the selected `FE70` timer1 dispatch, `28FE`, `FEBA/2C`,
-   `27D2->438C`, `19B8/1A87/1A05/1A58`, idle `6403` and `280F..2851`. The nested
-   timer3 path between `19BB/19BE` is real occupancy and must stay explicit.
-   `27D2 2851..288E` is static-only; active `6403`, non-19B8 `C6`/`4167`, `7CCF`
-   and SWI alarms remain boundaries. Capture41/43/57 match the FC4D/outer-FE70/FEC3 anchors
-   but save no outer FE70 2 KB or timer phase, so the prefix cannot compose from
-   current fixtures without reverse-fitting or reseeding. Next is one minimal
-   extension of that campaign: save the FE70 2 KB, timer3 state and exact
-   `FE70->FEC3` rows including nested `FE70/FF13`, then translate the `2851..288E`
-   tail and compose; compare FEC3 2 KB, stack, `2C=FF`, cycles and occupancy.
-   Stop at the first mismatch. No Live, cadence, audio, hardware or gate-3 claim.
-4. **Replace finish CPU work, then IRQ occupancy separately.** Only after native
-   state ownership is real, derive 5C7A/5CB5/5E2C and 777E..778B costs from the actual
-   path. Natural 360 CPU cycles is an oracle, not a budget to fit; the inferred
-   one-channel/tail explanation is not a recovered initial-state contract. Keep
-   `outer_irqs`/2735-cycle observed envelope explicit until causal acceptance and
-   complete service execution replace them. Each removal gets its own comparison.
-5. **Resume integrated gameplay acceptance.** One retained-state prompt/Collect/
-   payout path first, then ten paid games only when required recorded schedules
-   and results are genuinely absent. Synthetic transactions are not complete games.
+## Frozen work and orchestration
 
-If a gate is blocked, preserve its artifacts and report the missing evidence or
-first mismatch. Two unsuccessful attempts at the same boundary stop that boundary;
-do not loop, weaken expected results, switch tasks merely to appear busy, or claim
-that a higher step limit resolves the failure. Independent work is optional and
-must advance a named roadmap acceptance criterion.
+A1–A6 autonomous scheduling/gameplay/startup goals, Live native sound ownership,
+IRQ-prefix/suffix integration, native finish timing and C# peripheral simulation
+are frozen indefinitely. They can remain frozen permanently without blocking
+this plan. Preserve all implementation/tests/evidence and existing diagnostics.
+Narrow compiler/debugger-related use of recovered facts is permitted; it does
+not authorize continuation of the old native-runtime campaign.
 
-Secondary work after the ownership gates: natural consumption of award byte 75BE,
-or natural boot/execution of the edited 9ED9 definition with an explicitly scoped
-integrity contract. Avoid more generic encoder expansion or repeated unguided game
-runs until the next acceptance check needs them.
+The previous roadmap and exact resumption gates are retained in
+[historical roadmap](history/PRE-IL-MAME-ROADMAP.md). Older NEXT instructions in
+handoffs, recovery plans and task files are historical. Only explicit new
+authorization from John may resume native execution, after evidence/state review.
 
-## Worker operation and review
+Do not dispatch workers, unpause callbacks or alter durable operational checkpoints
+as part of this documentation change. Future authorized tasks must name allowed
+files, original evidence, measurable acceptance and unsupported boundaries.
+Review actual diffs and independent checks; retain zero automatic retries and
+the two-unsuccessful-attempt stopping rule. Historical commit/push permission
+does not grant permission in this task.
 
-DeepSeek performs investigation, captures, C# changes, builds/tests and compact
-reports. ORCHESTRATOR chooses a gate, reviews the actual diff and independent
-evidence, then commits/pushes accepted work under John's existing authorization.
-No installations or unrelated configuration changes are authorized by this plan.
-Fresh OpenCode runs currently have 1000 **steps**, not 1000 retries. Dispatch has
-a 20-minute bound for these batches and no automatic retry; on timeout preserve
-the handoff and verify any claimed completion against saved exit/summary logs.
+No installations/configuration changes without John's approval. No commit,
+push, publication or access changes unless requested. Preserve ROMs, MAME
+settings, Ghidra projects and unrelated configuration. Keep binaries, credentials
+and bulky traces untracked; cloud work must use curated repository evidence.
 
-For the paused callback's eventual resumption, read the durable checkpoint first,
-check one worker/process once and end if healthy. Process each result once. Quiet
-checks still consume some subscription allowance; this is scheduled supervision,
-not an instant callback or guaranteed unlimited unattended execution. Do not change
-or unpause the schedule as part of planning.
-
-Until FEC9 is accepted, verify intended changes in an isolated tracked-HEAD source
-snapshot plus only the intended patch. Preserve the main checkout and exclude only
-the uncommitted stopped changes from that snapshot, not tests belonging to the
-intended commit. Save patch, commands, exits and complete suite summary. Keep local
-task/log checkpoints durable; ROMs, credentials and bulky traces remain untracked.
-
-## Preservation and product direction
-
-Retain bytes/addresses, calling/frame/stack effects, input/output contracts and
-evidence classes (static, natural traces, hypotheses, synthetic faults). Unknown
-helpers fail; no guessed semantics, suspected ROM fixes or zero-cost timing.
-Keep binaries, credentials and bulky traces untracked. Hybrid building preserves
-opaque firmware rather than reconstructing every byte before changing a constant.
-
-Windows diagnostics and eventual DX renderer consume common backend inputs/outputs.
-Reuse John's MFME FML importer/layout renderer when paths/licences/assets arrive;
-avoid a polished temporary cabinet. Validate reuse using a second MPU4 game John
-supplies before generalizing. Other platforms, including 68000, need independent
-execution-model recovery. Millions of autoplay games remain a later goal after
-retained-state accounting and meaningful whole-game coverage.
+Headless build/verification commands remain in [README](../README.md).
+Run relevant checks for implementation changes and preserve existing regressions.
+The Windows diagnostic UI and eventual layout/DX rendering are later consumers
+of observed backend state; polished UI and whole-machine simulation do not gate
+the first IL-to-MAME proof.

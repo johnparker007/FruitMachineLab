@@ -1,5 +1,37 @@
 # Implementation and evidence boundaries
 
+## Strategic pivot — 18 October 2026
+
+The active [roadmap](docs/PROJECT-ROADMAP.md) now targets lossless original-VM
+IL, ROM compilation and MAME Lua live debugging, with original hardware as the
+final target. Autonomous native C# gameplay execution is frozen indefinitely,
+potentially permanently. Do not resume sound ownership, IRQ integration,
+causal scheduling, capture-free games or C# hardware simulation from old
+next-step instructions below. Preserve the code, tests, captures and reports.
+Historical resumption gates are retained in
+[the former roadmap](docs/history/PRE-IL-MAME-ROADMAP.md).
+
+Existing compiler foundations are bounded: checked 9A64/9ED9 definition emission,
+strict fixed-size patching, narrow 9ED9 image generation, synthetic original/
+changed 9ED9 MAME invocation and award-edit integrity repair/startup evidence.
+These do not establish a general ROM decoder, compiler, extension linker, new
+VM words, native primitive emission, live IL debugger or hardware compatibility.
+The observed natural award read was 75C0 rather than edited 75BE; natural
+execution of the changed 9ED9 definition is also still open.
+
+Next proposed proof: decode one known definition from ROM, round-trip it exactly,
+edit an operand, repair integrity, execute naturally in MAME and map Lua-observed
+PC/Y/U/S, registers and stacks to IL. The IL/compiler/debugger must work without
+the C# executor. Logged paused debugger writes are a planned experimental mode;
+they are not evidence of a persistent compiled modification.
+
+This is a documentation-only mandate change, with no worker/schedule restart or
+implementation campaign. The 415-group result below is an existing recorded
+checkpoint, not a rerun for this update. All dated entries below retain their
+original technical qualifications and are historical for priority/authorization.
+
+## Preserved implementation history
+
 18 October integrate59 IRQ-suffix correction: native `5CD0` flags are now
 explicit known-mask partial state, all unknown after the service and only
 N=0/Z=1/V=0/C=0 after `FECC CLR <$2C`; no full `CC` is copied from the

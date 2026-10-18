@@ -1,5 +1,20 @@
 # Source audit — 17 October 2026
 
+18 October strategic status: this is a dated audit of the preserved native
+implementation, not the current development mandate. Its priority rankings,
+A/B/C stage references and proposed native-runtime work are historical.
+[PROJECT-ROADMAP.md](PROJECT-ROADMAP.md) now directs lossless original-VM IL,
+ROM compilation and MAME Lua debugging; native C# execution is frozen indefinitely.
+The IL/compiler/debugger must not depend on that executor.
+
+Later bounded evidence includes checked 9A64/9ED9 emission, synthetic changed
+9ED9 invocation and shared-award integrity repair/startup. These do not establish
+a general decoder/compiler, natural edited-definition execution, extension
+allocation, new words, live IL debugging or physical hardware compatibility.
+See [ROM-EDITING.md](ROM-EDITING.md) and [implementation status](../IMPLEMENTATION-STATUS.md)
+for later checkpoints; historical absence/next-work statements below describe
+the audited snapshot.
+
 Inspected clean `main` at `2916fa1` (local `origin/main` agreed, without fetching).
 Work branch: `codex/rom-patching-roadmap`. This audit supersedes older roadmap
 priorities, not the qualifications in the recovery reports. Names and listings are

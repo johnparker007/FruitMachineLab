@@ -1,5 +1,12 @@
 # Live native sound ownership plan
 
+Status after the 18 October 2026 IL / MAME pivot: frozen indefinitely.
+This document is preserved research and conditional resumption context.
+Do not execute its next-step instructions or use its open gates as prerequisites
+for ROM editing. [The active roadmap](../PROJECT-ROADMAP.md) uses MAME for
+execution and debugging; native C# sound/IRQ work requires John's explicit new
+authorization to resume. Evidence qualifications below remain unchanged.
+
 Design only; no game code was changed. Scope is the selected Start-tone path
 `FC4D` `80A4` (`5A14 -> 59FF -> 59D9 -> 5C18/5C7A`). This does not claim generated
 timer1 cadence, `6B4D`/`58BB`, audio synthesis or whole-game acceptance.

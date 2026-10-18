@@ -1,5 +1,19 @@
 # Supervised DeepSeek dispatch
 
+## Active project mandate — 18 October 2026
+
+Read [the current roadmap](../../docs/PROJECT-ROADMAP.md) and repository AGENTS.md
+before choosing any task. Native C# execution is frozen indefinitely; old
+IRQ/sound/gameplay task files, gates and durable nextTask values are historical
+and must not automatically trigger dispatch. Preserve checkpoints and evidence.
+This documentation pivot does not restart workers or schedules.
+
+Future authorized work targets lossless original-VM IL, ROM compilation and
+MAME Lua debugging. Review the replacement plan with John before implementation
+dispatch, and scope each task to explicit files, evidence and acceptance.
+Historical commit/push permissions are not current authorization. The runner
+mechanics below remain available; examples are not instructions to start a run.
+
 From the repository root, invoke:
 
 ```powershell

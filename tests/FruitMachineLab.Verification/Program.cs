@@ -1038,6 +1038,63 @@ Check("Natural Start tone wait matches generated CPU delay plus full ordinary IR
     ulong before=adapter.NextStart;
     Equal(p[1].GetProperty("end").GetUInt64(),adapter.CompletionAfterCpuWork(p[1].GetProperty("start").GetUInt64(),Mpu4CalibratedDelay.StartToneWaitCycles));Equal(before,adapter.NextStart);
 });
+Check("Foreground7159 wait executes the actual5A05/5A07 boundary with the captured full stack", () => {
+    using var cap=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","stack-writer-0790-capture43.json")));
+    string Assembly(string address)=>System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"native",address+".json"))).RootElement.GetProperty("assembly").GetString()!;
+    string listing=string.Join("\n",new[]{"5a14","59ff","59d9","7159","718a","7164"}.Select(Assembly));
+    foreach(var line in new[]{
+        "5a05 LDB 0x1,S","5a07 JSR 0x7159","5a0a LDX #0x59eb","5a0d JSR 0x5c7a","5a10 CLR <0x4d","5a12 PULS  A B PC",
+        "7159 BSR 0x718a","715b PSHS  B A","715d BSR 0x7164","715f DECB","7160 BNE 0x715d","7162 PULS  A B PC",
+        "718a PSHS  B","718c LDB 0x719b","718f BITB #0x80","7191 BNE 0x7195","7193 PULS  B PC",
+        "7164 PSHS  B","7166 LDB #0x28","7168 LDA #0x54","716a DECA","716b BNE 0x716a","716d DECB","716e BNE 0x7168","7170 PULS  B PC"})
+        Equal(true,listing.Contains(line,StringComparison.Ordinal));
+    var trace=cap.RootElement.GetProperty("stack_writes").EnumerateArray()
+        .Where(w=>w.GetProperty("pc").GetString() is "5A0A" or "715B" or "718C" or "715D" or "715F" or "7166")
+        .Select(w=>new{PC=w.GetProperty("pc").GetString()!,Address=Convert.ToUInt16(w.GetProperty("wpaddr").GetString()!,16),Value=Convert.ToByte(w.GetProperty("new").GetString()!,16)}).ToArray();
+    Equal(10,trace.Length);
+    ulong jsrCycle=Convert.ToUInt64(cap.RootElement.GetProperty("final_writers").EnumerateArray().First(w=>w.GetProperty("address").GetString()=="079F").GetProperty("cycle").GetString()!,16);
+    var m=new Machine();m.Memory[0x719B]=0;ushort s=0x07A0;m.Memory[0x07A1]=0x02;
+    var result=Mpu4CalibratedDelayExecution.CallFrom5A05(m,jsrCycle-13,s,0x91,0x80A6,0xFC4F,0x0672,0,0xC0,state=>state.PC==0x716A && state.A==0x47 && state.B==0x27);
+    Equal(true,result.StoppedBeforeInstruction);Equal(10,result.Writes.Count);
+    for(int i=0;i<trace.Length;i++){Equal(trace[i].Address,result.Writes[i].Address);Equal(trace[i].Value,result.Writes[i].Value);Equal(trace[i].PC,result.Writes[i].TapPC.ToString("X4"));}
+    Equal((ushort)0x716A,result.State.PC);Equal((ushort)0x0799,result.State.S);Equal((byte)0x47,result.State.A);Equal((byte)0x27,result.State.B);
+    Equal((byte)0xC0,result.State.CC);Equal((ushort)0x80A6,result.State.X);Equal((ushort)0xFC4F,result.State.Y);Equal((ushort)0x0672,result.State.U);Equal((byte)0,result.State.DP);
+    Equal("02715F91025A0A",Convert.ToHexString(m.Memory.AsSpan(0x799,7)));
+    var irq=M6809IrqEntry.AtInstructionBoundary(result.State.Cycle,new(result.State.CC,result.State.A,result.State.B,result.State.DP,result.State.X,result.State.Y,result.State.U,result.State.S,result.State.PC),true)!;
+    Equal((ushort)0x078D,irq.StackPointer);irq.StackFrame.CopyTo(m.Memory,irq.StackPointer);
+    var after=cap.RootElement.GetProperty("stack_window").GetProperty("after_0790_079f").EnumerateArray().Select(e=>Convert.ToByte(e.GetProperty("value").GetString()!,16)).ToArray();
+    Equal("0080A6FC4F0672716A02715F91025A0A",Convert.ToHexString(m.Memory.AsSpan(0x790,16)));
+    Equal(Convert.ToHexString(after),Convert.ToHexString(m.Memory.AsSpan(0x790,16)));
+});
+Check("Foreground7159 wait preserves registers and fails closed on the disabled and invalid paths", () => {
+    foreach(byte count in new byte[]{0,1,2,3}){
+        var m=new Machine();m.Memory[0x719B]=0;ushort s=0x0700;m.Memory[0x0701]=count;
+        var r=Mpu4CalibratedDelayExecution.CallFrom5A05(m,1000,s,0x91,0x1234,0x2345,0x3456,0,0xC0);
+        Equal((ushort)0x5A0A,r.State.PC);Equal(s,r.State.S);Equal((byte)0x91,r.State.A);Equal(count,r.State.B);Equal((byte)0xC4,r.State.CC);
+        Equal((ushort)0x1234,r.State.X);Equal((ushort)0x2345,r.State.Y);Equal((ushort)0x3456,r.State.U);Equal((byte)0,r.State.DP);
+        Equal(1000UL+5+8+Mpu4CalibratedDelay.RepeatCycles(count),r.State.Cycle);
+        Equal((byte)0,m.Memory[0x700]);Equal(count,m.Memory[0x701]);
+    }
+    var disabled=new Machine();Array.Fill(disabled.Memory,(byte)0x5A);disabled.Memory[0x719B]=0x80;disabled.Memory[0x0701]=2;
+    byte[] before=disabled.Memory.ToArray();bool rejected=false;
+    try{Mpu4CalibratedDelayExecution.CallFrom5A05(disabled,0,0x700,0x91,0,0,0,0,0xC0);}catch(NotSupportedException){rejected=true;}Equal(true,rejected);
+    Equal(Convert.ToHexString(before),Convert.ToHexString(disabled.Memory));
+    var below=new Machine();Array.Fill(below.Memory,(byte)0x5A);below.Memory[0x719B]=0;
+    before=below.Memory.ToArray();bool low=false;
+    try{Mpu4CalibratedDelayExecution.CallFrom5A05(below,0,Mpu4CalibratedDelayExecution.MinimumStackPointer-1,0x91,0,0,0,0,0xC0);}catch(ArgumentOutOfRangeException){low=true;}Equal(true,low);
+    Equal(Convert.ToHexString(before),Convert.ToHexString(below.Memory));
+    var min=new Machine();Array.Fill(min.Memory,(byte)0xA5);min.Memory[0x719B]=0;min.Memory[8]=1;
+    before=min.Memory.ToArray();
+    var minResult=Mpu4CalibratedDelayExecution.CallFrom5A05(min,0,Mpu4CalibratedDelayExecution.MinimumStackPointer,0x91,0,0,0,0,0xC0);
+    Equal((ushort)0x5A0A,minResult.State.PC);Equal(Mpu4CalibratedDelayExecution.MinimumStackPointer,minResult.State.S);Equal((byte)1,minResult.State.B);
+    Equal(true,minResult.Writes.All(w=>w.Address<=6));Equal(Convert.ToHexString(before.AsSpan(7)),Convert.ToHexString(min.Memory.AsSpan(7)));
+    var high=new Machine();Array.Fill(high.Memory,(byte)0xA5);high.Memory[0x719B]=0;high.Memory[0]=1;
+    before=high.Memory.ToArray();
+    var highResult=Mpu4CalibratedDelayExecution.CallFrom5A05(high,0,0xFFFF,0x91,0,0,0,0,0xC0);
+    Equal((ushort)0x5A0A,highResult.State.PC);Equal((ushort)0xFFFF,highResult.State.S);Equal((byte)1,highResult.State.B);
+    Equal(true,highResult.Writes.All(w=>w.Address>=0xFFF8));
+    Equal(Convert.ToHexString(before.AsSpan(0,0xFFF8)),Convert.ToHexString(high.Memory.AsSpan(0,0xFFF8)));Equal(before[0xFFFF],high.Memory[0xFFFF]);
+});
 Check("Start tone setup derives bridge wrapper and queue cycles without phase0 capture", () => {
     using var tone=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","nudge-tone.json")));
     var ram=Convert.FromHexString(tone.RootElement.GetProperty("ram_hex").GetString()!);

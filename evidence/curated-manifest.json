@@ -45,6 +45,11 @@
     "sha256": "C6D0798D2380D4F23BC3CD11B90BD5206CEE4C9C6587C79D665977175A644537"
   },
   {
+    "path": "docs/recovery/CAPTURE36-MATCHED-SERVICE-WINDOW-PASS.md",
+    "bytes": 5753,
+    "sha256": "05D7B087B657024428F0F779991E0A67276EA2001B5216D101F5D73642EFD913"
+  },
+  {
     "path": "docs/recovery/CASH-FEATURE-FLOWS.txt",
     "bytes": 8106,
     "sha256": "E644AF1E94D3128A98611511442407E97FBE7FBA36C59B0026982C99DFA66403"
@@ -428,6 +433,11 @@
     "path": "evidence/mpu4/collection/input-condition-timing.json",
     "bytes": 660213,
     "sha256": "59B54683C79171250A38612CFE6E80A2DB13188F875DC06206308BD52C490A7C"
+  },
+  {
+    "path": "evidence/mpu4/collection/matched-service-window-capture36.json",
+    "bytes": 750810,
+    "sha256": "AC60AC5EDE6A962B1FB90DFB8389EF85C6AFE304A25DD24CC7C753A2F59FDB82"
   },
   {
     "path": "evidence/mpu4/collection/native-vm-gateway-debugger.cmd",

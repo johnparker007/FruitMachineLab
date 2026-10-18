@@ -3,6 +3,11 @@
 Experimental recovery of Barcrest MPU4 Adders & Ladders, m4addr A6L 0.1 set 1.
 Recovered code and names are reconstructions, not original source.
 
+The [strategic roadmap](docs/PROJECT-ROADMAP.md) now separates autonomous PC play,
+editable VM game logic and ROM generation. See the [source audit](docs/ENGINEERING-AUDIT.md)
+for actual capture dependencies and [ROM editing](docs/ROM-EDITING.md) for the
+validated, create-only patcher and first original-VM MAME lookup experiment.
+
 The C# solution separates the headless VM/runtime, game-specific Skill Cash replay,
 and WPF diagnostic viewer. It now verifies **continuous C721 feature execution**
 against recorded MAME timing and inputs. Standalone interactive gameplay and full

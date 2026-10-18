@@ -9,6 +9,7 @@ public record Instruction(ushort Site, ushort Token, string Operation, ushort? V
 public sealed class RecoveredScript
 {
     public IReadOnlyList<Instruction> Instructions { get; }
+    public RecoveredScript(IEnumerable<Instruction> instructions) => Instructions = instructions.ToArray();
     public RecoveredScript(string file)
     {
         var items = new List<Instruction>();

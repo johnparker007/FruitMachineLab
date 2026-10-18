@@ -3,9 +3,9 @@ namespace FruitMachineLab.Adders;
 
 public static class SkillCashData
 {
-    public static void LoadExtensions(Machine machine,string evidenceDirectory)
+    public static void LoadExtensions(Machine machine,string evidenceDirectory,RuntimeEvidencePolicy? evidencePolicy=null)
     {
-        using var data=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidenceDirectory,"maps","skill-cash-extension-data.json")));
+        using var data=System.Text.Json.JsonDocument.Parse((evidencePolicy ?? RuntimeEvidencePolicy.Compatibility).ReadText(evidenceDirectory,RuntimeEvidenceRequirements.SkillCashExtensionRanges));
         foreach(var range in data.RootElement.GetProperty("ranges").EnumerateObject())Convert.FromHexString(range.Value.GetString()!).CopyTo(machine.Memory,Convert.ToInt32(range.Name,16));
     }
     // Static ROM data, a6ls.p1 SHA1 402d1518bb78fdc489b06c2aabc771e5ce151847.
@@ -49,20 +49,30 @@ public static class SkillCashData
         _=>throw new NotSupportedException($"Unresolved Adders & Ladders word {token:X4}")
     };
 
-    public static void LoadFeature(Machine machine)
+    public static void LoadFeature(Machine machine,string? evidenceDirectory=null,RuntimeEvidencePolicy? evidencePolicy=null)
     {
+        (ushort Address,byte[] Bytes)[]? ranges=null;
+        if(evidenceDirectory is not null)
+            ranges=ReadStaticRanges(evidenceDirectory,evidencePolicy,RuntimeEvidenceRequirements.SkillCashFeatureRanges,(0x71AA,160),(0x8705,32),(0x890A,124),(0x7257,24));
         Load(machine);
-        Convert.FromHexString("000000000000000000000000080000000400000002000000010000000080000000400000002000000010000000080000000200000001000000008000000040000000200000001000000000800000004000000020000000100000000800000008000000040000000400000002000000020000000100000001000000FF000100000004000800000020004000800100020004000800100020004000800000007F5E").CopyTo(machine.Memory,0x71AA);
-        Convert.FromHexString("C685B9CA0F5B5C24303C4854B4FFC08568C685CDD8D00CC30CC987CE03C4D1C0").CopyTo(machine.Memory,0x8705);
-        Convert.FromHexString("92208F208B2092208F208B20942090208B20942090208B20962092208D20962092208D209740C085688630CE308630CE308830CE308830CE308A30CE308A30CE308330C085687F30CE307F30CE308430CE308430CE308130CE308130CE308B30C08568CC16D8CA0FC5E0C570C2890ACE03C570C28933C5E0C18950C0").CopyTo(machine.Memory,0x890A);
-        Convert.FromHexString("6F675F574F476C4D4E6445465C7D7E5475764C6D6E446566").CopyTo(machine.Memory,0x7257);
+        if(ranges is null) {
+            Convert.FromHexString("000000000000000000000000080000000400000002000000010000000080000000400000002000000010000000080000000200000001000000008000000040000000200000001000000000800000004000000020000000100000000800000008000000040000000400000002000000020000000100000001000000FF000100000004000800000020004000800100020004000800100020004000800000007F5E").CopyTo(machine.Memory,0x71AA);
+            Convert.FromHexString("C685B9CA0F5B5C24303C4854B4FFC08568C685CDD8D00CC30CC987CE03C4D1C0").CopyTo(machine.Memory,0x8705);
+            Convert.FromHexString("92208F208B2092208F208B20942090208B20942090208B20962092208D20962092208D209740C085688630CE308630CE308830CE308830CE308A30CE308A30CE308330C085687F30CE307F30CE308430CE308430CE308130CE308130CE308B30C08568CC16D8CA0FC5E0C570C2890ACE03C570C28933C5E0C18950C0").CopyTo(machine.Memory,0x890A);
+            Convert.FromHexString("6F675F574F476C4D4E6445465C7D7E5475764C6D6E446566").CopyTo(machine.Memory,0x7257);
+        }
+        else ApplyStaticRanges(machine,ranges);
         machine.WriteWord(0x9B7A,0x725D);machine.WriteWord(0x9B7E,0x726F);machine.WriteWord(0x9B80,0x725D);
         machine.WriteWord(0x9C36,0x7257);machine.WriteWord(0x9C3A,0x725D);machine.WriteWord(0x9C3C,0x7257);
         machine.WriteWord(0x851E,0xFF36);machine.WriteWord(0x8522,0xFF3A);machine.Memory[0xFF36]=0xFF;machine.Memory[0xFF3A]=0xFF;
         machine.WriteWord(0x84D6,1);machine.WriteWord(0x84D8,0xA0);
     }
-    public static void LoadAlpha(Machine machine)
+    public static void LoadAlpha(Machine machine,string? evidenceDirectory=null,RuntimeEvidencePolicy? evidencePolicy=null)
     {
+        if(evidenceDirectory is not null) {
+            ApplyStaticRanges(machine,ReadStaticRanges(evidenceDirectory,evidencePolicy,RuntimeEvidenceRequirements.SkillCashAlphaRanges,(0xA7B6,14),(0xA7C9,14),(0xA814,10),(0xAF78,9),(0x193B,16),(0x6C3C,10)));
+            return;
+        }
         Convert.FromHexString("70052020202020207602F020207A").CopyTo(machine.Memory,0xA7B6);
         Convert.FromHexString("70052020202020207602F02E357A").CopyTo(machine.Memory,0xA7C9);
         Convert.FromHexString("7000792003270401307A").CopyTo(machine.Memory,0xA814);
@@ -70,9 +80,62 @@ public static class SkillCashData
         Convert.FromHexString("0001FFFFFFFFFFFF001B001A001C001D").CopyTo(machine.Memory,0x193B);
         Convert.FromHexString("3F065B4F666D7D077F6F").CopyTo(machine.Memory,0x6C3C);
     }
-    public static void LoadScan(Machine machine)
+    public static void LoadScan(Machine machine,string? evidenceDirectory=null,RuntimeEvidencePolicy? evidencePolicy=null)
     {
+        if(evidenceDirectory is not null) {
+            ApplyStaticRanges(machine,ReadStaticRanges(evidenceDirectory,evidencePolicy,RuntimeEvidenceRequirements.SkillCashScanRanges,(0x28E6,24),(0x29BB,4)));
+            return;
+        }
         Convert.FromHexString("343C343C343C343C34343C3C34343C3C343434343C3C3C3C").CopyTo(machine.Memory,0x28E6);
         Convert.FromHexString("01020408").CopyTo(machine.Memory,0x29BB);
+    }
+    private static (ushort Address,byte[] Bytes)[] ReadStaticRanges(string evidenceDirectory,RuntimeEvidencePolicy? evidencePolicy,RuntimeEvidenceRequirement requirement,params (ushort Address,int Length)[] expected)
+    {
+        string text=(evidencePolicy ?? RuntimeEvidencePolicy.Compatibility).ReadText(evidenceDirectory,requirement);
+        System.Text.Json.JsonDocument data;
+        try { data=System.Text.Json.JsonDocument.Parse(text); }
+        catch(System.Text.Json.JsonException e) { throw new InvalidDataException($"{requirement.RelativePath}: malformed JSON: {e.Message}",e); }
+        using(data) {
+            if(!data.RootElement.TryGetProperty("ranges",out var ranges) || ranges.ValueKind!=System.Text.Json.JsonValueKind.Array)
+                throw new InvalidDataException($"{requirement.RelativePath}: missing ranges array");
+            var entries=new List<(ushort Address,byte[] Bytes)>();
+            foreach(var range in ranges.EnumerateArray()) {
+                if(range.ValueKind!=System.Text.Json.JsonValueKind.Object)
+                    throw new InvalidDataException($"{requirement.RelativePath}: range entry is not an object");
+                if(!range.TryGetProperty("address",out var addressValue) || addressValue.ValueKind!=System.Text.Json.JsonValueKind.String)
+                    throw new InvalidDataException($"{requirement.RelativePath}: range is missing a string address");
+                string addressText=addressValue.GetString()!;
+                if(!ushort.TryParse(addressText,System.Globalization.NumberStyles.AllowHexSpecifier,System.Globalization.CultureInfo.InvariantCulture,out ushort address))
+                    throw new InvalidDataException($"{requirement.RelativePath}: malformed range address '{addressText}'");
+                if(!range.TryGetProperty("hex",out var hexValue) || hexValue.ValueKind!=System.Text.Json.JsonValueKind.String)
+                    throw new InvalidDataException($"{requirement.RelativePath}: range {address:X4} is missing a string hex value");
+                byte[] bytes;
+                try { bytes=Convert.FromHexString(hexValue.GetString()!); }
+                catch(FormatException e) { throw new InvalidDataException($"{requirement.RelativePath}: range {address:X4} has malformed hex: {e.Message}",e); }
+                if(bytes.Length==0)throw new InvalidDataException($"{requirement.RelativePath}: range {address:X4} is empty");
+                if(address+bytes.Length>65536)throw new InvalidDataException($"{requirement.RelativePath}: range {address:X4} ends beyond 65536");
+                entries.Add((address,bytes));
+            }
+            var required=new List<(ushort Address,byte[] Bytes)>();
+            foreach(var item in expected) {
+                var matches=entries.Where(x=>x.Address==item.Address).ToArray();
+                if(matches.Length==0)throw new InvalidDataException($"{requirement.RelativePath}: missing required range {item.Address:X4}");
+                if(matches.Length>1)throw new InvalidDataException($"{requirement.RelativePath}: duplicate required range {item.Address:X4}");
+                if(matches[0].Bytes.Length!=item.Length)throw new InvalidDataException($"{requirement.RelativePath}: range {item.Address:X4} has {matches[0].Bytes.Length} bytes, expected {item.Length}");
+                required.Add(matches[0]);
+            }
+            for(int i=0;i<entries.Count;i++)for(int j=i+1;j<entries.Count;j++) {
+                bool touchesRequired=expected.Any(x=>x.Address==entries[i].Address || x.Address==entries[j].Address);
+                if(!touchesRequired)continue;
+                int endI=entries[i].Address+entries[i].Bytes.Length,endJ=entries[j].Address+entries[j].Bytes.Length;
+                if(entries[i].Address<endJ && entries[j].Address<endI)
+                    throw new InvalidDataException($"{requirement.RelativePath}: ranges {entries[i].Address:X4} and {entries[j].Address:X4} overlap");
+            }
+            return required.OrderBy(x=>x.Address).ToArray();
+        }
+    }
+    private static void ApplyStaticRanges(Machine machine,(ushort Address,byte[] Bytes)[] ranges)
+    {
+        foreach(var range in ranges)range.Bytes.CopyTo(machine.Memory,range.Address);
     }
 }

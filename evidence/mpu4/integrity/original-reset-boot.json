@@ -1,0 +1,105 @@
+{
+    "schema_version":  2,
+    "classification":  "Natural original-ROM MAME reset boot observation. Executable threshold and checksum outcomes are observed; intent and gameplay are not claimed.",
+    "rom":  {
+                "name":  "a6ls.p1",
+                "length":  65536,
+                "expected_length":  65536,
+                "sha1":  "402d1518bb78fdc489b06c2aabc771e5ce151847",
+                "run_copy_sha1_after":  "402d1518bb78fdc489b06c2aabc771e5ce151847",
+                "unchanged":  true
+            },
+    "starting_contract":  {
+                              "mode":  "Natural original reset boot",
+                              "declared_starting_nvram":  "absent",
+                              "declared_starting_configuration":  "absent; -noreadconfig",
+                              "declared_user_inputs":  "none",
+                              "configuration_read_disabled":  true,
+                              "isolated_rom_copy":  "verified: length 65536; SHA1 402d1518bb78fdc489b06c2aabc771e5ce151847",
+                              "user_inputs":  "none; no input playback files and no playback argument",
+                              "pc_ram_input_or_rom_injection":  "none; debugger script contains only bpset/printf/go/quit and arguments contain no state load, playback, autoboot or cheat option",
+                              "mame_sha256":  "0fce5a88df4f9d9b1fbf1405812c00848036e615993780978d967da34204cb7a",
+                              "mame_exit_code":  0,
+                              "debug_log_sha256":  "dee6c95944157e1f7c6aaca588bc5d6bfcebcbce3e2f2038a9e2701cb2c32190",
+                              "console_sha256":  "2709ed221527c35d41966922d9c5c9b5e39a66e9b06009192ec26ce4e1c1c8d0",
+                              "debug_log_sha256_source":  "recomputed from raw debug.log",
+                              "console_sha256_source":  "recomputed from raw console.txt"
+                          },
+    "observed":  {
+                     "reset_entry":  "BOOT_RESET pc=7CD1 s=0000 cc=50",
+                     "init_entry":  "BOOT_INIT_ENTRY pc=6750 u=0672",
+                     "reset_entries":  2,
+                     "init_entries":  2,
+                     "checksum_entry":  "BOOT_ROM_CHECK_ENTRY pc=66A5 u=0672 gate719b=00",
+                     "verifier_entry":  "BOOT_ROM_VERIFY_ENTRY pc=66DB u=066A expected=3E761E2605 start=1400 end=FFFF error=12",
+                     "sum_xor":  "BOOT_SUM_XOR sum=3E xor=76",
+                     "rotate_add":  "BOOT_ROTATE_ADD value=1E",
+                     "rotate_sub_xor":  "BOOT_ROTATE_SUB_XOR a=26 b=05",
+                     "checksum_return":  "BOOT_ROM_CHECK_RETURN pc=677E y=FFFF u=0672",
+                     "next_startup_boundary":  "BOOT_CAPTURE_END pc=677E y=FFFF",
+                     "checksum_marker_order":  "66A5 -\u003e 66DB -\u003e 66F3 -\u003e 6715 -\u003e 674C -\u003e 677E -\u003e end"
+                 },
+    "verification":  {
+                         "original_rom_identity":  true,
+                         "run_copy_identity":  true,
+                         "isolated_rom_copy_length":  65536,
+                         "exit_code_consistent":  true,
+                         "debug_log_hash_matches_observation":  true,
+                         "console_hash_matches_observation":  true,
+                         "observation_booleans_match_log":  true,
+                         "checksum_marker_order_enforced":  true,
+                         "required_breakpoint_addresses":  [
+                                                               "7cd1",
+                                                               "6750",
+                                                               "66a5",
+                                                               "66db",
+                                                               "66f3",
+                                                               "6715",
+                                                               "674c",
+                                                               "674d",
+                                                               "677e"
+                                                           ],
+                         "injection_claim_supported":  true,
+                         "starting_nvram_verification":  "declared by capture provenance; pre-run emptiness is not reconstructable from the post-run directory",
+                         "reset_marker_present":  true,
+                         "init_marker_present":  true,
+                         "verifier_entered":  true,
+                         "verifier_failure_marker_absent":  true,
+                         "returned_to_caller_677e":  true,
+                         "stopped_at_next_startup_boundary":  true,
+                         "active_record":  {
+                                               "gate_719b":  "00",
+                                               "expected_hex":  "3E761E2605",
+                                               "start":  "1400",
+                                               "end":  "FFFF",
+                                               "error_code":  "12"
+                                           },
+                         "computed":  {
+                                          "sum":  "3E",
+                                          "xor":  "76",
+                                          "rotate_add":  "1E",
+                                          "rotate_sub_xor_a":  "26",
+                                          "rotate_sub_xor_b":  "05"
+                                      },
+                         "matches_static_expectation":  true
+                     },
+    "provenance":  {
+                       "capture_script":  "tools/Capture-RomIntegrityBoot.ps1",
+                       "curator_script":  "tools/Curate-RomIntegrityBoot.ps1",
+                       "raw_run_directory":  "artifacts/deepseek/general-04/mame-reset-boot-original-5",
+                       "static_evidence":  [
+                                               "evidence/mpu4/maps/rom-integrity.json",
+                                               "evidence/mpu4/native/66a5.json",
+                                               "evidence/mpu4/native/66db.json"
+                                           ]
+                   },
+    "limitations":  [
+                        "This observes one natural cold reset with the original image and declared-absent NVRAM in MAME 0.281.",
+                        "The post-run directory cannot independently prove that NVRAM and configuration were absent before MAME started; those two entries remain capture declarations. Configuration reading is verifiably disabled with -noreadconfig.",
+                        "The injection claim is limited to the captured debugger script and arguments: no state load, playback, autoboot, cheat, memory/PC write or ROM replacement command is present.",
+                        "It does not prove physical hardware behaviour, modified-ROM behaviour, gameplay, randomness or timing equivalence.",
+                        "Only the active gate-00 record at FFD1 is exercised; disabled records remain unexercised.",
+                        "No ROM repair, re-signing, bypass or patch was performed.",
+                        "Negative controls are synthetic tampering of copied raw artifacts, not natural execution evidence."
+                    ]
+}

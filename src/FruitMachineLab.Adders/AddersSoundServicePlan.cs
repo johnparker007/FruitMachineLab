@@ -7,8 +7,8 @@ namespace FruitMachineLab.Adders;
 public sealed class AddersSoundServicePlan(Machine m,ushort stack,ushort initialU,ushort initialX,ushort initialY,ushort entry=0x5CD0,Action<byte,byte>? ymWrite=null)
 {
     private ushort s=stack,u=initialU,x=initialX,y=initialY,clock;
-    private byte command,duration;
-    private bool zero;
+    private byte command,duration,a,b;
+    private bool zero,negative;
     public int CompletedTasks {get;private set;}
     public IEnumerable<NativeRoutineWork> Instructions()
     {
@@ -60,6 +60,63 @@ public sealed class AddersSoundServicePlan(Machine m,ushort stack,ushort initial
                     yield return new NativeRoutineStep(0x5D45,"3A",()=>x+=command);
                     yield return new NativeRoutineStep(0x5D46,"6E94");
                     ushort target=m.ReadWord(x);
+                    if(command==0xC6 && target==0x608E){
+                        // Instrument table: eight cache writes, then the shared C5-style
+                        // attenuation tail. Only the captured initial FF sentinel (skip the
+                        // channel loop) is verified; the active-channel variant is rejected.
+                        yield return new NativeRoutineStep(0x608E,"5F",()=>b=0);
+                        yield return new NativeRoutineStep(0x608F,"AEC1",()=>{x=m.ReadWord(u);u+=2;});
+                        for(int n=0;n<8;n++){
+                            yield return new NativeRoutineStep(0x6091,"A680",()=>{a=m.Memory[x];x++;});
+                            yield return new NativeRoutineStep(0x6093,"8D16",()=>{s-=2;m.WriteWord(s,0x6095);});
+                            foreach(var op in new AddersYmCachedWritePlan(m,a,b,x,s,ymWrite).Instructions())yield return op;s+=2;
+                            yield return new NativeRoutineStep(0x6095,"5C",()=>b++);
+                            yield return new NativeRoutineStep(0x6096,"C108");
+                            yield return new NativeRoutineStep(0x6098,"25F7");if(b<8)continue;
+                        }
+                        yield return new NativeRoutineStep(0x609A,"4F",()=>a=0);
+                        yield return new NativeRoutineStep(0x609B,"7E5F8A");
+                        yield return new NativeRoutineStep(0x5F8A,"A82B",()=>a^=m.Memory[y+0xB]);
+                        yield return new NativeRoutineStep(0x5F8C,"84F0",()=>a&=0xF0);
+                        yield return new NativeRoutineStep(0x5F8E,"A82B",()=>a^=m.Memory[y+0xB]);
+                        yield return new NativeRoutineStep(0x5F90,"2033");
+                        yield return new NativeRoutineStep(0x5FC5,"A72B",()=>m.Memory[y+0xB]=a);
+                        yield return new NativeRoutineStep(0x5FC7,"E62A",()=>{b=m.Memory[y+0xA];negative=(sbyte)b<0;});
+                        yield return new NativeRoutineStep(0x5FC9,"102BFD6E",Branch:negative);
+                        if(!negative)throw new NotSupportedException("C6 active-channel variant is unverified");
+                        continue;
+                    }
+                    if(command==0xD8 && target==0x6049){
+                        yield return new NativeRoutineStep(0x6049,"A6A812",()=>a=m.Memory[y+0x12]);
+                        yield return new NativeRoutineStep(0x604C,"8A80",()=>a|=0x80);
+                        yield return new NativeRoutineStep(0x604E,"A7A812",()=>m.Memory[y+0x12]=a);
+                        yield return new NativeRoutineStep(0x6051,"7E5D3B");
+                        continue;
+                    }
+                    if(command==0xC3 && target==0x5EB2){
+                        yield return new NativeRoutineStep(0x5EB2,"30A818",()=>x=(ushort)(y+0x18));
+                        yield return new NativeRoutineStep(0x5EB5,"AC26");
+                        yield return new NativeRoutineStep(0x5EB7,"22C6");if(x>m.ReadWord((ushort)(y+6)))throw new NotSupportedException("Native sound call stack overflow reaches SWI3");
+                        yield return new NativeRoutineStep(0x5EB9,"AE26",()=>x=m.ReadWord((ushort)(y+6)));
+                        yield return new NativeRoutineStep(0x5EBB,"A6C0",()=>{a=m.Memory[u];u++;});
+                        yield return new NativeRoutineStep(0x5EBD,"EF83",()=>{x-=2;m.WriteWord(x,u);});
+                        yield return new NativeRoutineStep(0x5EBF,"A782",()=>{x--;m.Memory[x]=a;});
+                        yield return new NativeRoutineStep(0x5EC1,"AF26",()=>m.WriteWord((ushort)(y+6),x));
+                        yield return new NativeRoutineStep(0x5EC3,"7E5D3B");
+                        continue;
+                    }
+                    if(command==0xC4 && target==0x5EC6){
+                        yield return new NativeRoutineStep(0x5EC6,"30A822",()=>x=(ushort)(y+0x22));
+                        yield return new NativeRoutineStep(0x5EC9,"AC26");
+                        yield return new NativeRoutineStep(0x5ECB,"25B2");if(x<m.ReadWord((ushort)(y+6)))throw new NotSupportedException("Native sound loop frame overflow reaches SWI3");
+                        yield return new NativeRoutineStep(0x5ECD,"AE26",()=>x=m.ReadWord((ushort)(y+6)));
+                        yield return new NativeRoutineStep(0x5ECF,"A684",()=>{a=m.Memory[x];zero=a==0;});
+                        yield return new NativeRoutineStep(0x5ED1,"2704");
+                        if(!zero)throw new NotSupportedException("C4 finite-count variant is unverified");
+                        yield return new NativeRoutineStep(0x5ED7,"EE01",()=>u=m.ReadWord((ushort)(x+1)));
+                        yield return new NativeRoutineStep(0x5ED9,"7E5D3B");
+                        continue;
+                    }
                     if(command==0xC1 && target==0x5E8F){
                         yield return new NativeRoutineStep(0x5E8F,"30A817",()=>x=(ushort)(y+0x17));
                         yield return new NativeRoutineStep(0x5E92,"AC26",()=>zero=x>m.ReadWord((ushort)(y+6)));

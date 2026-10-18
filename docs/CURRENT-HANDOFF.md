@@ -1,5 +1,10 @@
 # Current handoff
 
+17 October strategic update: read PROJECT-ROADMAP.md, ENGINEERING-AUDIT.md and
+ROM-EDITING.md first. They supersede older next-step priorities below; historical
+evidence boundaries remain valid. The new strict patcher and isolated original-VM
+MAME award lookup are verified; reset boot/natural play remain open.
+
 Paused at John's wrap-up request before proposed revisions. Nine of16 milestones
 complete, latest250d882. Full regression353 groups PASS; isolated desktop solution
 build zero warnings/errors;1249 curated entries verify. No GUI behaviour changed.

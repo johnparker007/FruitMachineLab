@@ -1,0 +1,45 @@
+{
+  "SchemaVersion": 1,
+  "Address": "9A64",
+  "Purpose": "conditionally_set_or_clear_memory_mask",
+  "InputLength": 65536,
+  "RomSha1": "402D1518BB78FDC489B06C2AABC771E5CE151847",
+  "OriginalSpanHex": "7B6D79820676657979037671792F",
+  "OriginalSpanSha256": "8F6EB56621E16DB1097FEC5A8138D1A260C6B6B4DD431E02CBA43D8D54F5E113",
+  "EvidenceClass": "Exact in-place span from the original-ROM encoding checkpoint; every listed site is marked observed in the reviewed MAME listing. Branch targets are internal listed instruction boundaries.",
+  "Provenance": {
+    "Listing": "evidence/mpu4/VM-SCRIPTS/9A64.txt",
+    "ListingSha256": "01A93F20773E1530FCCCA66CC4C3ACB2C066F4595C1A0371B08EBF99D3CDC3E9",
+    "Checkpoint": "evidence/mpu4/maps/nudge-encoding-checkpoint.json",
+    "CheckpointSpanClassification": "Exact selected ROM span and checked listed tokens; gaps/operands/embedded data preserved verbatim.",
+    "ObservedSites": 6
+  },
+  "Instructions": [
+    {
+      "Token": "7B6D",
+      "Operation": "vm_rotate_three_cells"
+    },
+    {
+      "Token": "7982",
+      "Operation": "vm_branch_forward8_if_zero",
+      "Branch": "9A6E"
+    },
+    {
+      "Token": "7665",
+      "Operation": "vm_or_word_memory"
+    },
+    {
+      "Token": "7979",
+      "Operation": "vm_branch_unsigned_forward8",
+      "Branch": "9A70"
+    },
+    {
+      "Token": "7671",
+      "Operation": "vm_clear_word_memory_bits"
+    },
+    {
+      "Token": "792F",
+      "Operation": "vm_return_to_caller_stream"
+    }
+  ]
+}

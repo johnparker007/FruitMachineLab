@@ -1,0 +1,81 @@
+{
+    "schema_version":  1,
+    "classification":  "Static algorithm execution and deterministic regeneration for the existing equal-size shared-award edit. The repaired image has not been certified as gameplay-equivalent or hardware-compatible; natural MAME startup evidence is separate.",
+    "input":  {
+                  "path":  "a6ls.p1",
+                  "length":  65536,
+                  "sha1":  "402d1518bb78fdc489b06c2aabc771e5ce151847",
+                  "sha256":  "ebf580381aa6eb6ffb26e2acd40f30aa34b0311f71c6564607c6f48a53bca15c"
+              },
+    "patch":  {
+                  "path":  "evidence/mpu4/patches/skill-cash-level1-12.json",
+                  "sha256":  "c4ae375ead65e7c73025f966784cdc599297eeff803f276330c5d9f367f35df4",
+                  "offset":  30141,
+                  "expected_hex":  "000A1014162F3C",
+                  "replacement_hex":  "000C1014162F3C",
+                  "changed_offsets":  [
+                                          30142
+                                      ],
+                  "source":  "evidence/mpu4/patches/skill-cash-level1-12.json"
+              },
+    "dependency_order":  {
+                             "sum_xor":  "computed first; excludes FFD1-FFD5, so it reads no expected fields",
+                             "rotate_add":  "computed after sum/xor; excludes FFD3-FFD5 but reads regenerated FFD1-FFD2",
+                             "rotate_sub_xor":  "computed last; excludes FFD4-FFD5 but reads regenerated FFD1-FFD3",
+                             "source":  "evidence/mpu4/native/66db.json: 66df-66f1 sums, 6701-6713 rotate-add, 671f-6740 rotate-sub-xor and skip redirects"
+                         },
+    "original":  {
+                     "stored_fields":  "3E761E2605",
+                     "computed_fields":  "3E761E2605"
+                 },
+    "unrepaired":  {
+                       "path":  "artifacts/deepseek/general-07/roms/unrepaired.p1",
+                       "length":  65536,
+                       "sha1":  "58e997e6e1d2ef2251ddde18a5d41716d21368c0",
+                       "sha256":  "a67062f32dba37ad4f24c8b1bc6ac92c91e8f3b39ce8f9c21904af0fd1667714",
+                       "readback_sha256":  "a67062f32dba37ad4f24c8b1bc6ac92c91e8f3b39ce8f9c21904af0fd1667714",
+                       "stored_fields":  "3E761E2605",
+                       "computed_sum_xor":  "4070",
+                       "computed_rotate_add_with_original_fields":  "20",
+                       "changed_offsets":  [
+                                               30142
+                                           ]
+                   },
+    "repaired":  {
+                     "path":  "artifacts/deepseek/general-07/roms/repaired.p1",
+                     "length":  65536,
+                     "sha1":  "ae040f3f130934972b9e651d4dbe36ff24fb4954",
+                     "sha256":  "66162b920b05c537a5c7bce098d883b0551951ed46aa97cd98600a3d7b789796",
+                     "readback_sha256":  "66162b920b05c537a5c7bce098d883b0551951ed46aa97cd98600a3d7b789796",
+                     "stored_fields":  "40701CFA02",
+                     "computed_fields":  "40701CFA02",
+                     "changed_offsets":  [
+                                             30142,
+                                             65489,
+                                             65490,
+                                             65491,
+                                             65492,
+                                             65493
+                                         ],
+                     "field_offsets_changed_by_repair":  [
+                                                             65489,
+                                                             65490,
+                                                             65491,
+                                                             65492,
+                                                             65493
+                                                         ]
+                 },
+    "retained":  {
+                     "checker_code":  "66A5-674F unchanged",
+                     "outer_gate":  "719B unchanged",
+                     "disabled_records":  "FFB0-FFD0 unchanged",
+                     "active_record_metadata":  "FFD6-FFDB unchanged",
+                     "all_other_bytes":  "unchanged"
+                 },
+    "limitations":  [
+                        "Only the existing single-byte shared-award edit at 75BE is accepted.",
+                        "This regenerates the active gate-00 record fields only; disabled records are preserved, not enabled.",
+                        "No relocation, code edit, additional game rule, gameplay equivalence, MAME loader hash repair or hardware compatibility is claimed.",
+                        "Natural original/unrepaired/repaired startup comparison is recorded separately."
+                    ]
+}

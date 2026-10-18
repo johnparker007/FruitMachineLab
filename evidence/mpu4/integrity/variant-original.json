@@ -1,0 +1,97 @@
+{
+    "schema_version":  1,
+    "classification":  "Natural MAME 0.281 reset observation of one identity-checked ROM variant. The original checker code, gate, ranges and disabled records are unchanged; the unrepaired and repaired variants differ only in the shared award byte and the five active expected fields.",
+    "variant":  "Original",
+    "rom":  {
+                "name":  "a6ls.p1",
+                "length":  65536,
+                "sha1":  "402d1518bb78fdc489b06c2aabc771e5ce151847",
+                "sha256":  "ebf580381aa6eb6ffb26e2acd40f30aa34b0311f71c6564607c6f48a53bca15c",
+                "original_sha1":  "402d1518bb78fdc489b06c2aabc771e5ce151847",
+                "run_copy_sha1_after":  "402d1518bb78fdc489b06c2aabc771e5ce151847",
+                "run_copy_sha256_after":  "ebf580381aa6eb6ffb26e2acd40f30aa34b0311f71c6564607c6f48a53bca15c",
+                "unchanged":  true
+            },
+    "starting_contract":  {
+                              "mode":  "Natural ROM integrity variant reset",
+                              "declared_starting_nvram":  "absent",
+                              "declared_starting_configuration":  "absent; -noreadconfig",
+                              "declared_user_inputs":  "none",
+                              "configuration_read_disabled":  true,
+                              "isolated_rom_copy":  "verified: length 65536; SHA1 402d1518bb78fdc489b06c2aabc771e5ce151847; SHA256 ebf580381aa6eb6ffb26e2acd40f30aa34b0311f71c6564607c6f48a53bca15c",
+                              "user_inputs":  "none; no input playback files and no playback argument",
+                              "pc_ram_input_or_rom_injection":  "none; debugger script contains only bpset/printf/go/quit and arguments contain no state load, playback, autoboot or cheat option",
+                              "mame_sha256":  "0fce5a88df4f9d9b1fbf1405812c00848036e615993780978d967da34204cb7a",
+                              "mame_exit_code":  0,
+                              "debug_log_sha256":  "23946cf8ec8c4675c4a9392d03eee0ae1325175ec6e7dfdf59cfecfae3d8637e",
+                              "console_sha256":  "da21d48ca5fd4adcab35f334cf1ad41ed3ff15313486111b4e1fc71b97578721",
+                              "debug_log_sha256_source":  "recomputed from raw debug.log",
+                              "console_sha256_source":  "recomputed from raw console.txt"
+                          },
+    "observed":  {
+                     "outcome":  "passed",
+                     "check_entry":  "VARIANT_ROM_CHECK_ENTRY pc=66A5 u=0672 gate719b=00",
+                     "verify_entry":  "VARIANT_ROM_VERIFY_ENTRY pc=66DB u=066A expected=3E761E2605 start=1400 end=FFFF error=12",
+                     "sum_xor":  "VARIANT_SUM_XOR sum=3E xor=76",
+                     "rotate_add":  "VARIANT_ROTATE_ADD value=1E",
+                     "rotate_sub_xor":  "VARIANT_ROTATE_SUB_XOR a=26 b=05",
+                     "checksum_return":  "VARIANT_ROM_CHECK_RETURN pc=677E y=FFFF u=0672",
+                     "init_tail_jump":  "VARIANT_INIT_TAIL_JMP pc=67B3 y=0000 u=0672",
+                     "init_tail_entry":  "VARIANT_INIT_TAIL_ENTRY pc=3B1A y=0000 u=0672",
+                     "vm_call":  "VARIANT_VM_CALL pc=7CF6 x=FDF0 y=02DA u=0672",
+                     "vm_entry":  "VARIANT_VM_ENTRY pc=76C7 x=FDF0 y=02DA u=0672 s=07C6",
+                     "capture_end":  "VARIANT_CAPTURE_END pc=76C7 x=FDF0 y=02DA u=0672",
+                     "expected_fields":  "3E761E2605",
+                     "computed_fields":  "3E761E2605",
+                     "initial_stream_pointer":  "FDF0",
+                     "marker_order":  "66A5 -\u003e 66DB -\u003e 66F3 -\u003e 6715 -\u003e 674C -\u003e 677E -\u003e 67B3 -\u003e 3B1A -\u003e 7CF6 -\u003e 76C7 -\u003e end"
+                 },
+    "verification":  {
+                         "original_rom_identity":  true,
+                         "variant_identity_sha1_sha256":  true,
+                         "run_copy_identity":  true,
+                         "isolated_rom_copy_length":  65536,
+                         "exit_code_consistent":  true,
+                         "debug_log_hash_matches_observation":  true,
+                         "console_hash_matches_observation":  true,
+                         "observation_booleans_match_log":  true,
+                         "marker_order_enforced":  true,
+                         "required_breakpoint_addresses":  [
+                                                               "7cd1",
+                                                               "6750",
+                                                               "66a5",
+                                                               "66db",
+                                                               "66f3",
+                                                               "6715",
+                                                               "674c",
+                                                               "674f",
+                                                               "677e",
+                                                               "67b3",
+                                                               "3b1a",
+                                                               "7cf6",
+                                                               "76c7"
+                                                           ],
+                         "injection_claim_supported":  true,
+                         "starting_nvram_verification":  "declared by capture provenance; pre-run emptiness is not reconstructable from the post-run directory",
+                         "checker_code_gate_ranges_disabled_records":  "unchanged from the original image; only the shared award byte and active expected fields differ"
+                     },
+    "provenance":  {
+                       "capture_script":  "tools/Capture-RomIntegrityVariant.ps1",
+                       "curator_script":  "tools/Curate-RomIntegrityVariant.ps1",
+                       "raw_run_directory":  "artifacts/deepseek/general-07/mame-original",
+                       "original_oracle":  "evidence/mpu4/integrity/original-startup-vm-entry.json",
+                       "static_evidence":  [
+                                               "evidence/mpu4/maps/rom-integrity.json",
+                                               "evidence/mpu4/native/66a5.json",
+                                               "evidence/mpu4/native/66db.json"
+                                           ]
+                   },
+    "limitations":  [
+                        "This is one natural cold reset observation per variant in MAME 0.281, stopping at the first failure or the first 76C7 entry.",
+                        "The unrepaired variant is expected to fail the original sum/xor check first; the first-failure line records the actual observed result.",
+                        "The repaired variant passes the original checker and reaches the same VM entry/stream pointer, but later token dispatch, gameplay, randomness, timing equivalence and physical hardware are not claimed.",
+                        "MAME loader hash warnings for modified images remain expected and are not firmware-integrity repair.",
+                        "Starting NVRAM/configuration absence remains a capture declaration; configuration reading is verifiably disabled.",
+                        "Negative controls are synthetic tampering of copied raw artifacts, not natural execution evidence."
+                    ]
+}

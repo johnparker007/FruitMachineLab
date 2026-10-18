@@ -1,0 +1,96 @@
+{
+    "source_run":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\restart-22\\mame-scheduler-call",
+    "debug_sha256":  "E55049C920407A97EC0C3A55F23E1045FFE01B8BB979F0ED19F3BBA34A5F27CF",
+    "cases_sha256":  "7DC411A847D6B155D9B3698926289D0F03C665E29C38267BDE27E8012325112D",
+    "debugger_sha256":  "85FA74D70C03B910BA44F099C3EBB001724F6EAB971E19319AAA18B08905E551",
+    "arguments_sha256":  "26751CD9C2876FB01C2FD10DE84E4A439AC267DF23538D0EB409A15AF1B6E5A4",
+    "rom_sha1":  "402D1518BB78FDC489B06C2AABC771E5CE151847",
+    "provenance":  {
+                       "classification":  "Synthetic original FEC9 JSR5CD0 return to FECC/CLR2C; masked IRQ, fresh RAM, recorded initial registers/S, empty and queued8784 cases. Natural cadence not inferred.",
+                       "mame_sha256":  "0FCE5A88DF4F9D9B1FBF1405812C00848036E615993780978D967DA34204CB7A"
+                   },
+    "contract_rom_sha256":  "FA608731F92E181855F81E8FDCAF0F70C968E4E1A986B1F82B407C54F4731A54",
+    "cases":  2,
+    "initial_states":  [
+                           {
+                               "id":  0,
+                               "pc":  65225,
+                               "cycle":  4,
+                               "s":  1792,
+                               "u":  1536,
+                               "x":  34692,
+                               "y":  416,
+                               "dp":  0,
+                               "cc":  80
+                           },
+                           {
+                               "id":  1,
+                               "pc":  65225,
+                               "cycle":  66,
+                               "s":  1792,
+                               "u":  1536,
+                               "x":  34692,
+                               "y":  416,
+                               "dp":  0,
+                               "cc":  80
+                           }
+                       ],
+    "seeds":  [
+                  {
+                      "id":  0,
+                      "sha256":  "7F37A141A9E1FE46AA88A174C4F64C79CEF69A1D1A17B0D70A8A6134B5534DA4"
+                  },
+                  {
+                      "id":  1,
+                      "sha256":  "C8E7141545D3F139EADD6BA5D2603610C042678F733765755D7CD96C2A001C1F"
+                  }
+              ],
+    "rom_regions":  [
+                        {
+                            "address":  65225,
+                            "sha256":  "FA608731F92E181855F81E8FDCAF0F70C968E4E1A986B1F82B407C54F4731A54"
+                        },
+                        {
+                            "address":  23864,
+                            "sha256":  "EA72CB872A485C7FB94047BA71A3198361CD975EB523B6BC7C0E474053221C42"
+                        },
+                        {
+                            "address":  22883,
+                            "sha256":  "EBBC9B4A9045D6F72BEA7B4C8E2DE72F03EBC8472919D990B9B4C0FA90775495"
+                        },
+                        {
+                            "address":  34617,
+                            "sha256":  "874A4747BA14A822E4585D1C92AC7F68772216E337FBB46434A01C3C7BC1D38C"
+                        }
+                    ],
+    "natural":  {
+                    "scheduler-a":  {
+                                        "trace_sha256":  "C23DFB0B14D4C22C1A02C15FDCF6D916F74905942FE2A3EF1BEA34F764C05A82",
+                                        "entry_s":  1972,
+                                        "return_s":  1974,
+                                        "entry_pc":  23762,
+                                        "return_pc":  65228,
+                                        "ticks":  1,
+                                        "entry_line":  "A=00 B=0B DP=00 X=0672 S=07B4 CC=C5 LOCK=00 TICKS=0000 HEAD=0000 5CD2: BNE    $5D3A",
+                                        "return_line":  "A=00 B=0B DP=00 X=0672 S=07B6 CC=C4 LOCK=00 TICKS=0001 HEAD=0000 FECC: CLR    \u003c$2C",
+                                        "initial_state_sha256":  "1CF0CF7D4366B832A624E199B13488E8AD3BECFBA018F471DD2C96A100278D5D",
+                                        "debugger_sha256":  "A3DD43D6BB48B6721F548D341E37F62B967999D4E37EEF886CA2F6F0F63D2DD9",
+                                        "arguments_sha256":  "EA1C3FD2AD4210605D4C814C9BC735BFCD3B389518426795E9703A54D9E2B7FF",
+                                        "hashes_sha256":  "86B18D3E99A66ED3B78BFE45D17F65E65709D7DC96C1E804650430F6E8F13AF2"
+                                    },
+                    "scheduler-b":  {
+                                        "trace_sha256":  "C23DFB0B14D4C22C1A02C15FDCF6D916F74905942FE2A3EF1BEA34F764C05A82",
+                                        "entry_s":  1972,
+                                        "return_s":  1974,
+                                        "entry_pc":  23762,
+                                        "return_pc":  65228,
+                                        "ticks":  1,
+                                        "entry_line":  "A=00 B=0B DP=00 X=0672 S=07B4 CC=C5 LOCK=00 TICKS=0000 HEAD=0000 5CD2: BNE    $5D3A",
+                                        "return_line":  "A=00 B=0B DP=00 X=0672 S=07B6 CC=C4 LOCK=00 TICKS=0001 HEAD=0000 FECC: CLR    \u003c$2C",
+                                        "initial_state_sha256":  "1CF0CF7D4366B832A624E199B13488E8AD3BECFBA018F471DD2C96A100278D5D",
+                                        "debugger_sha256":  "A3DD43D6BB48B6721F548D341E37F62B967999D4E37EEF886CA2F6F0F63D2DD9",
+                                        "arguments_sha256":  "57CFCE721464C4DCAC2667E5B001BED64E78F3A282ACBE01326219D978C0D4F2",
+                                        "hashes_sha256":  "F182133BEFCFEB1FB0E8F4D6394C52E2D501A39AC63FB6E32F6DB11C77E1A8F6"
+                                    }
+                }
+}

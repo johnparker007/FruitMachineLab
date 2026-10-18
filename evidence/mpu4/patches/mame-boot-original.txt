@@ -1,0 +1,15 @@
+MAME debugger version 0.281 (mame0281)
+Currently targeting m4addr (Classic Adders & Ladders (Barcrest) (MPU4) (A6L 0.1, set 1))
+>printf "ROM_PATCH_TABLE value=%02X\n",b@75be
+ROM_PATCH_TABLE value=0A
+
+>bpset fc,y==0xfdf0,{printf "ROM_PATCH_BOOT initial_stream=%04X\n",y;go}
+Breakpoint 1 set
+>gtime #12000
+Stopped at time interval 1e+01
+>printf "ROM_PATCH_BOOT_END pc=%04X y=%04X\n",pc,y
+ROM_PATCH_BOOT_END pc=294C y=FFFF
+
+>save final-ram.bin,0,800
+Data saved successfully
+>quit

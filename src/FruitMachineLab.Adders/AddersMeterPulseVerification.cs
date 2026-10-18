@@ -1,4 +1,3 @@
-using System.Security.Cryptography;
 using System.Text.Json;
 using FruitMachineLab.Runtime;
 
@@ -19,8 +18,7 @@ public static class AddersMeterPulseVerification
 
         var capture=root.GetProperty("capture");
         string capturePath=Path.Combine(evidence,capture.GetProperty("fixture").GetString()!);
-        string captureHash=Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(capturePath)));
-        if(!captureHash.Equals(capture.GetProperty("fixture_sha256").GetString(),StringComparison.OrdinalIgnoreCase))
+        if(!FixtureIntegrity.MatchesPinnedHash(capturePath,capture.GetProperty("fixture_sha256").GetString()!))
             throw new InvalidDataException("Meter pulse capture41 fixture hash differs");
         using var captureDocument=JsonDocument.Parse(File.ReadAllText(capturePath));
         var captureRoot=captureDocument.RootElement;

@@ -72,7 +72,8 @@ internal static class VmDefinitionVerification
         Assert(region.GetProperty("end_exclusive").GetString() == "9A72", "Checkpoint end differs");
         Assert(region.GetProperty("span_hex").GetString() == Convert.ToHexString(definition.OriginalBytes),
             "Checkpoint span differs from definition bytes");
-        Assert(Sha256File(Path.Combine(evidence, "VM-SCRIPTS", "9A64.txt")) == definition.Provenance.ListingSha256,
+        Assert(FixtureIntegrity.MatchesPinnedHash(Path.Combine(evidence, "VM-SCRIPTS", "9A64.txt"),
+                definition.Provenance.ListingSha256),
             "Listing hash differs from definition provenance");
 
         string? romPath = Environment.GetEnvironmentVariable("FRUITMACHINELAB_ORIGINAL_ROM");
@@ -245,8 +246,8 @@ internal static class VmDefinitionVerification
             "Checkpoint literal end differs");
         Assert(region.GetProperty("span_hex").GetString() == Convert.ToHexString(definition.OriginalBytes),
             "Checkpoint literal span differs from definition bytes");
-        Assert(Sha256File(Path.Combine(evidence, "VM-SCRIPTS", "9ED9.txt")) ==
-               definition.Provenance.ListingSha256,
+        Assert(FixtureIntegrity.MatchesPinnedHash(Path.Combine(evidence, "VM-SCRIPTS", "9ED9.txt"),
+                definition.Provenance.ListingSha256),
             "Literal listing hash differs from definition provenance");
 
         string? romPath = Environment.GetEnvironmentVariable("FRUITMACHINELAB_ORIGINAL_ROM");
@@ -720,6 +721,4 @@ internal static class VmDefinitionVerification
         return machine;
     }
 
-    private static string Sha256File(string path) =>
-        Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(path)));
 }

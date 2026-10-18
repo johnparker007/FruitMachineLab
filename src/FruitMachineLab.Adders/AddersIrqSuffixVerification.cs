@@ -33,8 +33,8 @@ public static class AddersIrqSuffixVerification
     {
         string composition=PathOf(evidence,CompositionFile);
         string capture=PathOf(evidence,CaptureFile);
-        Require(Sha256(File.ReadAllBytes(composition))==CompositionSha256,"IRQ suffix composition fixture hash differs");
-        Require(Sha256(File.ReadAllBytes(capture))==CaptureSha256,"IRQ suffix capture57 fixture hash differs");
+        Require(FixtureIntegrity.MatchesPinnedHash(composition,CompositionSha256),"IRQ suffix composition fixture hash differs");
+        Require(FixtureIntegrity.MatchesPinnedHash(capture,CaptureSha256),"IRQ suffix capture57 fixture hash differs");
         using var compositionDocument=JsonDocument.Parse(File.ReadAllText(composition));
         using var captureDocument=JsonDocument.Parse(File.ReadAllText(capture));
         return VerifySemantic(compositionDocument.RootElement,captureDocument.RootElement);

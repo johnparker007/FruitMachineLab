@@ -213,8 +213,8 @@ public static class AddersToneFinishVerification
     public static int Verify(string evidence)
     {
         string fixture=FixturePath(evidence),regionPath=RegionPath(evidence);
-        Require(Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(fixture)))==ExpectedCapture36Sha256,"Matched service fixture hash differs");
-        Require(Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(regionPath)))==ExpectedRegionsSha256,"ROM region fixture hash differs");
+        Require(FixtureIntegrity.MatchesPinnedHash(fixture,ExpectedCapture36Sha256),"Matched service fixture hash differs");
+        Require(FixtureIntegrity.MatchesPinnedHash(regionPath,ExpectedRegionsSha256),"ROM region fixture hash differs");
         using var document=JsonDocument.Parse(File.ReadAllText(fixture));
         using var regionDocument=JsonDocument.Parse(File.ReadAllText(regionPath));
         return VerifySemantic(document.RootElement,regionDocument.RootElement);

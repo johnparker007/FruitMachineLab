@@ -175,6 +175,11 @@
         "sha256":  "2C4A0BFA7734179F2147687B2F407EFED8708EAFFDF6ED452715A5CD74BD4281"
     },
     {
+        "path":  "docs/recovery/IL-9A64-MEMORY.md",
+        "bytes":  8380,
+        "sha256":  "F30A49681716FB3BEFF98717F7649D56AC3D1D16613EDBA56E5F58D6AF4481FF"
+    },
+    {
         "path":  "docs/recovery/IL-9A64-NATURAL.md",
         "bytes":  8393,
         "sha256":  "3745037EF179A7591FBB132ACA97FC4E5B7C423F2AAC385642C6D0FDEC550CD0"
@@ -1083,6 +1088,11 @@
         "path":  "evidence/mpu4/integrity/il-9a64-decode.json",
         "bytes":  10173,
         "sha256":  "381AA7848E6A542EC42A96738285863D77FBE56ED8987222CBDA34D9F17868F8"
+    },
+    {
+        "path":  "evidence/mpu4/integrity/il-9a64-memory.json",
+        "bytes":  43709,
+        "sha256":  "A036CDCFE359BF2E8E90C6934274B41AA98B32E10A02662695E011ECEBBB3F07"
     },
     {
         "path":  "evidence/mpu4/integrity/il-9a64-natural.json",

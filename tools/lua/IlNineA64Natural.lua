@@ -7,6 +7,11 @@
 
 local PROTOCOL = "il-9a64-natural-v1"
 local MAX_BREAKPOINT_STEPS = 100000
+local MEMORY_WORD_ADDRESS = 0x00A0
+local MEMORY_MASK = 0x4000
+local CALLER_SITE = 0xEF9C
+local OR_HANDLER_AFTER_STD = 0x766F
+local CLEAR_HANDLER_AFTER_STD = 0x767D
 
 local m = manager.machine
 local cpu = m.devices[":maincpu"]
@@ -165,9 +170,15 @@ end
 if #map.branches ~= 2 then startupFailure("map_branches", "map does not contain two checked branches") end
 
 local function snapshot()
+    local a = cpu.state["A"].value
+    local b = cpu.state["B"].value
     return {
         pc = cpu.state["PC"].value,
         curpc = cpu.state["CURPC"].value,
+        a = a,
+        b = b,
+        d = ((a << 8) | b) & 0xFFFF,
+        cc = cpu.state["CC"].value,
         x = cpu.state["X"].value,
         y = cpu.state["Y"].value,
         u = cpu.state["U"].value,
@@ -187,6 +198,10 @@ local function stateFields(state, fields, prefix)
     local p = prefix or ""
     fields[p .. "pc"] = hex16(state.pc)
     fields[p .. "curpc"] = hex16(state.curpc)
+    fields[p .. "a"] = hex8(state.a)
+    fields[p .. "b"] = hex8(state.b)
+    fields[p .. "d"] = hex16(state.d)
+    fields[p .. "cc"] = hex8(state.cc)
     fields[p .. "x"] = hex16(state.x)
     fields[p .. "y"] = hex16(state.y)
     fields[p .. "u"] = hex16(state.u)
@@ -301,8 +316,10 @@ local function setObservationBreakpoints()
     setBp(0x7B6F, "y==0x9a66 && x==0x7b6f", "rotate-handler")
     setBp(0x7984, "y==0x9a68 && x==0x7984", "branch-if-zero-handler")
     setBp(0x7667, "y==0x9a6b && x==0x7667", "or-handler")
+    setBp(0x766F, "y==0x9a6b && x==0x00a0", "or-after-std")
     setBp(0x797B, "y==0x9a6d && x==0x797b", "branch-always-handler")
     setBp(0x7673, "y==0x9a70 && x==0x7673", "clear-handler")
+    setBp(0x767D, "y==0x9a70 && x==0x00a0", "clear-after-std")
     setBp(0x7931, "y==0x9a72 && x==0x7931", "return-handler")
 end
 
@@ -341,6 +358,10 @@ end
 local function completeCall(state)
     local active = session.active
     if not active then return end
+    if not active.memory or not active.memory.afterEventLogged then
+        protocolFailure("memory_incomplete", "call completed without a bounded memory entry and after-STD observation")
+        return
+    end
     local nodeSequence = {}
     for _, node in ipairs(active.nodes) do nodeSequence[#nodeSequence + 1] = tostring(node.index) end
     local handlerSequence = {}
@@ -444,6 +465,167 @@ local function handleComposite(state)
     logEvent("composite_entry", fields)
 end
 
+local function memoryEntryFields(state, kind, node)
+    local mask = readw(state.u)
+    local address = readw((state.u + 2) & 0xFFFF)
+    if session.active.siteY ~= CALLER_SITE then
+        protocolFailure("memory_caller", string.format("memory handler reached from caller site %04X, not the accepted EF9C site", session.active.siteY))
+        return nil
+    end
+    if address ~= MEMORY_WORD_ADDRESS then
+        protocolFailure("memory_address", string.format("memory handler stack address is %04X, not the bounded 00A0 word", address))
+        return nil
+    end
+    if mask ~= MEMORY_MASK then
+        protocolFailure("memory_mask", string.format("memory handler stack mask is %04X, not the accepted 4000 mask", mask))
+        return nil
+    end
+    local before = readw(MEMORY_WORD_ADDRESS)
+    local expected
+    if kind == "or" then
+        expected = (before | mask) & 0xFFFF
+    else
+        expected = before & ((~mask) & 0xFFFF)
+    end
+    local fields = {
+        callId = tostring(session.active.id),
+        nodeIndex = tostring(node.index),
+        nodeAddress = hex16(node.address),
+        token = hex16(node.token),
+        operation = node.operation,
+        memoryKind = kind,
+        memoryAddress = hex16(address),
+        maskWord = hex16(mask),
+        beforeWord = hex16(before),
+        expectedAfterWord = hex16(expected),
+        entryU = hex16(state.u),
+        entryS = hex16(state.s),
+        entryY = hex16(state.y),
+        entryX = hex16(state.x),
+        entryCC = hex8(state.cc),
+        entryD = hex16(state.d),
+        stackMaskWord = hex16(mask),
+        stackAddressWord = hex16(address),
+        phase = "memory-entry"
+    }
+    stateFields(state, fields)
+    logEvent("memory_entry", fields)
+    return {
+        kind = kind,
+        nodeIndex = node.index,
+        token = node.token,
+        mask = mask,
+        address = address,
+        before = before,
+        expected = expected,
+        entryU = state.u,
+        entryS = state.s,
+        entryY = state.y,
+        entryX = state.x,
+        entryCC = state.cc,
+        entryD = state.d
+    }
+end
+
+local function handleMemoryEntry(state, node)
+    if session.active.memory then
+        protocolFailure("memory_duplicate", "a second memory effect stopped before the first after-STD boundary")
+        return
+    end
+    local kind
+    if node.token == 0x7665 then kind = "or"
+    elseif node.token == 0x7671 then kind = "clear"
+    else return end
+    local record = memoryEntryFields(state, kind, node)
+    if record then session.active.memory = record end
+end
+
+local function handleMemoryAfterStd(state)
+    local active = session.active
+    if not active then
+        protocolFailure("memory_without_call", "a memory after-STD stop arrived with no active call")
+        return
+    end
+    local memory = active.memory
+    if not memory then
+        protocolFailure("memory_missing_entry", "an after-STD stop arrived without a bounded memory entry")
+        return
+    end
+    local expectedPc = memory.kind == "or" and OR_HANDLER_AFTER_STD or CLEAR_HANDLER_AFTER_STD
+    if state.pc ~= expectedPc then
+        protocolFailure("memory_phase", string.format("memory after-STD PC %04X is not %04X for the %s handler", state.pc, expectedPc, memory.kind))
+        return
+    end
+    if state.x ~= MEMORY_WORD_ADDRESS then
+        protocolFailure("memory_after_x", string.format("memory after-STD X is %04X, not the bounded 00A0 word", state.x))
+        return
+    end
+    if ((memory.entryU + 4) & 0xFFFF) ~= state.u then
+        protocolFailure("memory_u", string.format("memory handler U advanced to %04X, expected entry %04X plus four", state.u, memory.entryU))
+        return
+    end
+    if memory.entryS ~= state.s then
+        protocolFailure("memory_s", string.format("memory handler changed S from %04X to %04X", memory.entryS, state.s))
+        return
+    end
+    if memory.entryY ~= state.y then
+        protocolFailure("memory_y", string.format("memory handler changed Y from %04X to %04X", memory.entryY, state.y))
+        return
+    end
+    local after = readw(MEMORY_WORD_ADDRESS)
+    if after ~= memory.expected then
+        protocolFailure("memory_effect", string.format("%s at 00A0 produced %04X, expected %04X from %04X",
+            memory.kind, after, memory.expected, memory.before))
+        return
+    end
+    local expectedD = after
+    if state.d ~= expectedD or state.a ~= ((after >> 8) & 0xFF) or state.b ~= (after & 0xFF) then
+        protocolFailure("memory_d", string.format("memory handler D=%04X A=%02X B=%02X after STD, expected %04X", state.d, state.a, state.b, expectedD))
+        return
+    end
+    local entryCarry = memory.entryCC & 1
+    local exitCarry = state.cc & 1
+    local ccContract
+    if memory.kind == "clear" then
+        if exitCarry ~= 1 then
+            protocolFailure("memory_carry", string.format("clear handler exit CC %02X does not assert C after COMA/COMB", state.cc))
+            return
+        end
+        ccContract = "clear: C=1 (COMA/COMB set carry; AND leaves C unchanged)"
+    else
+        if exitCarry ~= entryCarry then
+            protocolFailure("memory_carry", string.format("OR handler changed carry from %d to %d", entryCarry, exitCarry))
+            return
+        end
+        ccContract = "or: C unchanged from entry (ORA/ORB preserve carry)"
+    end
+    local fields = {
+        callId = tostring(active.id),
+        nodeIndex = tostring(memory.nodeIndex),
+        token = hex16(active.memory.token or 0),
+        operation = memory.kind == "or" and "vm_or_word_memory" or "vm_clear_word_memory_bits",
+        memoryKind = memory.kind,
+        memoryAddress = hex16(memory.address),
+        maskWord = hex16(memory.mask),
+        beforeWord = hex16(memory.before),
+        afterWord = hex16(after),
+        expectedAfterWord = hex16(memory.expected),
+        uAdvance = "0004",
+        sUnchanged = "true",
+        yUnchanged = "true",
+        xExact = hex16(state.x),
+        dAfter = hex16(state.d),
+        entryCC = hex8(memory.entryCC),
+        exitCC = hex8(state.cc),
+        ccContract = ccContract,
+        phase = "memory-after-std"
+    }
+    stateFields(state, fields)
+    logEvent("memory_after_std", fields)
+    memory.after = after
+    memory.afterEventLogged = true
+end
+
 local function handleHandler(state)
     if not session.active then
         protocolFailure("handler_without_call", "a 9A64 handler stop arrived with no active call")
@@ -507,6 +689,9 @@ local function handleHandler(state)
         u = hex16(state.u),
         s = hex16(state.s)
     }
+    if node.token == 0x7665 or node.token == 0x7671 then
+        handleMemoryEntry(state, node)
+    end
 end
 
 local function handleStop(state)
@@ -522,6 +707,9 @@ local function handleStop(state)
         handled = true
     elseif state.pc == 0x00F8 then
         handleComposite(state)
+        handled = true
+    elseif state.pc == OR_HANDLER_AFTER_STD or state.pc == CLEAR_HANDLER_AFTER_STD then
+        handleMemoryAfterStd(state)
         handled = true
     elseif handlerByPc[state.pc] then
         handleHandler(state)

@@ -2,7 +2,10 @@
 param(
     [string]$OriginalRom = 'C:\projects\GitRepos\FruitMachineLab\artifacts\deepseek\general-14\roms\original.p1',
     [string]$RunDirectory = 'C:\projects\GitRepos\FruitMachineLab\artifacts\deepseek\il-9a64-finish-15\run-02',
-    [string]$EvidencePath = 'C:\projects\GitRepos\FruitMachineLab\evidence\mpu4\integrity\il-9a64-natural.json'
+    [string]$EvidencePath = 'C:\projects\GitRepos\FruitMachineLab\evidence\mpu4\integrity\il-9a64-natural.json',
+    [string]$MemoryRunDirectory = 'C:\projects\GitRepos\FruitMachineLab\artifacts\deepseek\il-9a64-memory-final-23\run-01',
+    [string]$MemoryNaturalEvidencePath = 'C:\projects\GitRepos\FruitMachineLab\artifacts\deepseek\il-9a64-memory-final-23\natural-evidence.json',
+    [string]$MemoryEvidencePath = 'C:\projects\GitRepos\FruitMachineLab\evidence\mpu4\integrity\il-9a64-memory.json'
 )
 $ErrorActionPreference = 'Stop'
 
@@ -10,6 +13,7 @@ $repo = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
 $tool = Join-Path $repo 'tools/Capture-IlNineA64Natural.ps1'
 $lua = Join-Path $repo 'tools/lua/IlNineA64Natural.lua'
 $doc = Join-Path $repo 'docs/recovery/IL-9A64-NATURAL.md'
+$memoryDoc = Join-Path $repo 'docs/recovery/IL-9A64-MEMORY.md'
 $manifest = Join-Path $repo 'tools/Update-CuratedManifest.ps1'
 
 $script:Checks = 0
@@ -48,6 +52,10 @@ try {
     Assert-True (Test-Path -LiteralPath $EvidencePath -PathType Leaf) 'curated natural 9A64 evidence exists'
     Assert-True (Test-Path -LiteralPath $OriginalRom -PathType Leaf) 'strict original ROM exists'
     Assert-True (Test-Path -LiteralPath $RunDirectory -PathType Container) 'preserved natural run exists'
+    Assert-True (Test-Path -LiteralPath $memoryDoc -PathType Leaf) 'memory proof document exists'
+    Assert-True (Test-Path -LiteralPath $MemoryRunDirectory -PathType Container) 'preserved memory proof run exists'
+    Assert-True (Test-Path -LiteralPath $MemoryNaturalEvidencePath -PathType Leaf) 'memory proof natural evidence exists'
+    Assert-True (Test-Path -LiteralPath $MemoryEvidencePath -PathType Leaf) 'curated memory evidence exists'
 
     $luaText = Get-Content -LiteralPath $lua -Raw
     $toolText = Get-Content -LiteralPath $tool -Raw
@@ -59,13 +67,19 @@ try {
     Assert-True ($luaText -notmatch '(?i)plugins[\\/]|boot\.lua') 'observer has no plugin bootstrap dependency'
     Assert-True ($luaText -notmatch 'mem:write|:write_u8|:write_u16|state\[[^\]]+\]\.value\s*=') 'observer has no memory or register writes'
     Assert-True ($luaText -notmatch '(?i)playback|:save\b|:load\b') 'observer has no state save/load method or playback path'
-    foreach ($site in @('0x00FC','0x00F8','0x7B6F','0x7984','0x7667','0x797B','0x7673','0x7931')) {
+    foreach ($site in @('0x00FC','0x00F8','0x7B6F','0x7984','0x7667','0x797B','0x7673','0x7931','0x766F','0x767D')) {
         Assert-True ($luaText -match [regex]::Escape($site)) "observer hooks native boundary $site"
     }
     Assert-True ($luaText -match 'node_prefetch') 'observer emits mapped node prefetch records'
     Assert-True ($luaText -match 'handler_entry') 'observer emits mapped handler records'
     Assert-True ($luaText -match 'post_return_prefetch') 'observer emits actual post-return records'
     Assert-True ($luaText -match 'branchCondition|conditionCell') 'observer records the branch condition cell'
+    Assert-True ($luaText -match 'MEMORY_WORD_ADDRESS = 0x00A0') 'observer bounds memory reads to 00A0'
+    Assert-True ($luaText -match 'MEMORY_MASK = 0x4000') 'observer bounds the accepted mask to 4000'
+    Assert-True ($luaText -match 'memory_entry') 'observer emits bounded memory entry records'
+    Assert-True ($luaText -match 'memory_after_std') 'observer emits actual after-STD memory records'
+    Assert-True ($luaText -match 'memory\.entryU \+ 4') 'observer checks U advanced by four across the memory handler'
+    Assert-True ($luaText -match 'entryCC|exitCC') 'observer records carry state for the memory handlers'
 
     Assert-True ($toolText -match "ValidateSet\('Capture','Analyze','Verify','MapOnly'\)") 'tool exposes Capture, Analyze, Verify and MapOnly modes'
     Assert-True ($toolText -match 'il-9a64-source-map-generation') 'tool generates the map through the IL API'
@@ -74,10 +88,22 @@ try {
     Assert-True ($toolText -match 'VmIlSourceMap\.CreateForBuild') 'map generation uses the source map API'
     Assert-True ($toolText -match 'Test-IlEventJson\.ps1') 'tool uses the strict JSON helper'
     Assert-True ($toolText -match '-noreadconfig') 'tool launches MAME without reading configuration'
-    Assert-True ($toolText -match '-debug.*-debugger.*windows') 'tool uses the installed native debugger host'
+    Assert-True ($toolText -match "\$script:IlA64FrontendDebugger = 'imgui'") 'tool pins the accepted imgui debugger frontend'
+    Assert-True ($toolText -match "\$script:IlA64FrontendVideo = 'bgfx'") 'tool pins the BGFX renderer required by imgui'
+    Assert-True ($toolText -match '''-debugger'',\$script:IlA64FrontendDebugger') 'generated arguments use the pinned imgui debugger'
+    Assert-True ($toolText -match '''-video'',\$script:IlA64FrontendVideo') 'generated arguments use the pinned BGFX video'
+    Assert-True ($toolText -match '''-bgfx_path'',\$bgfxPath') 'generated arguments pass the installed BGFX asset path'
+    Assert-True ($toolText -notmatch "'-debugger','windows'|'-video','none'") 'tool no longer launches the Windows debugger with video none'
     Assert-True ($toolText -notmatch '(?i)-playback') 'tool has no playback argument'
     Assert-True ($toolText -notmatch 'test410|plugins[\\/]|boot\.lua') 'tool has no probe or plugin-bootstrap path'
     Assert-True ($toolText -match 'per-event|node_prefetch Y differs') 'analysis validates mapped event phase, not only event presence'
+    Assert-True ($toolText -match 'Get-IlA64MemoryContract') 'tool derives the memory contract from exact ROM bytes'
+    Assert-True ($toolText -match '3716AA84EA01ED840EFC') 'tool pins the exact OR handler span'
+    Assert-True ($toolText -match '37164353A484E401ED840EFC') 'tool pins the exact clear handler span'
+    Assert-True ($toolText -match 'bounded_00A0_v1') 'tool marks the new run as requiring bounded memory effects'
+    Assert-True ($toolText -match 'wrong_memory_target') 'tool has a wrong-memory-target negative control'
+    Assert-True ($toolText -match 'bad_memory_before_after_equation') 'tool has a bad before/after equation negative control'
+    Assert-True ($toolText -match 'phase_mismatched_memory_after_std') 'tool has a memory phase negative control'
 
     $mapRun = Join-Path $tempRoot 'map'
     $map = Invoke-Tool @('-Mode','MapOnly','-RunDirectory',$mapRun,'-OriginalRom',$OriginalRom)
@@ -169,6 +195,127 @@ try {
     Assert-Equal $phase.Count 1 'phase negative control is recorded'
     Assert-Equal $phase[0].observed 'rejected' 'phase-mismatched node prefetch is rejected'
     Assert-True ([string]$phase[0].detail -match 'node_prefetch') 'phase negative control fails on mapped event phase, not an earlier error'
+
+    $memoryVerify = Invoke-Tool @('-Mode','Verify','-RunDirectory',$MemoryRunDirectory,'-EvidencePath',$MemoryNaturalEvidencePath,'-MemoryEvidencePath',$MemoryEvidencePath)
+    Assert-Equal $memoryVerify.exitCode 0 'memory proof Verify exits 0 without launching MAME'
+    $mv = $memoryVerify.text | ConvertFrom-Json
+    Assert-Equal $mv.status 'complete_natural_calls_observed' 'memory proof run status is complete'
+    Assert-Equal $mv.callsStarted 3 'memory proof run started three natural 9A64 calls'
+    Assert-Equal $mv.callsCompleted 3 'memory proof run completed three natural 9A64 calls'
+    Assert-Contains @($mv.branchPaths) 'nonzero' 'memory proof run observed the nonzero branch'
+    Assert-Equal $mv.memoryEffectCount 3 'memory proof run observed three memory effects'
+    Assert-Contains @($mv.memoryEffects) 'or' 'memory proof run observed the OR memory effect'
+    Assert-Equal $mv.strictJsonPass $true 'memory proof events pass strict System.Text.Json parsing'
+    Assert-Equal $mv.negativeControlCount 7 'memory proof verification runs seven negative controls'
+    Assert-Equal $mv.negativeControlsPass $true 'all memory proof negative controls pass'
+    Assert-Equal $mv.memoryStatus 'partial_memory_effect_observed' 'memory evidence truthfully records partial natural coverage'
+    Assert-Equal $mv.memoryEvidenceSha256 (Get-Sha256 $MemoryEvidencePath) 'memory verification evidence hash matches the curated file'
+
+    $memoryNatural = Get-Content -LiteralPath $MemoryNaturalEvidencePath -Raw | ConvertFrom-Json
+    Assert-Equal $memoryNatural.resultStatus 'complete_natural_calls_observed' 'memory natural evidence records complete calls'
+    Assert-Equal $memoryNatural.requiresMemoryEffects $true 'memory natural evidence requires bounded memory effects'
+    Assert-Equal @($memoryNatural.calls).Count 3 'memory natural evidence contains three call records'
+    Assert-Equal @($memoryNatural.memoryEffects).Count 3 'memory natural evidence contains three memory effects'
+    Assert-Equal $memoryNatural.run.eventRecordCount 51 'memory natural run has 51 strict event records'
+    Assert-Equal $memoryNatural.run.eventsSha256 (Get-Sha256 (Join-Path $MemoryRunDirectory 'events.jsonl')) 'memory natural event hash matches the run log'
+    Assert-Equal $memoryNatural.observer.match $true 'memory natural evidence captured observer matches the tracked source'
+    Assert-Equal $memoryNatural.run.mameRecord.exitCode 0 'memory natural MAME run exited 0'
+    Assert-Equal $memoryNatural.run.mameRecord.timedOut $false 'memory natural MAME run did not time out'
+    Assert-Equal $memoryNatural.run.sessionComplete.reason 'emulated_budget' 'memory natural run stopped at the emulated budget'
+
+    $finalArguments = Get-Content -LiteralPath (Join-Path $MemoryRunDirectory 'arguments.json') -Raw | ConvertFrom-Json
+    $debuggerIndex = [array]::IndexOf([object[]]$finalArguments, '-debugger')
+    $videoIndex = [array]::IndexOf([object[]]$finalArguments, '-video')
+    $bgfxIndex = [array]::IndexOf([object[]]$finalArguments, '-bgfx_path')
+    Assert-True ($debuggerIndex -ge 0 -and $finalArguments[$debuggerIndex + 1] -eq 'imgui') 'final capture arguments select the imgui debugger'
+    Assert-True ($videoIndex -ge 0 -and $finalArguments[$videoIndex + 1] -eq 'bgfx') 'final capture arguments select the BGFX renderer'
+    Assert-True ($bgfxIndex -ge 0) 'final capture arguments contain an explicit bgfx_path'
+    $finalMetadata = Get-Content -LiteralPath (Join-Path $MemoryRunDirectory 'session-metadata.json') -Raw | ConvertFrom-Json
+    $expectedBgfxPath = [IO.Path]::GetFullPath((Join-Path (Split-Path ([string]$finalMetadata.mame_executable) -Parent) 'bgfx'))
+    Assert-Equal $finalArguments[$bgfxIndex + 1] $expectedBgfxPath 'final capture bgfx_path is derived from the installed MAME directory'
+    Assert-True (Test-Path -LiteralPath $expectedBgfxPath -PathType Container) 'final capture bgfx_path exists in the installed MAME directory'
+    Assert-Equal $finalMetadata.frontend.debugger 'imgui' 'final session metadata records the imgui debugger'
+    Assert-Equal $finalMetadata.frontend.video 'bgfx' 'final session metadata records the BGFX renderer'
+    Assert-Equal $finalMetadata.frontend.bgfx_path $expectedBgfxPath 'final session metadata records the installed bgfx_path'
+    Assert-Equal $finalMetadata.frontend.focus_stealing $false 'final session metadata records no focus stealing'
+    Assert-True ([string]$finalMetadata.frontend.focus_note -match 'set_foreground') 'final session metadata documents the imgui no-focus-stealing provenance'
+    $finalRunRecord = Get-Content -LiteralPath (Join-Path $MemoryRunDirectory 'run-record.json') -Raw | ConvertFrom-Json
+    Assert-True ([string]$finalRunRecord.commandLine -match '-debugger imgui') 'final run record command line uses the imgui debugger'
+    Assert-True ([string]$finalRunRecord.commandLine -match '-video bgfx') 'final run record command line uses the BGFX renderer'
+    Assert-True ([string]$finalRunRecord.commandLine -match [regex]::Escape(('-bgfx_path ' + $expectedBgfxPath))) 'final run record command line passes the installed bgfx_path'
+    Assert-Equal $finalMetadata.source_provenance.capture_tool_sha256 (Get-Sha256 $tool) 'final capture records the current capture tool hash'
+    Assert-Equal $finalMetadata.source_provenance.observer_source_sha256 (Get-Sha256 $lua) 'final capture records the current observer source hash'
+    Assert-Equal $finalMetadata.source_provenance.observer_source_sha256 (Get-Sha256 (Join-Path $MemoryRunDirectory 'IlNineA64Natural.lua')) 'final capture copied observer matches its recorded source hash'
+
+    $memoryEvidence = Get-Content -LiteralPath $MemoryEvidencePath -Raw | ConvertFrom-Json
+    Assert-Equal $memoryEvidence.taskId 'il-9a64-memory-final-23' 'memory evidence task id is current'
+    Assert-Equal $memoryEvidence.frontend.debugger 'imgui' 'curated memory evidence binds the imgui debugger'
+    Assert-Equal $memoryEvidence.frontend.video 'bgfx' 'curated memory evidence binds the BGFX renderer'
+    Assert-Equal $memoryEvidence.frontend.bgfx_path $expectedBgfxPath 'curated memory evidence binds the installed bgfx_path'
+    Assert-Equal $memoryEvidence.frontend.focus_stealing $false 'curated memory evidence records no focus stealing'
+    Assert-Equal $memoryEvidence.sourceProvenance.capture_tool_sha256 (Get-Sha256 $tool) 'curated memory evidence binds the current capture tool hash'
+    Assert-Equal $memoryEvidence.sourceProvenance.observer_source_sha256 (Get-Sha256 $lua) 'curated memory evidence binds the current observer source hash'
+    Assert-True ([string]$memoryEvidence.run.mameRecord.commandLine -match '-debugger imgui') 'curated memory evidence run command line uses the imgui debugger'
+    Assert-True ([string]$memoryEvidence.run.mameRecord.commandLine -match '-video bgfx') 'curated memory evidence run command line uses the BGFX renderer'
+    Assert-Equal $memoryEvidence.resultStatus 'partial_memory_effect_observed' 'memory evidence records the truthful partial status'
+    Assert-Equal $memoryEvidence.images.original.sha1 '402d1518bb78fdc489b06c2aabc771e5ce151847' 'memory evidence binds the original SHA1'
+    Assert-Equal $memoryEvidence.images.original.sha256 'ebf580381aa6eb6ffb26e2acd40f30aa34b0311f71c6564607c6f48a53bca15c' 'memory evidence binds the original SHA256'
+    Assert-Equal $memoryEvidence.images.runRomUnchanged $true 'memory proof isolated run ROM is unchanged'
+    Assert-Equal $memoryEvidence.sourceMap.sha256 (Get-Sha256 (Join-Path $MemoryRunDirectory 'source-map.json')) 'memory evidence source-map hash matches the run'
+    Assert-Equal $memoryEvidence.sourceMap.originalRomSha256 'EBF580381AA6EB6FFB26E2ACD40F30AA34B0311F71C6564607C6F48A53BCA15C' 'memory evidence source map is bound to the original image'
+    Assert-Equal $memoryEvidence.buildReport.sha256 (Get-Sha256 (Join-Path $MemoryRunDirectory 'build-report.json')) 'memory evidence build-report hash matches the run'
+    Assert-Equal $memoryEvidence.buildReport.identityImageUnchanged $true 'memory evidence build report is an identity build'
+    Assert-Equal $memoryEvidence.run.eventsSha256 (Get-Sha256 (Join-Path $MemoryRunDirectory 'events.jsonl')) 'memory evidence event hash matches the run log'
+    Assert-Equal $memoryEvidence.observer.match $true 'memory evidence captured observer matches the tracked source'
+    Assert-Equal $memoryEvidence.observer.capturedSha256 (Get-Sha256 (Join-Path $MemoryRunDirectory 'IlNineA64Natural.lua')) 'memory evidence captured observer hash matches the run copy'
+    Assert-Equal $memoryEvidence.observer.sourceSha256 (Get-Sha256 $lua) 'memory evidence tracked observer hash matches the source file'
+
+    $mc = $memoryEvidence.memoryContract
+    Assert-Equal $mc.tokenPointers.orToken '7665' 'memory contract binds token 7665'
+    Assert-Equal $mc.tokenPointers.orHandler '7667' 'memory contract binds OR handler 7667'
+    Assert-Equal $mc.tokenPointers.clearToken '7671' 'memory contract binds token 7671'
+    Assert-Equal $mc.tokenPointers.clearHandler '7673' 'memory contract binds clear handler 7673'
+    Assert-Equal $mc.afterStdAddresses.or '766F' 'memory contract binds OR after-STD address 766F'
+    Assert-Equal $mc.afterStdAddresses.clear '767D' 'memory contract binds clear after-STD address 767D'
+    Assert-Equal $mc.orHandler.spanHex '3716AA84EA01ED840EFC' 'memory contract has the exact OR 6809 span'
+    Assert-Equal $mc.clearHandler.spanHex '37164353A484E401ED840EFC' 'memory contract has the exact clear 6809 span'
+    Assert-Equal @($mc.orHandler.instructions).Count 5 'OR contract has five checked instructions'
+    Assert-Equal @($mc.clearHandler.instructions).Count 7 'clear contract has seven checked instructions'
+    Assert-True ([string]$mc.evidenceClass -match 'Static deduction' -and [string]$mc.evidenceClass -match 'names are not used') 'memory contract is static byte evidence, not names'
+    Assert-Equal $mc.boundedMemory.address '00A0' 'memory contract bounds the address to 00A0'
+    Assert-Equal $mc.boundedMemory.mask '4000' 'memory contract bounds the mask to 4000'
+
+    Assert-Equal @($memoryEvidence.memoryCalls).Count 3 'memory evidence contains three natural memory calls'
+    foreach ($memoryCall in @($memoryEvidence.memoryCalls)) {
+        Assert-Equal $memoryCall.branchPath 'nonzero' "memory call $($memoryCall.callId) is the nonzero path"
+        Assert-Equal $memoryCall.memoryEffect 'or' "memory call $($memoryCall.callId) is the OR effect"
+        Assert-Equal $memoryCall.memoryAddress '00A0' "memory call $($memoryCall.callId) used bounded address 00A0"
+        Assert-Equal $memoryCall.maskWord '4000' "memory call $($memoryCall.callId) used the accepted mask 4000"
+        $before = [Convert]::ToInt32([string]$memoryCall.beforeWord,16)
+        $mask = [Convert]::ToInt32([string]$memoryCall.maskWord,16)
+        $expectedAfter = ('{0:X4}' -f (($before -bor $mask) -band 0xFFFF))
+        Assert-Equal $memoryCall.expectedAfterWord $expectedAfter "memory call $($memoryCall.callId) expected word is the OR equation"
+        Assert-Equal $memoryCall.afterWord $expectedAfter "memory call $($memoryCall.callId) after word is the OR equation"
+        Assert-Equal $memoryCall.memoryUAdvance '0004' "memory call $($memoryCall.callId) advanced U by four"
+        Assert-Equal $memoryCall.memorySUnchanged $true "memory call $($memoryCall.callId) preserved S"
+        Assert-Equal $memoryCall.memoryYUnchanged $true "memory call $($memoryCall.callId) preserved Y"
+        Assert-Equal $memoryCall.memoryXExact '00A0' "memory call $($memoryCall.callId) exited with X at 00A0"
+        Assert-Equal $memoryCall.memoryDAfter $memoryCall.afterWord "memory call $($memoryCall.callId) D equals the written word"
+        Assert-True ([string]$memoryCall.memoryCCContract -match 'C unchanged from entry') "memory call $($memoryCall.callId) records the OR carry contract"
+    }
+    Assert-Equal $memoryEvidence.coverage.orEffectsObserved 3 'memory evidence records three OR effects'
+    Assert-Equal $memoryEvidence.coverage.clearEffectsObserved 0 'memory evidence truthfully records zero natural clear effects'
+    Assert-True ((($memoryEvidence.coverage.gaps) -join ' ') -match 'Zero-condition 7982 path was not observed') 'memory evidence reports the unobserved zero path'
+    Assert-True ((($memoryEvidence.coverage.gaps) -join ' ') -match 'No natural zero/clear 7671 memory effect was observed') 'memory evidence reports the unobserved clear effect'
+    Assert-Equal @($memoryEvidence.negativeControls).Count 7 'memory evidence contains seven negative controls'
+    Assert-Equal @($memoryEvidence.negativeControls | Where-Object { -not [bool]$_.pass }).Count 0 'memory evidence has no failed negative control'
+    foreach ($control in @('wrong_memory_target','bad_memory_before_after_equation','phase_mismatched_memory_after_std')) {
+        $case = @($memoryEvidence.negativeControls | Where-Object { $_.name -eq $control })
+        Assert-Equal $case.Count 1 "memory negative control $control is recorded"
+        Assert-Equal $case[0].observed 'rejected' "memory negative control $control is rejected"
+    }
+    Assert-True ([string]$memoryEvidence.evidenceClasses.naturalExecution -match 'breakpoint') 'memory evidence distinguishes natural breakpoint observation'
+    Assert-True ([string]$memoryEvidence.evidenceClasses.staticDeduction -match '6809') 'memory evidence distinguishes static ROM deduction'
 
     $manifestOutput = & powershell -NoProfile -ExecutionPolicy Bypass -File $manifest -Verify 2>&1
     $manifestExit = $LASTEXITCODE

@@ -1,0 +1,581 @@
+{
+    "schemaVersion":  1,
+    "taskId":  "il-9a64-memory-final-23",
+    "generatedUtc":  "2026-10-18T20:17:14.2082440Z",
+    "resultStatus":  "partial_memory_effect_observed",
+    "classification":  "Bounded natural memory-effect observation on one fresh-boot original-ROM MAME 0.281 run. Byte boundaries come from native debugger breakpoints generated from the checked source map; the stopped host is the accepted imgui debugger under BGFX with the installed bgfx_path. Breakpoints stop only at 7667/7673 entry and immediately after the actual STD before JMP/next-token fetch. Only the word at 00A0/00A1 is read, with the stack address and mask checked first. No state, register, RAM or ROM injection, no save-state load and no checksum bypass.",
+    "evidenceClasses":  {
+                            "naturalExecution":  "Native MAME 0.281 breakpoint stops with read-only Lua state and bounded RAM reads during one fresh-boot original-image run.",
+                            "staticDeduction":  "Exact original-ROM 6809 bytes at 7667 and 7673, including token pointers, PULU A,B,X stack order, bytewise OR/COM/AND, STD and JMP, checked independently of operation names.",
+                            "hypothesis":  "The tracked replay schedule is the only input sequence used; no alternate input search was performed.",
+                            "synthetic":  "Memory negative controls only (wrong target, bad before/after equation, phase mismatch); they are not natural execution evidence."
+                        },
+    "images":  {
+                   "original":  {
+                                    "path":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\general-14\\roms\\original.p1",
+                                    "length":  65536,
+                                    "sha1":  "402d1518bb78fdc489b06c2aabc771e5ce151847",
+                                    "sha256":  "ebf580381aa6eb6ffb26e2acd40f30aa34b0311f71c6564607c6f48a53bca15c"
+                                },
+                   "runRomBefore":  {
+                                        "path":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-memory-final-23\\run-01\\roms\\m4addr\\a6ls.p1",
+                                        "length":  65536,
+                                        "sha1":  "402d1518bb78fdc489b06c2aabc771e5ce151847",
+                                        "sha256":  "ebf580381aa6eb6ffb26e2acd40f30aa34b0311f71c6564607c6f48a53bca15c"
+                                    },
+                   "runRomAfter":  {
+                                       "path":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-memory-final-23\\run-01\\roms\\m4addr\\a6ls.p1",
+                                       "length":  65536,
+                                       "sha1":  "402d1518bb78fdc489b06c2aabc771e5ce151847",
+                                       "sha256":  "ebf580381aa6eb6ffb26e2acd40f30aa34b0311f71c6564607c6f48a53bca15c"
+                                   },
+                   "runRomUnchanged":  true
+               },
+    "sourceMap":  {
+                      "path":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-memory-final-23\\run-01\\source-map.json",
+                      "sha256":  "8d9c9ddc58373e1ffdd221590a75babc1fb7bf3f497bfca587dbac84981df766",
+                      "originalRomSha256":  "EBF580381AA6EB6FFB26E2ACD40F30AA34B0311F71C6564607C6F48A53BCA15C",
+                      "outputSha256":  "EBF580381AA6EB6FFB26E2ACD40F30AA34B0311F71C6564607C6F48A53BCA15C",
+                      "bodyStart":  "9A64",
+                      "bodyEndExclusive":  "9A72",
+                      "spanHex":  "7B6D79820676657979037671792F",
+                      "entryCount":  14,
+                      "nodeCount":  6,
+                      "branchCount":  2,
+                      "provenance":  {
+                                         "evidenceClass":  "Direct static decode of the identity-checked original ROM bytes. Six cited sites are marked observed in the reviewed MAME listing; the byte-branch base and signedness are decoded from the original 6809 handler bytes at 797B and 7984. This is static original-ROM evidence, not natural or synthetic execution.",
+                                         "listingPath":  "evidence/mpu4/VM-SCRIPTS/9A64.txt",
+                                         "listingSha256":  "01A93F20773E1530FCCCA66CC4C3ACB2C066F4595C1A0371B08EBF99D3CDC3E9",
+                                         "checkpointPath":  "evidence/mpu4/maps/nudge-encoding-checkpoint.json",
+                                         "checkpointSpanClassification":  "Exact selected ROM span and checked listed tokens; gaps/operands/embedded data preserved verbatim.",
+                                         "observedSites":  6,
+                                         "sourceMapImageSha256":  "EBF580381AA6EB6FFB26E2ACD40F30AA34B0311F71C6564607C6F48A53BCA15C",
+                                         "sourceMapEntryCount":  14,
+                                         "sourceMapBranchCount":  2
+                                     }
+                  },
+    "buildReport":  {
+                        "path":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-memory-final-23\\run-01\\build-report.json",
+                        "sha256":  "11455cdcc15d91780bd1f67c3bd0f6fcdffb3a6a22a4cb61f6fdbc901e3ec3e2",
+                        "originalSha256":  "EBF580381AA6EB6FFB26E2ACD40F30AA34B0311F71C6564607C6F48A53BCA15C",
+                        "outputSha256":  "EBF580381AA6EB6FFB26E2ACD40F30AA34B0311F71C6564607C6F48A53BCA15C",
+                        "identityImageUnchanged":  true,
+                        "emittedBodyHex":  "7B6D79820676657979037671792F",
+                        "checks":  {
+                                       "strictOriginalIdentity":  true,
+                                       "identityImageUnchanged":  true,
+                                       "emittedBodyMatchesSpan":  true,
+                                       "sourceMapBoundToOutputSha256":  true,
+                                       "tokenHandlersVerified":  true,
+                                       "branchModelPresent":  true
+                                   }
+                    },
+    "observer":  {
+                     "capturedPath":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-memory-final-23\\run-01\\IlNineA64Natural.lua",
+                     "capturedSha256":  "32427535919d35620850b373f6449dd3d9c1d72ae8fcaaafcf14c4855dd3cd89",
+                     "sourcePath":  "C:\\projects\\GitRepos\\FruitMachineLab\\tools\\lua\\IlNineA64Natural.lua",
+                     "sourceSha256":  "32427535919d35620850b373f6449dd3d9c1d72ae8fcaaafcf14c4855dd3cd89",
+                     "match":  true
+                 },
+    "mame":  {
+                 "executable":  "E:\\Arcade\\MAME0266\\mame281.exe",
+                 "sha256":  "0fce5a88df4f9d9b1fbf1405812c00848036e615993780978d967da34204cb7a",
+                 "version":  "0.281 (mame0281)"
+             },
+    "frontend":  {
+                     "debugger":  "imgui",
+                     "video":  "bgfx",
+                     "bgfx_path":  "E:\\Arcade\\MAME0266\\bgfx",
+                     "bgfx_path_source":  "derived from the installed MAME executable directory, matching the accepted paused debugger launcher",
+                     "focus_stealing":  false,
+                     "focus_note":  "debug_imgui::wait_for_debugger does not call set_foreground; no OS focus or window activation is requested."
+                 },
+    "sourceProvenance":  {
+                             "capture_tool_path":  "C:\\projects\\GitRepos\\FruitMachineLab\\tools\\Capture-IlNineA64Natural.ps1",
+                             "capture_tool_sha256":  "99e1b9d0f24de899c719f21341dc1afd0561864cfc2309f58b538efd83ade087",
+                             "observer_source_path":  "C:\\projects\\GitRepos\\FruitMachineLab\\tools\\lua\\IlNineA64Natural.lua",
+                             "observer_source_sha256":  "32427535919d35620850b373f6449dd3d9c1d72ae8fcaaafcf14c4855dd3cd89"
+                         },
+    "inputs":  {
+                   "replayPath":  "C:\\projects\\GitRepos\\FruitMachineLab\\evidence\\mpu4\\skill-cash\\actions.csv",
+                   "replaySha256":  "4a051da15264842697879eff396b34a789f5d80623f9a2e749c244e6a80e721d",
+                   "inputLuaPath":  "C:\\projects\\GitRepos\\FruitMachineLab\\evidence\\mpu4\\skill-cash\\input.lua",
+                   "inputLuaSha256":  "23099f8888af8db353253e0df97638320dc59ca9a47371723a380e0c4ee85c94",
+                   "secondsToRun":  120,
+                   "wallTimeoutSeconds":  600,
+                   "maxCompleteCalls":  8,
+                   "startingNvram":  "absent",
+                   "startingConfiguration":  "absent; -noreadconfig",
+                   "saveStateLoaded":  false,
+                   "preRunEmpty":  {
+                                       "cfg":  0,
+                                       "nvram":  0,
+                                       "inp":  0,
+                                       "snap":  0,
+                                       "comments":  0,
+                                       "state":  0,
+                                       "diff":  0
+                                   },
+                   "postRunStateFiles":  0
+               },
+    "run":  {
+                "runDirectory":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-memory-final-23\\run-01",
+                "mameRecord":  {
+                                   "commandLine":  "m4addr -noreadconfig -rompath C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-memory-final-23\\run-01\\roms;E:\\Arcade\\MAME0266\\roms -cfg_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-memory-final-23\\run-01\\cfg -nvram_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-memory-final-23\\run-01\\nvram -input_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-memory-final-23\\run-01\\inp -snapshot_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-memory-final-23\\run-01\\snap -comment_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-memory-final-23\\run-01\\comments -state_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-memory-final-23\\run-01\\state -diff_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-memory-final-23\\run-01\\diff -debug -debugger imgui -debuglog -video bgfx -sound none -window -skip_gameinfo -nothrottle -seconds_to_run 120 -autoboot_delay 0 -autoboot_script C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-memory-final-23\\run-01\\observer.lua -bgfx_path E:\\Arcade\\MAME0266\\bgfx",
+                                   "startUtc":  "2026-10-18T20:16:57.5657261Z",
+                                   "endUtc":  "2026-10-18T20:17:11.8519733Z",
+                                   "wallSeconds":  14.287,
+                                   "timeoutSeconds":  600,
+                                   "timedOut":  false,
+                                   "exitCode":  0,
+                                   "commandId":  "il-9a64-natural-capture",
+                                   "description":  "One fresh-boot original-image MAME natural observation at native 9A64 boundaries"
+                               },
+                "sourceMapGeneration":  {
+                                            "commandLine":  "run --project C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-memory-final-23\\run-01\\source-map-gen\\IlNineA64MapGen.csproj --configuration Release -- C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\general-14\\roms\\original.p1 C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-memory-final-23\\run-01\\source-map.json C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-memory-final-23\\run-01\\build-report.json",
+                                            "startUtc":  "2026-10-18T20:16:55.2604001Z",
+                                            "endUtc":  "2026-10-18T20:16:57.2217299Z",
+                                            "wallSeconds":  1.957,
+                                            "timeoutSeconds":  300,
+                                            "timedOut":  false,
+                                            "exitCode":  0,
+                                            "commandId":  "il-9a64-source-map-generation",
+                                            "description":  "Generate source map from NineASixFourDecoder, VmIlCompiler.CompileIdentity and VmIlSourceMap"
+                                        },
+                "sessionComplete":  {
+                                        "event":  "session_complete",
+                                        "callsCompleted":  "3",
+                                        "callsStarted":  "3",
+                                        "emulatedBudget":  "120",
+                                        "emulatedTime":  "120.000000000",
+                                        "maxCalls":  "8",
+                                        "pc":  "281A",
+                                        "reason":  "emulated_budget",
+                                        "s":  "079A",
+                                        "u":  "0672",
+                                        "wallBudget":  "600",
+                                        "wallSeconds":  "12",
+                                        "y":  "0028"
+                                    },
+                "eventRecordCount":  51,
+                "strictJsonPass":  true,
+                "eventsSha256":  "1770b715ecfbc47f3eb2f314055339d4f47fda33391d2cd3fa5d2dbfd4bc34e0",
+                "debugLogSha256":  "1111f08f2f2ace03e1ee665995887d29189cf99c0b55488e4b98fa88c7fb5bc9"
+            },
+    "memoryContract":  {
+                           "evidenceClass":  "Static deduction from exact original-ROM 6809 handler bytes at 7667 and 7673. Token pointers, instruction bytes, stack order and arithmetic are checked directly; names are not used as evidence.",
+                           "originalRomSha256":  "ebf580381aa6eb6ffb26e2acd40f30aa34b0311f71c6564607c6f48a53bca15c",
+                           "tokenPointers":  {
+                                                 "orToken":  "7665",
+                                                 "orHandler":  "7667",
+                                                 "clearToken":  "7671",
+                                                 "clearHandler":  "7673"
+                                             },
+                           "afterStdAddresses":  {
+                                                     "or":  "766F",
+                                                     "clear":  "767D"
+                                                 },
+                           "orHandler":  {
+                                             "address":  "7667",
+                                             "spanHex":  "3716AA84EA01ED840EFC",
+                                             "instructions":  [
+                                                                  {
+                                                                      "address":  "7667",
+                                                                      "bytesHex":  "3716",
+                                                                      "mnemonic":  "PULU",
+                                                                      "operand":  "A,B,X",
+                                                                      "effect":  "pull A then B then X; D=mask, X=address; U+4"
+                                                                  },
+                                                                  {
+                                                                      "address":  "7669",
+                                                                      "bytesHex":  "AA84",
+                                                                      "mnemonic":  "ORA",
+                                                                      "operand":  "A,X",
+                                                                      "effect":  "A = A OR byte at X"
+                                                                  },
+                                                                  {
+                                                                      "address":  "766B",
+                                                                      "bytesHex":  "EA01",
+                                                                      "mnemonic":  "ORB",
+                                                                      "operand":  "1,X",
+                                                                      "effect":  "B = B OR byte at X+1"
+                                                                  },
+                                                                  {
+                                                                      "address":  "766D",
+                                                                      "bytesHex":  "ED84",
+                                                                      "mnemonic":  "STD",
+                                                                      "operand":  ",X",
+                                                                      "effect":  "write D big-endian at X/X+1"
+                                                                  },
+                                                                  {
+                                                                      "address":  "766F",
+                                                                      "bytesHex":  "0EFC",
+                                                                      "mnemonic":  "JMP",
+                                                                      "operand":  "\u003c$FC",
+                                                                      "effect":  "next-token fetch"
+                                                                  }
+                                                              ],
+                                             "stackContract":  "U points at the mask word; U+2 is the address word; PULU A,B,X pulls A then B then X, so D comes from U, X comes from U+2, and U advances by 4.",
+                                             "effectEquation":  "(afterWord \u0026 FFFF) = ((beforeWord \u0026 FFFF) | (maskWord \u0026 FFFF))",
+                                             "flagsContract":  "ORA/ORB set N/Z from the result and preserve C; carry is checked unchanged from entry.",
+                                             "registerContract":  "after STD: X=00A0, D=afterWord, A=high byte, B=low byte, Y and S unchanged."
+                                         },
+                           "clearHandler":  {
+                                                "address":  "7673",
+                                                "spanHex":  "37164353A484E401ED840EFC",
+                                                "instructions":  [
+                                                                     {
+                                                                         "address":  "7673",
+                                                                         "bytesHex":  "3716",
+                                                                         "mnemonic":  "PULU",
+                                                                         "operand":  "A,B,X",
+                                                                         "effect":  "pull A then B then X; D=mask, X=address; U+4"
+                                                                     },
+                                                                     {
+                                                                         "address":  "7675",
+                                                                         "bytesHex":  "43",
+                                                                         "mnemonic":  "COMA",
+                                                                         "operand":  "",
+                                                                         "effect":  "A = NOT A; C=1"
+                                                                     },
+                                                                     {
+                                                                         "address":  "7676",
+                                                                         "bytesHex":  "53",
+                                                                         "mnemonic":  "COMB",
+                                                                         "operand":  "",
+                                                                         "effect":  "B = NOT B; C=1"
+                                                                     },
+                                                                     {
+                                                                         "address":  "7677",
+                                                                         "bytesHex":  "A484",
+                                                                         "mnemonic":  "ANDA",
+                                                                         "operand":  ",X",
+                                                                         "effect":  "A = A AND byte at X"
+                                                                     },
+                                                                     {
+                                                                         "address":  "7679",
+                                                                         "bytesHex":  "E401",
+                                                                         "mnemonic":  "ANDB",
+                                                                         "operand":  "1,X",
+                                                                         "effect":  "B = B AND byte at X+1"
+                                                                     },
+                                                                     {
+                                                                         "address":  "767B",
+                                                                         "bytesHex":  "ED84",
+                                                                         "mnemonic":  "STD",
+                                                                         "operand":  ",X",
+                                                                         "effect":  "write D big-endian at X/X+1"
+                                                                     },
+                                                                     {
+                                                                         "address":  "767D",
+                                                                         "bytesHex":  "0EFC",
+                                                                         "mnemonic":  "JMP",
+                                                                         "operand":  "\u003c$FC",
+                                                                         "effect":  "next-token fetch"
+                                                                     }
+                                                                 ],
+                                                "stackContract":  "U points at the mask word; U+2 is the address word; PULU A,B,X pulls A then B then X, so D comes from U, X comes from U+2, and U advances by 4.",
+                                                "effectEquation":  "(afterWord \u0026 FFFF) = ((beforeWord \u0026 FFFF) \u0026 ~(maskWord \u0026 FFFF))",
+                                                "flagsContract":  "COMA and COMB set C=1; ANDA/ANDB preserve C, so the observed exit C must be 1.",
+                                                "registerContract":  "after STD: X=00A0, D=afterWord, A=high byte, B=low byte, Y and S unchanged."
+                                            },
+                           "boundedMemory":  {
+                                                 "address":  "00A0",
+                                                 "bytes":  "00A0/00A1",
+                                                 "mask":  "4000",
+                                                 "rule":  "Only the word at 00A0/00A1 is read, and only when the entry stack address is exactly 00A0 and the mask is 4000."
+                                             }
+                       },
+    "memoryEffects":  [
+                          {
+                              "callId":  1,
+                              "callSiteY":  "EF9C",
+                              "callSiteToken":  "9A62",
+                              "callSiteU":  "066C",
+                              "callSiteS":  "07AC",
+                              "emulatedTime":  "50.166901744",
+                              "callerSuccessor":  "EF9E",
+                              "compositePC":  "00F8",
+                              "compositeX":  "9A64",
+                              "nodeSequence":  "0,1,2,3,5",
+                              "handlerSequence":  "7B6F,7984,7667,797B,7931",
+                              "nodeCount":  5,
+                              "handlerCount":  5,
+                              "completeRecord":  true,
+                              "completed":  true,
+                              "branchPath":  "nonzero",
+                              "branchConditionCell":  "FFFF",
+                              "branchOperandAddress":  "9A68",
+                              "branchOperandByte":  "06",
+                              "branchNextY":  "9A69",
+                              "branchUAdvance":  "0002",
+                              "returnSavedCursor":  "EF9E",
+                              "returnS":  "07AA",
+                              "postReturnY":  "EF9E",
+                              "postReturnS":  "07AC",
+                              "postReturnToken":  "80C4",
+                              "returnSAdvanced":  "0002",
+                              "memoryEffect":  "or",
+                              "memoryNodeIndex":  "2",
+                              "memoryAddress":  "00A0",
+                              "maskWord":  "4000",
+                              "beforeWord":  "0000",
+                              "afterWord":  "4000",
+                              "expectedAfterWord":  "4000",
+                              "memoryUAdvance":  "0004",
+                              "memorySUnchanged":  true,
+                              "memoryYUnchanged":  true,
+                              "memoryXExact":  "00A0",
+                              "memoryDAfter":  "4000",
+                              "memoryCCContract":  "or: C unchanged from entry (ORA/ORB preserve carry)",
+                              "errors":  [
+
+                                         ]
+                          },
+                          {
+                              "callId":  2,
+                              "callSiteY":  "EF9C",
+                              "callSiteToken":  "9A62",
+                              "callSiteU":  "066C",
+                              "callSiteS":  "07AC",
+                              "emulatedTime":  "53.047543023",
+                              "callerSuccessor":  "EF9E",
+                              "compositePC":  "00F8",
+                              "compositeX":  "9A64",
+                              "nodeSequence":  "0,1,2,3,5",
+                              "handlerSequence":  "7B6F,7984,7667,797B,7931",
+                              "nodeCount":  5,
+                              "handlerCount":  5,
+                              "completeRecord":  true,
+                              "completed":  true,
+                              "branchPath":  "nonzero",
+                              "branchConditionCell":  "FFFF",
+                              "branchOperandAddress":  "9A68",
+                              "branchOperandByte":  "06",
+                              "branchNextY":  "9A69",
+                              "branchUAdvance":  "0002",
+                              "returnSavedCursor":  "EF9E",
+                              "returnS":  "07AA",
+                              "postReturnY":  "EF9E",
+                              "postReturnS":  "07AC",
+                              "postReturnToken":  "80C4",
+                              "returnSAdvanced":  "0002",
+                              "memoryEffect":  "or",
+                              "memoryNodeIndex":  "2",
+                              "memoryAddress":  "00A0",
+                              "maskWord":  "4000",
+                              "beforeWord":  "0000",
+                              "afterWord":  "4000",
+                              "expectedAfterWord":  "4000",
+                              "memoryUAdvance":  "0004",
+                              "memorySUnchanged":  true,
+                              "memoryYUnchanged":  true,
+                              "memoryXExact":  "00A0",
+                              "memoryDAfter":  "4000",
+                              "memoryCCContract":  "or: C unchanged from entry (ORA/ORB preserve carry)",
+                              "errors":  [
+
+                                         ]
+                          },
+                          {
+                              "callId":  3,
+                              "callSiteY":  "EF9C",
+                              "callSiteToken":  "9A62",
+                              "callSiteU":  "066C",
+                              "callSiteS":  "07AC",
+                              "emulatedTime":  "117.268365698",
+                              "callerSuccessor":  "EF9E",
+                              "compositePC":  "00F8",
+                              "compositeX":  "9A64",
+                              "nodeSequence":  "0,1,2,3,5",
+                              "handlerSequence":  "7B6F,7984,7667,797B,7931",
+                              "nodeCount":  5,
+                              "handlerCount":  5,
+                              "completeRecord":  true,
+                              "completed":  true,
+                              "branchPath":  "nonzero",
+                              "branchConditionCell":  "FFFF",
+                              "branchOperandAddress":  "9A68",
+                              "branchOperandByte":  "06",
+                              "branchNextY":  "9A69",
+                              "branchUAdvance":  "0002",
+                              "returnSavedCursor":  "EF9E",
+                              "returnS":  "07AA",
+                              "postReturnY":  "EF9E",
+                              "postReturnS":  "07AC",
+                              "postReturnToken":  "80C4",
+                              "returnSAdvanced":  "0002",
+                              "memoryEffect":  "or",
+                              "memoryNodeIndex":  "2",
+                              "memoryAddress":  "00A0",
+                              "maskWord":  "4000",
+                              "beforeWord":  "0000",
+                              "afterWord":  "4000",
+                              "expectedAfterWord":  "4000",
+                              "memoryUAdvance":  "0004",
+                              "memorySUnchanged":  true,
+                              "memoryYUnchanged":  true,
+                              "memoryXExact":  "00A0",
+                              "memoryDAfter":  "4000",
+                              "memoryCCContract":  "or: C unchanged from entry (ORA/ORB preserve carry)",
+                              "errors":  [
+
+                                         ]
+                          }
+                      ],
+    "memoryCalls":  [
+                        {
+                            "callId":  1,
+                            "branchPath":  "nonzero",
+                            "emulatedTime":  "50.166901744",
+                            "memoryEffect":  "or",
+                            "memoryNodeIndex":  "2",
+                            "memoryAddress":  "00A0",
+                            "maskWord":  "4000",
+                            "beforeWord":  "0000",
+                            "afterWord":  "4000",
+                            "expectedAfterWord":  "4000",
+                            "memoryUAdvance":  "0004",
+                            "memorySUnchanged":  true,
+                            "memoryYUnchanged":  true,
+                            "memoryXExact":  "00A0",
+                            "memoryDAfter":  "4000",
+                            "memoryCCContract":  "or: C unchanged from entry (ORA/ORB preserve carry)"
+                        },
+                        {
+                            "callId":  2,
+                            "branchPath":  "nonzero",
+                            "emulatedTime":  "53.047543023",
+                            "memoryEffect":  "or",
+                            "memoryNodeIndex":  "2",
+                            "memoryAddress":  "00A0",
+                            "maskWord":  "4000",
+                            "beforeWord":  "0000",
+                            "afterWord":  "4000",
+                            "expectedAfterWord":  "4000",
+                            "memoryUAdvance":  "0004",
+                            "memorySUnchanged":  true,
+                            "memoryYUnchanged":  true,
+                            "memoryXExact":  "00A0",
+                            "memoryDAfter":  "4000",
+                            "memoryCCContract":  "or: C unchanged from entry (ORA/ORB preserve carry)"
+                        },
+                        {
+                            "callId":  3,
+                            "branchPath":  "nonzero",
+                            "emulatedTime":  "117.268365698",
+                            "memoryEffect":  "or",
+                            "memoryNodeIndex":  "2",
+                            "memoryAddress":  "00A0",
+                            "maskWord":  "4000",
+                            "beforeWord":  "0000",
+                            "afterWord":  "4000",
+                            "expectedAfterWord":  "4000",
+                            "memoryUAdvance":  "0004",
+                            "memorySUnchanged":  true,
+                            "memoryYUnchanged":  true,
+                            "memoryXExact":  "00A0",
+                            "memoryDAfter":  "4000",
+                            "memoryCCContract":  "or: C unchanged from entry (ORA/ORB preserve carry)"
+                        }
+                    ],
+    "negativeControls":  [
+                             {
+                                 "name":  "malformed_trailing_comma_event",
+                                 "expected":  "rejected",
+                                 "observed":  "rejected",
+                                 "pass":  true,
+                                 "detail":  "Strict JSONL parse failed (exit=1): Exception: C:\\projects\\GitRepos\\FruitMachineLab\\tests\\worker\\Test-IlEventJson.ps1:125\r\nLine |\r\n 125 |          throw \"Strict JSONL parse rejected $($failures.Count) record( .\r\n     |          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n     | Strict JSONL parse rejected 1 record(s) in\r\n     | C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-memory-final-23\\run-01\\negative-controls\\malformed-events.jsonl\r\n"
+                             },
+                             {
+                                 "name":  "stale_source_map_identity",
+                                 "expected":  "rejected",
+                                 "observed":  "rejected",
+                                 "pass":  true,
+                                 "detail":  "Source map SHA256 is f78183f4fe69d4e89f45f624fe201a02f8c62120ecf7adb6347ddbe5706d9884, expected 8d9c9ddc58373e1ffdd221590a75babc1fb7bf3f497bfca587dbac84981df766"
+                             },
+                             {
+                                 "name":  "phase_mismatched_node_prefetch",
+                                 "expected":  "rejected",
+                                 "observed":  "rejected",
+                                 "pass":  true,
+                                 "detail":  "node_prefetch Y differs from mapped node 0 address"
+                             },
+                             {
+                                 "name":  "missing_post_return_not_accepted_as_complete",
+                                 "expected":  "no complete call",
+                                 "observed":  "no complete call",
+                                 "pass":  true,
+                                 "detail":  ""
+                             },
+                             {
+                                 "name":  "wrong_memory_target",
+                                 "expected":  "rejected",
+                                 "observed":  "rejected",
+                                 "pass":  true,
+                                 "detail":  "memory_entry memoryAddress is not the bounded 00A0 word"
+                             },
+                             {
+                                 "name":  "bad_memory_before_after_equation",
+                                 "expected":  "rejected",
+                                 "observed":  "rejected",
+                                 "pass":  true,
+                                 "detail":  "Call 1 failed 9A64 branch/return validation: memory_after_std word 0000 is not the big-endian or equation result 4000; memory_after_std D is not the written word"
+                             },
+                             {
+                                 "name":  "phase_mismatched_memory_after_std",
+                                 "expected":  "rejected",
+                                 "observed":  "rejected",
+                                 "pass":  true,
+                                 "detail":  "memory_after_std phase is not memory-after-std"
+                             }
+                         ],
+    "commands":  [
+                     {
+                         "id":  "il-9a64-source-map-generation",
+                         "description":  "Generate source map from NineASixFourDecoder, VmIlCompiler.CompileIdentity and VmIlSourceMap",
+                         "commandLine":  "run --project C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-memory-final-23\\run-01\\source-map-gen\\IlNineA64MapGen.csproj --configuration Release -- C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\general-14\\roms\\original.p1 C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-memory-final-23\\run-01\\source-map.json C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-memory-final-23\\run-01\\build-report.json",
+                         "exitCode":  0,
+                         "timedOut":  false,
+                         "wallSeconds":  1.957,
+                         "reconstructed":  false
+                     },
+                     {
+                         "id":  "il-9a64-natural-capture",
+                         "description":  "One fresh-boot original-image MAME natural observation at native 9A64 boundaries",
+                         "commandLine":  "m4addr -noreadconfig -rompath C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-memory-final-23\\run-01\\roms;E:\\Arcade\\MAME0266\\roms -cfg_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-memory-final-23\\run-01\\cfg -nvram_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-memory-final-23\\run-01\\nvram -input_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-memory-final-23\\run-01\\inp -snapshot_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-memory-final-23\\run-01\\snap -comment_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-memory-final-23\\run-01\\comments -state_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-memory-final-23\\run-01\\state -diff_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-memory-final-23\\run-01\\diff -debug -debugger imgui -debuglog -video bgfx -sound none -window -skip_gameinfo -nothrottle -seconds_to_run 120 -autoboot_delay 0 -autoboot_script C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-memory-final-23\\run-01\\observer.lua -bgfx_path E:\\Arcade\\MAME0266\\bgfx",
+                         "exitCode":  0,
+                         "timedOut":  false,
+                         "wallSeconds":  14.287
+                     }
+                 ],
+    "coverage":  {
+                     "callsStarted":  3,
+                     "callsCompleted":  3,
+                     "orEffectsObserved":  3,
+                     "clearEffectsObserved":  0,
+                     "boundedAddress":  "00A0",
+                     "boundedBytes":  "00A0/00A1",
+                     "acceptedMask":  "4000",
+                     "acceptedCallerSite":  "EF9C",
+                     "gaps":  [
+                                  "Zero-condition 7982 path was not observed: 9A6E, the 7671 handler and the final return after the clear path remain unobserved in this capture.",
+                                  "Nodes not observed in this capture (not labelled executed): 9A6E vm_clear_word_memory_bits",
+                                  "No natural zero/clear 7671 memory effect was observed in this capture.",
+                                  "Memory effects are bounded to the word at 00A0/00A1 with mask 4000 and the accepted EF9C caller; no other address, caller or arbitrary RAM read is claimed."
+                              ]
+                 },
+    "limitations":  [
+                        "Only the word at 00A0/00A1 with mask 4000 from caller site EF9C is claimed. Other callers, masks or addresses are rejected rather than read.",
+                        "Natural coverage is limited to the paths and calls actually reached by the tracked fixed replay; missing paths are reported as gaps.",
+                        "No 9A64 edit, operand replacement, extension range, linker, new word, native executor, hardware run or physical compatibility claim is included.",
+                        "The observed memory writes are natural ROM behaviour; they do not validate the recovered IL memory operations as original source.",
+                        "The EE16/EE22 paid-window comparison remains unchanged and was not retried."
+                    ],
+    "validation":  {
+                       "capture":  "tools/Capture-IlNineA64Natural.ps1",
+                       "focusedTest":  "tests/worker/Test-IlNineA64Natural.ps1",
+                       "strictJsonHelper":  "tests/worker/Test-IlEventJson.ps1",
+                       "sourceDocument":  "docs/recovery/IL-9A64-MEMORY.md"
+                   }
+}

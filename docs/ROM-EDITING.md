@@ -250,6 +250,34 @@ hardware claim is made. See
 [natural 9A64](recovery/IL-9A64-NATURAL.md) and
 `evidence/mpu4/integrity/il-9a64-natural.json`.
 
+## Bounded natural 9A64 memory effects
+
+A later single fresh-boot run extended the same read-only observer to the exact
+`00A0/00A1` word. Native breakpoints stop at `7667`/`7673` entry and immediately
+after the actual `STD` at `766F`/`767D`, before `JMP <$FC`. Original 6809 bytes
+establish `PULU A,B,X` (address at `U+2`, mask at `U`, `U+4`), big-endian
+`old | mask` for the OR handler and `old & ~mask` for the clear handler, with
+`COMA`/`COMB` leaving `C=1`.
+
+The preceding task 22 run used `-debugger windows -video none`; it remains
+preserved as a valid three-OR trace but is not described as having used the final
+frontend. The final capture launcher now uses the accepted paused-debugger
+frontend, `-debugger imgui -video bgfx -bgfx_path <installed MAME>\bgfx`, with
+the same isolated output directories and the imgui wait path that does not call
+`set_foreground`. A fresh run on that final launcher and observer again recorded
+three natural OR effects from the accepted `EF9C` caller with mask `4000`:
+`0000` became `4000`, `U` advanced by four, `X=00A0`, `S` and `Y` were unchanged,
+`D` equalled the written word, and carry was preserved. The zero path and the
+`7673` clear handler were not naturally reached, so the clear effect remains a
+static contract and is reported as a coverage gap. The observer rejects any
+other caller, mask or address instead of reading arbitrary RAM. Seven negative
+controls pass: the four preserved controls plus a wrong target, a bad
+before/after equation and a memory phase mismatch. Generated arguments, the
+actual run command line and the curated evidence are checked for the imgui/BGFX
+frontend and for capture-tool/observer source provenance. See
+[bounded 9A64 memory](recovery/IL-9A64-MEMORY.md) and
+`evidence/mpu4/integrity/il-9a64-memory.json`.
+
 ## Build and test
 
 From the repository root, with the already installed .NET SDK and net8.0 packs:

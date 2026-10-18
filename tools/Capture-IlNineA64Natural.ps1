@@ -8,6 +8,7 @@ param(
     [string]$ReplayPath,
     [string]$InputLuaPath,
     [string]$EvidencePath,
+    [string]$MemoryEvidencePath,
     [ValidateRange(1,120)][int]$SecondsToRun = 120,
     [ValidateRange(30,600)][int]$WallTimeoutSeconds = 600,
     [ValidateRange(1,8)][int]$MaxCalls = 8
@@ -15,6 +16,17 @@ param(
 $ErrorActionPreference = 'Stop'
 
 $script:IlA64Protocol = 'il-9a64-natural-v1'
+$script:IlA64MemoryTaskId = 'il-9a64-memory-final-23'
+$script:IlA64FrontendDebugger = 'imgui'
+$script:IlA64FrontendVideo = 'bgfx'
+$script:IlA64MemoryAddress = 0x00A0
+$script:IlA64MemoryMask = 0x4000
+$script:IlA64OrToken = 0x7665
+$script:IlA64ClearToken = 0x7671
+$script:IlA64OrHandler = 0x7667
+$script:IlA64ClearHandler = 0x7673
+$script:IlA64OrAfterStd = 0x766F
+$script:IlA64ClearAfterStd = 0x767D
 $script:IlA64OriginalSha1 = '402d1518bb78fdc489b06c2aabc771e5ce151847'
 $script:IlA64OriginalSha256 = 'ebf580381aa6eb6ffb26e2acd40f30aa34b0311f71c6564607c6f48a53bca15c'
 $script:IlA64MameSha256 = '0fce5a88df4f9d9b1fbf1405812c00848036e615993780978d967da34204cb7a'
@@ -23,6 +35,7 @@ $script:IlA64Root = Split-Path $PSScriptRoot -Parent
 if ([string]::IsNullOrWhiteSpace($ReplayPath)) { $ReplayPath = Join-Path $script:IlA64Root 'evidence/mpu4/skill-cash/actions.csv' }
 if ([string]::IsNullOrWhiteSpace($InputLuaPath)) { $InputLuaPath = Join-Path $script:IlA64Root 'evidence/mpu4/skill-cash/input.lua' }
 if ([string]::IsNullOrWhiteSpace($EvidencePath)) { $EvidencePath = Join-Path $script:IlA64Root 'evidence/mpu4/integrity/il-9a64-natural.json' }
+if ([string]::IsNullOrWhiteSpace($MemoryEvidencePath)) { $MemoryEvidencePath = Join-Path $script:IlA64Root 'evidence/mpu4/integrity/il-9a64-memory.json' }
 if ([string]::IsNullOrWhiteSpace($OriginalRom)) { $OriginalRom = Join-Path $script:IlA64Root 'artifacts/deepseek/general-14/roms/original.p1' }
 
 $script:IlA64Utf8 = New-Object System.Text.UTF8Encoding($false)
@@ -55,6 +68,108 @@ function ConvertTo-IlA64Int {
 function Format-IlA64Hex16 {
     param([int]$Value)
     return ('{0:X4}' -f ($Value -band 0xFFFF))
+}
+
+function Format-IlA64Hex8 {
+    param([int]$Value)
+    return ('{0:X2}' -f ($Value -band 0xFF))
+}
+
+function Get-IlA64RomHex {
+    param([byte[]]$Rom,[int]$Address,[int]$Length)
+    $parts = New-Object 'System.Collections.Generic.List[string]'
+    for ($i=0; $i -lt $Length; $i++) { $parts.Add((Format-IlA64Hex8 $Rom[($Address + $i) -band 0xFFFF])) }
+    return ($parts -join '')
+}
+
+function Assert-IlA64RomBytes {
+    param([byte[]]$Rom,[int]$Address,[string]$ExpectedHex,[string]$Label)
+    $actual = Get-IlA64RomHex $Rom $Address ($ExpectedHex.Length / 2)
+    if ($actual -ine $ExpectedHex) { throw "$Label at $(Format-IlA64Hex16 $Address) is $actual, expected $ExpectedHex" }
+}
+
+function Get-IlA64MemoryContract {
+    param([byte[]]$Rom,[string]$RomSha256)
+    if ($Rom.Length -ne 65536) { throw 'Memory contract requires the exact 65536-byte original ROM' }
+
+    $orPointer = (([int]$Rom[$script:IlA64OrToken] -shl 8) -bor [int]$Rom[$script:IlA64OrToken + 1])
+    $clearPointer = (([int]$Rom[$script:IlA64ClearToken] -shl 8) -bor [int]$Rom[$script:IlA64ClearToken + 1])
+    if ($orPointer -ne $script:IlA64OrHandler) { throw "Token 7665 points at $(Format-IlA64Hex16 $orPointer), expected 7667" }
+    if ($clearPointer -ne $script:IlA64ClearHandler) { throw "Token 7671 points at $(Format-IlA64Hex16 $clearPointer), expected 7673" }
+
+    $orInstructions = @(
+        [ordered]@{ address='7667'; bytesHex='3716'; mnemonic='PULU'; operand='A,B,X'; effect='pull A then B then X; D=mask, X=address; U+4' },
+        [ordered]@{ address='7669'; bytesHex='AA84'; mnemonic='ORA'; operand='A,X'; effect='A = A OR byte at X' },
+        [ordered]@{ address='766B'; bytesHex='EA01'; mnemonic='ORB'; operand='1,X'; effect='B = B OR byte at X+1' },
+        [ordered]@{ address='766D'; bytesHex='ED84'; mnemonic='STD'; operand=',X'; effect='write D big-endian at X/X+1' },
+        [ordered]@{ address='766F'; bytesHex='0EFC'; mnemonic='JMP'; operand='<$FC'; effect='next-token fetch' }
+    )
+    $clearInstructions = @(
+        [ordered]@{ address='7673'; bytesHex='3716'; mnemonic='PULU'; operand='A,B,X'; effect='pull A then B then X; D=mask, X=address; U+4' },
+        [ordered]@{ address='7675'; bytesHex='43'; mnemonic='COMA'; operand=''; effect='A = NOT A; C=1' },
+        [ordered]@{ address='7676'; bytesHex='53'; mnemonic='COMB'; operand=''; effect='B = NOT B; C=1' },
+        [ordered]@{ address='7677'; bytesHex='A484'; mnemonic='ANDA'; operand=',X'; effect='A = A AND byte at X' },
+        [ordered]@{ address='7679'; bytesHex='E401'; mnemonic='ANDB'; operand='1,X'; effect='B = B AND byte at X+1' },
+        [ordered]@{ address='767B'; bytesHex='ED84'; mnemonic='STD'; operand=',X'; effect='write D big-endian at X/X+1' },
+        [ordered]@{ address='767D'; bytesHex='0EFC'; mnemonic='JMP'; operand='<$FC'; effect='next-token fetch' }
+    )
+
+    $orSpanHex = '3716AA84EA01ED840EFC'
+    $clearSpanHex = '37164353A484E401ED840EFC'
+    Assert-IlA64RomBytes $Rom $script:IlA64OrHandler $orSpanHex 'OR handler span'
+    Assert-IlA64RomBytes $Rom $script:IlA64ClearHandler $clearSpanHex 'Clear handler span'
+
+    $previous = $script:IlA64OrHandler
+    foreach ($instruction in $orInstructions) {
+        $address = ConvertTo-IlA64Int ([string]$instruction.address)
+        if ($address -ne $previous) { throw "OR handler instruction is not contiguous at $($instruction.address)" }
+        Assert-IlA64RomBytes $Rom $address ([string]$instruction.bytesHex) "OR handler $($instruction.mnemonic)"
+        $previous = $address + (([string]$instruction.bytesHex).Length / 2)
+    }
+    if ($previous -ne ($script:IlA64OrAfterStd + 2)) { throw 'OR handler does not end at the checked JMP byte pair' }
+
+    $previous = $script:IlA64ClearHandler
+    foreach ($instruction in $clearInstructions) {
+        $address = ConvertTo-IlA64Int ([string]$instruction.address)
+        if ($address -ne $previous) { throw "Clear handler instruction is not contiguous at $($instruction.address)" }
+        Assert-IlA64RomBytes $Rom $address ([string]$instruction.bytesHex) "Clear handler $($instruction.mnemonic)"
+        $previous = $address + (([string]$instruction.bytesHex).Length / 2)
+    }
+    if ($previous -ne ($script:IlA64ClearAfterStd + 2)) { throw 'Clear handler does not end at the checked JMP byte pair' }
+
+    return [ordered]@{
+        evidenceClass = 'Static deduction from exact original-ROM 6809 handler bytes at 7667 and 7673. Token pointers, instruction bytes, stack order and arithmetic are checked directly; names are not used as evidence.'
+        originalRomSha256 = $RomSha256
+        tokenPointers = [ordered]@{
+            orToken = '7665'; orHandler = '7667'
+            clearToken = '7671'; clearHandler = '7673'
+        }
+        afterStdAddresses = [ordered]@{ or = '766F'; clear = '767D' }
+        orHandler = [ordered]@{
+            address = '7667'
+            spanHex = $orSpanHex
+            instructions = $orInstructions
+            stackContract = 'U points at the mask word; U+2 is the address word; PULU A,B,X pulls A then B then X, so D comes from U, X comes from U+2, and U advances by 4.'
+            effectEquation = '(afterWord & FFFF) = ((beforeWord & FFFF) | (maskWord & FFFF))'
+            flagsContract = 'ORA/ORB set N/Z from the result and preserve C; carry is checked unchanged from entry.'
+            registerContract = 'after STD: X=00A0, D=afterWord, A=high byte, B=low byte, Y and S unchanged.'
+        }
+        clearHandler = [ordered]@{
+            address = '7673'
+            spanHex = $clearSpanHex
+            instructions = $clearInstructions
+            stackContract = 'U points at the mask word; U+2 is the address word; PULU A,B,X pulls A then B then X, so D comes from U, X comes from U+2, and U advances by 4.'
+            effectEquation = '(afterWord & FFFF) = ((beforeWord & FFFF) & ~(maskWord & FFFF))'
+            flagsContract = 'COMA and COMB set C=1; ANDA/ANDB preserve C, so the observed exit C must be 1.'
+            registerContract = 'after STD: X=00A0, D=afterWord, A=high byte, B=low byte, Y and S unchanged.'
+        }
+        boundedMemory = [ordered]@{
+            address = '00A0'
+            bytes = '00A0/00A1'
+            mask = '4000'
+            rule = 'Only the word at 00A0/00A1 is read, and only when the entry stack address is exactly 00A0 and the mask is 4000.'
+        }
+    }
 }
 
 function Assert-IlA64Rom {
@@ -523,6 +638,32 @@ function Get-IlA64Analysis {
     if (!(Test-Path -LiteralPath $metadataPath -PathType Leaf)) { throw "Session metadata is missing: $metadataPath" }
     $metadata = Get-Content -LiteralPath $metadataPath -Raw | ConvertFrom-Json
     if ([string]$metadata.protocol -ne $script:IlA64Protocol) { throw 'Session metadata protocol mismatch' }
+    $frontend = $metadata.frontend
+    if ($null -ne $frontend) {
+        if ([string]$frontend.debugger -ne $script:IlA64FrontendDebugger) { throw "Session frontend debugger is not $($script:IlA64FrontendDebugger)" }
+        if ([string]$frontend.video -ne $script:IlA64FrontendVideo) { throw "Session frontend video is not $($script:IlA64FrontendVideo)" }
+        $expectedBgfxPath = [IO.Path]::GetFullPath((Join-Path (Split-Path ([string]$metadata.mame_executable) -Parent) 'bgfx'))
+        if ([string]$frontend.bgfx_path -ine $expectedBgfxPath) { throw 'Session frontend bgfx_path is not the installed MAME asset directory' }
+        if ([bool]$frontend.focus_stealing) { throw 'Session frontend records focus stealing' }
+    }
+    $requireMemoryEffects = ([string]$metadata.memory_effects -eq 'bounded_00A0_v1')
+    $observerInfo = $null
+    if ($requireMemoryEffects) {
+        $capturedLua = Join-Path $Run 'IlNineA64Natural.lua'
+        if (!(Test-Path -LiteralPath $capturedLua -PathType Leaf)) { throw "Captured observer Lua is missing: $capturedLua" }
+        $sourceLua = Join-Path $script:IlA64Root 'tools/lua/IlNineA64Natural.lua'
+        if (!(Test-Path -LiteralPath $sourceLua -PathType Leaf)) { throw "Tracked observer Lua is missing: $sourceLua" }
+        $capturedLuaSha256 = Get-IlA64Hash $capturedLua 'SHA256'
+        $sourceLuaSha256 = Get-IlA64Hash $sourceLua 'SHA256'
+        if ($capturedLuaSha256 -ine $sourceLuaSha256) { throw "Captured observer SHA256 $capturedLuaSha256 differs from tracked source $sourceLuaSha256" }
+        $observerInfo = [ordered]@{
+            capturedPath = [IO.Path]::GetFullPath($capturedLua)
+            capturedSha256 = $capturedLuaSha256
+            sourcePath = [IO.Path]::GetFullPath($sourceLua)
+            sourceSha256 = $sourceLuaSha256
+            match = $true
+        }
+    }
     if ([string]::IsNullOrWhiteSpace($SourceMapPath)) { $SourceMapPath = Join-Path $Run 'source-map.json' }
     if ([string]::IsNullOrWhiteSpace($BuildReportPath)) { $BuildReportPath = Join-Path $Run 'build-report.json' }
     if ([string]::IsNullOrWhiteSpace($EventsPath)) { $EventsPath = Join-Path $Run 'events.jsonl' }
@@ -548,6 +689,7 @@ function Get-IlA64Analysis {
     if ([string]$build.emittedBodyHex -ine '7B6D79820676657979037671792F') { throw 'Build report emitted body is not the 9A64 span' }
     if ([string]$build.sourceMapImageSha256 -ine $script:IlA64OriginalSha256) { throw 'Build report source map is not bound to the identity image' }
     $mapCheck = Test-IlA64MapDocument $map $rom $script:IlA64OriginalSha256
+    $memoryContract = Get-IlA64MemoryContract $rom $script:IlA64OriginalSha256
 
     $parseInfo = $null
     if ($SkipStrictParse) {
@@ -631,6 +773,38 @@ function Get-IlA64Analysis {
                 if ($targetAddressText -ine [string]$node.branch.targetAddress) { throw "handler_entry branch target differs from the source map at node $nodeIndex" }
             }
         }
+        elseif ($eventName -eq 'memory_entry') {
+            if ($nodeIndexText -notmatch '^\d+$') { throw "memory_entry nodeIndex is malformed: $nodeIndexText" }
+            $nodeIndex = [int]$nodeIndexText
+            if (-not $nodeByIndex.ContainsKey($nodeIndex)) { throw "memory_entry nodeIndex $nodeIndex is not mapped" }
+            $node = $nodeByIndex[$nodeIndex]
+            if ((Get-IlA64Field $record 'phase') -ne 'memory-entry') { throw 'memory_entry phase is not memory-entry' }
+            if ((Get-IlA64Field $record 'memoryAddress') -ine '00A0') { throw "memory_entry memoryAddress is not the bounded 00A0 word" }
+            if ((Get-IlA64Field $record 'stackAddressWord') -ine '00A0') { throw 'memory_entry stack address is not 00A0' }
+            if ((Get-IlA64Field $record 'maskWord') -ine '4000') { throw 'memory_entry mask is not the accepted 4000 mask' }
+            if ((Get-IlA64Field $record 'stackMaskWord') -ine (Get-IlA64Field $record 'maskWord')) { throw 'memory_entry stack mask differs from the recorded mask' }
+            if ((Get-IlA64Field $record 'stackAddressWord') -ine (Get-IlA64Field $record 'memoryAddress')) { throw 'memory_entry stack address differs from the recorded address' }
+            if ((Get-IlA64Field $record 'dataStack0') -ine (Get-IlA64Field $record 'maskWord')) { throw 'memory_entry data-stack top is not the mask word' }
+            if ((Get-IlA64Field $record 'dataStack1') -ine (Get-IlA64Field $record 'memoryAddress')) { throw 'memory_entry second data-stack cell is not the address word' }
+            if ($nodeIndex -eq 2) {
+                if ((Get-IlA64Field $record 'memoryKind') -ne 'or' -or (Get-IlA64Field $record 'token') -ine '7665') { throw 'memory_entry for node 2 is not the OR contract' }
+            }
+            elseif ($nodeIndex -eq 4) {
+                if ((Get-IlA64Field $record 'memoryKind') -ne 'clear' -or (Get-IlA64Field $record 'token') -ine '7671') { throw 'memory_entry for node 4 is not the clear contract' }
+            }
+            else { throw "memory_entry nodeIndex $nodeIndex is not a memory handler node" }
+        }
+        elseif ($eventName -eq 'memory_after_std') {
+            if ($nodeIndexText -notmatch '^\d+$') { throw "memory_after_std nodeIndex is malformed: $nodeIndexText" }
+            $nodeIndex = [int]$nodeIndexText
+            if (-not $nodeByIndex.ContainsKey($nodeIndex)) { throw "memory_after_std nodeIndex $nodeIndex is not mapped" }
+            if ((Get-IlA64Field $record 'phase') -ne 'memory-after-std') { throw 'memory_after_std phase is not memory-after-std' }
+            if ((Get-IlA64Field $record 'memoryAddress') -ine '00A0') { throw 'memory_after_std address is not the bounded 00A0 word' }
+            if ((Get-IlA64Field $record 'xExact') -ine '00A0' -or (Get-IlA64Field $record 'x') -ine '00A0') { throw 'memory_after_std X is not the bounded 00A0 word' }
+            if ((Get-IlA64Field $record 'uAdvance') -ine '0004') { throw 'memory_after_std U advance is not 0004' }
+            if ((Get-IlA64Field $record 'sUnchanged') -ne 'true') { throw 'memory_after_std does not record S unchanged' }
+            if ((Get-IlA64Field $record 'yUnchanged') -ne 'true') { throw 'memory_after_std does not record Y unchanged' }
+        }
         elseif ($eventName -eq 'post_return_prefetch') {
             $savedCursorText = Get-IlA64Field $record 'savedCursor'
             if ($savedCursorText -notmatch '^[0-9A-Fa-f]{4}$') { throw "post_return_prefetch savedCursor is malformed: $savedCursorText" }
@@ -663,6 +837,8 @@ function Get-IlA64Analysis {
         $composite = @($callEvents | Where-Object { (Get-IlA64Field $_ 'event') -eq 'composite_entry' })
         $nodeEvents = @($callEvents | Where-Object { (Get-IlA64Field $_ 'event') -eq 'node_prefetch' })
         $handlerEvents = @($callEvents | Where-Object { (Get-IlA64Field $_ 'event') -eq 'handler_entry' })
+        $memoryEntries = @($callEvents | Where-Object { (Get-IlA64Field $_ 'event') -eq 'memory_entry' })
+        $memoryAfterStd = @($callEvents | Where-Object { (Get-IlA64Field $_ 'event') -eq 'memory_after_std' })
         $postReturn = @($callEvents | Where-Object { (Get-IlA64Field $_ 'event') -eq 'post_return_prefetch' })
         $complete = @($callEvents | Where-Object { (Get-IlA64Field $_ 'event') -eq 'call_complete' })
         if ($entry.Count -ne 1) { throw "Call $callId has $($entry.Count) call_entry records, expected 1" }
@@ -699,6 +875,19 @@ function Get-IlA64Analysis {
             postReturnS = $null
             postReturnToken = $null
             returnSAdvanced = $null
+            memoryEffect = $null
+            memoryNodeIndex = $null
+            memoryAddress = $null
+            maskWord = $null
+            beforeWord = $null
+            afterWord = $null
+            expectedAfterWord = $null
+            memoryUAdvance = $null
+            memorySUnchanged = $null
+            memoryYUnchanged = $null
+            memoryXExact = $null
+            memoryDAfter = $null
+            memoryCCContract = $null
             errors = New-Object 'System.Collections.Generic.List[string]'
         }
 
@@ -801,6 +990,78 @@ function Get-IlA64Analysis {
                     sAdvance = $call.returnSAdvanced
                 })
             }
+            if ($requireMemoryEffects) {
+            $expectedMemoryNode = if ($call.branchPath -eq 'zero') { 4 } else { 2 }
+            $expectedMemoryKind = if ($call.branchPath -eq 'zero') { 'clear' } else { 'or' }
+            $expectedMemoryToken = if ($call.branchPath -eq 'zero') { '7671' } else { '7665' }
+            $expectedMemoryPc = if ($call.branchPath -eq 'zero') { '7673' } else { '7667' }
+            $expectedAfterStdPc = if ($call.branchPath -eq 'zero') { '767D' } else { '766F' }
+            if ($memoryEntries.Count -ne 1) {
+                [void]$call.errors.Add("complete $($call.branchPath) call has $($memoryEntries.Count) memory_entry records, expected 1")
+            }
+            elseif ($memoryAfterStd.Count -ne 1) {
+                [void]$call.errors.Add("complete $($call.branchPath) call has $($memoryAfterStd.Count) memory_after_std records, expected 1")
+            }
+            else {
+                $me = $memoryEntries[0]
+                $ma = $memoryAfterStd[0]
+                $call.memoryEffect = Get-IlA64Field $me 'memoryKind'
+                $call.memoryNodeIndex = Get-IlA64Field $me 'nodeIndex'
+                $call.memoryAddress = Get-IlA64Field $me 'memoryAddress'
+                $call.maskWord = Get-IlA64Field $me 'maskWord'
+                $call.beforeWord = Get-IlA64Field $me 'beforeWord'
+                $call.expectedAfterWord = Get-IlA64Field $me 'expectedAfterWord'
+                $call.afterWord = Get-IlA64Field $ma 'afterWord'
+                $call.memoryXExact = Get-IlA64Field $ma 'xExact'
+                $call.memoryDAfter = Get-IlA64Field $ma 'dAfter'
+                $call.memoryCCContract = Get-IlA64Field $ma 'ccContract'
+                if ([int](Get-IlA64Field $me 'nodeIndex') -ne $expectedMemoryNode) { [void]$call.errors.Add("memory_entry node is not the expected $expectedMemoryNode handler") }
+                if ([string]$call.memoryEffect -ne $expectedMemoryKind) { [void]$call.errors.Add("memory_entry effect is not $expectedMemoryKind") }
+                if ((Get-IlA64Field $me 'token') -ine $expectedMemoryToken) { [void]$call.errors.Add("memory_entry token is not $expectedMemoryToken") }
+                if ((Get-IlA64Field $me 'pc') -ine $expectedMemoryPc) { [void]$call.errors.Add("memory_entry PC is not $expectedMemoryPc") }
+                if ([string]$call.memoryAddress -ine '00A0') { [void]$call.errors.Add('memory_entry address is not the bounded 00A0 word') }
+                if ([string]$call.maskWord -ine '4000') { [void]$call.errors.Add('memory_entry mask is not the accepted 4000 mask') }
+                if ((Get-IlA64Field $me 'dataStack0') -ine [string]$call.maskWord) { [void]$call.errors.Add('memory_entry top stack cell is not the mask word') }
+                if ((Get-IlA64Field $me 'dataStack1') -ine [string]$call.memoryAddress) { [void]$call.errors.Add('memory_entry second stack cell is not the bounded address') }
+                $before = ConvertTo-IlA64Int ([string]$call.beforeWord)
+                $mask = ConvertTo-IlA64Int ([string]$call.maskWord)
+                $expectedAfter = if ($expectedMemoryKind -eq 'or') { ($before -bor $mask) -band 0xFFFF } else { $before -band ((-bnot $mask) -band 0xFFFF) }
+                $expectedAfterText = Format-IlA64Hex16 $expectedAfter
+                if ([string]$call.expectedAfterWord -ine $expectedAfterText) { [void]$call.errors.Add("memory_entry expected word $($call.expectedAfterWord) is not the big-endian $expectedMemoryKind equation result $expectedAfterText") }
+                if ([string]$call.afterWord -ine $expectedAfterText) { [void]$call.errors.Add("memory_after_std word $($call.afterWord) is not the big-endian $expectedMemoryKind equation result $expectedAfterText") }
+                if ([int](Get-IlA64Field $ma 'nodeIndex') -ne $expectedMemoryNode) { [void]$call.errors.Add('memory_after_std node differs from the entry node') }
+                if ((Get-IlA64Field $ma 'memoryKind') -ne $expectedMemoryKind) { [void]$call.errors.Add('memory_after_std kind differs from the entry kind') }
+                if ((Get-IlA64Field $ma 'memoryAddress') -ine [string]$call.memoryAddress) { [void]$call.errors.Add('memory_after_std address differs from the entry address') }
+                if ((Get-IlA64Field $ma 'beforeWord') -ine [string]$call.beforeWord) { [void]$call.errors.Add('memory_after_std beforeWord differs from the entry beforeWord') }
+                if ((Get-IlA64Field $ma 'maskWord') -ine [string]$call.maskWord) { [void]$call.errors.Add('memory_after_std mask differs from the entry mask') }
+                if ([string]$call.memoryXExact -ine '00A0') { [void]$call.errors.Add('memory_after_std X is not the bounded 00A0 word') }
+                if ((Get-IlA64Field $ma 'uAdvance') -ine '0004') { [void]$call.errors.Add('memory_after_std U advance is not 0004') }
+                if ((Get-IlA64Field $ma 'sUnchanged') -ne 'true') { [void]$call.errors.Add('memory_after_std S is not unchanged') }
+                if ((Get-IlA64Field $ma 'yUnchanged') -ne 'true') { [void]$call.errors.Add('memory_after_std Y is not unchanged') }
+                $entryU = ConvertTo-IlA64Int ([string](Get-IlA64Field $me 'u'))
+                $afterU = ConvertTo-IlA64Int ([string](Get-IlA64Field $ma 'u'))
+                $call.memoryUAdvance = Format-IlA64Hex16 ($afterU - $entryU)
+                if ((($entryU + 4) -band 0xFFFF) -ne $afterU) { [void]$call.errors.Add('memory handler U did not advance by exactly 4') }
+                if ((Get-IlA64Field $me 's') -ine (Get-IlA64Field $ma 's')) { [void]$call.errors.Add('memory handler S differs between entry and after STD') }
+                if ((Get-IlA64Field $me 'y') -ine (Get-IlA64Field $ma 'y')) { [void]$call.errors.Add('memory handler Y differs between entry and after STD') }
+                $call.memorySUnchanged = ((Get-IlA64Field $me 's') -ieq (Get-IlA64Field $ma 's'))
+                $call.memoryYUnchanged = ((Get-IlA64Field $me 'y') -ieq (Get-IlA64Field $ma 'y'))
+                if ([string]$call.memoryDAfter -ine [string]$call.afterWord) { [void]$call.errors.Add('memory_after_std D is not the written word') }
+                $expectedHigh = Format-IlA64Hex8 ($expectedAfter -shr 8)
+                $expectedLow = Format-IlA64Hex8 $expectedAfter
+                if ((Get-IlA64Field $ma 'a') -ine $expectedHigh -or (Get-IlA64Field $ma 'b') -ine $expectedLow) { [void]$call.errors.Add('memory_after_std A/B are not the written big-endian bytes') }
+                $entryCC = ConvertTo-IlA64Int ([string](Get-IlA64Field $me 'cc'))
+                $exitCC = ConvertTo-IlA64Int ([string](Get-IlA64Field $ma 'exitCC'))
+                $entryCarry = $entryCC -band 1
+                $exitCarry = $exitCC -band 1
+                if ($expectedMemoryKind -eq 'clear') {
+                    if ($exitCarry -ne 1) { [void]$call.errors.Add('clear handler exit C is not 1 as required by COMA/COMB') }
+                }
+                else {
+                    if ($exitCarry -ne $entryCarry) { [void]$call.errors.Add('OR handler did not preserve C from entry') }
+                }
+            }
+            }
         }
 
         if ($call.errors.Count -eq 0 -and $isComplete) {
@@ -840,7 +1101,18 @@ function Get-IlA64Analysis {
     if ($unobserved.Count -gt 0) {
         $gaps.Add('Nodes not observed in this capture (not labelled executed): ' + (($unobserved | ForEach-Object { "$($_.address) $($_.operation)" }) -join '; '))
     }
-    $gaps.Add('No memory OR/clear effect is claimed. The 7665/7671 handler contracts were not re-derived beyond the tracked native evidence and original ROM bytes in this task.')
+    $memoryEffects = @($calls | Where-Object { $null -ne $_.memoryEffect })
+    if ($completed -gt 0) {
+        if (-not ($memoryEffects | Where-Object { $_.memoryEffect -eq 'or' })) {
+            $gaps.Add('No natural nonzero/OR 7665 memory effect was observed in this capture.')
+        }
+        if (-not ($memoryEffects | Where-Object { $_.memoryEffect -eq 'clear' })) {
+            $gaps.Add('No natural zero/clear 7671 memory effect was observed in this capture.')
+        }
+        if ($memoryEffects.Count -gt 0) {
+            $gaps.Add('Memory effects are bounded to the word at 00A0/00A1 with mask 4000 and the accepted EF9C caller; no other address, caller or arbitrary RAM read is claimed.')
+        }
+    }
 
     $status = 'no_natural_9a64_call_observed'
     if ($completed -gt 0) { $status = 'complete_natural_calls_observed' }
@@ -848,6 +1120,8 @@ function Get-IlA64Analysis {
 
     return [ordered]@{
         status = $status
+        requiresMemoryEffects = $requireMemoryEffects
+        observer = $observerInfo
         map = [ordered]@{
             path = [IO.Path]::GetFullPath($SourceMapPath)
             sha256 = $mapSha256
@@ -876,6 +1150,8 @@ function Get-IlA64Analysis {
             recordCount = $parseInfo.recordCount
             strictJsonPass = ($parseInfo.strict -eq $true)
         }
+        memoryContract = $memoryContract
+        memoryEffects = $memoryEffects
         calls = $calls.ToArray()
         callsStarted = $callIds.Count
         callsCompleted = $completed
@@ -953,12 +1229,87 @@ function Test-IlA64NegativeControls {
     catch { $missingMessage = $_.Exception.Message }
     $cases.Add([ordered]@{ name='missing_post_return_not_accepted_as_complete'; expected='no complete call'; observed=($(if ($missingAccepted) { 'no complete call' } else { 'complete call or analysis failure' })); pass=$missingAccepted; detail=$missingMessage })
 
+    $memoryEventLines = @(Get-Content -LiteralPath (Join-Path $Run 'events.jsonl') | Where-Object { $_ -match '"event":"memory_entry"' -or $_ -match '"event":"memory_after_std"' })
+    $hasMemoryEvents = ($memoryEventLines.Count -gt 0)
+    if ($hasMemoryEvents) {
+    $wrongTarget = Join-Path $root 'wrong-memory-target-events.jsonl'
+    $wrongLines = New-Object 'System.Collections.Generic.List[string]'
+    $wrongChanged = $false
+    foreach ($line in Get-Content -LiteralPath (Join-Path $Run 'events.jsonl')) {
+        if (!$wrongChanged -and $line -match '"event":"memory_entry"') {
+            $mutated = $line.Replace('"memoryAddress":"00A0"','"memoryAddress":"00A2"').Replace('"stackAddressWord":"00A0"','"stackAddressWord":"00A2"')
+            if ($mutated -ne $line) { $line = $mutated; $wrongChanged = $true }
+        }
+        $wrongLines.Add($line)
+    }
+    if (!$wrongChanged) {
+        $cases.Add([ordered]@{ name='wrong_memory_target'; expected='rejected when a natural memory entry exists'; observed='not_applicable_no_natural_memory_entry'; pass=$true; detail='No natural memory_entry record was present to mutate.' })
+    }
+    else {
+        [IO.File]::WriteAllLines($wrongTarget,$wrongLines,$script:IlA64Utf8)
+        $wrongRejected = $false
+        $wrongMessage = ''
+        try { [void](Get-IlA64Analysis -Run $Run -EventsPath $wrongTarget -SkipStrictParse) }
+        catch { $wrongRejected = $true; $wrongMessage = $_.Exception.Message }
+        $cases.Add([ordered]@{ name='wrong_memory_target'; expected='rejected'; observed=($(if ($wrongRejected) { 'rejected' } else { 'accepted' })); pass=$wrongRejected; detail=$wrongMessage })
+    }
+
+    $badEquation = Join-Path $root 'bad-memory-equation-events.jsonl'
+    $badLines = New-Object 'System.Collections.Generic.List[string]'
+    $badChanged = $false
+    foreach ($line in Get-Content -LiteralPath (Join-Path $Run 'events.jsonl')) {
+        if (!$badChanged -and $line -match '"event":"memory_after_std"') {
+            $match = [regex]::Match($line,'"afterWord":"([0-9A-Fa-f]{4})"')
+            if ($match.Success) {
+                $old = $match.Groups[1].Value
+                $new = if ($old -ieq '0000') { 'FFFF' } else { '0000' }
+                $line = $line.Replace('"afterWord":"' + $old + '"','"afterWord":"' + $new + '"')
+                $badChanged = $true
+            }
+        }
+        $badLines.Add($line)
+    }
+    if (!$badChanged) {
+        $cases.Add([ordered]@{ name='bad_memory_before_after_equation'; expected='rejected when a natural after-STD record exists'; observed='not_applicable_no_natural_memory_after_std'; pass=$true; detail='No natural memory_after_std record was present to mutate.' })
+    }
+    else {
+        [IO.File]::WriteAllLines($badEquation,$badLines,$script:IlA64Utf8)
+        $badRejected = $false
+        $badMessage = ''
+        try { [void](Get-IlA64Analysis -Run $Run -EventsPath $badEquation -SkipStrictParse) }
+        catch { $badRejected = $true; $badMessage = $_.Exception.Message }
+        $cases.Add([ordered]@{ name='bad_memory_before_after_equation'; expected='rejected'; observed=($(if ($badRejected) { 'rejected' } else { 'accepted' })); pass=$badRejected; detail=$badMessage })
+    }
+
+    $phaseMemory = Join-Path $root 'phase-mismatched-memory-events.jsonl'
+    $phaseMemoryLines = New-Object 'System.Collections.Generic.List[string]'
+    $phaseMemoryChanged = $false
+    foreach ($line in Get-Content -LiteralPath (Join-Path $Run 'events.jsonl')) {
+        if (!$phaseMemoryChanged -and $line -match '"event":"memory_after_std"') {
+            $line = $line.Replace('"phase":"memory-after-std"','"phase":"memory-entry"')
+            $phaseMemoryChanged = $true
+        }
+        $phaseMemoryLines.Add($line)
+    }
+    if (!$phaseMemoryChanged) {
+        $cases.Add([ordered]@{ name='phase_mismatched_memory_after_std'; expected='rejected when a natural after-STD record exists'; observed='not_applicable_no_natural_memory_after_std'; pass=$true; detail='No natural memory_after_std record was present to mutate.' })
+    }
+    else {
+        [IO.File]::WriteAllLines($phaseMemory,$phaseMemoryLines,$script:IlA64Utf8)
+        $phaseMemoryRejected = $false
+        $phaseMemoryMessage = ''
+        try { [void](Get-IlA64Analysis -Run $Run -EventsPath $phaseMemory -SkipStrictParse) }
+        catch { $phaseMemoryRejected = $true; $phaseMemoryMessage = $_.Exception.Message }
+        $cases.Add([ordered]@{ name='phase_mismatched_memory_after_std'; expected='rejected'; observed=($(if ($phaseMemoryRejected) { 'rejected' } else { 'accepted' })); pass=$phaseMemoryRejected; detail=$phaseMemoryMessage })
+    }
+    }
+
     foreach ($case in $cases) { if (-not $case.pass) { throw "Negative control failed: $($case.name) ($($case.detail))" } }
     return $cases.ToArray()
 }
 
 function Write-IlA64Evidence {
-    param([string]$Run,$Analysis,[string]$OutputPath,$RunRecord,$MapRecord,$ReplayHash,$InputLuaHash,$MameHash,$MameVersion,$RomIdentity,$RunRomIdentity,$PreRunCounts,$PostRunRom,$StateFileCount,$NegativeControls,[string]$SourceDocument)
+    param([string]$Run,$Analysis,[string]$OutputPath,[string]$MemoryEvidencePath,$RunRecord,$MapRecord,$ReplayHash,$InputLuaHash,$MameHash,$MameVersion,$MameExe,$RomIdentity,$RunRomIdentity,$PreRunCounts,$PostRunRom,$StateFileCount,$NegativeControls,[string]$SourceDocument)
     $calls = @($Analysis.calls)
     $MapReconstructed = $false
     if ($MapRecord -is [System.Collections.IDictionary]) {
@@ -972,6 +1323,7 @@ function Write-IlA64Evidence {
         taskId = 'il-9a64-finish-15'
         generatedUtc = [DateTime]::UtcNow.ToString('o')
         resultStatus = [string]$Analysis.status
+        requiresMemoryEffects = [bool]$Analysis.requiresMemoryEffects
         runtimeClaim = if ([int]$Analysis.callsCompleted -gt 0) { "At most $($Analysis.callsCompleted) complete natural 9A64 call(s) were observed; unobserved nodes are not labelled executed." } else { 'No complete natural 9A64 call is claimed. The static map is valid, but the runtime coverage claim is limited to the recorded no-hit/partial finding.' }
         classification = 'Natural fresh-boot original-ROM MAME 0.281 run with the tracked physical-input replay and read-only native debugger breakpoints. The source map was generated independently from NineASixFourDecoder + VmIlCompiler.CompileIdentity + VmIlSourceMap. No state, register, RAM or ROM injection, no save-state load and no checksum bypass.'
         evidenceClasses = [ordered]@{
@@ -988,7 +1340,12 @@ function Write-IlA64Evidence {
         }
         sourceMap = $Analysis.map
         buildReport = $Analysis.build
-        mame = [ordered]@{ executable=[IO.Path]::GetFullPath($MameExecutable); sha256=$MameHash; version=$MameVersion }
+        observer = $Analysis.observer
+        memoryContract = $Analysis.memoryContract
+        memoryEffects = $Analysis.memoryEffects
+        mame = [ordered]@{ executable=[IO.Path]::GetFullPath($MameExe); sha256=$MameHash; version=$MameVersion }
+        frontend = $Analysis.metadata.frontend
+        sourceProvenance = $Analysis.metadata.source_provenance
         inputs = [ordered]@{
             replayPath = [IO.Path]::GetFullPath($ReplayPath); replaySha256 = $ReplayHash
             inputLuaPath = [IO.Path]::GetFullPath($InputLuaPath); inputLuaSha256 = $InputLuaHash
@@ -1040,7 +1397,93 @@ function Write-IlA64Evidence {
         }
     }
     Write-IlA64Json $OutputPath $evidence 30
+    if (![string]::IsNullOrWhiteSpace($MemoryEvidencePath)) {
+        Write-IlA64MemoryEvidence -Evidence $evidence -Analysis $Analysis -OutputPath $MemoryEvidencePath
+    }
     return $evidence
+}
+
+function Write-IlA64MemoryEvidence {
+    param($Evidence,$Analysis,[string]$OutputPath)
+    $effects = @($Analysis.memoryEffects)
+    $orEffects = @($effects | Where-Object { $_.memoryEffect -eq 'or' })
+    $clearEffects = @($effects | Where-Object { $_.memoryEffect -eq 'clear' })
+    $status = 'no_natural_memory_effect_observed'
+    if ($orEffects.Count -gt 0 -and $clearEffects.Count -gt 0) { $status = 'complete_or_and_clear_memory_effects_observed' }
+    elseif ($effects.Count -gt 0) { $status = 'partial_memory_effect_observed' }
+    $memoryCalls = @($Evidence.calls | ForEach-Object {
+        [ordered]@{
+            callId = $_.callId
+            branchPath = $_.branchPath
+            emulatedTime = $_.emulatedTime
+            memoryEffect = $_.memoryEffect
+            memoryNodeIndex = $_.memoryNodeIndex
+            memoryAddress = $_.memoryAddress
+            maskWord = $_.maskWord
+            beforeWord = $_.beforeWord
+            afterWord = $_.afterWord
+            expectedAfterWord = $_.expectedAfterWord
+            memoryUAdvance = $_.memoryUAdvance
+            memorySUnchanged = $_.memorySUnchanged
+            memoryYUnchanged = $_.memoryYUnchanged
+            memoryXExact = $_.memoryXExact
+            memoryDAfter = $_.memoryDAfter
+            memoryCCContract = $_.memoryCCContract
+        }
+    })
+    $document = [ordered]@{
+        schemaVersion = 1
+        taskId = $script:IlA64MemoryTaskId
+        generatedUtc = [DateTime]::UtcNow.ToString('o')
+        resultStatus = $status
+        classification = 'Bounded natural memory-effect observation on one fresh-boot original-ROM MAME 0.281 run. Byte boundaries come from native debugger breakpoints generated from the checked source map; the stopped host is the accepted imgui debugger under BGFX with the installed bgfx_path. Breakpoints stop only at 7667/7673 entry and immediately after the actual STD before JMP/next-token fetch. Only the word at 00A0/00A1 is read, with the stack address and mask checked first. No state, register, RAM or ROM injection, no save-state load and no checksum bypass.'
+        evidenceClasses = [ordered]@{
+            naturalExecution = 'Native MAME 0.281 breakpoint stops with read-only Lua state and bounded RAM reads during one fresh-boot original-image run.'
+            staticDeduction = 'Exact original-ROM 6809 bytes at 7667 and 7673, including token pointers, PULU A,B,X stack order, bytewise OR/COM/AND, STD and JMP, checked independently of operation names.'
+            hypothesis = 'The tracked replay schedule is the only input sequence used; no alternate input search was performed.'
+            synthetic = 'Memory negative controls only (wrong target, bad before/after equation, phase mismatch); they are not natural execution evidence.'
+        }
+        images = $Evidence.images
+        sourceMap = $Evidence.sourceMap
+        buildReport = $Evidence.buildReport
+        observer = $Evidence.observer
+        mame = $Evidence.mame
+        frontend = $Evidence.frontend
+        sourceProvenance = $Evidence.sourceProvenance
+        inputs = $Evidence.inputs
+        run = $Evidence.run
+        memoryContract = $Analysis.memoryContract
+        memoryEffects = $effects
+        memoryCalls = $memoryCalls
+        negativeControls = $Evidence.negativeControls
+        commands = $Evidence.commands
+        coverage = [ordered]@{
+            callsStarted = $Analysis.callsStarted
+            callsCompleted = $Analysis.callsCompleted
+            orEffectsObserved = $orEffects.Count
+            clearEffectsObserved = $clearEffects.Count
+            boundedAddress = '00A0'
+            boundedBytes = '00A0/00A1'
+            acceptedMask = '4000'
+            acceptedCallerSite = 'EF9C'
+            gaps = $Analysis.coverageGaps
+        }
+        limitations = @(
+            'Only the word at 00A0/00A1 with mask 4000 from caller site EF9C is claimed. Other callers, masks or addresses are rejected rather than read.',
+            'Natural coverage is limited to the paths and calls actually reached by the tracked fixed replay; missing paths are reported as gaps.',
+            'No 9A64 edit, operand replacement, extension range, linker, new word, native executor, hardware run or physical compatibility claim is included.',
+            'The observed memory writes are natural ROM behaviour; they do not validate the recovered IL memory operations as original source.',
+            'The EE16/EE22 paid-window comparison remains unchanged and was not retried.'
+        )
+        validation = [ordered]@{
+            capture = 'tools/Capture-IlNineA64Natural.ps1'
+            focusedTest = 'tests/worker/Test-IlNineA64Natural.ps1'
+            strictJsonHelper = 'tests/worker/Test-IlEventJson.ps1'
+            sourceDocument = 'docs/recovery/IL-9A64-MEMORY.md'
+        }
+    }
+    Write-IlA64Json $OutputPath $document 30
+    return $document
 }
 
 function Invoke-IlA64Analyze {
@@ -1104,7 +1547,7 @@ function Invoke-IlA64Analyze {
     $analysis = Get-IlA64Analysis -Run $run
     $negatives = Test-IlA64NegativeControls $run $analysis
     Write-IlA64Json (Join-Path $run 'observation.json') $analysis 30
-    $evidence = Write-IlA64Evidence -Run $run -Analysis $analysis -OutputPath $EvidencePath -RunRecord $runRecord -MapRecord $mapRecord -ReplayHash $replayHash -InputLuaHash $inputLuaHash -MameHash $mameHash -MameVersion $mameVersion -RomIdentity $romIdentity -RunRomIdentity $runRomBefore -PreRunCounts $preRunCounts -PostRunRom $runRomAfter -StateFileCount $stateFiles.Count -NegativeControls $negatives -SourceDocument 'docs/recovery/IL-9A64-NATURAL.md'
+    $evidence = Write-IlA64Evidence -Run $run -Analysis $analysis -OutputPath $EvidencePath -MemoryEvidencePath $MemoryEvidencePath -RunRecord $runRecord -MapRecord $mapRecord -ReplayHash $replayHash -InputLuaHash $inputLuaHash -MameHash $mameHash -MameVersion $mameVersion -MameExe ([string]$metadata.mame_executable) -RomIdentity $romIdentity -RunRomIdentity $runRomBefore -PreRunCounts $preRunCounts -PostRunRom $runRomAfter -StateFileCount $stateFiles.Count -NegativeControls $negatives -SourceDocument 'docs/recovery/IL-9A64-NATURAL.md'
     Write-Output (ConvertTo-Json -InputObject ([ordered]@{
         run = $run
         mode = 'Analyze'
@@ -1113,8 +1556,11 @@ function Invoke-IlA64Analyze {
         callsStarted = $analysis.callsStarted
         callsCompleted = $analysis.callsCompleted
         branchPaths = $analysis.branchPathsObserved
+        memoryEffects = @($analysis.memoryEffects | ForEach-Object { $_.memoryEffect })
         evidence = [IO.Path]::GetFullPath($EvidencePath)
         evidenceSha256 = Get-IlA64Hash $EvidencePath 'SHA256'
+        memoryEvidence = [IO.Path]::GetFullPath($MemoryEvidencePath)
+        memoryEvidenceSha256 = Get-IlA64Hash $MemoryEvidencePath 'SHA256'
     }) -Depth 6)
 }
 
@@ -1198,14 +1644,21 @@ function Invoke-IlA64Capture {
     $mameVersion = ((Get-Content -LiteralPath $versionOut -Raw).Trim() -split "`r?`n")[0]
     if ($mameVersion -notmatch '^0\.281\b') { throw "Unexpected MAME version: $mameVersion" }
 
+    $bgfxPath = [IO.Path]::GetFullPath((Join-Path (Split-Path ([IO.Path]::GetFullPath($MameExecutable)) -Parent) 'bgfx'))
+    if (!(Test-Path -LiteralPath $bgfxPath -PathType Container)) { throw "Installed BGFX asset directory is missing: $bgfxPath" }
+    $toolSha256 = Get-IlA64Hash $PSCommandPath 'SHA256'
+    $observerSourcePath = Join-Path $script:IlA64Root 'tools/lua/IlNineA64Natural.lua'
+    $observerSourceSha256 = Get-IlA64Hash $observerSourcePath 'SHA256'
+
     $arguments = @('m4addr','-noreadconfig','-rompath',((Join-Path $run 'roms')+';'+$RomDirectory),
         '-cfg_directory',(Join-Path $run 'cfg'),'-nvram_directory',(Join-Path $run 'nvram'),
         '-input_directory',(Join-Path $run 'inp'),'-snapshot_directory',(Join-Path $run 'snap'),
         '-comment_directory',(Join-Path $run 'comments'),'-state_directory',(Join-Path $run 'state'),
-        '-diff_directory',(Join-Path $run 'diff'),'-debug','-debugger','windows','-debuglog',
-        '-video','none','-sound','none','-window','-skip_gameinfo','-nothrottle',
+        '-diff_directory',(Join-Path $run 'diff'),'-debug','-debugger',$script:IlA64FrontendDebugger,'-debuglog',
+        '-video',$script:IlA64FrontendVideo,'-sound','none','-window','-skip_gameinfo','-nothrottle',
         '-seconds_to_run',[string]$SecondsToRun,'-autoboot_delay','0',
-        '-autoboot_script',(Join-Path $run 'observer.lua'))
+        '-autoboot_script',(Join-Path $run 'observer.lua'),
+        '-bgfx_path',$bgfxPath)
     Write-IlA64Json (Join-Path $run 'arguments.json') @($arguments) 6
     Write-IlA64Json (Join-Path $run 'session-metadata.json') ([ordered]@{
         protocol = $script:IlA64Protocol
@@ -1222,6 +1675,20 @@ function Invoke-IlA64Capture {
         input_lua_sha256 = $inputLuaHash
         mame_executable = [IO.Path]::GetFullPath($MameExecutable)
         mame_sha256 = $mameHash
+        frontend = [ordered]@{
+            debugger = $script:IlA64FrontendDebugger
+            video = $script:IlA64FrontendVideo
+            bgfx_path = $bgfxPath
+            bgfx_path_source = 'derived from the installed MAME executable directory, matching the accepted paused debugger launcher'
+            focus_stealing = $false
+            focus_note = 'debug_imgui::wait_for_debugger does not call set_foreground; no OS focus or window activation is requested.'
+        }
+        source_provenance = [ordered]@{
+            capture_tool_path = [IO.Path]::GetFullPath($PSCommandPath)
+            capture_tool_sha256 = $toolSha256
+            observer_source_path = [IO.Path]::GetFullPath($observerSourcePath)
+            observer_source_sha256 = $observerSourceSha256
+        }
         seconds_to_run = $SecondsToRun
         wall_timeout_seconds = $WallTimeoutSeconds
         max_complete_calls = $MaxCalls
@@ -1229,7 +1696,8 @@ function Invoke-IlA64Capture {
         starting_configuration = 'absent; -noreadconfig'
         save_state_loaded = $false
         debugger_writes = $false
-        classification = 'Fresh-isolated natural original-ROM run with read-only native debugger boundary stops.'
+        memory_effects = 'bounded_00A0_v1'
+        classification = 'Fresh-isolated natural original-ROM run with read-only native debugger boundary stops, including bounded 00A0/00A1 memory effects. The stopped host is the accepted imgui debugger under BGFX with the installed bgfx_path.'
     }) 14
 
     $previousReplay = $env:MPU4_REPLAY
@@ -1264,15 +1732,18 @@ function Invoke-IlA64Capture {
     $analysis = Get-IlA64Analysis -Run $run
     $negatives = Test-IlA64NegativeControls $run $analysis
     Write-IlA64Json (Join-Path $run 'observation.json') $analysis 30
-    $evidence = Write-IlA64Evidence -Run $run -Analysis $analysis -OutputPath $EvidencePath -RunRecord $runRecord -MapRecord $mapRecord.record -ReplayHash $replayHash -InputLuaHash $inputLuaHash -MameHash $mameHash -MameVersion $mameVersion -RomIdentity $romIdentity -RunRomIdentity $runRomIdentity -PreRunCounts $preRunCounts -PostRunRom $postRunRom -StateFileCount $stateFiles.Count -NegativeControls $negatives -SourceDocument 'docs/recovery/IL-9A64-NATURAL.md'
+    $evidence = Write-IlA64Evidence -Run $run -Analysis $analysis -OutputPath $EvidencePath -MemoryEvidencePath $MemoryEvidencePath -RunRecord $runRecord -MapRecord $mapRecord.record -ReplayHash $replayHash -InputLuaHash $inputLuaHash -MameHash $mameHash -MameVersion $mameVersion -MameExe $MameExecutable -RomIdentity $romIdentity -RunRomIdentity $runRomIdentity -PreRunCounts $preRunCounts -PostRunRom $postRunRom -StateFileCount $stateFiles.Count -NegativeControls $negatives -SourceDocument 'docs/recovery/IL-9A64-NATURAL.md'
     Write-Output (ConvertTo-Json -InputObject ([ordered]@{
         run = $run
         status = $analysis.status
         callsStarted = $analysis.callsStarted
         callsCompleted = $analysis.callsCompleted
         branchPaths = $analysis.branchPathsObserved
+        memoryEffects = @($analysis.memoryEffects | ForEach-Object { $_.memoryEffect })
         evidence = [IO.Path]::GetFullPath($EvidencePath)
         evidenceSha256 = Get-IlA64Hash $EvidencePath 'SHA256'
+        memoryEvidence = [IO.Path]::GetFullPath($MemoryEvidencePath)
+        memoryEvidenceSha256 = Get-IlA64Hash $MemoryEvidencePath 'SHA256'
     }) -Depth 6)
 }
 
@@ -1282,6 +1753,7 @@ function Invoke-IlA64Verify {
     if (!(Test-Path -LiteralPath $run -PathType Container)) { throw "Run directory is missing: $run" }
     $analysis = Get-IlA64Analysis -Run $run
     $negatives = Test-IlA64NegativeControls $run $analysis
+    $memoryEffects = @($analysis.memoryEffects)
     $result = [ordered]@{
         run = $run
         status = $analysis.status
@@ -1291,6 +1763,8 @@ function Invoke-IlA64Verify {
         strictJsonPass = $analysis.events.strictJsonPass
         negativeControlCount = $negatives.Count
         negativeControlsPass = (@($negatives | Where-Object { -not $_.pass }).Count -eq 0)
+        memoryEffectCount = $memoryEffects.Count
+        memoryEffects = @($memoryEffects | ForEach-Object { $_.memoryEffect })
     }
     if (!(Test-Path -LiteralPath $EvidencePath -PathType Leaf)) { throw "Evidence file is missing: $EvidencePath" }
     $evidence = Get-Content -LiteralPath $EvidencePath -Raw | ConvertFrom-Json
@@ -1299,6 +1773,19 @@ function Invoke-IlA64Verify {
     if ([int]$evidence.coverage.callsCompleted -ne [int]$analysis.callsCompleted) { throw 'Evidence completed-call count differs from the run' }
     if ([string]$evidence.resultStatus -ne [string]$analysis.status) { throw 'Evidence result status differs from the run' }
     $result.evidenceSha256 = Get-IlA64Hash $EvidencePath 'SHA256'
+    if ([bool]$analysis.requiresMemoryEffects -and ![string]::IsNullOrWhiteSpace($MemoryEvidencePath)) {
+        if (!(Test-Path -LiteralPath $MemoryEvidencePath -PathType Leaf)) { throw "Memory evidence file is missing: $MemoryEvidencePath" }
+        $memoryEvidence = Get-Content -LiteralPath $MemoryEvidencePath -Raw | ConvertFrom-Json
+        if ([string]$memoryEvidence.taskId -ne $script:IlA64MemoryTaskId) { throw 'Memory evidence task id is wrong' }
+        if ([string]$memoryEvidence.sourceMap.sha256 -ine [string]$analysis.map.sha256) { throw 'Memory evidence source-map hash differs from the run' }
+        if ([string]$memoryEvidence.buildReport.sha256 -ine [string]$analysis.build.sha256) { throw 'Memory evidence build-report hash differs from the run' }
+        if ([string]$memoryEvidence.run.eventsSha256 -ine [string]$analysis.events.sha256) { throw 'Memory evidence event hash differs from the run' }
+        if ([int]$memoryEvidence.coverage.orEffectsObserved -ne @($memoryEffects | Where-Object { $_.memoryEffect -eq 'or' }).Count) { throw 'Memory evidence OR-effect count differs from the run' }
+        if ([int]$memoryEvidence.coverage.clearEffectsObserved -ne @($memoryEffects | Where-Object { $_.memoryEffect -eq 'clear' }).Count) { throw 'Memory evidence clear-effect count differs from the run' }
+        if ([string]$memoryEvidence.memoryContract.originalRomSha256 -ine $script:IlA64OriginalSha256) { throw 'Memory evidence static contract is not bound to the original ROM' }
+        $result.memoryEvidenceSha256 = Get-IlA64Hash $MemoryEvidencePath 'SHA256'
+        $result.memoryStatus = [string]$memoryEvidence.resultStatus
+    }
     Write-Output (ConvertTo-Json -InputObject $result -Depth 6)
 }
 

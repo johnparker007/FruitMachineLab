@@ -200,6 +200,30 @@ runtime branch-path coverage. See
 [9A64 decode](recovery/IL-9A64-DECODE.md) and
 `evidence/mpu4/integrity/il-9a64-decode.json`.
 
+## Natural 9A64 branch observation
+
+A single fresh-boot original-ROM run with the tracked physical-input replay has
+now reached the checked 9A64 body naturally. Within 120 emulated seconds it
+completed five calls at caller site `EF9C`, covering all six mapped nodes and
+both branch paths. Exact stops came from native debugger breakpoints generated
+from a map produced by `NineASixFourDecoder` + `VmIlCompiler.CompileIdentity` +
+`VmIlSourceMap`; the Lua periodic callback was only the stopped-state driver.
+
+The zero path popped `0000` and moved from the `7982` operand address `9A68` to
+`9A6E`, then ran `7671` and returned. The nonzero path popped `FFFF`, skipped to
+`9A69`, ran `7665`, took the unconditional `7979` operand `03` to `9A70`, and
+returned. In every call the `7984` handler advanced `U` by exactly two, and the
+`7931` return restored `Y=EF9E` with `S` advancing from `07AA` to `07AC`; the
+post-return token was the ROM word `80C4` at `EF9E`. MAME exited 0 and the
+isolated ROM was unchanged.
+
+Four negative controls passed: malformed JSONL, stale map identity,
+phase-mismatched prefetch, and missing post-return completion. No memory
+OR/clear effect, other caller site, 9A64 edit, extension, paid-window result or
+hardware claim is made. See
+[natural 9A64](recovery/IL-9A64-NATURAL.md) and
+`evidence/mpu4/integrity/il-9a64-natural.json`.
+
 ## Build and test
 
 From the repository root, with the already installed .NET SDK and net8.0 packs:

@@ -175,6 +175,11 @@
         "sha256":  "2C4A0BFA7734179F2147687B2F407EFED8708EAFFDF6ED452715A5CD74BD4281"
     },
     {
+        "path":  "docs/recovery/IL-9A64-NATURAL.md",
+        "bytes":  8393,
+        "sha256":  "3745037EF179A7591FBB132ACA97FC4E5B7C423F2AAC385642C6D0FDEC550CD0"
+    },
+    {
         "path":  "docs/recovery/IL-DEBUG-SESSION.md",
         "bytes":  12588,
         "sha256":  "63F24AEF25DC5705AED60607C1285E398E009B7BF0068292EF56EF7023EC903B"
@@ -1073,6 +1078,11 @@
         "path":  "evidence/mpu4/integrity/il-9a64-decode.json",
         "bytes":  10173,
         "sha256":  "381AA7848E6A542EC42A96738285863D77FBE56ED8987222CBDA34D9F17868F8"
+    },
+    {
+        "path":  "evidence/mpu4/integrity/il-9a64-natural.json",
+        "bytes":  35646,
+        "sha256":  "F547A7ABBF1F954BFC31D7E3D0092DCA1DAB51512409A8B7B71C614AD7028BE0"
     },
     {
         "path":  "evidence/mpu4/integrity/il-debug-session.json",

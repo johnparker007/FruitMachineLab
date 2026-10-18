@@ -1,0 +1,535 @@
+{
+    "schemaVersion":  1,
+    "taskId":  "il-9a64-finish-15",
+    "generatedUtc":  "2026-10-18T16:50:10.0259376Z",
+    "resultStatus":  "complete_natural_calls_observed",
+    "runtimeClaim":  "At most 5 complete natural 9A64 call(s) were observed; unobserved nodes are not labelled executed.",
+    "classification":  "Natural fresh-boot original-ROM MAME 0.281 run with the tracked physical-input replay and read-only native debugger breakpoints. The source map was generated independently from NineASixFourDecoder + VmIlCompiler.CompileIdentity + VmIlSourceMap. No state, register, RAM or ROM injection, no save-state load and no checksum bypass.",
+    "evidenceClasses":  {
+                            "naturalExecution":  "Native MAME 0.281 breakpoint stops with Lua state reads during one fresh-boot original-image run.",
+                            "staticDeduction":  "Source map, handler headers and branch contracts generated from the identity-checked original ROM by the accepted IL decoder/compiler/map API.",
+                            "hypothesis":  "The tracked replay schedule is the only input sequence used; no alternate or speculative input search was performed.",
+                            "synthetic":  "Negative controls only (malformed JSON, stale map identity, phase mismatch, missing return); they are not natural execution evidence."
+                        },
+    "images":  {
+                   "original":  {
+                                    "path":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\general-14\\roms\\original.p1",
+                                    "length":  65536,
+                                    "sha1":  "402d1518bb78fdc489b06c2aabc771e5ce151847",
+                                    "sha256":  "ebf580381aa6eb6ffb26e2acd40f30aa34b0311f71c6564607c6f48a53bca15c"
+                                },
+                   "runRomBefore":  {
+                                        "path":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-finish-15\\run-02\\roms\\m4addr\\a6ls.p1",
+                                        "length":  65536,
+                                        "sha1":  "402d1518bb78fdc489b06c2aabc771e5ce151847",
+                                        "sha256":  "ebf580381aa6eb6ffb26e2acd40f30aa34b0311f71c6564607c6f48a53bca15c"
+                                    },
+                   "runRomAfter":  {
+                                       "path":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-finish-15\\run-02\\roms\\m4addr\\a6ls.p1",
+                                       "length":  65536,
+                                       "sha1":  "402d1518bb78fdc489b06c2aabc771e5ce151847",
+                                       "sha256":  "ebf580381aa6eb6ffb26e2acd40f30aa34b0311f71c6564607c6f48a53bca15c"
+                                   },
+                   "runRomUnchanged":  true
+               },
+    "sourceMap":  {
+                      "path":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-finish-15\\run-02\\source-map.json",
+                      "sha256":  "8d9c9ddc58373e1ffdd221590a75babc1fb7bf3f497bfca587dbac84981df766",
+                      "originalRomSha256":  "EBF580381AA6EB6FFB26E2ACD40F30AA34B0311F71C6564607C6F48A53BCA15C",
+                      "outputSha256":  "EBF580381AA6EB6FFB26E2ACD40F30AA34B0311F71C6564607C6F48A53BCA15C",
+                      "bodyStart":  "9A64",
+                      "bodyEndExclusive":  "9A72",
+                      "spanHex":  "7B6D79820676657979037671792F",
+                      "entryCount":  14,
+                      "nodeCount":  6,
+                      "branchCount":  2,
+                      "provenance":  {
+                                         "evidenceClass":  "Direct static decode of the identity-checked original ROM bytes. Six cited sites are marked observed in the reviewed MAME listing; the byte-branch base and signedness are decoded from the original 6809 handler bytes at 797B and 7984. This is static original-ROM evidence, not natural or synthetic execution.",
+                                         "listingPath":  "evidence/mpu4/VM-SCRIPTS/9A64.txt",
+                                         "listingSha256":  "01A93F20773E1530FCCCA66CC4C3ACB2C066F4595C1A0371B08EBF99D3CDC3E9",
+                                         "checkpointPath":  "evidence/mpu4/maps/nudge-encoding-checkpoint.json",
+                                         "checkpointSpanClassification":  "Exact selected ROM span and checked listed tokens; gaps/operands/embedded data preserved verbatim.",
+                                         "observedSites":  6,
+                                         "sourceMapImageSha256":  "EBF580381AA6EB6FFB26E2ACD40F30AA34B0311F71C6564607C6F48A53BCA15C",
+                                         "sourceMapEntryCount":  14,
+                                         "sourceMapBranchCount":  2
+                                     }
+                  },
+    "buildReport":  {
+                        "path":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-finish-15\\run-02\\build-report.json",
+                        "sha256":  "11455cdcc15d91780bd1f67c3bd0f6fcdffb3a6a22a4cb61f6fdbc901e3ec3e2",
+                        "originalSha256":  "EBF580381AA6EB6FFB26E2ACD40F30AA34B0311F71C6564607C6F48A53BCA15C",
+                        "outputSha256":  "EBF580381AA6EB6FFB26E2ACD40F30AA34B0311F71C6564607C6F48A53BCA15C",
+                        "identityImageUnchanged":  true,
+                        "emittedBodyHex":  "7B6D79820676657979037671792F",
+                        "checks":  {
+                                       "strictOriginalIdentity":  true,
+                                       "identityImageUnchanged":  true,
+                                       "emittedBodyMatchesSpan":  true,
+                                       "sourceMapBoundToOutputSha256":  true,
+                                       "tokenHandlersVerified":  true,
+                                       "branchModelPresent":  true
+                                   }
+                    },
+    "mame":  {
+                 "executable":  "E:\\Arcade\\MAME0266\\mame281.exe",
+                 "sha256":  "0fce5a88df4f9d9b1fbf1405812c00848036e615993780978d967da34204cb7a",
+                 "version":  "0.281 (mame0281)"
+             },
+    "inputs":  {
+                   "replayPath":  "C:\\projects\\GitRepos\\FruitMachineLab\\evidence\\mpu4\\skill-cash\\actions.csv",
+                   "replaySha256":  "4a051da15264842697879eff396b34a789f5d80623f9a2e749c244e6a80e721d",
+                   "inputLuaPath":  "C:\\projects\\GitRepos\\FruitMachineLab\\evidence\\mpu4\\skill-cash\\input.lua",
+                   "inputLuaSha256":  "23099f8888af8db353253e0df97638320dc59ca9a47371723a380e0c4ee85c94",
+                   "secondsToRun":  120,
+                   "wallTimeoutSeconds":  600,
+                   "maxCompleteCalls":  8,
+                   "startingNvram":  "absent",
+                   "startingConfiguration":  "absent; -noreadconfig",
+                   "saveStateLoaded":  false,
+                   "preRunEmpty":  {
+                                       "cfg":  0,
+                                       "nvram":  0,
+                                       "inp":  0,
+                                       "snap":  0,
+                                       "comments":  0,
+                                       "state":  0,
+                                       "diff":  0
+                                   },
+                   "postRunStateFiles":  0
+               },
+    "run":  {
+                "runDirectory":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-finish-15\\run-02",
+                "mameRecord":  {
+                                   "commandLine":  "m4addr -noreadconfig -rompath C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-finish-15\\run-02\\roms;E:\\Arcade\\MAME0266\\roms -cfg_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-finish-15\\run-02\\cfg -nvram_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-finish-15\\run-02\\nvram -input_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-finish-15\\run-02\\inp -snapshot_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-finish-15\\run-02\\snap -comment_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-finish-15\\run-02\\comments -state_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-finish-15\\run-02\\state -diff_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-finish-15\\run-02\\diff -debug -debugger windows -debuglog -video none -sound none -window -skip_gameinfo -nothrottle -seconds_to_run 120 -autoboot_delay 0 -autoboot_script C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-finish-15\\run-02\\observer.lua",
+                                   "startUtc":  "2026-10-18T16:48:04.2168482Z",
+                                   "endUtc":  "2026-10-18T16:48:14.4999591Z",
+                                   "wallSeconds":  10.285,
+                                   "timeoutSeconds":  600,
+                                   "timedOut":  false,
+                                   "exitCode":  0,
+                                   "commandId":  "il-9a64-natural-capture",
+                                   "description":  "One fresh-boot original-image MAME natural observation at native 9A64 boundaries"
+                               },
+                "sourceMapGeneration":  {
+                                            "commandId":  "il-9a64-source-map-generation",
+                                            "description":  "Source-map generation reconstructed from the preserved run; the generator was not re-executed in Analyze mode.",
+                                            "commandLine":  "run --project C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-finish-15\\run-02\\source-map-gen\\IlNineA64MapGen.csproj --configuration Release -- C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\general-14\\roms\\original.p1 C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-finish-15\\run-02\\source-map.json C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-finish-15\\run-02\\build-report.json",
+                                            "startUtc":  null,
+                                            "endUtc":  null,
+                                            "wallSeconds":  null,
+                                            "timeoutSeconds":  300,
+                                            "timedOut":  false,
+                                            "exitCode":  0,
+                                            "reconstructed":  true
+                                        },
+                "sessionComplete":  {
+                                        "event":  "session_complete",
+                                        "callsCompleted":  "5",
+                                        "callsStarted":  "5",
+                                        "emulatedBudget":  "120",
+                                        "emulatedTime":  "120.000000000",
+                                        "maxCalls":  "8",
+                                        "pc":  "2815",
+                                        "reason":  "emulated_budget",
+                                        "s":  "0770",
+                                        "u":  "0670",
+                                        "wallBudget":  "600",
+                                        "wallSeconds":  "9",
+                                        "y":  "0028"
+                                    },
+                "eventRecordCount":  71,
+                "strictJsonPass":  true,
+                "eventsSha256":  "2776ecc526da679c8d53d88d096993d358bd8e31f5ea113b9175ff134d9e97d0",
+                "debugLogSha256":  "f273b53cca145a013571752e399ec279d61469bcede727741150c94f9732f683"
+            },
+    "calls":  [
+                  {
+                      "callId":  1,
+                      "callSiteY":  "EF9C",
+                      "callSiteToken":  "9A62",
+                      "callSiteU":  "066C",
+                      "callSiteS":  "07AC",
+                      "emulatedTime":  "50.166901744",
+                      "callerSuccessor":  "EF9E",
+                      "compositePC":  "00F8",
+                      "compositeX":  "9A64",
+                      "nodeSequence":  "0,1,2,3,5",
+                      "handlerSequence":  "7B6F,7984,7667,797B,7931",
+                      "nodeCount":  5,
+                      "handlerCount":  5,
+                      "completeRecord":  true,
+                      "completed":  true,
+                      "branchPath":  "nonzero",
+                      "branchConditionCell":  "FFFF",
+                      "branchOperandAddress":  "9A68",
+                      "branchOperandByte":  "06",
+                      "branchNextY":  "9A69",
+                      "branchUAdvance":  "0002",
+                      "returnSavedCursor":  "EF9E",
+                      "returnS":  "07AA",
+                      "postReturnY":  "EF9E",
+                      "postReturnS":  "07AC",
+                      "postReturnToken":  "80C4",
+                      "returnSAdvanced":  "0002",
+                      "errors":  [
+
+                                 ]
+                  },
+                  {
+                      "callId":  2,
+                      "callSiteY":  "EF9C",
+                      "callSiteToken":  "9A62",
+                      "callSiteU":  "066C",
+                      "callSiteS":  "07AC",
+                      "emulatedTime":  "53.026843605",
+                      "callerSuccessor":  "EF9E",
+                      "compositePC":  "00F8",
+                      "compositeX":  "9A64",
+                      "nodeSequence":  "0,1,4,5",
+                      "handlerSequence":  "7B6F,7984,7673,7931",
+                      "nodeCount":  4,
+                      "handlerCount":  4,
+                      "completeRecord":  true,
+                      "completed":  true,
+                      "branchPath":  "zero",
+                      "branchConditionCell":  "0000",
+                      "branchOperandAddress":  "9A68",
+                      "branchOperandByte":  "06",
+                      "branchNextY":  "9A6E",
+                      "branchUAdvance":  "0002",
+                      "returnSavedCursor":  "EF9E",
+                      "returnS":  "07AA",
+                      "postReturnY":  "EF9E",
+                      "postReturnS":  "07AC",
+                      "postReturnToken":  "80C4",
+                      "returnSAdvanced":  "0002",
+                      "errors":  [
+
+                                 ]
+                  },
+                  {
+                      "callId":  3,
+                      "callSiteY":  "EF9C",
+                      "callSiteToken":  "9A62",
+                      "callSiteU":  "066C",
+                      "callSiteS":  "07AC",
+                      "emulatedTime":  "62.575979070",
+                      "callerSuccessor":  "EF9E",
+                      "compositePC":  "00F8",
+                      "compositeX":  "9A64",
+                      "nodeSequence":  "0,1,2,3,5",
+                      "handlerSequence":  "7B6F,7984,7667,797B,7931",
+                      "nodeCount":  5,
+                      "handlerCount":  5,
+                      "completeRecord":  true,
+                      "completed":  true,
+                      "branchPath":  "nonzero",
+                      "branchConditionCell":  "FFFF",
+                      "branchOperandAddress":  "9A68",
+                      "branchOperandByte":  "06",
+                      "branchNextY":  "9A69",
+                      "branchUAdvance":  "0002",
+                      "returnSavedCursor":  "EF9E",
+                      "returnS":  "07AA",
+                      "postReturnY":  "EF9E",
+                      "postReturnS":  "07AC",
+                      "postReturnToken":  "80C4",
+                      "returnSAdvanced":  "0002",
+                      "errors":  [
+
+                                 ]
+                  },
+                  {
+                      "callId":  4,
+                      "callSiteY":  "EF9C",
+                      "callSiteToken":  "9A62",
+                      "callSiteU":  "066C",
+                      "callSiteS":  "07AC",
+                      "emulatedTime":  "81.583993023",
+                      "callerSuccessor":  "EF9E",
+                      "compositePC":  "00F8",
+                      "compositeX":  "9A64",
+                      "nodeSequence":  "0,1,2,3,5",
+                      "handlerSequence":  "7B6F,7984,7667,797B,7931",
+                      "nodeCount":  5,
+                      "handlerCount":  5,
+                      "completeRecord":  true,
+                      "completed":  true,
+                      "branchPath":  "nonzero",
+                      "branchConditionCell":  "FFFF",
+                      "branchOperandAddress":  "9A68",
+                      "branchOperandByte":  "06",
+                      "branchNextY":  "9A69",
+                      "branchUAdvance":  "0002",
+                      "returnSavedCursor":  "EF9E",
+                      "returnS":  "07AA",
+                      "postReturnY":  "EF9E",
+                      "postReturnS":  "07AC",
+                      "postReturnToken":  "80C4",
+                      "returnSAdvanced":  "0002",
+                      "errors":  [
+
+                                 ]
+                  },
+                  {
+                      "callId":  5,
+                      "callSiteY":  "EF9C",
+                      "callSiteToken":  "9A62",
+                      "callSiteU":  "066C",
+                      "callSiteS":  "07AC",
+                      "emulatedTime":  "92.095154651",
+                      "callerSuccessor":  "EF9E",
+                      "compositePC":  "00F8",
+                      "compositeX":  "9A64",
+                      "nodeSequence":  "0,1,2,3,5",
+                      "handlerSequence":  "7B6F,7984,7667,797B,7931",
+                      "nodeCount":  5,
+                      "handlerCount":  5,
+                      "completeRecord":  true,
+                      "completed":  true,
+                      "branchPath":  "nonzero",
+                      "branchConditionCell":  "FFFF",
+                      "branchOperandAddress":  "9A68",
+                      "branchOperandByte":  "06",
+                      "branchNextY":  "9A69",
+                      "branchUAdvance":  "0002",
+                      "returnSavedCursor":  "EF9E",
+                      "returnS":  "07AA",
+                      "postReturnY":  "EF9E",
+                      "postReturnS":  "07AC",
+                      "postReturnToken":  "80C4",
+                      "returnSAdvanced":  "0002",
+                      "errors":  [
+
+                                 ]
+                  }
+              ],
+    "coverage":  {
+                     "callsStarted":  5,
+                     "callsCompleted":  5,
+                     "branchPathsObserved":  [
+                                                 "nonzero",
+                                                 "zero"
+                                             ],
+                     "observedNodeIndexes":  [
+                                                 0,
+                                                 1,
+                                                 2,
+                                                 3,
+                                                 5,
+                                                 4
+                                             ],
+                     "observedNodeSequenceUnion":  "0,1,2,3,4,5",
+                     "observedHandlerSequenceUnion":  "7667,7673,7931,797B,7984,7B6F",
+                     "observedNodes":  [
+                                           {
+                                               "index":  0,
+                                               "address":  "9A64",
+                                               "token":  "7B6D",
+                                               "operation":  "vm_rotate_three_cells",
+                                               "bytesHex":  "7B6D",
+                                               "handlerAddress":  "7B6F",
+                                               "handlerPc":  "7B6F",
+                                               "branch":  null
+                                           },
+                                           {
+                                               "index":  1,
+                                               "address":  "9A66",
+                                               "token":  "7982",
+                                               "operation":  "vm_branch_forward8_if_zero",
+                                               "bytesHex":  "798206",
+                                               "handlerAddress":  "7984",
+                                               "handlerPc":  "7984",
+                                               "branch":  {
+                                                              "nodeIndex":  1,
+                                                              "handlerAddress":  "7984",
+                                                              "tokenAddress":  "9A66",
+                                                              "operandAddress":  "9A68",
+                                                              "operandByte":  "06",
+                                                              "targetAddress":  "9A6E",
+                                                              "condition":  "IfZero",
+                                                              "offsetBase":  "operand-address",
+                                                              "offsetUnsigned":  true,
+                                                              "operandWidthBytes":  1,
+                                                              "evidenceClass":  "Static decoded contract from original-ROM 6809 handlers 797B/7984: one unsigned byte operand at the operand address, forward target = operand address + operand byte. No natural 9A64 branch execution or runtime path coverage is claimed."
+                                                          }
+                                           },
+                                           {
+                                               "index":  2,
+                                               "address":  "9A69",
+                                               "token":  "7665",
+                                               "operation":  "vm_or_word_memory",
+                                               "bytesHex":  "7665",
+                                               "handlerAddress":  "7667",
+                                               "handlerPc":  "7667",
+                                               "branch":  null
+                                           },
+                                           {
+                                               "index":  3,
+                                               "address":  "9A6B",
+                                               "token":  "7979",
+                                               "operation":  "vm_branch_unsigned_forward8",
+                                               "bytesHex":  "797903",
+                                               "handlerAddress":  "797B",
+                                               "handlerPc":  "797B",
+                                               "branch":  {
+                                                              "nodeIndex":  3,
+                                                              "handlerAddress":  "797B",
+                                                              "tokenAddress":  "9A6B",
+                                                              "operandAddress":  "9A6D",
+                                                              "operandByte":  "03",
+                                                              "targetAddress":  "9A70",
+                                                              "condition":  "Always",
+                                                              "offsetBase":  "operand-address",
+                                                              "offsetUnsigned":  true,
+                                                              "operandWidthBytes":  1,
+                                                              "evidenceClass":  "Static decoded contract from original-ROM 6809 handlers 797B/7984: one unsigned byte operand at the operand address, forward target = operand address + operand byte. No natural 9A64 branch execution or runtime path coverage is claimed."
+                                                          }
+                                           },
+                                           {
+                                               "index":  4,
+                                               "address":  "9A6E",
+                                               "token":  "7671",
+                                               "operation":  "vm_clear_word_memory_bits",
+                                               "bytesHex":  "7671",
+                                               "handlerAddress":  "7673",
+                                               "handlerPc":  "7673",
+                                               "branch":  null
+                                           },
+                                           {
+                                               "index":  5,
+                                               "address":  "9A70",
+                                               "token":  "792F",
+                                               "operation":  "vm_return_to_caller_stream",
+                                               "bytesHex":  "792F",
+                                               "handlerAddress":  "7931",
+                                               "handlerPc":  "7931",
+                                               "branch":  null
+                                           }
+                                       ],
+                     "observedHandlers":  [
+                                              "7667",
+                                              "7673",
+                                              "7931",
+                                              "797B",
+                                              "7984",
+                                              "7B6F"
+                                          ],
+                     "unobservedNodes":  [
+
+                                         ],
+                     "gaps":  [
+                                  "No memory OR/clear effect is claimed. The 7665/7671 handler contracts were not re-derived beyond the tracked native evidence and original ROM bytes in this task."
+                              ]
+                 },
+    "returnTransitions":  [
+                              {
+                                  "callId":  1,
+                                  "savedCursor":  "EF9E",
+                                  "returnS":  "07AA",
+                                  "postReturnY":  "EF9E",
+                                  "postReturnS":  "07AC",
+                                  "postReturnToken":  "80C4",
+                                  "sAdvance":  "0002"
+                              },
+                              {
+                                  "callId":  2,
+                                  "savedCursor":  "EF9E",
+                                  "returnS":  "07AA",
+                                  "postReturnY":  "EF9E",
+                                  "postReturnS":  "07AC",
+                                  "postReturnToken":  "80C4",
+                                  "sAdvance":  "0002"
+                              },
+                              {
+                                  "callId":  3,
+                                  "savedCursor":  "EF9E",
+                                  "returnS":  "07AA",
+                                  "postReturnY":  "EF9E",
+                                  "postReturnS":  "07AC",
+                                  "postReturnToken":  "80C4",
+                                  "sAdvance":  "0002"
+                              },
+                              {
+                                  "callId":  4,
+                                  "savedCursor":  "EF9E",
+                                  "returnS":  "07AA",
+                                  "postReturnY":  "EF9E",
+                                  "postReturnS":  "07AC",
+                                  "postReturnToken":  "80C4",
+                                  "sAdvance":  "0002"
+                              },
+                              {
+                                  "callId":  5,
+                                  "savedCursor":  "EF9E",
+                                  "returnS":  "07AA",
+                                  "postReturnY":  "EF9E",
+                                  "postReturnS":  "07AC",
+                                  "postReturnToken":  "80C4",
+                                  "sAdvance":  "0002"
+                              }
+                          ],
+    "negativeControls":  [
+                             {
+                                 "name":  "malformed_trailing_comma_event",
+                                 "expected":  "rejected",
+                                 "observed":  "rejected",
+                                 "pass":  true,
+                                 "detail":  "Strict JSONL parse failed (exit=1): Exception: C:\\projects\\GitRepos\\FruitMachineLab\\tests\\worker\\Test-IlEventJson.ps1:125\r\nLine |\r\n 125 |          throw \"Strict JSONL parse rejected $($failures.Count) record( .\r\n     |          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n     | Strict JSONL parse rejected 1 record(s) in\r\n     | C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-finish-15\\run-02\\negative-controls\\malformed-events.jsonl\r\n"
+                             },
+                             {
+                                 "name":  "stale_source_map_identity",
+                                 "expected":  "rejected",
+                                 "observed":  "rejected",
+                                 "pass":  true,
+                                 "detail":  "Source map SHA256 is f78183f4fe69d4e89f45f624fe201a02f8c62120ecf7adb6347ddbe5706d9884, expected 8d9c9ddc58373e1ffdd221590a75babc1fb7bf3f497bfca587dbac84981df766"
+                             },
+                             {
+                                 "name":  "phase_mismatched_node_prefetch",
+                                 "expected":  "rejected",
+                                 "observed":  "rejected",
+                                 "pass":  true,
+                                 "detail":  "node_prefetch Y differs from mapped node 0 address"
+                             },
+                             {
+                                 "name":  "missing_post_return_not_accepted_as_complete",
+                                 "expected":  "no complete call",
+                                 "observed":  "no complete call",
+                                 "pass":  true,
+                                 "detail":  ""
+                             }
+                         ],
+    "commands":  [
+                     {
+                         "id":  "il-9a64-source-map-generation",
+                         "description":  "Source-map generation reconstructed from the preserved run; the generator was not re-executed in Analyze mode.",
+                         "commandLine":  "run --project C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-finish-15\\run-02\\source-map-gen\\IlNineA64MapGen.csproj --configuration Release -- C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\general-14\\roms\\original.p1 C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-finish-15\\run-02\\source-map.json C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-finish-15\\run-02\\build-report.json",
+                         "exitCode":  0,
+                         "timedOut":  false,
+                         "wallSeconds":  null,
+                         "reconstructed":  true
+                     },
+                     {
+                         "id":  "il-9a64-natural-capture",
+                         "description":  "One fresh-boot original-image MAME natural observation at native 9A64 boundaries",
+                         "commandLine":  "m4addr -noreadconfig -rompath C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-finish-15\\run-02\\roms;E:\\Arcade\\MAME0266\\roms -cfg_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-finish-15\\run-02\\cfg -nvram_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-finish-15\\run-02\\nvram -input_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-finish-15\\run-02\\inp -snapshot_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-finish-15\\run-02\\snap -comment_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-finish-15\\run-02\\comments -state_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-finish-15\\run-02\\state -diff_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-finish-15\\run-02\\diff -debug -debugger windows -debuglog -video none -sound none -window -skip_gameinfo -nothrottle -seconds_to_run 120 -autoboot_delay 0 -autoboot_script C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-9a64-finish-15\\run-02\\observer.lua",
+                         "exitCode":  0,
+                         "timedOut":  false,
+                         "wallSeconds":  10.285
+                     }
+                 ],
+    "limitations":  [
+                        "This report does not establish storage/memory OR or clear effects for the 7665/7671 handlers; only the observed branch and return boundaries are claimed.",
+                        "Only the fixed 9A64 identity definition and the two checked byte-branch handlers are in scope.",
+                        "Natural branch coverage is limited to the paths actually reached by the tracked fixed replay; unobserved nodes are reported as gaps, not successes.",
+                        "No 9A64 edit, operand replacement, extension range, linker, new word, native executor, hardware run or physical compatibility claim is included.",
+                        "The EE16/EE22 paid-window comparison remains unchanged and was not retried."
+                    ],
+    "validation":  {
+                       "capture":  "tools/Capture-IlNineA64Natural.ps1",
+                       "focusedTest":  "tests/worker/Test-IlNineA64Natural.ps1",
+                       "strictJsonHelper":  "tests/worker/Test-IlEventJson.ps1",
+                       "sourceDocument":  "docs/recovery/IL-9A64-NATURAL.md"
+                   }
+}

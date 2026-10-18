@@ -1,0 +1,549 @@
+{
+    "schema":  "analysis42-stack-attribution-close/1",
+    "classification":  "fresh capture41 pre-commit write trace for one FC4D..5CD0 gap; capture36 remains a snapshot net delta and is not retroactively instruction-traced",
+    "source":  {
+                   "fixture":  "evidence/mpu4/collection/stack-writer-0785-capture41.json",
+                   "fixture_sha256":  "D23207FA7EBD2221124EBDACE8DAAA83F6B181566F301B236CA431518C1A5680",
+                   "raw_run":  "artifacts/deepseek/capture-41/natural-stack-writer",
+                   "watchpoint":  "0x0780 length 16 write; MAME 0.281 pre-commit tap (old=b@wpaddr, new=wpdata)",
+                   "rom_sha1":  "402D1518BB78FDC489B06C2AABC771E5CE151847",
+                   "rom_sha256":  "EBF580381AA6EB6FFB26E2ACD40F30AA34B0311F71C6564607C6F48A53BCA15C"
+               },
+    "prior":  {
+                  "analysis40_ledger":  "docs/recovery/ANALYSIS40-FOREGROUND-DELTA-LEDGER.json",
+                  "analysis40_ledger_sha256":  "C53E8DC98DE9A6F432B00011E40EBFC15CFA55FDF34796BEF5A68A83BE11CA17",
+                  "capture36_fixture":  "evidence/mpu4/collection/matched-service-window-capture36.json",
+                  "capture36_fixture_sha256":  "AC60AC5EDE6A962B1FB90DFB8389EF85C6AFE304A25DD24CC7C753A2F59FDB82"
+              },
+    "event_counts":  {
+                         "total":  44,
+                         "same_value_writes":  8,
+                         "watched_bytes":  16
+                     },
+    "write_sequence_0785_078a":  [
+                                     {
+                                         "event":  6,
+                                         "cycle":  "0000000003C59755",
+                                         "tap_pc":  "298D",
+                                         "s":  "078A",
+                                         "address":  "078A",
+                                         "old":  "00",
+                                         "new":  "8D",
+                                         "instruction_start":  "298A",
+                                         "opcode":  "BD 19 C2",
+                                         "mnemonic":  "JSR $19C2",
+                                         "source":  "28FE irq_update_lamp_and_digit_multiplex",
+                                         "semantics":  "return 298D low byte"
+                                     },
+                                     {
+                                         "event":  7,
+                                         "cycle":  "0000000003C59755",
+                                         "tap_pc":  "298D",
+                                         "s":  "0789",
+                                         "address":  "0789",
+                                         "old":  "0B",
+                                         "new":  "29",
+                                         "instruction_start":  "298A",
+                                         "opcode":  "BD 19 C2",
+                                         "mnemonic":  "JSR $19C2",
+                                         "source":  "28FE irq_update_lamp_and_digit_multiplex",
+                                         "semantics":  "return 298D high byte"
+                                     },
+                                     {
+                                         "event":  8,
+                                         "cycle":  "0000000003C5975D",
+                                         "tap_pc":  "19C4",
+                                         "s":  "0788",
+                                         "address":  "0788",
+                                         "old":  "00",
+                                         "new":  "03",
+                                         "instruction_start":  "19C2",
+                                         "opcode":  "34 02",
+                                         "mnemonic":  "PSHS A",
+                                         "source":  "19C2 hyp_update_lamp_pulse_width_sweep",
+                                         "semantics":  "push A=03"
+                                     },
+                                     {
+                                         "event":  9,
+                                         "cycle":  "0000000003C597B3",
+                                         "tap_pc":  "19F8",
+                                         "s":  "0787",
+                                         "address":  "0787",
+                                         "old":  "C1",
+                                         "new":  "F8",
+                                         "instruction_start":  "19F5",
+                                         "opcode":  "BD 70 EF",
+                                         "mnemonic":  "JSR $70EF",
+                                         "source":  "19C2 path -\u003e 70EF",
+                                         "semantics":  "return 19F8 low byte"
+                                     },
+                                     {
+                                         "event":  10,
+                                         "cycle":  "0000000003C597B3",
+                                         "tap_pc":  "19F8",
+                                         "s":  "0786",
+                                         "address":  "0786",
+                                         "old":  "19",
+                                         "new":  "19",
+                                         "instruction_start":  "19F5",
+                                         "opcode":  "BD 70 EF",
+                                         "mnemonic":  "JSR $70EF",
+                                         "source":  "19C2 path -\u003e 70EF",
+                                         "semantics":  "return 19F8 high byte, same value"
+                                     },
+                                     {
+                                         "event":  11,
+                                         "cycle":  "0000000003C597BB",
+                                         "tap_pc":  "70F1",
+                                         "s":  "0785",
+                                         "address":  "0785",
+                                         "old":  "00",
+                                         "new":  "3F",
+                                         "instruction_start":  "70EF",
+                                         "opcode":  "34 05",
+                                         "mnemonic":  "PSHS B,CC",
+                                         "source":  "70EF ptm_arm_timer3_callback",
+                                         "semantics":  "push B=3F"
+                                     },
+                                     {
+                                         "event":  13,
+                                         "cycle":  "0000000003C59861",
+                                         "tap_pc":  "29A9",
+                                         "s":  "078A",
+                                         "address":  "078A",
+                                         "old":  "8D",
+                                         "new":  "00",
+                                         "instruction_start":  "29A7",
+                                         "opcode":  "34 04",
+                                         "mnemonic":  "PSHS B",
+                                         "source":  "28FE path",
+                                         "semantics":  "push B=00"
+                                     },
+                                     {
+                                         "event":  16,
+                                         "cycle":  "0000000003C598E8",
+                                         "tap_pc":  "280C",
+                                         "s":  "078A",
+                                         "address":  "078A",
+                                         "old":  "00",
+                                         "new":  "0C",
+                                         "instruction_start":  "2809",
+                                         "opcode":  "BD 43 8C",
+                                         "mnemonic":  "JSR $438C",
+                                         "source":  "27D2 irq_update_inputs_reels_and_counters",
+                                         "semantics":  "return 280C low byte"
+                                     },
+                                     {
+                                         "event":  17,
+                                         "cycle":  "0000000003C598E8",
+                                         "tap_pc":  "280C",
+                                         "s":  "0789",
+                                         "address":  "0789",
+                                         "old":  "29",
+                                         "new":  "28",
+                                         "instruction_start":  "2809",
+                                         "opcode":  "BD 43 8C",
+                                         "mnemonic":  "JSR $438C",
+                                         "source":  "27D2 irq_update_inputs_reels_and_counters",
+                                         "semantics":  "return 280C high byte"
+                                     },
+                                     {
+                                         "event":  18,
+                                         "cycle":  "0000000003C59903",
+                                         "tap_pc":  "439E",
+                                         "s":  "0788",
+                                         "address":  "0788",
+                                         "old":  "03",
+                                         "new":  "9E",
+                                         "instruction_start":  "439A",
+                                         "opcode":  "AD 9F 00 C6",
+                                         "mnemonic":  "JSR [$00C6]",
+                                         "source":  "438C update_coin_inputs_and_callback; pointer 00C6=19B8",
+                                         "semantics":  "return 439E low byte"
+                                     },
+                                     {
+                                         "event":  19,
+                                         "cycle":  "0000000003C59903",
+                                         "tap_pc":  "439E",
+                                         "s":  "0787",
+                                         "address":  "0787",
+                                         "old":  "F8",
+                                         "new":  "43",
+                                         "instruction_start":  "439A",
+                                         "opcode":  "AD 9F 00 C6",
+                                         "mnemonic":  "JSR [$00C6]",
+                                         "source":  "438C update_coin_inputs_and_callback; pointer 00C6=19B8",
+                                         "semantics":  "return 439E high byte"
+                                     },
+                                     {
+                                         "event":  20,
+                                         "cycle":  "0000000003C5990F",
+                                         "tap_pc":  "19BB",
+                                         "s":  "0786",
+                                         "address":  "0786",
+                                         "old":  "19",
+                                         "new":  "BB",
+                                         "instruction_start":  "19B8",
+                                         "opcode":  "BD 1A 87",
+                                         "mnemonic":  "JSR $1A87",
+                                         "source":  "19B8 irq_accumulate_inputs_and_check_modes",
+                                         "semantics":  "return 19BB low byte"
+                                     },
+                                     {
+                                         "event":  21,
+                                         "cycle":  "0000000003C5990F",
+                                         "tap_pc":  "19BB",
+                                         "s":  "0785",
+                                         "address":  "0785",
+                                         "old":  "3F",
+                                         "new":  "19",
+                                         "instruction_start":  "19B8",
+                                         "opcode":  "BD 1A 87",
+                                         "mnemonic":  "JSR $1A87",
+                                         "source":  "19B8 irq_accumulate_inputs_and_check_modes",
+                                         "semantics":  "return 19BB high byte; introduces final 19"
+                                     },
+                                     {
+                                         "event":  27,
+                                         "cycle":  "0000000003C59A51",
+                                         "tap_pc":  "19BE",
+                                         "s":  "0786",
+                                         "address":  "0786",
+                                         "old":  "BB",
+                                         "new":  "BE",
+                                         "instruction_start":  "19BB",
+                                         "opcode":  "BD 1A 05",
+                                         "mnemonic":  "JSR $1A05",
+                                         "source":  "19B8 irq_accumulate_inputs_and_check_modes",
+                                         "semantics":  "return 19BE low byte"
+                                     },
+                                     {
+                                         "event":  28,
+                                         "cycle":  "0000000003C59A51",
+                                         "tap_pc":  "19BE",
+                                         "s":  "0785",
+                                         "address":  "0785",
+                                         "old":  "19",
+                                         "new":  "19",
+                                         "instruction_start":  "19BB",
+                                         "opcode":  "BD 1A 05",
+                                         "mnemonic":  "JSR $1A05",
+                                         "source":  "19B8 irq_accumulate_inputs_and_check_modes",
+                                         "semantics":  "return 19BE high byte, same value"
+                                     },
+                                     {
+                                         "event":  29,
+                                         "cycle":  "0000000003C59A8F",
+                                         "tap_pc":  "19C1",
+                                         "s":  "0786",
+                                         "address":  "0786",
+                                         "old":  "BE",
+                                         "new":  "C1",
+                                         "instruction_start":  "19BE",
+                                         "opcode":  "BD 1A 58",
+                                         "mnemonic":  "JSR $1A58",
+                                         "source":  "19B8 irq_accumulate_inputs_and_check_modes",
+                                         "semantics":  "return 19C1 low byte; final C1"
+                                     },
+                                     {
+                                         "event":  30,
+                                         "cycle":  "0000000003C59A8F",
+                                         "tap_pc":  "19C1",
+                                         "s":  "0785",
+                                         "address":  "0785",
+                                         "old":  "19",
+                                         "new":  "19",
+                                         "instruction_start":  "19BE",
+                                         "opcode":  "BD 1A 58",
+                                         "mnemonic":  "JSR $1A58",
+                                         "source":  "19B8 irq_accumulate_inputs_and_check_modes",
+                                         "semantics":  "return 19C1 high byte, same value; last 0785 writer"
+                                     },
+                                     {
+                                         "event":  31,
+                                         "cycle":  "0000000003C59AD4",
+                                         "tap_pc":  "280F",
+                                         "s":  "078A",
+                                         "address":  "078A",
+                                         "old":  "0C",
+                                         "new":  "0F",
+                                         "instruction_start":  "280C",
+                                         "opcode":  "BD 64 03",
+                                         "mnemonic":  "JSR $6403",
+                                         "source":  "27D2 path; callee 6403 update_four_reel_motion",
+                                         "semantics":  "return 280F low byte"
+                                     },
+                                     {
+                                         "event":  32,
+                                         "cycle":  "0000000003C59AD4",
+                                         "tap_pc":  "280F",
+                                         "s":  "0789",
+                                         "address":  "0789",
+                                         "old":  "28",
+                                         "new":  "28",
+                                         "instruction_start":  "280C",
+                                         "opcode":  "BD 64 03",
+                                         "mnemonic":  "JSR $6403",
+                                         "source":  "27D2 path; callee 6403 update_four_reel_motion",
+                                         "semantics":  "return 280F high byte, same value"
+                                     },
+                                     {
+                                         "event":  35,
+                                         "cycle":  "0000000003C59BA6",
+                                         "tap_pc":  "6B6A",
+                                         "s":  "078A",
+                                         "address":  "078A",
+                                         "old":  "0F",
+                                         "new":  "6A",
+                                         "instruction_start":  "6B67",
+                                         "opcode":  "BD 53 30",
+                                         "mnemonic":  "JSR $5330",
+                                         "source":  "6B4D update_serial_link_and_queue; callee 5330 serial_update_transfer_state",
+                                         "semantics":  "return 6B6A low byte"
+                                     },
+                                     {
+                                         "event":  36,
+                                         "cycle":  "0000000003C59BA6",
+                                         "tap_pc":  "6B6A",
+                                         "s":  "0789",
+                                         "address":  "0789",
+                                         "old":  "28",
+                                         "new":  "6B",
+                                         "instruction_start":  "6B67",
+                                         "opcode":  "BD 53 30",
+                                         "mnemonic":  "JSR $5330",
+                                         "source":  "6B4D update_serial_link_and_queue; callee 5330 serial_update_transfer_state",
+                                         "semantics":  "return 6B6A high byte"
+                                     },
+                                     {
+                                         "event":  37,
+                                         "cycle":  "0000000003C59BF0",
+                                         "tap_pc":  "51B3",
+                                         "s":  "078A",
+                                         "address":  "078A",
+                                         "old":  "6A",
+                                         "new":  "72",
+                                         "instruction_start":  "51B1",
+                                         "opcode":  "34 16",
+                                         "mnemonic":  "PSHS A,B,X",
+                                         "source":  "51B1 hyp_serial_receive_frame_parse",
+                                         "semantics":  "X low=72; final 078A"
+                                     },
+                                     {
+                                         "event":  38,
+                                         "cycle":  "0000000003C59BF0",
+                                         "tap_pc":  "51B3",
+                                         "s":  "0789",
+                                         "address":  "0789",
+                                         "old":  "6B",
+                                         "new":  "06",
+                                         "instruction_start":  "51B1",
+                                         "opcode":  "34 16",
+                                         "mnemonic":  "PSHS A,B,X",
+                                         "source":  "51B1 hyp_serial_receive_frame_parse",
+                                         "semantics":  "X high=06; final 0789"
+                                     },
+                                     {
+                                         "event":  39,
+                                         "cycle":  "0000000003C59BF0",
+                                         "tap_pc":  "51B3",
+                                         "s":  "0788",
+                                         "address":  "0788",
+                                         "old":  "9E",
+                                         "new":  "0B",
+                                         "instruction_start":  "51B1",
+                                         "opcode":  "34 16",
+                                         "mnemonic":  "PSHS A,B,X",
+                                         "source":  "51B1 hyp_serial_receive_frame_parse",
+                                         "semantics":  "B=0B; final 0788"
+                                     },
+                                     {
+                                         "event":  40,
+                                         "cycle":  "0000000003C59BF0",
+                                         "tap_pc":  "51B3",
+                                         "s":  "0787",
+                                         "address":  "0787",
+                                         "old":  "43",
+                                         "new":  "00",
+                                         "instruction_start":  "51B1",
+                                         "opcode":  "34 16",
+                                         "mnemonic":  "PSHS A,B,X",
+                                         "source":  "51B1 hyp_serial_receive_frame_parse",
+                                         "semantics":  "A=00; final 0787"
+                                     }
+                                 ],
+    "final_writers_0780_078f":  [
+                                    {
+                                        "address":  "0780",
+                                        "value":  "06",
+                                        "event":  26,
+                                        "cycle":  "0000000003C59933",
+                                        "writer":  "hardware IRQ frame",
+                                        "detail":  "exception-frame push inferred; UH=06, interrupted PC=1A98"
+                                    },
+                                    {
+                                        "address":  "0781",
+                                        "value":  "72",
+                                        "event":  25,
+                                        "cycle":  "0000000003C59933",
+                                        "writer":  "hardware IRQ frame",
+                                        "detail":  "exception-frame push inferred; UL=72"
+                                    },
+                                    {
+                                        "address":  "0782",
+                                        "value":  "1A",
+                                        "event":  24,
+                                        "cycle":  "0000000003C59933",
+                                        "writer":  "hardware IRQ frame",
+                                        "detail":  "exception-frame push inferred; PCH=1A"
+                                    },
+                                    {
+                                        "address":  "0783",
+                                        "value":  "98",
+                                        "event":  23,
+                                        "cycle":  "0000000003C59933",
+                                        "writer":  "hardware IRQ frame",
+                                        "detail":  "exception-frame push inferred; PCL=98"
+                                    },
+                                    {
+                                        "address":  "0784",
+                                        "value":  "00",
+                                        "event":  22,
+                                        "cycle":  "0000000003C59925",
+                                        "writer":  "1A8E 34 02 PSHS A",
+                                        "detail":  "A=00"
+                                    },
+                                    {
+                                        "address":  "0785",
+                                        "value":  "19",
+                                        "event":  30,
+                                        "cycle":  "0000000003C59A8F",
+                                        "writer":  "19BE BD 1A 58 JSR $1A58",
+                                        "detail":  "return 19C1 high; last same-value; final value introduced at event 21 (19B8 JSR 1A87, return 19BB high)"
+                                    },
+                                    {
+                                        "address":  "0786",
+                                        "value":  "C1",
+                                        "event":  29,
+                                        "cycle":  "0000000003C59A8F",
+                                        "writer":  "19BE BD 1A 58 JSR $1A58",
+                                        "detail":  "return 19C1 low"
+                                    },
+                                    {
+                                        "address":  "0787",
+                                        "value":  "00",
+                                        "event":  40,
+                                        "cycle":  "0000000003C59BF0",
+                                        "writer":  "51B1 34 16 PSHS A,B,X",
+                                        "detail":  "A=00"
+                                    },
+                                    {
+                                        "address":  "0788",
+                                        "value":  "0B",
+                                        "event":  39,
+                                        "cycle":  "0000000003C59BF0",
+                                        "writer":  "51B1 34 16 PSHS A,B,X",
+                                        "detail":  "B=0B"
+                                    },
+                                    {
+                                        "address":  "0789",
+                                        "value":  "06",
+                                        "event":  38,
+                                        "cycle":  "0000000003C59BF0",
+                                        "writer":  "51B1 34 16 PSHS A,B,X",
+                                        "detail":  "X high=06"
+                                    },
+                                    {
+                                        "address":  "078A",
+                                        "value":  "72",
+                                        "event":  37,
+                                        "cycle":  "0000000003C59BF0",
+                                        "writer":  "51B1 34 16 PSHS A,B,X",
+                                        "detail":  "X low=72"
+                                    },
+                                    {
+                                        "address":  "078B",
+                                        "value":  "FE",
+                                        "event":  44,
+                                        "cycle":  "0000000003C59CEE",
+                                        "writer":  "FEC9 BD 5C D0 JSR $5CD0",
+                                        "detail":  "return FECC high; last same-value; first FE at event 5 (FEBA JSR $28FE)"
+                                    },
+                                    {
+                                        "address":  "078C",
+                                        "value":  "CC",
+                                        "event":  43,
+                                        "cycle":  "0000000003C59CEE",
+                                        "writer":  "FEC9 BD 5C D0 JSR $5CD0",
+                                        "detail":  "return FECC low"
+                                    },
+                                    {
+                                        "address":  "078D",
+                                        "value":  "C0",
+                                        "event":  3,
+                                        "cycle":  "0000000003C5965D",
+                                        "writer":  "hardware IRQ frame",
+                                        "detail":  "outer IRQ; CC=C0"
+                                    },
+                                    {
+                                        "address":  "078E",
+                                        "value":  "47",
+                                        "event":  2,
+                                        "cycle":  "0000000003C5965D",
+                                        "writer":  "hardware IRQ frame",
+                                        "detail":  "outer IRQ; A=47"
+                                    },
+                                    {
+                                        "address":  "078F",
+                                        "value":  "27",
+                                        "event":  1,
+                                        "cycle":  "0000000003C5965D",
+                                        "writer":  "hardware IRQ frame",
+                                        "detail":  "outer IRQ; B=27"
+                                    }
+                                ],
+    "window_result_0785_078a":  {
+                                    "final_hex":  "19 C1 00 0B 06 72",
+                                    "decomposition":  [
+                                                          "0785/0786 = 19C1, last written by 19BE JSR $1A58; final high 19 first introduced by 19B8 JSR $1A87 (return 19BB)",
+                                                          "0787/0788 = 00/0B = A/B pushed by 51B1 PSHS A,B,X",
+                                                          "0789/078A = 06/72 = X=0672 pushed by the same 51B1 PSHS A,B,X"
+                                                      ],
+                                    "not_one_contiguous_return":  true
+                                },
+    "reconciliation_analysis40":  {
+                                      "analysis40_first_unknown":  "0785 (queue-\u003esv00), 00-\u003e19",
+                                      "analysis40_expected_chain":  "19BB/439E/4395/280C/FEC3",
+                                      "fresh_result":  "0785=19 and 0786=C1 are the 19C1 return from 19BE JSR $1A58; 0787..078A are 51B1 PSHS A,B,X. The expected chain describes intermediate writes, not the final window.",
+                                      "capture36_relation":  "capture36 final 0785..078A is also 19 C1 00 0B 06 72, but capture36 has no instruction/stack-write trace. This is shared-ROM static consistency plus fresh-trace writer proof, not a capture36 traceback."
+                                  },
+    "next_boundary":  {
+                          "queue_to_sv00_first_ambiguous":  {
+                                                                "address":  "0799",
+                                                                "bytes":  "0799..079D = 02 71 5F 91 02; 079F = 0A",
+                                                                "reason":  "above the outer FE70 frame; foreground caller-stack residue; not covered by the 0x0780..0x078F watchpoint",
+                                                                "capture41_cross_check":  "capture41 queue.bin -\u003e stop5cd0.bin changes 0799..079D to the same 02 71 5F 91 02 and 079F 05-\u003e0A"
+                                                            },
+                          "interservice_gaps":  {
+                                                    "fecc00_to_sv01":  "no changed byte beyond 078F; 0774..078A and 078E/F are consistent with 4916/FEF2/nested FE70 frame/19C1/51B1/FECC/outer frame, but this gap is not itself instruction-traced",
+                                                    "fecc24_to_cancel_first_ambiguous":  "079F (0A-\u003e10)",
+                                                    "cancel_to_5A10_first_ambiguous":  "0790 (run 0790..079D)",
+                                                    "sound_owner_unresolved":  false
+                                                },
+                          "missing_evidence":  "write trace for 0790..079F (especially 0799) or a foreground instruction trace; return addresses alone do not recover the caller semantics"
+                      },
+    "next_task":  {
+                      "kind":  "narrower watchpoint",
+                      "description":  "one fresh natural FC4D..5CD0 gap with a write watchpoint over 0x0790 length 16, reusing the existing campaign and MAME 0.281 pre-commit semantics",
+                      "not":  "duplicate capture41 (new address range only); not 6B4D/58BB helper recovery for this boundary; not foreground integration",
+                      "acceptance":  "exactly one gap; at least one write to 0799; log old/new/PC/registers/opcode context; replay old/new reproduces final 0790..079F bytes; identify final 0799 writer (and 079F if written) with instruction/register semantics",
+                      "stop":  "no 0799 write; event cap reached; ROM/MAME/source pins differ; any writer requires a non-unique indirect target"
+                  },
+    "limits":  [
+                   "Only one fresh gap is trace-proven; capture36 remains a net-delta ledger.",
+                   "Exception-frame pushes are identified by contiguous PC/U or B/A/CC write patterns and interrupted-PC values, not by a fully recovered IRQ semantic execution; the 1A98 nested frame is not corroborated by the later nested FE70 PC word 9E28 and is explicitly an inference.",
+                   "The caller/return path into 51B1 is not fully traced by the 0780..078F writes; 6B4D/58BB causality remains open.",
+                   "No sound-owner byte is unresolved; the next boundary is caller/IRQ stack ownership.",
+                   "No adapter, runtime, Live, fixture or capture change was made."
+               ]
+}

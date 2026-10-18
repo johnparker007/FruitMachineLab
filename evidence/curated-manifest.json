@@ -6463,5 +6463,15 @@
     "path": "docs/recovery/LIVE-NATIVE-SOUND-OWNERSHIP-PLAN.md",
     "bytes": 8926,
     "sha256": "69B2E9C87F9194CFC525AC16E4085FF9F56FF10ED3A96FECB29D70B14F1DE7BD"
+  },
+  {
+    "path": "docs/recovery/FRESH-TONE-OCCURRENCE-PASS.md",
+    "bytes": 5455,
+    "sha256": "BA1278A90E8EB0574C2DFC13FA0CCF0583E79EECFBE1E931A3B86CB468DF565C"
+  },
+  {
+    "path": "evidence/mpu4/collection/fresh-tone-occurrence.json",
+    "bytes": 80076,
+    "sha256": "1D71F7088E2528C9D78B5174AD9EFAE99739754B56855086DA477A54C986B313"
   }
 ]

@@ -13,6 +13,7 @@ public sealed class AddersNativeSound(Machine machine,Action<byte,byte>? ymWrite
     public bool Servicing=>running is not null;
     public ulong Cycle {get;private set;}
     public ushort? Address=>running?.Address;
+    public ushort? LastAddress {get;private set;}
     public ulong NextEventCycle=>running?.NextEventCycle ?? ulong.MaxValue;
     public bool Paused {get;private set;}
     public string? Fault {get;private set;}
@@ -43,14 +44,14 @@ public sealed class AddersNativeSound(Machine machine,Action<byte,byte>? ymWrite
             0x5C7A=>new AddersSoundCancelPlan(machine,x,stack,y,u,a,b,ymWrite).Instructions(),
             0x5B77=>new AddersSoundResetPlan(machine,stack,x,y,a,b,ymWrite).Instructions(),
             _=>throw new NotSupportedException("Unrecovered native sound entry")};
-        Cycle=cycle;running=new(instructions,cycle,returnAddress,()=>irqMasked);
+        Cycle=cycle;LastAddress=null;running=new(instructions,cycle,returnAddress,()=>irqMasked);
         running.ObserveInstruction=i=>ObserveInstruction?.Invoke(i);
     }
     public void AdvanceTo(ulong cycle)
     {
         ObjectDisposedException.ThrowIf(disposed,this);if(Paused)return;if(Fault is not null)throw new InvalidOperationException(Fault);
         var execution=running ?? throw new InvalidOperationException("No native sound service is active");
-        try{execution.AdvanceTo(cycle);Cycle=execution.Cycle;if(execution.Completed){CompletedTasks+=plan?.CompletedTasks ?? 0;CompletedCalls++;execution.Dispose();running=null;plan=null;}}
+        try{execution.AdvanceTo(cycle);Cycle=execution.Cycle;if(execution.Completed){LastAddress=execution.Address;CompletedTasks+=plan?.CompletedTasks ?? 0;CompletedCalls++;execution.Dispose();running=null;plan=null;}}
         catch(Exception e){Cycle=execution.Cycle;Fault=e.Message;Paused=true;execution.Dispose();throw;}
     }
     public void Pause()=>Paused=true;

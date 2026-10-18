@@ -1103,8 +1103,9 @@ Check("Foreground5A0A finish negatives fail at preflight ownership and snapshot 
 Check("Foreground5A0A finish exposes LDX/CLR flags, unknown native CC, and exact16-byte stack limit", () => Equal(1,AddersToneFinishVerification.VerifyFlagsAndStack(evidence)));
 Check("Foreground5A14 setup executes the captured wrapper and queues59EB through one native owner", () => Equal(1,AddersToneSetupVerification.Verify(evidence)));
 Check("Foreground5A14 setup negatives reject before mutation or at the captured queue comparison", () => {
-    foreach(var kind in new[]{"stack","gate","ownership","owner","servicing","paused","pool","poolPointer","missingROM","snapshot"})
+    foreach(var kind in new[]{"stack","gate","ownership","owner","servicing","paused","pool","poolPointer","vmTemplate","vmToken","vmHeader","vmNative","bridgeMode","missingROM","snapshot"})
         Equal(1,AddersToneSetupVerification.Rejects(evidence,kind));
+    Equal(false,typeof(AddersToneSetupExecution).GetMethod(nameof(AddersToneSetupExecution.ExecuteFromVmEntry))!.GetParameters().Any(p=>p.ParameterType==typeof(Action<byte>)));
 });
 Check("Foreground5A14 setup cycle split is source67/262/11, BPL explicit, and stack22 exact", () => {
     Equal(1,AddersToneSetupVerification.VerifyCycles(evidence));

@@ -13,6 +13,8 @@ public static class AddersToneSetupTiming
     private static ulong Branch(string bytes,bool taken)=>(ulong)M6809InstructionTiming.Decode(Convert.FromHexString(bytes),taken).Cycles;
 
     // 80A4 points at776F: LDA F1; BEQ777A; optional mode write; PSHS Y; JSR5A14.
+    // The F1!=0 branch is a static cost deduction only. Execution rejects it
+    // unconditionally; this helper does not certify the080C hardware write.
     public static ulong BridgeCycles(Machine machine)
     {
         ulong cycles=Cost("AEA1")+Cost("6E91")+Cost("96F1");

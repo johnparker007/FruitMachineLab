@@ -12,7 +12,9 @@ public static class AddersToneSetupVerification
 {
     private const int RamSize=0x800;
     private const string ExpectedFc4dSha256="30E97EE9A1A9CC7D50868BDD595D69E52A0A6BF9A0C65E5909F367F8BB3AF6BE";
+    private const string BridgeRomSha1="402D1518BB78FDC489B06C2AABC771E5CE151847";
     private static string FixturePath(string evidence)=>Path.Combine(evidence,"collection","fresh-tone-occurrence.json");
+    private static string BridgeFixturePath(string evidence)=>Path.Combine(evidence,"collection","tone-setup-bridge-data.json");
     private static void Require(bool condition,string message){if(!condition)throw new InvalidDataException(message);}
 
     private sealed record Frame(string Name,ushort PC,ulong Cycle,ushort S,ushort U,ushort X,ushort Y,byte A,byte B,byte[]? Ram);
@@ -83,6 +85,13 @@ public static class AddersToneSetupVerification
         RequireBytes(machine,0x59E9,"3596");
     }
 
+    private static void RequireBridgeRom(Machine machine)
+    {
+        RequireBytes(machine,0x776F,"96F127078A0197F1B7080C3420AD94352096F1270784FE97F1B7080C0EFC");
+        RequireBytes(machine,0x80A4,"776F5A14");
+        RequireBytes(machine,0xFC4D,"80A4F382");
+    }
+
     private static void Compare(ReadOnlySpan<byte> actual,ReadOnlySpan<byte> expected,string stage)
     {
         Require(actual.Length>=RamSize && expected.Length>=RamSize,$"{stage} size differs");
@@ -126,13 +135,14 @@ public static class AddersToneSetupVerification
                 throw new InvalidDataException($"Foreground delta {address:X3} captured {pair.From:X2}->{pair.To:X2} was not generated");
     }
 
-    private static int VerifySemantic(JsonElement root,string? negative)
+    private static int VerifySemantic(JsonElement root,JsonElement bridgeRoot,string? negative)
     {
         Require(root.GetProperty("schema").GetString()=="fresh-tone-occurrence/1","Fresh tone schema differs");
         Require(root.GetProperty("classification").GetString()!.StartsWith("controlled replay natural",StringComparison.Ordinal),"Fresh tone classification differs");
         var source=root.GetProperty("source");
         Require(source.GetProperty("rom_sha1").GetString()=="402D1518BB78FDC489B06C2AABC771E5CE151847","Fresh tone ROM SHA1 differs");
         Require(source.GetProperty("exit").GetInt32()==0,"Fresh tone capture exit differs");
+        Require(bridgeRoot.GetProperty("rom_sha1").GetString()==BridgeRomSha1,"Bridge ROM SHA1 differs");
 
         var primary=root.GetProperty("primary");
         var frames=primary.GetProperty("frames").EnumerateArray().ToArray();
@@ -143,38 +153,44 @@ public static class AddersToneSetupVerification
         var marker05=Find(markers,"foreground-5a05");
         Require(fc4d.Ram is not null && queue.Ram is not null,"Fresh setup frames are not 2 KB");
         Require(Convert.ToHexString(SHA256.HashData(fc4d.Ram!))==ExpectedFc4dSha256,"Fresh FC4D snapshot differs");
+        Require(fc4d.PC==AddersToneSetupExecution.VmEntry,"FC4D VM entry PC differs");
+        Require(fc4d.Y==0xFC4D,"FC4D VM entry Y differs");
         Require(marker14.PC==AddersToneSetupExecution.ForegroundEntry,"Foreground5A14 marker PC differs");
         Require(marker05.PC==AddersToneSetupExecution.Foreground5A05,"Foreground5A05 marker PC differs");
         Require(marker05.Cycle-marker14.Cycle==340,"Captured5A14-5A05 span differs");
 
         var regions=Regions(root);
         if(negative=="missingROM")regions=regions.Where(region=>region.GetProperty("address").GetInt32()!=0x5963).ToArray();
+        var bridgeRegions=bridgeRoot.GetProperty("regions").EnumerateArray().ToArray();
         var machine=new Machine();
-        try{LoadRegions(machine,regions);RequireRom(machine);}
+        try{LoadRegions(machine,regions);LoadRegions(machine,bridgeRegions);RequireRom(machine);RequireBridgeRom(machine);}
         catch(InvalidDataException error)when(negative=="missingROM"){throw new InvalidDataException("missingROM rejected",error);}
 
         fc4d.Ram!.CopyTo(machine.Memory,0);
-        // The bridge already wrote the caller Y=FC4F at5A14; FC4D still has4D.
-        // This is the single captured5A14 pre-entry stack word, not a post delta.
-        machine.WriteWord(0x7A8,marker14.Y);
+        RequireBytes(machine,0x00FC,"AEA16E91");
         machine.Memory[0x719B]=0;
 
-        ushort s=marker14.S;
-        if(negative=="stack")s=AddersToneSetupExecution.MinimumStackPointer-1;
+        ushort s=fc4d.S;
+        if(negative=="stack")s=AddersToneSetupExecution.MinimumVmEntryStackPointer-1;
         if(negative=="gate")machine.Memory[0x719B]|=0x80;
         if(negative=="ownership")machine.WriteWord(0x47,0x1A0);
         if(negative=="pool")machine.WriteWord(0x49,0);
         if(negative=="poolPointer")machine.WriteWord(0x49,0x1234);
+        if(negative=="vmTemplate")machine.Memory[AddersToneSetupExecution.VmEntry]=0;
+        if(negative=="vmToken")machine.WriteWord(fc4d.Y,0x80A6);
+        if(negative=="vmHeader")machine.WriteWord(AddersToneSetupExecution.VmToken,0x777A);
+        if(negative=="vmNative")machine.WriteWord(Cell.Add(AddersToneSetupExecution.VmToken,2),0x5A05);
+        if(negative=="bridgeMode")machine.Memory[0xF1]=0x80;
         byte[] before=machine.Memory.ToArray();
 
         using var sound=new AddersNativeSound(negative=="owner" ? new Machine() : machine);
-        if(negative=="servicing")sound.BeginService(0,marker14.S,marker14.U,marker14.X,marker14.Y,false,0xFECC);
+        if(negative=="servicing")sound.BeginService(0,fc4d.S,fc4d.U,fc4d.X,fc4d.Y,false,0xFECC);
         if(negative=="paused")sound.Pause();
-        AddersToneSetupResult result;
+        AddersToneSetupBridgeResult result;
         try{
-            result=AddersToneSetupExecution.Execute(sound,machine,marker14.Cycle,s,marker14.U,marker14.X,marker14.Y,marker14.A,marker14.B);
+            result=AddersToneSetupExecution.ExecuteFromVmEntry(sound,machine,fc4d.Cycle,s,fc4d.U,fc4d.X,fc4d.Y,fc4d.A,fc4d.B);
         }
-        catch(Exception error)when(negative is "stack" or "gate" or "ownership" or "owner" or "servicing" or "paused" or "pool" or "poolPointer"){
+        catch(Exception error)when(negative is "stack" or "gate" or "ownership" or "owner" or "servicing" or "paused" or "pool" or "poolPointer" or "vmTemplate" or "vmToken" or "vmHeader" or "vmNative" or "bridgeMode"){
             Require(before.SequenceEqual(machine.Memory),$"{negative} mutated memory before rejection");
             string? stage=negative switch{
                 "stack" when error is ArgumentOutOfRangeException=>"stack",
@@ -185,21 +201,34 @@ public static class AddersToneSetupVerification
                 "paused" when error is InvalidOperationException && error.Message.Contains("paused",StringComparison.Ordinal)=>"paused",
                 "pool" when error is InvalidDataException && error.Message.Contains("free pool is empty",StringComparison.Ordinal)=>"pool",
                 "poolPointer" when error is NotSupportedException && error.Message.Contains("sound task pool",StringComparison.Ordinal)=>"poolPointer",
+                "vmTemplate" when error is NotSupportedException && error.Message.Contains("NEXT template",StringComparison.Ordinal)=>"vmTemplate",
+                "vmToken" when error is NotSupportedException && error.Message.Contains("token",StringComparison.Ordinal)=>"vmToken",
+                "vmHeader" when error is NotSupportedException && error.Message.Contains("80A4 target",StringComparison.Ordinal)=>"vmHeader",
+                "vmNative" when error is NotSupportedException && error.Message.Contains("80A4 native",StringComparison.Ordinal)=>"vmNative",
+                "bridgeMode" when error is NotSupportedException && error.Message.Contains("F1!=0 mode branch",StringComparison.Ordinal)=>"bridgeMode",
                 _=>null};
             if(stage is null)throw;
             throw new InvalidDataException($"{stage} rejected",error);
         }
 
-        Require(result.WrapperCycles==67,$"Source wrapper cost {result.WrapperCycles} differs from67");
-        Require(result.QueueCycles==262,$"Source queue cost {result.QueueCycles} differs from262");
-        Require(result.ReturnCycles==11,$"Source59E9 cost {result.ReturnCycles} differs from11");
-        Require(result.Foreground5A05.Cycle-marker14.Cycle==340,"Generated5A14-5A05 span differs");
-        CompareState(result.QueueEntry,queue,"queue entry");
+        Require(result.DispatchCycles==17,$"Source dispatch cost {result.DispatchCycles} differs from17");
+        Require(result.BridgeCycles==24,$"Source bridge cost {result.BridgeCycles} differs from24");
+        Require(result.DispatchCycles+result.BridgeCycles==marker14.Cycle-fc4d.Cycle,"Bridge span does not reach5A14");
+        CompareState(result.VmEntryState,fc4d,"VM entry");
+        CompareState(result.Foreground5A14,marker14,"5A14 entry");
+        Require(fc4d.Ram![0x7A8]==0xFC && fc4d.Ram[0x7A9]==0x4D,"FC4D pre-entry Y word differs");
+        Require(machine.ReadWord(0x7A6)==0x777E,"776F did not push the777E return word");
+        Require(machine.ReadWord(0x7A8)==marker14.Y,"776F did not write the caller Y word at07A8/07A9");
+        Require(result.Setup.WrapperCycles==67,$"Source wrapper cost {result.Setup.WrapperCycles} differs from67");
+        Require(result.Setup.QueueCycles==262,$"Source queue cost {result.Setup.QueueCycles} differs from262");
+        Require(result.Setup.ReturnCycles==11,$"Source59E9 cost {result.Setup.ReturnCycles} differs from11");
+        Require(result.Setup.Foreground5A05.Cycle-marker14.Cycle==340,"Generated5A14-5A05 span differs");
+        CompareState(result.Setup.QueueEntry,queue,"queue entry");
         if(negative=="snapshot")queue.Ram![0x4D]^=0xFF;
-        Compare(result.QueueEntryMemory,queue.Ram!,"queue snapshot");
-        CompareForegroundDelta(fc4d.Ram!,result.QueueEntryMemory,primary.GetProperty("foreground_delta").EnumerateArray().ToArray());
-        CompareState(result.Foreground5A05,marker05,"5A05");
-        Require(result.QueueReturn==AddersToneSetupExecution.QueueContinuation,"Queue continuation differs");
+        Compare(result.Setup.QueueEntryMemory,queue.Ram!,"queue snapshot");
+        CompareForegroundDelta(fc4d.Ram!,result.Setup.QueueEntryMemory,primary.GetProperty("foreground_delta").EnumerateArray().ToArray());
+        CompareState(result.Setup.Foreground5A05,marker05,"5A05");
+        Require(result.Setup.QueueReturn==AddersToneSetupExecution.QueueContinuation,"Queue continuation differs");
 
         Require(sound.CompletedCalls==1,"Native owner did not complete exactly one queue call");
         Require(sound.Active,"Native owner did not create the tone task");
@@ -213,7 +242,8 @@ public static class AddersToneSetupVerification
     public static int Verify(string evidence)
     {
         using var document=JsonDocument.Parse(File.ReadAllText(FixturePath(evidence)));
-        return VerifySemantic(document.RootElement,null);
+        using var bridgeDocument=JsonDocument.Parse(File.ReadAllText(BridgeFixturePath(evidence)));
+        return VerifySemantic(document.RootElement,bridgeDocument.RootElement,null);
     }
 
     public static int VerifyCycles(string evidence)
@@ -223,6 +253,9 @@ public static class AddersToneSetupVerification
         var markers=primary.GetProperty("markers").EnumerateArray().ToArray();
         var marker14=Find(markers,"foreground-5a14");
         var marker05=Find(markers,"foreground-5a05");
+        Require(AddersToneSetupExecution.DispatchCycles==17,"DispatchCycles is not17");
+        Require(AddersToneSetupExecution.BridgeBodyCycles==24,"BridgeBodyCycles is not24");
+        Require(AddersToneSetupExecution.DispatchCycles+AddersToneSetupExecution.BridgeBodyCycles==41,"Bridge total is not41");
         Require(AddersToneSetupExecution.WrapperCycles==67,"WrapperCycles is not67");
         Require(AddersToneSetupExecution.ReturnCycles==11,"ReturnCycles is not11");
         Require(marker05.Cycle-marker14.Cycle==340,"Captured setup span is not340");
@@ -250,7 +283,6 @@ public static class AddersToneSetupVerification
             LoadRegions(machine,regions);
             RequireRom(machine);
             fc4d.Ram!.CopyTo(machine.Memory,0);
-            machine.WriteWord(0x7A8,marker14.Y);
             machine.Memory[0x719B]=0;
             return machine;
         }
@@ -286,7 +318,8 @@ public static class AddersToneSetupVerification
     {
         Require(Verify(evidence)==1,"Setup baseline did not pass before a negative mutation");
         using var document=JsonDocument.Parse(File.ReadAllText(FixturePath(evidence)));
-        try{VerifySemantic(document.RootElement,kind);}
+        using var bridgeDocument=JsonDocument.Parse(File.ReadAllText(BridgeFixturePath(evidence)));
+        try{VerifySemantic(document.RootElement,bridgeDocument.RootElement,kind);}
         catch(InvalidDataException error){
             if(!error.Message.Contains(kind,StringComparison.Ordinal))
                 throw new InvalidDataException($"Setup negative {kind} rejected at unexpected stage '{error.Message}'",error);

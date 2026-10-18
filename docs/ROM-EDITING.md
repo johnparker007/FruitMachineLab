@@ -93,9 +93,10 @@ separately verifies the original.
 Production rejects wrong length/SHA1/SHA256, altered original table/field or
 protected bytes, unexpected edits, `9EDC` not `80 -> 00`, missing/edited spans,
 malformed inputs, stale maps and existing/colliding targets. Only this fixed
-definition, first operand and active gate-00 record are supported. No boot,
-MAME execution, natural 9ED9 reach, gameplay or hardware compatibility is
-claimed: algorithmically repaired is not natural acceptance.
+definition, first operand and active gate-00 record are supported. Natural
+fresh-boot checker acceptance for this repaired image is recorded separately;
+natural 9ED9 reach, gameplay and hardware compatibility remain unproved.
+Algorithmically repaired alone is not natural acceptance.
 
 ## Build and test
 
@@ -222,6 +223,17 @@ original checker's required field order: the unrepaired image is rejected at
 the unmodified checker and reaches the same `76C7` entry with `X=FDF0`; see
 [ordered integrity repair](recovery/ROM-INTEGRITY-REPAIR-PASS.md). No checker
 bypass, gameplay/play-session claim or physical test is made.
+
+Separately, the accepted IL 9ED9 build was regenerated fresh and compared with
+the untouched original in the same isolated startup harness. The original
+control computes `3E761E2605`; the repaired image computes and stores
+`BEF69E7CC7`, passes the unmodified checker, returns to `677E`, follows the init
+tail to `7CF6` and reaches the first `76C7` entry with `X=FDF0`. Both stop
+before the first token fetch; the recorded `Y` is not a fetched VM cursor and
+the identical first stream word is a passive read, not execution. See
+[IL integrity startup](recovery/IL-INTEGRITY-STARTUP.md) and
+`evidence/mpu4/integrity/il-integrity-startup.json`. Natural 9ED9 execution,
+gameplay and hardware compatibility remain unproved.
 
 Harness development failures are excluded from accepted evidence: the first
 PowerShell run stopped on expected stderr; an early isolated lookup omitted the

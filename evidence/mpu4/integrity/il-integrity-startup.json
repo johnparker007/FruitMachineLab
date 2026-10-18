@@ -1,0 +1,359 @@
+{
+    "schema_version":  1,
+    "task":  "il-boot-04",
+    "classification":  "Natural MAME 0.281 fresh-boot control/changed comparison. The untouched original and the IL 9ED9 operand edit with ordered active-field repair both pass the original firmware checker and reach the same first VM entry. This is startup/checksum acceptance only, not 9ED9 execution or gameplay.",
+    "images":  {
+                   "original":  {
+                                    "name":  "a6ls.p1",
+                                    "length":  65536,
+                                    "sha1":  "402d1518bb78fdc489b06c2aabc771e5ce151847",
+                                    "sha256":  "ebf580381aa6eb6ffb26e2acd40f30aa34b0311f71c6564607c6f48a53bca15c",
+                                    "active_fields_hex":  "3E761E2605",
+                                    "changed_offsets":  [
+
+                                                        ]
+                                },
+                   "repaired":  {
+                                    "name":  "a6ls.p1",
+                                    "length":  65536,
+                                    "sha1":  "e1a42dccd304b7b175aabac99e8400cdad04cf69",
+                                    "sha256":  "577f76bd36dfca04dfb01b5f5d0be93e16572f8617c7ca906397c98df36e5107",
+                                    "active_fields_hex":  "BEF69E7CC7",
+                                    "changed_offsets":  [
+                                                            "9EDC",
+                                                            "FFD1",
+                                                            "FFD2",
+                                                            "FFD3",
+                                                            "FFD4",
+                                                            "FFD5"
+                                                        ],
+                                    "changed_bytes":  [
+                                                          {
+                                                              "offset":  "9EDC",
+                                                              "original":  "80",
+                                                              "variant":  "00"
+                                                          },
+                                                          {
+                                                              "offset":  "FFD1",
+                                                              "original":  "3E",
+                                                              "variant":  "BE"
+                                                          },
+                                                          {
+                                                              "offset":  "FFD2",
+                                                              "original":  "76",
+                                                              "variant":  "F6"
+                                                          },
+                                                          {
+                                                              "offset":  "FFD3",
+                                                              "original":  "1E",
+                                                              "variant":  "9E"
+                                                          },
+                                                          {
+                                                              "offset":  "FFD4",
+                                                              "original":  "26",
+                                                              "variant":  "7C"
+                                                          },
+                                                          {
+                                                              "offset":  "FFD5",
+                                                              "original":  "05",
+                                                              "variant":  "C7"
+                                                          }
+                                                      ]
+                                }
+               },
+    "starting_contract":  {
+                              "mode":  "Natural IL integrity startup observation",
+                              "starting_nvram":  "absent for both runs",
+                              "starting_configuration":  "absent for both runs; -noreadconfig",
+                              "user_inputs":  "none for both runs",
+                              "configuration_read_disabled":  true,
+                              "pre_run_empty_directory_file_counts":  {
+                                                                          "original":  {
+                                                                                           "cfg":  0,
+                                                                                           "nvram":  0,
+                                                                                           "inp":  0,
+                                                                                           "snap":  0,
+                                                                                           "comments":  0,
+                                                                                           "state":  0,
+                                                                                           "diff":  0
+                                                                                       },
+                                                                          "repaired":  {
+                                                                                           "cfg":  0,
+                                                                                           "nvram":  0,
+                                                                                           "inp":  0,
+                                                                                           "snap":  0,
+                                                                                           "comments":  0,
+                                                                                           "state":  0,
+                                                                                           "diff":  0
+                                                                                       }
+                                                                      },
+                              "pre_run_rom_directory_files":  {
+                                                                  "original":  [
+                                                                                   "a6ls.p1"
+                                                                               ],
+                                                                  "repaired":  [
+                                                                                   "a6ls.p1"
+                                                                               ]
+                                                              },
+                              "injection":  "none; both debugger scripts contain only bpset/printf/go/quit and both argument sets contain no state load, playback, autoboot or cheat option"
+                          },
+    "mame":  {
+                 "executable":  "E:\\Arcade\\MAME0266\\mame281.exe",
+                 "sha256":  "0fce5a88df4f9d9b1fbf1405812c00848036e615993780978d967da34204cb7a",
+                 "version":  "0.281 (mame0281)",
+                 "command_arguments":  {
+                                           "original":  [
+                                                            "m4addr",
+                                                            "-noreadconfig",
+                                                            "-rompath",
+                                                            "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-boot-04\\runs\\original-02\\roms;E:\\Arcade\\MAME0266\\roms",
+                                                            "-cfg_directory",
+                                                            "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-boot-04\\runs\\original-02\\cfg",
+                                                            "-nvram_directory",
+                                                            "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-boot-04\\runs\\original-02\\nvram",
+                                                            "-input_directory",
+                                                            "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-boot-04\\runs\\original-02\\inp",
+                                                            "-snapshot_directory",
+                                                            "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-boot-04\\runs\\original-02\\snap",
+                                                            "-comment_directory",
+                                                            "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-boot-04\\runs\\original-02\\comments",
+                                                            "-state_directory",
+                                                            "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-boot-04\\runs\\original-02\\state",
+                                                            "-diff_directory",
+                                                            "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-boot-04\\runs\\original-02\\diff",
+                                                            "-debug",
+                                                            "-debugger",
+                                                            "windows",
+                                                            "-debugscript",
+                                                            "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-boot-04\\runs\\original-02\\debugger.cmd",
+                                                            "-debuglog",
+                                                            "-video",
+                                                            "none",
+                                                            "-sound",
+                                                            "none",
+                                                            "-window",
+                                                            "-skip_gameinfo",
+                                                            "-nothrottle",
+                                                            "-seconds_to_run",
+                                                            "30"
+                                                        ],
+                                           "repaired":  [
+                                                            "m4addr",
+                                                            "-noreadconfig",
+                                                            "-rompath",
+                                                            "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-boot-04\\runs\\repaired-01\\roms;E:\\Arcade\\MAME0266\\roms",
+                                                            "-cfg_directory",
+                                                            "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-boot-04\\runs\\repaired-01\\cfg",
+                                                            "-nvram_directory",
+                                                            "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-boot-04\\runs\\repaired-01\\nvram",
+                                                            "-input_directory",
+                                                            "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-boot-04\\runs\\repaired-01\\inp",
+                                                            "-snapshot_directory",
+                                                            "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-boot-04\\runs\\repaired-01\\snap",
+                                                            "-comment_directory",
+                                                            "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-boot-04\\runs\\repaired-01\\comments",
+                                                            "-state_directory",
+                                                            "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-boot-04\\runs\\repaired-01\\state",
+                                                            "-diff_directory",
+                                                            "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-boot-04\\runs\\repaired-01\\diff",
+                                                            "-debug",
+                                                            "-debugger",
+                                                            "windows",
+                                                            "-debugscript",
+                                                            "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-boot-04\\runs\\repaired-01\\debugger.cmd",
+                                                            "-debuglog",
+                                                            "-video",
+                                                            "none",
+                                                            "-sound",
+                                                            "none",
+                                                            "-window",
+                                                            "-skip_gameinfo",
+                                                            "-nothrottle",
+                                                            "-seconds_to_run",
+                                                            "30"
+                                                        ]
+                                       },
+                 "emulated_seconds_limit":  30,
+                 "emulated_seconds_reported":  {
+                                                   "original":  25,
+                                                   "repaired":  25
+                                               },
+                 "emulated_seconds_source":  "MAME console summary line; not a stopwatch",
+                 "wall_timeout_seconds":  600,
+                 "exits":  {
+                               "original":  0,
+                               "repaired":  0
+                           },
+                 "wall_seconds":  {
+                                      "original":  4.065,
+                                      "repaired":  3.588
+                                  },
+                 "timed_out":  false
+             },
+    "instrumentation":  {
+                            "observation_only":  true,
+                            "marker_prefix":  "ILBOOT_",
+                            "original_debugger_script_sha256":  "7adf37882257f9fa37fc98229b411193b0b4d0f003e834cf3d9f2dba42eb9c05",
+                            "repaired_debugger_script_sha256":  "7adf37882257f9fa37fc98229b411193b0b4d0f003e834cf3d9f2dba42eb9c05",
+                            "no_ram_pc_register_or_rom_injection":  true,
+                            "vm_entry_phase":  "Entry to native 76C7 before the F8/FC trampoline has fetched a token. X=FDF0 is the initial token-stream pointer; Y at this point belongs to the caller and is not a fetched VM cursor. first_stream_word is a read-only peek at the not-yet-fetched stream head, not an executed instruction or IL mapping."
+                        },
+    "runs":  {
+                 "original":  {
+                                  "run_directory":  "artifacts/deepseek/il-boot-04/runs/original-02",
+                                  "exit_code":  0,
+                                  "timed_out":  false,
+                                  "wall_seconds":  4.065,
+                                  "debug_log_sha256":  "7c808f0e18d8d7f69fa6b2ec22108ae81c5a3bf25f240c2128352458f7989a05",
+                                  "console_sha256":  "e86f607045a6afda4d93f2a2b5cf99dc94c5a2fc9c4fbebd585d8034668e8e3a",
+                                  "console_error_sha256":  "eceb77a1490eb3f7a1242b1f2b56b262baff52fd0cf92ce7e261e83d87b64790",
+                                  "observed":  {
+                                                   "outcome":  "passed",
+                                                   "group_count":  2,
+                                                   "reset_count":  3,
+                                                   "init_count":  3,
+                                                   "check_entry":  "ILBOOT_ROM_CHECK_ENTRY pc=66A5 u=0672 gate719b=00",
+                                                   "verify_entry":  "ILBOOT_ROM_VERIFY_ENTRY pc=66DB u=066A expected=3E761E2605 start=1400 end=FFFF error=12",
+                                                   "sum_xor":  "ILBOOT_SUM_XOR sum=3E xor=76",
+                                                   "rotate_add":  "ILBOOT_ROTATE_ADD value=1E",
+                                                   "rotate_sub_xor":  "ILBOOT_ROTATE_SUB_XOR a=26 b=05",
+                                                   "checksum_return":  "ILBOOT_ROM_CHECK_RETURN pc=677E y=FFFF u=0672",
+                                                   "init_tail_jump":  "ILBOOT_INIT_TAIL_JMP pc=67B3 y=0000 u=0672",
+                                                   "init_tail_entry":  "ILBOOT_INIT_TAIL_ENTRY pc=3B1A y=0000 u=0672",
+                                                   "vm_call":  "ILBOOT_VM_CALL pc=7CF6 x=FDF0 y=02DA u=0672",
+                                                   "vm_entry":  "ILBOOT_VM_ENTRY pc=76C7 x=FDF0 y=02DA u=0672 s=07C6 first_word=7FBD",
+                                                   "capture_end":  "ILBOOT_CAPTURE_END pc=76C7 x=FDF0 y=02DA u=0672 s=07C6 first_word=7FBD",
+                                                   "expected_fields":  "3E761E2605",
+                                                   "computed_fields":  "3E761E2605",
+                                                   "initial_stream_pointer":  "FDF0",
+                                                   "first_stream_word":  "7FBD",
+                                                   "marker_order":  "7CD1 reset -\u003e 6750 init -\u003e 66A5/66DB/66F3/6715/674C/677E per complete group -\u003e 67B3 -\u003e 3B1A -\u003e 7CF6 -\u003e 76C7 -\u003e end"
+                                               },
+                                  "loader_hash_warning_present":  false
+                              },
+                 "repaired":  {
+                                  "run_directory":  "artifacts/deepseek/il-boot-04/runs/repaired-01",
+                                  "exit_code":  0,
+                                  "timed_out":  false,
+                                  "wall_seconds":  3.588,
+                                  "debug_log_sha256":  "8cc30b09b2480b78e5f44e1d898d8d85ad44538fefb028bc426fb7eda6ac1a55",
+                                  "console_sha256":  "1daa33cc2e574122a3666d556a2cc5fe2004a3f782beb53fdb58496f301e49bf",
+                                  "console_error_sha256":  "fa5efc87908d0ae71fb955fda0aa80540165370b525af1034decbaba983c662b",
+                                  "observed":  {
+                                                   "outcome":  "passed",
+                                                   "group_count":  2,
+                                                   "reset_count":  3,
+                                                   "init_count":  3,
+                                                   "check_entry":  "ILBOOT_ROM_CHECK_ENTRY pc=66A5 u=0672 gate719b=00",
+                                                   "verify_entry":  "ILBOOT_ROM_VERIFY_ENTRY pc=66DB u=066A expected=BEF69E7CC7 start=1400 end=FFFF error=12",
+                                                   "sum_xor":  "ILBOOT_SUM_XOR sum=BE xor=F6",
+                                                   "rotate_add":  "ILBOOT_ROTATE_ADD value=9E",
+                                                   "rotate_sub_xor":  "ILBOOT_ROTATE_SUB_XOR a=7C b=C7",
+                                                   "checksum_return":  "ILBOOT_ROM_CHECK_RETURN pc=677E y=FFFF u=0672",
+                                                   "init_tail_jump":  "ILBOOT_INIT_TAIL_JMP pc=67B3 y=0000 u=0672",
+                                                   "init_tail_entry":  "ILBOOT_INIT_TAIL_ENTRY pc=3B1A y=0000 u=0672",
+                                                   "vm_call":  "ILBOOT_VM_CALL pc=7CF6 x=FDF0 y=02DA u=0672",
+                                                   "vm_entry":  "ILBOOT_VM_ENTRY pc=76C7 x=FDF0 y=02DA u=0672 s=07C6 first_word=7FBD",
+                                                   "capture_end":  "ILBOOT_CAPTURE_END pc=76C7 x=FDF0 y=02DA u=0672 s=07C6 first_word=7FBD",
+                                                   "expected_fields":  "BEF69E7CC7",
+                                                   "computed_fields":  "BEF69E7CC7",
+                                                   "initial_stream_pointer":  "FDF0",
+                                                   "first_stream_word":  "7FBD",
+                                                   "marker_order":  "7CD1 reset -\u003e 6750 init -\u003e 66A5/66DB/66F3/6715/674C/677E per complete group -\u003e 67B3 -\u003e 3B1A -\u003e 7CF6 -\u003e 76C7 -\u003e end"
+                                               },
+                                  "loader_hash_warning_present":  true
+                              }
+             },
+    "build":  {
+                  "repaired_sha256":  "577f76bd36dfca04dfb01b5f5d0be93e16572f8617c7ca906397c98df36e5107",
+                  "source_map_sha256":  "0c39a6d0d1beac32ca0f64bfec5ce848b2297be41180d0234d2bfdf491df21a9",
+                  "build_report_sha256":  "ae7e0fb2c0121e0b4e62d38e82511841644fcdf922b2d9e54de79b3d7e57f61a",
+                  "source_map_bound_to_repaired_image":  true,
+                  "source_map":  "artifacts/deepseek/il-boot-04/build-01/source-map.json",
+                  "build_report":  "artifacts/deepseek/il-boot-04/build-01/build-report.json"
+              },
+    "comparison":  {
+                       "control_fields":  "3E761E2605",
+                       "repaired_fields":  "BEF69E7CC7",
+                       "control_computed_fields":  "3E761E2605",
+                       "repaired_computed_fields":  "BEF69E7CC7",
+                       "changed_offsets":  [
+                                               "9EDC",
+                                               "FFD1",
+                                               "FFD2",
+                                               "FFD3",
+                                               "FFD4",
+                                               "FFD5"
+                                           ],
+                       "marker_chain_same":  true,
+                       "reset_count_same":  true,
+                       "init_count_same":  true,
+                       "checksum_group_count_same":  true,
+                       "vm_entry_pc_x_y_u_s_same":  true,
+                       "initial_stream_pointer_same":  true,
+                       "initial_stream_pointer":  "FDF0",
+                       "first_stream_word_same":  true,
+                       "first_stream_word":  "7FBD",
+                       "firmware_failure_marker_absent_in_both":  true,
+                       "all_complete_checksum_groups_match_in_both":  true,
+                       "loader_hash_warning_in_control":  false,
+                       "loader_hash_warning_in_repaired":  true,
+                       "loader_warning_separate_from_firmware_check":  true
+                   },
+    "verification":  {
+                         "control_rom_identity":  true,
+                         "repaired_rom_identity":  true,
+                         "exact_changed_byte_set":  true,
+                         "active_field_bytes_match_both":  true,
+                         "both_exit_zero":  true,
+                         "both_rom_copies_unchanged":  true,
+                         "raw_log_and_console_hashes_recomputed":  true,
+                         "observation_booleans_match_logs":  true,
+                         "marker_order_enforced":  true,
+                         "all_complete_checksum_groups_match":  true,
+                         "first_mismatch_reported":  true,
+                         "firmware_failure_marker_absent":  true,
+                         "required_breakpoint_addresses":  [
+                                                               "7cd1",
+                                                               "6750",
+                                                               "66a5",
+                                                               "66db",
+                                                               "66f3",
+                                                               "6715",
+                                                               "674c",
+                                                               "674f",
+                                                               "677e",
+                                                               "67b3",
+                                                               "3b1a",
+                                                               "7cf6",
+                                                               "76c7"
+                                                           ],
+                         "injection_claim_supported":  true,
+                         "starting_nvram_verification":  "declared and pre-run emptiness recorded by both captures before launch",
+                         "source_map_bound_to_repaired_image":  true
+                     },
+    "provenance":  {
+                       "capture_script":  "tools/Capture-IlIntegrityStartup.ps1",
+                       "curator_script":  "tools/Curate-IlIntegrityStartup.ps1",
+                       "original_run_directory":  "artifacts/deepseek/il-boot-04/runs/original-02",
+                       "repaired_run_directory":  "artifacts/deepseek/il-boot-04/runs/repaired-01",
+                       "build_report":  "artifacts/deepseek/il-boot-04/build-01/build-report.json",
+                       "source_map":  "artifacts/deepseek/il-boot-04/build-01/source-map.json",
+                       "prior_original_startup_evidence":  "evidence/mpu4/integrity/original-startup-vm-entry.json",
+                       "static_evidence":  [
+                                               "evidence/mpu4/maps/rom-integrity.json",
+                                               "evidence/mpu4/native/66a5.json",
+                                               "evidence/mpu4/native/66db.json",
+                                               "evidence/mpu4/native/76c7.json"
+                                           ]
+                   },
+    "limitations":  [
+                        "This is one natural cold reset observation per image in MAME 0.281, stopped at the first 76C7 entry or the first failure.",
+                        "The captures record checker fields, return, init tail and VM entry. They do not observe the first token fetch, 9ED9 execution, gameplay, randomness, timing equivalence or physical hardware.",
+                        "The 76C7 observation is an interpreter entry before the F8/FC trampoline fetches a token. Y at that point is not a fetched VM cursor, and no PC-to-IL mapping beyond the native entry PC is claimed.",
+                        "The repaired image passes the original checker and reaches the same VM entry, stream pointer and first stream word as the original control. This does not establish later definition or gameplay behaviour.",
+                        "The repaired image produces expected MAME loader CRC/SHA warnings. Those loader warnings are separate from, and do not weaken, the original firmware checker result.",
+                        "Starting NVRAM/configuration absence is recorded before launch by each capture; it is not an inference from post-run files.",
+                        "Negative controls are synthetic tampering of copied run artifacts, not natural execution evidence."
+                    ]
+}

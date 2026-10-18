@@ -35,6 +35,22 @@ The debugger will provide inspection/VM stepping plus controlled logged paused
 RAM/register edits where installed MAME APIs permit. Experiments and save-state
 setups are distinct from natural execution acceptance.
 
+### Approved extension range reservation
+
+The exact A6L 0.1 set 1 range `1010-13EF` (992 bytes, bank 0) is **human-approved
+and reserved** for `a6ls.p1` SHA1
+`402d1518bb78fdc489b06c2aabc771e5ce151847`, with guards `1000-100F` and
+`13F0-13FF`. The approval and its exact quotation/date are recorded in
+[IL extension range reservation](recovery/IL-EXTENSION-RANGE-PROPOSAL.md) and
+`evidence/mpu4/integrity/il-extension-range-proposal.json`.
+
+The reservation is **not allocated, written, compiled, linked, booted or
+hardware-validated**. No separate approval is required for a bounded
+allocator/linker in this range under the continuing mandate; implementation
+remains a separate task. The tracked static verifier is
+`tools/Test-IlExtensionRangeProposal.ps1`; it needs only the clean checkout and
+an explicit original-ROM input.
+
 ### Installed MAME 0.281 Lua debugger and exact boundaries
 
 The earlier claim that MAME 0.281 had no Lua debugger was wrong: it checked the

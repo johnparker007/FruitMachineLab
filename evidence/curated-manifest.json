@@ -195,6 +195,11 @@
         "sha256":  "F2DAB38F6CF239913D5734E8E547FE5C115BD1E84AEBC24DD1B094A4E35B021F"
     },
     {
+        "path":  "docs/recovery/IL-EXTENSION-RANGE-PROPOSAL.md",
+        "bytes":  14739,
+        "sha256":  "FBAB31401BA492B9156A58F15A7802CCF5A3C23EA2AC608409EE5A0F8204AA09"
+    },
+    {
         "path":  "docs/recovery/IL-INTEGRITY-STARTUP.md",
         "bytes":  9242,
         "sha256":  "A4E010360D8A4672A6FDB12C39629B5A166A9D096F0E7F6A25F08B7B03B7173C"
@@ -1118,6 +1123,11 @@
         "path":  "evidence/mpu4/integrity/il-debug-session.json",
         "bytes":  102897,
         "sha256":  "02A4D1FAE40FAB64A49700EDC60357BA4FF97C07F37EC737329B26036AF97C45"
+    },
+    {
+        "path":  "evidence/mpu4/integrity/il-extension-range-proposal.json",
+        "bytes":  24708,
+        "sha256":  "86A546D4E190185C20278E0598B52BF7B7472E5934022818720211E4F72D732C"
     },
     {
         "path":  "evidence/mpu4/integrity/il-integrity-startup.json",

@@ -1,0 +1,546 @@
+{
+  "schemaVersion": 2,
+  "taskId": "il-extension-approval-28",
+  "supersedesTaskId": "il-extension-range-26",
+  "status": "approved-reserved-not-allocated",
+  "classification": "Human-approved reservation of the exact 1010-13EF range for the exact A6L 0.1 set 1 revision, based on a static read-only audit and a user-reported MFME observation. The range is not allocated, written, compiled, linked, booted or hardware-validated by this task.",
+  "generatedUtc": "2026-10-18T21:59:57Z",
+  "baseRevision": "3da6209f0bf4b6ba16f2f0c8075ebd0c703a26f6",
+  "corrections": [
+    "Task il-extension-range-26 recorded the range as proposed-awaiting-John-confirmation; John approved it on 18 October 2026, so that pending status is superseded.",
+    "Task il-extension-range-26 stated that range confirmation did not by itself authorize a linker. That separate-authorization restriction is superseded: no further approval is required for this range or bounded development under the continuing supervised mandate. Implementation is still unperformed and unclaimed here."
+  ],
+  "approval": {
+    "status": "approved-reserved-not-allocated",
+    "approvedBy": "John",
+    "approvedOn": "2026-10-18",
+    "approvalStatement": "I confirm you are ok to use that range btw. It is a little larger, I just left I think 16 bytes each side for a safety head/tail.",
+    "approvalSource": "Exact quotation from John in the supervised task chat, recorded by task il-extension-approval-28",
+    "approvalScope": "Humans approved reserving and using this exact range for this exact revision, with the recorded guards, for bounded development under the continuing supervised mandate.",
+    "revision": {
+      "set": "m4addr",
+      "revision": "Classic Adders & Ladders A6L 0.1 set 1",
+      "file": "a6ls.p1",
+      "length": 65536,
+      "sha1": "402d1518bb78fdc489b06c2aabc771e5ce151847",
+      "sha256": "ebf580381aa6eb6ffb26e2acd40f30aa34b0311f71c6564607c6f48a53bca15c"
+    },
+    "range": {
+      "cpuStart": "1010",
+      "cpuEnd": "13EF",
+      "length": 992,
+      "lengthHex": "03E0"
+    },
+    "guards": {
+      "left": "1000-100F",
+      "right": "13F0-13FF",
+      "protectedCells": "1000-1003",
+      "integrityStart": "1400"
+    },
+    "boundedDevelopmentCovered": true,
+    "separateApprovalForBoundedDevelopment": false,
+    "linkerOrAllocatorImplementationClaimed": false,
+    "allocationPerformed": false,
+    "romWritten": false,
+    "compiled": false,
+    "linked": false,
+    "bootedByUs": false,
+    "naturalExecutionObservedByUs": false,
+    "hardwareValidated": false,
+    "note": "Approval is bound to the exact revision, range and guards recorded here. It permits bounded development in this range but does not itself allocate, write, execute, boot or hardware-validate anything."
+  },
+  "rom": {
+    "set": "m4addr",
+    "revision": "Classic Adders & Ladders A6L 0.1 set 1",
+    "file": "a6ls.p1",
+    "length": 65536,
+    "sha1": "402d1518bb78fdc489b06c2aabc771e5ce151847",
+    "sha256": "ebf580381aa6eb6ffb26e2acd40f30aa34b0311f71c6564607c6f48a53bca15c"
+  },
+  "proposal": {
+    "id": "P1-1010-13EF",
+    "cpuStart": "1010",
+    "cpuEnd": "13EF",
+    "fileStart": 4112,
+    "fileEnd": 5103,
+    "length": 992,
+    "lengthHex": "03E0",
+    "expectedFill": "FF",
+    "expectedSha1": "eee7e8ec3670c1fb218bb9839c01277394e00c09",
+    "expectedSha256": "1a7a6a16a718aaf4221baa1f787612dd995aaa5b083cfb9409023ac6c0985c16",
+    "mapping": {
+      "bank": 0,
+      "cpuWindow": "1000-FFFF",
+      "fileAddressRule": "For the selected 64 KiB maincpu image, CPU ROM bank 0 window 1000-FFFF uses the same file offsets.",
+      "bank0Only": true,
+      "futureBankChangesRequireEvidence": true,
+      "evidence": {
+        "curated": [
+          "docs/recovery/README.txt:58-66 (runtime ROM bank 0 1000-FFFF from matching original-file offsets)",
+          "evidence/mpu4/maps/rom-layout.json file_address_rule (selected 64 KiB image loaded at region offset 0)"
+        ],
+        "priorConclusion": {
+          "statement": "MAME 0.281 mpu4_memmap maps CPU 1000-FFFF through bankr(\"bank1\"); setup_rom_banks configures the non-extended 64 KiB image at &rom[0x01000]; m4addr uses a6ls.p1 with SHA1 402d1518bb78fdc489b06c2aabc771e5ce151847 and init_m4.",
+          "recordedBy": "il-extension-audit-25",
+          "historicalSourceFiles": [
+            {
+              "file": "mpu4-mame0281.cpp",
+              "length": 81256,
+              "sha256": "8efb9b50e48e49e274f60d3a63fe8611de74e96d316fe54c0b8ad0e3bf996d0f"
+            },
+            {
+              "file": "mpu4mod4yam-mame0281.cpp",
+              "length": 166506,
+              "sha256": "7a3249fbde3e35490653c1a3568332988ff01e4a6019a8c44f2d437c49e36ac9"
+            }
+          ],
+          "reverifiedByThisChecker": false,
+          "note": "Historical curated prior conclusion. The checker does not download MAME source and does not silently treat it as reverified; optional explicit source checks may be requested separately."
+        }
+      }
+    },
+    "guards": {
+      "left": {
+        "start": "1000",
+        "end": "100F",
+        "length": 16,
+        "expectedHex": "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+        "protectedSubrange": {
+          "start": "1000",
+          "end": "1003",
+          "length": 4,
+          "kind": "dormant reset fallback pointer cells",
+          "expectedHex": "FFFFFFFF",
+          "evidence": "ROM 7CEA: BE 10 00 and 7CF4: AE 84; ROM 7D26: BE 10 02; original 719A=00 and FFF8=FE70 keep both fallback paths dormant"
+        }
+      },
+      "right": {
+        "start": "13F0",
+        "end": "13FF",
+        "length": 16,
+        "expectedHex": "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+        "nextStart": {
+          "address": "1400",
+          "expectedHex": "343631A9145D8E01",
+          "kind": "active firmware integrity range start"
+        }
+      }
+    },
+    "integrity": {
+      "rangeOutsideActiveRecord": true,
+      "activeRecord": {
+        "base": "FFD1",
+        "start": "1400",
+        "end": "FFFF",
+        "gate": "00",
+        "errorCode": "12",
+        "expectedHex": "3E761E2605",
+        "enabled": true
+      },
+      "recordTable": {
+        "base": "FFB0",
+        "recordSize": 11,
+        "recordCount": 4,
+        "termination": "FFDC",
+        "enabledCount": 1
+      },
+      "outerGate719B": "00",
+      "outerGateBit1Clear": true,
+      "fieldsOriginal": "3E761E2605",
+      "disabledRecordsStoredNotActive": true,
+      "loaderCrcShaWarningsSeparate": true,
+      "characteriserChecksSeparate": true,
+      "integrityRepairImplementedForThisRange": false,
+      "note": "The exact range ends before the active record start 1400, so the recovered firmware self-check does not cover it. This is not an integrity bypass and does not suppress loader CRC/SHA warnings or characteriser behaviour."
+    },
+    "knownReferenceChecks": {
+      "decodedNativeReferences": 0,
+      "decodedVmListingReferences": 0,
+      "opcodeAdjacentPatternCount": 18,
+      "opcodeAdjacentPatternOffsets": [
+        "167D",
+        "227E",
+        "237C",
+        "2689",
+        "26DD",
+        "3667",
+        "36F0",
+        "43A3",
+        "60DA",
+        "8E38",
+        "96A0",
+        "96AC",
+        "96B8",
+        "96C4",
+        "96D3",
+        "B597",
+        "B74D",
+        "F150"
+      ],
+      "opcodeAdjacentPatternDetails": [
+        {
+          "offset": "167D",
+          "opcode": "F7",
+          "operand": "10AE",
+          "classification": "unresolved_native_write_candidate",
+          "note": "F7 would be STB $10AE after the JSR opcode at 167B. An apparent write to ROM, not a read of the candidate bytes; not decoded or reachability-proved."
+        },
+        {
+          "offset": "227E",
+          "opcode": "FE",
+          "operand": "108E",
+          "classification": "unresolved_immediate_low_byte",
+          "note": "FE is the low byte of LDX #$03FE at 227C; the following 10 8E begins the next instruction. Not an opcode here."
+        },
+        {
+          "offset": "237C",
+          "opcode": "FE",
+          "operand": "108E",
+          "classification": "unresolved_immediate_low_byte",
+          "note": "FE is the low byte of LDX #$03FE at 237A; the following 10 8E begins the next instruction. Not an opcode here."
+        },
+        {
+          "offset": "2689",
+          "opcode": "FE",
+          "operand": "108E",
+          "classification": "unresolved_immediate_low_byte",
+          "note": "FE is the low byte of LDX #$03FE at 2687; the following 10 8E begins the next instruction. Not an opcode here."
+        },
+        {
+          "offset": "26DD",
+          "opcode": "FE",
+          "operand": "108E",
+          "classification": "unresolved_immediate_low_byte",
+          "note": "FE is the low byte of LDX #$03FE at 26DB; the following 10 8E begins the next instruction. Not an opcode here."
+        },
+        {
+          "offset": "3667",
+          "opcode": "F7",
+          "operand": "10CE",
+          "classification": "unresolved_native_write_candidate",
+          "note": "F7 would be STB $10CE in native-looking code. An apparent write to ROM, not a read of the candidate bytes; not decoded or reachability-proved."
+        },
+        {
+          "offset": "36F0",
+          "opcode": "7F",
+          "operand": "1026",
+          "classification": "unresolved_native_write_candidate",
+          "note": "7F would be CLR $1026 in native-looking code. An apparent write to ROM, not a read of the candidate bytes; not decoded or reachability-proved."
+        },
+        {
+          "offset": "43A3",
+          "opcode": "7F",
+          "operand": "108E",
+          "classification": "unresolved_immediate_low_byte",
+          "note": "7F is the immediate operand of ANDA #$7F at 43A2. Not an opcode here."
+        },
+        {
+          "offset": "60DA",
+          "opcode": "FE",
+          "operand": "1200",
+          "classification": "unresolved_data_or_stream_bytes",
+          "note": "Surrounded by 00/FF data-like bytes (00 00 00 FF FE 12 00 00 08 89 02 FE FF FC); not a decoded instruction or reference."
+        },
+        {
+          "offset": "8E38",
+          "opcode": "8E",
+          "operand": "10C0",
+          "classification": "unresolved_data_or_stream_bytes",
+          "note": "8E would be LDX #$10C0 if executed, but the surrounding repeated byte sequence is data-like; not decoded or reachability-proved."
+        },
+        {
+          "offset": "96A0",
+          "opcode": "CE",
+          "operand": "12CE",
+          "classification": "unresolved_repeated_data_pattern",
+          "note": "CE belongs to the repeated data-like pattern 2B 92 06 CE 12/2A; not a decoded threaded-VM token or native instruction."
+        },
+        {
+          "offset": "96AC",
+          "opcode": "CE",
+          "operand": "12CE",
+          "classification": "unresolved_repeated_data_pattern",
+          "note": "CE belongs to the repeated data-like pattern 2B 92 06 CE 12/2A; not a decoded threaded-VM token or native instruction."
+        },
+        {
+          "offset": "96B8",
+          "opcode": "CE",
+          "operand": "12CE",
+          "classification": "unresolved_repeated_data_pattern",
+          "note": "CE belongs to the repeated data-like pattern 2B 92 06 CE 12/2A; not a decoded threaded-VM token or native instruction."
+        },
+        {
+          "offset": "96C4",
+          "opcode": "CE",
+          "operand": "12C0",
+          "classification": "unresolved_repeated_data_pattern",
+          "note": "CE is embedded in the same repeated data-like sequence (12 C0 85 68 CA 0F 7A 12 CE); not a decoded reference."
+        },
+        {
+          "offset": "96D3",
+          "opcode": "CE",
+          "operand": "1282",
+          "classification": "unresolved_repeated_data_pattern",
+          "note": "CE is embedded in repeated data-like bytes (12 CE 1E 83 30 82 12 CE 12 82...); not a decoded reference."
+        },
+        {
+          "offset": "B597",
+          "opcode": "8E",
+          "operand": "10A7",
+          "classification": "unresolved_vm_stream_or_data_bytes",
+          "note": "8E would be LDX #$10A7 if executed, but the surrounding bytes resemble threaded-VM stream/data; not decoded or reachability-proved."
+        },
+        {
+          "offset": "B74D",
+          "opcode": "B7",
+          "operand": "1081",
+          "classification": "unresolved_native_write_candidate",
+          "note": "B7 would be STA $1081 in a repeating data-like sequence. An apparent write to ROM, not a read of the candidate bytes; not decoded."
+        },
+        {
+          "offset": "F150",
+          "opcode": "8E",
+          "operand": "10A6",
+          "classification": "unresolved_vm_stream_or_data_bytes",
+          "note": "8E would be LDX #$10A6 if executed, but the surrounding bytes resemble threaded-VM stream/data; not decoded or reachability-proved."
+        }
+      ],
+      "opcodeAdjacentClassification": "Bounded heuristic only. These are opcode-adjacent byte patterns whose apparent 16-bit operands fall inside the range; they are not decoded native or VM references and are not proof of execution or use.",
+      "opcodeAdjacentMethod": {
+        "description": "Scans bank-0 offsets 1000-FFFD for the listed opcode bytes and treats the following big-endian 16-bit value as an apparent absolute operand; records matches whose value lies in 1010-13EF.",
+        "opcodes": [
+          "8E",
+          "CE",
+          "BE",
+          "BD",
+          "7E",
+          "BF",
+          "B7",
+          "F7",
+          "FC",
+          "FD",
+          "FE",
+          "7F"
+        ],
+        "scanStart": "1000",
+        "scanEndExclusive": "FFFE",
+        "limitations": [
+          "No instruction-length decoding; an opcode byte may be an immediate, data or operand byte, as in LDX #$03FE.",
+          "Does not distinguish loads from stores, direct/indexed modes, branch targets, threaded-VM tokens or reachability.",
+          "Writes to ROM addresses do not read candidate bytes and are not references.",
+          "Matches are unresolved heuristics, not decoded references."
+        ]
+      },
+      "referenceInventoryMethod": {
+        "native": "Regex scan for four-hex-digit tokens in curated evidence/mpu4/native/*.json assembly text.",
+        "vm": "Regex scan for four-hex-digit tokens in curated evidence/mpu4/VM-SCRIPTS/*.txt lines no longer than 400 characters.",
+        "limitations": [
+          "Textual token scans are not a complete disassembler or a decoded reference graph.",
+          "The curated listings are incomplete and may contain non-address four-hex-digit values.",
+          "Zero decoded matches is not a complete no-use proof."
+        ]
+      },
+      "knownAdjacentUses": [
+        {
+          "address": "1000",
+          "kind": "dormant reset fallback pointer cell",
+          "evidence": "ROM 7CEA: BE 10 00, then 7CF4: AE 84; original 719A=00 selects BEQ 7CF4",
+          "activeInOriginal": false
+        },
+        {
+          "address": "1002",
+          "kind": "dormant reset fallback pointer cell",
+          "evidence": "ROM 7D26: BE 10 02; reached only when FFF8 != FE70, but original FFF8=FE70",
+          "activeInOriginal": false
+        }
+      ],
+      "inventoryIncomplete": true,
+      "absenceOfDecodedReferenceIsNotProof": true
+    },
+    "vectors": {
+      "reservedFFF0": "FE51",
+      "SWI3": "FE66",
+      "SWI2": "FE66",
+      "FIRQ": "FE56",
+      "IRQ": "FE70",
+      "SWI": "3620",
+      "NMI": "FE51",
+      "RESET": "7CCF"
+    },
+    "exclusions": {
+      "guardRanges": [
+        "1000-100F",
+        "13F0-13FF"
+      ],
+      "protectedRanges": [
+        {
+          "id": "reset-fallback-pointer-cells",
+          "start": "1000",
+          "end": "1003",
+          "source": "ROM reset bytes 7CEA/7CF4/7D26 and original vector/guard state"
+        },
+        {
+          "id": "vectors",
+          "start": "FFF0",
+          "end": "FFFF",
+          "source": "docs/recovery/README.txt:64-66"
+        },
+        {
+          "id": "integrity-table-and-metadata",
+          "start": "FFB0",
+          "end": "FFDB",
+          "source": "evidence/mpu4/maps/rom-integrity.json"
+        },
+        {
+          "id": "integrity-active-fields",
+          "start": "FFD1",
+          "end": "FFD5",
+          "source": "evidence/mpu4/maps/rom-integrity.json"
+        },
+        {
+          "id": "copyright-and-version-tail",
+          "start": "FFDD",
+          "end": "FFEF",
+          "source": "original ROM bytes"
+        },
+        {
+          "id": "known-config-flag-block",
+          "start": "FF30",
+          "end": "FF50",
+          "source": "docs/recovery/BRANCH-PREREQUISITES.txt; evidence/mpu4/maps/nudge-encoding-checkpoint.json"
+        },
+        {
+          "id": "reset-pointer-and-identity-area",
+          "start": "FF20",
+          "end": "FF2F",
+          "source": "docs/recovery/DEEP-ANALYSIS.txt"
+        }
+      ],
+      "notIncluded": [
+        "1000-1003 dormant reset fallback pointer cells",
+        "1004-100F left guard padding",
+        "13F0-13FF right guard padding",
+        "1400-FFFF active integrity range",
+        "FFB0-FFDC integrity record table and metadata",
+        "FFF0-FFFF CPU vectors"
+      ],
+      "notClaimed": [
+        "allocated",
+        "written",
+        "compiled",
+        "linked",
+        "booted by this task",
+        "natural execution of a patched image",
+        "physical hardware compatibility",
+        "complete ROM reference coverage"
+      ]
+    },
+    "evidenceClasses": {
+      "humanApprovedReservation": [
+        "John approved reserving and using the exact 1010-13EF range for a6ls.p1 SHA1 402d1518bb78fdc489b06c2aabc771e5ce151847 on 18 October 2026, with guards 1000-100F and 13F0-13FF.",
+        "The approval permits bounded development under the continuing supervised mandate; no separate linker/allocator approval is required. It does not itself perform or certify implementation."
+      ],
+      "staticVerified": [
+        "Original ROM length, SHA1 and SHA256 match A6L 0.1 set 1.",
+        "The exact range is 992 bytes, all FF, with the recorded SHA1/SHA256.",
+        "Both guard ranges are 16 bytes, all FF; 1400 begins with 34 36 31 A9 14 5D 8E 01.",
+        "The recovered active integrity record starts at 1400, outside the exact range.",
+        "The vector and integrity tables retain their original values.",
+        "No decoded native assembly or VM listing token was found in the exact range under the curated textual scans.",
+        "The 18 opcode-adjacent patterns were re-scanned; all are unresolved heuristics with the recorded opcodes/operands, not decoded references."
+      ],
+      "curatedPriorConclusions": [
+        "Bank-0 mapping 1000-FFFF uses matching file offsets for this 64 KiB set, per docs/recovery/README.txt and evidence/mpu4/maps/rom-layout.json; the MAME 0.281 memmap/setup conclusion is from historical task 25 and is not reverified by this checker.",
+        "The exact range is a proper subset of historical task 25 candidate C1 1004-13FF; that relation is recorded, not re-audited here.",
+        "Native/VM reference counts use curated listings; they are not a complete reference inventory."
+      ],
+      "traceBacked": [
+        "Existing accepted MAME captures establish original reset/startup and early VM entry, but they do not execute or validate a write into 1010-13EF."
+      ],
+      "userReported": [
+        "John reported patching 1010-13EF with a different value and loading/running the ROM in MFME without observed issues."
+      ],
+      "hypothesis": [
+        "The 992-byte FF run is usable free space for this exact revision, subject to the guards and technical checks.",
+        "The user MFME observation is compatible with the range being unused by the tested path."
+      ],
+      "syntheticFaultExperiments": [
+        "Static negative controls in the checker reject missing/mismatched approval, guard or protected overlap, wrong length, wrong hashes and allocation/boot/hardware overclaims. No new ROM fault experiment was run."
+      ],
+      "notEstablished": [
+        "No worker MAME run or patched-image boot was performed.",
+        "No physical MPU4 hardware test was performed.",
+        "No allocator, linker, emitter or new VM word was implemented.",
+        "No complete whole-ROM decode or complete reference inventory exists.",
+        "No claim that every possible bank-select path leaves this bank-0 range unused.",
+        "No claim that the range is allocated or that the approved reservation proves no use."
+      ]
+    },
+    "userReportedMfmeTest": {
+      "reportedBy": "John",
+      "reportedOn": "2026-10-18",
+      "statement": "Patched the 1010-13EF range with a different value; the ROM loaded in MFME and ran with no reported issues.",
+      "writtenValue": "unknown",
+      "testDurationAndCoverage": "unknown",
+      "observedIssues": "none reported",
+      "loaderWarningsObserved": "unknown",
+      "reproducedByWorker": false,
+      "physicalHardwareProof": false,
+      "evidenceClass": "user-reported empirical observation; not independently reproduced"
+    },
+    "remainingRisks": [
+      "Padding appearance alone is not proof of free space; human approval is a reservation decision, not a technical no-use proof.",
+      "The tracked inventory is incomplete; absence of a decoded reference is not a complete no-use proof.",
+      "Eighteen opcode-adjacent patterns remain unresolved and are not certified references.",
+      "The reservation assumes bank 0 for this single 64 KiB set; bank-select behaviour is not excluded by this static audit.",
+      "The range is below the active firmware self-check start 1400, so firmware does not certify bytes written there.",
+      "Loader CRC/SHA warnings and characteriser checks are separate mechanisms and are not evaluated here.",
+      "The MFME observation is user-reported, not independently reproduced, and MFME/MAME/physical hardware may differ.",
+      "The guards 1000-100F, 13F0-13FF, the dormant cells 1000-1003 and the integrity start 1400 must be preserved.",
+      "No natural boot, gameplay or hardware compatibility is established by this task."
+    ],
+    "approvalSummary": "Human-approved reservation for a6ls.p1 SHA1 402d1518bb78fdc489b06c2aabc771e5ce151847, range 1010-13EF inclusive (992 bytes), guards 1000-100F and 13F0-13FF, protected cells 1000-1003, integrity start 1400, bank-0 assumption. No further approval is required for bounded development in this range under the continuing mandate. Allocation, writes, execution and hardware validation remain unperformed.",
+    "nextBoundedTask": "Propose an independent FruitMachineLab.Il allocator that enforces exact original identity, bounds, non-overlap, expected FF bytes, guards and overflow with negative controls; do not redirect the VM or add a native primitive yet.",
+    "claims": {
+      "rangeReservationApproved": true,
+      "boundedDevelopmentPermittedByApproval": true,
+      "allocated": false,
+      "written": false,
+      "compiled": false,
+      "linked": false,
+      "bootedByUs": false,
+      "naturalExecutionObservedByUs": false,
+      "hardwareValidated": false,
+      "loaderIntegrityEvaluated": false,
+      "completeReferenceInventory": false
+    },
+    "scope": {
+      "sameSizeEditsFirst": true,
+      "boundedAllocatorImplemented": false,
+      "linkerImplemented": false,
+      "newVmWordsImplemented": false,
+      "patchingPerformed": false,
+      "romWritesPerformed": false,
+      "outputImageBuilt": false,
+      "mameRunPerformed": false,
+      "hardwareRunPerformed": false
+    },
+    "inputs": {
+      "priorAuditTask": "il-extension-audit-25",
+      "priorAuditResult": "artifacts/deepseek/il-extension-audit-25/Result.md (historical private artifact; not required by the tracked checker)",
+      "priorCandidate": {
+        "id": "C1",
+        "cpuStart": "1004",
+        "cpuEnd": "13FF",
+        "length": 1020,
+        "sha256": "d7e44f57783f8cc4890c29047cd04e1a50d7f8ab0b48fed2dc891c134430187a",
+        "conclusion": "Historical curated prior-audit conclusion; the exact 1010-13EF range is a proper subset. Not reverified by this checker."
+      },
+      "mappingEvidence": "docs/recovery/README.txt; evidence/mpu4/maps/rom-layout.json",
+      "integrityEvidence": "evidence/mpu4/maps/rom-integrity.json",
+      "proposalDocument": "docs/recovery/IL-EXTENSION-RANGE-PROPOSAL.md",
+      "staticChecker": "tools/Test-IlExtensionRangeProposal.ps1",
+      "checkerPortability": "Normal static validation requires only the tracked checkout and an explicit original ROM path. Historical MAME source checks are optional and explicit."
+    }
+  }
+}

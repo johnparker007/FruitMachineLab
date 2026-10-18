@@ -1095,6 +1095,12 @@ Check("Foreground7159 wait preserves registers and fails closed on the disabled 
     Equal(true,highResult.Writes.All(w=>w.Address>=0xFFF8));
     Equal(Convert.ToHexString(before.AsSpan(0,0xFFF8)),Convert.ToHexString(high.Memory.AsSpan(0,0xFFF8)));Equal(before[0xFFFF],high.Memory[0xFFFF]);
 });
+Check("Foreground5A0A finish cancels through one native owner and matches captured5A10/5A1C", () => Equal(1,AddersToneFinishVerification.Verify(evidence)));
+Check("Foreground5A0A finish negatives fail at preflight ownership and snapshot stages", () => {
+    foreach(var kind in new[]{"stack","return","gate","ownership","owner","missingROM","snapshot","cycle","final"})
+        Equal(1,AddersToneFinishVerification.Rejects(evidence,kind));
+});
+Check("Foreground5A0A finish exposes LDX/CLR flags, unknown native CC, and exact16-byte stack limit", () => Equal(1,AddersToneFinishVerification.VerifyFlagsAndStack(evidence)));
 Check("Start tone setup derives bridge wrapper and queue cycles without phase0 capture", () => {
     using var tone=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","nudge-tone.json")));
     var ram=Convert.FromHexString(tone.RootElement.GetProperty("ram_hex").GetString()!);

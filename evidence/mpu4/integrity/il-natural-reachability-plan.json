@@ -1,0 +1,299 @@
+{
+  "schema_version": 1,
+  "task": "il-reach-05",
+  "generated_utc": "2026-10-18T13:03:22Z",
+  "start_head": "c3c8307ee80e16133fc947fc5a72728223fbb5cd",
+  "classification": "Read-only evidence review and one proposed next capture. Natural 9ED9 reachability from a fresh-boot physical-input campaign is evidenced for the EE16->EE22 window; the exact accepted run's complete input log is external. VM node resolution must use Y at the PC=00FC pre-fetch boundary, not PC or the 76C7 entry. Multiple 7CD1 markers remain unexplained; candidate software restart paths are static deductions/hypotheses.",
+  "evidence_classes": {
+    "natural_execution": [
+      "evidence/mpu4/skill-cash/paid-flag-accounting.json records natural EE16->EE22 with 9ED9, EBB8 and EBCA sites; fresh isolated default configuration, absent NVRAM, no RAM/ROM injection",
+      "evidence/mpu4/integrity/original-startup-vm-entry.json records natural original reset/init/checksum/67B3/3B1A/7CF6/76C7",
+      "evidence/mpu4/integrity/il-integrity-startup.json records natural control and repaired 9ED9 fresh boots through first 76C7",
+      "evidence/mpu4/play/natural-award-boundary.json records natural original/repaired coin+Start through 61D6 and 75C0"
+    ],
+    "static_deduction": [
+      "evidence/mpu4/VM-SCRIPTS/9ED9.txt, EBB8.txt, EE11.txt, EE62.txt, FC34.txt, EBDA.txt",
+      "evidence/mpu4/definitions/bias-word-signed-value-9ed9.vm.json",
+      "evidence/mpu4/maps/nudge-encoding-checkpoint.json",
+      "evidence/mpu4/collection/native-vm-gateway.json (dispatch template bytes)",
+      "evidence/mpu4/native/76c7.json, 76ef.json, 76f6.json, 7931.json, 76ab.json, 76bf.json",
+      "docs/recovery/DEEP-ANALYSIS.txt (7CCF reset entry)",
+      "evidence/mpu4/native/6ef7.json, 6ea6.json, 6e99.json (JMP 7CCF restart paths)"
+    ],
+    "historical_trace_reports": [
+      "docs/recovery/STARTUP-VM-ENTRY-PASS.md",
+      "docs/recovery/ROM-INTEGRITY-PASS.md",
+      "docs/recovery/NATURAL-PLAY-BOUNDARY-PASS.md",
+      "docs/recovery/PREPLAY-START-STAKE-PASS.md",
+      "docs/recovery/PAID-CYCLE-RETURN-PASS.md",
+      "docs/recovery/FLAG-FEATURE-ENTRY-PASS.md",
+      "docs/recovery/IL-INTEGRITY-STARTUP.md"
+    ],
+    "hypothesis": [
+      "The 7CD1 restarts after cold NVRAM validation failure or door/mode change are consistent with 6EA6/6E99/6EF7 -> 7CCF, but the accepted trace does not record 7CCF or a caller",
+      "3B1A's 'startup reset history' name does not establish that it caused the earlier resets",
+      "The exact reason the paid award path reads a particular table entry remains separate"
+    ],
+    "synthetic": [
+      "evidence/mpu4/collection/vm-definition-9ed9-invocation.json seeds PC/register/RAM/frame; not natural reset or gameplay",
+      "curator negative controls tamper copied logs/JSON/RAM-free artifacts; not natural execution"
+    ]
+  },
+  "rom_and_build_identities": {
+    "original": {
+      "name": "a6ls.p1",
+      "length": 65536,
+      "sha1": "402d1518bb78fdc489b06c2aabc771e5ce151847",
+      "sha256": "ebf580381aa6eb6ffb26e2acd40f30aa34b0311f71c6564607c6f48a53bca15c",
+      "active_fields_hex": "3E761E2605"
+    },
+    "repaired_9ed9": {
+      "name": "a6ls.p1",
+      "length": 65536,
+      "sha1": "e1a42dccd304b7b175aabac99e8400cdad04cf69",
+      "sha256": "577f76bd36dfca04dfb01b5f5d0be93e16572f8617c7ca906397c98df36e5107",
+      "active_fields_hex": "BEF69E7CC7",
+      "changed_offsets": ["9EDC", "FFD1", "FFD2", "FFD3", "FFD4", "FFD5"],
+      "source_map_sha256": "0c39a6d0d1beac32ca0f64bfec5ce848b2297be41180d0234d2bfdf491df21a9",
+      "build_report_sha256": "ae7e0fb2c0121e0b4e62d38e82511841644fcdf922b2d9e54de79b3d7e57f61a",
+      "source_map_bound_to_repaired_image": true
+    },
+    "definition": {
+      "path": "evidence/mpu4/definitions/bias-word-signed-value-9ed9.vm.json",
+      "address": "9ED9",
+      "original_span_hex": "795BFF80787E795BFF807AAF792F",
+      "edit": "first 795B inline word 9EDB..9EDC FF80 -> FF00; only 9EDC 80 -> 00 in the definition span",
+      "callers_listed": ["EBB8", "AC03", "9EFB", "A553", "9F12"],
+      "target_call_site": "EBCA token 9ED7 -> body 9ED9"
+    }
+  },
+  "mame": {
+    "executable": "E:\\Arcade\\MAME0266\\mame281.exe",
+    "version": "0.281 (mame0281)",
+    "sha256": "0fce5a88df4f9d9b1fbf1405812c00848036e615993780978d967da34204cb7a",
+    "installed_listxml_checked": true,
+    "listxml_ports_present": [":AUX1", ":AUX2", ":BLACK1", ":BLACK2", ":DIL1", ":DIL2", ":ORANGE1", ":ORANGE2"],
+    "debugger_surface": ["bpset", "printf", "go", "save", "quit"],
+    "lua_surface": ["manager.machine", "ioport.ports[tag]:field(mask):set_value", "emu.register_frame_done", "cpu.spaces.program:read_u8/read_u16"]
+  },
+  "natural_call_chain": [
+    {"site": "Start input", "target": "FCDC/FC34", "evidence": "PREPLAY-START-STAKE-PASS: additional physical BLACK2 Start at 406.6 s; credit debit; FC4D"},
+    {"site": "FC34", "target": "EE62", "evidence": "FC34.txt: FC66 token EE60 body EE62; PAID-CYCLE-RETURN-PASS"},
+    {"site": "EE62", "target": "EE11", "evidence": "EE62.txt: EE64 1AA3 result; EE66 branch if zero to EE72/EE11"},
+    {"site": "EE11", "target": "EE16..EE20/EBB8", "evidence": "EE11.txt: EE11 9FA2; EE13 branch if zero to EE22; EE16 true path; EE20 body EBB8"},
+    {"site": "EBB8", "target": "9ED9", "evidence": "EBB8.txt: EBCA token 9ED7 body 9ED9; paid-flag-accounting sites include EBCA and 9ED9"},
+    {"site": "9ED9", "target": "EBCC/EE22", "evidence": "9EE5 token 792F -> 7931 PULS Y; return to caller successor"}
+  ],
+  "capture_classification": [
+    {"family": "original-reset-boot, original-startup-vm-entry, il-integrity-startup", "run_start": "fresh reset", "curated_window_start": "reset/checksum/VM entry", "input": "none", "class": "natural"},
+    {"family": "natural-award-boundary", "run_start": "fresh reset", "curated_window_start": "post-VM attract", "input": "exact coin 35.0 s :AUX2 128 and Start 37.0 s :BLACK2 128", "class": "natural"},
+    {"family": "paid-flag-* including paid-flag-accounting", "run_start": "fresh reset", "curated_window_start": "later VM boundaries (EE16 for accounting)", "input": "full tracked replay actions.csv plus declared scripted pulses", "class": "natural run with later curated window"},
+    {"family": "nudge-* and other paid windows", "run_start": "fresh reset", "curated_window_start": "later VM boundaries (AFF0, B403, ...)", "input": "full tracked replay actions.csv plus declared scripted pulses", "class": "natural run with later curated window"},
+    {"family": "vm-definition-9ed9-invocation", "run_start": "synthetic seeded state", "curated_window_start": "00FC dispatch", "input": "PC/register/RAM/frame seeding", "class": "synthetic; not natural"}
+  ],
+  "natural_reachability": {
+    "target_window": "EE16->EE22",
+    "window_json": "evidence/mpu4/skill-cash/paid-flag-accounting.json",
+    "window_classification": "Natural three-flag paid feature entry EE16 through EE22; physical input pattern recorded in provenance; no state injection",
+    "entry": {"y": "EE16", "token": "7ECB", "u": "0672", "s": "07A6", "f4": "07B4", "tick": "F3F6", "seed": "03CE", "board": "16", "credit_2f0": 2, "bank_2fc": 16, "win_2fa": 0, "byte_0305": 16, "counter_07d5_07d7": "000000"},
+    "terminal": {"y": "EE22", "token": "9FA0", "u": "0672", "s": "07A6", "tick": "F3F8", "seed": "03CE", "board": "16", "credit_2f0": 2, "bank_2fc": 16, "win_2fa": 0, "byte_0305": 16, "counter_07d5_07d7": "FFE0C0"},
+    "instructions": 34,
+    "lamp_requests": 0,
+    "sound_commands": 0,
+    "sites_observed": {"9ED9": 35, "9EDD": 38, "9EDF": 35, "9EE3": 41, "9EE5": 27, "EBB8": 28, "EBCA": 28, "EE16": 33, "EE22": 28},
+    "reachable_from_fresh_boot_run": true,
+    "curated_window_starts_at_EE16": true,
+    "complete_physical_sequence_tracked": "evidence/mpu4/skill-cash/actions.csv (replayed from frame 0 by the capture script); the accepted run's own actions.csv including scripted pulses and raw debug.log remain external",
+    "first_literal_edit_gates_reachability": false,
+    "natural_original_vs_changed_9ed9_semantics_proved": false
+  },
+  "physical_input_sequence": {
+    "replay_path": "evidence/mpu4/skill-cash/actions.csv",
+    "replay_sha256": "4A051DA15264842697879EFF396B34A789F5D80623F9A2E749C244E6A80E721D",
+    "replayed_by_capture_script": "tools/Capture-SkillCash.ps1 sets MPU4_REPLAY to the run copy of this file",
+    "event_count": 1249,
+    "max_frame": 143967,
+    "frame_clock": "60 Hz frame callbacks; n frames = n/60 s",
+    "first_events": [
+      {"first_frame": 2100, "last_frame": 2103, "port": ":AUX2", "field": "Coin 4", "mask": 128, "reason": "short_coin", "approx_ms": 50},
+      {"first_frame": 2220, "last_frame": 2232, "port": ":BLACK2", "field": "1 Player Start", "mask": 128, "reason": "start_probe", "approx_ms": 200}
+    ],
+    "ports_and_fields": {
+      ":AUX2": {"Coin 4": 128},
+      ":BLACK2": {"Collect / Take Feature": 1, "Hold 1/Nudge 1": 2, "Hold 2/Nudge 2": 4, "Hold 3/Nudge 3": 8, "Hi": 16, "Lo": 32, "Exchange Feature": 64, "1 Player Start": 128}
+    },
+    "event_reason_counts": {"start_probe": 443, "busy_choice_probe": 229, "hold_probe": 199, "nudge": 176, "feature_roll_or_take": 77, "short_coin": 74, "gamble_choice": 31, "superhold_select_or_confirm": 16, "exchange_or_collect": 4},
+    "scripted_physical_pulses": [
+      {"port": ":BLACK2", "field": "1 Player Start", "mask": 128, "frames": 12, "trigger": "t >= 406.6 s", "reason": "paid_start"},
+      {"port": ":BLACK2", "field": "Hold 1/Nudge 1", "mask": 2, "frames": 6, "trigger": "t > 406.6 s and observed prompt/counter conditions", "reason": "ordinary_paid_nudge1"},
+      {"port": ":BLACK2", "field": "Collect / Take Feature", "mask": 1, "frames": 12, "trigger": "natural square22 TAKE prompt", "reason": "take_nudge_entry"},
+      {"port": ":BLACK2", "field": "Nudge pattern", "mask": "2/4 per pattern digit", "frames": 6, "trigger": "observed NUDGE prompt and remaining count", "reason": "NudgePattern 121"}
+    ],
+    "state_prerequisites": [
+      "fresh isolated default configuration and absent NVRAM",
+      "-noreadconfig, no state load, no MAME -playback file; the replay file is the physical schedule, no cheat/autoboot state",
+      "coin and Start accepted; credit 2 and bank 16 at the target window",
+      "0305=0x10, 07D5..07D7=000000 at EE16",
+      "EE11 9FA2 all-three-symbol-flag2 returns nonzero (EE13 does not branch to EE22)",
+      "paid result route reaches EE11 via EE62 zero-result branch; EBB8 is entered at EE20",
+      "MAME loader hash warning for the repaired image is expected and separate from the firmware checker"
+    ],
+    "known_limitations": [
+      "The curated window begins at EE16, not at reset; the natural run begins at reset and replays the tracked schedule",
+      "The accepted run's full actions.csv and raw debug.log were in an external temp directory and are not curated",
+      "The exact scripted-pulse log must be regenerated deterministically or captured durably in the next task",
+      "No save state or debugger seeding is used; none is accepted as physical input"
+    ]
+  },
+  "vm_observation_boundaries": {
+    "entry_76c7": {
+      "pc": "76C7",
+      "phase": "native entry before token fetch",
+      "x": "FDF0 initial stream pointer",
+      "y": "02DA caller; not a VM node",
+      "u": "0672",
+      "s": "07C6",
+      "first_stream_word": "7FBD (read-only peek, not executed)",
+      "note": "The native entry copies 7927..792E to RAM F8..FF; the first dispatch is at RAM 00FC"
+    },
+    "dispatch_template": {"f8": "3420 PSHS Y", "fa": "3184 LEAY ,X", "fc": "AEA1 LDX ,Y++", "fe": "6E91 JMP [,X++]"},
+    "pre_fetch_hook": {
+      "pc": "00FC",
+      "condition": "before LDX ,Y++ (use a bpset at PC=0x00FC)",
+      "y": "address of the next node's token word (VM cursor)",
+      "w_at_y": "token pointer for the next IL node",
+      "x": "value left by the preceding handler/token; for the incoming dispatch it is the preceding token pointer+2, not the node address",
+      "u": "data stack pointer; w@U top, w@(U+2) second, ...",
+      "s": "control stack pointer",
+      "fetch_semantics": "copied bytes 7927..792E are 3420 3184 AEA1 6E91: F8 PSHS Y; FA LEAY ,X; FC LDX ,Y++ (X=w@Yold, Y=Yold+2); FE JMP [,X++] (PC=w@Xold, X=Xold+2)",
+      "resolution": "nodeAddress = Y when w@Y equals the mapped token; operand span begins at Y+2; handler entry has Y=nodeAddress+2 and X=tokenPointer+2 (tokenPointer=w@node); successor is the next 00FC Y, not arithmetic on Y"
+    },
+    "handler_entries": [
+      {"pc": "795D", "operation": "vm_push_inline_word_literal", "y_at_entry": "node+2", "x_at_entry": "tokenPointer+2=795D (equals handler PC for self-pointing 795B; not node+2)", "example": "9ED9 entry: Y=9EDB, X=795D, inline FF80 at 9EDB..9EDC"},
+      {"pc": "7880", "operation": "vm_add_words", "y_at_entry": "node+2", "x_at_entry": "tokenPointer+2=7880 (self-pointing 787E)", "example": "9EDD entry: Y=9EDF, X=7880"},
+      {"pc": "7AB1", "operation": "vm_bitwise_xor", "y_at_entry": "node+2", "x_at_entry": "tokenPointer+2=7AB1 (self-pointing 7AAF)", "example": "9EE3 entry: Y=9EE5, X=7AB1"},
+      {"pc": "7931", "operation": "vm_return_to_caller_stream", "y_at_entry": "node+2", "x_at_entry": "tokenPointer+2=7931 (self-pointing 792F)", "example": "9EE5 entry: Y=9EE7, X=7931; PULS Y restores caller cursor"}
+    ],
+    "composite_entry_limit": {
+      "call_site": "EBCA token 9ED7",
+      "w_at_9ed7": "00F8",
+      "dispatch": "X=9ED9, PC=00F8; copied PSHS Y saves EBCC on S and LEAY ,X sets Y=9ED9",
+      "warning": "Do not generalize the primitive X=handler-PC equality to composite/body entries; X=tokenPointer+2 is the body address here"
+    },
+    "nine_ed9_node_map": [
+      {"address": "9ED9", "token": "795B", "operand": "FF80", "successor_pre_fetch_y": "9EDD"},
+      {"address": "9EDD", "token": "787E", "operand": null, "successor_pre_fetch_y": "9EDF"},
+      {"address": "9EDF", "token": "795B", "operand": "FF80", "successor_pre_fetch_y": "9EE3"},
+      {"address": "9EE3", "token": "7AAF", "operand": null, "successor_pre_fetch_y": "9EE5"},
+      {"address": "9EE5", "token": "792F", "operand": null, "successor_pre_fetch_y": "EBCC after return"}
+    ],
+    "return_and_frame": {
+      "call_site": "EBCA token 9ED7 -> body 9ED9",
+      "return_token": "9EE5 token 792F -> 7931 PULS Y; JMP <00FC>",
+      "control_stack": "S holds the saved caller cursor; log S and w@S at 9ED9 entry and at 7931",
+      "data_stack": "U is separate; log w@U..w@(U+6) at 00FC and handler entries",
+      "pc_is_not_vm_location": true
+    }
+  },
+  "startup_reset_markers": {
+    "observed": {
+      "reset_entries": 3,
+      "reset_markers": ["pc=7CD1 s=0000 cc=50", "pc=7CD1 s=07C4 cc=58", "pc=7CD1 s=07C2 cc=D0"],
+      "init_entries": 3,
+      "checksum_passes": 2,
+      "first_677e_followed_by_reset": true,
+      "anchored_tail": "second 677E -> 67B3 -> 3B1A -> 7CF6 -> 76C7",
+      "source": "evidence/mpu4/integrity/original-startup-vm-entry.json and .txt"
+    },
+    "static_context": {
+      "reset_entry": "7CCF reset_and_game_entry masks IRQ/FIRQ, sets S=07C8, calls 7D2B then 6750 (DEEP-ANALYSIS)",
+      "7cd1_relation": "7CD1 is inside the 7CCF reset entry after interrupt masking; it is a stable reset boundary, not proof of a hardware reset",
+      "restart_paths": [
+        {"site": "6EF7", "condition": "door/mode change", "target": "7CCF", "source": "evidence/mpu4/native/6ef7.json"},
+        {"site": "6EA6", "condition": "NVRAM complement/checksum failure", "target": "7CCF", "source": "evidence/mpu4/native/6ea6.json"},
+        {"site": "6E99", "condition": "NVRAM check count/validation failure", "target": "7CCF", "source": "evidence/mpu4/native/6e99.json"}
+      ]
+    },
+    "interpretation": {
+      "first_s_0000": "consistent with cold CPU reset",
+      "later_s_07c4_07c2": "consistent with nonlocal software re-entry, not fresh CPU resets",
+      "cause_proved": false,
+      "plausible_hypothesis": "one or more absent-NVRAM validation failures and/or door/mode restart",
+      "unexplained": "0x08 S difference between 07C4 and 07C2",
+      "do_not_reinterpret_accepted_run": true
+    }
+  },
+  "known_unknowns": [
+    "The accepted paid-flag run's own full actions.csv and raw debug.log are external; only the replay hash is tracked",
+    "The exact 7CD1 restart causes and callers are not proved",
+    "9ED9's AC03, 9EFB, A553 and 9F12 callers are not naturally exercised by the paid-flag window",
+    "The natural changed 9ED9 target effect remains unobserved because the changed image did not reach EE16 with the fixed historical schedule; early calls and the gate are recorded",
+    "Physical MPU4 hardware compatibility remains separate"
+  ],
+  "execution_update": {
+    "task": "il-natural-06",
+    "status": "gate_changed_did_not_reach_ee16",
+    "evidence": "evidence/mpu4/integrity/il-natural-9ed9-comparison.json",
+    "report": "docs/recovery/IL-NATURAL-9ED9-COMPARISON.md",
+    "control": "Reached EE16->EE22; 9ED9 operand FF80; returned 0000; downstream 07D5..07D7=FFE0C0",
+    "changed": "Did not reach EE16; early natural 9ED9 operand FF00 and returned 0080; earliest sampled meaningful state mismatch at 49.05 s",
+    "classification": "Natural original target plus natural changed gate; no state injection"
+  },
+  "next_capture_acceptance": {
+    "proposal": "Natural fresh-boot original/changed 9ED9 comparison using the tracked replay",
+    "allowed_files": [
+      "docs/recovery/IL-NATURAL-9ED9-COMPARISON.md",
+      "evidence/mpu4/integrity/il-natural-9ed9-comparison.json",
+      "tools/Capture-Natural9Ed9Comparison.ps1",
+      "tools/Curate-Natural9Ed9Comparison.ps1",
+      "evidence/curated-manifest.json (shipped generator/verifier only)",
+      "artifacts/deepseek/il-natural-9ed9/** (private)"
+    ],
+    "prerequisites": [
+      "original SHA1 402d... and SHA256 ebf5...",
+      "repaired 9ED9 SHA1 e1a42... and SHA256 577f...",
+      "source map SHA256 0c39... bound to repaired SHA256 577f...",
+      "build report SHA256 ae7e...",
+      "replay actions.csv SHA256 4A05...",
+      "MAME 0.281 SHA256 0fce... with the debugger/Lua surfaces above"
+    ],
+    "run": {
+      "fresh_isolated_directories": 2,
+      "control": "original",
+      "changed": "repaired 9ED9",
+      "emulated_seconds_limit": 1200,
+      "wall_timeout_seconds": 1800,
+      "no_save_state_or_debugger_writes": true,
+      "same_replay_same_scripted_pulses": true,
+      "stop": "first EE22 after the EE16 window; optional bounded continuation to EBCC/EBD6"
+    },
+    "observation": [
+      "bpset PC=00FC conditioned on Y in {EBCA,9ED9,9EDD,9EDF,9EE3,9EE5,EBCC}; log Y,w@Y,X,U,S,w@U..w@(U+6)",
+      "bpset 795D, 7880, 7AB1, 7931; log Y,X,U,S and inline/stack cells",
+      "log EBB8 entry/exit, 0305, 07D5..07D7, credit 2F0, bank 2FC",
+      "resolve nodes with the map bound to the repaired image SHA256"
+    ],
+    "success": [
+      "both runs pass firmware integrity and reach EE16 and 9ED9 from reset with the same replay",
+      "pre-9ED9 state matches between control and changed",
+      "control 9EDB..9EDC is FF80; changed is FF00",
+      "the changed literal and resulting 07D5..07D7 differ consistently; 0305 and U/S discipline are preserved",
+      "no unsupported branch, injection or state seed is used"
+    ],
+    "failure": [
+      "integrity/boot failure",
+      "missed EE16/9ED9 or pre-9ED9 divergence",
+      "unattributable difference",
+      "stale map, wrong ROM/replay identity or any debugger state write"
+    ],
+    "negative_controls": [
+      "wrong original/repaired identity",
+      "stale source map or build report",
+      "altered replay hash",
+      "altered control byte",
+      "save-state seed",
+      "debugger PC/RAM/register write",
+      "tampered copied logs/JSON"
+    ]
+  }
+}

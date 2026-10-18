@@ -175,6 +175,16 @@
         "sha256":  "A4E010360D8A4672A6FDB12C39629B5A166A9D096F0E7F6A25F08B7B03B7173C"
     },
     {
+        "path":  "docs/recovery/IL-NATURAL-9ED9-COMPARISON.md",
+        "bytes":  12252,
+        "sha256":  "BB5D30055610BEE8746451DB20C7B8B6DF08834EC46B66A66F668A8B298EC89A"
+    },
+    {
+        "path":  "docs/recovery/IL-NATURAL-REACHABILITY-PLAN.md",
+        "bytes":  14434,
+        "sha256":  "FA706C76BBBA7A0880FF6E3CD88EB836A59FA46092CCAE34424A98E23229F73C"
+    },
+    {
         "path":  "docs/recovery/INTEGRATE58-IRQ-SUFFIX-COMPOSITION-PASS.md",
         "bytes":  4689,
         "sha256":  "92E007E0C97D53B148AD15797AB64BC2FC04FEB8D043137129762216FAFF9FF4"
@@ -1048,6 +1058,16 @@
         "path":  "evidence/mpu4/integrity/il-integrity-startup.json",
         "bytes":  29039,
         "sha256":  "4235F1164CC41A18E3D2FF5ACB889380FA588058DD6C8C87202AAF7D23B8E100"
+    },
+    {
+        "path":  "evidence/mpu4/integrity/il-natural-9ed9-comparison.json",
+        "bytes":  29836,
+        "sha256":  "80EB24D5E74B1C7C863473204F27654626CB0F64175A5F82343F12D19396E2EB"
+    },
+    {
+        "path":  "evidence/mpu4/integrity/il-natural-reachability-plan.json",
+        "bytes":  19802,
+        "sha256":  "FFE12FC01C26C4E7ABA54B35D1B497AEE18EF4F36051204F2D69A73F78574301"
     },
     {
         "path":  "evidence/mpu4/integrity/original-reset-boot.json",

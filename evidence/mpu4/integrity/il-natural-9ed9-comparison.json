@@ -1,0 +1,347 @@
+{
+    "schema_version":  1,
+    "task":  "il-natural-06",
+    "generated_utc":  "2026-10-18T13:33:46.0294053Z",
+    "classification":  "Natural fresh-boot MAME 0.281 comparison with the tracked physical replay and declared scripted pulses. The original control reaches EE16/EE22 and 9ED9; the changed image does not reach EE16 with the same historical schedule. No seeded state, save state, debugger write or RAM/PC/register injection was used.",
+    "result_status":  "gate_changed_did_not_reach_ee16",
+    "target_classification":  "natural_execution",
+    "identities":  {
+                       "original":  {
+                                        "length":  65536,
+                                        "sha1":  "402d1518bb78fdc489b06c2aabc771e5ce151847",
+                                        "sha256":  "ebf580381aa6eb6ffb26e2acd40f30aa34b0311f71c6564607c6f48a53bca15c"
+                                    },
+                       "changed":  {
+                                       "length":  65536,
+                                       "sha1":  "e1a42dccd304b7b175aabac99e8400cdad04cf69",
+                                       "sha256":  "577f76bd36dfca04dfb01b5f5d0be93e16572f8617c7ca906397c98df36e5107"
+                                   },
+                       "changed_offsets_hex":  "9EDC,FFD1,FFD2,FFD3,FFD4,FFD5",
+                       "control_run_rom":  {
+                                               "length":  65536,
+                                               "sha1":  "402d1518bb78fdc489b06c2aabc771e5ce151847",
+                                               "sha256":  "ebf580381aa6eb6ffb26e2acd40f30aa34b0311f71c6564607c6f48a53bca15c"
+                                           },
+                       "changed_run_rom":  {
+                                               "length":  65536,
+                                               "sha1":  "e1a42dccd304b7b175aabac99e8400cdad04cf69",
+                                               "sha256":  "577f76bd36dfca04dfb01b5f5d0be93e16572f8617c7ca906397c98df36e5107"
+                                           }
+                   },
+    "build_binding":  {
+                          "source_map_sha256":  "0c39a6d0d1beac32ca0f64bfec5ce848b2297be41180d0234d2bfdf491df21a9",
+                          "build_report_sha256":  "ae7e0fb2c0121e0b4e62d38e82511841644fcdf922b2d9e54de79b3d7e57f61a",
+                          "output_image_sha256":  "577F76BD36DFCA04DFB01B5F5D0BE93E16572F8617C7CA906397C98DF36E5107",
+                          "body_start":  "9ED9",
+                          "body_end_exclusive":  "9EE7",
+                          "entries":  [
+                                          {
+                                              "o":  "vm_push_inline_word_literal",
+                                              "t":  "795B",
+                                              "a":  "9ED9"
+                                          },
+                                          {
+                                              "o":  "vm_add_words",
+                                              "t":  "787E",
+                                              "a":  "9EDD"
+                                          },
+                                          {
+                                              "o":  "vm_push_inline_word_literal",
+                                              "t":  "795B",
+                                              "a":  "9EDF"
+                                          },
+                                          {
+                                              "o":  "vm_bitwise_xor",
+                                              "t":  "7AAF",
+                                              "a":  "9EE3"
+                                          },
+                                          {
+                                              "o":  "vm_return_to_caller_stream",
+                                              "t":  "792F",
+                                              "a":  "9EE5"
+                                          }
+                                      ]
+                      },
+    "runs":  {
+                 "control":  {
+                                 "directory":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-natural-06\\runs\\original-02",
+                                 "debug_log_sha256":  "94c901207465f8b2562dd9be85832c6e9da630bc056191294b61eeb2f09b3593",
+                                 "replay_sha256":  "4a051da15264842697879eff396b34a789f5d80623f9a2e749c244e6a80e721d",
+                                 "scripted_count":  5,
+                                 "observed_events":  202
+                             },
+                 "changed":  {
+                                 "directory":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-natural-06\\runs\\changed-01",
+                                 "debug_log_sha256":  "931cd9c998d9da1bcf8fa66147cc777631c85ae333217b594c580844f74866d7",
+                                 "replay_sha256":  "4a051da15264842697879eff396b34a789f5d80623f9a2e749c244e6a80e721d",
+                                 "scripted_count":  2,
+                                 "observed_events":  609
+                             },
+                 "early_control":  {
+                                       "directory":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-natural-06\\runs\\early-original-01",
+                                       "debug_log_sha256":  "23c51165a8af63001b90d59d74eeeaf38ad5042396026a1af51b0701a4c260e9",
+                                       "replay_sha256":  "4a051da15264842697879eff396b34a789f5d80623f9a2e749c244e6a80e721d",
+                                       "scripted_count":  0
+                                   },
+                 "early_changed":  {
+                                       "directory":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-natural-06\\runs\\early-changed-01",
+                                       "debug_log_sha256":  "bdc6477c8911409c850f5b00f8994c3ade6a5b3128784f415f6d47edf5a0668e",
+                                       "replay_sha256":  "4a051da15264842697879eff396b34a789f5d80623f9a2e749c244e6a80e721d",
+                                       "scripted_count":  0
+                                   }
+             },
+    "physical_inputs":  {
+                            "replay_path":  "evidence/mpu4/skill-cash/actions.csv",
+                            "replay_sha256":  "4a051da15264842697879eff396b34a789f5d80623f9a2e749c244e6a80e721d",
+                            "replay_event_count":  1249,
+                            "control_scripted":  [
+                                                     {
+                                                         "first_frame":  23734,
+                                                         "last_frame":  23746,
+                                                         "port":  ":BLACK2",
+                                                         "mask":  1,
+                                                         "reason":  "take_nudge_entry"
+                                                     },
+                                                     {
+                                                         "first_frame":  23746,
+                                                         "last_frame":  23752,
+                                                         "port":  ":BLACK2",
+                                                         "mask":  2,
+                                                         "reason":  "nudge1_request"
+                                                     },
+                                                     {
+                                                         "first_frame":  23769,
+                                                         "last_frame":  23775,
+                                                         "port":  ":BLACK2",
+                                                         "mask":  4,
+                                                         "reason":  "nudge1_repeat"
+                                                     },
+                                                     {
+                                                         "first_frame":  24400,
+                                                         "last_frame":  24412,
+                                                         "port":  ":BLACK2",
+                                                         "mask":  128,
+                                                         "reason":  "paid_start"
+                                                     },
+                                                     {
+                                                         "first_frame":  26136,
+                                                         "last_frame":  26142,
+                                                         "port":  ":BLACK2",
+                                                         "mask":  2,
+                                                         "reason":  "ordinary_paid_nudge1"
+                                                     }
+                                                 ],
+                            "changed_scripted":  [
+                                                     {
+                                                         "first_frame":  24400,
+                                                         "last_frame":  24412,
+                                                         "port":  ":BLACK2",
+                                                         "mask":  128,
+                                                         "reason":  "paid_start"
+                                                     },
+                                                     {
+                                                         "first_frame":  25254,
+                                                         "last_frame":  25260,
+                                                         "port":  ":BLACK2",
+                                                         "mask":  2,
+                                                         "reason":  "ordinary_paid_nudge1"
+                                                     }
+                                                 ],
+                            "control_observed_max_frame":  26185,
+                            "changed_observed_max_frame":  72006,
+                            "observed_port_lag_frames":  1,
+                            "press_release_convention":  "scheduler press=first, scheduler release=last (exclusive); observed port assertion begins at first+1 and ends at last, with observed release at last+1",
+                            "identical":  false
+                        },
+    "control_target":  {
+                           "ee16":  "TAIL y=EE16 token=7ECB x=7984 op0=78D3 op1=7EC4 u=0672 top=0000 second=0000 third=0000 fourth=0000 s=07A6 sw0=EE74 sw1=FC76 sw2=FCDE f4=07B4 f6=0000 tick=0000 b0305=10 c=000000 credit=02 bank=0010 rom9edb=FF80 irq=1D seed=03CE board=16 win=0000 cycle=000000002CBB140C",
+                           "prefetch":  [
+                                            "PF y=EBCA token=9ED7 x=7BCE op0=7CB3 op1=7C78 u=066A top=0000 second=1F40 third=0000 fourth=0000 s=07A4 sw0=EE22 sw1=EE74 sw2=FC76 f4=07B4 f6=0000 tick=0000 b0305=10 c=000000 credit=02 bank=0010 rom9edb=FF80 irq=1E seed=03CE board=16 win=0000 cycle=000000002CBB2132",
+                                            "PF y=9ED9 token=795B x=9ED9 op0=FF80 op1=787E u=066A top=0000 second=1F40 third=0000 fourth=0000 s=07A2 sw0=EBCC sw1=EE22 sw2=EE74 f4=07B4 f6=0000 tick=0000 b0305=10 c=000000 credit=02 bank=0010 rom9edb=FF80 irq=1E seed=03CE board=16 win=0000 cycle=000000002CBB214E",
+                                            "PF y=9EDD token=787E x=795D op0=795B op1=FF80 u=0668 top=FF80 second=0000 third=1F40 fourth=0000 s=07A2 sw0=EBCC sw1=EE22 sw2=EE74 f4=07B4 f6=0000 tick=0000 b0305=10 c=000000 credit=02 bank=0010 rom9edb=FF80 irq=1E seed=03CE board=16 win=0000 cycle=000000002CBB2171",
+                                            "PF y=9EDF token=795B x=7880 op0=FF80 op1=7AAF u=066A top=FF80 second=1F40 third=0000 fourth=0000 s=07A2 sw0=EBCC sw1=EE22 sw2=EE74 f4=07B4 f6=0000 tick=0000 b0305=10 c=000000 credit=02 bank=0010 rom9edb=FF80 irq=1E seed=03CE board=16 win=0000 cycle=000000002CBB2197",
+                                            "PF y=9EE3 token=7AAF x=795D op0=792F op1=00F8 u=0668 top=FF80 second=FF80 third=1F40 fourth=0000 s=07A2 sw0=EBCC sw1=EE22 sw2=EE74 f4=07B4 f6=0000 tick=0000 b0305=10 c=000000 credit=02 bank=0010 rom9edb=FF80 irq=1E seed=03CE board=16 win=0000 cycle=000000002CBB21BA",
+                                            "PF y=9EE5 token=792F x=7AB1 op0=00F8 op1=7AF4 u=066A top=0000 second=1F40 third=0000 fourth=0000 s=07A2 sw0=EBCC sw1=EE22 sw2=EE74 f4=07B4 f6=0000 tick=0000 b0305=10 c=000000 credit=02 bank=0010 rom9edb=FF80 irq=1E seed=03CE board=16 win=0000 cycle=000000002CBB21E3",
+                                            "PF y=EBCC token=7CB3 x=7931 op0=7C78 op1=8189 u=066A top=0000 second=1F40 third=0000 fourth=0000 s=07A4 sw0=EE22 sw1=EE74 sw2=FC76 f4=07B4 f6=0000 tick=0000 b0305=10 c=000000 credit=02 bank=0010 rom9edb=FF80 irq=1E seed=03CE board=16 win=0000 cycle=000000002CBB21FE"
+                                        ],
+                           "handlers":  [
+                                            "HE pc=795D token=795B x=795D y=9EDB u=066A top=0000 second=1F40 third=0000 fourth=0000 s=07A2 sw0=EBCC sw1=EE22 sw2=EE74 b0305=10 c=000000 credit=02 bank=0010",
+                                            "HE pc=7880 token=787E x=7880 y=9EDF u=0668 top=FF80 second=0000 third=1F40 fourth=0000 s=07A2 sw0=EBCC sw1=EE22 sw2=EE74 b0305=10 c=000000 credit=02 bank=0010",
+                                            "HE pc=795D token=795B x=795D y=9EE1 u=066A top=FF80 second=1F40 third=0000 fourth=0000 s=07A2 sw0=EBCC sw1=EE22 sw2=EE74 b0305=10 c=000000 credit=02 bank=0010",
+                                            "HE pc=7AB1 token=7AAF x=7AB1 y=9EE5 u=0668 top=FF80 second=FF80 third=1F40 fourth=0000 s=07A2 sw0=EBCC sw1=EE22 sw2=EE74 b0305=10 c=000000 credit=02 bank=0010",
+                                            "HE pc=7931 token=792F x=7931 y=9EE7 u=066A top=0000 second=1F40 third=0000 fourth=0000 s=07A2 sw0=EBCC sw1=EE22 sw2=EE74 b0305=10 c=000000 credit=02 bank=0010"
+                                        ],
+                           "composite":  "CT pc=00F8 x=9ED9 y=EBCC s=07A4 sw0=EE22 sw1=EE74",
+                           "ee22":  "TERM y=EE22 token=9FA0 x=7931 op0=798C op1=06ED u=0672 top=0000 second=0000 third=0000 fourth=0000 s=07A6 sw0=EE74 sw1=FC76 sw2=FCDE f4=07B4 f6=0000 tick=0000 b0305=10 c=FFE0C0 credit=02 bank=0010 rom9edb=FF80 irq=1F seed=03CE board=16 win=0000 cycle=000000002CBB2C7A",
+                           "literal":  [
+                                           "795B",
+                                           "FF80",
+                                           "787E",
+                                           "795B",
+                                           "FF80",
+                                           "7AAF",
+                                           "792F"
+                                       ],
+                           "expected_output_top":  "0000",
+                           "downstream_counter_07d5_07d7":  "FFE0C0"
+                       },
+    "changed_target":  {
+                           "reached":  false,
+                           "prefetch":  [
+
+                                        ],
+                           "handlers":  [
+
+                                        ],
+                           "ee16":  null,
+                           "ee22":  null
+                       },
+    "gate":  {
+                 "status":  "changed_did_not_reach_ee16",
+                 "reason":  "The intentional 9EDC FF80-\u003eFF00 edit changes earlier natural 9ED9 results, so the fixed historical replay/scripted-pulse schedule drives the changed image to a different feature/accounting state before EE16.",
+                 "control_reached_ee16":  true,
+                 "control_reached_ee22":  true,
+                 "changed_reached_ee16":  false,
+                 "changed_reached_ee22":  false,
+                 "physical_inputs_identical":  false,
+                 "control_scripted_reasons":  [
+                                                  "take_nudge_entry",
+                                                  "nudge1_request",
+                                                  "nudge1_repeat",
+                                                  "paid_start",
+                                                  "ordinary_paid_nudge1"
+                                              ],
+                 "changed_scripted_reasons":  [
+                                                  "paid_start",
+                                                  "ordinary_paid_nudge1"
+                                              ],
+                 "early_9ed9_observations_per_image":  8,
+                 "early_operand":  {
+                                       "control":  "FF80",
+                                       "changed":  "FF00"
+                                   },
+                 "early_return_top":  {
+                                          "control":  "0000",
+                                          "changed":  "0080"
+                                      },
+                 "arithmetic":  "((operand + 0000) AND FFFF) XOR FF80 gives 0000 for FF80 and 0080 for FF00; 16-bit wrap and XOR semantics preserved",
+                 "earliest_sampled_state_mismatch":  {
+                                                         "t":  "49.050000000",
+                                                         "field":  "reel3",
+                                                         "control":  "61AE",
+                                                         "changed":  "6191",
+                                                         "control_row":  {
+                                                                             "t":  "49.050000000",
+                                                                             "pc":  "629E",
+                                                                             "y":  "6191",
+                                                                             "u":  "0670",
+                                                                             "s":  "07A0",
+                                                                             "raw_black1":  "00",
+                                                                             "raw_black2":  "00",
+                                                                             "service":  "00",
+                                                                             "credit_candidate":  "000008",
+                                                                             "state_2f0":  "06",
+                                                                             "state_304":  "02",
+                                                                             "seed":  "C86C",
+                                                                             "reel0":  "6191",
+                                                                             "reel1":  "6191",
+                                                                             "reel2":  "6191",
+                                                                             "reel3":  "61AE",
+                                                                             "lamps":  "F0F0F7F0F0F000033F3F3F3F3F7F3F3FF0F7F0F0F0F000033F3F3F3F3F7F3F3FF7F0F0F0F0F000033F3F3F3F3F7F3F3FF0F0F0F0F0F000033F3F3F3F3F7F3F3F",
+                                                                             "alpha":  "2020B030302020202020202036202020",
+                                                                             "ram160_19f":  "03020200020001001807240B3013200800000000000000000000000000000000002000380068003E000000000000000000000000000000000000000000000000",
+                                                                             "bank_words":  "00000000000000000000"
+                                                                         },
+                                                         "changed_row":  {
+                                                                             "t":  "49.050000000",
+                                                                             "pc":  "623A",
+                                                                             "y":  "6191",
+                                                                             "u":  "0670",
+                                                                             "s":  "07A2",
+                                                                             "raw_black1":  "00",
+                                                                             "raw_black2":  "00",
+                                                                             "service":  "00",
+                                                                             "credit_candidate":  "000008",
+                                                                             "state_2f0":  "06",
+                                                                             "state_304":  "02",
+                                                                             "seed":  "C86C",
+                                                                             "reel0":  "6191",
+                                                                             "reel1":  "6191",
+                                                                             "reel2":  "6191",
+                                                                             "reel3":  "6191",
+                                                                             "lamps":  "F0F0F7F0F0F000033F3F3F3F3F7F3F3FF0F7F0F0F0F000033F3F3F3F3F7F3F3FF7F0F0F0F0F000033F3F3F3F3F7F3F3FF0F0F0F0F0F000033F3F3F3F3F7F3F3F",
+                                                                             "alpha":  "2020B030302020202020202036202020",
+                                                                             "ram160_19f":  "03020200020001001807240B30132008000000000000000000000000000000000020003800680036000000010002000300000000000000000000000000000000",
+                                                                             "bank_words":  "00000000000000000000"
+                                                                         }
+                                                     },
+                 "later_sampled_credit_mismatch":  {
+                                                       "t":  "100.050000000",
+                                                       "control_credit_candidate":  "00001E",
+                                                       "changed_credit_candidate":  "000012",
+                                                       "control_credit_2f0":  "05",
+                                                       "changed_credit_2f0":  "0B",
+                                                       "control_row":  {
+                                                                           "t":  "100.050000000",
+                                                                           "pc":  "70C7",
+                                                                           "y":  "0028",
+                                                                           "u":  "066A",
+                                                                           "s":  "076C",
+                                                                           "raw_black1":  "00",
+                                                                           "raw_black2":  "00",
+                                                                           "service":  "00",
+                                                                           "credit_candidate":  "00001E",
+                                                                           "state_2f0":  "05",
+                                                                           "state_304":  "02",
+                                                                           "seed":  "9FE0",
+                                                                           "reel0":  "60D9",
+                                                                           "reel1":  "6108",
+                                                                           "reel2":  "6108",
+                                                                           "reel3":  "60D9",
+                                                                           "lamps":  "F6F7F6F7F1F200033F3F3F3F3F7F3F3FF6F7F6F2F0F000033F3F3F3F3F7F3F3FF6F7F6F7F1F200033F3F3F3F3F7F3F3FF6F7F6F2F0F000033F3F3F3F3F7F3F3F",
+                                                                           "alpha":  "2A2A20131510051220080F0C04202A2A",
+                                                                           "ram160_19f":  "0501030004000B002400300006005000000000860086000000000000000000000000000000000000000000010002000300000000000500000600080601060A00",
+                                                                           "bank_words":  "00000000000000000000"
+                                                                       },
+                                                       "changed_row":  {
+                                                                           "t":  "100.050000000",
+                                                                           "pc":  "70C0",
+                                                                           "y":  "0028",
+                                                                           "u":  "0670",
+                                                                           "s":  "076E",
+                                                                           "raw_black1":  "00",
+                                                                           "raw_black2":  "00",
+                                                                           "service":  "00",
+                                                                           "credit_candidate":  "000012",
+                                                                           "state_2f0":  "0B",
+                                                                           "state_304":  "02",
+                                                                           "seed":  "46C2",
+                                                                           "reel0":  "6108",
+                                                                           "reel1":  "60D9",
+                                                                           "reel2":  "60D9",
+                                                                           "reel3":  "60D9",
+                                                                           "lamps":  "F7F7F7F0F0F000033F3F3F3F3F7F3F3FF7F7F7F0F0F000033F3F3F3F3F7F3F3FF7F7F7F0F0F000033F3F3F3F3F7F3F3FF7F7F7F0F0F000033F3F3F3F3F7F3F3F",
+                                                                           "alpha":  "2020B030302020202020203131202020",
+                                                                           "ram160_19f":  "04000300040208001800300030000800008600000000000000000000000000000000000000000000000000010002000300050000000000000406080008000100",
+                                                                           "bank_words":  "00000000000000000000"
+                                                                       }
+                                                   },
+                 "attribution":  "The same eight natural 9ED9 calls differ only in the inline operand and returned top word before the first sampled state mismatch; the edit is the only semantic ROM difference."
+             },
+    "negative_checks":  {
+                            "wrong_rom_identity":  "rejected by Assert-N9Rom",
+                            "stale_or_relabelled_map":  "rejected by map hash and outputImageSha256 binding",
+                            "altered_replay":  "rejected by replay SHA256 and event checks",
+                            "missing_or_wrong_phase_hooks":  "rejected by exact PF/HE sequence and field checks",
+                            "altered_prestate":  "rejected by TAIL/PF/HE fields",
+                            "seeded_state_or_debugger_writes":  "rejected by pre-run emptiness, state directory, arguments and debugger command checks",
+                            "bad_stack_return":  "rejected by 7931 sw0=EBCC and EBCC U/S checks",
+                            "tampered_logs_or_json":  "rejected by raw debug-log/console hashes and observation cross-checks",
+                            "changed_claims_success_without_target":  "rejected by RequireTargetComparison or missing TAIL/TERM"
+                        },
+    "limitations":  [
+                        "The changed image did not reach the EE16/EE22 window with the fixed historical schedule; no changed-target prestate, XOR output or downstream 07D5 counter was observed.",
+                        "The earliest sampled meaningful state mismatch is at 100.050 s in the 6-frame state log, not a continuous-time first divergence.",
+                        "Physical MPU4 hardware compatibility remains separate."
+                    ]
+}

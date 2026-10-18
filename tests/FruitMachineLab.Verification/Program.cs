@@ -637,6 +637,16 @@ Check("Fresh tone occurrence rejects snapshot frame order ROM pool link and cont
     Equal(1,AddersFreshToneOccurrenceVerification.Rejects(evidence,"link"));
     Equal(1,AddersFreshToneOccurrenceVerification.Rejects(evidence,"continuation"));
 });
+Check("Matched service capture36 independently reproduces all25 outer5CD0/FECC pairs with full2KB", () => Equal(25,AddersMatchedServiceVerification.Verify(evidence)));
+Check("Matched service semantic validator accepts unmodified fixtures without raw pins", () => Equal(25,AddersMatchedServiceVerification.VerifySemanticForTests(evidence)));
+Check("Matched service semantic negatives fail at intended rule stages", () => {
+    foreach(var kind in new[]{"wrongpair","returnS","returnword","host","expectedRAM","missingROM"})
+        Console.WriteLine($"  {kind} rejected: {AddersMatchedServiceVerification.Rejects(evidence,kind)}");
+});
+Check("Matched service pinned entrypoint rejects whitespace-only changed raw fixtures", () => {
+    Equal(1,AddersMatchedServiceVerification.PinnedRejects(evidence,"capture"));
+    Equal(1,AddersMatchedServiceVerification.PinnedRejects(evidence,"regions"));
+});
 Check("Post-panel counters and sense match64 native calls including held limits and byte wrap", () => {
     using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","post-panel-timing.json")));int count=0;foreach(var row in doc.RootElement.GetProperty("rows").EnumerateArray()){
         var c=row.GetProperty("case");var m=new Machine();m.WriteWord(0x28,c.GetProperty("column").GetUInt16());foreach(var pair in new[]{("tick2d",0x2D),("tick2f",0x2F),("tick31",0x31),("timer",0x35)})m.WriteWord((ushort)pair.Item2,c.GetProperty(pair.Item1).GetUInt16());m.Memory[0x33]=c.GetProperty("irq").GetByte();int sample=8+c.GetProperty("column").GetInt32();m.Memory[sample]=c.GetProperty("sample").GetByte();var native=row.GetProperty("instructions");var observed=new List<OutputScanInstruction>();int reads=0;using var execution=new Mpu4PostPanelExecution(m,native[0].GetProperty("cycle").GetUInt64(),()=>{reads++;return c.GetProperty("sense").GetByte();});execution.ObserveInstruction=observed.Add;while(!execution.Completed)execution.AdvanceTo(execution.NextEventCycle);if(native.GetArrayLength()!=observed.Count)throw new Exception($"Post case {c.GetProperty("id")}: native {native.GetArrayLength()} generated {observed.Count}; {string.Join(",",observed.Select(x=>x.Address.ToString("X4")))}");for(int i=0;i<observed.Count;i++){Equal(native[i].GetProperty("pc").GetUInt16(),observed[i].Address);Equal(native[i].GetProperty("cycle").GetUInt64(),observed[i].Started);Equal(true,native[i].GetProperty("context_hex").GetString()!.StartsWith(observed[i].Bytes,StringComparison.Ordinal));}var end=row.GetProperty("end");Equal(end.GetProperty("cycle").GetUInt64(),execution.Cycle);Equal((ushort)0x2851,execution.Address);Equal(1,reads);foreach(var pair in new[]{("tick2d",0x2D),("tick2f",0x2F),("tick31",0x31),("timer",0x35)})Equal(end.GetProperty(pair.Item1).GetUInt16(),m.ReadWord((ushort)pair.Item2));Equal(end.GetProperty("irq").GetByte(),m.Memory[0x33]);Equal(end.GetProperty("sample").GetByte(),m.Memory[sample]);count++;

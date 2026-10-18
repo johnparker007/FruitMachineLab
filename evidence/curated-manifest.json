@@ -370,6 +370,11 @@
     "sha256": "8D3F277AAA32692AD04493764AEF84635D59FBAC87310F1613BCA6F3DBCB2E2E"
   },
   {
+    "path": "docs/recovery/VERIFY37-MATCHED-SERVICE-COMPONENT-PASS.md",
+    "bytes": 4777,
+    "sha256": "1D041FBE675CEFE0429DC07EB5462BF4CF3784F3865D6D8FF70539480325DE55"
+  },
+  {
     "path": "docs/recovery/VM-BATCH-RECOVERY.txt",
     "bytes": 7591,
     "sha256": "5239BF49F35DDC956133AC033318187688F8A4AA2E900FB339008926568A956B"
@@ -438,6 +443,11 @@
     "path": "evidence/mpu4/collection/matched-service-window-capture36.json",
     "bytes": 750810,
     "sha256": "AC60AC5EDE6A962B1FB90DFB8389EF85C6AFE304A25DD24CC7C753A2F59FDB82"
+  },
+  {
+    "path": "evidence/mpu4/collection/native-service-rom-regions-capture36.json",
+    "bytes": 5426,
+    "sha256": "DD5DFDCE3E44B51944180A9CB5A5DC84A11D917C3BFD7C301DD8F33F7F40E864"
   },
   {
     "path": "evidence/mpu4/collection/native-vm-gateway-debugger.cmd",

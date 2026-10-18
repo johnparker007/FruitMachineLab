@@ -53,6 +53,64 @@ post-return `00FC` fetch at `Y=9F16`/`S=0798` (original result `0000`, repaired
 `0080`). The separate `il-natural-06` EE16/EE22 paid-window gate is unchanged.
 See [IL/Lua debugger and early call](recovery/IL-LUA-VM-TRACE.md).
 
+### Bounded paused IL debugger session
+
+The accepted early-call tooling now includes a reusable read-only paused session
+for the five-node `9ED9` map. It uses the installed MAME 0.281 OSD debugger as the
+stopped host, `cpu.debug:step(1)` for native instruction stepping, and a strict
+file-based command protocol. It never writes CPU registers, RAM, ROM, save
+states or the VM stack. Exact boundaries are native; the Lua periodic callback is
+only the command/step driver and is not an instruction boundary.
+
+The command vocabulary is `pause-at-mapped-node`, `inspect`,
+`step-one-IL-node`, `resume-to-supported-boundary` and `stop`. Requests are
+strict `key=value` files with a session ID, monotonic sequence, request ID and
+nonce. Unknown commands, write fields, arbitrary addresses/lengths, injected
+state, wrong phases, stale/out-of-order requests, response collisions and forged
+acknowledgments are rejected. Inspect returns only PC/X/Y/U/S, bounded data- and
+control-stack words, emulated time and map-resolved IL operands. Repeated
+inspections do not advance state.
+
+Event records are strict JSONL. The serializer escapes quotes, backslashes,
+CR/LF/tab and every other U+0000..U+001F control byte as `\u00xx`; it never
+writes a trailing comma. `tests/worker/Test-IlDebugSession.ps1` parses every
+nonblank record with `System.Text.Json` (`AllowTrailingCommas=false`), checks
+the expected command/step/return/stop content, and runs negative controls that
+reject trailing commas and raw control characters. The preserved step-10 event
+logs are invalid and remain only as rejected review inputs. The serializer
+escaping probe is in `tests/worker/Test-IlEventJson.ps1` and uses the real
+serializer block under installed MAME Lua 5.4.
+
+`-debugger windows` is required as the stopped host; `-debugger none`
+auto-resumes on scheduled events at reset and is not used for idle sessions.
+There is still no Lua instruction callback. Only the fixed `9ED9` map is
+supported; no extension range, new word, dictionary editor, arbitrary read,
+register write or save-state load is included. The demonstrated call is the first
+natural `9ED9` call, not the later `EBCA -> 9ED9` paid window. The `EE16/EE22`
+comparison remains unchanged and unresolved. See
+[IL debug session](recovery/IL-DEBUG-SESSION.md).
+
+```powershell
+powershell -NoProfile -File tools/Start-IlDebugSession.ps1 `
+  -MameExecutable E:\Arcade\MAME0266\mame281.exe `
+  -RomDirectory E:\Arcade\MAME0266\roms `
+  -OriginalRom <a6ls.p1> -RepairedRom <edited-repaired.p1> `
+  -Variant Original -RunDirectory <fresh-run> -SecondsToRun 120 -WallTimeoutSeconds 180
+
+powershell -NoProfile -File tools/Invoke-IlDebugCommand.ps1 `
+  -SessionDirectory <fresh-run> -Command pause-at-mapped-node -Node 0
+powershell -NoProfile -File tools/Invoke-IlDebugCommand.ps1 `
+  -SessionDirectory <fresh-run> -Command inspect
+# Then resume-to-supported-boundary, five step-one-IL-node commands and stop.
+
+powershell -NoProfile -File tests/worker/Test-IlDebugSession.ps1 -Force
+```
+
+The verifier runs fresh original and repaired sessions plus the negative
+controls, parses every event record strictly, runs the serializer escaping probe,
+and regenerates `evidence/mpu4/integrity/il-debug-session.json`. Raw runs stay
+under `artifacts/deepseek/il-debug-log-11/`.
+
 ## Existing fixed-size patcher and historical measurements
 
 This is a small hybrid ROM builder: preserve the original image and change only

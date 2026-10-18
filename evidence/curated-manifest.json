@@ -6588,5 +6588,15 @@
     "path": "evidence/mpu4/collection/stack-writer-0790-capture43.json",
     "bytes": 107419,
     "sha256": "BA44707515A202A98CBD65BBF9323A29A47BC7E4D71FA922D33E63CE4D560E3B"
+  },
+  {
+    "path": "docs/recovery/IRQ-6B4D-ZERO-STATE-PASS.md",
+    "bytes": 3578,
+    "sha256": "F3E56EF89809DC3C5A9E1A0CCFB43E24DB71D46689AC34569417C915F772DB0F"
+  },
+  {
+    "path": "evidence/mpu4/collection/irq-6b4d-zero-state.json",
+    "bytes": 34553,
+    "sha256": "541B2FF7AE7C6D2C530B449C3774EA17FDB526CF497FD747ECCE0DF2DAE5538B"
   }
 ]

@@ -6513,5 +6513,15 @@
     "path": "evidence/mpu4/collection/fresh-tone-occurrence.json",
     "bytes": 80076,
     "sha256": "1D71F7088E2528C9D78B5174AD9EFAE99739754B56855086DA477A54C986B313"
+  },
+  {
+    "path": "docs/recovery/CAPTURE41-STACK-WRITER-0785-PASS.md",
+    "bytes": 4842,
+    "sha256": "6C75BB43A9AEB21BCEC269424C969F4D48C1CAA2A5D951043B4DE2C4E0C250D9"
+  },
+  {
+    "path": "evidence/mpu4/collection/stack-writer-0785-capture41.json",
+    "bytes": 107233,
+    "sha256": "D23207FA7EBD2221124EBDACE8DAAA83F6B181566F301B236CA431518C1A5680"
   }
 ]

@@ -1,0 +1,1963 @@
+{
+    "schema":  "stack-writer-0785-capture41/1",
+    "classification":  "controlled replay natural: one fresh first-FC4D-to-first-5CD0 gap from the retained recorded physical-input campaign; original reset ROM/settings/NVRAM; no RAM/CPU/device/PTM/ACK/end-state injection; debugger breakpoints/write watchpoint/reads/2KB saves only",
+    "source":  {
+                   "run":  "artifacts/deepseek/capture-41/natural-stack-writer",
+                   "rom_sha1":  "402D1518BB78FDC489B06C2AABC771E5CE151847",
+                   "rom_zip_sha256":  "E2553AFA6B8E9DEF55BD920E4BED77A4324696C1E358B73BE70BFD2C58179989",
+                   "mame_version":  "0.281",
+                   "mame_sha256":  "0FCE5A88DF4F9D9B1FBF1405812C00848036E615993780978D967DA34204CB7A",
+                   "source_input_lua_sha256":  "7C664323A5725E9FB294CB201B17B855564AF2E4A500560ED499F1EE45179D0D",
+                   "derived_input_lua_sha256":  "BC93C0699861A2B3DE402489DD09BEA95E0438C27A1F79698430B7E68A475957",
+                   "input_lua_patch":  "removed only the debugger-startup frame assertion and set its skip guard to zero; replay/physical-input/event code unchanged",
+                   "replay_actions_sha256":  "4A051DA15264842697879EFF396B34A789F5D80623F9A2E749C244E6A80E721D",
+                   "debug_sha256":  "FD580CA17A67DC2382CBFFF88F0684F1401F225231BCF59E9B1C2E1255E42490",
+                   "debugger_sha256":  "E17389D07AD6FBA4408789707393819B095890FFB82ED4763FFEB58AB71FA89F",
+                   "arguments_sha256":  "2F7A9B11575A89339B7DD958B9B27AF6A8076170FC00134F45C2D0045B6188EF",
+                   "provenance_sha256":  "BF6357FC039011408090FEEB6D80780E77F50A79A3160278FC54E152CD95074E",
+                   "exit":  0,
+                   "conditions":  "fresh isolated cfg/nvram/inp/snap/state/diff; actual m4addr.zip read-only; MPU4_REPLAY=retained replay-actions.csv; no machine-state load, PTM/ACK/end-state injection or debugger memory write; stopped by first 5CD0 guard",
+                   "event_cap":  128,
+                   "save_cap":  4,
+                   "hard_timeout_seconds":  600
+               },
+    "occurrence":  {
+                       "identity":  "fresh first FC4D-\u003efirst 5CD0 occurrence in this run; absolute cycle/state is its own and is not fitted to capture36, gate28 or the historical nudge checkpoint",
+                       "scope":  "single gap only; not a continuous lifecycle, autonomous IRQ cadence or later-delta recovery",
+                       "entry":  "FC4D",
+                       "entry_cycle":  "0000000003C592B3",
+                       "entry_s":  "07AA",
+                       "entry_x":  "8132",
+                       "stop":  "5CD0",
+                       "stop_cycle":  "0000000003C59CF6",
+                       "stop_s":  "078B",
+                       "stop_ret":  "FECC",
+                       "event_counts":  {
+                                            "total":  51,
+                                            "fc":  1,
+                                            "queue":  1,
+                                            "fe70":  2,
+                                            "ff13":  1,
+                                            "fec9":  1,
+                                            "stack_writes":  44,
+                                            "first_5cd0":  1
+                                        },
+                       "historical_relation":  "fresh 0785 final value is 19, matching the historical net delta, but the fresh gap has an intermediate 0785=3F write and its own cycles; it is not claimed as the identical historical occurrence"
+                   },
+    "watchpoint":  {
+                       "address":  "0780",
+                       "length":  16,
+                       "type":  "write",
+                       "mame_version":  "0.281",
+                       "semantics":  "MAME 0.281 installs a pre-commit write tap (points.cpp:231-237); debug_watchpoint::triggered sets wpaddr/wpdata and runs the action before the write commits (points.cpp:314-355). old=b@wpaddr is the pre-write byte; new=wpdata is the value about to be written; stop5cd0.bin is the independent after-state.",
+                       "pc_semantics":  "M6809 read_opcode_arg increments PC during operand fetch (m6809.h:214-216); tap PC is post-fetch. Instruction starts are recovered from logged pre-PC bytes and verified against the original ROM.",
+                       "installed_help":  "artifacts/deepseek/capture-41/mame0281-help-wpset.txt sha256=A2C1738BF2413B9EC285FAA18F8A540FE675DBE9CF5FB24A397CE5DF8CA99D3A",
+                       "source_reference":  "MAME mame0281 src/emu/debug/points.cpp sha256=72AE0E61EAE7C51EE3E7CD0E12C39DEE2B8B0AF90D65232E3A04451058927612; src/devices/cpu/m6809/m6809.h sha256=A8581492454D4123FC2548725AD9E7FEC0430C0B93E072E4E92A3761A4B72D59"
+                   },
+    "stack_window":  {
+                         "before_0780_078f":  [
+                                                  {
+                                                      "address":  "0780",
+                                                      "value":  "28"
+                                                  },
+                                                  {
+                                                      "address":  "0781",
+                                                      "value":  "06"
+                                                  },
+                                                  {
+                                                      "address":  "0782",
+                                                      "value":  "72"
+                                                  },
+                                                  {
+                                                      "address":  "0783",
+                                                      "value":  "1A"
+                                                  },
+                                                  {
+                                                      "address":  "0784",
+                                                      "value":  "98"
+                                                  },
+                                                  {
+                                                      "address":  "0785",
+                                                      "value":  "00"
+                                                  },
+                                                  {
+                                                      "address":  "0786",
+                                                      "value":  "19"
+                                                  },
+                                                  {
+                                                      "address":  "0787",
+                                                      "value":  "C1"
+                                                  },
+                                                  {
+                                                      "address":  "0788",
+                                                      "value":  "00"
+                                                  },
+                                                  {
+                                                      "address":  "0789",
+                                                      "value":  "0B"
+                                                  },
+                                                  {
+                                                      "address":  "078A",
+                                                      "value":  "00"
+                                                  },
+                                                  {
+                                                      "address":  "078B",
+                                                      "value":  "06"
+                                                  },
+                                                  {
+                                                      "address":  "078C",
+                                                      "value":  "FE"
+                                                  },
+                                                  {
+                                                      "address":  "078D",
+                                                      "value":  "CC"
+                                                  },
+                                                  {
+                                                      "address":  "078E",
+                                                      "value":  "C1"
+                                                  },
+                                                  {
+                                                      "address":  "078F",
+                                                      "value":  "00"
+                                                  }
+                                              ],
+                         "after_0780_078f":  [
+                                                 {
+                                                     "address":  "0780",
+                                                     "value":  "06"
+                                                 },
+                                                 {
+                                                     "address":  "0781",
+                                                     "value":  "72"
+                                                 },
+                                                 {
+                                                     "address":  "0782",
+                                                     "value":  "1A"
+                                                 },
+                                                 {
+                                                     "address":  "0783",
+                                                     "value":  "98"
+                                                 },
+                                                 {
+                                                     "address":  "0784",
+                                                     "value":  "00"
+                                                 },
+                                                 {
+                                                     "address":  "0785",
+                                                     "value":  "19"
+                                                 },
+                                                 {
+                                                     "address":  "0786",
+                                                     "value":  "C1"
+                                                 },
+                                                 {
+                                                     "address":  "0787",
+                                                     "value":  "00"
+                                                 },
+                                                 {
+                                                     "address":  "0788",
+                                                     "value":  "0B"
+                                                 },
+                                                 {
+                                                     "address":  "0789",
+                                                     "value":  "06"
+                                                 },
+                                                 {
+                                                     "address":  "078A",
+                                                     "value":  "72"
+                                                 },
+                                                 {
+                                                     "address":  "078B",
+                                                     "value":  "FE"
+                                                 },
+                                                 {
+                                                     "address":  "078C",
+                                                     "value":  "CC"
+                                                 },
+                                                 {
+                                                     "address":  "078D",
+                                                     "value":  "C0"
+                                                 },
+                                                 {
+                                                     "address":  "078E",
+                                                     "value":  "47"
+                                                 },
+                                                 {
+                                                     "address":  "078F",
+                                                     "value":  "27"
+                                                 }
+                                             ]
+                     },
+    "first_0785_write":  {
+                             "pc":  "70F1",
+                             "cycle":  "0000000003C597BB",
+                             "s":  "0785",
+                             "wpaddr":  "0785",
+                             "old":  "00",
+                             "new":  "3F",
+                             "instruction_start":  "70EF",
+                             "opcode":  "34 05",
+                             "mnemonic":  "PSHS B,CC",
+                             "registers":  {
+                                               "a":  "00",
+                                               "b":  "3F",
+                                               "x":  "48FD",
+                                               "y":  "0028",
+                                               "u":  "0672",
+                                               "dp":  "00",
+                                               "cc":  "C0"
+                                           },
+                             "opcode_context":  {
+                                                    "m4":  "35",
+                                                    "m3":  "85",
+                                                    "m2":  "34",
+                                                    "m1":  "05",
+                                                    "p0":  "1A",
+                                                    "p1":  "50",
+                                                    "p2":  "F6",
+                                                    "p3":  "09"
+                                                }
+                         },
+    "final_0785_writer":  {
+                              "pc":  "19BB",
+                              "cycle":  "0000000003C5990F",
+                              "s":  "0785",
+                              "wpaddr":  "0785",
+                              "old":  "3F",
+                              "new":  "19",
+                              "instruction_start":  "19B8",
+                              "opcode":  "BD 1A 87",
+                              "mnemonic":  "JSR $1A87",
+                              "source_function":  "irq_accumulate_inputs_and_check_modes",
+                              "callee":  "accumulate_mux_input_or_and_samples",
+                              "meaning":  "saved JSR return address 19BB; high byte 19 becomes 0785; low byte BB becomes 0786",
+                              "registers":  {
+                                                "a":  "07",
+                                                "b":  "99",
+                                                "x":  "0007",
+                                                "y":  "0028",
+                                                "u":  "0672",
+                                                "dp":  "00",
+                                                "cc":  "C0"
+                                            },
+                              "opcode_context":  {
+                                                     "m4":  "F1",
+                                                     "m3":  "BD",
+                                                     "m2":  "1A",
+                                                     "m1":  "87",
+                                                     "p0":  "BD",
+                                                     "p1":  "1A",
+                                                     "p2":  "05",
+                                                     "p3":  "BD"
+                                                 }
+                          },
+    "indirect_caller_439a":  {
+                                 "instruction_start":  "439A",
+                                 "opcode":  "AD 9F 00 C6",
+                                 "mnemonic":  "JSR [$00C6]",
+                                 "return_address":  "439E",
+                                 "pointer":  "00C6",
+                                 "target":  "19B8",
+                                 "trace_evidence":  "SW pc=439E pushes return word 439E; stop5cd0.bin word 00C6=19B8"
+                             },
+    "same_value_rewrites_0785":  [
+                                     {
+                                         "pc":  "19BE",
+                                         "cycle":  "0000000003C59A51",
+                                         "s":  "0785",
+                                         "old":  "19",
+                                         "new":  "19"
+                                     },
+                                     {
+                                         "pc":  "19C1",
+                                         "cycle":  "0000000003C59A8F",
+                                         "s":  "0785",
+                                         "old":  "19",
+                                         "new":  "19"
+                                     }
+                                 ],
+    "key_call_chain":  [
+                           {
+                               "pc":  "FEC3",
+                               "cycle":  "0000000003C59896",
+                               "s":  "078C",
+                               "wpaddr":  "078C",
+                               "old":  "BA",
+                               "new":  "C3",
+                               "opcode_context":  {
+                                                      "m4":  "2C",
+                                                      "m3":  "BD",
+                                                      "m2":  "27",
+                                                      "m1":  "D2",
+                                                      "p0":  "BD",
+                                                      "p1":  "6B",
+                                                      "p2":  "4D",
+                                                      "p3":  "BD"
+                                                  }
+                           },
+                           {
+                               "pc":  "FEC3",
+                               "cycle":  "0000000003C59896",
+                               "s":  "078B",
+                               "wpaddr":  "078B",
+                               "old":  "FE",
+                               "new":  "FE",
+                               "opcode_context":  {
+                                                      "m4":  "2C",
+                                                      "m3":  "BD",
+                                                      "m2":  "27",
+                                                      "m1":  "D2",
+                                                      "p0":  "BD",
+                                                      "p1":  "6B",
+                                                      "p2":  "4D",
+                                                      "p3":  "BD"
+                                                  }
+                           },
+                           {
+                               "pc":  "280C",
+                               "cycle":  "0000000003C598E8",
+                               "s":  "078A",
+                               "wpaddr":  "078A",
+                               "old":  "00",
+                               "new":  "0C",
+                               "opcode_context":  {
+                                                      "m4":  "03",
+                                                      "m3":  "BD",
+                                                      "m2":  "43",
+                                                      "m1":  "8C",
+                                                      "p0":  "BD",
+                                                      "p1":  "64",
+                                                      "p2":  "03",
+                                                      "p3":  "9E"
+                                                  }
+                           },
+                           {
+                               "pc":  "280C",
+                               "cycle":  "0000000003C598E8",
+                               "s":  "0789",
+                               "wpaddr":  "0789",
+                               "old":  "29",
+                               "new":  "28",
+                               "opcode_context":  {
+                                                      "m4":  "03",
+                                                      "m3":  "BD",
+                                                      "m2":  "43",
+                                                      "m1":  "8C",
+                                                      "p0":  "BD",
+                                                      "p1":  "64",
+                                                      "p2":  "03",
+                                                      "p3":  "9E"
+                                                  }
+                           },
+                           {
+                               "pc":  "439E",
+                               "cycle":  "0000000003C59903",
+                               "s":  "0788",
+                               "wpaddr":  "0788",
+                               "old":  "03",
+                               "new":  "9E",
+                               "opcode_context":  {
+                                                      "m4":  "AD",
+                                                      "m3":  "9F",
+                                                      "m2":  "00",
+                                                      "m1":  "C6",
+                                                      "p0":  "39",
+                                                      "p1":  "B6",
+                                                      "p2":  "00",
+                                                      "p3":  "05"
+                                                  }
+                           },
+                           {
+                               "pc":  "439E",
+                               "cycle":  "0000000003C59903",
+                               "s":  "0787",
+                               "wpaddr":  "0787",
+                               "old":  "F8",
+                               "new":  "43",
+                               "opcode_context":  {
+                                                      "m4":  "AD",
+                                                      "m3":  "9F",
+                                                      "m2":  "00",
+                                                      "m1":  "C6",
+                                                      "p0":  "39",
+                                                      "p1":  "B6",
+                                                      "p2":  "00",
+                                                      "p3":  "05"
+                                                  }
+                           },
+                           {
+                               "pc":  "19BB",
+                               "cycle":  "0000000003C5990F",
+                               "s":  "0786",
+                               "wpaddr":  "0786",
+                               "old":  "19",
+                               "new":  "BB",
+                               "opcode_context":  {
+                                                      "m4":  "F1",
+                                                      "m3":  "BD",
+                                                      "m2":  "1A",
+                                                      "m1":  "87",
+                                                      "p0":  "BD",
+                                                      "p1":  "1A",
+                                                      "p2":  "05",
+                                                      "p3":  "BD"
+                                                  }
+                           },
+                           {
+                               "pc":  "19BB",
+                               "cycle":  "0000000003C5990F",
+                               "s":  "0785",
+                               "wpaddr":  "0785",
+                               "old":  "3F",
+                               "new":  "19",
+                               "opcode_context":  {
+                                                      "m4":  "F1",
+                                                      "m3":  "BD",
+                                                      "m2":  "1A",
+                                                      "m1":  "87",
+                                                      "p0":  "BD",
+                                                      "p1":  "1A",
+                                                      "p2":  "05",
+                                                      "p3":  "BD"
+                                                  }
+                           },
+                           {
+                               "pc":  "19BE",
+                               "cycle":  "0000000003C59A51",
+                               "s":  "0786",
+                               "wpaddr":  "0786",
+                               "old":  "BB",
+                               "new":  "BE",
+                               "opcode_context":  {
+                                                      "m4":  "87",
+                                                      "m3":  "BD",
+                                                      "m2":  "1A",
+                                                      "m1":  "05",
+                                                      "p0":  "BD",
+                                                      "p1":  "1A",
+                                                      "p2":  "58",
+                                                      "p3":  "39"
+                                                  }
+                           },
+                           {
+                               "pc":  "19BE",
+                               "cycle":  "0000000003C59A51",
+                               "s":  "0785",
+                               "wpaddr":  "0785",
+                               "old":  "19",
+                               "new":  "19",
+                               "opcode_context":  {
+                                                      "m4":  "87",
+                                                      "m3":  "BD",
+                                                      "m2":  "1A",
+                                                      "m1":  "05",
+                                                      "p0":  "BD",
+                                                      "p1":  "1A",
+                                                      "p2":  "58",
+                                                      "p3":  "39"
+                                                  }
+                           },
+                           {
+                               "pc":  "19C1",
+                               "cycle":  "0000000003C59A8F",
+                               "s":  "0786",
+                               "wpaddr":  "0786",
+                               "old":  "BE",
+                               "new":  "C1",
+                               "opcode_context":  {
+                                                      "m4":  "05",
+                                                      "m3":  "BD",
+                                                      "m2":  "1A",
+                                                      "m1":  "58",
+                                                      "p0":  "39",
+                                                      "p1":  "34",
+                                                      "p2":  "02",
+                                                      "p3":  "7D"
+                                                  }
+                           },
+                           {
+                               "pc":  "19C1",
+                               "cycle":  "0000000003C59A8F",
+                               "s":  "0785",
+                               "wpaddr":  "0785",
+                               "old":  "19",
+                               "new":  "19",
+                               "opcode_context":  {
+                                                      "m4":  "05",
+                                                      "m3":  "BD",
+                                                      "m2":  "1A",
+                                                      "m1":  "58",
+                                                      "p0":  "39",
+                                                      "p1":  "34",
+                                                      "p2":  "02",
+                                                      "p3":  "7D"
+                                                  }
+                           },
+                           {
+                               "pc":  "280F",
+                               "cycle":  "0000000003C59AD4",
+                               "s":  "078A",
+                               "wpaddr":  "078A",
+                               "old":  "0C",
+                               "new":  "0F",
+                               "opcode_context":  {
+                                                      "m4":  "8C",
+                                                      "m3":  "BD",
+                                                      "m2":  "64",
+                                                      "m1":  "03",
+                                                      "p0":  "9E",
+                                                      "p1":  "2D",
+                                                      "p2":  "30",
+                                                      "p3":  "01"
+                                                  }
+                           },
+                           {
+                               "pc":  "280F",
+                               "cycle":  "0000000003C59AD4",
+                               "s":  "0789",
+                               "wpaddr":  "0789",
+                               "old":  "28",
+                               "new":  "28",
+                               "opcode_context":  {
+                                                      "m4":  "8C",
+                                                      "m3":  "BD",
+                                                      "m2":  "64",
+                                                      "m1":  "03",
+                                                      "p0":  "9E",
+                                                      "p1":  "2D",
+                                                      "p2":  "30",
+                                                      "p3":  "01"
+                                                  }
+                           },
+                           {
+                               "pc":  "FEC6",
+                               "cycle":  "0000000003C59B81",
+                               "s":  "078C",
+                               "wpaddr":  "078C",
+                               "old":  "C3",
+                               "new":  "C6",
+                               "opcode_context":  {
+                                                      "m4":  "D2",
+                                                      "m3":  "BD",
+                                                      "m2":  "6B",
+                                                      "m1":  "4D",
+                                                      "p0":  "BD",
+                                                      "p1":  "58",
+                                                      "p2":  "BB",
+                                                      "p3":  "BD"
+                                                  }
+                           },
+                           {
+                               "pc":  "FEC6",
+                               "cycle":  "0000000003C59B81",
+                               "s":  "078B",
+                               "wpaddr":  "078B",
+                               "old":  "FE",
+                               "new":  "FE",
+                               "opcode_context":  {
+                                                      "m4":  "D2",
+                                                      "m3":  "BD",
+                                                      "m2":  "6B",
+                                                      "m1":  "4D",
+                                                      "p0":  "BD",
+                                                      "p1":  "58",
+                                                      "p2":  "BB",
+                                                      "p3":  "BD"
+                                                  }
+                           },
+                           {
+                               "pc":  "6B6A",
+                               "cycle":  "0000000003C59BA6",
+                               "s":  "078A",
+                               "wpaddr":  "078A",
+                               "old":  "0F",
+                               "new":  "6A",
+                               "opcode_context":  {
+                                                      "m4":  "85",
+                                                      "m3":  "BD",
+                                                      "m2":  "53",
+                                                      "m1":  "30",
+                                                      "p0":  "0D",
+                                                      "p1":  "7C",
+                                                      "p2":  "27",
+                                                      "p3":  "04"
+                                                  }
+                           },
+                           {
+                               "pc":  "6B6A",
+                               "cycle":  "0000000003C59BA6",
+                               "s":  "0789",
+                               "wpaddr":  "0789",
+                               "old":  "28",
+                               "new":  "6B",
+                               "opcode_context":  {
+                                                      "m4":  "85",
+                                                      "m3":  "BD",
+                                                      "m2":  "53",
+                                                      "m1":  "30",
+                                                      "p0":  "0D",
+                                                      "p1":  "7C",
+                                                      "p2":  "27",
+                                                      "p3":  "04"
+                                                  }
+                           },
+                           {
+                               "pc":  "FEC9",
+                               "cycle":  "0000000003C59C2B",
+                               "s":  "078C",
+                               "wpaddr":  "078C",
+                               "old":  "C6",
+                               "new":  "C9",
+                               "opcode_context":  {
+                                                      "m4":  "4D",
+                                                      "m3":  "BD",
+                                                      "m2":  "58",
+                                                      "m1":  "BB",
+                                                      "p0":  "BD",
+                                                      "p1":  "5C",
+                                                      "p2":  "D0",
+                                                      "p3":  "0F"
+                                                  }
+                           },
+                           {
+                               "pc":  "FEC9",
+                               "cycle":  "0000000003C59C2B",
+                               "s":  "078B",
+                               "wpaddr":  "078B",
+                               "old":  "FE",
+                               "new":  "FE",
+                               "opcode_context":  {
+                                                      "m4":  "4D",
+                                                      "m3":  "BD",
+                                                      "m2":  "58",
+                                                      "m1":  "BB",
+                                                      "p0":  "BD",
+                                                      "p1":  "5C",
+                                                      "p2":  "D0",
+                                                      "p3":  "0F"
+                                                  }
+                           },
+                           {
+                               "pc":  "FECC",
+                               "cycle":  "0000000003C59CEE",
+                               "s":  "078C",
+                               "wpaddr":  "078C",
+                               "old":  "C9",
+                               "new":  "CC",
+                               "opcode_context":  {
+                                                      "m4":  "BB",
+                                                      "m3":  "BD",
+                                                      "m2":  "5C",
+                                                      "m1":  "D0",
+                                                      "p0":  "0F",
+                                                      "p1":  "2C",
+                                                      "p2":  "20",
+                                                      "p3":  "38"
+                                                  }
+                           },
+                           {
+                               "pc":  "FECC",
+                               "cycle":  "0000000003C59CEE",
+                               "s":  "078B",
+                               "wpaddr":  "078B",
+                               "old":  "FE",
+                               "new":  "FE",
+                               "opcode_context":  {
+                                                      "m4":  "BB",
+                                                      "m3":  "BD",
+                                                      "m2":  "5C",
+                                                      "m1":  "D0",
+                                                      "p0":  "0F",
+                                                      "p1":  "2C",
+                                                      "p2":  "20",
+                                                      "p3":  "38"
+                                                  }
+                           }
+                       ],
+    "stack_writes":  [
+                         {
+                             "tag":  "SW",
+                             "pc":  "716A",
+                             "cycle":  "0000000003C5965D",
+                             "s":  "078F",
+                             "wpaddr":  "078F",
+                             "old":  "00",
+                             "new":  "27",
+                             "a":  "47",
+                             "b":  "27",
+                             "x":  "80A6",
+                             "y":  "FC4F",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C0",
+                             "opcode_context":  {
+                                                    "m4":  "C6",
+                                                    "m3":  "28",
+                                                    "m2":  "86",
+                                                    "m1":  "54",
+                                                    "p0":  "4A",
+                                                    "p1":  "26",
+                                                    "p2":  "FD",
+                                                    "p3":  "5A"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "716A",
+                             "cycle":  "0000000003C5965D",
+                             "s":  "078E",
+                             "wpaddr":  "078E",
+                             "old":  "C1",
+                             "new":  "47",
+                             "a":  "47",
+                             "b":  "27",
+                             "x":  "80A6",
+                             "y":  "FC4F",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C0",
+                             "opcode_context":  {
+                                                    "m4":  "C6",
+                                                    "m3":  "28",
+                                                    "m2":  "86",
+                                                    "m1":  "54",
+                                                    "p0":  "4A",
+                                                    "p1":  "26",
+                                                    "p2":  "FD",
+                                                    "p3":  "5A"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "716A",
+                             "cycle":  "0000000003C5965D",
+                             "s":  "078D",
+                             "wpaddr":  "078D",
+                             "old":  "CC",
+                             "new":  "C0",
+                             "a":  "47",
+                             "b":  "27",
+                             "x":  "80A6",
+                             "y":  "FC4F",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C0",
+                             "opcode_context":  {
+                                                    "m4":  "C6",
+                                                    "m3":  "28",
+                                                    "m2":  "86",
+                                                    "m1":  "54",
+                                                    "p0":  "4A",
+                                                    "p1":  "26",
+                                                    "p2":  "FD",
+                                                    "p3":  "5A"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "FEBA",
+                             "cycle":  "0000000003C596AC",
+                             "s":  "078C",
+                             "wpaddr":  "078C",
+                             "old":  "FE",
+                             "new":  "BA",
+                             "a":  "0D",
+                             "b":  "0A",
+                             "x":  "0672",
+                             "y":  "FC4F",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C0",
+                             "opcode_context":  {
+                                                    "m4":  "3F",
+                                                    "m3":  "BD",
+                                                    "m2":  "28",
+                                                    "m1":  "FE",
+                                                    "p0":  "0D",
+                                                    "p1":  "2C",
+                                                    "p2":  "26",
+                                                    "p3":  "10"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "FEBA",
+                             "cycle":  "0000000003C596AC",
+                             "s":  "078B",
+                             "wpaddr":  "078B",
+                             "old":  "06",
+                             "new":  "FE",
+                             "a":  "0D",
+                             "b":  "0A",
+                             "x":  "0672",
+                             "y":  "FC4F",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C0",
+                             "opcode_context":  {
+                                                    "m4":  "3F",
+                                                    "m3":  "BD",
+                                                    "m2":  "28",
+                                                    "m1":  "FE",
+                                                    "p0":  "0D",
+                                                    "p1":  "2C",
+                                                    "p2":  "26",
+                                                    "p3":  "10"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "298D",
+                             "cycle":  "0000000003C59755",
+                             "s":  "078A",
+                             "wpaddr":  "078A",
+                             "old":  "00",
+                             "new":  "8D",
+                             "a":  "03",
+                             "b":  "3F",
+                             "x":  "0007",
+                             "y":  "FC4F",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C0",
+                             "opcode_context":  {
+                                                    "m4":  "02",
+                                                    "m3":  "BD",
+                                                    "m2":  "19",
+                                                    "m1":  "C2",
+                                                    "p0":  "D6",
+                                                    "p1":  "22",
+                                                    "p2":  "96",
+                                                    "p3":  "29"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "298D",
+                             "cycle":  "0000000003C59755",
+                             "s":  "0789",
+                             "wpaddr":  "0789",
+                             "old":  "0B",
+                             "new":  "29",
+                             "a":  "03",
+                             "b":  "3F",
+                             "x":  "0007",
+                             "y":  "FC4F",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C0",
+                             "opcode_context":  {
+                                                    "m4":  "02",
+                                                    "m3":  "BD",
+                                                    "m2":  "19",
+                                                    "m1":  "C2",
+                                                    "p0":  "D6",
+                                                    "p1":  "22",
+                                                    "p2":  "96",
+                                                    "p3":  "29"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "19C4",
+                             "cycle":  "0000000003C5975D",
+                             "s":  "0788",
+                             "wpaddr":  "0788",
+                             "old":  "00",
+                             "new":  "03",
+                             "a":  "03",
+                             "b":  "3F",
+                             "x":  "0007",
+                             "y":  "FC4F",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C0",
+                             "opcode_context":  {
+                                                    "m4":  "58",
+                                                    "m3":  "39",
+                                                    "m2":  "34",
+                                                    "m1":  "02",
+                                                    "p0":  "7D",
+                                                    "p1":  "00",
+                                                    "p2":  "B3",
+                                                    "p3":  "27"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "19F8",
+                             "cycle":  "0000000003C597B3",
+                             "s":  "0787",
+                             "wpaddr":  "0787",
+                             "old":  "C1",
+                             "new":  "F8",
+                             "a":  "00",
+                             "b":  "3F",
+                             "x":  "48FD",
+                             "y":  "0028",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C0",
+                             "opcode_context":  {
+                                                    "m4":  "FD",
+                                                    "m3":  "BD",
+                                                    "m2":  "70",
+                                                    "m1":  "EF",
+                                                    "p0":  "35",
+                                                    "p1":  "82",
+                                                    "p2":  "70",
+                                                    "p3":  "00"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "19F8",
+                             "cycle":  "0000000003C597B3",
+                             "s":  "0786",
+                             "wpaddr":  "0786",
+                             "old":  "19",
+                             "new":  "19",
+                             "a":  "00",
+                             "b":  "3F",
+                             "x":  "48FD",
+                             "y":  "0028",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C0",
+                             "opcode_context":  {
+                                                    "m4":  "FD",
+                                                    "m3":  "BD",
+                                                    "m2":  "70",
+                                                    "m1":  "EF",
+                                                    "p0":  "35",
+                                                    "p1":  "82",
+                                                    "p2":  "70",
+                                                    "p3":  "00"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "70F1",
+                             "cycle":  "0000000003C597BB",
+                             "s":  "0785",
+                             "wpaddr":  "0785",
+                             "old":  "00",
+                             "new":  "3F",
+                             "a":  "00",
+                             "b":  "3F",
+                             "x":  "48FD",
+                             "y":  "0028",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C0",
+                             "opcode_context":  {
+                                                    "m4":  "35",
+                                                    "m3":  "85",
+                                                    "m2":  "34",
+                                                    "m1":  "05",
+                                                    "p0":  "1A",
+                                                    "p1":  "50",
+                                                    "p2":  "F6",
+                                                    "p3":  "09"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "70F1",
+                             "cycle":  "0000000003C597BB",
+                             "s":  "0784",
+                             "wpaddr":  "0784",
+                             "old":  "98",
+                             "new":  "C0",
+                             "a":  "00",
+                             "b":  "3F",
+                             "x":  "48FD",
+                             "y":  "0028",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C0",
+                             "opcode_context":  {
+                                                    "m4":  "35",
+                                                    "m3":  "85",
+                                                    "m2":  "34",
+                                                    "m1":  "05",
+                                                    "p0":  "1A",
+                                                    "p1":  "50",
+                                                    "p2":  "F6",
+                                                    "p3":  "09"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "29A9",
+                             "cycle":  "0000000003C59861",
+                             "s":  "078A",
+                             "wpaddr":  "078A",
+                             "old":  "8D",
+                             "new":  "00",
+                             "a":  "00",
+                             "b":  "00",
+                             "x":  "02BE",
+                             "y":  "0028",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C4",
+                             "opcode_context":  {
+                                                    "m4":  "E6",
+                                                    "m3":  "85",
+                                                    "m2":  "34",
+                                                    "m1":  "04",
+                                                    "p0":  "F6",
+                                                    "p1":  "00",
+                                                    "p2":  "23",
+                                                    "p3":  "8E"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "FEC3",
+                             "cycle":  "0000000003C59896",
+                             "s":  "078C",
+                             "wpaddr":  "078C",
+                             "old":  "BA",
+                             "new":  "C3",
+                             "a":  "00",
+                             "b":  "00",
+                             "x":  "29BB",
+                             "y":  "0028",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C9",
+                             "opcode_context":  {
+                                                    "m4":  "2C",
+                                                    "m3":  "BD",
+                                                    "m2":  "27",
+                                                    "m1":  "D2",
+                                                    "p0":  "BD",
+                                                    "p1":  "6B",
+                                                    "p2":  "4D",
+                                                    "p3":  "BD"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "FEC3",
+                             "cycle":  "0000000003C59896",
+                             "s":  "078B",
+                             "wpaddr":  "078B",
+                             "old":  "FE",
+                             "new":  "FE",
+                             "a":  "00",
+                             "b":  "00",
+                             "x":  "29BB",
+                             "y":  "0028",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C9",
+                             "opcode_context":  {
+                                                    "m4":  "2C",
+                                                    "m3":  "BD",
+                                                    "m2":  "27",
+                                                    "m1":  "D2",
+                                                    "p0":  "BD",
+                                                    "p1":  "6B",
+                                                    "p2":  "4D",
+                                                    "p3":  "BD"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "280C",
+                             "cycle":  "0000000003C598E8",
+                             "s":  "078A",
+                             "wpaddr":  "078A",
+                             "old":  "00",
+                             "new":  "0C",
+                             "a":  "00",
+                             "b":  "99",
+                             "x":  "0007",
+                             "y":  "0028",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C4",
+                             "opcode_context":  {
+                                                    "m4":  "03",
+                                                    "m3":  "BD",
+                                                    "m2":  "43",
+                                                    "m1":  "8C",
+                                                    "p0":  "BD",
+                                                    "p1":  "64",
+                                                    "p2":  "03",
+                                                    "p3":  "9E"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "280C",
+                             "cycle":  "0000000003C598E8",
+                             "s":  "0789",
+                             "wpaddr":  "0789",
+                             "old":  "29",
+                             "new":  "28",
+                             "a":  "00",
+                             "b":  "99",
+                             "x":  "0007",
+                             "y":  "0028",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C4",
+                             "opcode_context":  {
+                                                    "m4":  "03",
+                                                    "m3":  "BD",
+                                                    "m2":  "43",
+                                                    "m1":  "8C",
+                                                    "p0":  "BD",
+                                                    "p1":  "64",
+                                                    "p2":  "03",
+                                                    "p3":  "9E"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "439E",
+                             "cycle":  "0000000003C59903",
+                             "s":  "0788",
+                             "wpaddr":  "0788",
+                             "old":  "03",
+                             "new":  "9E",
+                             "a":  "07",
+                             "b":  "99",
+                             "x":  "0007",
+                             "y":  "0028",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C0",
+                             "opcode_context":  {
+                                                    "m4":  "AD",
+                                                    "m3":  "9F",
+                                                    "m2":  "00",
+                                                    "m1":  "C6",
+                                                    "p0":  "39",
+                                                    "p1":  "B6",
+                                                    "p2":  "00",
+                                                    "p3":  "05"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "439E",
+                             "cycle":  "0000000003C59903",
+                             "s":  "0787",
+                             "wpaddr":  "0787",
+                             "old":  "F8",
+                             "new":  "43",
+                             "a":  "07",
+                             "b":  "99",
+                             "x":  "0007",
+                             "y":  "0028",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C0",
+                             "opcode_context":  {
+                                                    "m4":  "AD",
+                                                    "m3":  "9F",
+                                                    "m2":  "00",
+                                                    "m1":  "C6",
+                                                    "p0":  "39",
+                                                    "p1":  "B6",
+                                                    "p2":  "00",
+                                                    "p3":  "05"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "19BB",
+                             "cycle":  "0000000003C5990F",
+                             "s":  "0786",
+                             "wpaddr":  "0786",
+                             "old":  "19",
+                             "new":  "BB",
+                             "a":  "07",
+                             "b":  "99",
+                             "x":  "0007",
+                             "y":  "0028",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C0",
+                             "opcode_context":  {
+                                                    "m4":  "F1",
+                                                    "m3":  "BD",
+                                                    "m2":  "1A",
+                                                    "m1":  "87",
+                                                    "p0":  "BD",
+                                                    "p1":  "1A",
+                                                    "p2":  "05",
+                                                    "p3":  "BD"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "19BB",
+                             "cycle":  "0000000003C5990F",
+                             "s":  "0785",
+                             "wpaddr":  "0785",
+                             "old":  "3F",
+                             "new":  "19",
+                             "a":  "07",
+                             "b":  "99",
+                             "x":  "0007",
+                             "y":  "0028",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C0",
+                             "opcode_context":  {
+                                                    "m4":  "F1",
+                                                    "m3":  "BD",
+                                                    "m2":  "1A",
+                                                    "m1":  "87",
+                                                    "p0":  "BD",
+                                                    "p1":  "1A",
+                                                    "p2":  "05",
+                                                    "p3":  "BD"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "1A90",
+                             "cycle":  "0000000003C59925",
+                             "s":  "0784",
+                             "wpaddr":  "0784",
+                             "old":  "C0",
+                             "new":  "00",
+                             "a":  "00",
+                             "b":  "99",
+                             "x":  "0007",
+                             "y":  "0028",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C4",
+                             "opcode_context":  {
+                                                    "m4":  "00",
+                                                    "m3":  "00",
+                                                    "m2":  "34",
+                                                    "m1":  "02",
+                                                    "p0":  "AA",
+                                                    "p1":  "89",
+                                                    "p2":  "00",
+                                                    "p3":  "8E"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "1A98",
+                             "cycle":  "0000000003C59933",
+                             "s":  "0783",
+                             "wpaddr":  "0783",
+                             "old":  "1A",
+                             "new":  "98",
+                             "a":  "00",
+                             "b":  "99",
+                             "x":  "0007",
+                             "y":  "0028",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C4",
+                             "opcode_context":  {
+                                                    "m4":  "A7",
+                                                    "m3":  "89",
+                                                    "m2":  "00",
+                                                    "m1":  "8E",
+                                                    "p0":  "35",
+                                                    "p1":  "02",
+                                                    "p2":  "A4",
+                                                    "p3":  "89"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "1A98",
+                             "cycle":  "0000000003C59933",
+                             "s":  "0782",
+                             "wpaddr":  "0782",
+                             "old":  "72",
+                             "new":  "1A",
+                             "a":  "00",
+                             "b":  "99",
+                             "x":  "0007",
+                             "y":  "0028",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C4",
+                             "opcode_context":  {
+                                                    "m4":  "A7",
+                                                    "m3":  "89",
+                                                    "m2":  "00",
+                                                    "m1":  "8E",
+                                                    "p0":  "35",
+                                                    "p1":  "02",
+                                                    "p2":  "A4",
+                                                    "p3":  "89"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "1A98",
+                             "cycle":  "0000000003C59933",
+                             "s":  "0781",
+                             "wpaddr":  "0781",
+                             "old":  "06",
+                             "new":  "72",
+                             "a":  "00",
+                             "b":  "99",
+                             "x":  "0007",
+                             "y":  "0028",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C4",
+                             "opcode_context":  {
+                                                    "m4":  "A7",
+                                                    "m3":  "89",
+                                                    "m2":  "00",
+                                                    "m1":  "8E",
+                                                    "p0":  "35",
+                                                    "p1":  "02",
+                                                    "p2":  "A4",
+                                                    "p3":  "89"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "1A98",
+                             "cycle":  "0000000003C59933",
+                             "s":  "0780",
+                             "wpaddr":  "0780",
+                             "old":  "28",
+                             "new":  "06",
+                             "a":  "00",
+                             "b":  "99",
+                             "x":  "0007",
+                             "y":  "0028",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C4",
+                             "opcode_context":  {
+                                                    "m4":  "A7",
+                                                    "m3":  "89",
+                                                    "m2":  "00",
+                                                    "m1":  "8E",
+                                                    "p0":  "35",
+                                                    "p1":  "02",
+                                                    "p2":  "A4",
+                                                    "p3":  "89"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "19BE",
+                             "cycle":  "0000000003C59A51",
+                             "s":  "0786",
+                             "wpaddr":  "0786",
+                             "old":  "BB",
+                             "new":  "BE",
+                             "a":  "00",
+                             "b":  "99",
+                             "x":  "0007",
+                             "y":  "0028",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C4",
+                             "opcode_context":  {
+                                                    "m4":  "87",
+                                                    "m3":  "BD",
+                                                    "m2":  "1A",
+                                                    "m1":  "05",
+                                                    "p0":  "BD",
+                                                    "p1":  "1A",
+                                                    "p2":  "58",
+                                                    "p3":  "39"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "19BE",
+                             "cycle":  "0000000003C59A51",
+                             "s":  "0785",
+                             "wpaddr":  "0785",
+                             "old":  "19",
+                             "new":  "19",
+                             "a":  "00",
+                             "b":  "99",
+                             "x":  "0007",
+                             "y":  "0028",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C4",
+                             "opcode_context":  {
+                                                    "m4":  "87",
+                                                    "m3":  "BD",
+                                                    "m2":  "1A",
+                                                    "m1":  "05",
+                                                    "p0":  "BD",
+                                                    "p1":  "1A",
+                                                    "p2":  "58",
+                                                    "p3":  "39"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "19C1",
+                             "cycle":  "0000000003C59A8F",
+                             "s":  "0786",
+                             "wpaddr":  "0786",
+                             "old":  "BE",
+                             "new":  "C1",
+                             "a":  "00",
+                             "b":  "00",
+                             "x":  "0007",
+                             "y":  "0028",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C4",
+                             "opcode_context":  {
+                                                    "m4":  "05",
+                                                    "m3":  "BD",
+                                                    "m2":  "1A",
+                                                    "m1":  "58",
+                                                    "p0":  "39",
+                                                    "p1":  "34",
+                                                    "p2":  "02",
+                                                    "p3":  "7D"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "19C1",
+                             "cycle":  "0000000003C59A8F",
+                             "s":  "0785",
+                             "wpaddr":  "0785",
+                             "old":  "19",
+                             "new":  "19",
+                             "a":  "00",
+                             "b":  "00",
+                             "x":  "0007",
+                             "y":  "0028",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C4",
+                             "opcode_context":  {
+                                                    "m4":  "05",
+                                                    "m3":  "BD",
+                                                    "m2":  "1A",
+                                                    "m1":  "58",
+                                                    "p0":  "39",
+                                                    "p1":  "34",
+                                                    "p2":  "02",
+                                                    "p3":  "7D"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "280F",
+                             "cycle":  "0000000003C59AD4",
+                             "s":  "078A",
+                             "wpaddr":  "078A",
+                             "old":  "0C",
+                             "new":  "0F",
+                             "a":  "00",
+                             "b":  "00",
+                             "x":  "0007",
+                             "y":  "0028",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C4",
+                             "opcode_context":  {
+                                                    "m4":  "8C",
+                                                    "m3":  "BD",
+                                                    "m2":  "64",
+                                                    "m1":  "03",
+                                                    "p0":  "9E",
+                                                    "p1":  "2D",
+                                                    "p2":  "30",
+                                                    "p3":  "01"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "280F",
+                             "cycle":  "0000000003C59AD4",
+                             "s":  "0789",
+                             "wpaddr":  "0789",
+                             "old":  "28",
+                             "new":  "28",
+                             "a":  "00",
+                             "b":  "00",
+                             "x":  "0007",
+                             "y":  "0028",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C4",
+                             "opcode_context":  {
+                                                    "m4":  "8C",
+                                                    "m3":  "BD",
+                                                    "m2":  "64",
+                                                    "m1":  "03",
+                                                    "p0":  "9E",
+                                                    "p1":  "2D",
+                                                    "p2":  "30",
+                                                    "p3":  "01"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "FEC6",
+                             "cycle":  "0000000003C59B81",
+                             "s":  "078C",
+                             "wpaddr":  "078C",
+                             "old":  "C3",
+                             "new":  "C6",
+                             "a":  "00",
+                             "b":  "0B",
+                             "x":  "0672",
+                             "y":  "0028",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C1",
+                             "opcode_context":  {
+                                                    "m4":  "D2",
+                                                    "m3":  "BD",
+                                                    "m2":  "6B",
+                                                    "m1":  "4D",
+                                                    "p0":  "BD",
+                                                    "p1":  "58",
+                                                    "p2":  "BB",
+                                                    "p3":  "BD"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "FEC6",
+                             "cycle":  "0000000003C59B81",
+                             "s":  "078B",
+                             "wpaddr":  "078B",
+                             "old":  "FE",
+                             "new":  "FE",
+                             "a":  "00",
+                             "b":  "0B",
+                             "x":  "0672",
+                             "y":  "0028",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C1",
+                             "opcode_context":  {
+                                                    "m4":  "D2",
+                                                    "m3":  "BD",
+                                                    "m2":  "6B",
+                                                    "m1":  "4D",
+                                                    "p0":  "BD",
+                                                    "p1":  "58",
+                                                    "p2":  "BB",
+                                                    "p3":  "BD"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "6B6A",
+                             "cycle":  "0000000003C59BA6",
+                             "s":  "078A",
+                             "wpaddr":  "078A",
+                             "old":  "0F",
+                             "new":  "6A",
+                             "a":  "00",
+                             "b":  "0B",
+                             "x":  "0672",
+                             "y":  "0028",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C4",
+                             "opcode_context":  {
+                                                    "m4":  "85",
+                                                    "m3":  "BD",
+                                                    "m2":  "53",
+                                                    "m1":  "30",
+                                                    "p0":  "0D",
+                                                    "p1":  "7C",
+                                                    "p2":  "27",
+                                                    "p3":  "04"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "6B6A",
+                             "cycle":  "0000000003C59BA6",
+                             "s":  "0789",
+                             "wpaddr":  "0789",
+                             "old":  "28",
+                             "new":  "6B",
+                             "a":  "00",
+                             "b":  "0B",
+                             "x":  "0672",
+                             "y":  "0028",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C4",
+                             "opcode_context":  {
+                                                    "m4":  "85",
+                                                    "m3":  "BD",
+                                                    "m2":  "53",
+                                                    "m1":  "30",
+                                                    "p0":  "0D",
+                                                    "p1":  "7C",
+                                                    "p2":  "27",
+                                                    "p3":  "04"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "51B3",
+                             "cycle":  "0000000003C59BF0",
+                             "s":  "078A",
+                             "wpaddr":  "078A",
+                             "old":  "6A",
+                             "new":  "72",
+                             "a":  "00",
+                             "b":  "0B",
+                             "x":  "0672",
+                             "y":  "0028",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C4",
+                             "opcode_context":  {
+                                                    "m4":  "35",
+                                                    "m3":  "96",
+                                                    "m2":  "34",
+                                                    "m1":  "16",
+                                                    "p0":  "0D",
+                                                    "p1":  "84",
+                                                    "p2":  "10",
+                                                    "p3":  "27"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "51B3",
+                             "cycle":  "0000000003C59BF0",
+                             "s":  "0789",
+                             "wpaddr":  "0789",
+                             "old":  "6B",
+                             "new":  "06",
+                             "a":  "00",
+                             "b":  "0B",
+                             "x":  "0672",
+                             "y":  "0028",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C4",
+                             "opcode_context":  {
+                                                    "m4":  "35",
+                                                    "m3":  "96",
+                                                    "m2":  "34",
+                                                    "m1":  "16",
+                                                    "p0":  "0D",
+                                                    "p1":  "84",
+                                                    "p2":  "10",
+                                                    "p3":  "27"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "51B3",
+                             "cycle":  "0000000003C59BF0",
+                             "s":  "0788",
+                             "wpaddr":  "0788",
+                             "old":  "9E",
+                             "new":  "0B",
+                             "a":  "00",
+                             "b":  "0B",
+                             "x":  "0672",
+                             "y":  "0028",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C4",
+                             "opcode_context":  {
+                                                    "m4":  "35",
+                                                    "m3":  "96",
+                                                    "m2":  "34",
+                                                    "m1":  "16",
+                                                    "p0":  "0D",
+                                                    "p1":  "84",
+                                                    "p2":  "10",
+                                                    "p3":  "27"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "51B3",
+                             "cycle":  "0000000003C59BF0",
+                             "s":  "0787",
+                             "wpaddr":  "0787",
+                             "old":  "43",
+                             "new":  "00",
+                             "a":  "00",
+                             "b":  "0B",
+                             "x":  "0672",
+                             "y":  "0028",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C4",
+                             "opcode_context":  {
+                                                    "m4":  "35",
+                                                    "m3":  "96",
+                                                    "m2":  "34",
+                                                    "m1":  "16",
+                                                    "p0":  "0D",
+                                                    "p1":  "84",
+                                                    "p2":  "10",
+                                                    "p3":  "27"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "FEC9",
+                             "cycle":  "0000000003C59C2B",
+                             "s":  "078C",
+                             "wpaddr":  "078C",
+                             "old":  "C6",
+                             "new":  "C9",
+                             "a":  "00",
+                             "b":  "0B",
+                             "x":  "0672",
+                             "y":  "0028",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C0",
+                             "opcode_context":  {
+                                                    "m4":  "4D",
+                                                    "m3":  "BD",
+                                                    "m2":  "58",
+                                                    "m1":  "BB",
+                                                    "p0":  "BD",
+                                                    "p1":  "5C",
+                                                    "p2":  "D0",
+                                                    "p3":  "0F"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "FEC9",
+                             "cycle":  "0000000003C59C2B",
+                             "s":  "078B",
+                             "wpaddr":  "078B",
+                             "old":  "FE",
+                             "new":  "FE",
+                             "a":  "00",
+                             "b":  "0B",
+                             "x":  "0672",
+                             "y":  "0028",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C0",
+                             "opcode_context":  {
+                                                    "m4":  "4D",
+                                                    "m3":  "BD",
+                                                    "m2":  "58",
+                                                    "m1":  "BB",
+                                                    "p0":  "BD",
+                                                    "p1":  "5C",
+                                                    "p2":  "D0",
+                                                    "p3":  "0F"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "FECC",
+                             "cycle":  "0000000003C59CEE",
+                             "s":  "078C",
+                             "wpaddr":  "078C",
+                             "old":  "C9",
+                             "new":  "CC",
+                             "a":  "05",
+                             "b":  "0B",
+                             "x":  "0366",
+                             "y":  "0000",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C4",
+                             "opcode_context":  {
+                                                    "m4":  "BB",
+                                                    "m3":  "BD",
+                                                    "m2":  "5C",
+                                                    "m1":  "D0",
+                                                    "p0":  "0F",
+                                                    "p1":  "2C",
+                                                    "p2":  "20",
+                                                    "p3":  "38"
+                                                }
+                         },
+                         {
+                             "tag":  "SW",
+                             "pc":  "FECC",
+                             "cycle":  "0000000003C59CEE",
+                             "s":  "078B",
+                             "wpaddr":  "078B",
+                             "old":  "FE",
+                             "new":  "FE",
+                             "a":  "05",
+                             "b":  "0B",
+                             "x":  "0366",
+                             "y":  "0000",
+                             "u":  "0672",
+                             "dp":  "00",
+                             "cc":  "C4",
+                             "opcode_context":  {
+                                                    "m4":  "BB",
+                                                    "m3":  "BD",
+                                                    "m2":  "5C",
+                                                    "m1":  "D0",
+                                                    "p0":  "0F",
+                                                    "p1":  "2C",
+                                                    "p2":  "20",
+                                                    "p3":  "38"
+                                                }
+                         }
+                     ],
+    "anchors":  {
+                    "fc4d":  {
+                                 "pc":  "00FC",
+                                 "cycle":  "0000000003C592B3",
+                                 "s":  "07AA",
+                                 "x":  "8132",
+                                 "y":  "FC4D",
+                                 "host":  {
+                                              "44":  "00",
+                                              "47":  "0000",
+                                              "49":  "01A0",
+                                              "4d":  "00"
+                                          },
+                                 "ret":  "FCDE",
+                                 "ram_sha256":  "9ED56A2D5B90426E46C2063B6B32B3FBE0A914C5F1D963F048C92127C93EFC3A"
+                             },
+                    "queue":  {
+                                  "pc":  "5C18",
+                                  "cycle":  "0000000003C5931F",
+                                  "s":  "0798",
+                                  "x":  "59EB",
+                                  "y":  "FC4F",
+                                  "host":  {
+                                               "44":  "00",
+                                               "47":  "0000",
+                                               "49":  "01A0",
+                                               "4d":  "31"
+                                           },
+                                  "ret":  "59E9",
+                                  "ram_sha256":  "1460D4B929BA045E930AF7DA967E8BC66F127CDE4526DA311F57EDE4199A4859"
+                              },
+                    "outer_fe70":  {
+                                       "pc":  "FE70",
+                                       "cycle":  "0000000003C59673",
+                                       "s":  "078D",
+                                       "stack":  {
+                                                     "s0":  "C047",
+                                                     "s2":  "2700",
+                                                     "s4":  "80A6",
+                                                     "s6":  "FC4F",
+                                                     "s8":  "0672",
+                                                     "s10":  "025A"
+                                                 },
+                                       "ret":  "C047"
+                                   },
+                    "nested_fe70":  {
+                                        "pc":  "FE70",
+                                        "cycle":  "0000000003C5994E",
+                                        "s":  "0778",
+                                        "stack":  {
+                                                      "s0":  "C400",
+                                                      "s2":  "9900",
+                                                      "s4":  "0007",
+                                                      "s6":  "0028",
+                                                      "s8":  "0672",
+                                                      "s10":  "9E28"
+                                                  },
+                                        "ret":  "C400"
+                                    },
+                    "ff13":  {
+                                 "pc":  "FF13",
+                                 "cycle":  "0000000003C59A27",
+                                 "s":  "0778",
+                                 "stack":  {
+                                               "s0":  "C400",
+                                               "s2":  "9900",
+                                               "s4":  "0007",
+                                               "s6":  "0028",
+                                               "s8":  "0672",
+                                               "s10":  "9E28"
+                                           },
+                                 "ret":  "C400"
+                             },
+                    "fec9":  {
+                                 "pc":  "FEC9",
+                                 "cycle":  "0000000003C59CEE",
+                                 "s":  "078D",
+                                 "stack":  {
+                                               "s0":  "C047",
+                                               "s2":  "2700",
+                                               "s4":  "80A6",
+                                               "s6":  "FC4F",
+                                               "s8":  "0672",
+                                               "s10":  "025A"
+                                           },
+                                 "ret":  "C047"
+                             },
+                    "first_5cd0":  {
+                                       "pc":  "5CD0",
+                                       "cycle":  "0000000003C59CF6",
+                                       "s":  "078B",
+                                       "u":  "0672",
+                                       "x":  "0366",
+                                       "y":  "0000",
+                                       "host":  {
+                                                    "44":  "00",
+                                                    "47":  "01A0",
+                                                    "49":  "01C5",
+                                                    "4d":  "31"
+                                                },
+                                       "stack":  {
+                                                     "s0":  "FECC",
+                                                     "s2":  "C047",
+                                                     "s4":  "2700",
+                                                     "s6":  "80A6",
+                                                     "s8":  "FC4F",
+                                                     "s10":  "5F91"
+                                                 },
+                                       "ret":  "FECC",
+                                       "ram_sha256":  "6F51BB65E70D31D65C4B1054221973C77C3B636FE6443CE30802388686ADA4D9"
+                                   }
+                },
+    "validation":  {
+                       "validator":  "tools/Curate-StackWriterCapture41.ps1",
+                       "actual_mame_sha256":  "0FCE5A88DF4F9D9B1FBF1405812C00848036E615993780978D967DA34204CB7A",
+                       "actual_rom_zip_sha256":  "E2553AFA6B8E9DEF55BD920E4BED77A4324696C1E358B73BE70BFD2C58179989",
+                       "actual_rom_entry_sha1":  "402D1518BB78FDC489B06C2AABC771E5CE151847",
+                       "source_campaign_pins_verified":  true,
+                       "source_input_lua_sha256":  "7C664323A5725E9FB294CB201B17B855564AF2E4A500560ED499F1EE45179D0D",
+                       "derived_input_only_declared_patch":  true,
+                       "debugger_allowlisted_breakpoints_watchpoint_reads_saves":  true,
+                       "debugger_has_no_load_write_or_state_injection":  true,
+                       "arguments_isolated_noreadconfig_original_rom":  true,
+                       "event_cap_enforced":  true,
+                       "save_cap_enforced":  true,
+                       "cycles_monotonic":  true,
+                       "old_bytes_match_fc4d_then_prior_new":  true,
+                       "final_stack_window_matches_stop5cd0":  true,
+                       "target_0785_transition_00_to_19":  true,
+                       "writer_opcode_verified_against_original_rom":  true,
+                       "prior_capture36_fixture_and_raw_unchanged":  true,
+                       "classification_basis":  "derived from the executed checks above; the free-text classification string is descriptive, not used as evidence"
+                   },
+    "next_task":  "Trace the remaining 0785-marker consumers and the exact 438C/19B8/1A87 stack order against a second independent natural gap before attributing later transitions; do not build an adapter from these writes.",
+    "limits":  [
+                   "Single fresh FC4D-\u003efirst 5CD0 gap; no continuous execution or autonomous IRQ cadence is claimed.",
+                   "The fresh occurrence is not the historical occurrence; 0785 final=19 matches only the snapshotted net delta.",
+                   "The first watched 0785 write is PSHS B,CC -\u003e 3F; the final 19 comes later from the JSR return high byte. These are distinct events.",
+                   "Later inter-service deltas and downstream consumers are not recovered here."
+               ]
+}

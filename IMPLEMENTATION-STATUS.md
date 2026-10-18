@@ -1,5 +1,34 @@
 # Implementation and evidence boundaries
 
+18 October integrate59 IRQ-suffix correction: native `5CD0` flags are now
+explicit known-mask partial state, all unknown after the service and only
+N=0/Z=1/V=0/C=0 after `FECC CLR <$2C`; no full `CC` is copied from the
+pre-service frame. The caller-controlled `expectedEntryS` bypass was removed.
+The 6B4D component accepts only the independently captured FEC3 frames `0786`
+and `078D`; the suffix accepts only `078D` and requires the captured `078B`
+service frame. Unsupported S is rejected before mutation, with both captured
+frames positively exercised and `S=0001`, `0002` and `078C` negatives proving a
+full unchanged memory image. Fixture negatives now assert their intended
+stage-specific rules instead of stopping at a hash. All intermediate full 2 KB
+and cycle checks are unchanged. Clean build has zero warnings/errors; the full
+headless suite is **415 groups**, exit 0. See
+[the correction pass](docs/recovery/INTEGRATE59-IRQ-SUFFIX-FLAGS-FRAME-PREFLIGHT.md).
+
+18 October integrate58 IRQ-suffix composition: accepted capture57 attempt 2 is
+composed on one machine from only the captured `FEC3` full 2 KB and registers.
+`FEC3 JSR 6B4D` (captured `S=078D`; integrate59 replaced the temporary explicit
+override with closed captured frames), `FEC6 JSR 58BB` (empty meter queue), the native `5CD0` zero-guard
+service, the actual `FEC9` return push, `5D3A RTS` pop and `FECC CLR <$2C` reach
+`FECE`. Full 2 KB is compared at all five intermediate anchors and the capture57
+trace supplies full register/CC/stack/cycle proof for the CPU components; native
+`5CD0` flags are explicit partial state because that adapter has no CPU file.
+Wrong frame/branch/ROM/continuation, duplicate owner, intermediate tamper and
+reseed controls reject before mutation. Capture56 attempt 1 remains preserved as
+the wrong-`FECC`-guard historical failure. Clean build has zero warnings/errors;
+the full headless suite is **415 groups** (413 baseline plus two), exit 0. See
+[the composition pass](docs/recovery/INTEGRATE58-IRQ-SUFFIX-COMPOSITION-PASS.md).
+No Live, whole-IRQ, cadence or audio claim.
+
 18 October fresh sound evidence / gate-3 reconciliation: accepted `3e19734`
 passes **401 groups**. Capture33 is a single-occurrence anchor set whose
 `FECC/FECE` is a nested IRQ return, not the matched completion of its `5CD0`.

@@ -107,6 +107,9 @@ public static class AddersIrq6B4DZeroStateVerification
 
         Preflight("branch",machine=>machine.Memory[0x0073]=0x01);
         Preflight("frame",s:0x0784);
+        Preflight("s1",s:0x0001);
+        Preflight("snearlow",s:0x0002);
+        Preflight("snearhigh",s:0x078C);
         Preflight("opcode",machine=>machine.Memory[0x6B4D]=0x0C);
         Preflight("missingrom",machine=>machine.Memory[0x51B1]=0x00);
 

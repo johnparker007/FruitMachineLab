@@ -19,6 +19,9 @@ public static class AddersIrq6B4DZeroStateExecution
     public const ushort Entry=0x6B4D;
     public const ushort Return=0xFEC6;
     public const ushort CaptureS=0x0786;
+    // Capture57's independently evidenced FEC3 JSR entry frame. It is a closed
+    // placement, not a caller-supplied guard override.
+    public const ushort SuffixCaptureS=0x078D;
     public const ushort CaptureU=0x0672;
     public const string CallBytes="BD6B4D";
 
@@ -65,11 +68,13 @@ public static class AddersIrq6B4DZeroStateExecution
     public static ulong CallCycles {get;}=
         (ulong)M6809InstructionTiming.Decode(Convert.FromHexString(CallBytes)).Cycles;
 
+    public static bool IsSupportedEntryS(ushort s)=>s==CaptureS || s==SuffixCaptureS;
+
     public static void Validate(Machine machine,ushort s,ushort u)
     {
         ArgumentNullException.ThrowIfNull(machine);
-        if(s!=CaptureS)throw new NotSupportedException(
-            $"6B4D component requires captured S={CaptureS:X4}, got {s:X4}");
+        if(!IsSupportedEntryS(s))throw new NotSupportedException(
+            $"6B4D component supports only captured FEC3 entry S={CaptureS:X4} or {SuffixCaptureS:X4}, got {s:X4}");
         if(u!=CaptureU)throw new NotSupportedException(
             $"6B4D component requires captured U={CaptureU:X4}, got {u:X4}");
 

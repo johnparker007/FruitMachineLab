@@ -6608,5 +6608,20 @@
     "path": "evidence/mpu4/collection/irq-suffix-capture57.json",
     "bytes": 125927,
     "sha256": "B7029FD86E2D93154E1EA907E24A589CE1C1A8DE2BD17CB81016BD4ADE6A8545"
+  },
+  {
+    "path": "evidence/mpu4/collection/irq-suffix-capture57-composition.json",
+    "bytes": 116746,
+    "sha256": "859E96D303DEBC044B529C60327427FB3D92EB9D58FA3EE20A716D27330F4EFA"
+  },
+  {
+    "path": "docs/recovery/INTEGRATE58-IRQ-SUFFIX-COMPOSITION-PASS.md",
+    "bytes": 4689,
+    "sha256": "92E007E0C97D53B148AD15797AB64BC2FC04FEB8D043137129762216FAFF9FF4"
+  },
+  {
+    "path": "docs/recovery/INTEGRATE59-IRQ-SUFFIX-FLAGS-FRAME-PREFLIGHT.md",
+    "bytes": 3437,
+    "sha256": "FF81A92B092D07902806C0782711C8CE100E64676C90E289EB30E4965CF47AC6"
   }
 ]

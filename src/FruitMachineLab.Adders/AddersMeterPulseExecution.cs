@@ -3,14 +3,15 @@ using FruitMachineLab.Runtime;
 namespace FruitMachineLab.Adders;
 
 public readonly record struct AddersMeterPulseState(
-    ulong Cycle,ushort PC,ushort S,ushort X,ushort Y,ushort U,byte A,byte B);
+    ulong Cycle,ushort PC,ushort S,ushort X,ushort Y,ushort U,byte A,byte B,byte CC);
 
 public sealed record AddersMeterPulseResult(
     AddersMeterPulseState CallState,
     AddersMeterPulseState ReturnState,
     ulong CallCycles,
     ulong HelperCycles,
-    byte[] MemoryAfter);
+    byte[] MemoryAfter,
+    IReadOnlyList<AddersMeterPulseState> Boundaries);
 
 public static class AddersMeterPulseExecution
 {
@@ -60,67 +61,96 @@ public static class AddersMeterPulseExecution
     }
 
     public static AddersMeterPulseResult Execute(
-        Machine machine,ulong startCycle,ushort s,ushort u,ushort x,ushort y,byte a,byte b)
+        Machine machine,ulong startCycle,ushort s,ushort u,ushort x,ushort y,byte a,byte b,byte cc=0)
     {
         Validate(machine,s);
-        var callState=new AddersMeterPulseState(startCycle,Call,s,x,y,u,a,b);
+        var callState=new AddersMeterPulseState(startCycle,Call,s,x,y,u,a,b,cc);
+        var boundaries=new List<AddersMeterPulseState>(40);
         ulong cycle=startCycle;
-        void Step(string bytes,bool? taken=null){cycle=checked(cycle+Cost(bytes,taken));}
+        ushort pc=Call;
 
-        Step(CallBytes);
-        s=Cell.Subtract(s,2);
-        machine.WriteWord(s,Return);
-
-        Step("B6719B");a=machine.Memory[0x719B];
-        Step("8504");
-        Step("262D",false);
-        Step("0D3A");
-        Step("2B28",false);
-        Step("9639");a=machine.Memory[0x0039];
-        Step("2645",false);
-        Step("8E0366");x=0x0366;
-        Step("8609");a=0x09;
-        Step("2006");
-        while(true)
+        void Record()=>boundaries.Add(new(cycle,pc,s,x,y,u,a,b,cc));
+        void Step(string bytes,ushort address,ushort next,bool? taken=null,Action? effect=null)
         {
-            Step("8C036A");
-            bool c=x<0x036A;
-            Step("25F5",c);
-            if(!c)break;
-            Step("10AE81");
-            ushort value=machine.ReadWord(x);
-            y=value;
-            x=Cell.Add(x,2);
-            if(value!=0)throw new InvalidOperationException("58BB meter word changed during scanned path");
-            Step("2627",false);
-            Step("4C");a++;
+            if(pc!=address)throw new InvalidDataException(
+                $"58BB expected PC {address:X4}, got {pc:X4}");
+            Record();
+            cycle=checked(cycle+Cost(bytes,taken));
+            effect?.Invoke();
+            pc=next;
         }
 
-        Step("8E035E");x=0x035E;
-        Step("8601");a=0x01;
-        Step("2006");
+        Step(CallBytes,Call,Entry,effect:()=>{s=Cell.Subtract(s,2);machine.WriteWord(s,Return);});
+        Step("B6719B",0x58BB,0x58BE,effect:()=>{a=machine.Memory[0x719B];cc=SetNZV(cc,a,8);});
+        Step("8504",0x58BE,0x58C0,effect:()=>cc=SetNZV(cc,(byte)(a&0x04),8));
+        Step("262D",0x58C0,0x58C2,taken:false);
+        Step("0D3A",0x58C2,0x58C4,effect:()=>cc=SetNZV(cc,machine.Memory[0x003A],8));
+        Step("2B28",0x58C4,0x58C6,taken:false);
+        Step("9639",0x58C6,0x58C8,effect:()=>{a=machine.Memory[0x0039];cc=SetNZV(cc,a,8);});
+        Step("2645",0x58C8,0x58CA,taken:false);
+        Step("8E0366",0x58CA,0x58CD,effect:()=>{x=0x0366;cc=SetNZV(cc,x,16);});
+        Step("8609",0x58CD,0x58CF,effect:()=>{a=0x09;cc=SetNZV(cc,a,8);});
+        Step("2006",0x58CF,0x58D7);
         while(true)
         {
-            Step("8C0366");
-            bool c=x<0x0366;
-            Step("25F5",c);
-            if(!c)break;
-            Step("10AE81");
-            ushort value=machine.ReadWord(x);
-            y=value;
-            x=Cell.Add(x,2);
-            if(value!=0)throw new InvalidOperationException("58BB meter word changed during scanned path");
-            Step("2627",false);
-            Step("4C");a++;
+            Step("8C036A",0x58D7,0x58DA,effect:()=>cc=Compare16(cc,x,0x036A));
+            bool carry=(cc&0x01)!=0;
+            Step("25F5",0x58DA,carry?(ushort)0x58D1:(ushort)0x58DC,taken:carry);
+            if(!carry)break;
+            Step("10AE81",0x58D1,0x58D4,effect:()=>{y=machine.ReadWord(x);x=Cell.Add(x,2);cc=SetNZV(cc,y,16);});
+            Step("2627",0x58D4,0x58D6,taken:false);
+            Step("4C",0x58D6,0x58D7,effect:()=>{a=unchecked((byte)(a+1));cc=Increment(cc,a);});
         }
 
-        Step("39");
-        if(machine.ReadWord(s)!=Return)
-            throw new InvalidDataException($"58BB return word {machine.ReadWord(s):X4}, expected {Return:X4}");
-        s=Cell.Add(s,2);
+        Step("8E035E",0x58DC,0x58DF,effect:()=>{x=0x035E;cc=SetNZV(cc,x,16);});
+        Step("8601",0x58DF,0x58E1,effect:()=>{a=0x01;cc=SetNZV(cc,a,8);});
+        Step("2006",0x58E1,0x58E9);
+        while(true)
+        {
+            Step("8C0366",0x58E9,0x58EC,effect:()=>cc=Compare16(cc,x,0x0366));
+            bool carry=(cc&0x01)!=0;
+            Step("25F5",0x58EC,carry?(ushort)0x58E3:(ushort)0x58EE,taken:carry);
+            if(!carry)break;
+            Step("10AE81",0x58E3,0x58E6,effect:()=>{y=machine.ReadWord(x);x=Cell.Add(x,2);cc=SetNZV(cc,y,16);});
+            Step("2627",0x58E6,0x58E8,taken:false);
+            Step("4C",0x58E8,0x58E9,effect:()=>{a=unchecked((byte)(a+1));cc=Increment(cc,a);});
+        }
 
-        var returnState=new AddersMeterPulseState(cycle,Return,s,x,y,u,a,b);
-        return new(callState,returnState,CallCycles,HelperCycles,machine.Memory.AsSpan(0,0x800).ToArray());
+        Step("39",0x58EE,Return,effect:()=>
+        {
+            if(machine.ReadWord(s)!=Return)
+                throw new InvalidDataException($"58BB return word {machine.ReadWord(s):X4}, expected {Return:X4}");
+            s=Cell.Add(s,2);
+        });
+        boundaries.Add(new(cycle,Return,s,x,y,u,a,b,cc));
+
+        var returnState=new AddersMeterPulseState(cycle,Return,s,x,y,u,a,b,cc);
+        return new(callState,returnState,CallCycles,HelperCycles,machine.Memory.AsSpan(0,0x800).ToArray(),boundaries);
+    }
+
+    private static byte SetNZV(byte cc,ushort value,int bits)
+    {
+        cc=(byte)(cc&~0x0E);
+        if(value==0)cc|=0x04;
+        if((value&(1<<(bits-1)))!=0)cc|=0x08;
+        return cc;
+    }
+
+    private static byte Increment(byte cc,byte value)
+    {
+        cc=SetNZV(cc,value,8);
+        if(value==0x80)cc|=0x02;
+        return cc;
+    }
+
+    private static byte Compare16(byte cc,ushort left,ushort right)
+    {
+        ushort result=unchecked((ushort)(left-right));
+        cc=(byte)(cc&~0x0F);
+        if(result==0)cc|=0x04;
+        if((result&0x8000)!=0)cc|=0x08;
+        if(((left^right)&(left^result)&0x8000)!=0)cc|=0x02;
+        if(left<right)cc|=0x01;
+        return cc;
     }
 }
-

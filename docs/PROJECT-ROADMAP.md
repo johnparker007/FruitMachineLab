@@ -1,6 +1,7 @@
 # Project roadmap
 
-Updated 18 October 2026 through `3e19734`. The source audit at `2916fa1` remains
+Updated 18 October 2026 through `eb7a40a` (415 groups). The suffix proof is
+accepted; the IRQ prefix and gate 3 remain open. The source audit at `2916fa1` remains
 historical context. This replaces older timing-first and byte-identical-rebuild
 priorities. Historical evidence remains in [CURRENT-HANDOFF.md](CURRENT-HANDOFF.md),
 recovery reports and implementation status. The historical exact-snapshot sound
@@ -21,7 +22,7 @@ ROMs/settings/projects; no installations/configuration changes without approval.
 | Stage | State and acceptance |
 | --- | --- |
 | A1 Capture inventory (P0) | Initial source-backed inventory in ENGINEERING-AUDIT.md extends COLLECTION-TRANSFER-PASS. `SkillCashLiveSession` direct reads are field-classified and fail closed under an optional strict policy; default compatibility remains. The same policy now covers `SkillCashData` extension/feature/alpha/scan static range loads, with compiled fallbacks for callers that pass no evidence directory. Other verification/caller/board and scheduling reads remain unenforced. See `docs/recovery/A1-CAPTURE-POLICY-PASS.md`. |
-| A2 Causal scheduling (P0) | Partial: timer3 phase/assertion, selected instruction acceptance/dispatch/scan/callback generated. Outer timer1 entry/occupancy and atomic helper/VM pacing remain captured. Accept selected game paths with generated scheduling and differential verification. |
+| A2 Causal scheduling (P0) | Partial: timer3 phase/assertion, selected instruction acceptance/dispatch/scan/callback generated. The captured `FEC3..FECE` suffix is composed on one machine (415 groups), but `FE70..FEC3` remains open. Outer timer1 entry/occupancy and atomic helper/VM pacing remain captured. Accept selected game paths with generated scheduling and differential verification. |
 | A3 Ten paid games (P1) | Open: three selected generated games pass using Live capture adapters. Accept ten complete games on one state, no runtime recorded schedules/results or manual repairs. Declared starting snapshot temporarily permitted. |
 | A4 Expanded coverage / 100 games (P1) | Partial gameplay includes paid spins/results, nudges, board links, Skill Cash, accounts and selected headless collection. Accept 100 games across outcomes/features/collection/background services with deterministic accounting/state checks. |
 | A5 Extended stability (P2) | Open: accept 1000 complete games with invariants and no unsupported execution boundaries. Synthetic payout transactions are not played games. |
@@ -135,6 +136,20 @@ focused review; do not dispatch the entire migration as one prompt.
    `5C18`, no logical scheduler, no reseed, captured host ABI, same-machine
    intermediate comparisons and meaningful negatives). A `FC4D` start remains a
    separate prerequisite.
+
+   **18 October suffix/prefix boundary:** integrate58/59 accepted the one-machine
+   `FEC3..FECE` suffix at 415 groups; this is not gate 3. Existing executable
+   components cover the selected `FE70` timer1 dispatch, `28FE`, `FEBA/2C`,
+   `27D2->438C`, `19B8/1A87/1A05/1A58`, idle `6403` and `280F..2851`. The nested
+   timer3 path between `19BB/19BE` is real occupancy and must stay explicit.
+   `27D2 2851..288E` is static-only; active `6403`, non-19B8 `C6`/`4167`, `7CCF`
+   and SWI alarms remain boundaries. Capture41/43/57 match the FC4D/outer-FE70/FEC3 anchors
+   but save no outer FE70 2 KB or timer phase, so the prefix cannot compose from
+   current fixtures without reverse-fitting or reseeding. Next is one minimal
+   extension of that campaign: save the FE70 2 KB, timer3 state and exact
+   `FE70->FEC3` rows including nested `FE70/FF13`, then translate the `2851..288E`
+   tail and compose; compare FEC3 2 KB, stack, `2C=FF`, cycles and occupancy.
+   Stop at the first mismatch. No Live, cadence, audio, hardware or gate-3 claim.
 4. **Replace finish CPU work, then IRQ occupancy separately.** Only after native
    state ownership is real, derive 5C7A/5CB5/5E2C and 777E..778B costs from the actual
    path. Natural 360 CPU cycles is an oracle, not a budget to fit; the inferred

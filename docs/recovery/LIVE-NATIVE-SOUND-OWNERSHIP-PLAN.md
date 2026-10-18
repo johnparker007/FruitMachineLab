@@ -134,15 +134,16 @@ service frames (`S=078B`, `U=0672`, `X=0366`, `Y=0000`, `A=05`, `B=0B`), not
 invent a frame. Capture33's nested `FECC/FECE` frame (`S=077F`) is not an outer
 completion.
 
-## Gate 3 decision (18 October)
+## Gate 3 decision (historical, 18 October)
 
-No Live implementation is authorized by this evidence. Gate 3 is not complete.
-The smallest genuine advance is not another per-pair fixture: it is a foreground
-delta ownership analysis of capture36's inter-service gaps. The captured
-task/channel/cache state is sound-owner output, but the gaps contain
-foreground/IRQ writes (observed at least `29`, `2C`, `2E/2F`, `33`, `6E`, stack
-`0770..0799` and occasional scan state). These are not recovered instruction
-writes and must not be guessed.
+This decision predates capture41/42/43 and integrate58/59. No Live implementation
+is authorized and gate 3 is not complete. The foreground delta analysis of
+capture36's inter-service gaps remains an open requirement for continuous service
+ownership, but it is no longer the immediate IRQ-prefix prerequisite; the suffix
+proof and remaining `FE70..FEC3` boundary are recorded in the next section. The
+captured gaps contain foreground/IRQ writes (`29`, `2C`, `2E/2F`, `33`, `6E`,
+stack `0770..0799` and scan state); these are not recovered instruction writes
+and must not be guessed.
 
 Analyze `queue->sv00`, every `fecc[i]->sv[i+1]`, `fecc24->cancel`,
 `cancel->5A10` and `5A10->5A1C`. Attribute every byte to one of: the native sound
@@ -150,6 +151,28 @@ owner; recovered `FE70/FF13/FEC9/FECC/FECE/5D3B/5CF3/5E29/5E2C/5E6D` code;
 recovered foreground `5A05/7159/5A14/5A10/5A1C` code; another known owner; or
 unknown. Stop at the first unknown byte and name the exact missing source/helper.
 Only after every delta is attributed may the following adapter be implemented.
+
+## IRQ prefix boundary after integrate58/59 (18 October)
+
+Integrate58/59 close only the captured `FEC3..FECE` suffix on one machine at
+**415 groups**. `FE70..FEC3` remains open and does not complete gate 3. For the
+selected occurrence, existing executable components cover the selected `FE70`
+timer1 dispatch, `28FE`, `FEBA/2C`, `27D2->438C`, `19B8/1A87/1A05/1A58`, idle
+`6403` and `280F..2851`. The nested timer3 path between `19BB/19BE` is a real
+occupancy and must stay explicit through the existing suspend/dispatch/callback/
+return components. `27D2 2851..288E` is static-only, and active `6403`, non-19B8
+`C6`/`4167`, `7CCF` and SWI alarms remain explicit boundaries.
+
+Capture41/43/57 have matching FC4D/outer-FE70/FEC3 anchors: capture41/43 trace the prefix stack
+and outer frame, capture57 supplies the FEC3/FECE 2 KB, but none saves the outer
+FE70 2 KB or timer phase. The prefix therefore cannot be composed from current
+fixtures without reverse-fitting the expected FEC3 delta or reseeding. The next
+task is one strict minimal extension of the same campaign: save the full FE70
+2 KB, timer3 phase/latch/counter/status and exact `FE70->FEC3` rows including
+nested `FE70/FF13`, then compose the existing components plus the missing
+`2851..288E` tail and compare the FEC3 2 KB, stack, `2C=FF`, cycles and nested
+occupancy before the accepted suffix. Stop at the first mismatch; no Live,
+whole-IRQ, cadence, audio, hardware or gate-3 claim.
 
 ## Smallest implementation slice (blocked on the delta analysis)
 

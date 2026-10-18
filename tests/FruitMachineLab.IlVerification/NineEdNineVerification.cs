@@ -22,9 +22,17 @@ internal sealed record VerificationReport(
     bool InputUnchanged,
     string EmittedSpanHex,
     int[] ChangedOffsets,
+    string EditedSpanHex,
+    string EditedOutputSha1,
+    string EditedOutputSha256,
+    int[] EditedChangedOffsets,
     string SourceMapRomSha256,
+    string SourceMapImageSha256,
+    bool SourceMapIsIdentity,
     int SourceMapSpanBytes,
     int SourceMapEntries,
+    string EditedSourceMapImageSha256,
+    int EditedSourceMapEntries,
     string[] IlAssemblyReferences,
     string[] VerifierAssemblyReferences,
     IReadOnlyList<VerificationCheck> Checks,
@@ -47,6 +55,10 @@ internal static class NineEdNineVerification
     private const string ExpectedSpanHex = "795BFF80787E795BFF807AAF792F";
     private const string ExpectedSpanSha256 =
         "A7BEC73F18CB7B8937768DE2BC6EC56DC1B98C2EC61C136F2B979153CF56AD77";
+    private const string ExpectedEditedSpanHex = "795BFF00787E795BFF807AAF792F";
+    private const string ExpectedEditedSha1 = "51E81CC5F41DA2AA659A4D14D277E9E78614EB6B";
+    private const string ExpectedEditedSha256 =
+        "A99D96F8EA8B4770D2D3828125F25894E831726FE44A79A37E0871FABA135ED2";
 
     private static readonly (ushort Address, ushort Token, string Operation, ushort? Literal)[]
         ExpectedNodes =
@@ -70,6 +82,8 @@ internal static class NineEdNineVerification
         VmIlDefinition definition = null!;
         VmIlCompileResult compile = null!;
         VmIlSourceMap map = null!;
+        VmIlEditCompileResult edited = null!;
+        VmIlSourceMap editedMap = null!;
         string[] ilReferences = Array.Empty<string>();
         string[] verifierReferences = Array.Empty<string>();
 
@@ -307,6 +321,243 @@ internal static class NineEdNineVerification
                 Assert(map.Resolve(0x9ED9).NodeIndex == 0, "First byte node differs");
                 Assert(map.Resolve(0x9EDC).NodeIndex == 0, "Operand byte node differs");
                 Assert(map.Resolve(0x9EE6).NodeIndex == 4, "Last byte node differs");
+            });
+
+            Check("Fixed original identity rejects caller-forged definition hashes and tampered images", () =>
+            {
+                byte[] tampered = (byte[])rom.Clone();
+                tampered[0x1400] ^= 1;
+                string tamperedSha1 = Convert.ToHexString(SHA1.HashData(tampered));
+                string tamperedSha256 = Convert.ToHexString(SHA256.HashData(tampered));
+                VmIlDefinition forged = definition with
+                {
+                    RomLength = tampered.Length,
+                    RomSha1 = tamperedSha1,
+                    RomSha256 = tamperedSha256
+                };
+
+                Reject(() => VmIlCompiler.CompileIdentity(forged, tampered), "SHA1");
+                Reject(() => VmIlCompiler.CompileEdit(
+                        tampered, new VmIlOperandEdit(0x9EDB, 0xFF80, 0xFF00)),
+                    "SHA1");
+                Reject(() => VmIlSourceMap.Create(forged), "identity");
+                Reject(() => VmIlSourceMap.Create(definition with
+                {
+                    RomSha256 = tamperedSha256
+                }), "identity");
+            });
+
+            Check("Supported same-size IL edit emits FF00 at 9EDC and preserves all other bytes", () =>
+            {
+                edited = VmIlCompiler.CompileEdit(
+                    rom, new VmIlOperandEdit(0x9EDB, 0xFF80, 0xFF00));
+
+                Assert(edited.Compile.EmittedBody.Length == 14,
+                    "Edited emitted body length differs");
+                Assert(Convert.ToHexString(edited.Compile.EmittedBody) == ExpectedEditedSpanHex,
+                    "Edited emitted body differs from 795BFF00787E795BFF807AAF792F");
+                Assert(edited.Compile.ChangedOffsets.SequenceEqual(new[] { 0x9EDC }),
+                    "Edited compile did not change exactly offset 9EDC");
+                Assert(edited.Compile.Image.Length == 65536,
+                    "Edited image length differs");
+                Assert(rom[0x9EDC] == 0x80 && edited.Compile.Image[0x9EDC] == 0x00,
+                    "9EDC was not 80 -> 00");
+                Assert(edited.Compile.Image[0x9EDB] == 0xFF,
+                    "Unexpected change to the first literal high byte");
+                Assert(edited.Compile.Image[0x9EE1] == 0xFF &&
+                       edited.Compile.Image[0x9EE2] == 0x80,
+                    "Second inline literal FF80 was not preserved");
+                Assert(edited.Compile.Image[0x9ED7] == 0x00 &&
+                       edited.Compile.Image[0x9ED8] == 0xF8,
+                    "VM header 00F8 was not preserved");
+
+                int diffCount = 0;
+                for (int offset = 0; offset < rom.Length; offset++)
+                {
+                    if (rom[offset] == edited.Compile.Image[offset]) continue;
+                    diffCount++;
+                    Assert(offset == 0x9EDC,
+                        $"Unexpected changed byte at {offset:X4}");
+                }
+                Assert(diffCount == 1, "Edited image diff is not exactly one byte");
+
+                string editedSha1 = Convert.ToHexString(SHA1.HashData(edited.Compile.Image));
+                string editedSha256 = Convert.ToHexString(SHA256.HashData(edited.Compile.Image));
+                Assert(editedSha1 == ExpectedEditedSha1, "Edited image SHA1 differs");
+                Assert(editedSha256 == ExpectedEditedSha256, "Edited image SHA256 differs");
+                Assert(edited.Compile.OutputSha256 == ExpectedEditedSha256,
+                    "Compile output SHA256 differs");
+                Assert(edited.Compile.InputSha256 == beforeSha256,
+                    "Compile input SHA256 differs");
+                Assert(edited.OriginalRomSha1 == beforeSha1 &&
+                       edited.OriginalRomSha256 == beforeSha256,
+                    "Edited result original identity differs");
+                Assert(!edited.IntegrityRepaired,
+                    "Edited artifact unexpectedly claims repaired integrity");
+                Assert(edited.IntegrityStatus.Contains("UNREPAIRED", StringComparison.Ordinal),
+                    "Edited artifact is not marked UNREPAIRED");
+
+                Assert(edited.Edit.NodeIndex == 0, "Edited node index differs");
+                Assert(edited.Edit.TokenAddress == 0x9ED9, "Edited token address differs");
+                Assert(edited.Edit.OperandAddress == 0x9EDB, "Edited operand address differs");
+                Assert(edited.Edit.Token == 0x795B, "Edited token differs");
+                Assert(edited.Edit.Operation == "vm_push_inline_word_literal",
+                    "Edited operation differs");
+                Assert(edited.Edit.OperandWidthBytes == 2, "Edited operand width differs");
+                Assert(edited.Edit.ExpectedOriginalValue == 0xFF80,
+                    "Edited expected original value differs");
+                Assert(edited.Edit.ActualOriginalValue == 0xFF80,
+                    "Edited actual original value differs");
+                Assert(edited.Edit.ReplacementValue == 0xFF00,
+                    "Edited replacement value differs");
+                Assert(edited.Edit.ExpectedOriginalBytesHex == "FF80",
+                    "Edited expected original bytes differ");
+                Assert(edited.Edit.ReplacementBytesHex == "FF00",
+                    "Edited replacement bytes differ");
+                Assert(edited.Edit.ChangedOffsets.SequenceEqual(new[] { 0x9EDC }),
+                    "Edited report changed offsets differ");
+            });
+
+            Check("Edited source map covers all 14 bytes and is bound to the exact output image", () =>
+            {
+                editedMap = VmIlSourceMap.CreateForBuild(
+                    edited.SourceDefinition, edited.Compile.Image, edited.Compile.EmittedBody);
+                string editedSha256 = Convert.ToHexString(SHA256.HashData(edited.Compile.Image));
+
+                Assert(editedMap.RomSha256 == beforeSha256,
+                    "Edited source map original identity differs");
+                Assert(editedMap.ImageSha256 == editedSha256,
+                    "Edited source map is not bound to the output image SHA256");
+                Assert(!editedMap.IsIdentityBuild,
+                    "Edited source map incorrectly claims an identity build");
+                Assert(editedMap.BodyStart == 0x9ED9 && editedMap.BodyEndExclusive == 0x9EE7,
+                    "Edited source-map span differs");
+                Assert(editedMap.Entries.Count == 14, "Edited source-map entry count differs");
+
+                for (int index = 0; index < 14; index++)
+                {
+                    ushort address = (ushort)(0x9ED9 + index);
+                    VmIlSourceMapEntry entry = editedMap.Resolve(address, editedSha256);
+                    Assert(entry.Address == address,
+                        $"Edited source-map address {address:X4} differs");
+                    Assert(entry.ImageByte == edited.Compile.Image[address],
+                        $"Edited source-map byte at {address:X4} differs from the image");
+                    VmIlNode node = definition.Nodes[entry.NodeIndex];
+                    Assert(entry.Token == node.Token,
+                        $"Edited source-map token at {address:X4} differs");
+                    Assert(entry.Operation == node.Operation,
+                        $"Edited source-map operation at {address:X4} differs");
+                    Assert(editedMap.ResolveNodeIndex(address, editedSha256) == entry.NodeIndex,
+                        $"Edited source-map reverse lookup at {address:X4} differs");
+                }
+
+                Assert(editedMap.Resolve(0x9EDC, editedSha256).ImageByte == 0x00,
+                    "Edited source map does not show 9EDC = 00");
+                Assert(editedMap.Resolve(0x9EDB, editedSha256).ImageByte == 0xFF,
+                    "Edited source map does not show 9EDB = FF");
+                Assert(editedMap.Resolve(0x9EE1, editedSha256).ImageByte == 0xFF &&
+                       editedMap.Resolve(0x9EE2, editedSha256).ImageByte == 0x80,
+                    "Edited source map does not preserve the second literal FF80");
+                Assert(map.Resolve(0x9EDC, beforeSha256).ImageByte == 0x80,
+                    "Original source map does not show 9EDC = 80");
+                Assert(editedMap.Resolve(0x9EDC, edited.Compile.Image).ImageByte == 0x00,
+                    "Edited source map image-span lookup differs");
+
+                Reject(() => map.Resolve(0x9EDC, editedSha256), "identity");
+                Reject(() => editedMap.Resolve(0x9EDC, beforeSha256), "identity");
+                Reject(() => editedMap.Resolve(0x9EDC, rom), "identity");
+
+                byte[] wrongBody = (byte[])edited.Compile.Image.Clone();
+                wrongBody[0x9EDC] = 0x80;
+                Reject(() => VmIlSourceMap.CreateForBuild(
+                        edited.SourceDefinition, wrongBody, edited.Compile.EmittedBody),
+                    "does not match");
+                Reject(() => VmIlSourceMap.CreateForBuild(
+                        edited.SourceDefinition with { BodyEndExclusive = 0x10001 },
+                        edited.Compile.Image, edited.Compile.EmittedBody),
+                    "invalid");
+            });
+
+            Check("Edit validation rejects unsupported values addresses tokens widths spans and multiple edits", () =>
+            {
+                VmIlOperandEdit valid = new(0x9EDB, 0xFF80, 0xFF00);
+                VmIlNode first = definition.Nodes[0];
+                VmIlNode[] rest = definition.Nodes.Skip(1).ToArray();
+
+                Reject(() => VmIlCompiler.CompileEdit(
+                        rom, new VmIlOperandEdit(0x9EDB, 0xFF81, 0xFF00)),
+                    "expected original");
+                Reject(() => VmIlCompiler.CompileEdit(
+                        rom, new VmIlOperandEdit(0x9EDC, 0xFF80, 0xFF00)),
+                    "operand address");
+                Reject(() => VmIlCompiler.CompileEdit(
+                        rom, new VmIlOperandEdit(0x9ED9, 0xFF80, 0xFF00)),
+                    "operand address");
+                Reject(() => VmIlCompiler.CompileEdit(
+                        rom, new VmIlOperandEdit(0x9EE1, 0xFF80, 0xFF00)),
+                    "operand address");
+                Reject(() => VmIlCompiler.CompileEdit(
+                        rom, new VmIlOperandEdit(0xFFFF, 0xFF80, 0xFF00)),
+                    "operand address");
+                Reject(() => VmIlCompiler.CompileEdit(
+                        rom, new VmIlOperandEdit(0x9EDB, 0xFF80, 0xFF80)),
+                    "no-op");
+                Reject(() => VmIlCompiler.CompileEdits(
+                        rom, Array.Empty<VmIlOperandEdit>()), "Exactly one");
+                Reject(() => VmIlCompiler.CompileEdits(
+                        rom, new[] { valid, valid }), "Exactly one");
+
+                VmIlDefinition unsupportedToken = definition with
+                {
+                    Nodes = new[]
+                    {
+                        first with
+                        {
+                            Token = 0x7963,
+                            Operation = "vm_push_inline_byte_literal"
+                        }
+                    }.Concat(rest).ToArray()
+                };
+                Reject(() => VmIlCompiler.CompileEditsForTests(
+                        unsupportedToken, rom, new[] { valid }),
+                    "Unsupported edit target token");
+
+                VmIlDefinition wrongWidth = definition with
+                {
+                    Nodes = new[]
+                    {
+                        first with
+                        {
+                            Operand = new VmIlOperand(0x9EDB, new byte[] { 0xFF }, 0xFF80)
+                        }
+                    }.Concat(rest).ToArray()
+                };
+                Reject(() => VmIlCompiler.CompileEditsForTests(
+                        wrongWidth, rom, new[] { valid }),
+                    "operand width");
+
+                VmIlNode[] changedUnrelated = definition.Nodes.ToArray();
+                changedUnrelated[1] = new VmIlNode(
+                    1, 0x9EDD, 0x7AAF, "vm_bitwise_xor",
+                    new byte[] { 0x7A, 0xAF }, null,
+                    VmIlEvidenceClass.OriginalRomBytes);
+                Reject(() => VmIlCompiler.CompileEditsForTests(
+                        definition with { Nodes = changedUnrelated }, rom, new[] { valid }),
+                    "original span");
+
+                Reject(() => VmIlCompiler.CompileEditsForTests(
+                        definition with { BodyEndExclusive = 0x9EE6 }, rom, new[] { valid }),
+                    "definition end");
+                Reject(() => VmIlCompiler.CompileEditsForTests(
+                        definition with { BodyStart = 0x9EDA }, rom, new[] { valid }),
+                    "body start");
+                Reject(() => VmIlCompiler.CompileEditsForTests(
+                        definition with { BodyEndExclusive = 0x10001 }, rom, new[] { valid }),
+                    "address space");
+
+                byte[] tampered = (byte[])rom.Clone();
+                tampered[0x9EDC] ^= 1;
+                Reject(() => VmIlCompiler.CompileEdit(tampered, valid), "SHA1");
             });
 
             Check("Wrong length SHA1 and SHA256 are rejected before decoding", () =>
@@ -573,6 +824,27 @@ internal static class NineEdNineVerification
                     "ProjectReference", StringSplitOptions.None).Length - 1;
                 Assert(projectReferences == 1,
                     "Verifier has dependencies other than the IL project");
+
+                string cliProject = File.ReadAllText(Path.Combine(
+                    repositoryRoot, "tools", "FruitMachineLab.IlBuild",
+                    "FruitMachineLab.IlBuild.csproj"));
+                Assert(!cliProject.Contains("PackageReference", StringComparison.OrdinalIgnoreCase),
+                    "CLI project has a package dependency");
+                Assert(cliProject.Contains(
+                        "src/FruitMachineLab.Il/FruitMachineLab.Il.csproj",
+                        StringComparison.OrdinalIgnoreCase),
+                    "CLI does not reference the IL project");
+                Assert(!cliProject.Contains("FruitMachineLab.Runtime",
+                        StringComparison.OrdinalIgnoreCase) &&
+                       !cliProject.Contains("FruitMachineLab.Adders",
+                        StringComparison.OrdinalIgnoreCase) &&
+                       !cliProject.Contains("Executor",
+                        StringComparison.OrdinalIgnoreCase),
+                    "CLI references a native executor assembly");
+                int cliProjectReferences = cliProject.Split(
+                    "ProjectReference", StringSplitOptions.None).Length - 1;
+                Assert(cliProjectReferences == 1,
+                    "CLI has dependencies other than the IL project");
             });
         }
         catch
@@ -584,12 +856,15 @@ internal static class NineEdNineVerification
         byte[] finalBytes = File.ReadAllBytes(romPath);
         string afterSha1 = Convert.ToHexString(SHA1.HashData(finalBytes));
         string afterSha256 = Convert.ToHexString(SHA256.HashData(finalBytes));
+        string editedSha1 = Convert.ToHexString(SHA1.HashData(edited.Compile.Image));
+        string editedSha256 = edited.Compile.OutputSha256;
         var report = new VerificationReport(
-            "il-impl-01",
-            1,
+            "il-edit-02",
+            2,
             "passed",
-            "Independent ROM-byte decode to IL, unchanged identity compile and Y-addressed source map. " +
-            "No CPU-PC-to-IL or runtime Y-observation-phase claim.",
+            "Independent ROM-byte decode to IL, unchanged identity compile, one checked same-size operand edit, " +
+            "exact full-image diff and output-bound source maps. No firmware integrity repair, boot, MAME " +
+            "execution or runtime Y-observation claim.",
             NineEdNineDecoder.EvidenceClass,
             Path.GetFullPath(romPath),
             rom.Length,
@@ -600,27 +875,41 @@ internal static class NineEdNineVerification
             beforeSha1 == afterSha1 && beforeSha256 == afterSha256,
             Convert.ToHexString(compile.EmittedBody),
             compile.ChangedOffsets,
+            Convert.ToHexString(edited.Compile.EmittedBody),
+            editedSha1,
+            editedSha256,
+            edited.Compile.ChangedOffsets,
             map.RomSha256,
+            map.ImageSha256,
+            map.IsIdentityBuild,
             map.Entries.Count,
             map.Entries.Count,
+            editedMap.ImageSha256,
+            editedMap.Entries.Count,
             ilReferences,
             verifierReferences,
             checks,
             new[]
             {
-                "Only the fixed 9ED9 definition and four tokens are supported; this is not a general decoder.",
-                "The ROM is read-only; no operand edit, integrity repair, repaired image or create-only ROM output is performed.",
+                "Only the fixed 9ED9 definition, four tokens and the first 795B operand at 9EDB are supported; " +
+                "this is not a general decoder or editor.",
+                "The edited image is an UNREPAIRED experimental artifact; firmware integrity fields FFD1-FFD5 " +
+                "are unchanged and the image is not accepted or boot-validated.",
                 "No MAME launch, natural fresh-boot execution, synthetic invocation or runtime stack observation is performed.",
-                "Cited listing/checkpoint/JSON files are verification oracles only; the decoder consumes ROM bytes.",
-                "Natural paid-window reach is retained as cited provenance, not re-executed or proven here."
+                "Cited listing/checkpoint/JSON files are verification oracles only; the decoders consume ROM bytes.",
+                "Natural paid-window reach is retained as cited provenance, not re-executed or proven here.",
+                "Natural reach of 9ED9 and the Y observation boundary remain unproven for this release."
             },
-            "M2 remains next: edit the first literal FF80->FF00 at 9EDC, validate a separately evidenced integrity repair, " +
-            "run natural fresh-boot MAME execution and resolve observed PC/Y/U/S to IL. That work is not authorized here.");
+            "M2 remains next: apply only the documented ordered active firmware integrity repair " +
+            "(FFD1 sum, FFD2 xor, FFD3 rotate-add, FFD4/FFD5 rotate-sub-xor) over this edited image, then run " +
+            "a natural fresh-boot MAME original control and edited image with no injection, observe PC/Y/U/S " +
+            "and resolve 9ED9 execution to IL. Natural 9ED9 reach before the first token fetch remains uncertain.");
 
         WriteOutputs(outputDirectory, report, BuildLog(report));
         Console.WriteLine(
-            $"PASS {checks.Count} verification groups; identity compile preserved 65536 bytes " +
-            $"with {compile.ChangedOffsets.Length} changed offsets.");
+            $"PASS {checks.Count} verification groups; identity compile preserved 65536 bytes, " +
+            $"edited compile changed {edited.Compile.ChangedOffsets.Length} byte at 9EDC, " +
+            $"edited source map bound to {editedMap.ImageSha256}.");
         return report;
 
         void RejectBody(byte[] body, string expected)
@@ -667,19 +956,31 @@ internal static class NineEdNineVerification
     private static string BuildLog(VerificationReport report)
     {
         var builder = new StringBuilder();
-        builder.AppendLine("FruitMachineLab il-impl-01 verification");
+        builder.AppendLine("FruitMachineLab il-edit-02 verification");
         builder.AppendLine("ROM: " + report.RomPath);
         builder.AppendLine("SHA1: " + report.RomSha1Before);
         builder.AppendLine("SHA256: " + report.RomSha256Before);
         builder.AppendLine("ROM length: " + report.RomLength);
         builder.AppendLine("Input unchanged: " + report.InputUnchanged);
-        builder.AppendLine("Emitted span: " + report.EmittedSpanHex);
-        builder.AppendLine("Changed offsets: " +
+        builder.AppendLine("Identity emitted span: " + report.EmittedSpanHex);
+        builder.AppendLine("Identity changed offsets: " +
             (report.ChangedOffsets.Length == 0
                 ? "none"
                 : string.Join(',', report.ChangedOffsets)));
+        builder.AppendLine("Edited emitted span: " + report.EditedSpanHex);
+        builder.AppendLine("Edited output SHA1: " + report.EditedOutputSha1);
+        builder.AppendLine("Edited output SHA256: " + report.EditedOutputSha256);
+        builder.AppendLine("Edited changed offsets: " +
+            (report.EditedChangedOffsets.Length == 0
+                ? "none"
+                : string.Join(',', report.EditedChangedOffsets)));
         builder.AppendLine("Source map ROM SHA256: " + report.SourceMapRomSha256);
+        builder.AppendLine("Source map image SHA256: " + report.SourceMapImageSha256);
+        builder.AppendLine("Source map identity build: " + report.SourceMapIsIdentity);
         builder.AppendLine("Source map span bytes: " + report.SourceMapSpanBytes);
+        builder.AppendLine("Edited source map image SHA256: " + report.EditedSourceMapImageSha256);
+        builder.AppendLine("Edited source map entries: " + report.EditedSourceMapEntries);
+        builder.AppendLine("Integrity: UNREPAIRED; no acceptance, boot or MAME claim");
         builder.AppendLine("IL references: " + string.Join(", ", report.IlAssemblyReferences));
         builder.AppendLine("Verifier references: " +
             string.Join(", ", report.VerifierAssemblyReferences));
@@ -711,7 +1012,7 @@ internal static class NineEdNineVerification
         if (Directory.Exists(outputDirectory)) return;
         Directory.CreateDirectory(outputDirectory);
         var builder = new StringBuilder();
-        builder.AppendLine("FruitMachineLab il-impl-01 verification FAILED");
+        builder.AppendLine("FruitMachineLab il-edit-02 verification FAILED");
         foreach (VerificationCheck check in checks)
             builder.AppendLine((check.Passed ? "PASS " : "FAIL ") + check.Name +
                 (check.Error is null ? string.Empty : ": " + check.Error));

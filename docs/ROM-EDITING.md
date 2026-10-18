@@ -44,6 +44,39 @@ The CLI writes with `FileMode.CreateNew`, rejects the input/specification as out
 rejects existing outputs, reads the result back and prints input/output SHA256 and
 exact changed offsets. Validation occurs before any output is created.
 
+## Independent IL same-size operand edit
+
+`FruitMachineLab.Il` now decodes the fixed 9ED9 definition, compiles it
+byte-identically, and supports exactly one checked same-size edit: the first
+`795B` inline-word literal operand at `9EDB..9EDC` may change from the strict
+original `FF80` to a declared 16-bit replacement. The production compiler
+rejects wrong ROM identity, caller-supplied IL hashes, wrong expected values,
+wrong addresses/widths, unsupported tokens, unrelated byte changes,
+multiple/overlapping edits and invalid spans. Emitted operand bytes are derived
+from the edited IL value; original bytes remain separately recorded.
+
+Generate a fresh, create-only edited image, build report and source map:
+
+```powershell
+dotnet run --project tools/FruitMachineLab.IlBuild --no-build -- `
+  <original-a6ls.p1> artifacts/deepseek/il-edit-02/cli-positive
+```
+
+The fixed proof edit is `9EDB FF80 -> FF00`, producing
+`795BFF00787E795BFF807AAF792F`; the full-image diff is exactly offset `9EDC`
+(`80 -> 00`). The report records original/output lengths, SHA1/SHA256, expected
+and actual bytes, edit/span, the single diff and an explicit `UNREPAIRED`
+integrity status. The source map covers all 14 bytes at unchanged addresses and
+is bound to the output image SHA256; original and edited maps reject each
+other's image identity. The CLI rejects wrong input, input/output aliases,
+existing targets and collisions before writing, never modifies the original
+ROM, and leaves no partial accepted files on rejection.
+
+Only this fixed definition and first operand are supported. No firmware
+integrity field is repaired, no image is accepted or boot-validated, and no MAME
+or hardware execution claim is made. The active `FFD1..FFD5` integrity fields,
+ordered repair and natural 9ED9 reach remain the next gates.
+
 ## Build and test
 
 From the repository root, with the already installed .NET SDK and net8.0 packs:

@@ -51,6 +51,34 @@ public sealed record VmIlCompileResult(
     string OutputSha256,
     int[] ChangedOffsets);
 
+public sealed record VmIlOperandEdit(
+    ushort OperandAddress,
+    ushort ExpectedOriginalValue,
+    ushort ReplacementValue);
+
+public sealed record VmIlEditReport(
+    int NodeIndex,
+    ushort TokenAddress,
+    ushort OperandAddress,
+    ushort Token,
+    string Operation,
+    int OperandWidthBytes,
+    ushort ExpectedOriginalValue,
+    ushort ActualOriginalValue,
+    ushort ReplacementValue,
+    string ExpectedOriginalBytesHex,
+    string ReplacementBytesHex,
+    int[] ChangedOffsets);
+
+public sealed record VmIlEditCompileResult(
+    VmIlDefinition SourceDefinition,
+    VmIlCompileResult Compile,
+    VmIlEditReport Edit,
+    string OriginalRomSha1,
+    string OriginalRomSha256,
+    bool IntegrityRepaired,
+    string IntegrityStatus);
+
 public static class VmIlVocabulary
 {
     public const ushort InlineWordLiteral = 0x795B;

@@ -4,14 +4,195 @@ namespace FruitMachineLab.Il;
 
 public static class VmIlCompiler
 {
+    public const ushort SupportedEditTokenAddress = 0x9ED9;
+    public const ushort SupportedEditOperandAddress = 0x9EDB;
+    public const ushort SupportedEditOriginalValue = 0xFF80;
+    public const int SupportedEditOperandWidthBytes = 2;
+
+    public const string UnrepairedIntegrityStatus =
+        "UNREPAIRED experimental artifact: firmware integrity fields were not regenerated. " +
+        "No boot, MAME execution, integrity acceptance or hardware compatibility is claimed.";
+
     public static VmIlCompileResult CompileIdentity(
         VmIlDefinition definition, ReadOnlySpan<byte> originalImage)
     {
         ArgumentNullException.ThrowIfNull(definition);
 
-        NineEdNineDecoder.ValidateIdentity(
-            originalImage, definition.RomLength, definition.RomSha1, definition.RomSha256);
+        ValidateOriginalIdentity(originalImage);
+        string inputSha1 = Sha1(originalImage);
+        string inputSha256 = Sha256(originalImage);
+        ValidateDefinitionIdentity(definition, originalImage.Length, inputSha1, inputSha256);
 
+        List<byte> emitted = BuildEmittedBody(
+            definition, originalImage, editedNodeIndex: null, editedNodeBytes: null);
+        byte[] emittedBody = emitted.ToArray();
+
+        byte[] image = originalImage.ToArray();
+        emittedBody.CopyTo(image, definition.BodyStart);
+
+        int[] changed = ChangedOffsets(originalImage, image);
+        string outputSha256 = Sha256(image);
+        return new VmIlCompileResult(
+            image, emittedBody, inputSha256, outputSha256, changed);
+    }
+
+    public static VmIlEditCompileResult CompileEdit(
+        ReadOnlySpan<byte> originalImage, VmIlOperandEdit edit)
+    {
+        if (edit is null)
+            throw new ArgumentNullException(nameof(edit));
+        return CompileEdits(originalImage, new[] { edit });
+    }
+
+    public static VmIlEditCompileResult CompileEdits(
+        ReadOnlySpan<byte> originalImage, IReadOnlyList<VmIlOperandEdit> edits)
+    {
+        VmIlDefinition definition = NineEdNineDecoder.Decode(originalImage);
+        return CompileEditsCore(definition, originalImage, edits);
+    }
+
+    internal static VmIlEditCompileResult CompileEditsForTests(
+        VmIlDefinition definition,
+        ReadOnlySpan<byte> originalImage,
+        IReadOnlyList<VmIlOperandEdit> edits)
+    {
+        return CompileEditsCore(definition, originalImage, edits);
+    }
+
+    private static VmIlEditCompileResult CompileEditsCore(
+        VmIlDefinition definition,
+        ReadOnlySpan<byte> originalImage,
+        IReadOnlyList<VmIlOperandEdit> edits)
+    {
+        ArgumentNullException.ThrowIfNull(definition);
+        ArgumentNullException.ThrowIfNull(edits);
+
+        ValidateOriginalIdentity(originalImage);
+        string originalSha1 = Sha1(originalImage);
+        string originalSha256 = Sha256(originalImage);
+        ValidateDefinitionIdentity(
+            definition, originalImage.Length, originalSha1, originalSha256);
+
+        if (edits.Count != 1)
+            throw new InvalidDataException(
+                "Exactly one explicit operand edit is supported; multiple or overlapping edits are rejected");
+        VmIlOperandEdit edit = edits[0] ??
+            throw new InvalidDataException("The declared operand edit is missing");
+
+        if (edit.OperandAddress != SupportedEditOperandAddress)
+            throw new InvalidDataException(
+                $"Unsupported edit operand address {edit.OperandAddress:X4}; " +
+                $"only the first 9ED9 literal operand at {SupportedEditOperandAddress:X4} is supported");
+
+        VmIlNode? target = definition.Nodes?
+            .FirstOrDefault(node => node is not null &&
+                                    node.Operand is not null &&
+                                    node.Operand.Address == edit.OperandAddress);
+        if (target is null)
+            throw new InvalidDataException(
+                $"Unsupported edit operand address {edit.OperandAddress:X4}; " +
+                "no decoded operand exists there");
+        if (target.Index != 0 || target.Address != SupportedEditTokenAddress ||
+            target.Token != VmIlVocabulary.InlineWordLiteral ||
+            !string.Equals(target.Operation, VmIlVocabulary.InlineWordLiteralOperation,
+                StringComparison.Ordinal))
+            throw new InvalidDataException(
+                $"Unsupported edit target token {target.Token:X4} at {target.Address:X4}; " +
+                "only the first 795B inline-word literal is editable");
+
+        VmIlOperand operand = target.Operand!;
+        if (operand.Bytes is null || operand.Bytes.Length != SupportedEditOperandWidthBytes)
+            throw new InvalidDataException(
+                $"Unsupported edit operand width at {operand.Address:X4}; " +
+                $"expected {SupportedEditOperandWidthBytes} bytes");
+        if (target.Bytes is null || target.Bytes.Length != 2 + SupportedEditOperandWidthBytes)
+            throw new InvalidDataException(
+                $"Unsupported edit node width at {target.Address:X4}; " +
+                $"expected {2 + SupportedEditOperandWidthBytes} bytes");
+
+        if (operand.Value != edit.ExpectedOriginalValue)
+            throw new InvalidDataException(
+                $"Edit expected original value {edit.ExpectedOriginalValue:X4} does not match " +
+                $"the decoded value {operand.Value:X4} at {operand.Address:X4}");
+        if (edit.ExpectedOriginalValue != SupportedEditOriginalValue)
+            throw new InvalidDataException(
+                $"Unsupported expected original literal {edit.ExpectedOriginalValue:X4}; " +
+                $"only {SupportedEditOriginalValue:X4} is supported");
+        if (edit.ReplacementValue == edit.ExpectedOriginalValue)
+            throw new InvalidDataException(
+                $"Edit replacement {edit.ReplacementValue:X4} equals the original literal; " +
+                "no-op edits are rejected");
+
+        byte[] replacementBytes =
+        {
+            (byte)(edit.ReplacementValue >> 8),
+            (byte)(edit.ReplacementValue & 0xFF)
+        };
+        byte[] editedNode = target.Bytes.ToArray();
+        editedNode[2] = replacementBytes[0];
+        editedNode[3] = replacementBytes[1];
+
+        List<byte> emitted = BuildEmittedBody(
+            definition, originalImage, target.Index, editedNode);
+        byte[] emittedBody = emitted.ToArray();
+        byte[] image = originalImage.ToArray();
+        emittedBody.CopyTo(image, definition.BodyStart);
+
+        var changed = new List<int>();
+        for (int offset = 0; offset < image.Length; offset++)
+        {
+            if (image[offset] == originalImage[offset])
+                continue;
+            if (offset < operand.Address || offset >= operand.Address + operand.Bytes.Length)
+                throw new InvalidDataException(
+                    $"Edited compile changed unrelated byte at {offset:X4}; " +
+                    $"only {operand.Address:X4}..{operand.Address + operand.Bytes.Length - 1:X4} may differ");
+            changed.Add(offset);
+        }
+
+        var expectedDiff = new List<int>();
+        for (int index = 0; index < operand.Bytes.Length; index++)
+        {
+            if (operand.Bytes[index] != replacementBytes[index])
+                expectedDiff.Add(operand.Address + index);
+        }
+        if (!changed.SequenceEqual(expectedDiff))
+            throw new InvalidDataException(
+                "Edited compile diff does not match the declared operand replacement");
+
+        string outputSha256 = Sha256(image);
+        var compile = new VmIlCompileResult(
+            image, emittedBody, originalSha256, outputSha256, changed.ToArray());
+        var report = new VmIlEditReport(
+            target.Index,
+            target.Address,
+            operand.Address,
+            target.Token,
+            target.Operation,
+            operand.Bytes.Length,
+            edit.ExpectedOriginalValue,
+            operand.Value,
+            edit.ReplacementValue,
+            Convert.ToHexString(operand.Bytes),
+            Convert.ToHexString(replacementBytes),
+            changed.ToArray());
+
+        return new VmIlEditCompileResult(
+            definition,
+            compile,
+            report,
+            originalSha1,
+            originalSha256,
+            false,
+            UnrepairedIntegrityStatus);
+    }
+
+    private static List<byte> BuildEmittedBody(
+        VmIlDefinition definition,
+        ReadOnlySpan<byte> originalImage,
+        int? editedNodeIndex,
+        byte[]? editedNodeBytes)
+    {
         if (definition.Nodes is null || definition.Nodes.Count == 0)
             throw new InvalidDataException("VM definition has no nodes");
         if (definition.HeaderBytes is null || definition.HeaderBytes.Length != 2)
@@ -124,7 +305,24 @@ public static class VmIlCompiler
                     $"VM node at {node.Address:X4} does not match the original span bytes; " +
                     "identity compile only accepts unchanged decoded bytes");
 
-            emitted.AddRange(node.Bytes);
+            byte[] emittedNode = node.Bytes;
+            if (editedNodeIndex == index)
+            {
+                if (editedNodeBytes is null || editedNodeBytes.Length != nodeLength)
+                    throw new InvalidDataException(
+                        $"Edited VM node at {node.Address:X4} has the wrong width");
+                if (editedNodeBytes[0] != node.Bytes[0] ||
+                    editedNodeBytes[1] != node.Bytes[1])
+                    throw new InvalidDataException(
+                        $"Edited VM node at {node.Address:X4} changes the execution token");
+                if (operandBytes != 2 &&
+                    !editedNodeBytes.AsSpan().SequenceEqual(node.Bytes))
+                    throw new InvalidDataException(
+                        $"Edited VM token {node.Token:X4} at {node.Address:X4} does not take an operand");
+                emittedNode = editedNodeBytes;
+            }
+
+            emitted.AddRange(emittedNode);
             cursor += nodeLength;
         }
 
@@ -137,20 +335,45 @@ public static class VmIlCompiler
             throw new InvalidDataException(
                 $"Compiled VM body length {emitted.Count} differs from span length {definition.BodyLength}");
 
-        byte[] emittedBody = emitted.ToArray();
-        byte[] image = originalImage.ToArray();
-        emittedBody.CopyTo(image, definition.BodyStart);
+        return emitted;
+    }
 
+    private static void ValidateOriginalIdentity(ReadOnlySpan<byte> originalImage)
+    {
+        NineEdNineDecoder.ValidateIdentity(
+            originalImage,
+            NineEdNineDecoder.RequiredRomLength,
+            NineEdNineDecoder.RequiredRomSha1,
+            NineEdNineDecoder.RequiredRomSha256);
+    }
+
+    private static void ValidateDefinitionIdentity(
+        VmIlDefinition definition, int length, string sha1, string sha256)
+    {
+        if (definition.RomLength != length ||
+            !string.Equals(definition.RomSha1, sha1, StringComparison.OrdinalIgnoreCase) ||
+            !string.Equals(definition.RomSha256, sha256, StringComparison.OrdinalIgnoreCase))
+            throw new InvalidDataException(
+                "VM definition original identity does not match the exact original ROM");
+    }
+
+    private static int[] ChangedOffsets(
+        ReadOnlySpan<byte> originalImage, ReadOnlySpan<byte> image)
+    {
+        if (image.Length != originalImage.Length)
+            throw new InvalidDataException("Compiled image length differs from the original");
         var changed = new List<int>();
         for (int offset = 0; offset < image.Length; offset++)
         {
             if (image[offset] != originalImage[offset])
                 changed.Add(offset);
         }
-
-        string inputSha256 = Convert.ToHexString(SHA256.HashData(originalImage));
-        string outputSha256 = Convert.ToHexString(SHA256.HashData(image));
-        return new VmIlCompileResult(
-            image, emittedBody, inputSha256, outputSha256, changed.ToArray());
+        return changed.ToArray();
     }
+
+    private static string Sha1(ReadOnlySpan<byte> bytes) =>
+        Convert.ToHexString(SHA1.HashData(bytes));
+
+    private static string Sha256(ReadOnlySpan<byte> bytes) =>
+        Convert.ToHexString(SHA256.HashData(bytes));
 }

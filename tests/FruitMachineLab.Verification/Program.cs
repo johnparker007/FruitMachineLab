@@ -1101,6 +1101,15 @@ Check("Foreground5A0A finish negatives fail at preflight ownership and snapshot 
         Equal(1,AddersToneFinishVerification.Rejects(evidence,kind));
 });
 Check("Foreground5A0A finish exposes LDX/CLR flags, unknown native CC, and exact16-byte stack limit", () => Equal(1,AddersToneFinishVerification.VerifyFlagsAndStack(evidence)));
+Check("Foreground5A14 setup executes the captured wrapper and queues59EB through one native owner", () => Equal(1,AddersToneSetupVerification.Verify(evidence)));
+Check("Foreground5A14 setup negatives reject before mutation or at the captured queue comparison", () => {
+    foreach(var kind in new[]{"stack","gate","ownership","owner","servicing","paused","pool","poolPointer","missingROM","snapshot"})
+        Equal(1,AddersToneSetupVerification.Rejects(evidence,kind));
+});
+Check("Foreground5A14 setup cycle split is source67/262/11, BPL explicit, and stack22 exact", () => {
+    Equal(1,AddersToneSetupVerification.VerifyCycles(evidence));
+    Equal(1,AddersToneSetupVerification.VerifyStackBoundary(evidence));
+});
 Check("Start tone setup derives bridge wrapper and queue cycles without phase0 capture", () => {
     using var tone=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","nudge-tone.json")));
     var ram=Convert.FromHexString(tone.RootElement.GetProperty("ram_hex").GetString()!);

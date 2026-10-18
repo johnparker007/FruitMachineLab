@@ -22,6 +22,17 @@ public static class AddersSoundLifecycleMemory
         //5E8C continues5CDE at the SAME clock;44 decrement belongs to the
         // scheduler exit5D38, not to this C0 handler.
     }
+    public static void ValidateCancel(Machine m,ushort stream)
+    {
+        if((m.Memory[0x719B]&0x80)!=0)throw new NotSupportedException("719B bit80 disabled-tone cancel requires independent evidence");
+        var visited=new HashSet<ushort>();ushort link=0x47;
+        for(ushort at=m.ReadWord(link);at!=0;at=m.ReadWord(link)){
+            ValidateTask(at);if(!visited.Add(at))throw new InvalidDataException("Cyclic active sound list");
+            if(m.ReadWord((ushort)(at+0x13))==stream){ValidateRelease(m,at);return;}
+            link=at;
+        }
+        throw new InvalidDataException($"Active sound list has no {stream:X4} root");
+    }
     // Native5C7A/5CB5 removes the FIRST matching root. The sound-disabled
     // gate60C8 returns before touching lists. No logical scheduler is modified.
     public static bool Cancel(Machine m,ushort stream,Action<byte,byte>? ymWrite=null)

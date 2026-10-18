@@ -1,0 +1,41 @@
+{
+  "SchemaVersion": 1,
+  "Address": "9ED9",
+  "Purpose": "bias_word_signed_value_at_bit7",
+  "InputLength": 65536,
+  "RomSha1": "402D1518BB78FDC489B06C2AABC771E5CE151847",
+  "OriginalSpanHex": "795BFF80787E795BFF807AAF792F",
+  "OriginalSpanSha256": "A7BEC73F18CB7B8937768DE2BC6EC56DC1B98C2EC61C136F2B979153CF56AD77",
+  "EvidenceClass": "Exact in-place span from the original-ROM encoding checkpoint; all five listed sites are marked observed in the reviewed MAME listing. The 795B inline word operand size (two big-endian bytes) comes from the separately verified native interpreter path 795B->795D ECA1 (read word at Y+2).",
+  "Provenance": {
+    "Listing": "evidence/mpu4/VM-SCRIPTS/9ED9.txt",
+    "ListingSha256": "15A98BF4A6F58BFC5622FEA8304134BA3CAB2133866A6DDA5B1C321E45A68CC6",
+    "Checkpoint": "evidence/mpu4/maps/nudge-encoding-checkpoint.json",
+    "CheckpointSpanClassification": "Exact selected ROM span and checked listed tokens; gaps/operands/embedded data preserved verbatim.",
+    "ObservedSites": 5
+  },
+  "Instructions": [
+    {
+      "Token": "795B",
+      "Operation": "vm_push_inline_word_literal",
+      "InlineValue": "FF80"
+    },
+    {
+      "Token": "787E",
+      "Operation": "vm_add_words"
+    },
+    {
+      "Token": "795B",
+      "Operation": "vm_push_inline_word_literal",
+      "InlineValue": "FF80"
+    },
+    {
+      "Token": "7AAF",
+      "Operation": "vm_bitwise_xor"
+    },
+    {
+      "Token": "792F",
+      "Operation": "vm_return_to_caller_stream"
+    }
+  ]
+}

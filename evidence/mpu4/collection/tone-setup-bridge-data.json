@@ -1,0 +1,19 @@
+{
+  "classification": "Static original-ROM word header and bridge code; not a capture and not original source.",
+  "rom_sha1": "402D1518BB78FDC489B06C2AABC771E5CE151847",
+  "scope": "Rechecked 776F bridge bytes and the 80A4 word header used by the FC4D VM entry. The 5A14 wrapper bytes remain in fresh-tone-occurrence.json.",
+  "regions": [
+    {
+      "address": 30575,
+      "bytes_hex": "96F127078A0197F1B7080C3420AD94352096F1270784FE97F1B7080C0EFC"
+    },
+    {
+      "address": 32932,
+      "bytes_hex": "776F5A14"
+    },
+    {
+      "address": 64589,
+      "bytes_hex": "80A4F382"
+    }
+  ]
+}

@@ -1,5 +1,146 @@
 # Implementation and evidence boundaries
 
+18 October integrate59 IRQ-suffix correction: native `5CD0` flags are now
+explicit known-mask partial state, all unknown after the service and only
+N=0/Z=1/V=0/C=0 after `FECC CLR <$2C`; no full `CC` is copied from the
+pre-service frame. The caller-controlled `expectedEntryS` bypass was removed.
+The 6B4D component accepts only the independently captured FEC3 frames `0786`
+and `078D`; the suffix accepts only `078D` and requires the captured `078B`
+service frame. Unsupported S is rejected before mutation, with both captured
+frames positively exercised and `S=0001`, `0002` and `078C` negatives proving a
+full unchanged memory image. Fixture negatives now assert their intended
+stage-specific rules instead of stopping at a hash. All intermediate full 2 KB
+and cycle checks are unchanged. Clean build has zero warnings/errors; the full
+headless suite is **415 groups**, exit 0. See
+[the correction pass](docs/recovery/INTEGRATE59-IRQ-SUFFIX-FLAGS-FRAME-PREFLIGHT.md).
+
+18 October integrate58 IRQ-suffix composition: accepted capture57 attempt 2 is
+composed on one machine from only the captured `FEC3` full 2 KB and registers.
+`FEC3 JSR 6B4D` (captured `S=078D`; integrate59 replaced the temporary explicit
+override with closed captured frames), `FEC6 JSR 58BB` (empty meter queue), the native `5CD0` zero-guard
+service, the actual `FEC9` return push, `5D3A RTS` pop and `FECC CLR <$2C` reach
+`FECE`. Full 2 KB is compared at all five intermediate anchors and the capture57
+trace supplies full register/CC/stack/cycle proof for the CPU components; native
+`5CD0` flags are explicit partial state because that adapter has no CPU file.
+Wrong frame/branch/ROM/continuation, duplicate owner, intermediate tamper and
+reseed controls reject before mutation. Capture56 attempt 1 remains preserved as
+the wrong-`FECC`-guard historical failure. Clean build has zero warnings/errors;
+the full headless suite is **415 groups** (413 baseline plus two), exit 0. See
+[the composition pass](docs/recovery/INTEGRATE58-IRQ-SUFFIX-COMPOSITION-PASS.md).
+No Live, whole-IRQ, cadence or audio claim.
+
+18 October fresh sound evidence / gate-3 reconciliation: accepted `3e19734`
+passes **401 groups**. Capture33 is a single-occurrence anchor set whose
+`FECC/FECE` is a nested IRQ return, not the matched completion of its `5CD0`.
+Capture36 is a separate controlled-input first `FC4D..5A1C` window with 25
+matched outer `5CD0/FECC` pairs and actual reset YM cache. Verify37/38 reproduce
+each pair independently from its own 2 KB entry plus captured ABI/`719B`, matching
+full 2 KB, cycle spans and instruction completion; six semantic negatives reach
+their intended rules and two raw-file pins are separate. This is per-call
+component proof, not continuous same-state execution: the foreground/IRQ writes
+between `FECC` returns and the next `sv` entries are not recovered. The historical
+nudge-tone/zero-cache gate-2 exact snapshot and its expectations are retained as
+history and are not silently replaced. No runtime or Live code changed; gate 3 is
+not complete. Next prerequisite is a foreground delta ownership analysis of
+capture36's inter-service gaps, with no reseeding and no new duplicate fixture.
+The 17 October entries below remain historical.
+
+17 October orchestrator planning checkpoint: accepted `0fe3713` passes 384 groups
+in the complete intended headless snapshot. Tone setup CPU work is source-derived;
+finish CPU work and IRQ occupancy remain captured. General21 found that Live's
+logical scheduler lacks native task/channel/rhythm/tail ownership, so cancellation
+cost cannot yet be derived from actual Live state. Uncommitted FEC9 wrapper work
+has a known failing check and is not part of that accepted baseline. Callback is
+paused by John. The revised [roadmap](docs/PROJECT-ROADMAP.md) separates fixture/
+wrapper certification, headless native tone ownership, selected Live integration,
+finish CPU timing and causal IRQ occupancy. No worker restart or sound repair is
+claimed by this planning update. Older group counts below are historical.
+
+17 October gate1 FEC9 certification: the preserved `FEC9 JSR5CD0 -> FECC CLR2C
+-> FECE` wrapper is independently captured, curated and verified against the
+original ROM. Two synthetic original-ROM cases (empty and queued `8784`) use the
+captured before state (`S=0700`, `U=0600`, `X=8784`, `Y=01A0`), masked IRQ,
+full 2 KB RAM, every instruction PC/encoding/start/end cycle and the fixed
+`FECC` continuation. Natural `scheduler-a/b` prove only their observed empty
+return. Five groups pass in the dirty checkout; the clean intended snapshot is
+389 groups (384 baseline plus five), zero build warnings/errors. Missing-region,
+corrupt-stream and wrong-return controls are negative tests. No timer cadence,
+IRQ ownership, `6B4D`/`58BB`, Live integration or native tone ownership is
+claimed. See [certification](docs/recovery/TIMER1-SCHEDULER-CALL-CERTIFICATION.md).
+
+17 October A1 capture-policy increment: `SkillCashLiveSession` now classifies its
+direct evidence reads by exact consumer field and applies a fail-closed
+`RuntimeEvidencePolicy` at that real constructor boundary. Default compatibility
+is unchanged. Strict capture-free mode allows static decoded/ROM data, permits
+declared checkpoints only with explicit permission, and rejects recorded timing,
+IRQ occupancy and results (including mixed static/checkpoint files) with precise
+file/field/replacement diagnostics. Current Live still fails early because it
+needs those captures; capture-free gameplay is not claimed. Six new groups pass in
+a clean `HEAD` snapshot: full suite 376 (370 baseline plus six), zero build
+warnings/errors. Other runtime loaders remain unenforced (A1 partial). See
+[A1 capture policy](docs/recovery/A1-CAPTURE-POLICY-PASS.md). Uncommitted stopped
+sound work was preserved untouched and excluded from the snapshot.
+
+17 October A1 `SkillCashData` static-load increment: the shared
+`RuntimeEvidencePolicy` now covers `LoadExtensions`, `LoadFeature`, `LoadAlpha`
+and `LoadScan`; Live forwards its chosen policy instead of defaulting those
+helpers to compatibility. The covered evidence is static ROM range data
+(`skill-cash-extension-data`, `skill-cash-feature-data`,
+`skill-cash-alpha-scan-data`), so strict mode allows it and reads no captured
+schedule or result. Callers that supply no evidence directory retain the compiled
+ROM arrays and prior replay semantics. Review18 preflights all feature/alpha/scan
+required spans for exact presence, recovered length, valid hex/address/end and
+overlap before any machine write; ten invalid map-copy cases are rejected with
+sentinel memory intact, and valid maps match compiled bytes. Six new groups pass;
+full clean snapshot suite is 382 (376 baseline plus six), zero build
+warnings/errors. Strict Live still fails on recorded timing/IRQ ownership; A1
+remains partial.
+
+17 October natural ROM-integrity boot oracle: a fresh isolated original-ROM
+MAME 0.281 cold boot with declared-absent NVRAM/configuration and no input
+playback reaches reset `7CD1`, init `6750`, checksum `66A5`/`66DB`, computes the
+static `3E 76 1E 26 05` fields, returns to caller `677E` and is stopped there.
+The curator enforces original SHA1, isolated-copy length `65536` and hash,
+recomputed raw log/console hashes, exit `0` and chronological marker PCs; it
+also rejects captured state/playback/autoboot/cheat or debugger memory/PC-write
+injection. Tampered sum, order, provenance, log hash, ROM hash/length, exit and
+injection copies are rejected. Starting NVRAM/configuration absence remains a
+capture declaration; `-noreadconfig` is verified. This is one natural
+original-image observation, not modified-ROM boot, gameplay or hardware
+evidence. See [ROM integrity](docs/recovery/ROM-INTEGRITY-PASS.md) and
+`evidence/mpu4/integrity/original-reset-boot.json`.
+
+17 October original startup continuation: the same natural no-injection rules
+now observe the init tail (`67B3`, `3B1A`) and first threaded-VM entry at `76C7`
+with `X=FDF0`, after a second completed checksum pass. The strict curator anchors
+the checksum chain to the pass immediately preceding `67B3` and enforces the
+original SHA1, isolated-copy length/hash, raw log/console hashes, exit `0`,
+marker order and `X=FDF0`. Three resets and two checksum passes are observed
+before the tail; why the first pass restarts is an explicit hypothesis. The run
+stops before the first token fetch. See
+[startup VM entry](docs/recovery/STARTUP-VM-ENTRY-PASS.md) and
+`evidence/mpu4/integrity/original-startup-vm-entry.json`.
+
+17 October static ROM-integrity increment: startup 66A5/66DB self-check recovered
+as four 11-byte records at FFB0; the single gate-00 record covers CPU range
+1400-FFFF with expected fields FFD1-FFD5 (`3E 76 1E 26 05`). All three recovered
+algorithms reproduce those fields on the original image; a local tool validates
+identity, table, fields and a synthetic in-memory detection control. No repair,
+re-signing, bypass, ROM change, MAME boot or gameplay claim. See
+[ROM integrity](docs/recovery/ROM-INTEGRITY-PASS.md). This static increment does
+not touch the pre-existing timer1 sound-wrapper work or its failing focused check.
+
+17 October ROM-editing increment: strict declarative patcher generates a separate
+original-identity-checked image, changing only shared award-table byte75BE (10→12).
+Four new headless groups and CLI safety tests pass; full suite357 groups. Recovered
+PC VM/native lookup and an isolated original-VM MAME invocation observe the changed
+value. Reset boot/play remains unverified: both original and modified12-second
+boot probes missed the chosen initial-stream marker. No integrity bypass or repair,
+relocation, autonomous gameplay or hardware compatibility is claimed. See
+[ROM editing](docs/ROM-EDITING.md), [source audit](docs/ENGINEERING-AUDIT.md) and the
+rewritten [three-workstream roadmap](docs/PROJECT-ROADMAP.md). Older notes below
+retain historical context and do not supersede this scope.
+
 Actual8784 Collect sound now executes natively through C1, rhythm/melodic channels,
 children, yield and release. Both headless collection hosts verify prompt/requeue/
 sampled Collect/payout on one state; native queue/cancel/reset are instruction-

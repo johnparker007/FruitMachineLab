@@ -1,5 +1,30 @@
 [
   {
+    "path": "docs/recovery/A1-CAPTURE-POLICY-PASS.md",
+    "bytes": 10990,
+    "sha256": "EF7A162992472B0BF51C055A7F2E0CA2344F2E57DBFCF2896FDFE40650F9CB07"
+  },
+  {
+    "path": "docs/recovery/ANALYSIS40-FOREGROUND-DELTA-ATTRIBUTION-PASS.md",
+    "bytes": 4309,
+    "sha256": "73F52B561740A9DC7D7CE61599E7EC0BFD4297A697C81EC53CDB084E3937CA83"
+  },
+  {
+    "path": "docs/recovery/ANALYSIS40-FOREGROUND-DELTA-LEDGER.json",
+    "bytes": 15646,
+    "sha256": "C53E8DC98DE9A6F432B00011E40EBFC15CFA55FDF34796BEF5A68A83BE11CA17"
+  },
+  {
+    "path": "docs/recovery/ANALYSIS42-STACK-ATTRIBUTION-CLOSE-PASS.md",
+    "bytes": 5887,
+    "sha256": "C687866BAA5B15FE10941C9BDC165F558FEF8F3543F449D369315D929FB17263"
+  },
+  {
+    "path": "docs/recovery/ANALYSIS42-STACK-ATTRIBUTION-LEDGER.json",
+    "bytes": 35638,
+    "sha256": "0906EEF2540130A9081C8043896B9D59F05C1610ACF621E2BEFD5BA54D4D5910"
+  },
+  {
     "path": "docs/recovery/BACKGROUND-SERVICES-PREPLAY-PASS.md",
     "bytes": 7980,
     "sha256": "D953C4DEB74B49C81F1EBA21AE51EF19C1CA3F535D65FEE99204A7BAD68E237E"
@@ -33,6 +58,16 @@
     "path": "docs/recovery/BRANCH-PREREQUISITES.txt",
     "bytes": 1549,
     "sha256": "DE92F4132507BCDC347463530EB848A6E15A9DE557605C743165D78A212CA812"
+  },
+  {
+    "path": "docs/recovery/CAPTURE33-SERVICE-FRAME-MEANING-PASS.md",
+    "bytes": 4305,
+    "sha256": "C6D0798D2380D4F23BC3CD11B90BD5206CEE4C9C6587C79D665977175A644537"
+  },
+  {
+    "path": "docs/recovery/CAPTURE36-MATCHED-SERVICE-WINDOW-PASS.md",
+    "bytes": 5753,
+    "sha256": "05D7B087B657024428F0F779991E0A67276EA2001B5216D101F5D73642EFD913"
   },
   {
     "path": "docs/recovery/CASH-FEATURE-FLOWS.txt",
@@ -133,6 +168,11 @@
     "path": "docs/recovery/NATIVE-PURPOSES.txt",
     "bytes": 10658,
     "sha256": "CAB218A225A8D6FFE836C772EA67BA0C20009E60353DB28C92DA694149B0B444"
+  },
+  {
+    "path": "docs/recovery/NATURAL-PLAY-BOUNDARY-PASS.md",
+    "bytes": 5778,
+    "sha256": "C24B90AD73B3BABEAA086BC5517A89EE8ADBE9A18A9B973649C0D158A8FC4223"
   },
   {
     "path": "docs/recovery/NUDGE-AND-AWARD-PATHS.txt",
@@ -236,13 +276,53 @@
   },
   {
     "path": "docs/recovery/PTM-CLOCK-FOUNDATION-PASS.md",
-    "bytes": 104252,
-    "sha256": "6A26CF3E288A07A5185790B3E33CC4A418A97B17688D7F78873769B2D615B493"
+    "bytes": 107782,
+    "sha256": "4C07710316827E45AEB78B0BA3B3311A0BF721616EEC61666D05B4BE856D8F30"
   },
   {
     "path": "docs/recovery/README.txt",
     "bytes": 11998,
     "sha256": "116816983F30E222C10D291B3F7B9104AA993C2172095B952910FD264CFB1054"
+  },
+  {
+    "path": "docs/recovery/RECOVER44-FOREGROUND-7159-WAIT-PASS.md",
+    "bytes": 5110,
+    "sha256": "62C87002784E739761806EF3262D5DDCFEDC38DE62EA8CBABD3980961B1D5715"
+  },
+  {
+    "path": "docs/recovery/RECOVER46-FOREGROUND-FINISH-PASS.md",
+    "bytes": 5977,
+    "sha256": "8FB5387E6A1FA6908B0B17450F457BD61E3F9F5EE047B5853E5E5060D37FA1F1"
+  },
+  {
+    "path": "docs/recovery/RECOVER48-FOREGROUND-SETUP-PASS.md",
+    "bytes": 4202,
+    "sha256": "FE35D799CE5EAF683C95001691E0F451221771F884A071429115340364403E24"
+  },
+  {
+    "path": "docs/recovery/RECOVER49-FOREGROUND-SETUP-PREFLIGHT-PASS.md",
+    "bytes": 4407,
+    "sha256": "B97B0720902FFA8BCD1BA2B489C7D02E662866BA78C467FE53EEDDEA08F50C50"
+  },
+  {
+    "path": "docs/recovery/RECOVER50-VM-FOREGROUND-BRIDGE-PASS.md",
+    "bytes": 4362,
+    "sha256": "D6B6EB4F0ED92753187CBB3F582986E6A93D3A04FC81A239D3C237D296DAFB0E"
+  },
+  {
+    "path": "docs/recovery/RECOVER51-F1-ZERO-BRIDGE-RESTRICTION-PASS.md",
+    "bytes": 4045,
+    "sha256": "6F676044D4791DA0693A6FF278359399A79DBA46DF9F97523ACEECF7E2C1AB57"
+  },
+  {
+    "path": "docs/recovery/RECOVER52-58BB-EMPTY-METER-PULSE-PASS.md",
+    "bytes": 3869,
+    "sha256": "317A33711A7771A1ED2C841DC291AC6B286740A8BA314750CE95FD178CA1F293"
+  },
+  {
+    "path": "docs/recovery/ROM-INTEGRITY-PASS.md",
+    "bytes": 11370,
+    "sha256": "56F77D370C1678BEFB0443084F897FA0EAC45F765B9C21278E94E35932A62794"
   },
   {
     "path": "docs/recovery/SCRIPT-CLASSIFICATION.txt",
@@ -335,9 +415,19 @@
     "sha256": "712462DF68582EA85ED1E9577876E2C86142DAF1CCFF04B1D89B036DC6AACF7C"
   },
   {
+    "path": "docs/recovery/STARTUP-VM-ENTRY-PASS.md",
+    "bytes": 5177,
+    "sha256": "08A59E333666A827BDEDCF466E09E061B6A2FB0D93EDF7102E53A4FE27DDC79A"
+  },
+  {
     "path": "docs/recovery/STATE-AWARE-EXPLORATION.txt",
     "bytes": 6199,
     "sha256": "8D3F277AAA32692AD04493764AEF84635D59FBAC87310F1613BCA6F3DBCB2E2E"
+  },
+  {
+    "path": "docs/recovery/VERIFY37-MATCHED-SERVICE-COMPONENT-PASS.md",
+    "bytes": 4777,
+    "sha256": "1D041FBE675CEFE0429DC07EB5462BF4CF3784F3865D6D8FF70539480325DE55"
   },
   {
     "path": "docs/recovery/VM-BATCH-RECOVERY.txt",
@@ -403,6 +493,21 @@
     "path": "evidence/mpu4/collection/input-condition-timing.json",
     "bytes": 660213,
     "sha256": "59B54683C79171250A38612CFE6E80A2DB13188F875DC06206308BD52C490A7C"
+  },
+  {
+    "path": "evidence/mpu4/collection/matched-service-window-capture36.json",
+    "bytes": 750810,
+    "sha256": "AC60AC5EDE6A962B1FB90DFB8389EF85C6AFE304A25DD24CC7C753A2F59FDB82"
+  },
+  {
+    "path": "evidence/mpu4/collection/meter-pulse-58bb-empty.json",
+    "bytes": 2220,
+    "sha256": "8F2A8CABB60E4D9F48EDEC47E2B8235D2F3438B9793D6F9A509FE52A90F4F8E2"
+  },
+  {
+    "path": "evidence/mpu4/collection/native-service-rom-regions-capture36.json",
+    "bytes": 5426,
+    "sha256": "DD5DFDCE3E44B51944180A9CB5A5DC84A11D917C3BFD7C301DD8F33F7F40E864"
   },
   {
     "path": "evidence/mpu4/collection/native-vm-gateway-debugger.cmd",
@@ -755,6 +860,26 @@
     "sha256": "6525E31BF565048BCA86347CEB3C14B1EF6B4026699680E4D283622C1319E10E"
   },
   {
+    "path": "evidence/mpu4/integrity/original-reset-boot.json",
+    "bytes": 7554,
+    "sha256": "087DB7C467D4B28B4AE6C20FBFA335BBC1C698715427DF4D3459763C5104E64D"
+  },
+  {
+    "path": "evidence/mpu4/integrity/original-reset-boot.log",
+    "bytes": 1552,
+    "sha256": "AB52014199FA93869BF77E1D80B872CDB33818CDF3EFABF165611EF172316B8C"
+  },
+  {
+    "path": "evidence/mpu4/integrity/original-startup-vm-entry.json",
+    "bytes": 6865,
+    "sha256": "576D7AE190FBB9DA264BE386ED8F71F18C99C0FF492CB9A887B743F58968A94F"
+  },
+  {
+    "path": "evidence/mpu4/integrity/original-startup-vm-entry.txt",
+    "bytes": 2596,
+    "sha256": "758BED6D6588F9CBDE74FD01AA389546D9014AE7D56D70BB75D6925C72D8A804"
+  },
+  {
     "path": "evidence/mpu4/maps/board-availability-boundary.json",
     "bytes": 3658,
     "sha256": "48DC78B6B59152752E25010189337648AE69AFA477531DE008C30557F8B25D5F"
@@ -811,8 +936,8 @@
   },
   {
     "path": "evidence/mpu4/maps/mame-timing-source.json",
-    "bytes": 23556,
-    "sha256": "141049BD1822A65AB52EEED52A4E5364B9B4D9F20EDBD11C712EC4699A5F5F27"
+    "bytes": 24013,
+    "sha256": "4809101BE5B0D1E011FC685796E8E7B4F87FD2E3D503192B99FF891DA2632C89"
   },
   {
     "path": "evidence/mpu4/maps/nudge-availability-data.json",
@@ -863,6 +988,16 @@
     "path": "evidence/mpu4/maps/ptm-clock-semantics.json",
     "bytes": 2831,
     "sha256": "7F151F4C350B3C07DDB9D746FE2C6BF82E5D9EA865C9EE7954CB8EBF64C73731"
+  },
+  {
+    "path": "evidence/mpu4/maps/rom-integrity.json",
+    "bytes": 5014,
+    "sha256": "241B9DEE4DD384254798842BE7584215ABB42BB2F8B9F04610D81473ED04A5DB"
+  },
+  {
+    "path": "evidence/mpu4/maps/rom-layout.json",
+    "bytes": 2213,
+    "sha256": "2F671D5C90F96E28D0135495912467F84940164736822799BEDB4ACDE1932ED9"
   },
   {
     "path": "evidence/mpu4/maps/skill-cash-alpha-scan-data.json",
@@ -1530,6 +1665,16 @@
     "sha256": "3846F96F195DB55DF7D2BED6DB7BF9EC499421D6022FE11DD1C5FD1D0505C6D1"
   },
   {
+    "path": "evidence/mpu4/native/66a5.json",
+    "bytes": 1798,
+    "sha256": "96201A51BA503646791E1F36A90D5F577A47FCC5E65C0CA769FA541254645622"
+  },
+  {
+    "path": "evidence/mpu4/native/66db.json",
+    "bytes": 5581,
+    "sha256": "D3AE0A6FD5A0989E72B162720E98716F5B1485ACF844A5A701460CF44308BA4A"
+  },
+  {
     "path": "evidence/mpu4/native/67e2.json",
     "bytes": 3709,
     "sha256": "4A97322D0102FEB09F66F55CC5CF6EC8D8DF9F4C087294B7F8DF0DD6D67E89E7"
@@ -2113,6 +2258,51 @@
     "path": "evidence/mpu4/native/timer-native.txt",
     "bytes": 1978,
     "sha256": "B758D299E4E7F082F88CFA7DA75CDCECCE20C28999B9DD5D559EBF62CC1D19A1"
+  },
+  {
+    "path": "evidence/mpu4/patches/lookup-debugger.cmd",
+    "bytes": 242,
+    "sha256": "454C64998644BE542174651BB9E6474B7D9932B56347F69EDFA2DFF43B17A870"
+  },
+  {
+    "path": "evidence/mpu4/patches/mame-boot-modified.txt",
+    "bytes": 477,
+    "sha256": "D5DCEB4D79454D0176C90EA4D56E1153EDE916659760419C102D810F525ECB69"
+  },
+  {
+    "path": "evidence/mpu4/patches/mame-boot-original.txt",
+    "bytes": 477,
+    "sha256": "568257DAB984E4BC7B8CAA807CB05823E9B5921EF34EB6C4CBBF122E7202FC89"
+  },
+  {
+    "path": "evidence/mpu4/patches/mame-lookup-modified.txt",
+    "bytes": 471,
+    "sha256": "7F3EB80488BE99154F20561C5D8921C12B890C0EBB694B2063DA36460E064F9A"
+  },
+  {
+    "path": "evidence/mpu4/patches/mame-lookup-original.txt",
+    "bytes": 471,
+    "sha256": "7990A600E9BC2C3D68B7AD279562608340459BC842E5496222781896D6446E47"
+  },
+  {
+    "path": "evidence/mpu4/patches/skill-cash-level1-12.json",
+    "bytes": 710,
+    "sha256": "C4AE375EAD65E7C73025F966784CDC599297EEFF803F276330C5D9F367F35DF4"
+  },
+  {
+    "path": "evidence/mpu4/patches/verification.json",
+    "bytes": 2030,
+    "sha256": "F748207011DBC5FF5AA66DF0A082C0D61A5E4F07FDA4A410564CDCFD3E176CE6"
+  },
+  {
+    "path": "evidence/mpu4/play/natural-award-boundary.json",
+    "bytes": 5079,
+    "sha256": "D5BED246527375201167C8743E1268C43F641492B1D5AAEB8B96EE9C1E581159"
+  },
+  {
+    "path": "evidence/mpu4/play/natural-award-boundary.txt",
+    "bytes": 1641,
+    "sha256": "69F262A01BD8E6E5A6FE5F131B0CF1D4739BFEDDA74F2CE51BD2481140B252BE"
   },
   {
     "path": "evidence/mpu4/skill-cash/actions.csv",
@@ -6243,5 +6433,220 @@
     "path": "evidence/mpu4/VM-SCRIPTS/INDEX.txt",
     "bytes": 215177,
     "sha256": "C4B85FFD74D67512E71AA6D78BF87998E98B896671620BB8EE0AF8BE4F27078F"
+  },
+  {
+    "path": "docs/recovery/ROM-INTEGRITY-REPAIR-PASS.md",
+    "bytes": 5856,
+    "sha256": "99D1C5537374E8259182251B344B3F22A42B3F74E22A5F30847B2F2595B1B54B"
+  },
+  {
+    "path": "evidence/mpu4/integrity/repaired-award-fields.json",
+    "bytes": 4975,
+    "sha256": "225DDD32550C4A81C811177B110FAAEAB97FD756BC52AB29C52DACF807DD7BFB"
+  },
+  {
+    "path": "evidence/mpu4/integrity/variant-comparison.txt",
+    "bytes": 2221,
+    "sha256": "1871668BA181BBDAD1682ACE0E134019CC844CDAC500897D78ED2717D358BD08"
+  },
+  {
+    "path": "evidence/mpu4/integrity/variant-original.json",
+    "bytes": 7654,
+    "sha256": "2A87BF3A945F099C253981DECC0897E8DFD3A36DF982A4FFE5CE4ACBC4F52342"
+  },
+  {
+    "path": "evidence/mpu4/integrity/variant-original.txt",
+    "bytes": 2596,
+    "sha256": "9842AE5FB5E54B935777CF598E2C3790C97EF482D398D84B4CE4A7F4E18CD637"
+  },
+  {
+    "path": "evidence/mpu4/integrity/variant-repaired.json",
+    "bytes": 7659,
+    "sha256": "5BE8293E360754BD461DBF60A5A90709CACD0F162BAC73B59AB2B3368489C342"
+  },
+  {
+    "path": "evidence/mpu4/integrity/variant-repaired.txt",
+    "bytes": 2596,
+    "sha256": "C23C5A5B3E021154EAE98C49151BC150D51B16E8D9AE5897F29A59A57A48B187"
+  },
+  {
+    "path": "evidence/mpu4/integrity/variant-unrepaired.json",
+    "bytes": 7125,
+    "sha256": "0BD9855311DBF943D1FB20A9CEAE6122DE67556F02B0E81F61AE3E92BC4D0543"
+  },
+  {
+    "path": "evidence/mpu4/integrity/variant-unrepaired.txt",
+    "bytes": 1974,
+    "sha256": "6276A679A98A8AFEB5358A5A6106622F9F50553445F56FB6C6C75C8D056E13A4"
+  },
+  {
+    "path": "docs/recovery/VM-DEFINITION-9A64-PASS.md",
+    "bytes": 3257,
+    "sha256": "FA9D96972DFC6E19EDE1D7E66DB19D68BAD362C529B39E6B2F62D3C9B391D94A"
+  },
+  {
+    "path": "evidence/mpu4/definitions/conditionally-set-or-clear-memory-mask-9a64.vm.json",
+    "bytes": 1496,
+    "sha256": "E2467D2308798FC4D49841797F0BB4D4F8C4CDA84E39E6EEB5A768A3DCCF3EBE"
+  },
+  {
+    "path": "docs/recovery/VM-DEFINITION-9ED9-LITERAL-PASS.md",
+    "bytes": 3441,
+    "sha256": "F0219124196A871AE963F5190DE16C593DF8B1017A6317D5654FB80DA17F73C1"
+  },
+  {
+    "path": "evidence/mpu4/definitions/bias-word-signed-value-9ed9.vm.json",
+    "bytes": 1502,
+    "sha256": "17D310CCE02F3B387BA4A888128AA0515D512D7AFFC3CC048170A9A6E4C07C34"
+  },
+  {
+    "path": "docs/recovery/VM-DEFINITION-9ED9-MAME-INVOCATION-PASS.md",
+    "bytes": 5262,
+    "sha256": "9C4D38D72B9D91138D325CEB88281D0881F79C76BBCA2950D9293C7F6599B9E7"
+  },
+  {
+    "path": "docs/recovery/VM-DEFINITION-IMAGE-CLI-SAFETY-PASS.md",
+    "bytes": 3463,
+    "sha256": "CDC6F5C24A5D41F89D05FB045478A15DF564575EA73F58661065943C44C510B8"
+  },
+  {
+    "path": "evidence/mpu4/collection/vm-definition-9ed9-invocation.json",
+    "bytes": 13133,
+    "sha256": "3BFA4A804EA18DC510C2FB9701BE60FD2CA6DDFC77380A8A98DF35BDAB48AAF5"
+  },
+  {
+    "path": "docs/recovery/TIMER1-SCHEDULER-CALL-CERTIFICATION.md",
+    "bytes": 5058,
+    "sha256": "874D9CB6EE1A6A7812C3AE5446EC4563DAFB5105282FB61ADDD33567C59ECECD"
+  },
+  {
+    "path": "evidence/mpu4/collection/timer1-scheduler-call.json",
+    "bytes": 262271,
+    "sha256": "1B4A65B2FF72CD14CCECDC10A707836AD9FD1A9CCA42B43DBCFD5DC005395E0D"
+  },
+  {
+    "path": "evidence/mpu4/collection/timer1-scheduler-call-verification.json",
+    "bytes": 5924,
+    "sha256": "E371D801956DA3077ECB80310B47F40123CCE2378B14CF7B8EE12184D8849FFE"
+  },
+  {
+    "path": "docs/recovery/TONE-LIFECYCLE-CERTIFICATION.md",
+    "bytes": 4652,
+    "sha256": "57AAA67CB4E58C5AA0804992B0A3732C7F6A61030A9EB86ABF933538B44672FE"
+  },
+  {
+    "path": "evidence/mpu4/collection/tone-lifecycle.json",
+    "bytes": 183542,
+    "sha256": "723A0456CC5B82C14B5DEEB6CA80219DFF5D71113E0CAEC34C6A5E525C03AA31"
+  },
+  {
+    "path": "evidence/mpu4/collection/tone-lifecycle-verification.json",
+    "bytes": 5719,
+    "sha256": "AE966EF6E1098D23D21FAC4207544DDE33F1A31DF90AF295F724750D0367851C"
+  },
+  {
+    "path": "evidence/mpu4/collection/tone-setup-bridge-data.json",
+    "bytes": 599,
+    "sha256": "3B3F270D64C26AFC9135184A5ABA7B04EE8C8BE011A8976EAC06A758B42A659B"
+  },
+  {
+    "path": "docs/recovery/LIVE-NATIVE-SOUND-OWNERSHIP-PLAN.md",
+    "bytes": 16261,
+    "sha256": "9B6517610AC57ACB730924D812AEDBA849BA18AB813D46FEE0FB33A2C8508A66"
+  },
+  {
+    "path": "docs/recovery/FRESH-TONE-OCCURRENCE-PASS.md",
+    "bytes": 5455,
+    "sha256": "BA1278A90E8EB0574C2DFC13FA0CCF0583E79EECFBE1E931A3B86CB468DF565C"
+  },
+  {
+    "path": "evidence/mpu4/collection/fresh-tone-occurrence-capture33.json",
+    "bytes": 80625,
+    "sha256": "1D1167098AE50316081838CF74868EBC31E9485EDF7D81379F3F065930EB25E8"
+  },
+  {
+    "path": "evidence/mpu4/collection/fresh-tone-occurrence.json",
+    "bytes": 80076,
+    "sha256": "1D71F7088E2528C9D78B5174AD9EFAE99739754B56855086DA477A54C986B313"
+  },
+  {
+    "path": "docs/recovery/CAPTURE41-STACK-WRITER-0785-PASS.md",
+    "bytes": 4842,
+    "sha256": "6C75BB43A9AEB21BCEC269424C969F4D48C1CAA2A5D951043B4DE2C4E0C250D9"
+  },
+  {
+    "path": "evidence/mpu4/collection/stack-writer-0785-capture41.json",
+    "bytes": 107233,
+    "sha256": "D23207FA7EBD2221124EBDACE8DAAA83F6B181566F301B236CA431518C1A5680"
+  },
+  {
+    "path": "docs/recovery/CAPTURE43-CALLER-STACK-0790-PASS.md",
+    "bytes": 4947,
+    "sha256": "EBDD87C2D658147B8D56669166EE7763FFC53D09435B3E923945A7650F27F296"
+  },
+  {
+    "path": "evidence/mpu4/collection/stack-writer-0790-capture43.json",
+    "bytes": 107419,
+    "sha256": "BA44707515A202A98CBD65BBF9323A29A47BC7E4D71FA922D33E63CE4D560E3B"
+  },
+  {
+    "path": "docs/recovery/IRQ-6B4D-ZERO-STATE-PASS.md",
+    "bytes": 3578,
+    "sha256": "F3E56EF89809DC3C5A9E1A0CCFB43E24DB71D46689AC34569417C915F772DB0F"
+  },
+  {
+    "path": "evidence/mpu4/collection/irq-6b4d-zero-state.json",
+    "bytes": 34553,
+    "sha256": "541B2FF7AE7C6D2C530B449C3774EA17FDB526CF497FD747ECCE0DF2DAE5538B"
+  },
+  {
+    "path": "evidence/mpu4/collection/irq-suffix-capture56-attempt1.json",
+    "bytes": 19079,
+    "sha256": "F6759AFD0D0132ABE9F35B175572C862EA29091CEDC367320BB2C4D85E880687"
+  },
+  {
+    "path": "evidence/mpu4/collection/irq-suffix-capture57.json",
+    "bytes": 125927,
+    "sha256": "B7029FD86E2D93154E1EA907E24A589CE1C1A8DE2BD17CB81016BD4ADE6A8545"
+  },
+  {
+    "path": "evidence/mpu4/collection/irq-suffix-capture57-composition.json",
+    "bytes": 116746,
+    "sha256": "859E96D303DEBC044B529C60327427FB3D92EB9D58FA3EE20A716D27330F4EFA"
+  },
+  {
+    "path": "docs/recovery/INTEGRATE58-IRQ-SUFFIX-COMPOSITION-PASS.md",
+    "bytes": 4689,
+    "sha256": "92E007E0C97D53B148AD15797AB64BC2FC04FEB8D043137129762216FAFF9FF4"
+  },
+  {
+    "path": "docs/recovery/INTEGRATE59-IRQ-SUFFIX-FLAGS-FRAME-PREFLIGHT.md",
+    "bytes": 3437,
+    "sha256": "FF81A92B092D07902806C0782711C8CE100E64676C90E289EB30E4965CF47AC6"
+  },
+  {
+    "path": "docs/recovery/ANALYZE60-IRQ-PREFIX-BOUNDARY-PASS.md",
+    "bytes": 5526,
+    "sha256": "769855E063474F29AE84C4F90F2C0F544C52081A3138DDD5F785052F8155EB74"
+  },
+  {
+    "path": "evidence/mpu4/collection/irq-prefix-capture61.json",
+    "bytes": 106242,
+    "sha256": "6BD7847C025CB724C223DF60F1C7923DE41EA740E6AD2B0B8B3028486DE1F73A"
+  },
+  {
+    "path": "docs/recovery/CAPTURE61-IRQ-PREFIX-BOUNDARY-PASS.md",
+    "bytes": 4226,
+    "sha256": "524B94AAFAA1AFCD3D6CF2548BA669353B914589608F02EBCAFE7895E167B5EA"
+  },
+  {
+    "path": "docs/recovery/RECOVER62-IRQ-PREFIX-TAIL-PASS.md",
+    "bytes": 4063,
+    "sha256": "A3128FE3293CDABE92AE3F10C93C08B2584C8B97D2A5A65E2BD51CBC69F3F5ED"
+  },
+  {
+    "path": "docs/recovery/RECOVER63-GUARD-TAIL-DIRECT-PAGE-PREFLIGHT.md",
+    "bytes": 3440,
+    "sha256": "F1BFB9A6119024FE6F048E882E511956F6CE60AD2864F31F0C1BF93FA845B032"
   }
 ]

@@ -7,6 +7,23 @@ var evidence = Path.Combine(root,"evidence","mpu4");
 var passed = 0;
 void Check(string name, Action action) { if(args.Length>1 && !name.Contains(args[1],StringComparison.OrdinalIgnoreCase))return;action(); Console.WriteLine("PASS " + name); passed++; }
 void Equal<T>(T expected,T actual) { if (!Equals(expected,actual)) throw new Exception($"Expected {expected}, got {actual}"); }
+Check("ROM patch validates identity and preserves input and unrelated bytes",()=>RomPatchVerification.Preservation());
+Check("ROM patch rejects wrong identity expected bytes and invalid specifications",()=>RomPatchVerification.Rejections());
+Check("ROM patch specification agrees with curated original award table",()=>RomPatchVerification.Provenance(evidence));
+Check("ROM patch shared award executes in recovered VM and native result helper",()=>RomPatchVerification.Execution(evidence));
+Check("VM definition original round-trip matches curated span and listing",()=>VmDefinitionVerification.RoundTrip(evidence));
+Check("VM definition branch targets and boundaries reject unsupported encodings",()=>VmDefinitionVerification.Boundaries(evidence));
+Check("VM definition executes stack and return-frame semantics",()=>VmDefinitionVerification.Execution(evidence));
+Check("VM definition changed branch operand propagates to bytes and decoded execution",()=>VmDefinitionVerification.ChangedOperand(evidence));
+Check("VM definition image build preserves unknown bytes and strict original identity",()=>VmDefinitionVerification.ApplyPreservesUnknown(evidence));
+Check("Inline literal VM definition original round-trip matches curated span and listing",()=>VmDefinitionVerification.LiteralRoundTrip(evidence));
+Check("Inline literal VM definition bounds malformed literal and token mismatch are rejected",()=>VmDefinitionVerification.LiteralBoundaries(evidence));
+Check("Inline literal VM definition executes signed wrap and return-frame semantics",()=>VmDefinitionVerification.LiteralExecution(evidence));
+Check("Inline literal VM definition changed literal propagates to bytes and decoded execution",()=>VmDefinitionVerification.LiteralChangedOperand(evidence));
+Check("Inline literal VM definition image build preserves unknown bytes and strict original identity",()=>VmDefinitionVerification.LiteralApplyPreservesUnknown(evidence));
+Check("Inline literal VM definition matches all ten recorded original-MAME invocation results",()=>VmDefinitionVerification.LiteralInvocation(evidence));
+Check("Inline literal MAME invocation cases headers and frame invariants match the definition",()=>VmDefinitionVerification.LiteralInvocationInvariants(evidence));
+Check("Inline literal MAME invocation rejects tampered captured results and frames",()=>VmDefinitionVerification.LiteralInvocationTamperRejected(evidence));
 Check("Serial transport bit images match32 original-ROM instruction paths",()=>Equal(32,AddersSerialTransportVerification.Bit(evidence)));
 Check("Serial transport byte frames match32 original-ROM instruction paths",()=>Equal(32,AddersSerialTransportVerification.Byte(evidence)));
 Check("Serial transport timer2 helpers match16 original-ROM instruction paths",()=>Equal(16,AddersSerialTransportVerification.Timer(evidence)));
@@ -594,10 +611,97 @@ Check("Timer1 dispatch matches all nineteen natural instruction prefixes", () =>
         ulong start=parent.GetProperty("entry_cycle").GetUInt64();var native=parent.GetProperty("steps").EnumerateArray().TakeWhile(s=>s[0].GetInt32()==0 && catalog[s[2].GetInt32()].GetProperty("pc").GetUInt16()!=0x28FE).ToArray();var observed=new List<OutputScanInstruction>();var execution=new Mpu4Timer1DispatchExecution(new Machine(),start,()=>0x670);execution.ObserveInstruction=observed.Add;while(!execution.Completed)execution.AdvanceTo(execution.NextEventCycle);Equal(native.Length,observed.Count);for(int i=0;i<observed.Count;i++){Equal(catalog[native[i][2].GetInt32()].GetProperty("pc").GetUInt16(),observed[i].Address);Equal(start+native[i][1].GetUInt64(),observed[i].Started);Equal(start+native[i][4].GetUInt64(),observed[i].Completed);}count++;
     }Equal(19,count);
 });
+Check("Timer1 scheduler call matches2 original FEC9 captures with full2KB RAM", () => Equal(2,AddersTimer1SchedulerCallVerification.Verify(evidence)));
+Check("Timer1 scheduler call natural return matches scheduler-a/b", () => Equal(2,AddersTimer1SchedulerCallVerification.Natural(evidence)));
+Check("Timer1 scheduler call rejects missing required ROM regions", () => Equal(1,AddersTimer1SchedulerCallVerification.Rejects(evidence,"missingregion")));
+Check("Timer1 scheduler call rejects corrupted stream or table bytes", () => Equal(1,AddersTimer1SchedulerCallVerification.Rejects(evidence,"corruption")));
+Check("Timer1 scheduler call rejects wrong return contracts", () => Equal(1,AddersTimer1SchedulerCallVerification.Rejects(evidence,"wrongreturn")));
+Check("IRQ meter pulse58BB empty scan matches the captured FEC6->FEC9 call in195 cycles", () => Equal(1,AddersMeterPulseVerification.Verify(evidence)));
+Check("IRQ meter pulse58BB rejects uncaptured branches tampered ROM and stack before mutation", () => {foreach(var kind in new[]{"disabled","timer","active","pulse","rom","call","stack"})Equal(1,AddersMeterPulseVerification.Rejects(evidence,kind));});
+Check("IRQ 6B4D zero-state component matches32 boundaries and full2KB return in170 cycles", () => Equal(1,AddersIrq6B4DZeroStateVerification.Verify(evidence)));
+Check("IRQ 6B4D zero-state rejects branch frame low high stack opcode ROM return and row negatives", () => Equal(9,AddersIrq6B4DZeroStateVerification.Rejects(evidence)));
+Check("IRQ capture57 suffix composes 6B4D 58BB and native 5CD0 from one FEC3 state with full2KB trace and partial native flags", () => Equal(1,AddersIrqSuffixVerification.Verify(evidence)));
+Check("IRQ capture57 suffix rejects wrong frame unsupported S branch ROM continuation duplicate owner intermediate tamper and reseed", () => Equal(11,AddersIrqSuffixVerification.Rejects(evidence)));
+Check("Native tone lifecycle queues services and cancels actual59EB on one owner", () => Equal(4,AddersToneLifecycleVerification.Verify(evidence)));
+Check("Native tone lifecycle cancel preserves an unrelated native task", () => Equal(1,AddersToneLifecycleVerification.Unrelated(evidence)));
+Check("Native tone lifecycle command order matches natural nudge-tone observations", () => Equal(1,AddersToneLifecycleVerification.NaturalOrder(evidence)));
+Check("Native tone lifecycle rejects missing ROM corrupt stream and empty pool", () => {
+    Equal(1,AddersToneLifecycleVerification.Rejects(evidence,"missingregion"));
+    Equal(1,AddersToneLifecycleVerification.Rejects(evidence,"corruption"));
+    Equal(1,AddersToneLifecycleVerification.Rejects(evidence,"zero"));
+});
+Check("Native tone lifecycle host clock frame RAM delta and entry opcode controls fail", () => Equal(4,AddersToneLifecycleVerification.Controls(evidence)));
+Check("Native tone lifecycle rejects unverified C6 active-channel and C4 finite-count variants", () => Equal(2,AddersToneLifecycleVerification.Unsupported(evidence)));
+Check("Fresh controlled-input tone occurrence reproduces natural queue service and cancel state", () => Equal(3,AddersFreshToneOccurrenceVerification.Verify(evidence)));
+Check("Fresh tone occurrence rejects snapshot frame order ROM pool link and continuation negatives", () => {
+    Equal(1,AddersFreshToneOccurrenceVerification.Rejects(evidence,"hash"));
+    Equal(1,AddersFreshToneOccurrenceVerification.Rejects(evidence,"frame"));
+    Equal(1,AddersFreshToneOccurrenceVerification.Rejects(evidence,"order"));
+    Equal(1,AddersFreshToneOccurrenceVerification.Rejects(evidence,"snapshot"));
+    Equal(1,AddersFreshToneOccurrenceVerification.Rejects(evidence,"rom"));
+    Equal(1,AddersFreshToneOccurrenceVerification.Rejects(evidence,"pool"));
+    Equal(1,AddersFreshToneOccurrenceVerification.Rejects(evidence,"link"));
+    Equal(1,AddersFreshToneOccurrenceVerification.Rejects(evidence,"continuation"));
+});
+Check("Matched service capture36 independently reproduces all25 outer5CD0/FECC pairs with full2KB", () => Equal(25,AddersMatchedServiceVerification.Verify(evidence)));
+Check("Matched service semantic validator accepts unmodified fixtures without raw pins", () => Equal(25,AddersMatchedServiceVerification.VerifySemanticForTests(evidence)));
+Check("Matched service semantic negatives fail at intended rule stages", () => {
+    foreach(var kind in new[]{"wrongpair","returnS","returnword","host","expectedRAM","missingROM"})
+        Console.WriteLine($"  {kind} rejected: {AddersMatchedServiceVerification.Rejects(evidence,kind)}");
+});
+Check("Matched service pinned entrypoint rejects whitespace-only changed raw fixtures", () => {
+    Equal(1,AddersMatchedServiceVerification.PinnedRejects(evidence,"capture"));
+    Equal(1,AddersMatchedServiceVerification.PinnedRejects(evidence,"regions"));
+});
 Check("Post-panel counters and sense match64 native calls including held limits and byte wrap", () => {
     using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","post-panel-timing.json")));int count=0;foreach(var row in doc.RootElement.GetProperty("rows").EnumerateArray()){
         var c=row.GetProperty("case");var m=new Machine();m.WriteWord(0x28,c.GetProperty("column").GetUInt16());foreach(var pair in new[]{("tick2d",0x2D),("tick2f",0x2F),("tick31",0x31),("timer",0x35)})m.WriteWord((ushort)pair.Item2,c.GetProperty(pair.Item1).GetUInt16());m.Memory[0x33]=c.GetProperty("irq").GetByte();int sample=8+c.GetProperty("column").GetInt32();m.Memory[sample]=c.GetProperty("sample").GetByte();var native=row.GetProperty("instructions");var observed=new List<OutputScanInstruction>();int reads=0;using var execution=new Mpu4PostPanelExecution(m,native[0].GetProperty("cycle").GetUInt64(),()=>{reads++;return c.GetProperty("sense").GetByte();});execution.ObserveInstruction=observed.Add;while(!execution.Completed)execution.AdvanceTo(execution.NextEventCycle);if(native.GetArrayLength()!=observed.Count)throw new Exception($"Post case {c.GetProperty("id")}: native {native.GetArrayLength()} generated {observed.Count}; {string.Join(",",observed.Select(x=>x.Address.ToString("X4")))}");for(int i=0;i<observed.Count;i++){Equal(native[i].GetProperty("pc").GetUInt16(),observed[i].Address);Equal(native[i].GetProperty("cycle").GetUInt64(),observed[i].Started);Equal(true,native[i].GetProperty("context_hex").GetString()!.StartsWith(observed[i].Bytes,StringComparison.Ordinal));}var end=row.GetProperty("end");Equal(end.GetProperty("cycle").GetUInt64(),execution.Cycle);Equal((ushort)0x2851,execution.Address);Equal(1,reads);foreach(var pair in new[]{("tick2d",0x2D),("tick2f",0x2F),("tick31",0x31),("timer",0x35)})Equal(end.GetProperty(pair.Item1).GetUInt16(),m.ReadWord((ushort)pair.Item2));Equal(end.GetProperty("irq").GetByte(),m.Memory[0x33]);Equal(end.GetProperty("sample").GetByte(),m.Memory[sample]);count++;
     }Equal(64,count);
+});
+Check("Post-panel 2851 guard and RTS match captured 59 plus 5 cycle prefix tail", () => {
+    using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","irq-prefix-capture61.json")));
+    var rows=doc.RootElement.GetProperty("trace").GetProperty("rows").EnumerateArray().ToArray();
+    ushort H16(System.Text.Json.JsonElement e,string n)=>Convert.ToUInt16(e.GetProperty(n).GetString()!,16);
+    byte H8(System.Text.Json.JsonElement e,string n)=>Convert.ToByte(e.GetProperty(n).GetString()!,16);
+    ulong H64(System.Text.Json.JsonElement e,string n)=>Convert.ToUInt64(e.GetProperty(n).GetString()!,16);
+    int first=Array.FindIndex(rows,r=>r.GetProperty("pc").GetString()=="2851");
+    int last=Array.FindIndex(rows,r=>r.GetProperty("pc").GetString()=="288E");
+    Equal(16,last-first+1);
+    var guard=rows[first..(last+1)];
+    var fec3=rows.Single(r=>r.GetProperty("pc").GetString()=="FEC3");
+    var fec3Boundary=doc.RootElement.GetProperty("boundaries").GetProperty("fec3");
+    ushort s=H16(guard[0],"s"),u=H16(guard[0],"u"),x=H16(guard[0],"x"),y=H16(guard[0],"y");
+    byte a=H8(guard[0],"a"),b=H8(guard[0],"b"),dp=0,cc=H8(guard[0],"cc");
+    var m=new Machine();m.Memory[0x44]=0;m.WriteWord(0x1400,0x3436);m.WriteWord(s,0xFEC3);m.WriteWord(Cell.Add(s,2),0xC018);m.WriteWord(Cell.Add(s,0xA),u);
+    foreach(var row in guard)Convert.FromHexString(row.GetProperty("op").GetString()!).CopyTo(m.Memory,H16(row,"pc"));
+    ulong start=H64(guard[0],"cyc"),rts=0;int n=0;var observed=new List<OutputScanInstruction>();
+    using var execution=new Mpu4PostPanelGuardExecution(m,start,a,b,x,y,u,s,dp,cc);execution.ObserveInstruction=observed.Add;
+    foreach(var row in guard){
+        ushort pc=H16(row,"pc");Equal(pc,execution.Address);Equal(H8(row,"cc"),execution.CC);Equal(H8(row,"a"),execution.A);Equal(H8(row,"b"),execution.B);Equal(H16(row,"x"),execution.X);Equal(H16(row,"y"),execution.Y);Equal(H16(row,"u"),execution.U);Equal(H16(row,"s"),execution.S);
+        if(pc==0x288E)rts=execution.Cycle;
+        execution.AdvanceTo(execution.NextEventCycle);
+        Equal(1,observed.Count-n);Equal(pc,observed[n].Address);Equal(H64(row,"cyc"),observed[n].Started);Equal(true,row.GetProperty("op").GetString()!.StartsWith(observed[n].Bytes,StringComparison.Ordinal));n++;
+    }
+    Equal(guard.Length,observed.Count);Equal(true,execution.Completed);Equal((ushort)0xFEC3,execution.PC);Equal((ushort)0x078D,execution.S);Equal((ushort)0x0672,execution.SavedU);Equal((ushort)0x0672,execution.X);Equal((byte)0x0B,execution.B);
+    Equal(H8(fec3,"cc"),execution.CC);Equal(H8(fec3,"a"),execution.A);Equal(H8(fec3,"b"),execution.B);Equal(H16(fec3,"x"),execution.X);Equal(H16(fec3,"y"),execution.Y);Equal(H16(fec3,"u"),execution.U);Equal(H8(fec3Boundary,"dp"),execution.DP);Equal(H16(fec3,"s"),execution.S);
+    Equal(start+59,rts);Equal(start+64,execution.Cycle);Equal(H64(fec3,"cyc"),execution.Cycle);Equal(u,m.ReadWord(Cell.Add(s,0xA)));
+});
+Check("Post-panel 2851 guard rejects unsupported branches and boundaries before mutation", () => {
+    const ushort S=0x078B;
+    using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","irq-prefix-capture61.json")));
+    var rows=doc.RootElement.GetProperty("trace").GetProperty("rows").EnumerateArray().ToArray();
+    ushort H16(System.Text.Json.JsonElement e,string n)=>Convert.ToUInt16(e.GetProperty(n).GetString()!,16);
+    Machine Base(ushort s=S){var m=new Machine();foreach(var row in rows)Convert.FromHexString(row.GetProperty("op").GetString()!).CopyTo(m.Memory,H16(row,"pc"));m.WriteWord(0x1400,0x3436);m.WriteWord(s,0xFEC3);m.WriteWord(Cell.Add(s,2),0xC018);m.WriteWord(Cell.Add(s,0xA),0x0672);return m;}
+    void Rejects(string site,Action<Machine> mutate,ushort? s=null,byte dp=0){
+        var m=Base(s??S);mutate(m);byte[] before=m.Memory.ToArray();
+        try{using var e=new Mpu4PostPanelGuardExecution(m,0,0,3,3,0x28,0x672,s??S,dp,0xC4);throw new Exception("Accepted "+site);}
+        catch(NotSupportedException ex){Equal(true,ex.Message.Contains(site,StringComparison.Ordinal));}
+        Equal(true,before.SequenceEqual(m.Memory));
+    }
+    void Accepts(ushort saved,ushort s){var m=Base(s);m.WriteWord(Cell.Add(s,0xA),saved);using var e=new Mpu4PostPanelGuardExecution(m,0,0,3,3,0x28,0x672,s,0,0xC4);Equal(saved,e.SavedU);Equal(s,e.S);}
+    Rejects("DP 01",_=>{},dp:1);Rejects("DP FF",_=>{},dp:0xFF);Rejects("original selected bytes",m=>m.Memory[0x2851]=0);
+    Rejects("44",m=>m.Memory[0x44]=1);Rejects("0525",m=>m.WriteWord(Cell.Add(S,0xA),0x0524));Rejects("0676",m=>m.WriteWord(Cell.Add(S,0xA),0x0677));Rejects("0677",_=>{},0x0676);Rejects("07C8",_=>{},0x07C9);Rejects("288F",m=>m.Memory[0x1400]=0);
+    Accepts(0x0525,0x0677);Accepts(0x0676,0x07C8);
 });
 Check("Post-panel idle motor and counter suffix match all nineteen natural native paths", () => {
     using var outer=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","ptm-outer-timing.json")));
@@ -984,6 +1088,164 @@ Check("Natural Start tone wait matches generated CPU delay plus full ordinary IR
     var adapter=CapturedInterruptOccupancy.FromOrdinaryIrqHandlers(natural.GetProperty("terminal").GetUInt64()+100,handlers);
     ulong before=adapter.NextStart;
     Equal(p[1].GetProperty("end").GetUInt64(),adapter.CompletionAfterCpuWork(p[1].GetProperty("start").GetUInt64(),Mpu4CalibratedDelay.StartToneWaitCycles));Equal(before,adapter.NextStart);
+});
+Check("Foreground7159 wait executes the actual5A05/5A07 boundary with the captured full stack", () => {
+    using var cap=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","stack-writer-0790-capture43.json")));
+    string Assembly(string address)=>System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"native",address+".json"))).RootElement.GetProperty("assembly").GetString()!;
+    string listing=string.Join("\n",new[]{"5a14","59ff","59d9","7159","718a","7164"}.Select(Assembly));
+    foreach(var line in new[]{
+        "5a05 LDB 0x1,S","5a07 JSR 0x7159","5a0a LDX #0x59eb","5a0d JSR 0x5c7a","5a10 CLR <0x4d","5a12 PULS  A B PC",
+        "7159 BSR 0x718a","715b PSHS  B A","715d BSR 0x7164","715f DECB","7160 BNE 0x715d","7162 PULS  A B PC",
+        "718a PSHS  B","718c LDB 0x719b","718f BITB #0x80","7191 BNE 0x7195","7193 PULS  B PC",
+        "7164 PSHS  B","7166 LDB #0x28","7168 LDA #0x54","716a DECA","716b BNE 0x716a","716d DECB","716e BNE 0x7168","7170 PULS  B PC"})
+        Equal(true,listing.Contains(line,StringComparison.Ordinal));
+    var trace=cap.RootElement.GetProperty("stack_writes").EnumerateArray()
+        .Where(w=>w.GetProperty("pc").GetString() is "5A0A" or "715B" or "718C" or "715D" or "715F" or "7166")
+        .Select(w=>new{PC=w.GetProperty("pc").GetString()!,Address=Convert.ToUInt16(w.GetProperty("wpaddr").GetString()!,16),Value=Convert.ToByte(w.GetProperty("new").GetString()!,16)}).ToArray();
+    Equal(10,trace.Length);
+    ulong jsrCycle=Convert.ToUInt64(cap.RootElement.GetProperty("final_writers").EnumerateArray().First(w=>w.GetProperty("address").GetString()=="079F").GetProperty("cycle").GetString()!,16);
+    var m=new Machine();m.Memory[0x719B]=0;ushort s=0x07A0;m.Memory[0x07A1]=0x02;
+    var result=Mpu4CalibratedDelayExecution.CallFrom5A05(m,jsrCycle-13,s,0x91,0x80A6,0xFC4F,0x0672,0,0xC0,state=>state.PC==0x716A && state.A==0x47 && state.B==0x27);
+    Equal(true,result.StoppedBeforeInstruction);Equal(10,result.Writes.Count);
+    for(int i=0;i<trace.Length;i++){Equal(trace[i].Address,result.Writes[i].Address);Equal(trace[i].Value,result.Writes[i].Value);Equal(trace[i].PC,result.Writes[i].TapPC.ToString("X4"));}
+    Equal((ushort)0x716A,result.State.PC);Equal((ushort)0x0799,result.State.S);Equal((byte)0x47,result.State.A);Equal((byte)0x27,result.State.B);
+    Equal((byte)0xC0,result.State.CC);Equal((ushort)0x80A6,result.State.X);Equal((ushort)0xFC4F,result.State.Y);Equal((ushort)0x0672,result.State.U);Equal((byte)0,result.State.DP);
+    Equal("02715F91025A0A",Convert.ToHexString(m.Memory.AsSpan(0x799,7)));
+    var irq=M6809IrqEntry.AtInstructionBoundary(result.State.Cycle,new(result.State.CC,result.State.A,result.State.B,result.State.DP,result.State.X,result.State.Y,result.State.U,result.State.S,result.State.PC),true)!;
+    Equal((ushort)0x078D,irq.StackPointer);irq.StackFrame.CopyTo(m.Memory,irq.StackPointer);
+    var after=cap.RootElement.GetProperty("stack_window").GetProperty("after_0790_079f").EnumerateArray().Select(e=>Convert.ToByte(e.GetProperty("value").GetString()!,16)).ToArray();
+    Equal("0080A6FC4F0672716A02715F91025A0A",Convert.ToHexString(m.Memory.AsSpan(0x790,16)));
+    Equal(Convert.ToHexString(after),Convert.ToHexString(m.Memory.AsSpan(0x790,16)));
+});
+Check("Foreground7159 wait preserves registers and fails closed on the disabled and invalid paths", () => {
+    foreach(byte count in new byte[]{0,1,2,3}){
+        var m=new Machine();m.Memory[0x719B]=0;ushort s=0x0700;m.Memory[0x0701]=count;
+        var r=Mpu4CalibratedDelayExecution.CallFrom5A05(m,1000,s,0x91,0x1234,0x2345,0x3456,0,0xC0);
+        Equal((ushort)0x5A0A,r.State.PC);Equal(s,r.State.S);Equal((byte)0x91,r.State.A);Equal(count,r.State.B);Equal((byte)0xC4,r.State.CC);
+        Equal((ushort)0x1234,r.State.X);Equal((ushort)0x2345,r.State.Y);Equal((ushort)0x3456,r.State.U);Equal((byte)0,r.State.DP);
+        Equal(1000UL+5+8+Mpu4CalibratedDelay.RepeatCycles(count),r.State.Cycle);
+        Equal((byte)0,m.Memory[0x700]);Equal(count,m.Memory[0x701]);
+    }
+    var disabled=new Machine();Array.Fill(disabled.Memory,(byte)0x5A);disabled.Memory[0x719B]=0x80;disabled.Memory[0x0701]=2;
+    byte[] before=disabled.Memory.ToArray();bool rejected=false;
+    try{Mpu4CalibratedDelayExecution.CallFrom5A05(disabled,0,0x700,0x91,0,0,0,0,0xC0);}catch(NotSupportedException){rejected=true;}Equal(true,rejected);
+    Equal(Convert.ToHexString(before),Convert.ToHexString(disabled.Memory));
+    var below=new Machine();Array.Fill(below.Memory,(byte)0x5A);below.Memory[0x719B]=0;
+    before=below.Memory.ToArray();bool low=false;
+    try{Mpu4CalibratedDelayExecution.CallFrom5A05(below,0,Mpu4CalibratedDelayExecution.MinimumStackPointer-1,0x91,0,0,0,0,0xC0);}catch(ArgumentOutOfRangeException){low=true;}Equal(true,low);
+    Equal(Convert.ToHexString(before),Convert.ToHexString(below.Memory));
+    var min=new Machine();Array.Fill(min.Memory,(byte)0xA5);min.Memory[0x719B]=0;min.Memory[8]=1;
+    before=min.Memory.ToArray();
+    var minResult=Mpu4CalibratedDelayExecution.CallFrom5A05(min,0,Mpu4CalibratedDelayExecution.MinimumStackPointer,0x91,0,0,0,0,0xC0);
+    Equal((ushort)0x5A0A,minResult.State.PC);Equal(Mpu4CalibratedDelayExecution.MinimumStackPointer,minResult.State.S);Equal((byte)1,minResult.State.B);
+    Equal(true,minResult.Writes.All(w=>w.Address<=6));Equal(Convert.ToHexString(before.AsSpan(7)),Convert.ToHexString(min.Memory.AsSpan(7)));
+    var high=new Machine();Array.Fill(high.Memory,(byte)0xA5);high.Memory[0x719B]=0;high.Memory[0]=1;
+    before=high.Memory.ToArray();
+    var highResult=Mpu4CalibratedDelayExecution.CallFrom5A05(high,0,0xFFFF,0x91,0,0,0,0,0xC0);
+    Equal((ushort)0x5A0A,highResult.State.PC);Equal((ushort)0xFFFF,highResult.State.S);Equal((byte)1,highResult.State.B);
+    Equal(true,highResult.Writes.All(w=>w.Address>=0xFFF8));
+    Equal(Convert.ToHexString(before.AsSpan(0,0xFFF8)),Convert.ToHexString(high.Memory.AsSpan(0,0xFFF8)));Equal(before[0xFFFF],high.Memory[0xFFFF]);
+});
+Check("Foreground5A0A finish cancels through one native owner and matches captured5A10/5A1C", () => Equal(1,AddersToneFinishVerification.Verify(evidence)));
+Check("Foreground5A0A finish negatives fail at preflight ownership and snapshot stages", () => {
+    foreach(var kind in new[]{"stack","return","gate","ownership","owner","missingROM","snapshot","cycle","final"})
+        Equal(1,AddersToneFinishVerification.Rejects(evidence,kind));
+});
+Check("Foreground5A0A finish exposes LDX/CLR flags, unknown native CC, and exact16-byte stack limit", () => Equal(1,AddersToneFinishVerification.VerifyFlagsAndStack(evidence)));
+Check("Foreground5A14 setup executes the captured wrapper and queues59EB through one native owner", () => Equal(1,AddersToneSetupVerification.Verify(evidence)));
+Check("Foreground5A14 setup negatives reject before mutation or at the captured queue comparison", () => {
+    foreach(var kind in new[]{"stack","gate","ownership","owner","servicing","paused","pool","poolPointer","vmTemplate","vmToken","vmHeader","vmNative","bridgeMode","missingROM","snapshot"})
+        Equal(1,AddersToneSetupVerification.Rejects(evidence,kind));
+    Equal(false,typeof(AddersToneSetupExecution).GetMethod(nameof(AddersToneSetupExecution.ExecuteFromVmEntry))!.GetParameters().Any(p=>p.ParameterType==typeof(Action<byte>)));
+});
+Check("Foreground5A14 setup cycle split is source67/262/11, BPL explicit, and stack22 exact", () => {
+    Equal(1,AddersToneSetupVerification.VerifyCycles(evidence));
+    Equal(1,AddersToneSetupVerification.VerifyStackBoundary(evidence));
+});
+Check("Start tone setup derives bridge wrapper and queue cycles without phase0 capture", () => {
+    using var tone=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","nudge-tone.json")));
+    var ram=Convert.FromHexString(tone.RootElement.GetProperty("ram_hex").GetString()!);
+    Machine Natural(){var m=new Machine();ram.CopyTo(m.Memory,0);return m;}
+    var natural=Natural();Equal(41UL,AddersToneSetupTiming.BridgeCycles(natural));Equal(67UL,AddersToneSetupTiming.WrapperCycles);Equal(262UL,AddersToneSetupTiming.QueueCycles(natural));Equal(381UL,AddersToneSetupTiming.Cycles(natural));
+    using var recorded=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","calibrated-delay-timing.json")));
+    Equal(recorded.RootElement.GetProperty("natural").GetProperty("phases")[0].GetProperty("cpu_cycles").GetUInt64(),AddersToneSetupTiming.Cycles(Natural()));
+    var mode=Natural();mode.Memory[0xF1]=1;Equal(392UL,AddersToneSetupTiming.Cycles(mode));
+    var volume=Natural();volume.Memory[0x50]=0x14;Equal(383UL,AddersToneSetupTiming.Cycles(volume));
+    var empty=Natural();empty.WriteWord(0x49,0);Equal(211UL,AddersToneSetupTiming.Cycles(empty));
+    var disabled=Natural();disabled.Memory[0x719B]=0x80;Equal(153UL,AddersToneSetupTiming.Cycles(disabled));
+    string At(System.Text.Json.JsonDocument doc,string property,ushort address,int length){
+        foreach(var region in doc.RootElement.GetProperty(property).EnumerateArray()){
+            int start=region.GetProperty("address").GetInt32();string hex=region.GetProperty("bytes_hex").GetString()!;
+            if(address>=start && address+length<=start+hex.Length/2)return hex.Substring((address-start)*2,length*2);
+        }
+        throw new Exception($"Curated evidence lacks {address:X4}+{length} in {property}");
+    }
+    ulong DecodeCost(string hex,bool? taken=null)=>(ulong)M6809InstructionTiming.Decode(Convert.FromHexString(hex),taken).Cycles;
+    using var words=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","vm-word-timing.json")));
+    string next=words.RootElement.GetProperty("rows").EnumerateArray().First().GetProperty("before_hex").GetString()!.Substring(0xFC*2,8);
+    Equal("AEA16E91",next);ulong nextCost=DecodeCost(next[..4])+DecodeCost(next[4..]);
+    using var payout=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","payout-word-data.json")));
+    var bridgeSteps=new (ushort Address,string Bytes)[]{(0x776F,"96F1"),(0x7771,"2707"),(0x7773,"8A01"),(0x7775,"97F1"),(0x7777,"B7080C"),(0x777A,"3420"),(0x777C,"AD94")};
+    ulong BridgeCost(bool mode){
+        ulong total=nextCost;
+        foreach(var step in bridgeSteps){
+            string exact=At(payout,"regions",step.Address,step.Bytes.Length/2);Equal(step.Bytes,exact);
+            bool? taken=step.Address==0x7771 ? !mode : null;
+            if(mode || (step.Address!=0x7773 && step.Address!=0x7775 && step.Address!=0x7777))total+=DecodeCost(exact,taken);
+        }
+        return total;
+    }
+    Equal(41UL,BridgeCost(false));Equal(52UL,BridgeCost(true));
+    Equal(BridgeCost(false),AddersToneSetupTiming.BridgeCycles(natural));Equal(BridgeCost(true),AddersToneSetupTiming.BridgeCycles(mode));
+    using var prompt=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","sound-prompt.json")));
+    var wrapperSteps=new (ushort Address,string Bytes,bool? Taken)[]{(0x5A14,"3406",null),(0x5A16,"8691",null),(0x5A18,"C602",null),(0x5A1A,"8DE3",null),(0x59FF,"3406",null),(0x5A01,"1F89",null),(0x5A03,"8DD4",null),(0x59D9,"3416",null),(0x59DB,"C060",null),(0x59DD,"2A02",true),(0x59E1,"D74D",null),(0x59E3,"8E59EB",null),(0x59E6,"BD5C18",null)};
+    ulong wrapperCost=0;
+    foreach(var step in wrapperSteps){string exact=At(prompt,"rom_regions",step.Address,step.Bytes.Length/2);Equal(step.Bytes,exact);wrapperCost+=DecodeCost(exact,step.Taken);}
+    string returnBytes=At(prompt,"rom_regions",0x59E9,2);Equal("3596",returnBytes);ulong returnCost=DecodeCost(returnBytes);Equal(11UL,returnCost);
+    Equal(67UL,wrapperCost);Equal(wrapperCost,AddersToneSetupTiming.WrapperCycles);
+    using var queueDoc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","sound-queue.json")));
+    ulong QueueCost(Machine state,ulong expected){
+        var copy=new Machine();Array.Copy(state.Memory,copy.Memory,copy.Memory.Length);
+        var plan=new AddersSoundQueuePlan(copy,0x59EB,0x700,copy.ReadWord(0x49),0x91,0x31);
+        ulong total=0;int mul=0,branches=0;
+        foreach(var work in plan.Instructions()){
+            if(work is not NativeRoutineStep step)throw new Exception("Tone queue plan produced a non-instruction");
+            string exact=At(queueDoc,"rom_regions",step.Address,step.Bytes.Length/2);Equal(step.Bytes,exact);
+            var timing=M6809InstructionTiming.Decode(Convert.FromHexString(exact));total+=(ulong)timing.Cycles;
+            if(step.Bytes=="3D"){mul++;Equal(11,timing.Cycles);}
+            byte opcode=Convert.FromHexString(step.Bytes)[0];if(opcode is >=0x20 and <=0x2F)branches++;
+            step.Effect?.Invoke();
+        }
+        Equal(expected,total);
+        if(expected==262UL){Equal(1,mul);Equal(4,branches);}
+        if(expected==34UL){Equal(0,mul);Equal(1,branches);}
+        return total;
+    }
+    Equal(AddersToneSetupTiming.QueueCycles(natural),QueueCost(natural,262UL));
+    Equal(AddersToneSetupTiming.QueueCycles(empty),QueueCost(empty,92UL));
+    Equal(AddersToneSetupTiming.QueueCycles(volume),QueueCost(volume,264UL));
+    Equal(AddersToneSetupTiming.QueueCycles(disabled),QueueCost(disabled,34UL));
+    Equal(11,M6809InstructionTiming.Decode(Convert.FromHexString("3D")).Cycles);
+    Equal(3,M6809InstructionTiming.Decode(Convert.FromHexString("2602"),true).Cycles);
+    Equal(3,M6809InstructionTiming.Decode(Convert.FromHexString("2602"),false).Cycles);
+    Equal(6,M6809InstructionTiming.Decode(Convert.FromHexString("10270000"),true).Cycles);
+    Equal(5,M6809InstructionTiming.Decode(Convert.FromHexString("10270000"),false).Cycles);
+    bool missing=false;try{M6809InstructionTiming.Decode(Convert.FromHexString("10270000"));}catch(NotSupportedException){missing=true;}Equal(true,missing);
+    Equal(false,RuntimeEvidenceRequirements.CalibratedDelayTiming.Fields.Contains("phases[0]"));
+    Equal(true,RuntimeEvidenceRequirements.CalibratedDelayTiming.Fields.Contains("phases[2]"));
+});
+Check("Start tone setup timing is clone-only and rejects invalid task state", () => {
+    using var tone=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","nudge-tone.json")));
+    var ram=Convert.FromHexString(tone.RootElement.GetProperty("ram_hex").GetString()!);
+    Machine Natural(){var m=new Machine();ram.CopyTo(m.Memory,0);return m;}
+    var natural=Natural();natural.Data.Push(0x1234);natural.Data.Push(0x5678);natural.DataStackBase=0x7F0;natural.LocalFrame=0x4444;
+    var memory=natural.Memory.ToArray();var data=natural.Data.ToArray();var dataBase=natural.DataStackBase;var localFrame=natural.LocalFrame;
+    Equal(381UL,AddersToneSetupTiming.Cycles(natural));
+    Equal(true,memory.SequenceEqual(natural.Memory));Equal(true,data.SequenceEqual(natural.Data));Equal(dataBase,natural.DataStackBase);Equal(localFrame,natural.LocalFrame);Equal(2,natural.Data.Count);
+    var invalid=Natural();invalid.WriteWord(0x49,0x1234);var invalidMemory=invalid.Memory.ToArray();
+    bool rejected=false;
+    try{AddersToneSetupTiming.QueueCycles(invalid);}catch(NotSupportedException error){rejected=error.Message.Contains("not in the recovered sound task pool",StringComparison.Ordinal);}
+    Equal(true,rejected);Equal(true,invalidMemory.SequenceEqual(invalid.Memory));
 });
 Check("CPU work deadline crosses IRQ envelopes and period boundaries without consuming events", () => {
     var adapter=new CapturedInterruptOccupancy(100,new[]{new ulong[]{20,10},new ulong[]{60,20}});
@@ -2810,6 +3072,149 @@ Check("Recorded dispatch tokens agree with recovered listings", () => {
     }
     if(checkedSites<100) throw new Exception("Insufficient dispatch comparisons");
     Console.WriteLine($"  {checkedSites} recorded dispatches checked");
+});
+Check("Live runtime evidence policy default compatibility preserves constructed session", () => {
+    var implicitCompatibility=new SkillCashLiveSession(evidence);
+    var explicitCompatibility=new SkillCashLiveSession(evidence,evidencePolicy:RuntimeEvidencePolicy.Compatibility);
+    Equal(true,implicitCompatibility.Machine.Memory.SequenceEqual(explicitCompatibility.Machine.Memory));
+    Equal(implicitCompatibility.VmAddress,explicitCompatibility.VmAddress);
+    Equal(implicitCompatibility.Cycle,explicitCompatibility.Cycle);
+});
+Check("Live runtime evidence policy strict rejects recorded tone and IRQ timing at the actual load boundary", () => {
+    foreach(var policy in new[]{RuntimeEvidencePolicy.CaptureFree(),RuntimeEvidencePolicy.CaptureFree(allowDeclaredCheckpoint:true)}) {
+        try { new SkillCashLiveSession(evidence,evidencePolicy:policy); throw new Exception("Strict live construction consumed recorded timing"); }
+        catch(NotSupportedException error) {
+            foreach(var token in new[]{"calibrated-delay-timing.json","natural.phases","recorded timing","source-derived"})
+                if(!error.Message.Contains(token))throw new Exception($"Recorded timing diagnostic lacks {token}: {error.Message}");
+        }
+    }
+});
+Check("Live runtime evidence policy allows source-backed static definitions and ROM data", () => {
+    var policy=RuntimeEvidencePolicy.CaptureFree();
+    using var literals=System.Text.Json.JsonDocument.Parse(policy.ReadText(evidence,RuntimeEvidenceRequirements.VmLiteralTiming));
+    if(literals.RootElement.GetProperty("tokens").GetArrayLength()==0)throw new Exception("Static literal membership missing");
+    using var motor=System.Text.Json.JsonDocument.Parse(policy.ReadText(evidence,RuntimeEvidenceRequirements.DiceMotionData));
+    if(motor.RootElement.GetProperty("ranges").EnumerateObject().Count()==0)throw new Exception("Static ROM ranges missing");
+});
+Check("Live runtime evidence policy requires explicit declared-checkpoint permission", () => {
+    try { RuntimeEvidencePolicy.CaptureFree().ReadText(evidence,RuntimeEvidenceRequirements.FeatureCheckpoint); throw new Exception("Checkpoint read without explicit permission"); }
+    catch(NotSupportedException error) {
+        foreach(var token in new[]{"feature-replay.json","declared checkpoint","initial","explicit permission","checkpoint contract"})
+            if(!error.Message.Contains(token))throw new Exception($"Checkpoint diagnostic lacks {token}: {error.Message}");
+    }
+    var allowed=RuntimeEvidencePolicy.CaptureFree(allowDeclaredCheckpoint:true).ReadText(evidence,RuntimeEvidenceRequirements.FeatureCheckpoint);
+    if(!allowed.Contains("\"initial\""))throw new Exception("Explicit checkpoint permission did not read the declared state");
+});
+Check("Live runtime evidence policy rejects recorded lamp results even with checkpoint permission", () => {
+    try { RuntimeEvidencePolicy.CaptureFree(allowDeclaredCheckpoint:true).ReadText(evidence,RuntimeEvidenceRequirements.LampFrames); throw new Exception("Recorded lamp responses were accepted"); }
+    catch(NotSupportedException error) {
+        foreach(var token in new[]{"lamp-frames.json","responses","recorded result","PAL"})
+            if(!error.Message.Contains(token))throw new Exception($"Recorded result diagnostic lacks {token}: {error.Message}");
+    }
+});
+Check("Live runtime evidence policy names captured fields in a mixed static checkpoint file", () => {
+    try { RuntimeEvidencePolicy.CaptureFree().ReadText(evidence,RuntimeEvidenceRequirements.IrqServiceData); throw new Exception("Mixed checkpoint file was treated as wholly static"); }
+    catch(NotSupportedException error) {
+        foreach(var token in new[]{"irq-service-data.json","timer3","ranges","declared checkpoint"})
+            if(!error.Message.Contains(token))throw new Exception($"Mixed-source diagnostic lacks {token}: {error.Message}");
+    }
+    var allowed=RuntimeEvidencePolicy.CaptureFree(allowDeclaredCheckpoint:true).ReadText(evidence,RuntimeEvidenceRequirements.IrqServiceData);
+    if(!allowed.Contains("\"ranges\""))throw new Exception("Static ROM ranges were dropped when checkpoint was permitted");
+});
+Check("SkillCashData extension ranges use the shared policy and preserve compatibility bytes", () => {
+    var baseline=new Machine();SkillCashData.LoadExtensions(baseline,evidence);
+    var explicitCompatibility=new Machine();SkillCashData.LoadExtensions(explicitCompatibility,evidence,RuntimeEvidencePolicy.Compatibility);
+    var strict=new Machine();SkillCashData.LoadExtensions(strict,evidence,RuntimeEvidencePolicy.CaptureFree());
+    Equal(true,baseline.Memory.SequenceEqual(explicitCompatibility.Memory));
+    Equal(true,baseline.Memory.SequenceEqual(strict.Memory));
+    if(baseline.Memory[0x7248]==0)throw new Exception("Static extension ranges were not loaded");
+});
+Check("SkillCashData feature ranges match compiled ROM data under compatibility and strict policy", () => {
+    var compiled=new Machine();SkillCashData.LoadFeature(compiled);
+    var compatibility=new Machine();SkillCashData.LoadFeature(compatibility,evidence,RuntimeEvidencePolicy.Compatibility);
+    var strict=new Machine();SkillCashData.LoadFeature(strict,evidence,RuntimeEvidencePolicy.CaptureFree());
+    Equal(true,compiled.Memory.SequenceEqual(compatibility.Memory));
+    Equal(true,compiled.Memory.SequenceEqual(strict.Memory));
+});
+Check("SkillCashData alpha and scan ranges match compiled ROM data under strict policy", () => {
+    var compiledAlpha=new Machine();SkillCashData.LoadAlpha(compiledAlpha);
+    var strictAlpha=new Machine();SkillCashData.LoadAlpha(strictAlpha,evidence,RuntimeEvidencePolicy.CaptureFree());
+    Equal(true,compiledAlpha.Memory.SequenceEqual(strictAlpha.Memory));
+    var compiledScan=new Machine();SkillCashData.LoadScan(compiledScan);
+    var strictScan=new Machine();SkillCashData.LoadScan(strictScan,evidence,RuntimeEvidencePolicy.CaptureFree());
+    Equal(true,compiledScan.Memory.SequenceEqual(strictScan.Memory));
+});
+Check("SkillCashData requirements name exact static files and fields", () => {
+    var requirements=new[]{
+        (RuntimeEvidenceRequirements.SkillCashExtensionRanges,"maps/skill-cash-extension-data.json","ranges"),
+        (RuntimeEvidenceRequirements.SkillCashFeatureRanges,"maps/skill-cash-feature-data.json","ranges[71AA, 8705, 890A, 7257]"),
+        (RuntimeEvidenceRequirements.SkillCashAlphaRanges,"maps/skill-cash-alpha-scan-data.json","ranges[A7B6, A7C9, A814, AF78, 193B, 6C3C]"),
+        (RuntimeEvidenceRequirements.SkillCashScanRanges,"maps/skill-cash-alpha-scan-data.json","ranges[28E6, 29BB]")
+    };
+    foreach(var item in requirements) {
+        Equal(item.Item2,item.Item1.RelativePath);
+        Equal(RuntimeEvidenceClass.StaticDefinition,item.Item1.Class);
+        Equal(item.Item3,item.Item1.Fields);
+        if(string.IsNullOrEmpty(item.Item1.Replacement))throw new Exception($"Missing replacement for {item.Item1.RelativePath}");
+        var text=RuntimeEvidencePolicy.CaptureFree().ReadText(evidence,item.Item1);
+        using var doc=System.Text.Json.JsonDocument.Parse(text);
+        if(!doc.RootElement.TryGetProperty("ranges",out _))throw new Exception($"Missing ranges in {item.Item1.RelativePath}");
+    }
+});
+Check("SkillCashData static range preflight rejects invalid map copies without mutation", () => {
+    var feature=Path.Combine(evidence,"maps","skill-cash-feature-data.json");
+    var alphaScan=Path.Combine(evidence,"maps","skill-cash-alpha-scan-data.json");
+    var dir=Path.Combine(Path.GetTempPath(),"fml-review18-"+Guid.NewGuid().ToString("N"));
+    Directory.CreateDirectory(Path.Combine(dir,"maps"));
+    try {
+        System.Text.Json.Nodes.JsonArray Ranges(System.Text.Json.Nodes.JsonNode node)=>node["ranges"]!.AsArray();
+        System.Text.Json.Nodes.JsonObject RangeAt(System.Text.Json.Nodes.JsonNode node,string address)=>Ranges(node).Single(x=>x!["address"]!.GetValue<string>()==address)!.AsObject();
+        void Reject(string source,string expected,Action<System.Text.Json.Nodes.JsonNode> mutate,Action<Machine,string> load) {
+            var name=Path.GetFileName(source);
+            var target=Path.Combine(dir,"maps",name);
+            var node=System.Text.Json.Nodes.JsonNode.Parse(File.ReadAllText(source))!;
+            mutate(node);
+            File.WriteAllText(target,node.ToJsonString());
+            var machine=new Machine();Array.Fill(machine.Memory,(byte)0xA5);var before=machine.Memory.ToArray();
+            try { load(machine,dir); }
+            catch(InvalidDataException error) {
+                if(!error.Message.Contains(name,StringComparison.Ordinal) || !error.Message.Contains(expected,StringComparison.OrdinalIgnoreCase))
+                    throw new Exception($"{name}: diagnostic missing {expected}: {error.Message}");
+                if(!machine.Memory.SequenceEqual(before))throw new Exception($"{name}: partial mutation before rejection of {expected}");
+                return;
+            }
+            throw new Exception($"{name}: expected rejection for {expected}");
+        }
+        Reject(feature,"8705",node=>Ranges(node).Remove(RangeAt(node,"8705")),(machine,dir)=>SkillCashData.LoadFeature(machine,dir));
+        Reject(feature,"8705",node=>Ranges(node).Add(RangeAt(node,"8705").DeepClone()),(machine,dir)=>SkillCashData.LoadFeature(machine,dir));
+        Reject(feature,"890A",node=>{var range=RangeAt(node,"890A");var hex=range["hex"]!.GetValue<string>();range["hex"]=hex[..^2];},(machine,dir)=>SkillCashData.LoadFeature(machine,dir));
+        Reject(feature,"7257",node=>{var range=RangeAt(node,"7257");range["hex"]=range["hex"]!.GetValue<string>()+"00";},(machine,dir)=>SkillCashData.LoadFeature(machine,dir));
+        Reject(feature,"7257",node=>Ranges(node).Add(new System.Text.Json.Nodes.JsonObject{["address"]="7260",["bytes"]=1,["hex"]="00"}),(machine,dir)=>SkillCashData.LoadFeature(machine,dir));
+        Reject(feature,"ZZZZ",node=>RangeAt(node,"8705")["address"]="ZZZZ",(machine,dir)=>SkillCashData.LoadFeature(machine,dir));
+        Reject(feature,"8705",node=>RangeAt(node,"8705")["hex"]="ABC",(machine,dir)=>SkillCashData.LoadFeature(machine,dir));
+        Reject(feature,"FFFF",node=>RangeAt(node,"8705")["address"]="FFFF",(machine,dir)=>SkillCashData.LoadFeature(machine,dir));
+        Reject(alphaScan,"A7C9",node=>Ranges(node).Remove(RangeAt(node,"A7C9")),(machine,dir)=>SkillCashData.LoadAlpha(machine,dir));
+        Reject(alphaScan,"29BB",node=>{var range=RangeAt(node,"29BB");range["hex"]=range["hex"]!.GetValue<string>()+"00";},(machine,dir)=>SkillCashData.LoadScan(machine,dir));
+    }
+    finally { Directory.Delete(dir,true); }
+});
+Check("SkillCashData valid temporary map copies match compiled bytes", () => {
+    var dir=Path.Combine(Path.GetTempPath(),"fml-review18-"+Guid.NewGuid().ToString("N"));
+    Directory.CreateDirectory(Path.Combine(dir,"maps"));
+    try {
+        foreach(var name in new[]{"skill-cash-feature-data.json","skill-cash-alpha-scan-data.json"})
+            File.Copy(Path.Combine(evidence,"maps",name),Path.Combine(dir,"maps",name),true);
+        var compiledFeature=new Machine();SkillCashData.LoadFeature(compiledFeature);
+        var mappedFeature=new Machine();SkillCashData.LoadFeature(mappedFeature,dir,RuntimeEvidencePolicy.CaptureFree());
+        Equal(true,compiledFeature.Memory.SequenceEqual(mappedFeature.Memory));
+        var compiledAlpha=new Machine();SkillCashData.LoadAlpha(compiledAlpha);
+        var mappedAlpha=new Machine();SkillCashData.LoadAlpha(mappedAlpha,dir,RuntimeEvidencePolicy.CaptureFree());
+        Equal(true,compiledAlpha.Memory.SequenceEqual(mappedAlpha.Memory));
+        var compiledScan=new Machine();SkillCashData.LoadScan(compiledScan);
+        var mappedScan=new Machine();SkillCashData.LoadScan(mappedScan,dir,RuntimeEvidencePolicy.CaptureFree());
+        Equal(true,compiledScan.Memory.SequenceEqual(mappedScan.Memory));
+    }
+    finally { Directory.Delete(dir,true); }
 });
 if(passed==0)throw new ArgumentException("No verification groups matched the requested filter");
 Console.WriteLine($"{passed} verification groups passed. Feature, alpha software and IRQ latch replay verified; electrical timing, audio synthesis and general scheduling remain incomplete.");

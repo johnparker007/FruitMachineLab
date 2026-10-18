@@ -1,0 +1,136 @@
+{
+  "schema_version": 3,
+  "classification": "Natural original-ROM MAME startup continuation observation from checksum return through native initialization tail to the first threaded-VM entry. Marker execution and stream pointer are observed; token semantics and gameplay are not claimed.",
+  "rom": {
+    "name": "a6ls.p1",
+    "length": 65536,
+    "expected_length": 65536,
+    "sha1": "402d1518bb78fdc489b06c2aabc771e5ce151847",
+    "run_copy_sha1_after": "402d1518bb78fdc489b06c2aabc771e5ce151847",
+    "unchanged": true
+  },
+  "starting_contract": {
+    "mode": "Natural original startup through first VM entry",
+    "declared_starting_nvram": "absent",
+    "declared_starting_configuration": "absent; -noreadconfig",
+    "declared_user_inputs": "none",
+    "configuration_read_disabled": true,
+    "isolated_rom_copy": "verified: length 65536; SHA1 402d1518bb78fdc489b06c2aabc771e5ce151847",
+    "user_inputs": "none; no input playback files and no playback argument",
+    "pc_ram_input_or_rom_injection": "none; debugger script contains only bpset/printf/go/quit and arguments contain no state load, playback, autoboot or cheat option",
+    "mame_sha256": "0fce5a88df4f9d9b1fbf1405812c00848036e615993780978d967da34204cb7a",
+    "mame_exit_code": 0,
+    "debug_log_sha256": "41b4970e790c0e7d26890bd65685ecef9b943fc47b4192a9d9ec6c4756f22a40",
+    "console_sha256": "81f157edd54040267bf3aeee9120aaf8e10e1fa84ef715891424a20898179680",
+    "debug_log_sha256_source": "recomputed from raw debug.log",
+    "console_sha256_source": "recomputed from raw console.txt"
+  },
+  "observed": {
+    "reset_entry": "STARTUP_RESET pc=7CD1 s=07C2 cc=D0",
+    "init_entry": "STARTUP_INIT_ENTRY pc=6750 u=0672",
+    "reset_entries": 3,
+    "init_entries": 3,
+    "checksum_entry_count": 2,
+    "checksum_return_count": 2,
+    "checksum_pass_anchored_to_tail": true,
+    "checksum_entry": "STARTUP_ROM_CHECK_ENTRY pc=66A5 u=0672 gate719b=00",
+    "verifier_entry": "STARTUP_ROM_VERIFY_ENTRY pc=66DB u=066A expected=3E761E2605 start=1400 end=FFFF error=12",
+    "sum_xor": "STARTUP_SUM_XOR sum=3E xor=76",
+    "rotate_add": "STARTUP_ROTATE_ADD value=1E",
+    "rotate_sub_xor": "STARTUP_ROTATE_SUB_XOR a=26 b=05",
+    "checksum_return": "STARTUP_ROM_CHECK_RETURN pc=677E y=FFFF u=0672",
+    "init_tail_jump": "STARTUP_INIT_TAIL_JMP pc=67B3 y=0000 u=0672",
+    "init_tail_entry": "STARTUP_INIT_TAIL_ENTRY pc=3B1A y=0000 u=0672",
+    "vm_call": "STARTUP_VM_CALL pc=7CF6 x=FDF0 y=02DA u=0672",
+    "vm_entry": "STARTUP_VM_ENTRY pc=76C7 x=FDF0 y=02DA u=0672 s=07C6",
+    "capture_end": "STARTUP_CAPTURE_END pc=76C7 x=FDF0 y=02DA u=0672",
+    "initial_stream_pointer": "FDF0",
+    "marker_order": "66A5 -> 66DB -> 66F3 -> 6715 -> 674C -> 677E -> 67B3 -> 3B1A -> 7CF6 -> 76C7 -> end"
+  },
+  "boundary": {
+    "reached": "first threaded-VM entry at 76C7",
+    "initial_stream_pointer": "FDF0; observed in X at the 7CF6 call site and at the 76C7 entry",
+    "intervening_restart": "observed: a reset after the first 677E return, followed by a second checksum pass; cause not proved",
+    "stopped_before": "first token dispatch and all later VM/native execution",
+    "not_observed": [
+      "the first token fetched after entry",
+      "attract, credit, input, reel or payout behaviour",
+      "any modified-ROM or physical-hardware behaviour"
+    ]
+  },
+  "verification": {
+    "original_rom_identity": true,
+    "run_copy_identity": true,
+    "isolated_rom_copy_length": 65536,
+    "exit_code_consistent": true,
+    "debug_log_hash_matches_observation": true,
+    "console_hash_matches_observation": true,
+    "observation_booleans_match_log": true,
+    "startup_marker_order_enforced": true,
+    "required_breakpoint_addresses": [
+      "7cd1",
+      "6750",
+      "66a5",
+      "66db",
+      "66f3",
+      "6715",
+      "674c",
+      "674d",
+      "677e",
+      "67b3",
+      "3b1a",
+      "7cf6",
+      "76c7"
+    ],
+    "injection_claim_supported": true,
+    "starting_nvram_verification": "declared by capture provenance; pre-run emptiness is not reconstructable from the post-run directory",
+    "reset_marker_present": true,
+    "init_marker_present": true,
+    "verifier_entered": true,
+    "verifier_failure_marker_absent": true,
+    "returned_to_caller_677e": true,
+    "init_tail_jump_observed": true,
+    "init_tail_entry_observed": true,
+    "vm_call_site_observed": true,
+    "vm_entry_observed": true,
+    "initial_stream_pointer_fdf0": true,
+    "stopped_at_vm_entry": true,
+    "active_record": {
+      "gate_719b": "00",
+      "expected_hex": "3E761E2605",
+      "start": "1400",
+      "end": "FFFF",
+      "error_code": "12"
+    },
+    "computed": {
+      "sum": "3E",
+      "xor": "76",
+      "rotate_add": "1E",
+      "rotate_sub_xor_a": "26",
+      "rotate_sub_xor_b": "05"
+    },
+    "matches_static_expectation": true
+  },
+  "provenance": {
+    "capture_script": "tools/Capture-StartupVmEntry.ps1",
+    "curator_script": "tools/Curate-StartupVmEntry.ps1",
+    "raw_run_directory": "artifacts/deepseek/general-06/mame-vm-entry-original-2",
+    "prior_oracle": "evidence/mpu4/integrity/original-reset-boot.json",
+    "static_evidence": [
+      "evidence/mpu4/maps/rom-integrity.json",
+      "evidence/mpu4/native/66a5.json",
+      "evidence/mpu4/native/66db.json"
+    ]
+  },
+  "limitations": [
+    "This observes one natural cold reset with the original image and declared-absent NVRAM in MAME 0.281.",
+    "The post-run directory cannot independently prove that NVRAM and configuration were absent before MAME started; those two entries remain capture declarations. Configuration reading is verifiably disabled with -noreadconfig.",
+    "The injection claim is limited to the captured debugger script and arguments: no state load, playback, autoboot, cheat, memory/PC write or ROM replacement command is present.",
+    "The capture stops at the first 76C7 entry. It does not observe the first token fetch or any later VM/game behaviour, randomness, timing equivalence or physical hardware.",
+    "The raw log contains three reset entries and two completed checksum passes before the init tail. The curated checksum chain is anchored to the pass immediately preceding 67B3; why the earlier pass restarted is an observed, unexplained hypothesis, not recovered semantics.",
+    "The path from 677E through 67B3, 3B1A, 7CF6 and 76C7 is observed because the listed breakpoints fire, not because the intervening code was symbolically re-proved here.",
+    "Only the active gate-00 checksum record at FFD1 is exercised; disabled records remain unexercised.",
+    "No ROM repair, re-signing, bypass or patch was performed.",
+    "Negative controls are synthetic tampering of copied raw artifacts, not natural execution evidence."
+  ]
+}

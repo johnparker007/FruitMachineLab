@@ -1,0 +1,67 @@
+{
+  "schema": "fruitmachinelab.mpu4.meter-pulse-58bb-empty/v1",
+  "classification": "trace-backed FEC6 call and FEC9 return endpoints; static original-ROM empty-scan instruction path",
+  "capture": {
+    "fixture": "collection/stack-writer-0785-capture41.json",
+    "fixture_sha256": "D23207FA7EBD2221124EBDACE8DAAA83F6B181566F301B236CA431518C1A5680",
+    "debug_sha256": "FD580CA17A67DC2382CBFFF88F0684F1401F225231BCF59E9B1C2E1255E42490",
+    "rom_sha1": "402D1518BB78FDC489B06C2AABC771E5CE151847",
+    "entry_event": "SW pc=FEC9 cyc=0000000003C59C2B old=C6 new=C9 opm3=BD opm2=58 opm1=BB",
+    "return_event": "FEC9 pc=FEC9 cyc=0000000003C59CEE s=078D x=0366 y=0000 a=05 b=0B dp=00 cc=C4"
+  },
+  "rom_regions": [
+    {
+      "address": "58BB",
+      "bytes_hex": "B6719B8504262D0D3A2B28963926458E03668609200610AE8126274C8C036A25F58E035E8601200610AE8126154C8C036625F5398E035ECC0000ED818C036A26F9399739313F10AF1EBD6FECBD5924C628D73A390A3A2701390D392B0896398A80973920E70F3920"
+    },
+    {
+      "address": "FEC6",
+      "bytes_hex": "BD58BB"
+    }
+  ],
+  "entry": {
+    "pc": "FEC6",
+    "instruction": "BD58BB",
+    "cycle": "0000000003C59C2B",
+    "s": "078D",
+    "u": "0672",
+    "x": "0672",
+    "y": "0028",
+    "a": "00",
+    "b": "0B",
+    "dp": "00"
+  },
+  "return": {
+    "pc": "FEC9",
+    "cycle": "0000000003C59CEE",
+    "s": "078D",
+    "u": "0672",
+    "x": "0366",
+    "y": "0000",
+    "a": "05",
+    "b": "0B",
+    "dp": "00",
+    "return_word": "FEC9"
+  },
+  "ram": {
+    "719b": "00",
+    "0039": "00",
+    "003a": "00",
+    "queue_hex": "000000000000000000000000"
+  },
+  "expected": {
+    "call_cycles": 8,
+    "helper_cycles": 187,
+    "captured_span_cycles": 195,
+    "first_scan_words": 2,
+    "second_scan_words": 4,
+    "final_scan_counter": 5
+  },
+  "limits": [
+    "Only the captured empty-meter scan path is supported.",
+    "The 58EF clear-queue, 58FD pulse, 590F active-count and 5924 SWI/0E02/0E03/0F02/2040/FF30 paths have no captured execution here.",
+    "The component returns only captured/source-derived registers; CC and DP are not modelled.",
+    "This is one FEC6->58BB->FEC9 helper boundary, not the FE70 IRQ, 6B4D continuation, timer cadence, Live integration or audio."
+  ]
+}
+

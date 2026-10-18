@@ -1,0 +1,20 @@
+{
+  "classification": "Static original-ROM patch and synthetic cross-target lookup; reset boot observation inconclusive",
+  "baseline_commit": "2916fa1",
+  "original_sha1": "402d1518bb78fdc489b06c2aabc771e5ce151847",
+  "original_sha256": "EBF580381AA6EB6FFB26E2ACD40F30AA34B0311F71C6564607C6F48A53BCA15C",
+  "modified_sha1": "58e997e6e1d2ef2251ddde18a5d41716d21368c0",
+  "modified_sha256": "A67062F32DBA37AD4F24C8B1BC6AC92C91E8F3B39CE8F9C21904AF0FD1667714",
+  "modified_crc32": "b0a4b990",
+  "length": 65536,
+  "changed_offsets": [30142],
+  "before_hex": "0A",
+  "after_hex": "0C",
+  "mame_version": "0.281",
+  "mame_sha256": "0FCE5A88DF4F9D9B1FBF1405812C00848036E615993780978D967DA34204CB7A",
+  "pc_lookup": {"classification":"Synthetic table-only images with explicitly substituted test identity","vm_sites":"C6FE-C706","original":10,"modified":12,"native_helper":"AddersNudgeAvailability.Lookup agrees"},
+  "mame_lookup": {"classification":"Synthetic isolated original VM, RAM dispatcher initialized from ROM, register/frame seed, IRQ masked","stop_y":"C708","original_top":"000A","modified_top":"000C","original_log_sha256":"7990A600E9BC2C3D68B7AD279562608340459BC842E5496222781896D6446E47","modified_log_sha256":"7F3EB80488BE99154F20561C5D8921C12B890C0EBB694B2063DA36460E064F9A"},
+  "reset_observation": {"seconds":12,"injected_pc_or_ram":false,"initial_stream_marker_reached_original":false,"initial_stream_marker_reached_modified":false,"original_final_pc":"294C","original_final_y":"FFFF","modified_final_pc":"1A5B","modified_final_y":"3824","conclusion":"Inconclusive: original boot oracle/window not validated; no diagnosis of firmware failure"},
+  "not_verified": ["firmware integrity repair", "natural modified award", "complete boot and gameplay", "physical hardware", "Live patched image integration"],
+  "excluded_harness_runs": ["mame-lookup: PowerShell expected-stderr failure", "mame-lookup-b: omitted RAM dispatch template, no result marker", "mame-boot: initial run without bounded final-state observation"]
+}

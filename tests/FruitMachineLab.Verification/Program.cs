@@ -658,6 +658,51 @@ Check("Post-panel counters and sense match64 native calls including held limits 
         var c=row.GetProperty("case");var m=new Machine();m.WriteWord(0x28,c.GetProperty("column").GetUInt16());foreach(var pair in new[]{("tick2d",0x2D),("tick2f",0x2F),("tick31",0x31),("timer",0x35)})m.WriteWord((ushort)pair.Item2,c.GetProperty(pair.Item1).GetUInt16());m.Memory[0x33]=c.GetProperty("irq").GetByte();int sample=8+c.GetProperty("column").GetInt32();m.Memory[sample]=c.GetProperty("sample").GetByte();var native=row.GetProperty("instructions");var observed=new List<OutputScanInstruction>();int reads=0;using var execution=new Mpu4PostPanelExecution(m,native[0].GetProperty("cycle").GetUInt64(),()=>{reads++;return c.GetProperty("sense").GetByte();});execution.ObserveInstruction=observed.Add;while(!execution.Completed)execution.AdvanceTo(execution.NextEventCycle);if(native.GetArrayLength()!=observed.Count)throw new Exception($"Post case {c.GetProperty("id")}: native {native.GetArrayLength()} generated {observed.Count}; {string.Join(",",observed.Select(x=>x.Address.ToString("X4")))}");for(int i=0;i<observed.Count;i++){Equal(native[i].GetProperty("pc").GetUInt16(),observed[i].Address);Equal(native[i].GetProperty("cycle").GetUInt64(),observed[i].Started);Equal(true,native[i].GetProperty("context_hex").GetString()!.StartsWith(observed[i].Bytes,StringComparison.Ordinal));}var end=row.GetProperty("end");Equal(end.GetProperty("cycle").GetUInt64(),execution.Cycle);Equal((ushort)0x2851,execution.Address);Equal(1,reads);foreach(var pair in new[]{("tick2d",0x2D),("tick2f",0x2F),("tick31",0x31),("timer",0x35)})Equal(end.GetProperty(pair.Item1).GetUInt16(),m.ReadWord((ushort)pair.Item2));Equal(end.GetProperty("irq").GetByte(),m.Memory[0x33]);Equal(end.GetProperty("sample").GetByte(),m.Memory[sample]);count++;
     }Equal(64,count);
 });
+Check("Post-panel 2851 guard and RTS match captured 59 plus 5 cycle prefix tail", () => {
+    using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","irq-prefix-capture61.json")));
+    var rows=doc.RootElement.GetProperty("trace").GetProperty("rows").EnumerateArray().ToArray();
+    ushort H16(System.Text.Json.JsonElement e,string n)=>Convert.ToUInt16(e.GetProperty(n).GetString()!,16);
+    byte H8(System.Text.Json.JsonElement e,string n)=>Convert.ToByte(e.GetProperty(n).GetString()!,16);
+    ulong H64(System.Text.Json.JsonElement e,string n)=>Convert.ToUInt64(e.GetProperty(n).GetString()!,16);
+    int first=Array.FindIndex(rows,r=>r.GetProperty("pc").GetString()=="2851");
+    int last=Array.FindIndex(rows,r=>r.GetProperty("pc").GetString()=="288E");
+    Equal(16,last-first+1);
+    var guard=rows[first..(last+1)];
+    var fec3=rows.Single(r=>r.GetProperty("pc").GetString()=="FEC3");
+    var fec3Boundary=doc.RootElement.GetProperty("boundaries").GetProperty("fec3");
+    ushort s=H16(guard[0],"s"),u=H16(guard[0],"u"),x=H16(guard[0],"x"),y=H16(guard[0],"y");
+    byte a=H8(guard[0],"a"),b=H8(guard[0],"b"),dp=0,cc=H8(guard[0],"cc");
+    var m=new Machine();m.Memory[0x44]=0;m.WriteWord(0x1400,0x3436);m.WriteWord(s,0xFEC3);m.WriteWord(Cell.Add(s,2),0xC018);m.WriteWord(Cell.Add(s,0xA),u);
+    foreach(var row in guard)Convert.FromHexString(row.GetProperty("op").GetString()!).CopyTo(m.Memory,H16(row,"pc"));
+    ulong start=H64(guard[0],"cyc"),rts=0;int n=0;var observed=new List<OutputScanInstruction>();
+    using var execution=new Mpu4PostPanelGuardExecution(m,start,a,b,x,y,u,s,dp,cc);execution.ObserveInstruction=observed.Add;
+    foreach(var row in guard){
+        ushort pc=H16(row,"pc");Equal(pc,execution.Address);Equal(H8(row,"cc"),execution.CC);Equal(H8(row,"a"),execution.A);Equal(H8(row,"b"),execution.B);Equal(H16(row,"x"),execution.X);Equal(H16(row,"y"),execution.Y);Equal(H16(row,"u"),execution.U);Equal(H16(row,"s"),execution.S);
+        if(pc==0x288E)rts=execution.Cycle;
+        execution.AdvanceTo(execution.NextEventCycle);
+        Equal(1,observed.Count-n);Equal(pc,observed[n].Address);Equal(H64(row,"cyc"),observed[n].Started);Equal(true,row.GetProperty("op").GetString()!.StartsWith(observed[n].Bytes,StringComparison.Ordinal));n++;
+    }
+    Equal(guard.Length,observed.Count);Equal(true,execution.Completed);Equal((ushort)0xFEC3,execution.PC);Equal((ushort)0x078D,execution.S);Equal((ushort)0x0672,execution.SavedU);Equal((ushort)0x0672,execution.X);Equal((byte)0x0B,execution.B);
+    Equal(H8(fec3,"cc"),execution.CC);Equal(H8(fec3,"a"),execution.A);Equal(H8(fec3,"b"),execution.B);Equal(H16(fec3,"x"),execution.X);Equal(H16(fec3,"y"),execution.Y);Equal(H16(fec3,"u"),execution.U);Equal(H8(fec3Boundary,"dp"),execution.DP);Equal(H16(fec3,"s"),execution.S);
+    Equal(start+59,rts);Equal(start+64,execution.Cycle);Equal(H64(fec3,"cyc"),execution.Cycle);Equal(u,m.ReadWord(Cell.Add(s,0xA)));
+});
+Check("Post-panel 2851 guard rejects unsupported branches and boundaries before mutation", () => {
+    const ushort S=0x078B;
+    using var doc=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"collection","irq-prefix-capture61.json")));
+    var rows=doc.RootElement.GetProperty("trace").GetProperty("rows").EnumerateArray().ToArray();
+    ushort H16(System.Text.Json.JsonElement e,string n)=>Convert.ToUInt16(e.GetProperty(n).GetString()!,16);
+    Machine Base(ushort s=S){var m=new Machine();foreach(var row in rows)Convert.FromHexString(row.GetProperty("op").GetString()!).CopyTo(m.Memory,H16(row,"pc"));m.WriteWord(0x1400,0x3436);m.WriteWord(s,0xFEC3);m.WriteWord(Cell.Add(s,2),0xC018);m.WriteWord(Cell.Add(s,0xA),0x0672);return m;}
+    void Rejects(string site,Action<Machine> mutate,ushort? s=null,byte dp=0){
+        var m=Base(s??S);mutate(m);byte[] before=m.Memory.ToArray();
+        try{using var e=new Mpu4PostPanelGuardExecution(m,0,0,3,3,0x28,0x672,s??S,dp,0xC4);throw new Exception("Accepted "+site);}
+        catch(NotSupportedException ex){Equal(true,ex.Message.Contains(site,StringComparison.Ordinal));}
+        Equal(true,before.SequenceEqual(m.Memory));
+    }
+    void Accepts(ushort saved,ushort s){var m=Base(s);m.WriteWord(Cell.Add(s,0xA),saved);using var e=new Mpu4PostPanelGuardExecution(m,0,0,3,3,0x28,0x672,s,0,0xC4);Equal(saved,e.SavedU);Equal(s,e.S);}
+    Rejects("DP 01",_=>{},dp:1);Rejects("DP FF",_=>{},dp:0xFF);Rejects("original selected bytes",m=>m.Memory[0x2851]=0);
+    Rejects("44",m=>m.Memory[0x44]=1);Rejects("0525",m=>m.WriteWord(Cell.Add(S,0xA),0x0524));Rejects("0676",m=>m.WriteWord(Cell.Add(S,0xA),0x0677));Rejects("0677",_=>{},0x0676);Rejects("07C8",_=>{},0x07C9);Rejects("288F",m=>m.Memory[0x1400]=0);
+    Accepts(0x0525,0x0677);Accepts(0x0676,0x07C8);
+});
 Check("Post-panel idle motor and counter suffix match all nineteen natural native paths", () => {
     using var outer=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","ptm-outer-timing.json")));
     using var pia=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(evidence,"skill-cash","pia-service-timing.json")));var entries=pia.RootElement.GetProperty("rows").EnumerateArray().Where(r=>r.GetProperty("event").GetString()=="entry").ToArray();var catalog=outer.RootElement.GetProperty("catalog");int count=0;

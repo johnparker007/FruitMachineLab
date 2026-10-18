@@ -174,6 +174,32 @@ fresh-boot checker acceptance for this repaired image is recorded separately;
 natural 9ED9 reach, gameplay and hardware compatibility remain unproved.
 Algorithmically repaired alone is not natural acceptance.
 
+## Independent 9A64 static decode and checked byte branches
+
+`FruitMachineLab.Il` now also decodes the existing 9A64 definition directly from
+the identity-checked original ROM bytes. The selected span is `9A64..9A71`
+(`7B6D79820676657979037671792F`), six nodes, with the checked listing and
+encoding checkpoint used only as oracles. The decoder validates the `9A62` header
+`00F8`, token pointers, a single final return, supported widths and branch
+targets.
+
+The two branch tokens retain their byte-sized operands explicitly. Original 6809
+handler bytes at `797B` (`LDAB ,Y; CLRA; LEAY D,Y; JMP <$FC`) and `7984`
+(`LDD ,U++; BEQ $797B; LEAY 1,Y; JMP <$FC`) establish an unsigned one-byte
+operand at the operand address, forward target = operand address + operand byte.
+The 9A64 targets are `9A68 + 06 = 9A6E` for `7982` when the popped cell is zero,
+and `9A6D + 03 = 9A70` unconditionally for `7979`. Nonzero `7982` skips the byte
+and continues at `9A69`.
+
+`VmIlNode.Branch` is additive; existing 9ED9 nodes and edits are unchanged.
+`VmIlCompiler.CompileIdentity` re-emits the decoded body and rejects forged branch
+plans. `VmIlSourceMap` exposes branch positions, explicit targets, handler and
+operand evidence, and binds them to the exact image hash. 9A64 edits remain
+unsupported; this is static decoded-contract evidence, not natural execution or
+runtime branch-path coverage. See
+[9A64 decode](recovery/IL-9A64-DECODE.md) and
+`evidence/mpu4/integrity/il-9a64-decode.json`.
+
 ## Build and test
 
 From the repository root, with the already installed .NET SDK and net8.0 packs:

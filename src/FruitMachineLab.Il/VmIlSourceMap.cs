@@ -9,22 +9,39 @@ public sealed record VmIlSourceMapEntry(
     string Operation,
     byte ImageByte);
 
+public sealed record VmIlSourceMapBranch(
+    int NodeIndex,
+    ushort TokenAddress,
+    ushort OperandAddress,
+    byte OperandByte,
+    ushort TargetAddress,
+    VmIlBranchCondition Condition,
+    string OffsetBase,
+    bool OffsetUnsigned,
+    int OperandWidthBytes,
+    string EvidenceClass);
+
 public sealed class VmIlSourceMap
 {
     private readonly VmIlSourceMapEntry[] _byAddress;
+    private readonly VmIlSourceMapBranch[] _branches;
 
     private VmIlSourceMap(
         string romSha256,
         string imageSha256,
         ushort bodyStart,
         int bodyEndExclusive,
-        VmIlSourceMapEntry[] byAddress)
+        VmIlSourceMapEntry[] byAddress,
+        VmIlSourceMapBranch[] branches,
+        VmIlProvenance provenance)
     {
         RomSha256 = romSha256;
         ImageSha256 = imageSha256;
         BodyStart = bodyStart;
         BodyEndExclusive = bodyEndExclusive;
         _byAddress = byAddress;
+        _branches = branches;
+        Provenance = provenance;
     }
 
     public string RomSha256 { get; }
@@ -39,6 +56,10 @@ public sealed class VmIlSourceMap
     public int BodyEndExclusive { get; }
 
     public IReadOnlyList<VmIlSourceMapEntry> Entries => _byAddress;
+
+    public IReadOnlyList<VmIlSourceMapBranch> Branches => _branches;
+
+    public VmIlProvenance Provenance { get; }
 
     public static VmIlSourceMap Create(VmIlDefinition definition)
     {
@@ -111,6 +132,32 @@ public sealed class VmIlSourceMap
     public int ResolveNodeIndex(ushort address, string imageSha256) =>
         Resolve(address, imageSha256).NodeIndex;
 
+    public VmIlSourceMapBranch ResolveBranch(ushort tokenAddress)
+    {
+        VmIlSourceMapBranch? branch = _branches.FirstOrDefault(
+            item => item.TokenAddress == tokenAddress);
+        if (branch is null)
+            throw new KeyNotFoundException(
+                $"Source-map address {tokenAddress:X4} is not a checked branch token");
+        return branch;
+    }
+
+    public VmIlSourceMapBranch ResolveBranch(ushort tokenAddress, string imageSha256)
+    {
+        if (!string.Equals(imageSha256, ImageSha256, StringComparison.OrdinalIgnoreCase))
+            throw new InvalidDataException(
+                $"Source-map build identity mismatch: map is bound to image {ImageSha256}, " +
+                $"not {imageSha256}");
+        return ResolveBranch(tokenAddress);
+    }
+
+    public VmIlSourceMapBranch ResolveBranch(
+        ushort tokenAddress, ReadOnlySpan<byte> builtImage)
+    {
+        string imageSha256 = Convert.ToHexString(SHA256.HashData(builtImage));
+        return ResolveBranch(tokenAddress, imageSha256);
+    }
+
     private static VmIlSourceMap CreateCore(
         VmIlDefinition definition, string imageSha256, byte[]? image)
     {
@@ -129,6 +176,7 @@ public sealed class VmIlSourceMap
         var owner = new int[spanLength];
         Array.Fill(owner, -1);
         var entries = new VmIlSourceMapEntry[spanLength];
+        var branches = new List<VmIlSourceMapBranch>();
         int expectedAddress = definition.BodyStart;
 
         for (int index = 0; index < definition.Nodes.Count; index++)
@@ -174,7 +222,89 @@ public sealed class VmIlSourceMap
                     image is null ? node.Bytes[byteIndex] : image[address]);
             }
 
+            if (node.Branch is not null)
+            {
+                VmIlBranch branch = node.Branch;
+                if (!VmIlVocabulary.IsBranchWithByteOperand(node.Token))
+                    throw new InvalidDataException(
+                        $"VM source-map node {index} at {node.Address:X4} carries a branch model " +
+                        "for a non-branch token");
+                if (node.Bytes.Length != 3 || branch.OperandWidthBytes != 1)
+                    throw new InvalidDataException(
+                        $"VM source-map branch at {node.Address:X4} has the wrong operand width");
+                if (branch.OperandAddress != node.Address + 2)
+                    throw new InvalidDataException(
+                        $"VM source-map branch operand at {branch.OperandAddress:X4} does not " +
+                        $"follow token {node.Address:X4}");
+                if (node.Bytes[2] != branch.OperandByte)
+                    throw new InvalidDataException(
+                        $"VM source-map branch operand at {branch.OperandAddress:X4} does not " +
+                        "match the original node byte");
+                if (image is not null && image[branch.OperandAddress] != branch.OperandByte)
+                    throw new InvalidDataException(
+                        $"VM source-map branch operand at {branch.OperandAddress:X4} does not " +
+                        "match the bound image byte");
+                if (branch.TargetAddress !=
+                    (ushort)(branch.OperandAddress + branch.OperandByte))
+                    throw new InvalidDataException(
+                        $"VM source-map branch target {branch.TargetAddress:X4} does not match " +
+                        "operand-address plus unsigned operand");
+                if (!string.Equals(branch.OffsetBase, NineASixFourDecoder.OffsetBase,
+                        StringComparison.Ordinal) || !branch.OffsetUnsigned)
+                    throw new InvalidDataException(
+                        $"VM source-map branch at {node.Address:X4} has unsupported offset semantics");
+                if (branch.HandlerAddress != node.Token + 2)
+                    throw new InvalidDataException(
+                        $"VM source-map branch handler at {branch.HandlerAddress:X4} does not " +
+                        $"follow token {node.Address:X4}");
+                VmIlBranchCondition expectedCondition =
+                    node.Token == VmIlVocabulary.BranchForward8IfZero
+                        ? VmIlBranchCondition.IfZero
+                        : VmIlBranchCondition.Always;
+                if (branch.Condition != expectedCondition)
+                    throw new InvalidDataException(
+                        $"VM source-map branch condition at {node.Address:X4} does not match its token");
+                if (string.IsNullOrWhiteSpace(branch.EvidenceClass))
+                    throw new InvalidDataException(
+                        $"VM source-map branch at {node.Address:X4} has no evidence classification");
+                branches.Add(new VmIlSourceMapBranch(
+                    index,
+                    node.Address,
+                    branch.OperandAddress,
+                    branch.OperandByte,
+                    branch.TargetAddress,
+                    branch.Condition,
+                    branch.OffsetBase,
+                    branch.OffsetUnsigned,
+                    branch.OperandWidthBytes,
+                    branch.EvidenceClass));
+            }
+            else if (VmIlVocabulary.IsBranchWithByteOperand(node.Token))
+            {
+                throw new InvalidDataException(
+                    $"VM source-map branch token at {node.Address:X4} has no checked branch model");
+            }
+
             expectedAddress = nodeEnd;
+        }
+
+        var boundaries = new HashSet<ushort>(
+            definition.Nodes.Where(item => item is not null).Select(item => item.Address));
+        foreach (VmIlSourceMapBranch branch in branches)
+        {
+            if (branch.TargetAddress <= branch.OperandAddress)
+                throw new InvalidDataException(
+                    $"VM source-map branch target {branch.TargetAddress:X4} is inside or before " +
+                    $"its operand at {branch.OperandAddress:X4}");
+            if (branch.TargetAddress < definition.BodyStart ||
+                branch.TargetAddress >= definition.BodyEndExclusive)
+                throw new InvalidDataException(
+                    $"VM source-map branch target {branch.TargetAddress:X4} is outside the " +
+                    "definition span");
+            if (!boundaries.Contains(branch.TargetAddress))
+                throw new InvalidDataException(
+                    $"VM source-map branch target {branch.TargetAddress:X4} is not an " +
+                    "instruction boundary in this definition");
         }
 
         for (int slot = 0; slot < owner.Length; slot++)
@@ -192,7 +322,9 @@ public sealed class VmIlSourceMap
             imageSha256,
             definition.BodyStart,
             definition.BodyEndExclusive,
-            entries);
+            entries,
+            branches.ToArray(),
+            definition.Provenance);
     }
 
     private static void ValidateOriginalDefinition(VmIlDefinition definition)

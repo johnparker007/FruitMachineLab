@@ -26,6 +26,13 @@ internal static class Program
             NineEdNineVerification.Run(romPath, repositoryRoot, outputDirectory);
             Console.WriteLine("Report: " + Path.Combine(outputDirectory, "verification-report.json"));
             Console.WriteLine("Log: " + Path.Combine(outputDirectory, "verification.log"));
+
+            string nineASixFourOutput = Path.Combine(outputDirectory, "9a64");
+            NineASixFourVerification.Run(romPath, repositoryRoot, nineASixFourOutput);
+            Console.WriteLine("9A64 report: " +
+                Path.Combine(nineASixFourOutput, "verification-report.json"));
+            Console.WriteLine("9A64 log: " +
+                Path.Combine(nineASixFourOutput, "verification.log"));
             return 0;
         }
         catch (Exception error)

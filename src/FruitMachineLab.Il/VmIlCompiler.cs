@@ -231,6 +231,7 @@ public static class VmIlCompiler
         var emitted = new List<byte>(definition.BodyLength);
         int cursor = definition.BodyStart;
         bool sawReturn = false;
+        bool includeNineASixFour = IsNineASixFourDefinition(definition);
 
         for (int index = 0; index < definition.Nodes.Count; index++)
         {
@@ -245,7 +246,8 @@ public static class VmIlCompiler
                     $"VM definition node {index} starts at {node.Address:X4}; expected {cursor:X4}");
 
             if (!VmIlVocabulary.TryGetOperation(
-                    node.Token, out string operation, out int operandBytes))
+                    node.Token, out string operation, out int operandBytes,
+                    includeNineASixFour))
                 throw new InvalidDataException(
                     $"Unsupported VM token {node.Token:X4} at {node.Address:X4}");
             if (!string.Equals(node.Operation, operation, StringComparison.Ordinal))
@@ -270,6 +272,9 @@ public static class VmIlCompiler
 
             if (operandBytes == 2)
             {
+                if (node.Branch is not null)
+                    throw new InvalidDataException(
+                        $"VM token {node.Token:X4} at {node.Address:X4} does not take a branch operand");
                 if (node.Operand is null)
                     throw new InvalidDataException(
                         $"VM inline-word node at {node.Address:X4} is missing its operand");
@@ -289,7 +294,17 @@ public static class VmIlCompiler
                     throw new InvalidDataException(
                         $"VM node bytes at {node.Address:X4} do not match its inline operand");
             }
-            else if (node.Operand is not null)
+            else if (operandBytes == 1)
+            {
+                if (node.Operand is not null)
+                    throw new InvalidDataException(
+                        $"VM branch node at {node.Address:X4} must not carry an inline-word operand");
+                if (node.Branch is null)
+                    throw new InvalidDataException(
+                        $"VM branch node at {node.Address:X4} is missing its checked branch model");
+                ValidateBranch(node, definition);
+            }
+            else if (node.Operand is not null || node.Branch is not null)
             {
                 throw new InvalidDataException(
                     $"VM token {node.Token:X4} at {node.Address:X4} does not take an operand");
@@ -344,8 +359,76 @@ public static class VmIlCompiler
             throw new InvalidDataException(
                 $"Compiled VM body length {emitted.Count} differs from span length {definition.BodyLength}");
 
+        ValidateBranchTargets(definition);
         return emitted;
     }
+
+    private static void ValidateBranch(VmIlNode node, VmIlDefinition definition)
+    {
+        VmIlBranch branch = node.Branch!;
+        if (!VmIlVocabulary.IsBranchWithByteOperand(node.Token))
+            throw new InvalidDataException(
+                $"VM token {node.Token:X4} at {node.Address:X4} does not take a branch operand");
+        if (branch.OperandWidthBytes != 1)
+            throw new InvalidDataException(
+                $"VM branch at {node.Address:X4} has the wrong operand width");
+        if (branch.OperandAddress != node.Address + 2)
+            throw new InvalidDataException(
+                $"VM branch operand at {branch.OperandAddress:X4} does not follow node {node.Address:X4}");
+        if (node.Bytes.Length != 3 || node.Bytes[2] != branch.OperandByte)
+            throw new InvalidDataException(
+                $"VM branch operand at {branch.OperandAddress:X4} does not match its original byte");
+        ushort expectedTarget = (ushort)(branch.OperandAddress + branch.OperandByte);
+        if (branch.TargetAddress != expectedTarget)
+            throw new InvalidDataException(
+                $"VM branch target {branch.TargetAddress:X4} does not match its operand byte");
+        if (branch.TargetAddress <= branch.OperandAddress)
+            throw new InvalidDataException(
+                $"VM branch target {branch.TargetAddress:X4} is inside or before its operand");
+        if (branch.TargetAddress < definition.BodyStart ||
+            branch.TargetAddress >= definition.BodyEndExclusive)
+            throw new InvalidDataException(
+                $"VM branch target {branch.TargetAddress:X4} is outside the definition span");
+        if (!string.Equals(branch.OffsetBase, NineASixFourDecoder.OffsetBase,
+                StringComparison.Ordinal) || !branch.OffsetUnsigned)
+            throw new InvalidDataException(
+                $"VM branch at {node.Address:X4} has unsupported offset semantics");
+        VmIlBranchCondition expectedCondition =
+            node.Token == VmIlVocabulary.BranchForward8IfZero
+                ? VmIlBranchCondition.IfZero
+                : VmIlBranchCondition.Always;
+        if (branch.Condition != expectedCondition)
+            throw new InvalidDataException(
+                $"VM branch condition at {node.Address:X4} does not match its token");
+        if (branch.HandlerAddress != node.Token + 2)
+            throw new InvalidDataException(
+                $"VM branch handler at {branch.HandlerAddress:X4} does not follow node {node.Address:X4}");
+        if (string.IsNullOrWhiteSpace(branch.EvidenceClass))
+            throw new InvalidDataException(
+                $"VM branch at {node.Address:X4} has no evidence classification");
+    }
+
+    private static void ValidateBranchTargets(VmIlDefinition definition)
+    {
+        var boundaries = new HashSet<ushort>(
+            definition.Nodes.Where(node => node is not null).Select(node => node.Address));
+        foreach (VmIlNode node in definition.Nodes)
+        {
+            if (node?.Branch is null)
+                continue;
+            if (!boundaries.Contains(node.Branch.TargetAddress))
+                throw new InvalidDataException(
+                    $"VM branch target {node.Branch.TargetAddress:X4} is not an instruction " +
+                    "boundary in this definition");
+        }
+    }
+
+    private static bool IsNineASixFourDefinition(VmIlDefinition definition) =>
+        (definition.Provenance is not null &&
+         string.Equals(definition.Provenance.ListingPath,
+             NineASixFourDecoder.ListingPath, StringComparison.Ordinal)) ||
+        (definition.BodyStart == NineASixFourDecoder.BodyStart &&
+         definition.BodyEndExclusive == NineASixFourDecoder.BodyEndExclusive);
 
     private static void ValidateOriginalIdentity(ReadOnlySpan<byte> originalImage)
     {

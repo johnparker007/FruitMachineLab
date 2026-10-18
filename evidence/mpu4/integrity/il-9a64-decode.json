@@ -1,0 +1,213 @@
+{
+  "TaskId": "il-9a64-local-13",
+  "SchemaVersion": 1,
+  "Status": "passed",
+  "Classification": "Independent static decode of the original 9A64 definition from identity-checked ROM bytes, with explicit checked byte-branch targets, byte-identical unchanged 9A64 body and full-image compile, and source maps bound to the exact image. No natural 9A64 execution, edit, MAME run, hardware or extension claim.",
+  "EvidenceClasses": {
+    "romIdentity": "Original ROM length, SHA1 and SHA256 checked before decode.",
+    "listing": "Reviewed MAME listing used as a static oracle for the selected span and listed sites, not as the source of branch semantics.",
+    "checkpoint": "Tracked encoding checkpoint used as a static oracle for the selected span, sites and recorded targets.",
+    "nativeHandlerAssembly": "Tracked 7984 native evidence supplies the LDD,U++ / BEQ797B / LEAY1,Y / JMPFC assembly cross-check.",
+    "handlerDecode": "Static deduction from the original 6809 bytes at 797B and 7984; no execution.",
+    "identityCompile": "In-memory unchanged decode and re-emit; no ROM file was written.",
+    "naturalExecution": "Not performed. No natural 9A64 branch execution or runtime path coverage is claimed."
+  },
+  "OriginalRom": {
+    "Path": "artifacts/deepseek/general-14/roms/original.p1",
+    "Length": 65536,
+    "Sha1": "402D1518BB78FDC489B06C2AABC771E5CE151847",
+    "Sha256": "EBF580381AA6EB6FFB26E2ACD40F30AA34B0311F71C6564607C6F48A53BCA15C"
+  },
+  "Definition": {
+    "HeaderAddress": "9A62",
+    "HeaderHex": "00F8",
+    "BodyStart": "9A64",
+    "BodyEndExclusive": "9A72",
+    "BodyLength": 14,
+    "SpanHex": "7B6D79820676657979037671792F",
+    "SpanSha256": "8F6EB56621E16DB1097FEC5A8138D1A260C6B6B4DD431E02CBA43D8D54F5E113",
+    "ListingPath": "evidence/mpu4/VM-SCRIPTS/9A64.txt",
+    "ListingSha256": "01A93F20773E1530FCCCA66CC4C3ACB2C066F4595C1A0371B08EBF99D3CDC3E9",
+    "CheckpointPath": "evidence/mpu4/maps/nudge-encoding-checkpoint.json",
+    "CheckpointSha256": "24D305F8CDBCDCB46C77A4C03037A573878FAAE3E29786C7140235BFF4BB6AB6",
+    "ObservedSites": 6
+  },
+  "Nodes": [
+    {
+      "Index": 0,
+      "Address": "9A64",
+      "Token": "7B6D",
+      "Operation": "vm_rotate_three_cells",
+      "BytesHex": "7B6D"
+    },
+    {
+      "Index": 1,
+      "Address": "9A66",
+      "Token": "7982",
+      "Operation": "vm_branch_forward8_if_zero",
+      "BytesHex": "798206",
+      "Branch": {
+        "HandlerAddress": "7984",
+        "OperandAddress": "9A68",
+        "OperandByteHex": "06",
+        "TargetAddress": "9A6E",
+        "Condition": "IfZero",
+        "OffsetBase": "operand-address",
+        "OffsetUnsigned": true,
+        "OperandWidthBytes": 1
+      }
+    },
+    {
+      "Index": 2,
+      "Address": "9A69",
+      "Token": "7665",
+      "Operation": "vm_or_word_memory",
+      "BytesHex": "7665"
+    },
+    {
+      "Index": 3,
+      "Address": "9A6B",
+      "Token": "7979",
+      "Operation": "vm_branch_unsigned_forward8",
+      "BytesHex": "797903",
+      "Branch": {
+        "HandlerAddress": "797B",
+        "OperandAddress": "9A6D",
+        "OperandByteHex": "03",
+        "TargetAddress": "9A70",
+        "Condition": "Always",
+        "OffsetBase": "operand-address",
+        "OffsetUnsigned": true,
+        "OperandWidthBytes": 1
+      }
+    },
+    {
+      "Index": 4,
+      "Address": "9A6E",
+      "Token": "7671",
+      "Operation": "vm_clear_word_memory_bits",
+      "BytesHex": "7671"
+    },
+    {
+      "Index": 5,
+      "Address": "9A70",
+      "Token": "792F",
+      "Operation": "vm_return_to_caller_stream",
+      "BytesHex": "792F"
+    }
+  ],
+  "Branches": [
+    {
+      "TokenAddress": "9A66",
+      "OperandAddress": "9A68",
+      "OperandByteHex": "06",
+      "TargetAddress": "9A6E",
+      "Condition": "IfZero",
+      "OffsetBase": "operand-address",
+      "OffsetUnsigned": true,
+      "OperandWidthBytes": 1,
+      "EvidenceClass": "Static decoded contract from original-ROM 6809 handlers 797B/7984: one unsigned byte operand at the operand address, forward target = operand address + operand byte. No natural 9A64 branch execution or runtime path coverage is claimed."
+    },
+    {
+      "TokenAddress": "9A6B",
+      "OperandAddress": "9A6D",
+      "OperandByteHex": "03",
+      "TargetAddress": "9A70",
+      "Condition": "Always",
+      "OffsetBase": "operand-address",
+      "OffsetUnsigned": true,
+      "OperandWidthBytes": 1,
+      "EvidenceClass": "Static decoded contract from original-ROM 6809 handlers 797B/7984: one unsigned byte operand at the operand address, forward target = operand address + operand byte. No natural 9A64 branch execution or runtime path coverage is claimed."
+    }
+  ],
+  "Handlers": [
+    {
+      "TokenAddress": "7979",
+      "HandlerAddress": "797B",
+      "Operation": "vm_branch_unsigned_forward8",
+      "Condition": "Always",
+      "Instructions": [
+        { "Address": "797B", "BytesHex": "E6A4", "Mnemonic": "LDAB", "Operand": ",Y" },
+        { "Address": "797D", "BytesHex": "4F", "Mnemonic": "CLRA", "Operand": "" },
+        { "Address": "797E", "BytesHex": "31AB", "Mnemonic": "LEAY", "Operand": "D,Y" },
+        { "Address": "7980", "BytesHex": "0EFC", "Mnemonic": "JMP", "Operand": "<$FC" }
+      ],
+      "Semantics": "LDAB ,Y reads the byte at Y without advancing; CLRA zero-extends it to an unsigned 16-bit value; LEAY D,Y replaces Y with operand-address + unsigned operand. No data cell is consumed."
+    },
+    {
+      "TokenAddress": "7982",
+      "HandlerAddress": "7984",
+      "Operation": "vm_branch_forward8_if_zero",
+      "Condition": "IfZero",
+      "Instructions": [
+        { "Address": "7984", "BytesHex": "ECC1", "Mnemonic": "LDD", "Operand": ",U++" },
+        { "Address": "7986", "BytesHex": "27F3", "Mnemonic": "BEQ", "Operand": "$797B" },
+        { "Address": "7988", "BytesHex": "3121", "Mnemonic": "LEAY", "Operand": "1,Y" },
+        { "Address": "798A", "BytesHex": "0EFC", "Mnemonic": "JMP", "Operand": "<$FC" }
+      ],
+      "Semantics": "LDD ,U++ pops one 16-bit data cell and tests it. When the cell is 0000, BEQ enters the 797B handler, so Y becomes operand-address + unsigned operand. When nonzero, LEAY 1,Y skips exactly the one-byte operand."
+    }
+  ],
+  "IdentityCompile": {
+    "EmittedSpanHex": "7B6D79820676657979037671792F",
+    "ChangedOffsets": [],
+    "ImageLength": 65536,
+    "ImageUnchanged": true,
+    "OutputSha1": "402D1518BB78FDC489B06C2AABC771E5CE151847",
+    "OutputSha256": "EBF580381AA6EB6FFB26E2ACD40F30AA34B0311F71C6564607C6F48A53BCA15C"
+  },
+  "SourceMap": {
+    "RomSha256": "EBF580381AA6EB6FFB26E2ACD40F30AA34B0311F71C6564607C6F48A53BCA15C",
+    "ImageSha256": "EBF580381AA6EB6FFB26E2ACD40F30AA34B0311F71C6564607C6F48A53BCA15C",
+    "IsIdentityBuild": true,
+    "Entries": 14,
+    "Branches": 2,
+    "EvidenceClass": "Direct static decode of the identity-checked original ROM bytes. Six cited sites are marked observed in the reviewed MAME listing; the byte-branch base and signedness are decoded from the original 6809 handler bytes at 797B and 7984. This is static original-ROM evidence, not natural or synthetic execution."
+  },
+  "NegativeControls": [
+    "Wrong ROM length and SHA1 are rejected before decode.",
+    "Wrong VM header, unsupported 9A64 token and token code-field pointer mismatch are rejected.",
+    "Unsupported 6809 handler opcode is rejected.",
+    "Branch target equal to its own operand is rejected as target-in-operand.",
+    "Branch target inside another token or at another instruction's operand is rejected as a non-boundary.",
+    "Branch target outside the definition span is rejected.",
+    "Missing return token is rejected.",
+    "Forged branch plans with a missing model, operand/target mismatch, wrong operand width, wrong condition, wrong offset semantics, wrong handler, non-boundary target or out-of-span target are rejected despite full original-ROM identity.",
+    "A 9A64 operand edit at 9A68 remains unsupported by the existing 9ED9-only edit path."
+  ],
+  "Commands": [
+    {
+      "Id": "build-headless-01",
+      "Command": "dotnet build FruitMachineLab.Headless.sln --ignore-failed-sources",
+      "Exit": 0,
+      "Result": "Build succeeded. 0 Warning(s), 0 Error(s)."
+    },
+    {
+      "Id": "verify-il-04",
+      "Command": "dotnet run --project tests/FruitMachineLab.IlVerification --no-build -- <original-a6ls.p1> artifacts/deepseek/il-9a64-local-13/run-10",
+      "Exit": 0,
+      "Result": "20 existing 9ED9 groups and 9 additive 9A64 groups passed."
+    },
+    {
+      "Id": "full-regression-01",
+      "Command": "dotnet run --project tests/FruitMachineLab.Verification --no-build -- .",
+      "Exit": 0,
+      "Result": "417 verification groups passed."
+    }
+  ],
+  "SourceHashes": {
+    "src/FruitMachineLab.Il/NineASixFourDecoder.cs": "635DCC9B84C3BC167E70643825ECC5F22B9EB2977E5E3A32A7C1F60A3C05F003",
+    "src/FruitMachineLab.Il/VmIl.cs": "543045BB2886E98979E6F5B30C502744822317FB51E76AA1976701949AC0987A",
+    "src/FruitMachineLab.Il/VmIlCompiler.cs": "6F47182E92688675C45908F1C477177AA431B92FB5C1E60506AF53D623672B51",
+    "src/FruitMachineLab.Il/VmIlSourceMap.cs": "273D4B7AE67B78329A68BBD0054DF9225E2D1CD15ECC6343EE7671659DD6413C"
+  },
+  "Limitations": [
+    "Only the six tokens used by 9A64 and the two checked byte-branch handlers are supported; this is not a general decoder.",
+    "Branch base, unsigned one-byte width and target arithmetic are static deductions from original 6809 handler bytes, not natural execution evidence.",
+    "No 9A64 edit, operand replacement, relocation, linker, extension allocation or new-word support is implemented.",
+    "No MAME launch, natural 9A64 branch execution, runtime branch-path observation or hardware test was performed.",
+    "The 9ED9 edit and integrity behavior is preserved by the preceding baseline checks and is not generalized by this increment.",
+    "Natural reachability and branch observation for 9A64 remain separate supervisor-selected work."
+  ],
+  "RemainingChainBoundary": "Natural reachability and branch-path observation for 9A64 remain separate supervisor-selected work. Do not extend the paused debugger to 9A64 until that observation task is authorized."
+}

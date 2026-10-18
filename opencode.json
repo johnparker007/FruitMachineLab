@@ -1,0 +1,11 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "permission": {
+    "external_directory": {
+      "C:\\Users\\John\\Documents\\Codex\\2026-10-13\\help-me-set-up-a-local\\outputs\\mpu4\\rom\\*": "allow"
+    },
+    "edit": {
+      "C:\\Users\\John\\Documents\\Codex\\2026-10-13\\help-me-set-up-a-local\\outputs\\mpu4\\rom\\*": "deny"
+    }
+  }
+}

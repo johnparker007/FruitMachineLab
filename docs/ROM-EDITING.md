@@ -137,6 +137,40 @@ regression `tests/worker/Test-IlDebugCommandDelivery.ps1` starts one strict
 response collision and stop delivery at 3 s each; it writes
 `evidence/mpu4/integrity/il-debug-delivery.json`.
 
+## Bounded build and paused-debug entry point
+
+`tools/Build-IlDebugSession.ps1` composes the independent `IlBuild` CLI, the
+existing ordered integrity repair and the accepted paused-debug launcher into one
+create-only workflow for the single supported `9ED9:FF80->FF00` edit. From the
+exact original ROM, installed MAME and support ROM directory it writes fresh
+build artifacts and an output-bound source map, validates the exact image, map,
+build and integrity agreement, then launches one isolated repaired-image session
+and performs `pause-at-mapped-node`, `inspect` and `stop`. It fails before MAME on
+any build or agreement failure.
+
+The machine-readable `workflow-report.json` and human-readable
+`build-summary.txt` distinguish `built`, `launched`, `paused`, `observed` and
+`stopped`, record every actual phase exit and preserve the session/process IDs.
+The workflow does not claim a full call, later paid-window behaviour, gameplay or
+hardware compatibility. See
+[Bounded IL build and paused-debug workflow](recovery/IL-BUILD-DEBUG-WORKFLOW.md).
+
+```powershell
+dotnet build FruitMachineLab.Headless.sln --ignore-failed-sources
+powershell -NoProfile -File tools/Build-IlDebugSession.ps1 `
+  -OriginalRom <a6ls.p1> `
+  -MameExecutable E:\Arcade\MAME0266\mame281.exe `
+  -RomDirectory E:\Arcade\MAME0266\roms `
+  -OutputRoot <fresh-output-root>
+
+powershell -NoProfile -File tests/worker/Test-IlBuildDebugWorkflow.ps1 -Force
+```
+
+The `9ED9` launcher path now validates fresh canonical map/build documents and
+their exact image/byte bindings instead of requiring the historical `build-01`
+file hashes. Stale, tampered, wrong-binding and existing-run inputs are still
+rejected before launch.
+
 ## Existing fixed-size patcher and historical measurements
 
 This is a small hybrid ROM builder: preserve the original image and change only

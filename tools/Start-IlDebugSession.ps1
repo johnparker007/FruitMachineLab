@@ -21,8 +21,6 @@ $script:DsOriginalSha1 = '402d1518bb78fdc489b06c2aabc771e5ce151847'
 $script:DsOriginalSha256 = 'ebf580381aa6eb6ffb26e2acd40f30aa34b0311f71c6564607c6f48a53bca15c'
 $script:DsRepairedSha1 = 'e1a42dccd304b7b175aabac99e8400cdad04cf69'
 $script:DsRepairedSha256 = '577f76bd36dfca04dfb01b5f5d0be93e16572f8617c7ca906397c98df36e5107'
-$script:DsSourceMapSha256 = '0c39a6d0d1beac32ca0f64bfec5ce848b2297be41180d0234d2bfdf491df21a9'
-$script:DsBuildReportSha256 = 'ae7e0fb2c0121e0b4e62d38e82511841644fcdf922b2d9e54de79b3d7e57f61a'
 $script:DsReplaySha256 = '4a051da15264842697879eff396b34a789f5d80623f9a2e749c244e6a80e721d'
 $script:DsMameSha256 = '0fce5a88df4f9d9b1fbf1405812c00848036e615993780978d967da34204cb7a'
 $script:DsExpectedChangedOffsets = @(0x9EDC,0xFFD1,0xFFD2,0xFFD3,0xFFD4,0xFFD5)
@@ -66,6 +64,152 @@ function Get-DsOffsets {
     $list = New-Object 'System.Collections.Generic.List[int]'
     for ($i=0;$i -lt $A.Length;$i++) { if ($A[$i] -ne $B[$i]) { [void]$list.Add($i) } }
     return $list.ToArray()
+}
+
+function Assert-DsCanonicalJsonFile {
+    param([string]$Path,[string]$Label)
+    $bytes = [IO.File]::ReadAllBytes($Path)
+    if ($bytes.Length -ge 3 -and $bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF) {
+        throw "$Label SHA256 validation failed: UTF-8 BOM is not canonical"
+    }
+    if ($bytes.Length -lt 2 -or $bytes[$bytes.Length-1] -ne 0x7D) {
+        throw "$Label SHA256 validation failed: file is not the canonical create-only JSON document"
+    }
+}
+
+function Assert-DsProperties {
+    param($Object,[string[]]$Expected,[string]$Label)
+    if ($null -eq $Object) { throw "$Label is missing" }
+    $actual = @($Object.PSObject.Properties | ForEach-Object { [string]$_.Name })
+    if ($actual.Count -ne $Expected.Count) { throw "$Label has $($actual.Count) properties, expected $($Expected.Count)" }
+    foreach ($name in $Expected) {
+        if ($actual -cnotcontains $name) { throw "$Label is missing property $name" }
+    }
+}
+
+function Assert-DsSequence {
+    param($Actual,[object[]]$Expected,[string]$Label)
+    $values = @($Actual)
+    if ($values.Count -ne $Expected.Count) { throw "$Label has $($values.Count) values, expected $($Expected.Count)" }
+    for ($index=0; $index -lt $values.Count; $index++) {
+        if ([string]$values[$index] -ne [string]$Expected[$index]) {
+            throw "$Label value $index is $($values[$index]), expected $($Expected[$index])"
+        }
+    }
+}
+
+function Assert-DsSourceMap {
+    param($Map,[byte[]]$RepairedBytes,[string]$OriginalSha256,[string]$RepairedSha256)
+    Assert-DsProperties $Map @('schemaVersion','taskId','classification','originalRomSha256','outputImageSha256','identityBuild','bodyStart','bodyEndExclusive','entries') 'Source map'
+    if ([int]$Map.schemaVersion -ne 1) { throw 'Source map schemaVersion is not 1' }
+    if ([string]$Map.taskId -cne 'il-integrity-03') { throw 'Source map taskId is not il-integrity-03' }
+    if ([string]$Map.originalRomSha256 -ine $OriginalSha256) { throw 'Source map original identity is stale or wrong' }
+    if ([string]$Map.outputImageSha256 -ine $RepairedSha256) { throw 'Source map is not bound to the repaired image' }
+    if ([bool]$Map.identityBuild) { throw 'Source map must describe the non-identity repaired build' }
+    if ([string]$Map.bodyStart -ine '9ED9' -or [string]$Map.bodyEndExclusive -ine '9EE7') { throw 'Source map body span is not 9ED9..9EE7' }
+    $entries = @($Map.entries)
+    if ($entries.Count -ne 14) { throw "Source map has $($entries.Count) entries, expected 14" }
+    $expectedNodeIndices = @(0,0,0,0,1,1,2,2,2,2,3,3,4,4)
+    $expectedTokens = @('795B','795B','795B','795B','787E','787E','795B','795B','795B','795B','7AAF','7AAF','792F','792F')
+    $expectedOperations = @(
+        'vm_push_inline_word_literal','vm_push_inline_word_literal','vm_push_inline_word_literal','vm_push_inline_word_literal',
+        'vm_add_words','vm_add_words',
+        'vm_push_inline_word_literal','vm_push_inline_word_literal','vm_push_inline_word_literal','vm_push_inline_word_literal',
+        'vm_bitwise_xor','vm_bitwise_xor',
+        'vm_return_to_caller_stream','vm_return_to_caller_stream')
+    for ($index=0; $index -lt $entries.Count; $index++) {
+        $entry = $entries[$index]
+        Assert-DsProperties $entry @('address','nodeIndex','token','operation','imageByte') "Source map entry $index"
+        $address = ConvertTo-DsInt ([string]$entry.address)
+        if ($address -ne (0x9ED9 + $index)) { throw "Source map entry $index address is not contiguous" }
+        if ([int]$entry.nodeIndex -ne $expectedNodeIndices[$index]) { throw "Source map entry $index nodeIndex is wrong" }
+        if ([string]$entry.token -ine $expectedTokens[$index]) { throw "Source map entry $index token is wrong" }
+        if ([string]$entry.operation -cne $expectedOperations[$index]) { throw "Source map entry $index operation is wrong" }
+        if ([Convert]::ToInt32([string]$entry.imageByte,16) -ne [int]$RepairedBytes[$address]) {
+            throw "Source map entry $index imageByte differs from the repaired image"
+        }
+    }
+}
+
+function Assert-DsBuildReport {
+    param($Build,[byte[]]$OriginalBytes,[byte[]]$RepairedBytes,[string]$OriginalPath,[string]$RepairedPath,[string]$SourceMapPath,[string]$OriginalSha256,[string]$RepairedSha256)
+    Assert-DsProperties $Build @('schemaVersion','taskId','classification','original','unrepaired','repaired','edit','unrepairedDiff','repairedDiff','repairOnlyDiff','integrity','sourceMap','checks','limitations') 'Build report'
+    if ([int]$Build.schemaVersion -ne 1) { throw 'Build report schemaVersion is not 1' }
+    if ([string]$Build.taskId -cne 'il-integrity-03') { throw 'Build report taskId is not il-integrity-03' }
+    Assert-DsProperties $Build.original @('path','length','sha1','sha256','spanHex','storedFieldsHex','computedFieldsHex') 'Build report original'
+    Assert-DsProperties $Build.unrepaired @('path','length','sha1','sha256','spanHex','storedFieldsHex','changedOffsets','changedOffsetsHex','integrityStatus') 'Build report unrepaired'
+    Assert-DsProperties $Build.repaired @('path','length','sha1','sha256','spanHex','storedFieldsHex','computedFieldsHex','changedOffsets','changedOffsetsHex','integrityStatus') 'Build report repaired'
+    Assert-DsProperties $Build.edit @('nodeIndex','tokenAddress','operandAddress','operandWidthBytes','token','operation','expectedOriginalValue','actualOriginalValue','replacementValue','expectedOriginalBytesHex','replacementBytesHex','changedOffsets','changedOffsetsHex') 'Build report edit'
+    if ([int]$Build.original.length -ne 65536 -or [int]$Build.unrepaired.length -ne 65536 -or [int]$Build.repaired.length -ne 65536) {
+        throw 'Build report image length is not 65536'
+    }
+    if ([string]$Build.original.path -ine [IO.Path]::GetFullPath($OriginalPath)) { throw 'Build report original path differs from the supplied original ROM' }
+    if ([string]$Build.repaired.path -ine [IO.Path]::GetFullPath($RepairedPath)) { throw 'Build report repaired path differs from the supplied repaired ROM' }
+    if ([string]$Build.sourceMap.path -ine [IO.Path]::GetFullPath($SourceMapPath)) { throw 'Build report source map path differs from the supplied source map' }
+    $unrepairedExpected = Join-Path (Split-Path -Parent ([IO.Path]::GetFullPath($RepairedPath))) 'edited-unrepaired.p1'
+    if ([string]$Build.unrepaired.path -ine $unrepairedExpected) { throw 'Build report unrepaired path is not the sibling create-only artifact' }
+    if ([string]$Build.original.sha1 -ine (Get-DsHash $OriginalPath 'SHA1') -or [string]$Build.original.sha256 -ine $OriginalSha256) { throw 'Build report original identity is wrong' }
+    if ([string]$Build.repaired.sha1 -ine (Get-DsHash $RepairedPath 'SHA1') -or [string]$Build.repaired.sha256 -ine $RepairedSha256) { throw 'Build report repaired identity is wrong' }
+    if (!(Test-Path -LiteralPath $unrepairedExpected -PathType Leaf)) { throw 'Build report unrepaired image is missing' }
+    if ([string]$Build.unrepaired.sha1 -ine (Get-DsHash $unrepairedExpected 'SHA1') -or [string]$Build.unrepaired.sha256 -ine (Get-DsHash $unrepairedExpected 'SHA256')) { throw 'Build report unrepaired identity is wrong' }
+    if ([string]$Build.original.spanHex -ine '795BFF80787E795BFF807AAF792F') { throw 'Build report original span is wrong' }
+    if ([string]$Build.original.storedFieldsHex -ine '3E761E2605' -or [string]$Build.original.computedFieldsHex -ine '3E761E2605') { throw 'Build report original integrity fields are wrong' }
+    if ([string]$Build.unrepaired.spanHex -ine '795BFF00787E795BFF807AAF792F') { throw 'Build report unrepaired span is wrong' }
+    if ([string]$Build.unrepaired.storedFieldsHex -ine '3E761E2605') { throw 'Build report unrepaired fields are wrong' }
+    Assert-DsSequence $Build.unrepaired.changedOffsets @(40668) 'Build report unrepaired changed offsets'
+    Assert-DsSequence $Build.unrepaired.changedOffsetsHex @('9EDC') 'Build report unrepaired changed offsets hex'
+    if ([string]$Build.repaired.spanHex -ine '795BFF00787E795BFF807AAF792F') { throw 'Build report repaired span is wrong' }
+    if ([string]$Build.repaired.storedFieldsHex -ine 'BEF69E7CC7' -or [string]$Build.repaired.computedFieldsHex -ine 'BEF69E7CC7') { throw 'Build report repaired integrity fields are wrong' }
+    Assert-DsSequence $Build.repaired.changedOffsets @(40668,65489,65490,65491,65492,65493) 'Build report repaired changed offsets'
+    Assert-DsSequence $Build.repaired.changedOffsetsHex @('9EDC','FFD1','FFD2','FFD3','FFD4','FFD5') 'Build report repaired changed offsets hex'
+    if ([int]$Build.edit.nodeIndex -ne 0 -or [string]$Build.edit.tokenAddress -ine '9ED9' -or [string]$Build.edit.operandAddress -ine '9EDB') { throw 'Build report edit address is wrong' }
+    if ([int]$Build.edit.operandWidthBytes -ne 2 -or [string]$Build.edit.token -ine '795B' -or [string]$Build.edit.operation -cne 'vm_push_inline_word_literal') { throw 'Build report edit token is wrong' }
+    if ([string]$Build.edit.expectedOriginalValue -ine 'FF80' -or [string]$Build.edit.actualOriginalValue -ine 'FF80' -or [string]$Build.edit.replacementValue -ine 'FF00') { throw 'Build report edit value is wrong' }
+    if ([string]$Build.edit.expectedOriginalBytesHex -ine 'FF80' -or [string]$Build.edit.replacementBytesHex -ine 'FF00') { throw 'Build report edit byte encoding is wrong' }
+    Assert-DsSequence $Build.edit.changedOffsets @(40668) 'Build report edit changed offsets'
+    Assert-DsSequence $Build.edit.changedOffsetsHex @('9EDC') 'Build report edit changed offsets hex'
+    $unrepairedDiff = @($Build.unrepairedDiff)
+    if ($unrepairedDiff.Count -ne 1) { throw 'Build report unrepaired diff is not exactly 9EDC' }
+    if ([int]$unrepairedDiff[0].offset -ne 40668 -or [string]$unrepairedDiff[0].before -ine '80' -or [string]$unrepairedDiff[0].after -ine '00') { throw 'Build report unrepaired diff is wrong' }
+    $repairedDiff = @($Build.repairedDiff)
+    if ($repairedDiff.Count -ne 6) { throw 'Build report repaired diff is not the accepted six bytes' }
+    $expectedBefore = @('80','3E','76','1E','26','05')
+    $expectedAfter = @('00','BE','F6','9E','7C','C7')
+    $expectedOffsets = @(40668,65489,65490,65491,65492,65493)
+    for ($index=0; $index -lt 6; $index++) {
+        if ([int]$repairedDiff[$index].offset -ne $expectedOffsets[$index]) { throw "Build report repaired diff offset $index is wrong" }
+        if ([string]$repairedDiff[$index].before -ine $expectedBefore[$index] -or [string]$repairedDiff[$index].after -ine $expectedAfter[$index]) { throw "Build report repaired diff value $index is wrong" }
+        if ([int]$OriginalBytes[$expectedOffsets[$index]] -ne [Convert]::ToInt32($expectedBefore[$index],16)) { throw "Original image byte at $($expectedOffsets[$index]) is wrong" }
+        if ([int]$RepairedBytes[$expectedOffsets[$index]] -ne [Convert]::ToInt32($expectedAfter[$index],16)) { throw "Repaired image byte at $($expectedOffsets[$index]) is wrong" }
+    }
+    $repairOnlyDiff = @($Build.repairOnlyDiff)
+    if ($repairOnlyDiff.Count -ne 5) { throw 'Build report repair-only diff is not exactly FFD1..FFD5' }
+    for ($index=0; $index -lt 5; $index++) {
+        if ([int]$repairOnlyDiff[$index].offset -ne (65489 + $index)) { throw "Build report repair-only diff offset $index is wrong" }
+        if ([string]$repairOnlyDiff[$index].before -ine $expectedBefore[$index+1] -or [string]$repairOnlyDiff[$index].after -ine $expectedAfter[$index+1]) { throw "Build report repair-only diff value $index is wrong" }
+    }
+    Assert-DsProperties $Build.integrity @('repaired','accepted','recordBase','rangeStart','rangeEnd','errorCode','gate','algorithmOrder','evidenceSource','fieldWrites','status') 'Build report integrity'
+    if (![bool]$Build.integrity.repaired -or [bool]$Build.integrity.accepted) { throw 'Build report integrity acceptance flags are wrong' }
+    if ([string]$Build.integrity.recordBase -ine 'FFD1' -or [string]$Build.integrity.rangeStart -ine '1400' -or [string]$Build.integrity.rangeEnd -ine 'FFFF') { throw 'Build report integrity range is wrong' }
+    if ([string]$Build.integrity.errorCode -ine '12' -or [string]$Build.integrity.gate -ine '00') { throw 'Build report integrity record is wrong' }
+    $fieldWrites = @($Build.integrity.fieldWrites)
+    if ($fieldWrites.Count -ne 5) { throw 'Build report integrity field count is wrong' }
+    $expectedFieldNames = @('sum','xor','rotate_add','rotate_sub_xor_a','rotate_sub_xor_b')
+    for ($index=0; $index -lt 5; $index++) {
+        if ([string]$fieldWrites[$index].Name -cne $expectedFieldNames[$index]) { throw "Build report field $index name is wrong" }
+        if ([int]$fieldWrites[$index].offset -ne (65489 + $index)) { throw "Build report field $index offset is wrong" }
+        if ([string]$fieldWrites[$index].before -ine $expectedBefore[$index+1] -or [string]$fieldWrites[$index].after -ine $expectedAfter[$index+1]) { throw "Build report field $index value is wrong" }
+    }
+    Assert-DsProperties $Build.sourceMap @('outputImageSha256','originalRomSha256','identityBuild','bodyStart','bodyEndExclusive','coveredBytes','entries','path') 'Build report source map'
+    if ([string]$Build.sourceMap.outputImageSha256 -ine $RepairedSha256 -or [string]$Build.sourceMap.originalRomSha256 -ine $OriginalSha256) { throw 'Build report source-map identity is wrong' }
+    if ([bool]$Build.sourceMap.identityBuild) { throw 'Build report source map must be non-identity' }
+    if ([string]$Build.sourceMap.bodyStart -ine '9ED9' -or [string]$Build.sourceMap.bodyEndExclusive -ine '9EE7') { throw 'Build report source-map span is wrong' }
+    if ([int]$Build.sourceMap.coveredBytes -ne 14 -or [int]$Build.sourceMap.entries -ne 14) { throw 'Build report source-map coverage is wrong' }
+    Assert-DsProperties $Build.checks @('originalIdentityStrict','originalFieldsVerified','editedSpanDerivedFromIlValue','exactlyOneUnrepairedChangedOffset','secondLiteralPreserved','headerPreserved','orderedIntegrityRepair','repairedDiffIsEditPlusFields','sourceMapBoundToRepairedSha256','acceptedForBoot') 'Build report checks'
+    foreach ($check in @('originalIdentityStrict','originalFieldsVerified','editedSpanDerivedFromIlValue','exactlyOneUnrepairedChangedOffset','secondLiteralPreserved','headerPreserved','orderedIntegrityRepair','repairedDiffIsEditPlusFields','sourceMapBoundToRepairedSha256')) {
+        if (![bool]$Build.checks.$check) { throw "Build report check $check is not true" }
+    }
+    if ([bool]$Build.checks.acceptedForBoot) { throw 'Build report must not claim boot acceptance' }
 }
 
 function Assert-DsRom {
@@ -667,10 +811,10 @@ foreach ($path in @($MameExecutable,$SourceMapPath,$BuildReportPath,$PlanPath,$R
 if (!(Test-Path -LiteralPath $RomDirectory -PathType Container)) { throw "Installed ROM directory is missing: $RomDirectory" }
 $mameHash = Get-DsHash $MameExecutable 'SHA256'
 if ($mameHash -ine $script:DsMameSha256) { throw "MAME SHA256 is $mameHash, expected $($script:DsMameSha256)" }
+Assert-DsCanonicalJsonFile $SourceMapPath 'Source map'
+Assert-DsCanonicalJsonFile $BuildReportPath 'Build report'
 $sourceMapHash = Get-DsHash $SourceMapPath 'SHA256'
-if ($sourceMapHash -ine $script:DsSourceMapSha256) { throw "Source map SHA256 is $sourceMapHash, expected $($script:DsSourceMapSha256)" }
 $buildReportHash = Get-DsHash $BuildReportPath 'SHA256'
-if ($buildReportHash -ine $script:DsBuildReportSha256) { throw "Build report SHA256 is $buildReportHash, expected $($script:DsBuildReportSha256)" }
 $replayHash = Get-DsHash $ReplayPath 'SHA256'
 if ($replayHash -ine $script:DsReplaySha256) { throw "Replay SHA256 is $replayHash, expected $($script:DsReplaySha256)" }
 $planHash = Get-DsHash $PlanPath 'SHA256'
@@ -689,14 +833,8 @@ if (($actualChanged -join ',') -ne ($script:DsExpectedChangedOffsets -join ','))
 
 $sourceMap = Get-Content -LiteralPath $SourceMapPath -Raw | ConvertFrom-Json
 $buildReport = Get-Content -LiteralPath $BuildReportPath -Raw | ConvertFrom-Json
-if ($buildReport.original.sha256 -ine $script:DsOriginalSha256) { throw 'Build report original identity is wrong' }
-if ($buildReport.repaired.sha256 -ine $script:DsRepairedSha256) { throw 'Build report repaired identity is wrong' }
-if ($buildReport.sourceMap.outputImageSha256 -ine $script:DsRepairedSha256) { throw 'Build report source map is not bound to the repaired image' }
-if ($buildReport.sourceMap.originalRomSha256 -ine $script:DsOriginalSha256) { throw 'Build report source map original identity is wrong' }
-if ($buildReport.edit.nodeIndex -ne 0) { throw 'Build report edit node is not zero' }
-if ($buildReport.edit.operandAddress -ne '9EDB') { throw 'Build report operand address is not 9EDB' }
-if ($buildReport.edit.replacementValue -ne 'FF00') { throw 'Build report replacement is not FF00' }
-if (!$buildReport.checks.sourceMapBoundToRepairedSha256) { throw 'Build report does not assert source-map binding' }
+Assert-DsSourceMap $sourceMap $repairedBytes $script:DsOriginalSha256 $script:DsRepairedSha256
+Assert-DsBuildReport $buildReport $script:DsOriginalBytes $repairedBytes $OriginalRom $RepairedRom $SourceMapPath $script:DsOriginalSha256 $script:DsRepairedSha256
 
 $planInfo = Get-DsPlan $PlanPath
 $variantEntries = Get-DsVariantEntries $sourceMap $repairedBytes $variantBytes $Variant

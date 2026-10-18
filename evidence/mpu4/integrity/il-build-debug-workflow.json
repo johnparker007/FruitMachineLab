@@ -1,0 +1,387 @@
+{
+    "schema_version":  1,
+    "task":  "il-build-debug-24",
+    "generated_utc":  "2026-10-18T20:54:51.4805342Z",
+    "classification":  "Fresh create-only build of the single supported 9ED9 FF80 -\u003e FF00 edit through the independent IlBuildCLI, followed by one isolated repaired-image paused MAME 0.281 observation of the first mapped node. Static build evidence and runtime observation are separate; no full-call, gameplay or hardware claim is made.",
+    "result_status":  "complete_bounded_build_paused_observation",
+    "workflow":  {
+                     "entrypoint":  "tools/Build-IlDebugSession.ps1",
+                     "output_root":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-build-debug-24\\test-runs\\run-20261018-205421\\fresh-success",
+                     "report_path":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-build-debug-24\\test-runs\\run-20261018-205421\\fresh-success\\workflow-report.json",
+                     "report_sha256":  "3b607a5748e98e2ccd2aa286fd0cab9eea4c27c1347b46aad3a48c91b9f3b441",
+                     "summary_path":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-build-debug-24\\test-runs\\run-20261018-205421\\fresh-success\\build-summary.txt",
+                     "summary_sha256":  "f2766998ab4ee4487b9bb9f5f67660f3af4d245e59ba25c72dbb9d43a50b1f6d",
+                     "phases":  {
+                                    "preflight":  {
+                                                      "status":  "passed",
+                                                      "started_utc":  "2026-10-18T20:54:22.3159881Z",
+                                                      "completed_utc":  "2026-10-18T20:54:24.8079893Z",
+                                                      "duration_ms":  2498,
+                                                      "exit_code":  0,
+                                                      "message":  "Original identity, MAME, support paths and create-only output root verified"
+                                                  },
+                                    "build":  {
+                                                  "status":  "passed",
+                                                  "started_utc":  "2026-10-18T20:54:24.8299922Z",
+                                                  "completed_utc":  "2026-10-18T20:54:25.8229916Z",
+                                                  "duration_ms":  993,
+                                                  "exit_code":  0,
+                                                  "message":  "Fresh independent IL build, ordered integrity repair and output-bound source map verified"
+                                              },
+                                    "launch":  {
+                                                   "status":  "passed",
+                                                   "started_utc":  "2026-10-18T20:54:25.8289910Z",
+                                                   "completed_utc":  "2026-10-18T20:54:30.7725007Z",
+                                                   "duration_ms":  4943.5,
+                                                   "exit_code":  0,
+                                                   "message":  "Isolated repaired-image session launched and ready in the stopped state"
+                                               },
+                                    "pause":  {
+                                                  "status":  "passed",
+                                                  "started_utc":  "2026-10-18T20:54:30.7785004Z",
+                                                  "completed_utc":  "2026-10-18T20:54:36.1742196Z",
+                                                  "duration_ms":  5395.7,
+                                                  "exit_code":  0,
+                                                  "message":  "Mapped node 0 reached naturally at a native prefetch boundary"
+                                              },
+                                    "inspect":  {
+                                                    "status":  "passed",
+                                                    "started_utc":  "2026-10-18T20:54:36.1782019Z",
+                                                    "completed_utc":  "2026-10-18T20:54:36.6657892Z",
+                                                    "duration_ms":  487.6,
+                                                    "exit_code":  0,
+                                                    "message":  "Paused PC/Y/U/S/token/mapped operand observed read-only from the compiled image"
+                                                },
+                                    "stop":  {
+                                                 "status":  "passed",
+                                                 "started_utc":  "2026-10-18T20:54:36.6697720Z",
+                                                 "completed_utc":  "2026-10-18T20:54:37.4074352Z",
+                                                 "duration_ms":  738.7,
+                                                 "exit_code":  0,
+                                                 "message":  "Session stopped cleanly and the isolated repaired ROM remained unchanged"
+                                             }
+                                },
+                     "actual_exits":  {
+                                          "preflight":  0,
+                                          "build":  0,
+                                          "launch":  0,
+                                          "pause":  0,
+                                          "inspect":  0,
+                                          "stop":  0
+                                      },
+                     "statuses":  {
+                                      "built":  true,
+                                      "launched":  true,
+                                      "paused":  true,
+                                      "observed":  true,
+                                      "stopped":  true,
+                                      "fresh_boot_observed":  true
+                                  }
+                 },
+    "inputs":  {
+                   "original":  {
+                                    "path":  "C:\\Users\\John\\Documents\\Codex\\2026-10-13\\help-me-set-up-a-local\\outputs\\mpu4\\rom\\a6ls.p1",
+                                    "length":  65536,
+                                    "sha1":  "402d1518bb78fdc489b06c2aabc771e5ce151847",
+                                    "sha256":  "ebf580381aa6eb6ffb26e2acd40f30aa34b0311f71c6564607c6f48a53bca15c"
+                                },
+                   "mame":  {
+                                "path":  "E:\\Arcade\\MAME0266\\mame281.exe",
+                                "length":  373377024,
+                                "sha256":  "0fce5a88df4f9d9b1fbf1405812c00848036e615993780978d967da34204cb7a"
+                            },
+                   "rom_directory":  "E:\\Arcade\\MAME0266\\roms",
+                   "support":  {
+                                   "plan":  {
+                                                "path":  "C:\\projects\\GitRepos\\FruitMachineLab\\evidence\\mpu4\\integrity\\il-natural-reachability-plan.json",
+                                                "sha256":  "ffe12fc01c26c4e7aba54b35d1b497aee18ef4f36051204f2d69a73f78574301"
+                                            },
+                                   "replay":  {
+                                                  "path":  "C:\\projects\\GitRepos\\FruitMachineLab\\evidence\\mpu4\\skill-cash\\actions.csv",
+                                                  "sha256":  "4a051da15264842697879eff396b34a789f5d80623f9a2e749c244e6a80e721d"
+                                              },
+                                   "input_lua":  {
+                                                     "path":  "C:\\projects\\GitRepos\\FruitMachineLab\\evidence\\mpu4\\skill-cash\\input.lua",
+                                                     "sha256":  "23099f8888af8db353253e0df97638320dc59ca9a47371723a380e0c4ee85c94"
+                                                 }
+                               }
+               },
+    "build":  {
+                  "cli_exit_code":  0,
+                  "cli_stdout":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-build-debug-24\\test-runs\\run-20261018-205421\\fresh-success\\logs\\build.stdout.txt",
+                  "cli_stderr":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-build-debug-24\\test-runs\\run-20261018-205421\\fresh-success\\logs\\build.stderr.txt",
+                  "original":  {
+                                   "path":  "C:\\Users\\John\\Documents\\Codex\\2026-10-13\\help-me-set-up-a-local\\outputs\\mpu4\\rom\\a6ls.p1",
+                                   "length":  65536,
+                                   "sha1":  "402d1518bb78fdc489b06c2aabc771e5ce151847",
+                                   "sha256":  "ebf580381aa6eb6ffb26e2acd40f30aa34b0311f71c6564607c6f48a53bca15c",
+                                   "unchanged":  true
+                               },
+                  "unrepaired":  {
+                                     "path":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-build-debug-24\\test-runs\\run-20261018-205421\\fresh-success\\build\\edited-unrepaired.p1",
+                                     "length":  65536,
+                                     "sha256":  "a99d96f8ea8b4770d2d3828125f25894e831726fe44a79a37e0871faba135ed2"
+                                 },
+                  "repaired":  {
+                                   "path":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-build-debug-24\\test-runs\\run-20261018-205421\\fresh-success\\build\\edited-repaired.p1",
+                                   "length":  65536,
+                                   "sha1":  "e1a42dccd304b7b175aabac99e8400cdad04cf69",
+                                   "sha256":  "577f76bd36dfca04dfb01b5f5d0be93e16572f8617c7ca906397c98df36e5107",
+                                   "changed_offsets":  [
+                                                           40668,
+                                                           65489,
+                                                           65490,
+                                                           65491,
+                                                           65492,
+                                                           65493
+                                                       ],
+                                   "changed_offsets_hex":  "9EDC,FFD1,FFD2,FFD3,FFD4,FFD5"
+                               },
+                  "diff":  [
+                               {
+                                   "offset":  40668,
+                                   "offsetHex":  "9EDC",
+                                   "before":  "80",
+                                   "after":  "00"
+                               },
+                               {
+                                   "offset":  65489,
+                                   "offsetHex":  "FFD1",
+                                   "before":  "3E",
+                                   "after":  "BE"
+                               },
+                               {
+                                   "offset":  65490,
+                                   "offsetHex":  "FFD2",
+                                   "before":  "76",
+                                   "after":  "F6"
+                               },
+                               {
+                                   "offset":  65491,
+                                   "offsetHex":  "FFD3",
+                                   "before":  "1E",
+                                   "after":  "9E"
+                               },
+                               {
+                                   "offset":  65492,
+                                   "offsetHex":  "FFD4",
+                                   "before":  "26",
+                                   "after":  "7C"
+                               },
+                               {
+                                   "offset":  65493,
+                                   "offsetHex":  "FFD5",
+                                   "before":  "05",
+                                   "after":  "C7"
+                               }
+                           ],
+                  "repair_only_diff":  [
+                                           {
+                                               "offset":  65489,
+                                               "offsetHex":  "FFD1",
+                                               "before":  "3E",
+                                               "after":  "BE"
+                                           },
+                                           {
+                                               "offset":  65490,
+                                               "offsetHex":  "FFD2",
+                                               "before":  "76",
+                                               "after":  "F6"
+                                           },
+                                           {
+                                               "offset":  65491,
+                                               "offsetHex":  "FFD3",
+                                               "before":  "1E",
+                                               "after":  "9E"
+                                           },
+                                           {
+                                               "offset":  65492,
+                                               "offsetHex":  "FFD4",
+                                               "before":  "26",
+                                               "after":  "7C"
+                                           },
+                                           {
+                                               "offset":  65493,
+                                               "offsetHex":  "FFD5",
+                                               "before":  "05",
+                                               "after":  "C7"
+                                           }
+                                       ],
+                  "integrity":  {
+                                    "status":  "ALGORITHMICALLY REPAIRED active gate-00 integrity fields in the recovered checker order. This is not natural boot acceptance, MAME execution evidence or hardware compatibility.",
+                                    "recordBase":  "FFD1",
+                                    "gate":  "00",
+                                    "errorCode":  "12",
+                                    "unrepaired_fields":  "3E761E2605",
+                                    "repaired_fields":  "BEF69E7CC7",
+                                    "computed_fields":  "BEF69E7CC7",
+                                    "field_writes":  [
+                                                         {
+                                                             "Name":  "sum",
+                                                             "offset":  65489,
+                                                             "offsetHex":  "FFD1",
+                                                             "before":  "3E",
+                                                             "after":  "BE",
+                                                             "Dependency":  "computed first; excludes FFD1-FFD5 and reads no expected field"
+                                                         },
+                                                         {
+                                                             "Name":  "xor",
+                                                             "offset":  65490,
+                                                             "offsetHex":  "FFD2",
+                                                             "before":  "76",
+                                                             "after":  "F6",
+                                                             "Dependency":  "computed with sum; excludes FFD1-FFD5 and reads no expected field"
+                                                         },
+                                                         {
+                                                             "Name":  "rotate_add",
+                                                             "offset":  65491,
+                                                             "offsetHex":  "FFD3",
+                                                             "before":  "1E",
+                                                             "after":  "9E",
+                                                             "Dependency":  "computed after sum/xor; excludes FFD3-FFD5 but reads FFD1-FFD2"
+                                                         },
+                                                         {
+                                                             "Name":  "rotate_sub_xor_a",
+                                                             "offset":  65492,
+                                                             "offsetHex":  "FFD4",
+                                                             "before":  "26",
+                                                             "after":  "7C",
+                                                             "Dependency":  "computed last; excludes FFD4-FFD5 but reads FFD1-FFD3"
+                                                         },
+                                                         {
+                                                             "Name":  "rotate_sub_xor_b",
+                                                             "offset":  65493,
+                                                             "offsetHex":  "FFD5",
+                                                             "before":  "05",
+                                                             "after":  "C7",
+                                                             "Dependency":  "computed with rotate_sub_xor A; excludes FFD4-FFD5 but reads FFD1-FFD3"
+                                                         }
+                                                     ]
+                                },
+                  "source_map":  {
+                                     "path":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-build-debug-24\\test-runs\\run-20261018-205421\\fresh-success\\build\\source-map.json",
+                                     "sha256":  "0c39a6d0d1beac32ca0f64bfec5ce848b2297be41180d0234d2bfdf491df21a9",
+                                     "bodyStart":  "9ED9",
+                                     "bodyEndExclusive":  "9EE7",
+                                     "entries":  14
+                                 },
+                  "build_report":  {
+                                       "path":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-build-debug-24\\test-runs\\run-20261018-205421\\fresh-success\\build\\build-report.json",
+                                       "sha256":  "5bb30b7b521c36a3df31a27d36ce31477a4c7dc511b25921447ee991a7521fe8"
+                                   },
+                  "integrity_report":  {
+                                           "path":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-build-debug-24\\test-runs\\run-20261018-205421\\fresh-success\\build\\integrity-report.json",
+                                           "sha256":  "d6e800b2a69ba3cab08c60b2dc0eacc9adbd763204973bc5e867a24a8455d2c6"
+                                       },
+                  "map_build_image_agree":  true
+              },
+    "observation":  {
+                        "session_id":  "92d6099c-bf5d-45f8-9fef-2dac6905029c",
+                        "process_id":  34784,
+                        "run_directory":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-build-debug-24\\test-runs\\run-20261018-205421\\fresh-success\\session",
+                        "mame_version":  "0.281 (mame0281)",
+                        "mame_sha256":  "0fce5a88df4f9d9b1fbf1405812c00848036e615993780978d967da34204cb7a",
+                        "node_index":  0,
+                        "boundary_phase":  "prefetch",
+                        "proof":  "boundary_reached",
+                        "pc":  "00FC",
+                        "y":  "9ED9",
+                        "u":  "066E",
+                        "s":  "0796",
+                        "token":  "795B",
+                        "il_operand":  "FF00",
+                        "emulated_time":  37.076473837,
+                        "full_call_observed":  false,
+                        "inspect_state_unchanged":  "yes",
+                        "stop_kind":  "stopped",
+                        "stop_proof":  "exit_scheduled",
+                        "mame_exit_code":  0,
+                        "run_rom_unchanged":  true,
+                        "state_directory_files":  0,
+                        "note":  "Only the first mapped node and operand were observed; no later call or result is claimed."
+                    },
+    "negatives":  [
+                      {
+                          "name":  "wrong original identity",
+                          "rejected":  true,
+                          "exit_code":  1,
+                          "message":  "powershell.exe : original ROM SHA1 is e1a42dccd304b7b175aabac99e8400cdad04cf69, expected "
+                      },
+                      {
+                          "name":  "existing output root",
+                          "rejected":  true,
+                          "exit_code":  1,
+                          "message":  "powershell.exe : Use a fresh create-only output root: C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-build-"
+                      },
+                      {
+                          "name":  "unsupported edit request",
+                          "rejected":  true,
+                          "exit_code":  1,
+                          "message":  "powershell.exe : Unsupported edit request \u00279ED9:FF80-\u003eFF01\u0027; only 9ED9:FF80-\u003eFF00 is supported"
+                      },
+                      {
+                          "name":  "failed build",
+                          "rejected":  true,
+                          "exit_code":  1,
+                          "message":  "powershell.exe : IlBuildCLI exited 1: Couldn\u0027t find a project to run. Ensure a project exists in C:\\projects\\GitRepos\\F"
+                      },
+                      {
+                          "name":  "stale source map",
+                          "rejected":  true,
+                          "exit_code":  1,
+                          "message":  "powershell.exe : Source map SHA256 validation failed: file is not the canonical create-only JSON document"
+                      },
+                      {
+                          "name":  "stale build report",
+                          "rejected":  true,
+                          "exit_code":  1,
+                          "message":  "powershell.exe : Build report SHA256 validation failed: file is not the canonical create-only JSON document"
+                      },
+                      {
+                          "name":  "wrong-binding source map",
+                          "rejected":  true,
+                          "exit_code":  1,
+                          "message":  "powershell.exe : Source map is not bound to the repaired image"
+                      },
+                      {
+                          "name":  "wrong-binding build report",
+                          "rejected":  true,
+                          "exit_code":  1,
+                          "message":  "powershell.exe : Build report repaired identity is wrong"
+                      }
+                  ],
+    "preservation":  {
+                         "original_sha256_before":  "ebf580381aa6eb6ffb26e2acd40f30aa34b0311f71c6564607c6f48a53bca15c",
+                         "original_sha256_after":  "ebf580381aa6eb6ffb26e2acd40f30aa34b0311f71c6564607c6f48a53bca15c",
+                         "original_unchanged":  true,
+                         "repaired_sha256":  "577f76bd36dfca04dfb01b5f5d0be93e16572f8617c7ca906397c98df36e5107",
+                         "existing_root_sentinel":  "preserve-me",
+                         "isolated_run_rom_unchanged":  true
+                     },
+    "strict_json":  {
+                        "workflow_report":  true,
+                        "source_map":  true,
+                        "build_report":  true,
+                        "integrity_report":  true,
+                        "session_events":  {
+                                               "path":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-build-debug-24\\test-runs\\run-20261018-205421\\fresh-success\\session\\events.jsonl",
+                                               "sha256":  "84d9507407e637078855e1954a59e74f15a1236816d036aad787172a11b2ae47",
+                                               "nonblank":  10,
+                                               "parsed":  10,
+                                               "failures":  0,
+                                               "pass":  true
+                                           }
+                    },
+    "limitations":  [
+                        "Only the fixed 9ED9 definition and the first 795B literal at 9EDB are supported.",
+                        "Integrity repair is algorithmic; natural checker acceptance is observed only for this fresh boot, and physical hardware compatibility is not claimed.",
+                        "The paused observation covers the first mapped node and operand only; no later call, result, gameplay or paid-window behaviour is claimed.",
+                        "The imgui debugger requires BGFX and creates a rendering window; the Lua periodic callback is a command driver, not an instruction boundary."
+                    ],
+    "manifest_verification":  {
+                                  "path":  "C:\\projects\\GitRepos\\FruitMachineLab\\evidence\\curated-manifest.json",
+                                  "entries":  1351,
+                                  "verified":  true,
+                                  "evidence_included":  true
+                              }
+}

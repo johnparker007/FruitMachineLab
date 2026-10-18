@@ -10,7 +10,9 @@ compatibility target. Later games/platforms follow demonstrated reuse.
 - Require John's approval before installations or configuration changes.
 - Autonomously commit reviewed, passing increments on main between worker runs;
   stage only accepted files and preserve unrelated or unfinished changes.
-- Pushing, publishing, repository access changes and history rewrites require
+- Autonomously push reviewed, passing commits to the existing GitHub remote main
+  between worker runs; verify the outgoing range and remote HEAD. Never force-push.
+- Releases, deployments, repository access changes and history rewrites require
   John's explicit authorization. Do not switch branches or merge during worker runs.
 - Preserve existing ROMs, MAME settings, Ghidra projects, and unrelated MCP configuration.
 - Distinguish trace-backed findings, static deductions, hypotheses, and synthetic fault experiments.
@@ -19,6 +21,12 @@ compatibility target. Later games/platforms follow demonstrated reuse.
 - Never silently invent missing helper semantics or fix suspected ROM bugs in the reference behaviour.
 
 ## Primary architecture and priorities
+
+John authorized a continuing supervised development loop on 18 October 2026:
+review each bounded worker result, commit and push accepted increments, then
+dispatch the next supported roadmap task. Successful batches are review points,
+not stop conditions. Historical documentation-pivot and one-batch restrictions
+do not limit this later authorization. Native execution remains frozen.
 
 Read docs/PROJECT-ROADMAP.md for the active plan and docs/ROM-EDITING.md for
 existing tools/evidence. The former autonomous C# roadmap is superseded.

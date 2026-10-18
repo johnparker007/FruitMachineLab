@@ -1,5 +1,12 @@
 # Supervised DeepSeek dispatch
 
+Current authorization (18 October 2026): continue bounded roadmap-aligned tasks
+after supervisor review, committing and normally pushing accepted increments to
+the existing remote main between worker runs. The earlier pivot-only restrictions
+below are historical. No worker commits or dispatches successors. Successful
+batches do not pause the loop; unsupported boundaries remain blockers. Native
+execution stays frozen. No force-push, access/configuration changes or releases.
+
 ## Active project mandate — 18 October 2026
 
 Read [the current roadmap](../../docs/PROJECT-ROADMAP.md) and repository AGENTS.md

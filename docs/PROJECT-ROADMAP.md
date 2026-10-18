@@ -1,5 +1,13 @@
 # Project roadmap — lossless IL, ROM compiler and MAME debugger
 
+Operational authorization updated 18 October 2026: John authorized a continuing
+supervised DeepSeek development loop, with reviewed passing increments committed
+and normally pushed to the existing remote main between worker runs. Continue
+after successful batches. Earlier documentation-only/no-dispatch/no-commit
+restrictions below describe the original pivot, not the current authorization.
+Native execution remains frozen; releases, deployments, configuration changes,
+history rewrites and extension-range selection retain their approval boundaries.
+
 Decision: 18 October 2026. This replaces the previous parallel native-runtime,
 editable-VM and ROM-generation priorities. Autonomous C# gameplay execution is
 frozen indefinitely, potentially permanently. Do not finish the old sound/IRQ

@@ -6533,5 +6533,15 @@
     "path": "evidence/mpu4/collection/stack-writer-0785-capture41.json",
     "bytes": 107233,
     "sha256": "D23207FA7EBD2221124EBDACE8DAAA83F6B181566F301B236CA431518C1A5680"
+  },
+  {
+    "path": "docs/recovery/CAPTURE43-CALLER-STACK-0790-PASS.md",
+    "bytes": 4947,
+    "sha256": "EBDD87C2D658147B8D56669166EE7763FFC53D09435B3E923945A7650F27F296"
+  },
+  {
+    "path": "evidence/mpu4/collection/stack-writer-0790-capture43.json",
+    "bytes": 107419,
+    "sha256": "BA44707515A202A98CBD65BBF9323A29A47BC7E4D71FA922D33E63CE4D560E3B"
   }
 ]

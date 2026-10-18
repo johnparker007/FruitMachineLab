@@ -33,6 +33,9 @@ function Invoke-FakeRun {
         [string]$Mode,
         [string]$TaskId,
         [int]$TimeoutSeconds = 30,
+        [int]$HardSeconds = 0,
+        [int]$IdleSeconds = 900,
+        [int]$CommandSeconds = 1800,
         [string]$ComSpec = $null,
         [switch]$PassThru
     )
@@ -43,7 +46,10 @@ function Invoke-FakeRun {
     $env:FAKE_PIDFILE = Join-Path $caseDir 'fake-pids.txt'
     $oldComSpec = $env:ComSpec
     if ($ComSpec) { $env:ComSpec = $ComSpec }
-    $args = @('-NoProfile', '-File', (Join-Path $root 'tools/worker/Invoke-DeepSeekTask.ps1'), '-TaskId', $TaskId, '-TimeoutSeconds', $TimeoutSeconds)
+    if(!$HardSeconds){$HardSeconds=$TimeoutSeconds}
+    $env:FAKE_PROGRESS = Join-Path $root "artifacts/deepseek/$TaskId/progress.json"
+    $env:FAKE_TASK = $TaskId
+    $args = @('-NoProfile', '-File', (Join-Path $root 'tools/worker/Invoke-DeepSeekTask.ps1'), '-TaskId', $TaskId, '-TimeoutSeconds', $TimeoutSeconds, '-HardTimeoutSeconds', $HardSeconds, '-IdleTimeoutSeconds', $IdleSeconds, '-CommandTimeoutSeconds', $CommandSeconds)
     $sp = @{
         FilePath = $pwsh
         ArgumentList = $args
@@ -88,7 +94,7 @@ function New-StateRun {
 }
 
 New-Item -ItemType Directory -Path (Join-Path $root 'tools/worker'), (Join-Path $root 'tasks/deepseek'), (Join-Path $root 'docs'), (Join-Path $root 'artifacts/deepseek') -Force | Out-Null
-Copy-Item -LiteralPath (Join-Path $workerSource 'DeepSeekWorker.psm1'), (Join-Path $workerSource 'Invoke-DeepSeekTask.ps1'), (Join-Path $workerSource 'Get-DeepSeekStatus.ps1') -Destination (Join-Path $root 'tools/worker')
+Copy-Item -LiteralPath (Join-Path $workerSource 'DeepSeekWorker.psm1'), (Join-Path $workerSource 'WorkerWatchdog.psm1'), (Join-Path $workerSource 'Invoke-DeepSeekTask.ps1'), (Join-Path $workerSource 'Get-DeepSeekStatus.ps1') -Destination (Join-Path $root 'tools/worker')
 Set-Content -LiteralPath (Join-Path $root 'docs/DEEPSEEK-WORKER-STATUS.md') -Value '# Test checkpoint'
 $env:PATH = $fakeBin + ';' + $env:PATH
 Import-Module (Join-Path $root 'tools/worker/DeepSeekWorker.psm1') -Force
@@ -163,9 +169,25 @@ try {
     Assert-True $sawLastEvent 'slow run: last-event metadata durable while running'
     Assert-True ($s.status -eq 'needs-review') 'slow run: completes to needs-review'
 
+    $r = Invoke-FakeRun -Mode extended -TaskId extended -HardSeconds 60
+    $s = Get-State extended
+    Assert-True ($s.status -eq 'needs-review' -and ([datetime]$s.finishedUtc-[datetime]$s.startedUtc).TotalSeconds -gt 30) 'soft budget: productive worker finishes after soft deadline'
+    $st = Invoke-Status extended
+    Assert-True ($st.Json.watchdog.progress.phase -eq 'verification' -and !$st.Json.watchdog.progress.verified) 'status: advisory progress visible without acceptance claim'
+
+    $r = Invoke-FakeRun -Mode timeout-tree -TaskId idlestall -IdleSeconds 5
+    $s = Get-State idlestall
+    Assert-True ($s.status -eq 'stalled' -and $s.reason -eq 'stalled-no-activity') 'idle: silent worker stopped before hard deadline'
+    foreach($id in (Get-Content (Join-Path $root 'runner-idlestall/fake-pids.txt'))){
+        Assert-True ($null -eq (Get-Process -Id ([int]$id) -ErrorAction SilentlyContinue)) 'idle: descendant stopped'
+    }
+    $r = Invoke-FakeRun -Mode commandstall -TaskId commandstall -IdleSeconds 5 -CommandSeconds 10
+    $s = Get-State commandstall
+    Assert-True ($s.reason -eq 'command-deadline' -and ([datetime]$s.finishedUtc-[datetime]$s.startedUtc).TotalSeconds -ge 10) 'command: quiet lease survives idle limit but is force stopped at command bound'
+
     $r = Invoke-FakeRun -Mode timeout-tree -TaskId timeouttree -TimeoutSeconds 30
     $s = Get-State timeouttree
-    Assert-True ($s.status -eq 'timeout' -and $s.reason -eq 'timeout' -and $s.finishedUtc) 'timeout: primary reason preserved'
+    Assert-True ($s.status -eq 'interrupted' -and $s.reason -eq 'hard-deadline' -and $s.finishedUtc -and !$s.semanticFailure -and $s.requiresSupervisorReview) 'timeout: hard deadline preserved as interruption requiring review'
     Assert-True ($s.parseErrors -ge 1) 'timeout: truncated JSON did not override timeout'
     Assert-True ((Get-Item -LiteralPath (Join-Path $root 'artifacts/deepseek/timeouttree/events.jsonl')).Length -gt 0) 'timeout: partial raw events durable'
     $pidFile = Join-Path $root 'runner-timeouttree/fake-pids.txt'

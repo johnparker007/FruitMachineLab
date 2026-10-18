@@ -8,7 +8,10 @@ compatibility target. Later games/platforms follow demonstrated reuse.
 ## Working rules
 
 - Require John's approval before installations or configuration changes.
-- Do not commit, push, publish, or change repository access unless requested.
+- Autonomously commit reviewed, passing increments on main between worker runs;
+  stage only accepted files and preserve unrelated or unfinished changes.
+- Pushing, publishing, repository access changes and history rewrites require
+  John's explicit authorization. Do not switch branches or merge during worker runs.
 - Preserve existing ROMs, MAME settings, Ghidra projects, and unrelated MCP configuration.
 - Distinguish trace-backed findings, static deductions, hypotheses, and synthetic fault experiments.
 - Recovered pseudocode is not original source. A name does not establish complete behaviour.

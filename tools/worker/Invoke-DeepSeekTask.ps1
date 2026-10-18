@@ -1,9 +1,16 @@
 param(
     [Parameter(Mandatory)][ValidatePattern('^[a-z0-9-]+$')][string]$TaskId,
-    [ValidateRange(30,1800)][int]$TimeoutSeconds = 600
+    # TimeoutSeconds is now a soft planning budget, not a kill timer.
+    [ValidateRange(30,86400)][int]$TimeoutSeconds = 1200,
+    [ValidateRange(30,86400)][int]$HardTimeoutSeconds = 10800,
+    [ValidateRange(5,7200)][int]$IdleTimeoutSeconds = 900,
+    [ValidateRange(5,14400)][int]$MilestoneTimeoutSeconds = 1800,
+    [ValidateRange(5,14400)][int]$CommandTimeoutSeconds = 1800
 )
 $ErrorActionPreference = 'Stop'
 Import-Module (Join-Path $PSScriptRoot 'DeepSeekWorker.psm1') -Force
+Import-Module (Join-Path $PSScriptRoot 'WorkerWatchdog.psm1') -Force
+if($HardTimeoutSeconds -lt $TimeoutSeconds){throw 'Hard timeout must be at least the soft budget'}
 
 $root = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
 $task = Join-Path $root "tasks/deepseek/$TaskId.md"
@@ -24,6 +31,14 @@ $stdoutWriter = $null
 $stderrWriter = $null
 $state = $null
 $timedOut = $false
+$stopReason = $null
+$lastActivity = [DateTime]::UtcNow
+$lastMilestone = $lastActivity
+$lastProgressSignature = $null
+$activeCommandId = $null
+$activeCommandStarted = $null
+$commandStarts = @{}
+$lastWatchdogCheck = [DateTime]::MinValue
 
 $script:State = $null
 $script:StatePath = $statePath
@@ -69,6 +84,7 @@ function Add-StdoutLine {
     param([AllowEmptyString()][string]$Line)
     $script:EventsWriter.WriteLine($Line)
     $now = [DateTime]::UtcNow
+    $script:lastActivity = $now
     $script:LastEventReceivedUtc = $now
     $info = Get-WorkerEventInfo $Line
     if (!$info.Valid) {
@@ -86,7 +102,10 @@ function Add-StdoutLine {
             $script:LastTextIndex = $idx
             if ($script:ReportText.Length -lt 4194304) { [void]$script:ReportText.AppendLine($info.Text) }
         }
-        if ($info.IsToolUse) { $script:LastToolUseIndex = $idx }
+        if ($info.IsToolUse) {
+            $script:LastToolUseIndex = $idx
+            if($info.ToolStatus -eq 'completed'){$script:lastMilestone=$now}
+        }
         if ($info.IsStepFinish) {
             $script:LastStepFinishIndex = $idx
             $script:LastStepFinishReason = $info.FinishReason
@@ -128,18 +147,30 @@ function Stop-WorkerProcessTree {
     if (!$Process.HasExited -and (Test-Path -LiteralPath $taskkill)) {
         try { & $taskkill /PID $Process.Id /T /F *> $null } catch { }
     }
+    if(!$Process.WaitForExit(5000)){throw 'Worker termination could not be confirmed; manual process inspection required'}
 }
 
 try {
     $lock = [IO.File]::Open($lockPath, 'OpenOrCreate', 'ReadWrite', 'None')
     $start = [DateTime]::UtcNow
-    $deadline = $start.AddSeconds($TimeoutSeconds)
+    $softDeadline = $start.AddSeconds($TimeoutSeconds)
+    $deadline = $start.AddSeconds($HardTimeoutSeconds)
+    $lastActivity=$start;$lastMilestone=$start
     $state = [ordered]@{
         task = $TaskId
         status = 'running'
         startedUtc = $start.ToString('o')
         deadlineUtc = $deadline.ToString('o')
         timeoutSeconds = $TimeoutSeconds
+        softDeadlineUtc = $softDeadline.ToString('o')
+        hardTimeoutSeconds = $HardTimeoutSeconds
+        idleTimeoutSeconds = $IdleTimeoutSeconds
+        milestoneTimeoutSeconds = $MilestoneTimeoutSeconds
+        commandTimeoutSeconds = $CommandTimeoutSeconds
+        health = 'running'
+        progress = $null
+        lastActivityReceivedUtc = $start.ToString('o')
+        lastMilestoneReceivedUtc = $start.ToString('o')
         retries = 0
         model = 'deepseek/deepseek-flash'
         taskSha256 = (Get-FileHash $task).Hash
@@ -169,7 +200,34 @@ try {
     $info.RedirectStandardOutput = $true
     $info.RedirectStandardError = $true
     # Task IDs are restricted above. No auto-approval or configuration override.
-    $info.Arguments = '/d /s /c ""' + $exe + '" run --pure --format json --model deepseek/deepseek-flash "Execute the attached bounded task and stop." --file tasks/deepseek/' + $TaskId + '.md"'
+    # Attach the runner contract to every task; do not rely on a callback to
+    # remember to request progress, and never overwrite the user's task file.
+    $contract=Join-Path $run 'worker-contract.md'
+    $contractText=@"
+# Runner supervision contract for $TaskId
+Follow the attached task's scope and preservation rules. The runner's time policy
+supersedes older task text describing a fixed wall timeout: soft budget
+$TimeoutSeconds seconds; hard maximum $HardTimeoutSeconds seconds, no automatic retry.
+Update artifacts/deepseek/$TaskId/progress.json atomically at each phase, before
+and after each command, and about every two minutes when able. Schema:
+{"taskId":"$TaskId","phase":"inspect","completed":[],"percent":null,"nextStep":"concrete next action","activeCommand":null}
+Use completed for concrete milestones with evidence paths. Percent is optional,
+estimated and never evidence. Before a command, activeCommand must be
+{"id":"unique-stable-command-id","description":"short purpose, no secrets"}.
+Clear it after completion; never rotate an id to extend the same command.
+Commands must have explicit tool timeouts no greater than $CommandTimeoutSeconds seconds.
+Silence outside a declared command is bounded by $IdleTimeoutSeconds seconds;
+no completed tool or changed phase/completed milestone is bounded by
+$MilestoneTimeoutSeconds seconds. A declared command has its own absolute
+$CommandTimeoutSeconds-second cap; timestamp rewrites cannot extend it.
+Write command logs/exits and partial findings durably as work proceeds. Near the
+hard maximum, stop cleanly with result.md naming completed work, verified results,
+unresolved issues and an exact continuation. Hard maximum/stall interruption is
+incomplete work, never acceptance. Do not invent progress or retry automatically.
+"@
+    [IO.File]::WriteAllText($contract,$contractText,[Text.UTF8Encoding]::new($false))
+    $relativeContract='artifacts/deepseek/'+$TaskId+'/worker-contract.md'
+    $info.Arguments = '/d /s /c ""' + $exe + '" run --pure --format json --model deepseek/deepseek-flash "Execute the attached bounded task and supervision contract, then stop." --file tasks/deepseek/' + $TaskId + '.md ' + $relativeContract + '"'
     $process = [Diagnostics.Process]::new()
     $process.StartInfo = $info
     if (!$process.Start()) { throw 'OpenCode did not start' }
@@ -220,10 +278,42 @@ try {
             break
         }
 
-        if (!$timedOut -and [DateTime]::UtcNow -ge $deadline) {
+        $now=[DateTime]::UtcNow
+        if(!$timedOut -and ($now-$lastWatchdogCheck).TotalSeconds -ge 2){
+            $lastWatchdogCheck=$now
+            try{
+                $progress=Read-WorkerProgress -Path (Join-Path $run 'progress.json') -TaskId $TaskId -Started $start
+                if($progress){
+                    $state.progress=[ordered]@{phase=$progress.phase;nextStep=$progress.nextStep;percent=$progress.percent;reportedUtc=$progress.received.ToString('o');verified=$false}
+                    if($progress.signature -ne $lastProgressSignature){
+                        $lastProgressSignature=$progress.signature;$lastMilestone=$now;$lastActivity=$now
+                    }
+                    if($progress.command){
+                        if($progress.command.id -ne $activeCommandId){
+                            $activeCommandId=$progress.command.id
+                            if(!$commandStarts.ContainsKey($activeCommandId)){$commandStarts[$activeCommandId]=$now}
+                            $activeCommandStarted=$commandStarts[$activeCommandId]
+                        }
+                        $state.progress.activeCommand=$progress.command
+                    }else{$activeCommandId=$null;$activeCommandStarted=$null}
+                    $state.progressError=$null
+                }
+            }catch{$state.progressError=ConvertTo-WorkerSummary $_.Exception.Message}
+            $state.lastActivityReceivedUtc=$lastActivity.ToString('o')
+            $state.lastMilestoneReceivedUtc=$lastMilestone.ToString('o')
+            $state.activeCommandStartedUtc=if($activeCommandStarted){$activeCommandStarted.ToString('o')}else{$null}
+            $decision=Get-WorkerWatchdogDecision -Now $now -Started $start -LastActivity $lastActivity -LastMilestone $lastMilestone -HardDeadline $deadline -SoftSeconds $TimeoutSeconds -IdleSeconds $IdleTimeoutSeconds -MilestoneSeconds $MilestoneTimeoutSeconds -CommandStarted $activeCommandStarted -CommandSeconds $CommandTimeoutSeconds
+            $state.health=$decision
+            if($decision -notin @('running','running-extended')){$stopReason=$decision;$timedOut=$true}
+            Update-RunnerState
+        }
+        if ($timedOut -and !$state.Contains('terminationRequestedUtc')) {
+            $state.terminationRequestedUtc=[DateTime]::UtcNow.ToString('o')
             $timedOut = $true
-            $state.status = 'timeout'
-            $state.reason = 'timeout'
+            $state.status = if($stopReason -like 'stalled-*'){'stalled'}else{'interrupted'}
+            $state.reason = $stopReason
+            $state.requiresSupervisorReview=$true
+            $state.semanticFailure=$false
             Update-RunnerState
             Stop-WorkerProcessTree -Process $process
         }
@@ -237,8 +327,8 @@ try {
     $state.exitCode = $process.ExitCode
     $state.finishedUtc = [DateTime]::UtcNow.ToString('o')
     if ($timedOut) {
-        $state.status = 'timeout'
-        $state.reason = 'timeout'
+        $state.status = if($stopReason -like 'stalled-*'){'stalled'}else{'interrupted'}
+        $state.reason = $stopReason
     } elseif ($script:PermissionDenied) {
         $state.status = 'blocked'
         $state.reason = 'permission-denied'
@@ -300,9 +390,9 @@ try {
         $state = [ordered]@{ task = $TaskId; status = 'dispatch-error'; startedUtc = [DateTime]::UtcNow.ToString('o') }
         $script:State = $state
     }
-    if ($timedOut -or $state.status -eq 'timeout') {
-        $state.status = 'timeout'
-        $state.reason = 'timeout'
+    if ($timedOut) {
+        $state.status = if($stopReason -like 'stalled-*'){'stalled'}else{'interrupted'}
+        $state.reason = $stopReason
     } else {
         $state.status = 'dispatch-error'
         $state.reason = 'dispatch-error'

@@ -309,5 +309,8 @@ $payload = [ordered]@{
     deadline = $deadlineInfo
     lock = [ordered]@{ held = $lockHeld }
     review = $review
+    watchdog = if($state -and $state.PSObject.Properties['health']){
+        [ordered]@{health=$state.health;softDeadlineUtc=$state.softDeadlineUtc;hardDeadlineUtc=$state.deadlineUtc;lastActivityReceivedUtc=$state.lastActivityReceivedUtc;lastMilestoneReceivedUtc=$state.lastMilestoneReceivedUtc;progress=$state.progress;activeCommandStartedUtc=$state.activeCommandStartedUtc}
+    }else{$null}
 }
 $payload | ConvertTo-Json -Depth 8 -Compress

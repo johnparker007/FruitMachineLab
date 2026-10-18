@@ -23,6 +23,20 @@ function ToolPermissionError {
 
 $mode = $env:FAKE_MODE
 switch ($mode) {
+    'extended' {
+        StepStart
+        @{taskId=$env:FAKE_TASK;phase='verification';completed=@('inspect');percent=50;nextStep='finish verification';activeCommand=$null}|ConvertTo-Json|Set-Content $env:FAKE_PROGRESS
+        1..17|ForEach-Object {ToolCompleted 'verified piece';Start-Sleep -Seconds 2}
+        Text 'COMPLETE: productive work beyond the soft budget.'
+        StepFinish 'stop'
+        exit 0
+    }
+    'commandstall' {
+        StepStart
+        @{taskId=$env:FAKE_TASK;phase='verification';completed=@('inspect');percent=50;nextStep='await command';activeCommand=@{id='build-1';description='quiet bounded command'}}|ConvertTo-Json -Depth 5|Set-Content $env:FAKE_PROGRESS
+        Start-Sleep -Seconds 120
+        exit 0
+    }
     'complete' {
         StepStart
         ToolCompleted 'ok'

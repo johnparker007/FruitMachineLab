@@ -1,17 +1,47 @@
 # FruitMachineLab
 
-Experimental recovery of Barcrest MPU4 Adders & Ladders, m4addr A6L 0.1 set 1.
+Primary direction (18 October 2026): lossless original-VM IL, ROM compilation
+and MAME execution/live debugging. Autonomous C# gameplay execution is frozen
+indefinitely. See [the replacement roadmap](docs/PROJECT-ROADMAP.md).
+
+An editing, compilation and live-debugging environment for original fruit-machine
+ROMs. First target: Barcrest MPU4 Adders & Ladders, m4addr A6L 0.1 set 1.
 Recovered code and names are reconstructions, not original source.
 
-The [strategic roadmap](docs/PROJECT-ROADMAP.md) now separates autonomous PC play,
-editable VM game logic and ROM generation. See the [source audit](docs/ENGINEERING-AUDIT.md)
-for actual capture dependencies and [ROM editing](docs/ROM-EDITING.md) for the
-validated, create-only patcher and first original-VM MAME lookup experiment.
+The intended workflow is original ROM -> lossless recovered VM intermediate
+language (IL) -> edits/new words -> compiled ROM -> MAME execution and Lua
+source-level debugging -> physical MPU4 validation. The IL represents the
+original game's VM; unchanged supported definitions must compile identically,
+and unknown regions remain byte-for-byte preserved.
 
-The C# solution separates the headless VM/runtime, game-specific Skill Cash replay,
-and WPF diagnostic viewer. It now verifies **continuous C721 feature execution**
-against recorded MAME timing and inputs. Standalone interactive gameplay and full
-peripheral emulation remain incomplete. See [implementation status](IMPLEMENTATION-STATUS.md).
+The compiler will support same-size edits, end-of-ROM extension allocation,
+new composite VM words and native 6809 primitives, with supported reference
+redirection/trampolines before general relocation. The debugger will map CPU/VM
+state to IL, inspect registers/stacks/RAM, step and break on VM instructions,
+and allow controlled paused state edits where MAME permits. These are planned
+capabilities, not a completed editor.
+
+The first proof is one definition decoded and rebuilt identically, one meaningful
+operand changed, integrity repaired, and natural MAME execution observed through
+Lua and mapped back to IL. Debugger-injected experiments are separate evidence.
+Original hardware compatibility remains the final acceptance requirement.
+
+See the [replacement roadmap](docs/PROJECT-ROADMAP.md) for reuse, gaps and
+milestones, [ROM editing](docs/ROM-EDITING.md) for existing tools and measured
+limits, and [implementation status](IMPLEMENTATION-STATUS.md) for evidence.
+The [source audit](docs/ENGINEERING-AUDIT.md) describes the preserved implementation.
+
+The existing C# headless runtime, Skill Cash replay and WPF diagnostic viewer
+remain research and verification assets. Autonomous scheduling, IRQ/sound
+ownership and C# peripheral simulation are frozen indefinitely, potentially
+permanently, unless John explicitly reauthorizes them. The IL/compiler/debugger
+must remain independent of that executor. The former roadmap is retained in
+[historical resumption notes](docs/history/PRE-IL-MAME-ROADMAP.md).
+
+This documentation change does not start implementation workers or resume paused
+schedules. The replacement implementation plan is ready for John's review.
+
+## Existing build and verification
 
 Using installed .NET SDK 9.0.313 and net8.0 targeting packs:
 
@@ -27,6 +57,13 @@ It deliberately needs no NuGet test framework installation. Run from repository 
 or pass the absolute repository path to verification. The Windows viewer accepts that
 path separately. No SDK pin or machine configuration is changed.
 
+## Preserved native diagnostics and historical evidence
+
+The following records the earlier implementation, not the active development
+plan. Counts and boundaries are checkpoint-specific; the last documented full
+headless checkpoint is 415 groups. No new runtime verification is claimed by
+this documentation update. Native recovery next-step statements below are superseded.
+
 The diagnostics app opens on **Live Skill Cash**. Click **Start feature**, then
 press and release **TAKE FEATURE** at the board prompt. Use the physical **START**
 button to stop each Skill Cash selection. Pause/Resume
@@ -41,7 +78,7 @@ are available. This mode uses recorded inputs; use Live Skill Cash for the tempo
 player control. Audio remains future work. See
 [playback evidence and boundaries](docs/recovery/SKILL-CASH-PLAYBACK-PASS.md).
 
-Latest local verification: headless and isolated WPF builds succeed; 307
+Earlier diagnostic checkpoint: headless and isolated WPF builds succeed; 307
 verification groups pass. Continuous C721 execution matches 98,704 VM dispatches,
 selects 3, 2 and 1, and finishes with pending 0/current win 10. All 7,298 lamp frame
 updates and the complete sound timing protocol match recorded native observations.
@@ -73,7 +110,8 @@ removal of between-scan frame injection and the remaining deadline-generation bo
 
 The [award coverage and IRQ occupancy pass](docs/recovery/SKILL-CASH-EXTENSION-PASS.md)
 adds live jackpot announcement support and tests all six default award levels.
-Normal machine play remains the next milestone; captured timing remains provisional.
+Normal native machine play was the former next milestone; that work is frozen.
+Captured timing remains provisional.
 
 Live now starts at the square-32 board prompt: press and release **TAKE FEATURE**,
 then use **START** for Skill Cash's three selections. The entry selector retains

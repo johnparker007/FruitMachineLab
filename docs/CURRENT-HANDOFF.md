@@ -1,5 +1,37 @@
 # Current handoff
 
+## Active mandate — 18 October 2026 IL / MAME pivot
+
+Read [PROJECT-ROADMAP.md](PROJECT-ROADMAP.md), [ROM-EDITING.md](ROM-EDITING.md)
+and repository AGENTS.md first. The new objective is editable lossless original-VM
+IL, a ROM compiler/linker and a Lua-connected MAME debugger, ultimately producing
+ROMs for physical MPU4 hardware. The native C# executor is not a dependency.
+
+Autonomous native execution is frozen indefinitely, potentially permanently.
+Do not resume IRQ-prefix/suffix, Live sound ownership, finish timing, serial/
+peripheral simulation or capture-free gameplay from any NEXT instruction below.
+Preserve all source, tests, fixtures and recovery evidence. The old roadmap and
+resumption gates are archived in
+[history/PRE-IL-MAME-ROADMAP.md](history/PRE-IL-MAME-ROADMAP.md); resuming them
+requires explicit new authorization from John.
+
+The replacement roadmap inventories reusable assets, missing components and the
+minimum next slice: decode one definition, emit identical bytes, change an
+operand, repair integrity, execute naturally in MAME and map Lua-observed
+PC/Y/U/S and stacks to IL. Then add an extension-region composite word and a
+native 6809 primitive after proving the ABI.
+
+The documented integrate59 baseline is 415 groups. Checked 9ED9 modified-image
+execution is synthetic; natural edited-definition execution/source mapping is
+still open. This documentation pass does not claim fresh builds or captures.
+
+No worker was dispatched, schedule resumed or operational checkpoint rewritten
+for this pivot. Old task files/checkpoints describe stopped historical work;
+they cannot authorize dispatch. Present the new plan for John's review before
+implementation. No commit/push permission is granted by historical notes.
+
+## Historical handoff entries — superseded priorities
+
 17 October strategic update: read PROJECT-ROADMAP.md, ENGINEERING-AUDIT.md and
 ROM-EDITING.md first. They supersede older next-step priorities below; historical
 evidence boundaries remain valid. The new strict patcher and isolated original-VM

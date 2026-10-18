@@ -1,9 +1,28 @@
 # Local and cloud development
 
+## Active development direction — 18 October 2026
+
+Use [PROJECT-ROADMAP.md](PROJECT-ROADMAP.md) and repository AGENTS.md for the
+current mandate: lossless original-VM IL, ROM compiler/linker and MAME Lua live
+debugger, with physical MPU4 as the final target. Native C# execution and its
+IRQ/sound/peripheral work are frozen indefinitely. Preserve the existing
+implementation and verification; they are optional research assets.
+
+The first executable proof is one decoded definition, unchanged byte-identical
+build, meaningful edit, integrity-correct natural MAME execution and Lua-to-IL
+source mapping. The general compiler/debugger is planned, not installed or
+implemented by this documentation update. No SDK/tool installation, machine
+configuration, cloud setup, worker dispatch or schedule restart is authorized
+here. See [README](../README.md) for existing build/verification commands.
+
+All dated batches and former next-step instructions below are historical.
+The former first milestone is preserved as setup history; it does not override
+the new roadmap. Local MAME/ROM access remains separate from cloud capabilities.
+
 Repository: https://github.com/johnparker007/FruitMachineLab
 Local clone: C:\projects\GitRepos\FruitMachineLab
 
-## Current status
+## Preserved setup and implementation history
 
 Sixteen-batch sound/serial additions: Capture-SoundCommandService supports -Calls
 and -Prompt; Capture-SoundNote supports -Rhythm. Capture-SoundQueue, SoundReset,
@@ -322,7 +341,7 @@ Official guidance:
 - https://learn.chatgpt.com/docs/environments/modes
 - https://learn.chatgpt.com/docs/environments/cloud-environments
 
-## First implementation milestone
+## Historical first implementation milestone
 
 Create the C# headless runtime and a simple Windows diagnostic UI, then execute Skill Cash
 against a selected recorded path. Record the exact SDK and build/test commands. Do not

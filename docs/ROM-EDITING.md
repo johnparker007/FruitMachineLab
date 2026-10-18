@@ -1,4 +1,41 @@
-# Reproducible ROM data patching
+# ROM editing — compiler direction and existing patch tools
+
+## Active direction — 18 October 2026
+
+The [replacement roadmap](PROJECT-ROADMAP.md) makes original-VM IL and ROM
+compilation the primary workstream. MAME is the execution backend and Lua live
+debugger; physical MPU4 hardware is the final compatibility target. Native C#
+execution is frozen indefinitely and is not a compiler prerequisite.
+
+The planned builder preserves the original image, emits checked same-size
+definition edits, then allocates additions into a revision-specific confirmed
+end-of-ROM extension range. Support new composite words and native 6809 primitives
+through the original dispatch/stack ABI, with supported entry/reference redirects
+and safe trampolines before general relocation. Record allocations/fixups and
+reject unsupported hooks, overlaps and overflow. A user-confirmed range with
+mapping, expected-byte, known-use and integrity checks is sufficient for the
+initial allocator; complete ROM disassembly is not required. Padding scans only
+identify candidates. No extension range or new-word support is certified yet.
+
+For unchanged supported definitions require byte-identical re-encoding; preserve
+opaque regions exactly without claiming they are decoded/editable. Retain original
+tokens/addresses unless explicitly patched. Bind source maps to exact built-ROM
+hashes. Regenerate original firmware integrity fields in the recovered order,
+without bypasses, and keep loader hash warnings separately visible.
+
+Reuse Mpu4VmDefinition and the checked 9A64/9ED9 plans, RomPatch, the narrow
+VmDefinitionImage CLI and existing MAME scripts. The next proof is an actual
+ROM-byte decoder -> unchanged identity build -> meaningful operand edit ->
+integrity-correct fresh boot -> natural changed-definition execution -> Lua
+PC/Y/U/S/register/stack observation resolved to IL. Existing synthetic 9ED9
+invocation does not complete this proof. General decoding, repair for arbitrary
+edits, linking, source maps and a live debugger remain missing components.
+
+The debugger will provide inspection/VM stepping plus controlled logged paused
+RAM/register edits where installed MAME APIs permit. Experiments and save-state
+setups are distinct from natural execution acceptance.
+
+## Existing fixed-size patcher and historical measurements
 
 This is a small hybrid ROM builder: preserve the original image and change only
 explicit equal-length ranges. It is not a compiler, relocation tool or firmware
@@ -138,11 +175,12 @@ PowerShell run stopped on expected stderr; an early isolated lookup omitted the
 RAM dispatch template and never reached its result. The corrected original and
 modified controls above reach C708 and are the accepted evidence.
 
-## Next boundary
+## Historical next boundary
 
 The active gate-00 field regeneration is now demonstrated to the first VM entry.
 Next demonstrate original/modified natural play beyond that entry, or generalise
 the repair only from a separately validated definition. Preserve unknown code/data
-and do not designate padding as free space. The partial machine-readable map is
+and do not designate padding as free space based on appearance alone. The partial machine-readable map is
 `maps/rom-layout.json`; relocation, bank expansion, full dictionary recovery and
-native/hardware compatibility remain open.
+native/hardware compatibility remain open. The active order is now the first
+IL-to-MAME slice in PROJECT-ROADMAP.md; native C# compatibility is deferred.

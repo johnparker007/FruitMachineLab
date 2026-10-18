@@ -752,7 +752,7 @@ if ($script:Failures -eq 0 -and !$SkipNatural) {
         schema_version = 1
         task = 'il-debug-log-11'
         generated_utc = [DateTime]::UtcNow.ToString('o')
-        classification = 'Read-only MAME 0.281 paused Lua debugger session using native single-instruction stepping and map-derived IL boundary resolution. Event logs are strict JSONL with complete string escaping. No CPU/register/RAM/ROM writes, no save-state loading and no state seeding. The OSD debugger window is used only as the stopped host; the Lua periodic callback drives the command/step state machine and is not itself an instruction boundary.'
+        classification = 'Read-only MAME 0.281 paused Lua debugger session using native single-instruction stepping and map-derived IL boundary resolution. Event logs are strict JSONL with complete string escaping. No CPU/register/RAM/ROM writes, no save-state loading and no state seeding. The imgui OSD debugger under the BGFX renderer is used only as the stopped host; its polling wait loop keeps the Lua periodic command/step driver active, and the periodic callback is not itself an instruction boundary.'
         result_status = 'complete_bounded_paused_il_debug_session_with_strict_event_json'
         target = 'first natural 9ED9 call reached from a fresh isolated boot with the tracked physical-input replay'
         protocol = 'il-debug-session-v1'
@@ -761,7 +761,7 @@ if ($script:Failures -eq 0 -and !$SkipNatural) {
             version = $originalSummary.mame_version
             sha256 = $originalSummary.mame_sha256
             debugger = 'manager.machine.debugger and :maincpu debug interfaces under -debug'
-            host = 'installed windows OSD debugger; file-based strict command protocol'
+            host = 'installed imgui OSD debugger over BGFX; file-based strict command protocol'
             instruction_boundary_source = 'cpu.debug:step(1) with observed stopped execution state'
             lua_instruction_callback = 'unsupported and not used'
         }
@@ -817,7 +817,7 @@ if ($script:Failures -eq 0 -and !$SkipNatural) {
             physical_hardware_compatibility = 'not claimed'
         }
         limitations = @(
-            'The OSD debugger window is required as the stopped host; -debugger none auto-resumes on scheduled events at reset.',
+            'The imgui debugger requires the BGFX renderer and creates a rendering window; it is the stopped host because the Windows debugger wait can stop entering the Lua periodic callback for tens of seconds.',
             'The Lua periodic callback is a command driver, not an instruction callback; exact boundaries come from native step/breakpoint state.',
             'Only the fixed 9ED9 definition map and its five nodes are supported.',
             'The demonstrated call is the first natural 9ED9 call with the tracked replay, not the later EE16/EE22 paid window.',

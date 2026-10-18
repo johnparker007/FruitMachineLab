@@ -106,22 +106,24 @@ if map.schemaVersion ~= 1 or map.protocol ~= PROTOCOL then startupFailure("map_s
 if map.variant ~= config.variant then startupFailure("map_variant", "map variant differs from session variant") end
 if map.imageSha256 ~= config.expectedImageSha256 then startupFailure("map_image", "map image identity differs from session") end
 if map.originalRomSha256 ~= config.expectedOriginalRomSha256 then startupFailure("map_original", "map original identity differs from session") end
-if map.bodyStart ~= 0x9ED9 or map.bodyEndExclusive ~= 0x9EE7 then startupFailure("map_body", "map body is not 9ED9..9EE7") end
-if type(map.nodes) ~= "table" or #map.nodes ~= 5 then startupFailure("map_nodes", "map does not contain five nodes") end
-if type(map.entries) ~= "table" or #map.entries ~= 14 then startupFailure("map_entries", "map does not contain fourteen entries") end
-if map.returnNodeIndex ~= 4 then startupFailure("map_return", "return node index is not four") end
+if type(map.bodyStart) ~= "number" or type(map.bodyEndExclusive) ~= "number" or map.bodyEndExclusive <= map.bodyStart then startupFailure("map_body", "map body span is malformed") end
+if type(map.nodes) ~= "table" or #map.nodes < 1 then startupFailure("map_nodes", "map does not contain nodes") end
+if type(map.entries) ~= "table" or #map.entries ~= (map.bodyEndExclusive - map.bodyStart) then startupFailure("map_entries", "map entries do not cover the declared body span") end
+if type(map.returnNodeIndex) ~= "number" or map.returnNodeIndex < 0 or map.returnNodeIndex >= #map.nodes then startupFailure("map_return", "return node index is out of range") end
 
+local lastNodeIndex = #map.nodes - 1
 local nodeByAddress = {}
 local nodeByIndex = {}
 for _, node in ipairs(map.nodes) do
-    if type(node.index) ~= "number" or node.index < 0 or node.index > 4 then startupFailure("map_node_index", "node index is out of range") end
+    if type(node.index) ~= "number" or node.index < 0 or node.index > lastNodeIndex then startupFailure("map_node_index", "node index is out of range") end
     if type(node.address) ~= "number" or type(node.token) ~= "number" or type(node.handlerPc) ~= "number" then startupFailure("map_node", "node fields are malformed") end
+    if type(node.bytes) ~= "table" or #node.bytes < 2 then startupFailure("map_node_bytes", "node bytes are missing") end
     if nodeByIndex[node.index] then startupFailure("map_node_duplicate", "duplicate node index") end
     if nodeByAddress[node.address] then startupFailure("map_node_address", "duplicate node address") end
     nodeByIndex[node.index] = node
     nodeByAddress[node.address] = node
 end
-for i = 0, 4 do
+for i = 0, lastNodeIndex do
     if not nodeByIndex[i] then startupFailure("map_node_missing", "missing node index " .. tostring(i)) end
 end
 if nodeByIndex[0].address ~= map.bodyStart then startupFailure("map_start", "first node is not the body start") end
@@ -140,14 +142,31 @@ for index, entry in ipairs(map.entries) do
     expectedAddress = expectedAddress + 1
 end
 if expectedAddress ~= map.bodyEndExclusive then startupFailure("map_body_end", "map does not cover the declared body end") end
-if lastNode ~= 4 then startupFailure("map_last_node", "map does not end at node four") end
+if lastNode ~= lastNodeIndex then startupFailure("map_last_node", "map does not end at the last node") end
 
+local branchByIndex = {}
 for _, node in ipairs(map.nodes) do
     local liveToken = readw(node.address)
     if liveToken ~= node.token then startupFailure("map_token", string.format("live token %04X differs from map token %04X at %04X", liveToken, node.token, node.address)) end
     for offset, byte in ipairs(node.bytes or {}) do
         local live = readb(node.address + offset - 1)
         if live ~= byte then startupFailure("map_node_byte", string.format("live node byte %02X differs from map byte %02X at %04X", live, byte, node.address + offset - 1)) end
+    end
+    if node.branch ~= nil then
+        local branch = node.branch
+        if type(branch.operandAddress) ~= "number" or type(branch.operandByte) ~= "number" or type(branch.targetAddress) ~= "number" then startupFailure("map_branch", "branch fields are malformed") end
+        if branch.tokenAddress ~= node.address then startupFailure("map_branch_token_address", "branch tokenAddress is not the node address") end
+        if branch.operandAddress ~= ((node.address + 2) & 0xFFFF) then startupFailure("map_branch_operand", "branch operand does not follow the token") end
+        if #node.bytes ~= 3 then startupFailure("map_branch_width", "branch node does not have a one-byte operand") end
+        local liveOperand = readb(branch.operandAddress)
+        if liveOperand ~= branch.operandByte then startupFailure("map_branch_byte", string.format("live branch operand %02X differs from map byte %02X at %04X", liveOperand, branch.operandByte, branch.operandAddress)) end
+        if ((branch.operandAddress + branch.operandByte) & 0xFFFF) ~= branch.targetAddress then startupFailure("map_branch_target", "branch target arithmetic does not hold") end
+        if not nodeByAddress[branch.targetAddress] then startupFailure("map_branch_boundary", "branch target is not a node boundary") end
+        if branch.condition ~= "IfZero" and branch.condition ~= "Always" then startupFailure("map_branch_condition", "branch condition is unsupported") end
+        if branch.condition == "IfZero" and not nodeByIndex[node.index + 1] then startupFailure("map_branch_fallthrough", "conditional branch has no fall-through node") end
+        if branch.handlerAddress ~= ((node.token + 2) & 0xFFFF) then startupFailure("map_branch_handler", "branch handler address is not the token code field") end
+        if node.handlerPc ~= branch.handlerAddress then startupFailure("map_branch_handler_pc", "branch handler PC differs from the token code field") end
+        branchByIndex[node.index] = branch
     end
 end
 
@@ -236,13 +255,23 @@ local function resolveBoundary(state)
             if token ~= node.token then return nil, "token_mismatch" end
             local expectedX = (token + 2) & 0xFFFF
             if state.x ~= expectedX then return nil, "handler_x_mismatch" end
-            local boundary = { node = node, token = token }
+            local boundary = { node = node, token = token, uAtHandler = state.u }
             if node.index == map.returnNodeIndex then
                 boundary.phase = "return-handler"
                 boundary.savedCursor = readw(state.s)
                 boundary.returnS = state.s
             else
                 boundary.phase = "handler"
+            end
+            local branch = branchByIndex[node.index]
+            if branch then
+                boundary.branch = branch
+                if branch.condition == "IfZero" then
+                    boundary.conditionCell = readw(state.u)
+                    boundary.branchPath = boundary.conditionCell == 0 and "zero" or "nonzero"
+                else
+                    boundary.branchPath = "always"
+                end
             end
             return boundary
         end
@@ -263,7 +292,19 @@ local function boundaryFields(boundary, target)
     target[#target + 1] = "ilAddress=" .. hex16(node.address)
     target[#target + 1] = "ilToken=" .. hex16(node.token)
     target[#target + 1] = "ilOperation=" .. tostring(node.operation)
-    if node.index == 0 or node.index == 2 then
+    local branch = branchByIndex[node.index]
+    if branch then
+        -- A branch operand is a one-byte stream operand, never a word literal.
+        target[#target + 1] = "ilOperand="
+        target[#target + 1] = "ilBranchTokenAddress=" .. hex16(branch.tokenAddress)
+        target[#target + 1] = "ilBranchOperandAddress=" .. hex16(branch.operandAddress)
+        target[#target + 1] = "ilBranchOperandByte=" .. hex2(branch.operandByte)
+        target[#target + 1] = "ilBranchTargetAddress=" .. hex16(branch.targetAddress)
+        target[#target + 1] = "ilBranchCondition=" .. tostring(branch.condition)
+        if boundary.conditionCell then target[#target + 1] = "ilBranchConditionCell=" .. hex16(boundary.conditionCell) end
+        if boundary.branchPath then target[#target + 1] = "ilBranchPath=" .. boundary.branchPath end
+    elseif #(node.bytes or {}) == 4 then
+        -- Only a four-byte node carries a two-byte word literal after the token.
         target[#target + 1] = "ilOperand=" .. hex16(readw(node.address + 2))
     else
         target[#target + 1] = "ilOperand="
@@ -380,8 +421,12 @@ local function parseRequest(path, filenameSeq)
     }
     if not commands[req.command] then return nil, "unknown_command", "command is not in the supported vocabulary" end
     if req.node == nil then req.node = "" end
-    if req.node ~= "" and not req.node:match("^[0-4]$") then return nil, "node", "node is not an integer 0..4" end
-    if req.node ~= "" then req.node = tonumber(req.node) end
+    if req.node ~= "" then
+        if not req.node:match("^%d+$") then return nil, "node", "node is not a decimal index" end
+        local nodeIndex = tonumber(req.node)
+        if not nodeIndex or nodeIndex < 0 or nodeIndex > lastNodeIndex then return nil, "node", "node index is out of range" end
+        req.node = nodeIndex
+    end
     return req
 end
 
@@ -394,6 +439,20 @@ end
 
 local function clearBreakpoints()
     pcall(function() cpu.debug:bpclear() end)
+end
+
+local function expectedBranchSuccessor(branch, boundary)
+    if branch.condition == "Always" then
+        return nodeByAddress[branch.targetAddress], "always"
+    end
+    if branch.condition == "IfZero" then
+        if boundary.conditionCell == 0 then
+            return nodeByAddress[branch.targetAddress], "zero"
+        end
+        local fallThrough = nodeByIndex[boundary.node.index + 1]
+        return fallThrough, "nonzero"
+    end
+    return nil, nil
 end
 
 local function completeStep(state)
@@ -412,11 +471,37 @@ local function completeStep(state)
     end
     boundaryFields(boundary, fields)
     stateFields(state, "", fields)
-    fields[#fields + 1] = "resultExpected=" .. hex16(map.expectedResult)
-    local observed = nil
-    if boundary.phase == "prefetch" and boundary.node.index == 4 then observed = readw(state.u) end
-    if boundary.phase == "post-return" and step.from.node.index == 4 then observed = readw(step.fromState.u) end
-    if observed then fields[#fields + 1] = "resultObserved=" .. hex16(observed) else fields[#fields + 1] = "resultObserved=" end
+    local branchInfo = step.branchInfo
+    if branchInfo then
+        local branch = branchInfo.branch
+        local liveOperand = readb(branch.operandAddress)
+        local uAdvance = (state.u - branchInfo.uAtHandler) & 0xFFFF
+        fields[#fields + 1] = "branchNodeIndex=" .. tostring(branchInfo.node.index)
+        fields[#fields + 1] = "branchCondition=" .. tostring(branch.condition)
+        fields[#fields + 1] = "branchPath=" .. tostring(branchInfo.path)
+        if branch.condition == "IfZero" then
+            fields[#fields + 1] = "branchConditionCell=" .. hex16(branchInfo.conditionCell)
+        else
+            fields[#fields + 1] = "branchConditionCell="
+        end
+        fields[#fields + 1] = "branchTokenAddress=" .. hex16(branch.tokenAddress)
+        fields[#fields + 1] = "branchOperandAddress=" .. hex16(branch.operandAddress)
+        fields[#fields + 1] = "branchOperandByte=" .. hex2(branch.operandByte)
+        fields[#fields + 1] = "branchLiveOperandByte=" .. hex2(liveOperand)
+        fields[#fields + 1] = "branchTargetAddress=" .. hex16(branch.targetAddress)
+        fields[#fields + 1] = "branchExpectedNextY=" .. hex16(branchInfo.expectedNode.address)
+        fields[#fields + 1] = "branchObservedNextY=" .. hex16(state.y)
+        fields[#fields + 1] = "branchUAtHandler=" .. hex16(branchInfo.uAtHandler)
+        fields[#fields + 1] = "branchUNext=" .. hex16(state.u)
+        fields[#fields + 1] = "branchUAdvance=" .. hex16(uAdvance)
+    end
+    local resultObserved = nil
+    if map.expectedResult then
+        fields[#fields + 1] = "resultExpected=" .. hex16(map.expectedResult)
+        if boundary.phase == "prefetch" and boundary.node.index == map.returnNodeIndex then resultObserved = readw(state.u) end
+        if boundary.phase == "post-return" and step.from.node.index == map.returnNodeIndex then resultObserved = readw(step.fromState.u) end
+        if resultObserved then fields[#fields + 1] = "resultObserved=" .. hex16(resultObserved) else fields[#fields + 1] = "resultObserved=" end
+    end
     if boundary.phase == "post-return" then
         fields[#fields + 1] = "postReturnS=" .. hex16(state.s)
         fields[#fields + 1] = "callerCursor=" .. hex16(state.y)
@@ -436,7 +521,11 @@ local function completeStep(state)
         toNode = boundary.node.index,
         toPhase = boundary.phase,
         steps = step.count,
-        resultObserved = observed and hex16(observed) or ""
+        branchPath = branchInfo and branchInfo.path or "",
+        branchConditionCell = branchInfo and branchInfo.conditionCell and hex16(branchInfo.conditionCell) or "",
+        branchNextY = branchInfo and hex16(state.y) or "",
+        branchUAdvance = branchInfo and hex16((state.u - branchInfo.uAtHandler) & 0xFFFF) or "",
+        resultObserved = resultObserved and hex16(resultObserved) or ""
     })
 end
 
@@ -457,18 +546,25 @@ local function failStep(req, code, message, state)
     writeResponse(req, "error", "error", "none", { "errorCode=" .. code, "message=" .. tostring(message) } )
 end
 
-local function beginStep(req, kind, targetType, targetNode)
+local function beginStep(req, kind, targetType, targetNode, acceptableNodes, branchInfo)
     local state = snapshot()
     local boundary = session.current
     if not boundary then
         errorResponse(req, "no_current_boundary", "no supported boundary is current")
         return
     end
+    local acceptable = acceptableNodes
+    if targetType == "prefetch" and not acceptable then
+        acceptable = { [targetNode] = true }
+    end
     local step = {
         request = req,
         kind = kind,
         targetType = targetType,
         targetNode = targetNode,
+        acceptableNodes = acceptable,
+        branchInfo = branchInfo,
+        expectedSuccessor = branchInfo and branchInfo.expectedNode.index or nil,
         from = boundary,
         fromState = state,
         count = 0,
@@ -518,12 +614,33 @@ local function processStep(state)
         isTarget = boundary and boundary.node.index == step.targetNode and
             (boundary.phase == "handler" or boundary.phase == "return-handler")
     elseif step.targetType == "prefetch" then
-        isTarget = boundary and boundary.phase == "prefetch" and boundary.node.index == step.targetNode
+        isTarget = boundary and boundary.phase == "prefetch" and step.acceptableNodes[boundary.node.index] and
+            (not step.expectedSuccessor or boundary.node.index == step.expectedSuccessor)
     elseif step.targetType == "post-return" then
         isTarget = boundary and boundary.phase == "post-return" and step.savedCursor and
             state.y == step.savedCursor and state.s == ((step.returnS + 2) & 0xFFFF)
     end
     if isTarget then
+        if boundary.phase == "prefetch" and step.branchInfo then
+            local branch = step.branchInfo.branch
+            if boundary.node.index ~= step.branchInfo.expectedNode.index then
+                failStep(step.request, "wrong_branch_target", "observed prefetch does not match the branch condition successor", state)
+                return
+            end
+            if readb(branch.operandAddress) ~= branch.operandByte then
+                failStep(step.request, "branch_operand_mismatch", "live branch operand byte differs from the map", state)
+                return
+            end
+            if branch.condition == "IfZero" then
+                if state.u ~= ((step.branchInfo.uAtHandler + 2) & 0xFFFF) then
+                    failStep(step.request, "branch_u_mismatch", "conditional branch did not advance U by exactly two", state)
+                    return
+                end
+            elseif state.u ~= step.branchInfo.uAtHandler then
+                failStep(step.request, "branch_u_mismatch", "unconditional branch changed U unexpectedly", state)
+                return
+            end
+        end
         local transition = string.format("type=%s;pc=%s;y=%s;x=%s;u=%s;s=%s;node=%d;token=%s",
             boundary.phase, hex16(state.pc), hex16(state.y), hex16(state.x), hex16(state.u), hex16(state.s),
             boundary.node.index, hex16(boundary.token))
@@ -546,6 +663,24 @@ local function processStep(state)
                 transition = transition .. string.format(";savedCursor=%s;returnS=%s", hex16(boundary.savedCursor), hex16(boundary.returnS))
             end
             step.transitions[#step.transitions + 1] = transition
+            if step.targetType == "prefetch" and branchByIndex[step.from.node.index] then
+                local branch = branchByIndex[step.from.node.index]
+                local expectedNode, path = expectedBranchSuccessor(branch, boundary)
+                if not expectedNode then
+                    failStep(step.request, "branch_successor", "branch condition has no mapped successor", state)
+                    return
+                end
+                step.branchInfo = {
+                    node = boundary.node,
+                    branch = branch,
+                    conditionCell = boundary.conditionCell,
+                    path = path,
+                    uAtHandler = boundary.uAtHandler,
+                    expectedNode = expectedNode
+                }
+                step.expectedSuccessor = expectedNode.index
+                step.acceptableNodes = { [expectedNode.index] = true }
+            end
         else
             failStep(step.request, "reentered_handler", "handler was entered again during the same node step", state)
             return
@@ -590,16 +725,27 @@ local function handlePauseStop(state)
 end
 
 local function commandPause(req)
-    if session.phase ~= "initial" then
-        errorResponse(req, "wrong_phase", "pause-at-mapped-node is only valid from the initial stopped state")
+    local rearm = session.phase == "paused" and session.current and session.current.phase == "post-return"
+    if session.phase ~= "initial" and not rearm then
+        errorResponse(req, "wrong_phase", "pause-at-mapped-node is only valid from the initial stopped state or after a post-return boundary")
         return
     end
     if type(req.node) ~= "number" then
-        errorResponse(req, "node_required", "pause-at-mapped-node requires a node 0..4")
+        errorResponse(req, "node_required", "pause-at-mapped-node requires a mapped node index")
         return
     end
     local node = nodeByIndex[req.node]
     if not node then errorResponse(req, "node", "node is not mapped"); return end
+    if rearm then
+        local current, reason = resolveBoundary(snapshot())
+        if not current or current.phase ~= "post-return" then
+            errorResponse(req, "unsupported_boundary", tostring(reason or "post-return boundary is no longer current"))
+            return
+        end
+        session.current = nil
+        session.postReturnContext = nil
+        session.inspectionCount = 0
+    end
     clearBreakpoints()
     local okBp, breakpoint = pcall(function()
         return cpu.debug:bpset(0x00FC, string.format("y==0x%04x", node.address), "")
@@ -640,6 +786,71 @@ local function commandInspect(req)
     writeResponse(req, "ok", "inspection", "stopped_read_only", fields)
 end
 
+local function beginPrefetchSuccessor(req, kind, boundary)
+    local node = boundary.node
+    if node.index == map.returnNodeIndex then
+        beginStep(req, kind, "post-return", node.index)
+        return
+    end
+    local branch = branchByIndex[node.index]
+    if branch then
+        local acceptable = {}
+        local targetNode = nodeByAddress[branch.targetAddress]
+        if not targetNode then
+            errorResponse(req, "branch_target", "branch target is not a mapped node")
+            return
+        end
+        acceptable[targetNode.index] = true
+        if branch.condition == "IfZero" then
+            local fallThrough = nodeByIndex[node.index + 1]
+            if not fallThrough then
+                errorResponse(req, "branch_successor", "conditional branch has no fall-through node")
+                return
+            end
+            acceptable[fallThrough.index] = true
+        end
+        beginStep(req, kind, "prefetch", nil, acceptable, nil)
+        return
+    end
+    local nextNode = nodeByIndex[node.index + 1]
+    if not nextNode then
+        errorResponse(req, "no_successor", "the current node has no mapped successor")
+        return
+    end
+    beginStep(req, kind, "prefetch", nextNode.index)
+end
+
+local function beginHandlerSuccessor(req, kind, boundary)
+    local node = boundary.node
+    if node.index == map.returnNodeIndex then
+        beginStep(req, kind, "post-return", node.index)
+        return
+    end
+    local branch = branchByIndex[node.index]
+    if branch then
+        local expectedNode, path = expectedBranchSuccessor(branch, boundary)
+        if not expectedNode then
+            errorResponse(req, "branch_successor", "branch condition has no mapped successor")
+            return
+        end
+        beginStep(req, kind, "prefetch", expectedNode.index, { [expectedNode.index] = true }, {
+            node = node,
+            branch = branch,
+            conditionCell = boundary.conditionCell,
+            path = path,
+            uAtHandler = boundary.uAtHandler,
+            expectedNode = expectedNode
+        })
+        return
+    end
+    local nextNode = nodeByIndex[node.index + 1]
+    if not nextNode then
+        errorResponse(req, "no_successor", "the current node has no mapped successor")
+        return
+    end
+    beginStep(req, kind, "prefetch", nextNode.index)
+end
+
 local function commandStep(req)
     if session.phase ~= "paused" then
         errorResponse(req, "wrong_phase", "step-one-IL-node requires a paused supported boundary")
@@ -651,11 +862,10 @@ local function commandStep(req)
         errorResponse(req, "no_successor", "the caller continuation has no further mapped node")
         return
     end
-    local fromNode = boundary.node.index
-    if fromNode < map.returnNodeIndex then
-        beginStep(req, "step", "prefetch", fromNode + 1)
+    if boundary.phase == "prefetch" then
+        beginPrefetchSuccessor(req, "step", boundary)
     else
-        beginStep(req, "step", "post-return", fromNode)
+        beginHandlerSuccessor(req, "step", boundary)
     end
 end
 
@@ -669,12 +879,7 @@ local function commandResume(req)
     if boundary.phase == "prefetch" then
         beginStep(req, "resume", "handler", boundary.node.index)
     elseif boundary.phase == "handler" or boundary.phase == "return-handler" then
-        local fromNode = boundary.node.index
-        if fromNode < map.returnNodeIndex then
-            beginStep(req, "resume", "prefetch", fromNode + 1)
-        else
-            beginStep(req, "resume", "post-return", fromNode)
-        end
+        beginHandlerSuccessor(req, "resume", boundary)
     elseif boundary.phase == "post-return" then
         errorResponse(req, "no_successor", "the caller continuation has no further supported boundary")
     else
@@ -776,7 +981,7 @@ local function writeReady(execState)
     ready:write("exec=" .. tostring(execState) .. "\n")
     ready:write("lfs=ok\n")
     ready:write("nodes=" .. tostring(#map.nodes) .. "\n")
-    ready:write("expectedResult=" .. hex16(map.expectedResult) .. "\n")
+    if map.expectedResult then ready:write("expectedResult=" .. hex16(map.expectedResult) .. "\n") else ready:write("expectedResult=\n") end
     ready:write("hold=" .. hex16(session.resetPc) .. "\n")
     ready:close()
     os.rename("ready.tmp", "ready.txt")
@@ -785,7 +990,7 @@ local function writeReady(execState)
         variant = config.variant,
         session = config.sessionId,
         image = config.expectedImageSha256,
-        expectedResult = hex16(map.expectedResult),
+        expectedResult = map.expectedResult and hex16(map.expectedResult) or "",
         resetPc = hex16(session.resetPc)
     })
 end

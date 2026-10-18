@@ -3,8 +3,9 @@ param(
     [Parameter(Mandatory=$true)][string]$MameExecutable,
     [Parameter(Mandatory=$true)][string]$RomDirectory,
     [Parameter(Mandatory=$true)][string]$OriginalRom,
-    [Parameter(Mandatory=$true)][string]$RepairedRom,
+    [string]$RepairedRom,
     [Parameter(Mandatory=$true)][ValidateSet('Original','Changed')][string]$Variant,
+    [ValidateSet('9ED9','9A64')][string]$Definition = '9ED9',
     [Parameter(Mandatory=$true)][string]$RunDirectory,
     [string]$SourceMapPath,
     [string]$BuildReportPath,
@@ -220,6 +221,443 @@ function Write-DsConfigLua {
     [IO.File]::WriteAllText($Path,$sb.ToString(),(New-Object System.Text.UTF8Encoding($false)))
 }
 
+function Write-DsA64Map {
+    param([string]$Path,$SessionMap)
+    $sb = New-Object System.Text.StringBuilder
+    [void]$sb.AppendLine('return {')
+    [void]$sb.AppendLine('  schemaVersion = 1,')
+    [void]$sb.AppendLine(('  protocol = "{0}",' -f $script:DsProtocol))
+    [void]$sb.AppendLine('  definition = "9A64",')
+    [void]$sb.AppendLine(('  variant = "{0}",' -f $SessionMap.variant))
+    [void]$sb.AppendLine(('  imageSha256 = "{0}",' -f $SessionMap.imageSha256))
+    [void]$sb.AppendLine(('  originalRomSha256 = "{0}",' -f $SessionMap.originalRomSha256))
+    [void]$sb.AppendLine(('  bodyStart = 0x{0},' -f $SessionMap.bodyStart))
+    [void]$sb.AppendLine(('  bodyEndExclusive = 0x{0},' -f $SessionMap.bodyEndExclusive))
+    [void]$sb.AppendLine(('  sourceMapSha256 = "{0}",' -f $SessionMap.sourceMapSha256))
+    [void]$sb.AppendLine(('  buildReportSha256 = "{0}",' -f $SessionMap.buildReportSha256))
+    [void]$sb.AppendLine('  returnNodeIndex = 5,')
+    [void]$sb.AppendLine('  nodes = {')
+    foreach ($node in @($SessionMap.nodes)) {
+        $bytes = (@($node.bytes) | ForEach-Object { '0x{0:X2}' -f $_ }) -join ','
+        $branchText = 'nil'
+        if ($null -ne $node.branch) {
+            $branchText = ('{{ tokenAddress = 0x{0}, operandAddress = 0x{1}, operandByte = 0x{2}, targetAddress = 0x{3}, condition = "{4}", offsetBase = "{5}", offsetUnsigned = {6}, operandWidthBytes = {7}, handlerAddress = 0x{8} }}' -f `
+                $node.branch.tokenAddress,$node.branch.operandAddress,$node.branch.operandByte,$node.branch.targetAddress,$node.branch.condition,$node.branch.offsetBase,($(if ($node.branch.offsetUnsigned) { 'true' } else { 'false' })),$node.branch.operandWidthBytes,$node.branch.handlerAddress)
+        }
+        [void]$sb.AppendLine(('    {{ index = {0}, address = 0x{1}, token = 0x{2}, operation = "{3}", handlerPc = 0x{4}, handlerAddress = 0x{5}, bytes = {{{6}}}, branch = {7} }},' -f $node.index,$node.address,$node.token,$node.operation,$node.handlerPc,$node.handlerAddress,($bytes),$branchText))
+    }
+    [void]$sb.AppendLine('  },')
+    [void]$sb.AppendLine('  entries = {')
+    foreach ($entry in @($SessionMap.entries)) {
+        [void]$sb.AppendLine(('    {{ address = 0x{0}, nodeIndex = {1}, token = 0x{2}, operation = "{3}", imageByte = 0x{4} }},' -f $entry.address,$entry.nodeIndex,$entry.token,$entry.operation,$entry.imageByte))
+    }
+    [void]$sb.AppendLine('  },')
+    [void]$sb.AppendLine('}')
+    [IO.File]::WriteAllText($Path,$sb.ToString(),(New-Object System.Text.UTF8Encoding($false)))
+}
+
+function Get-DsA64Word {
+    param([byte[]]$Bytes,[int]$Address)
+    return ((([int]$Bytes[$Address]) -shl 8) -bor [int]$Bytes[($Address + 1) -band 0xFFFF])
+}
+
+function Assert-DsA64MapDocument {
+    param($Map,$Build,[byte[]]$Rom,[string]$OriginalSha1,[string]$OriginalSha256)
+    if ($Map.schemaVersion -ne 1) { throw '9A64 source map schemaVersion is not 1' }
+    if ($Map.originalRomSha1 -ine $OriginalSha1) { throw '9A64 source map original SHA1 is wrong' }
+    if ($Map.originalRomSha256 -ine $OriginalSha256) { throw '9A64 source map original SHA256 is wrong' }
+    if ($Map.outputSha256 -ine $OriginalSha256) { throw '9A64 source map is not bound to the original identity image' }
+    if (!$Map.identityBuild) { throw '9A64 source map is not an identity build map' }
+    if ($Map.bodyStart -ne '9A64' -or $Map.bodyEndExclusive -ne '9A72') { throw '9A64 source map body span is not 9A64..9A72' }
+    $span = '7B6D79820676657979037671792F'
+    if ($Map.spanHex -ine $span) { throw '9A64 source map span bytes differ from the checked listing' }
+    if ($Map.emittedBodyHex -ine $span) { throw '9A64 identity build emitted a different body' }
+    $nodes = @($Map.nodes)
+    $branches = @($Map.branches)
+    $entries = @($Map.entries)
+    if ($nodes.Count -ne 6) { throw "9A64 source map has $($nodes.Count) nodes, expected 6" }
+    if ($branches.Count -ne 2) { throw "9A64 source map has $($branches.Count) branches, expected 2" }
+    if ($entries.Count -ne 14) { throw "9A64 source map has $($entries.Count) entries, expected 14" }
+    $expectedNodes = @(
+        @{ index=0; address='9A64'; token='7B6D'; operation='vm_rotate_three_cells'; handlerPc='7B6F'; bytes='7B6D' },
+        @{ index=1; address='9A66'; token='7982'; operation='vm_branch_forward8_if_zero'; handlerPc='7984'; bytes='798206'; branch=@{ tokenAddress='9A66'; operandAddress='9A68'; operandByte='06'; targetAddress='9A6E'; condition='IfZero' } },
+        @{ index=2; address='9A69'; token='7665'; operation='vm_or_word_memory'; handlerPc='7667'; bytes='7665' },
+        @{ index=3; address='9A6B'; token='7979'; operation='vm_branch_unsigned_forward8'; handlerPc='797B'; bytes='797903'; branch=@{ tokenAddress='9A6B'; operandAddress='9A6D'; operandByte='03'; targetAddress='9A70'; condition='Always' } },
+        @{ index=4; address='9A6E'; token='7671'; operation='vm_clear_word_memory_bits'; handlerPc='7673'; bytes='7671' },
+        @{ index=5; address='9A70'; token='792F'; operation='vm_return_to_caller_stream'; handlerPc='7931'; bytes='792F' }
+    )
+    $nodeByAddress = @{}
+    for ($index=0; $index -lt 6; $index++) {
+        $node = $nodes[$index]
+        $expected = $expectedNodes[$index]
+        if ([int]$node.index -ne $expected.index) { throw "9A64 node position $index has index $($node.index)" }
+        if ($node.address -ine $expected.address) { throw "9A64 node $index address is $($node.address), expected $($expected.address)" }
+        if ($node.token -ine $expected.token) { throw "9A64 node $index token is $($node.token), expected $($expected.token)" }
+        if ($node.operation -ne $expected.operation) { throw "9A64 node $index operation is $($node.operation), expected $($expected.operation)" }
+        if ($node.handlerPc -ine $expected.handlerPc) { throw "9A64 node $index handler PC is $($node.handlerPc), expected $($expected.handlerPc)" }
+        if ($node.bytesHex -ine $expected.bytes) { throw "9A64 node $index bytes are $($node.bytesHex), expected $($expected.bytes)" }
+        $address = ConvertTo-DsInt $node.address
+        $tokenAddress = ConvertTo-DsInt $node.token
+        if ((Get-DsA64Word $Rom $address) -ne $tokenAddress) { throw "9A64 node $index live token word differs from the map" }
+        if ((Get-DsA64Word $Rom $tokenAddress) -ne (ConvertTo-DsInt $node.handlerPc)) { throw "9A64 node $index code field does not point at the mapped handler" }
+        if ($node.handlerAddress -ine ([string](Format-DsHex16 ($tokenAddress + 2)))) { throw "9A64 node $index handlerAddress is not token+2" }
+        if ($node.handlerAddress -ine $node.handlerPc) { throw "9A64 node $index handlerAddress and handlerPc differ" }
+        if ($expected.ContainsKey('branch')) {
+            $branch = $node.branch
+            if ($null -eq $branch) { throw "9A64 node $index is missing its byte-branch model" }
+            $expectedBranch = $expected.branch
+            if ($branch.tokenAddress -ine $expectedBranch.tokenAddress) { throw "9A64 node $index branch tokenAddress is wrong" }
+            if ($branch.operandAddress -ine $expectedBranch.operandAddress) { throw "9A64 node $index branch operand address is wrong" }
+            if ($branch.operandByte -ine $expectedBranch.operandByte) { throw "9A64 node $index branch operand byte is wrong" }
+            if ($branch.targetAddress -ine $expectedBranch.targetAddress) { throw "9A64 node $index branch target is wrong" }
+            if ($branch.condition -ne $expectedBranch.condition) { throw "9A64 node $index branch condition is wrong" }
+            if ($branch.offsetBase -ne 'operand-address') { throw "9A64 node $index branch offset base is wrong" }
+            if (!$branch.offsetUnsigned) { throw "9A64 node $index branch is not unsigned" }
+            if ([int]$branch.operandWidthBytes -ne 1) { throw "9A64 node $index branch operand width is not one byte" }
+            $operandAddress = ConvertTo-DsInt $branch.operandAddress
+            if ([int]$Rom[$operandAddress] -ne (ConvertTo-DsInt $branch.operandByte)) { throw "9A64 node $index live branch operand differs from the map" }
+            if (($operandAddress + (ConvertTo-DsInt $branch.operandByte)) -ne (ConvertTo-DsInt $branch.targetAddress)) { throw "9A64 node $index branch target arithmetic does not hold" }
+            if (!($expectedNodes | Where-Object { $_.address -ieq $branch.targetAddress })) { throw "9A64 node $index branch target is not a node boundary" }
+            if ($branch.handlerAddress -ine $node.handlerPc) { throw "9A64 node $index branch handler address differs from the handler PC" }
+        }
+        elseif ($null -ne $node.branch) { throw "9A64 node $index has an unexpected branch model" }
+        $nodeByAddress[$expected.address] = $node
+    }
+    $expectedBranchTable = @($branches | ForEach-Object { [string]$_.tokenAddress })
+    if (($expectedBranchTable -join ',') -ne '9A66,9A6B') { throw '9A64 branch table does not bind the two checked token addresses' }
+    $expectedAddress = 0x9A64
+    for ($index=0; $index -lt $entries.Count; $index++) {
+        $entry = $entries[$index]
+        if ((ConvertTo-DsInt $entry.address) -ne $expectedAddress) { throw "9A64 entry $index is not contiguous" }
+        if ((ConvertTo-DsInt $entry.imageByte) -ne [int]$Rom[$expectedAddress]) { throw "9A64 entry $index image byte differs from the original ROM" }
+        $owner = $expectedNodes | Where-Object { (ConvertTo-DsInt $_.address) -le $expectedAddress -and $expectedAddress -lt ((ConvertTo-DsInt $_.address) + ($_.bytes.Length / 2)) } | Select-Object -First 1
+        if ($null -eq $owner) { throw "9A64 entry $index has no owning node" }
+        if ([int]$entry.nodeIndex -ne $owner.index) { throw "9A64 entry $index nodeIndex differs from the owning node" }
+        if ($entry.token -ine $owner.token -or $entry.operation -ne $owner.operation) { throw "9A64 entry $index token/operation differs from its node" }
+        $expectedAddress++
+    }
+    if ($expectedAddress -ne 0x9A72) { throw '9A64 entries do not reach the declared body end' }
+    $handlerExpectations = @(
+        @{ token='7979'; handler='797B'; instructions=@(@{a='797B';b='E6A4'},@{a='797D';b='4F'},@{a='797E';b='31AB'},@{a='7980';b='0EFC'}) },
+        @{ token='7982'; handler='7984'; instructions=@(@{a='7984';b='ECC1'},@{a='7986';b='27F3'},@{a='7988';b='3121'},@{a='798A';b='0EFC'}) }
+    )
+    foreach ($expected in $handlerExpectations) {
+        $handler = @($Map.handlers | Where-Object { $_.tokenAddress -ieq $expected.token })
+        if ($handler.Count -ne 1) { throw "9A64 handler record for token $($expected.token) is missing or duplicated" }
+        if ($handler[0].handlerAddress -ine $expected.handler) { throw "9A64 handler entry for token $($expected.token) is wrong" }
+        $instructions = @($handler[0].instructions)
+        if ($instructions.Count -ne $expected.instructions.Count) { throw "9A64 handler $($expected.handler) instruction count is wrong" }
+        for ($index=0; $index -lt $instructions.Count; $index++) {
+            if ($instructions[$index].address -ine $expected.instructions[$index].a) { throw "9A64 handler $($expected.handler) instruction $index address is wrong" }
+            if ($instructions[$index].bytesHex -ine $expected.instructions[$index].b) { throw "9A64 handler $($expected.handler) instruction $index bytes are wrong" }
+            $address = ConvertTo-DsInt $expected.instructions[$index].a
+            $byteCount = ([string]$expected.instructions[$index].b).Length / 2
+            $live = -join @(0..($byteCount - 1) | ForEach-Object { '{0:X2}' -f [int]$Rom[$address + $_] })
+            if ($live -ine $expected.instructions[$index].b) { throw "9A64 handler $($expected.handler) instruction $index live bytes differ from the ROM" }
+        }
+    }
+    if ($Build.schemaVersion -ne 1) { throw '9A64 build report schemaVersion is not 1' }
+    if ($Build.originalSha1 -ine $OriginalSha1 -or $Build.originalSha256 -ine $OriginalSha256) { throw '9A64 build report original identity is wrong' }
+    if ($Build.outputSha1 -ine $OriginalSha1 -or $Build.outputSha256 -ine $OriginalSha256) { throw '9A64 build report output is not the original identity image' }
+    if (!$Build.identityImageUnchanged) { throw '9A64 build report is not an identity build' }
+    if (@($Build.changedOffsets).Count -ne 0) { throw '9A64 build report changed offsets are not empty' }
+    if ($Build.bodyStart -ne '9A64' -or $Build.bodyEndExclusive -ne '9A72') { throw '9A64 build report body span is wrong' }
+    if ($Build.emittedBodyHex -ine $span) { throw '9A64 build report emitted body differs from the original span' }
+    if ([int]$Build.sourceMapEntryCount -ne 14 -or [int]$Build.sourceMapBranchCount -ne 2) { throw '9A64 build report source-map counts are wrong' }
+    foreach ($check in @('strictOriginalIdentity','identityImageUnchanged','emittedBodyMatchesSpan','sourceMapBoundToOutputSha256','tokenHandlersVerified','branchModelPresent')) {
+        if (!$Build.checks.$check) { throw "9A64 build report check $check is not true" }
+    }
+}
+
+function Invoke-DsNineA64Session {
+    $script:DsA64SourceMapSha256 = '8d9c9ddc58373e1ffdd221590a75babc1fb7bf3f497bfca587dbac84981df766'
+    $script:DsA64BuildReportSha256 = '11455cdcc15d91780bd1f67c3bd0f6fcdffb3a6a22a4cb61f6fdbc901e3ec3e2'
+    if ($Variant -ne 'Original') { throw '9A64 supports only the original identity image; modified images and edits are not supported' }
+    $run = [IO.Path]::GetFullPath($RunDirectory)
+    if (Test-Path -LiteralPath $run) { throw "Use a fresh create-only session directory: $run" }
+    foreach ($path in @($MameExecutable,$SourceMapPath,$BuildReportPath,$ReplayPath,$InputLuaPath)) {
+        if (!(Test-Path -LiteralPath $path -PathType Leaf)) { throw "Required file is missing: $path" }
+    }
+    if (!(Test-Path -LiteralPath $RomDirectory -PathType Container)) { throw "Installed ROM directory is missing: $RomDirectory" }
+    $mameHash = Get-DsHash $MameExecutable 'SHA256'
+    if ($mameHash -ine $script:DsMameSha256) { throw "MAME SHA256 is $mameHash, expected $($script:DsMameSha256)" }
+    $replayHash = Get-DsHash $ReplayPath 'SHA256'
+    if ($replayHash -ine $script:DsReplaySha256) { throw "Replay SHA256 is $replayHash, expected $($script:DsReplaySha256)" }
+    $mapHash = Get-DsHash $SourceMapPath 'SHA256'
+    if ($mapHash -ine $script:DsA64SourceMapSha256) { throw "9A64 source map SHA256 is $mapHash, expected $($script:DsA64SourceMapSha256)" }
+    $buildHash = Get-DsHash $BuildReportPath 'SHA256'
+    if ($buildHash -ine $script:DsA64BuildReportSha256) { throw "9A64 build report SHA256 is $buildHash, expected $($script:DsA64BuildReportSha256)" }
+    $inputLuaHash = Get-DsHash $InputLuaPath 'SHA256'
+    $originalIdentity = Assert-DsRom $OriginalRom 65536 $script:DsOriginalSha1 $script:DsOriginalSha256 'original ROM'
+    $originalBytes = [IO.File]::ReadAllBytes($OriginalRom)
+    if (![string]::IsNullOrWhiteSpace($RepairedRom)) {
+        $other = Assert-DsRom $RepairedRom 65536 $script:DsOriginalSha1 $script:DsOriginalSha256 '9A64 image'
+        if ((Get-DsHash $RepairedRom 'SHA256') -ine $script:DsOriginalSha256) { throw '9A64 does not support modified images or edits' }
+    }
+    $map = Get-Content -LiteralPath $SourceMapPath -Raw | ConvertFrom-Json
+    $build = Get-Content -LiteralPath $BuildReportPath -Raw | ConvertFrom-Json
+    Assert-DsA64MapDocument $map $build $originalBytes $script:DsOriginalSha1 $script:DsOriginalSha256
+    $sessionNodes = New-Object 'System.Collections.Generic.List[object]'
+    foreach ($node in @($map.nodes)) {
+        $bytes = New-Object 'System.Collections.Generic.List[int]'
+        for ($i=0; $i -lt ([string]$node.bytesHex).Length; $i+=2) { [void]$bytes.Add([Convert]::ToInt32(([string]$node.bytesHex).Substring($i,2),16)) }
+        $branch = $null
+        if ($null -ne $node.branch) {
+            $branch = [ordered]@{
+                tokenAddress = [string]$node.branch.tokenAddress
+                operandAddress = [string]$node.branch.operandAddress
+                operandByte = [string]$node.branch.operandByte
+                targetAddress = [string]$node.branch.targetAddress
+                condition = [string]$node.branch.condition
+                offsetBase = [string]$node.branch.offsetBase
+                offsetUnsigned = [bool]$node.branch.offsetUnsigned
+                operandWidthBytes = [int]$node.branch.operandWidthBytes
+                handlerAddress = [string]$node.branch.handlerAddress
+            }
+        }
+        $sessionNodes.Add([ordered]@{
+            index = [int]$node.index
+            address = [string]$node.address
+            token = [string]$node.token
+            operation = [string]$node.operation
+            handlerPc = [string]$node.handlerPc
+            handlerAddress = [string]$node.handlerAddress
+            bytes = $bytes.ToArray()
+            branch = $branch
+        })
+    }
+    $sessionEntries = New-Object 'System.Collections.Generic.List[object]'
+    foreach ($entry in @($map.entries)) {
+        $sessionEntries.Add([ordered]@{
+            address = [string]$entry.address
+            nodeIndex = [int]$entry.nodeIndex
+            token = [string]$entry.token
+            operation = [string]$entry.operation
+            imageByte = [string]$entry.imageByte
+        })
+    }
+    $sessionBranches = New-Object 'System.Collections.Generic.List[object]'
+    foreach ($branch in @($map.branches)) {
+        $sessionBranches.Add([ordered]@{
+            nodeIndex = [int]$branch.nodeIndex
+            tokenAddress = [string]$branch.tokenAddress
+            operandAddress = [string]$branch.operandAddress
+            operandByte = [string]$branch.operandByte
+            targetAddress = [string]$branch.targetAddress
+            condition = [string]$branch.condition
+            offsetBase = [string]$branch.offsetBase
+            offsetUnsigned = [bool]$branch.offsetUnsigned
+            operandWidthBytes = [int]$branch.operandWidthBytes
+        })
+    }
+    $sessionId = [guid]::NewGuid().ToString('D')
+    $sessionMap = [ordered]@{
+        variant = 'Original'
+        imageSha256 = $script:DsOriginalSha256
+        originalRomSha256 = $script:DsOriginalSha256
+        bodyStart = '9A64'
+        bodyEndExclusive = '9A72'
+        sourceMapSha256 = $mapHash
+        buildReportSha256 = $buildHash
+        nodes = $sessionNodes.ToArray()
+        entries = $sessionEntries.ToArray()
+        branches = $sessionBranches.ToArray()
+    }
+    $config = [ordered]@{
+        schemaVersion = 1
+        protocol = $script:DsProtocol
+        sessionId = $sessionId
+        definition = '9A64'
+        variant = 'Original'
+        cpuTag = ':maincpu'
+        secondsToRun = $SecondsToRun
+        wallTimeoutSeconds = $WallTimeoutSeconds
+        expectedOriginalRomSha256 = $script:DsOriginalSha256
+        expectedImageSha256 = $script:DsOriginalSha256
+        expectedSourceMapSha256 = $mapHash
+        expectedBuildReportSha256 = $buildHash
+        expectedPlanSha256 = ''
+        expectedReplaySha256 = $replayHash
+        expectedInputLuaSha256 = $inputLuaHash
+        expectedMameSha256 = $mameHash
+    }
+    New-Item -ItemType Directory -Path $run -ErrorAction Stop | Out-Null
+    foreach ($name in @('roms/m4addr','cfg','nvram','inp','snap','comments','state','diff','commands','responses','protocol')) {
+        New-Item -ItemType Directory -Path (Join-Path $run $name) -ErrorAction Stop | Out-Null
+    }
+    $variantPath = $OriginalRom
+    $runRom = Join-Path $run 'roms/m4addr/a6ls.p1'
+    Copy-Item -LiteralPath $variantPath -Destination $runRom -ErrorAction Stop
+    $runRomIdentity = Assert-DsRom $runRom 65536 $script:DsOriginalSha1 $script:DsOriginalSha256 'isolated run ROM copy'
+    Copy-Item -LiteralPath $ReplayPath -Destination (Join-Path $run 'replay-actions.csv') -ErrorAction Stop
+    Copy-Item -LiteralPath $InputLuaPath -Destination (Join-Path $run 'input.lua') -ErrorAction Stop
+    Copy-Item -LiteralPath (Join-Path $script:DsRoot 'tools/lua/IlDebugSession.lua') -Destination (Join-Path $run 'IlDebugSession.lua') -ErrorAction Stop
+    [IO.File]::WriteAllText((Join-Path $run 'observer.lua'),"dofile('input.lua')`ndofile('IlDebugSession.lua')`n",(New-Object System.Text.UTF8Encoding($false)))
+    Write-DsA64Map (Join-Path $run 'session-map.lua') $sessionMap
+    Write-DsConfigLua (Join-Path $run 'session-config.lua') $config
+    Write-DsJson (Join-Path $run 'session-config.json') $config 8
+    Write-DsJson (Join-Path $run 'variant-map.json') ([ordered]@{
+        schemaVersion = 1
+        definition = '9A64'
+        variant = 'Original'
+        originalRomSha256 = $script:DsOriginalSha256
+        outputImageSha256 = $script:DsOriginalSha256
+        bodyStart = '9A64'
+        bodyEndExclusive = '9A72'
+        sourceMapSha256 = $mapHash
+        buildReportSha256 = $buildHash
+        entries = $sessionEntries.ToArray()
+        nodes = $sessionNodes.ToArray()
+        branches = $sessionBranches.ToArray()
+    }) 12
+    Write-DsJson (Join-Path $run 'session-metadata.json') ([ordered]@{
+        sessionId = $sessionId
+        protocol = $script:DsProtocol
+        definition = '9A64'
+        variant = 'Original'
+        original_rom = $originalIdentity
+        variant_rom = $originalIdentity
+        run_rom_before = $runRomIdentity
+        source_map_path = [IO.Path]::GetFullPath($SourceMapPath)
+        source_map_sha256 = $mapHash
+        build_report_path = [IO.Path]::GetFullPath($BuildReportPath)
+        build_report_sha256 = $buildHash
+        replay_sha256 = $replayHash
+        input_lua_sha256 = $inputLuaHash
+        mame_executable = [IO.Path]::GetFullPath($MameExecutable)
+        mame_sha256 = $mameHash
+        seconds_to_run = $SecondsToRun
+        wall_timeout_seconds = $WallTimeoutSeconds
+        body_start = '9A64'
+        body_end_exclusive = '9A72'
+        return_node_index = 5
+        changed_offsets_hex = ''
+        starting_nvram = 'absent'
+        starting_configuration = 'absent; -noreadconfig'
+        save_state_loaded = $false
+        debugger_writes = $false
+        classification = 'Fresh-isolated natural original-image 9A64 run with read-only Lua run-control and bounded IL-node stepping.'
+    }) 14
+    $preRunCounts = [ordered]@{}
+    foreach ($name in @('cfg','nvram','inp','snap','comments','state','diff')) { $preRunCounts[$name] = @(Get-ChildItem -LiteralPath (Join-Path $run $name) -Recurse -File -ErrorAction SilentlyContinue).Count }
+    foreach ($key in $preRunCounts.Keys) { if ($preRunCounts[$key] -ne 0) { throw "Pre-run directory $key is not empty" } }
+    $preRunRomFiles = @(Get-ChildItem -LiteralPath (Join-Path $run 'roms/m4addr') -File | ForEach-Object { $_.Name } | Sort-Object)
+    if (($preRunRomFiles -join ',') -ne 'a6ls.p1') { throw 'Isolated ROM directory must contain exactly a6ls.p1 before launch' }
+    Write-DsJson (Join-Path $run 'pre-run-empty.json') $preRunCounts 6
+    $versionOut = Join-Path $run 'mame-version.txt'
+    $versionErr = Join-Path $run 'mame-version.err.txt'
+    $versionInfo = New-Object System.Diagnostics.ProcessStartInfo
+    $versionInfo.FileName = [IO.Path]::GetFullPath($MameExecutable)
+    $versionInfo.Arguments = '-version'
+    $versionInfo.WorkingDirectory = $run
+    $versionInfo.UseShellExecute = $false
+    $versionInfo.CreateNoWindow = $true
+    $versionInfo.RedirectStandardOutput = $true
+    $versionInfo.RedirectStandardError = $true
+    $versionProcess = New-Object System.Diagnostics.Process
+    $versionProcess.StartInfo = $versionInfo
+    [void]$versionProcess.Start()
+    $versionStdout = $versionProcess.StandardOutput.ReadToEndAsync()
+    $versionStderr = $versionProcess.StandardError.ReadToEndAsync()
+    if (-not $versionProcess.WaitForExit(60000)) { & "$env:SystemRoot\System32\taskkill.exe" /PID $versionProcess.Id /T /F | Out-Null; throw 'MAME -version timed out' }
+    [IO.File]::WriteAllText($versionOut,$versionStdout.GetAwaiter().GetResult(),(New-Object System.Text.UTF8Encoding($false)))
+    [IO.File]::WriteAllText($versionErr,$versionStderr.GetAwaiter().GetResult(),(New-Object System.Text.UTF8Encoding($false)))
+    if ($versionProcess.ExitCode -ne 0) { throw "MAME -version failed: exit=$($versionProcess.ExitCode)" }
+    $versionProcess.Dispose()
+    $mameVersion = ((Get-Content -LiteralPath $versionOut -Raw).Trim() -split "\r?\n")[0]
+    if ($mameVersion -notmatch '^0\.281\b') { throw "Unexpected MAME version: $mameVersion" }
+    $arguments = @('m4addr','-noreadconfig','-rompath',((Join-Path $run 'roms')+';'+$RomDirectory),
+        '-cfg_directory',(Join-Path $run 'cfg'),'-nvram_directory',(Join-Path $run 'nvram'),
+        '-input_directory',(Join-Path $run 'inp'),'-snapshot_directory',(Join-Path $run 'snap'),
+        '-comment_directory',(Join-Path $run 'comments'),'-state_directory',(Join-Path $run 'state'),
+        '-diff_directory',(Join-Path $run 'diff'),'-debug','-debugger','imgui','-debuglog',
+        '-video','bgfx','-sound','none','-window','-skip_gameinfo','-nothrottle',
+        '-seconds_to_run',[string]$SecondsToRun,'-autoboot_delay','0',
+        '-autoboot_script',(Join-Path $run 'observer.lua'))
+    $arguments += @('-bgfx_path',(Join-Path (Split-Path $MameExecutable -Parent) 'bgfx'))
+    $quotedArguments = foreach ($arg in $arguments) {
+        $text = [string]$arg
+        if ($text -match '[\s"]') { '"' + $text.Replace('"','\"') + '"' } else { $text }
+    }
+    $argumentString = ($quotedArguments -join ' ')
+    $consolePath = Join-Path $run 'console.txt'
+    $consoleErrorPath = Join-Path $run 'console.err.txt'
+    $wrapperPath = Join-Path $run 'launch.cmd'
+    $wrapperLines = @(
+        '@echo off',
+        ('set "MPU4_REPLAY={0}"' -f (Join-Path $run 'replay-actions.csv')),
+        'set "MPU4_POLICY=7"',
+        'set "FML_IL_DEBUG_SESSION=1"',
+        ('set "FML_IL_DEBUG_SESSION_ID={0}"' -f $sessionId),
+        ('"{0}" {1} > "{2}" 2> "{3}"' -f ([IO.Path]::GetFullPath($MameExecutable)), $argumentString, $consolePath, $consoleErrorPath),
+        'set "MAME_EXIT=%ERRORLEVEL%"',
+        ('echo %MAME_EXIT% > "{0}"' -f (Join-Path $run 'mame-exit-code.txt')),
+        'exit /b %MAME_EXIT%'
+    )
+    [IO.File]::WriteAllLines($wrapperPath, $wrapperLines, (New-Object System.Text.UTF8Encoding($false)))
+    $wrapperCommand = 'cmd.exe /c ""' + [IO.Path]::GetFullPath($wrapperPath) + '""'
+    $createResult = Invoke-CimMethod -ClassName Win32_Process -MethodName Create -Arguments @{ CommandLine = $wrapperCommand; CurrentDirectory = $run }
+    if ($createResult.ReturnValue -ne 0) { throw "Failed to create the detached MAME launcher (WMI return $($createResult.ReturnValue))" }
+    $launchPid = [int]$createResult.ProcessId
+    $startUtc = [DateTime]::UtcNow
+    $readyPath = Join-Path $run 'ready.txt'
+    $readyDeadline = [DateTime]::UtcNow.AddSeconds([Math]::Min($WallTimeoutSeconds, 60))
+    while (!(Test-Path -LiteralPath $readyPath -PathType Leaf)) {
+        if ($null -eq (Get-Process -Id $launchPid -ErrorAction SilentlyContinue)) {
+            $consoleText = if (Test-Path -LiteralPath $consoleErrorPath) { Get-Content -LiteralPath $consoleErrorPath -Raw } else { '' }
+            throw "MAME launcher exited before the session became ready: $consoleText"
+        }
+        if ([DateTime]::UtcNow -gt $readyDeadline) {
+            & "$env:SystemRoot\System32\taskkill.exe" /PID $launchPid /T /F | Out-Null
+            throw "Session did not become ready within $([Math]::Min($WallTimeoutSeconds,60)) wall seconds"
+        }
+        Start-Sleep -Milliseconds 200
+    }
+    $readyLines = @(Get-Content -LiteralPath $readyPath)
+    $ready = @{}
+    foreach ($line in $readyLines) {
+        if ($line -match '^([a-zA-Z0-9]+)=(.*)$') { $ready[$Matches[1]] = $Matches[2] }
+    }
+    if ($ready['protocol'] -ne $script:DsProtocol) { throw 'Ready file protocol mismatch' }
+    if ($ready['session'] -ne $sessionId) { throw 'Ready file session mismatch' }
+    if ($ready['variant'] -ne 'Original') { throw 'Ready file variant mismatch' }
+    if ($ready['map'] -ne 'ok') { throw 'Lua map validation did not pass' }
+    if ($ready['exec'] -ne 'stop') { throw "Session did not start stopped (exec=$($ready['exec']))" }
+    if ($ready['lfs'] -ne 'ok') { throw 'Lua lfs directory enumeration is unavailable' }
+    if ($ready['nodes'] -ne '6') { throw "Ready file reports $($ready['nodes']) nodes, expected 6" }
+    Write-DsJson (Join-Path $run 'session-launch.json') ([ordered]@{
+        sessionId = $sessionId
+        definition = '9A64'
+        variant = 'Original'
+        protocol = $script:DsProtocol
+        process_id = $launchPid
+        start_utc = $startUtc.ToString('o')
+        command_line = $argumentString
+        mame_version = $mameVersion
+        mame_sha256 = $mameHash
+        launch_wrapper = $wrapperPath
+        ready = $ready
+        seconds_to_run = $SecondsToRun
+        wall_timeout_seconds = $WallTimeoutSeconds
+    }) 10
+    $launchRecord = [ordered]@{
+        sessionId = $sessionId
+        definition = '9A64'
+        variant = 'Original'
+        session_directory = $run
+        process_id = $launchPid
+        mame_version = $mameVersion
+        ready = $ready
+    }
+    Write-Output (ConvertTo-Json -InputObject $launchRecord -Depth 6)
+}
+
+if ($Definition -eq '9A64') {
+    Invoke-DsNineA64Session
+    return
+}
+if ([string]::IsNullOrWhiteSpace($RepairedRom)) { throw 'The 9ED9 session requires -RepairedRom' }
+
 # Validate inputs before creating the session directory.
 $run = [IO.Path]::GetFullPath($RunDirectory)
 if (Test-Path -LiteralPath $run) { throw "Use a fresh create-only session directory: $run" }
@@ -391,10 +829,11 @@ $arguments = @('m4addr','-noreadconfig','-rompath',((Join-Path $run 'roms')+';'+
     '-cfg_directory',(Join-Path $run 'cfg'),'-nvram_directory',(Join-Path $run 'nvram'),
     '-input_directory',(Join-Path $run 'inp'),'-snapshot_directory',(Join-Path $run 'snap'),
     '-comment_directory',(Join-Path $run 'comments'),'-state_directory',(Join-Path $run 'state'),
-    '-diff_directory',(Join-Path $run 'diff'),'-debug','-debugger','windows','-debuglog',
-    '-video','none','-sound','none','-window','-skip_gameinfo','-nothrottle',
+    '-diff_directory',(Join-Path $run 'diff'),'-debug','-debugger','imgui','-debuglog',
+    '-video','bgfx','-sound','none','-window','-skip_gameinfo','-nothrottle',
     '-seconds_to_run',[string]$SecondsToRun,'-autoboot_delay','0',
     '-autoboot_script',(Join-Path $run 'observer.lua'))
+$arguments += @('-bgfx_path',(Join-Path (Split-Path $MameExecutable -Parent) 'bgfx'))
 $quotedArguments = foreach ($arg in $arguments) {
     $text = [string]$arg
     if ($text -match '[\s"]') { '"' + $text.Replace('"','\"') + '"' } else { $text }

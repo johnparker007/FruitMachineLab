@@ -181,8 +181,8 @@
     },
     {
         "path":  "docs/recovery/IL-DEBUG-SESSION.md",
-        "bytes":  12588,
-        "sha256":  "63F24AEF25DC5705AED60607C1285E398E009B7BF0068292EF56EF7023EC903B"
+        "bytes":  18980,
+        "sha256":  "F2DAB38F6CF239913D5734E8E547FE5C115BD1E84AEBC24DD1B094A4E35B021F"
     },
     {
         "path":  "docs/recovery/IL-INTEGRITY-STARTUP.md",
@@ -1075,6 +1075,11 @@
         "sha256":  "E2467D2308798FC4D49841797F0BB4D4F8C4CDA84E39E6EEB5A768A3DCCF3EBE"
     },
     {
+        "path":  "evidence/mpu4/integrity/il-9a64-debug-session.json",
+        "bytes":  112925,
+        "sha256":  "D55E62A2B2ECF8AD4A2504C0622650798B441BEA8EA5DADC2E60A6D0CDC35E1A"
+    },
+    {
         "path":  "evidence/mpu4/integrity/il-9a64-decode.json",
         "bytes":  10173,
         "sha256":  "381AA7848E6A542EC42A96738285863D77FBE56ED8987222CBDA34D9F17868F8"
@@ -1085,9 +1090,14 @@
         "sha256":  "F547A7ABBF1F954BFC31D7E3D0092DCA1DAB51512409A8B7B71C614AD7028BE0"
     },
     {
+        "path":  "evidence/mpu4/integrity/il-debug-delivery.json",
+        "bytes":  24131,
+        "sha256":  "0B8103D6C3DF164E9A8B3BE9827F9F8E8AC934FD39BA445495C654EF90159CC5"
+    },
+    {
         "path":  "evidence/mpu4/integrity/il-debug-session.json",
-        "bytes":  102751,
-        "sha256":  "3661A05AC7B05C398A72B9E3E43D49462A25D8F27119EAC9A790AE69E855BCDF"
+        "bytes":  102897,
+        "sha256":  "02A4D1FAE40FAB64A49700EDC60357BA4FF97C07F37EC737329B26036AF97C45"
     },
     {
         "path":  "evidence/mpu4/integrity/il-integrity-startup.json",

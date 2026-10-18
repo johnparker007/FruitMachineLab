@@ -2,7 +2,7 @@
 param(
     [Parameter(Mandatory=$true)][string]$SessionDirectory,
     [Parameter(Mandatory=$true)][ValidateSet('pause-at-mapped-node','inspect','step-one-IL-node','resume-to-supported-boundary','stop')][string]$Command,
-    [ValidateRange(0,4)][int]$Node = -1,
+    [ValidateRange(0,5)][int]$Node = -1,
     [ValidateRange(1,600)][int]$TimeoutSeconds = 120
 )
 $ErrorActionPreference = 'Stop'
@@ -30,7 +30,7 @@ $process = Get-Process -Id ([int]$launch.process_id) -ErrorAction SilentlyContin
 if ($null -eq $process) { throw "Session process $($launch.process_id) is not running" }
 
 if ($Command -eq 'pause-at-mapped-node') {
-    if ($Node -lt 0) { throw 'pause-at-mapped-node requires -Node 0..4' }
+    if ($Node -lt 0) { throw 'pause-at-mapped-node requires a mapped -Node index 0..5' }
 } elseif ($Node -ge 0) {
     throw "$Command does not accept -Node"
 }

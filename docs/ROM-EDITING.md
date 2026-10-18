@@ -35,6 +35,24 @@ The debugger will provide inspection/VM stepping plus controlled logged paused
 RAM/register edits where installed MAME APIs permit. Experiments and save-state
 setups are distinct from natural execution acceptance.
 
+### Installed MAME 0.281 Lua debugger and exact boundaries
+
+The earlier claim that MAME 0.281 had no Lua debugger was wrong: it checked the
+unrelated global name `debugger` without enabling the debugger. Under `-debug`,
+`manager.machine.debugger` and `manager.machine.devices[tag].debug` are userdata
+and expose breakpoints, stepping, run control and console commands. There is
+still no Lua instruction callback, so frame callbacks are not instruction
+boundaries. `tools/lua/IlVmTrace.lua` validates a variant-bound source map
+against live ROM bytes and records the debugger capability, physical input,
+frame-sampled PC/X/Y/U/S and tap diagnostics. Exact boundaries come from native
+debugger `bpset`/`printf` hooks generated from the checked source map and
+handler-entry plan. The `il-lua-api-09` capture completed the first natural
+`9ED9` call for original and repaired images, including all five prefetches,
+handler entries, the `PULS` return, saved caller cursor `9F16` and the actual
+post-return `00FC` fetch at `Y=9F16`/`S=0798` (original result `0000`, repaired
+`0080`). The separate `il-natural-06` EE16/EE22 paid-window gate is unchanged.
+See [IL/Lua debugger and early call](recovery/IL-LUA-VM-TRACE.md).
+
 ## Existing fixed-size patcher and historical measurements
 
 This is a small hybrid ROM builder: preserve the original image and change only

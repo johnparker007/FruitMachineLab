@@ -1,5 +1,21 @@
 # Implementation and evidence boundaries
 
+18 October fresh sound evidence / gate-3 reconciliation: accepted `3e19734`
+passes **401 groups**. Capture33 is a single-occurrence anchor set whose
+`FECC/FECE` is a nested IRQ return, not the matched completion of its `5CD0`.
+Capture36 is a separate controlled-input first `FC4D..5A1C` window with 25
+matched outer `5CD0/FECC` pairs and actual reset YM cache. Verify37/38 reproduce
+each pair independently from its own 2 KB entry plus captured ABI/`719B`, matching
+full 2 KB, cycle spans and instruction completion; six semantic negatives reach
+their intended rules and two raw-file pins are separate. This is per-call
+component proof, not continuous same-state execution: the foreground/IRQ writes
+between `FECC` returns and the next `sv` entries are not recovered. The historical
+nudge-tone/zero-cache gate-2 exact snapshot and its expectations are retained as
+history and are not silently replaced. No runtime or Live code changed; gate 3 is
+not complete. Next prerequisite is a foreground delta ownership analysis of
+capture36's inter-service gaps, with no reseeding and no new duplicate fixture.
+The 17 October entries below remain historical.
+
 17 October orchestrator planning checkpoint: accepted `0fe3713` passes 384 groups
 in the complete intended headless snapshot. Tone setup CPU work is source-derived;
 finish CPU work and IRQ occupancy remain captured. General21 found that Live's

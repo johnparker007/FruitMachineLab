@@ -4,18 +4,39 @@ Design only; no game code was changed. Scope is the selected Start-tone path
 `FC4D` `80A4` (`5A14 -> 59FF -> 59D9 -> 5C18/5C7A`). This does not claim generated
 timer1 cadence, `6B4D`/`58BB`, audio synthesis or whole-game acceptance.
 
+## 18 October fresh-evidence reconciliation
+
+Gate 3 remains open. The historical gate-2 certification
+(`TONE-LIFECYCLE-CERTIFICATION.md`) and the historical nudge-tone/zero-cache
+exact snapshot remain valid **historical component evidence**; they are not
+silently rewritten or promoted. A separate, user-authorized fresh oracle now
+exists. Capture33 is one anchor set whose `FECC/FECE` is a nested IRQ return.
+Capture36 is a different controlled-input occurrence with 25 matched outer
+`5CD0/FECC` pairs. Verify37/38 independently reproduce each capture36 pair from
+its own 2 KB entry and captured ABI, including full 2 KB, cycle spans,
+instruction completion, six semantic negatives and two raw-file pins. That is
+per-call component proof, not continuous same-state execution. The historical
+nudge-tone snapshot is no longer the selected entry source.
+
 ## Evidence classes
 
 - Static/source: original A6L ROM SHA1 `402d1518bb78fdc489b06c2aabc771e5ce151847`;
   `5A14/59FF/59D9/7159/5C18/5C7A/5E2C/60AB/5CD0`, and `FE70..FECE`.
-- Natural: `skill-cash/nudge-tone.json`, an FC4D entry and FC4D->F384 window
-  from physical inputs, including full entry RAM, six sound commands and
-  per-phase cycle/clock observations.
-- Synthetic original-ROM: `collection/tone-lifecycle.json` (485 instruction
-  boundaries, full 2KB RAM, queue/service/cancel) and
-  `collection/timer1-scheduler-call.json` (FEC9 wrapper).
+- Fresh natural oracle (current): `collection/matched-service-window-capture36.json`,
+  the first controlled-input `FC4D..5A1C` window with 25 matched outer service
+  pairs, actual reset YM cache and full 2 KB at queue/service/cancel/returns.
+  `collection/fresh-tone-occurrence-capture33.json` is a separate single-occurrence
+  anchor set whose `FECC/FECE` is nested; `fresh-tone-occurrence.json` is the
+  separate oracle31 window. Neither replaces the other.
+- Historical natural: `skill-cash/nudge-tone.json`, an FC4D entry and FC4D->F384
+  window from physical inputs, including full entry RAM, six sound commands and
+  per-phase cycle/clock observations. Retained as history.
+- Historical synthetic original-ROM: `collection/tone-lifecycle.json` (485
+  instruction boundaries, full 2KB RAM, zero YM cache, queue/service/cancel) and
+  `collection/timer1-scheduler-call.json` (FEC9 wrapper). Retained as history.
 - Declared checkpoints: `feature-replay.json`, `board-selection.json`,
-  `nudge-tone.json`. Only the last is permitted here.
+  `nudge-tone.json`. The fresh capture36 queue frame is now the preferred scoped
+  entry; the older checkpoint is not the selected gate-3 source.
 - Unsupported/hypothesis: causal `6B4D`/`58BB` execution, timer1 assertion and
   native service frame generation.
 
@@ -59,63 +80,121 @@ evolves while `0047` remains the captured `01A0` record. Converting logical
 discard the captured background task; servicing both would duplicate it. The
 existing native queue/cancel frame is also not the Live VM frame.
 
-The selected FC4D entry is a **candidate starting contract**, not yet a proved
-handoff, because `nudge-tone.json`
-is a full natural 2KB entry captured immediately after `5B77` reset: `0047=0000`,
-`0049=01A0`, `004B=00`, `004C=05`, `027E..0283=01..05,FF`, `004D=00`,
-`004E=10`, `004F=00`, `0050=10`, `0045=01DF`, VM `S=07AA`, `U=0672`. It contains
-no active sound task and a valid free pool, so it is a clean single-owner start.
-It must be declared as the permitted starting snapshot; it is an entry image,
-not an injected trajectory. Fresh checkpoint-started verification remains a
-synthetic experiment even though the checkpoint came from a natural trace.
+The historical `nudge-tone.json` FC4D entry is retained as history, but it is not
+the current starting contract. Capture36 supplies an actual fresh queue entry
+(`5C18`, full 2 KB, actual reset YM cache) plus 25 matched outer service
+entries/returns and cancel/return frames from one occurrence. This removes the
+old zero-YM-cache objection for the queue/service/cancel slice, but it does
+**not** prove continuous same-state execution. The foreground/IRQ writes between
+`FEC9/5CD0` pairs are captured only as before/after snapshots, not as recovered
+instruction writes; the observed gaps include stack `0770..0799`, `2C`, `2E/2F`,
+`33/6E`, `29` and occasional scan/counter bytes. Capture33's `FC4D` anchors are
+separate and its `FECC/FECE` is nested, so it must not be used as an outer
+completion. A `FC4D`-started owner therefore remains a separate prerequisite;
+the first safe owner entry is the captured `5C18` queue frame.
 
 ## Selected single-owner contract
 
 One mutating owner: `AddersNativeSound` on the selected `Machine`. The logical
 scheduler must be empty and must not receive `59EB` in this mode.
 
-1. Construction: seed the nudge-tone 2KB image; construct the native owner;
-   require `0047=0`, a valid `0049` pool, `0044=0`, and `719B` bit 80 clear.
-2. Setup (`FC4D`): execute the existing native queue plan through the owner's
-   timed `BeginCall`/advance interface on the real machine, not a clone or an
-   independently mutating plan. Accumulate costs and effects in that same execution.
-   Success gives `0047=01A0`, root `59EB`, `004D=31`, due `0045+1`.
-3. Wait: charge `Mpu4CalibratedDelay.StartToneWaitCycles`; native `0045` is
-   advanced only by actual `5CD0` service calls. The retained outer acceptance
-   supplies one bounded service call, `S/U/X/Y` and masked IRQ. No audio or
-   causal cadence is claimed.
-4. Finish: `5C7A/5CB5/5E2C` removes the first root `59EB`, releases its channel,
-   restores the free list, clears `004D`, and returns through `5A10/5A12`.
-   Unrelated roots would be preserved by the certified cancel, but this selected
-   entry has none.
+1. Construction: seed the declared capture36 `queue.bin` 2 KB at `5C18` and
+   actual `719B=00`; construct the native owner on that same `Machine`; require
+   `0047=0`, `0049=01A0`, `0044=0`, `004B=00`, `004C=05`, the six-record pool,
+   the `027E..0283` shape and `719B` bit 80 clear. Do not seed the historical
+   nudge-tone image or the capture33 nested-return frame.
+2. Setup (`5C18`): execute `AddersSoundQueuePlan` through the owner's
+   `BeginCall(0x5C18,...)`/advance interface on the real machine, with the
+   captured caller frame and continuation `59E9`; not a clone or an independently
+   mutating plan. Accumulate costs and effects in that same execution. Success
+   gives `0047=01A0`, root `59EB`, `004D=31`, due `0045+1`. The
+   `FC4D/5A14/59FF/59D9` foreground wrapper is outside this increment until its
+   delta ownership is recovered.
+3. Wait: capture36 contains 25 outer `5CD0` calls, not one. A continuous adapter
+   may call `5CD0` at the captured entry cycles/frames, but must first account for
+   the non-sound foreground/IRQ writes between each `FECC` return and the next
+   `sv` entry. Until that analysis is complete, only the first pair is an
+   independently proved component boundary; do not skip the remaining 24 or
+   reseed at each return. Native `0045` advances only by actual service calls, not
+   by `scheduler.AdvanceTicks`.
+4. Finish: at the captured cancel boundary use `BeginCall(0x5C7A,...)` with
+   continuation `5A10`. `5C7A/5CB5/5E2C` removes the first root `59EB`, releases
+   its channel and restores the free list. `5A10/5A1C` foreground sets `004D=0`
+   after the native cancel; include that only as an explicitly attributed
+   foreground write. Unrelated roots would be preserved by the certified cancel,
+   but this selected entry has none.
 5. Pause/resume/fault: Live pause calls owner `Pause`; resume calls `Resume`;
    owner faults become Live faults and remain latched. No host-clock or service
    advance occurs while paused.
 
 Native service requires a real CPU frame. The gate-2 `S=0700/U=0600` frame is a
-component frame; it is not valid for this entry because the VM stack is `07AA`
-and the tone is inside `7159` when IRQs arrive. The selected slice must use a
-captured FEC9/`5CD0` frame, not invent one.
+component frame; it is not valid for the fresh entry. The selected slice must
+use the captured `5C18` queue frame (`S=0798`) and the captured `FEC9/5CD0`
+service frames (`S=078B`, `U=0672`, `X=0366`, `Y=0000`, `A=05`, `B=0B`), not
+invent a frame. Capture33's nested `FECC/FECE` frame (`S=077F`) is not an outer
+completion.
 
-## Smallest implementation slice
+## Gate 3 decision (18 October)
+
+No Live implementation is authorized by this evidence. Gate 3 is not complete.
+The smallest genuine advance is not another per-pair fixture: it is a foreground
+delta ownership analysis of capture36's inter-service gaps. The captured
+task/channel/cache state is sound-owner output, but the gaps contain
+foreground/IRQ writes (observed at least `29`, `2C`, `2E/2F`, `33`, `6E`, stack
+`0770..0799` and occasional scan state). These are not recovered instruction
+writes and must not be guessed.
+
+Analyze `queue->sv00`, every `fecc[i]->sv[i+1]`, `fecc24->cancel`,
+`cancel->5A10` and `5A10->5A1C`. Attribute every byte to one of: the native sound
+owner; recovered `FE70/FF13/FEC9/FECC/FECE/5D3B/5CF3/5E29/5E2C/5E6D` code;
+recovered foreground `5A05/7159/5A14/5A10/5A1C` code; another known owner; or
+unknown. Stop at the first unknown byte and name the exact missing source/helper.
+Only after every delta is attributed may the following adapter be implemented.
+
+## Smallest implementation slice (blocked on the delta analysis)
 
 Files and API:
 
-- `src/FruitMachineLab.Adders/AddersToneSetupTiming.cs`: retain the existing
-  cost-only calculation as a scoped adapter/test. For the native slice, consume
-  elapsed instruction costs from the owner's existing `BeginCall`/advance path;
-  do not add a second queue mutator outside its ownership checks. The real
-  foreground frame/caller boundary must first be captured and verified.
-- `src/FruitMachineLab.Adders/SkillCashLiveSession.cs`: an opt-in, headless
-  `nativeStartTone` constructor mode (no UI switch). It constructs the owner,
-  uses the FC4D nudge-tone seed, routes the three tone phases to the native
-  owner, and at the retained outer service boundary calls one `5CD0` service
-  instead of `AdvanceTicks(1)`. Logical words remain unchanged and must be
-  inactive.
-- `src/FruitMachineLab.Adders/AddersTimedTone.cs`: reject native mode, or replace
-  its `Begin/End` calls with the native owner; never run both.
-- `src/FruitMachineLab.Adders/AddersToneLiveOwnershipVerification.cs` (new) and
-  `tests/FruitMachineLab.Verification/Program.cs`: verification and controls.
+- `src/FruitMachineLab.Adders/AddersNativeToneOwnerExecution.cs` (new, proposed):
+  one bounded adapter holding the single `Machine`/`AddersNativeSound`; routes
+  queue/service/cancel through existing `BeginCall`/`BeginService`/`AdvanceTo`
+  calls. It declares the captured host cycle and `S/U/X/Y/A/B` ABI as explicit
+  inputs and performs no RAM writes itself.
+- `src/FruitMachineLab.Adders/AddersToneSetupTiming.cs`: retain the cost-only
+  calculation as a scoped test. In native mode it must not clone the machine or
+  run `AddersSoundQueuePlan` outside the owner.
+- `src/FruitMachineLab.Adders/AddersTimedTone.cs`: reject native mode; never run
+  its logical `scheduler.Queue/Cancel` alongside the native owner.
+- `src/FruitMachineLab.Adders/SkillCashLiveSession.cs`: only after the adapter is
+  proved, an opt-in headless `nativeStartTone` mode may consume it. The current
+  Live constructor must not be changed by this evidence alone.
+- `AddersToneLiveOwnershipVerification.cs` (new) and
+  `tests/FruitMachineLab.Verification/Program.cs`: same-machine intermediate
+  comparisons and meaningful negatives.
+
+Contract: entry is capture36 `queue.bin` at `5C18` with actual `719B=00`, not the
+historical nudge-tone image and not a capture33 nested-return frame. The
+logical scheduler must be empty and must not receive `59EB`; no
+`RestoreQueuedNativeTasks` transfer. Queue uses the captured caller frame and
+continuation `59E9`; each service uses the captured `FEC9/5CD0` frame and
+continuation `FECC`; cancel uses the captured frame and continuation `5A10`.
+Supported host inputs are the captured cycles and `S/U/X/Y/A/B`; each service
+entry/return must be reached by advancing the same machine, with no reseeding
+after the initial 2 KB seed. The only non-owner writes allowed are foreground/IRQ
+writes attributed by the delta analysis, each with a source site. Fail closed on
+nonempty `0047`, invalid `0049`, `719B` bit 80, `0044` nonzero, any logical task,
+a second owner, a changed `719B`/host frame, a wrong service `S`/return word, an
+unattributed delta, a missing ROM region, or any root other than `59EB`.
+Verification must compare the same-machine intermediate states at `sv00..sv24`,
+`fecc00..fecc24`, cancel, `5A10` and `5A1C` (full 2 KB where evidence supports,
+otherwise only the exact owner/attributed ranges), the captured cycle spans and
+`5D3B`/`5CF3` events. Negatives must reject reseeding, wrong pair, wrong `S` or
+return word, changed captured frame, nonempty logical scheduler, duplicate
+ownership and a missing ROM region. Exact prerequisites: complete attribution of
+the deltas above; a captured full `FC4D` 2 KB frame with foreground ownership if
+the mode is to start before `5C18`; and `5E29/5E6D` callback evidence if the
+lifecycle is extended beyond capture36's 25-service window. This plan does not
+require or authorize a new capture.
 
 The finish CPU work is derived from `5A0A` (`LDX #59EB`), `5A0D` (`JSR 5C7A`),
 the cancel/release instructions, `5A10` (`CLR 4D`) and `5A12` (`PULS`), plus the
@@ -136,7 +215,8 @@ continuation first.
 
 ## Unsupported cases and acceptance
 
-Fail closed on: nonempty `0047` at FC4D; invalid `0049`; `719B` bit 80; `0044`
+Fail closed on: nonempty `0047` at the declared queue entry (or at FC4D if that
+start is later recovered); invalid `0049`; `719B` bit 80; `0044`
 nonzero; any logical task or second owner; service during pause/fault; a service
 frame that is not the captured one; any stream/root other than `59EB`; the
 gate-2 rejected `C6` active-channel and finite `C4` branches; unsupported
@@ -145,9 +225,13 @@ from this entry; it is reset-empty. The gate-2 cancel-preserves-unrelated-roots
 case remains component evidence only.
 
 Acceptance: exact ROM bytes; all gate-2 queue/service/cancel boundaries and full
-RAM where schema overlaps; nudge-tone six sound commands, phase timestamps
-`699661924/699661949/699662264/699745210/699748264/699748279` and protected
-terminal bytes; one fresh bounded original-ROM capture at the FC4D reset-cache
-entry/exit is required because gate 2 used a zero YM cache. Negative controls
-must reject injected end state, a wrong return/frame, a nonempty initial list and
-duplicated logical/native ownership. No status is changed to implemented.
+RAM where schema overlaps; capture36's 25 matched outer pairs, cycle spans,
+actual reset YM cache and full queue/service/cancel frames; capture33 remains a
+separate nested-return anchor set. The historical gate-2 zero-cache fixture,
+nudge-tone six sound commands and phase timestamps
+`699661924/699661949/699662264/699745210/699748264/699748279` remain historical
+expectations and are not replaced. Negative controls must reject injected end
+state, a wrong return/frame, a nonempty initial list, a reseed after entry and
+duplicated logical/native ownership. Gate 3 is not complete; the next increment
+is the foreground delta ownership analysis above. No status is changed to
+implemented.

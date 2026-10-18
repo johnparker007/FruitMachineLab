@@ -1,9 +1,11 @@
 # Project roadmap
 
-Updated 17 October 2026 through `0fe3713`, following the orchestrator restart
-review. The source audit at `2916fa1` remains historical context. This replaces older
-timing-first and byte-identical-rebuild priorities. Historical evidence remains in
-[CURRENT-HANDOFF.md](CURRENT-HANDOFF.md), recovery reports and implementation status.
+Updated 18 October 2026 through `3e19734`. The source audit at `2916fa1` remains
+historical context. This replaces older timing-first and byte-identical-rebuild
+priorities. Historical evidence remains in [CURRENT-HANDOFF.md](CURRENT-HANDOFF.md),
+recovery reports and implementation status. The historical exact-snapshot sound
+certification remains valid history; the separate fresh capture33/36 oracle and
+verify37/38 component checks do not silently supersede it or complete gate 3.
 
 Three goals advance in parallel: autonomous PC gameplay, editable original-VM
 game logic, and modified ROM generation for MAME and eventually physical hardware.
@@ -61,10 +63,12 @@ polished editor before replacement ROM definitions execute.
 ## Restart plan: sound ownership before finish timing
 
 John paused the callback. This is a planning checkpoint, not permission to resume
-the stopped boundary automatically. Last accepted commit: `0fe3713`; complete
-clean-snapshot verification: **384 groups**, zero build warnings/errors. The main
-checkout additionally contains uncommitted FEC9 work with a failing check. Preserve
-it; do not represent the dirty checkout as green or commit it with unrelated work.
+the stopped boundary automatically. Last accepted commit: `3e19734`; complete
+clean-snapshot verification: **401 groups**, zero build warnings/errors. The
+earlier uncommitted FEC9 work was accepted through `99c7ef4`/`85fce7f`; the old
+"dirty checkout with a failing check" note is historical, not the current state.
+The accepted fresh-oracle evidence is a separate lineage from the historical
+nudge-tone/zero-cache exact snapshot and does not replace those expectations.
 
 Two blockers must be kept separate. The early FEC9 attempts exhausted their old
 40-step runs; their queued-case verifier also lacks ROM regions required by the
@@ -98,11 +102,17 @@ focused review; do not dispatch the entire migration as one prompt.
    the natural tone path and selected labelled synthetic alternatives. No parallel
    fabricated task or captured end-state injection. This can be proved headlessly
    before solving every timer1 service; stage 1 alone does not establish ownership.
-   **Certified** for one headless owner in
+   **Historical gate-2 certification** remains in
    `docs/recovery/TONE-LIFECYCLE-CERTIFICATION.md`: entry-gap-checked 485 captured
    instruction boundaries, two declared service ticks and full RAM/channel/tail
-   comparison. Only the initial `C6` channel sentinel and zero-count `C4` loop are
-   covered; the active-channel/finite-count variants are rejected explicitly.
+   comparison on the zero-YM-cache reset snapshot. Only the initial `C6` channel
+   sentinel and zero-count `C4` loop are covered; active-channel/finite-count
+   variants remain rejected. It is retained as historical component evidence and
+   is not silently replaced. A separate fresh oracle now adds capture36's first
+   `FC4D..5A1C` window and verify37/38's 25 independent outer `5CD0/FECC`
+   reproductions (full 2 KB, cycles, instruction completion, semantic negatives
+   and raw-file pins). Capture33's `FECC/FECE` is a nested IRQ return and remains
+   separate. This proves per-call components, not continuous same-state execution.
    Gate 3's Live ownership design remains open.
 3. **Design then connect the selected Live owner.** Specify entry-state source,
    required foreground and service instruction boundaries, pause/resume, task
@@ -110,7 +120,21 @@ focused review; do not dispatch the entire migration as one prompt.
    tasks coexist or transfer without duplication. Preserve compatibility until the
    selected path is independently proved. If 6B4D/58BB or IRQ scheduling is required,
    identify and recover that prerequisite separately; do not skip it. Do not use
-   captured task trajectories to claim a causal replacement.
+   captured task trajectories to claim a causal replacement. **18 October
+   reconciliation:** safe Live handoff is still not possible. The fresh queue
+   frame, 25 matched service pairs and cancel/return frames are available, but the
+   foreground/IRQ writes between each `FECC` and the next `sv` entry are not
+   recovered. Do not implement a continuous adapter that reseeds at each return or
+   guesses those writes. The next prerequisite is a foreground delta ownership
+   analysis of `queue->sv00`, every `fecc[i]->sv[i+1]`, `fecc24->cancel`,
+   `cancel->5A10` and `5A10->5A1C`; every byte must be attributed to the sound
+   owner, recovered IRQ/wrapper code, recovered foreground code or another known
+   owner. Stop at the first unknown byte. Only then implement the single-owner
+   queue/service/cancel adapter specified in
+   `docs/recovery/LIVE-NATIVE-SOUND-OWNERSHIP-PLAN.md` (entry `queue.bin` at
+   `5C18`, no logical scheduler, no reseed, captured host ABI, same-machine
+   intermediate comparisons and meaningful negatives). A `FC4D` start remains a
+   separate prerequisite.
 4. **Replace finish CPU work, then IRQ occupancy separately.** Only after native
    state ownership is real, derive 5C7A/5CB5/5E2C and 777E..778B costs from the actual
    path. Natural 360 CPU cycles is an oracle, not a budget to fit; the inferred

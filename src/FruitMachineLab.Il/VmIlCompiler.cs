@@ -44,6 +44,15 @@ public static class VmIlCompiler
         return CompileEdits(originalImage, new[] { edit });
     }
 
+    public static VmIlRepairedEditCompileResult CompileEditWithIntegrity(
+        ReadOnlySpan<byte> originalImage, VmIlOperandEdit edit)
+    {
+        VmIlEditCompileResult unrepaired = CompileEdit(originalImage, edit);
+        VmIlIntegrityResult integrity =
+            VmIlIntegrity.Repair(originalImage, unrepaired.Compile.Image);
+        return new VmIlRepairedEditCompileResult(unrepaired, integrity);
+    }
+
     public static VmIlEditCompileResult CompileEdits(
         ReadOnlySpan<byte> originalImage, IReadOnlyList<VmIlOperandEdit> edits)
     {

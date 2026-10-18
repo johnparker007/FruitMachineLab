@@ -79,6 +79,10 @@ public sealed record VmIlEditCompileResult(
     bool IntegrityRepaired,
     string IntegrityStatus);
 
+public sealed record VmIlRepairedEditCompileResult(
+    VmIlEditCompileResult Unrepaired,
+    VmIlIntegrityResult Integrity);
+
 public static class VmIlVocabulary
 {
     public const ushort InlineWordLiteral = 0x795B;

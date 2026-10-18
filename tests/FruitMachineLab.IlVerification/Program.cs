@@ -20,7 +20,7 @@ internal static class Program
             string outputDirectory = args.Length == 2
                 ? Path.GetFullPath(args[1])
                 : Path.Combine(
-                    repositoryRoot, "artifacts", "deepseek", "il-edit-02", "runs",
+                    repositoryRoot, "artifacts", "deepseek", "il-integrity-03", "runs",
                     DateTime.UtcNow.ToString("yyyyMMdd-HHmmssfff"));
 
             NineEdNineVerification.Run(romPath, repositoryRoot, outputDirectory);

@@ -44,9 +44,9 @@ The CLI writes with `FileMode.CreateNew`, rejects the input/specification as out
 rejects existing outputs, reads the result back and prints input/output SHA256 and
 exact changed offsets. Validation occurs before any output is created.
 
-## Independent IL same-size operand edit
+## Independent IL same-size operand edit and ordered integrity repair
 
-`FruitMachineLab.Il` now decodes the fixed 9ED9 definition, compiles it
+`FruitMachineLab.Il` decodes the fixed 9ED9 definition, compiles it
 byte-identically, and supports exactly one checked same-size edit: the first
 `795B` inline-word literal operand at `9EDB..9EDC` may change from the strict
 original `FF80` to a declared 16-bit replacement. The production compiler
@@ -55,27 +55,47 @@ wrong addresses/widths, unsupported tokens, unrelated byte changes,
 multiple/overlapping edits and invalid spans. Emitted operand bytes are derived
 from the edited IL value; original bytes remain separately recorded.
 
-Generate a fresh, create-only edited image, build report and source map:
+After that compile, `VmIlIntegrity` validates the exact original identity, the
+recovered record table (disabled `FFB0-FFD0`, active `FFD1` with gate `00` and
+error `12`, metadata `FFD6-FFDB` = `1400FFFF1200`, outer gate `719B` = `00`),
+the single `9EDC` diff, the retained span and the protected checker/gate bytes.
+It then regenerates only the active fields in the checker's recovered order:
+sum/XOR (`FFD1`/`FFD2`), rotate-add (`FFD3`, reads regenerated `FFD1-FFD2`),
+then rotate-sub-XOR (`FFD4`/`FFD5`, reads regenerated `FFD1-FFD3`). Sum/XOR
+excludes `FFD1-FFD5`; rotate-add excludes `FFD3-FFD5`; rotate-sub-XOR excludes
+`FFD4-FFD5`. The checker code, outer gate, ranges and disabled records are
+preserved, not patched.
+
+Generate fresh, create-only images and reports:
 
 ```powershell
 dotnet run --project tools/FruitMachineLab.IlBuild --no-build -- `
-  <original-a6ls.p1> artifacts/deepseek/il-edit-02/cli-positive
+  <original-a6ls.p1> artifacts/deepseek/il-integrity-03/cli-positive
 ```
 
-The fixed proof edit is `9EDB FF80 -> FF00`, producing
-`795BFF00787E795BFF807AAF792F`; the full-image diff is exactly offset `9EDC`
-(`80 -> 00`). The report records original/output lengths, SHA1/SHA256, expected
-and actual bytes, edit/span, the single diff and an explicit `UNREPAIRED`
-integrity status. The source map covers all 14 bytes at unchanged addresses and
-is bound to the output image SHA256; original and edited maps reject each
-other's image identity. The CLI rejects wrong input, input/output aliases,
-existing targets and collisions before writing, never modifies the original
-ROM, and leaves no partial accepted files on rejection.
+The CLI writes `edited-unrepaired.p1`, `edited-repaired.p1`,
+`build-report.json`, `integrity-report.json` and `source-map.json`. The source
+map covers all 14 bytes at unchanged addresses and is bound to the repaired
+image SHA256. For the fixed `9EDB FF80 -> FF00` edit the accepted span is
+`795BFF00787E795BFF807AAF792F`:
 
-Only this fixed definition and first operand are supported. No firmware
-integrity field is repaired, no image is accepted or boot-validated, and no MAME
-or hardware execution claim is made. The active `FFD1..FFD5` integrity fields,
-ordered repair and natural 9ED9 reach remain the next gates.
+| Image | Fields / diff | SHA1 | SHA256 |
+| --- | --- | --- | --- |
+| Unrepaired | fields `3E761E2605`, diff `9EDC` only | `51E81CC5F41DA2AA659A4D14D277E9E78614EB6B` | `A99D96F8EA8B4770D2D3828125F25894E831726FE44A79A37E0871FABA135ED2` |
+| Repaired | fields `BEF69E7CC7`, diff `9EDC` + `FFD1-FFD5` | `E1A42DCCD304B7B175AABAC99E8400CDAD04CF69` | `577F76BD36DFCA04DFB01B5F5D0BE93E16572F8617C7CA906397C98DF36E5107` |
+
+The repair-only diff is exactly `FFD1-FFD5`; every other byte is unchanged. An
+independent PowerShell execution of the existing recovered algorithm (copied
+verbatim from `tools/Verify-RomIntegrity.ps1`) on isolated copies produced the
+same fields and a byte-identical repaired image; `tools/Verify-RomIntegrity.ps1`
+separately verifies the original.
+
+Production rejects wrong length/SHA1/SHA256, altered original table/field or
+protected bytes, unexpected edits, `9EDC` not `80 -> 00`, missing/edited spans,
+malformed inputs, stale maps and existing/colliding targets. Only this fixed
+definition, first operand and active gate-00 record are supported. No boot,
+MAME execution, natural 9ED9 reach, gameplay or hardware compatibility is
+claimed: algorithmically repaired is not natural acceptance.
 
 ## Build and test
 

@@ -1,0 +1,817 @@
+{
+ "schema": "analysis40-foreground-delta-ledger/1",
+ "source_fixture": "evidence/mpu4/collection/matched-service-window-capture36.json",
+ "source_fixture_sha256": "AC60AC5EDE6A962B1FB90DFB8389EF85C6AFE304A25DD24CC7C753A2F59FDB82",
+ "rom_sha1": "402D1518BB78FDC489B06C2AABC771E5CE151847",
+ "rom_sha256": "EBF580381AA6EB6FFB26E2ACD40F30AA34B0311F71C6564607C6F48A53BCA15C",
+ "classification": "snapshot net byte delta only; not a complete write history",
+ "transitions": [
+  {
+   "from": "queue",
+   "to": "sv00",
+   "changed": 62,
+   "buckets": {
+    "owner": 16,
+    "control": 6,
+    "stack": 40,
+    "other": 0
+   },
+   "runs": [
+    "0029-0029(1)",
+    "002C-002C(1)",
+    "002E-002E(1)",
+    "0030-0030(1)",
+    "0033-0033(1)",
+    "0047-0048(2)",
+    "004A-004A(1)",
+    "006E-006E(1)",
+    "01A0-01A5(6)",
+    "01A8-01A9(2)",
+    "01AB-01AC(2)",
+    "01B2-01B4(3)",
+    "0775-077C(8)",
+    "077E-077E(1)",
+    "0780-079D(30)",
+    "079F-079F(1)"
+   ]
+  },
+  {
+   "from": "fecc00",
+   "to": "sv01",
+   "changed": 27,
+   "buckets": {
+    "owner": 0,
+    "control": 6,
+    "stack": 21,
+    "other": 0
+   },
+   "runs": [
+    "0029-0029(1)",
+    "002C-002C(1)",
+    "002E-002E(1)",
+    "0030-0030(1)",
+    "0033-0033(1)",
+    "006E-006E(1)",
+    "0774-0779(6)",
+    "077B-077B(1)",
+    "077D-0784(8)",
+    "0787-078A(4)",
+    "078E-078F(2)"
+   ]
+  },
+  {
+   "from": "fecc01",
+   "to": "sv02",
+   "changed": 23,
+   "buckets": {
+    "owner": 0,
+    "control": 8,
+    "stack": 15,
+    "other": 0
+   },
+   "runs": [
+    "0024-0024(1)",
+    "0026-0026(1)",
+    "0029-0029(1)",
+    "002C-002C(1)",
+    "002E-002E(1)",
+    "0030-0030(1)",
+    "0033-0033(1)",
+    "006E-006E(1)",
+    "0776-077A(5)",
+    "077C-0783(8)",
+    "078E-078F(2)"
+   ]
+  },
+  {
+   "from": "fecc02",
+   "to": "sv03",
+   "changed": 23,
+   "buckets": {
+    "owner": 0,
+    "control": 6,
+    "stack": 17,
+    "other": 0
+   },
+   "runs": [
+    "0029-0029(1)",
+    "002C-002C(1)",
+    "002E-002E(1)",
+    "0030-0030(1)",
+    "0033-0033(1)",
+    "006E-006E(1)",
+    "0775-077A(6)",
+    "077C-077C(1)",
+    "077E-0784(7)",
+    "078E-078F(2)",
+    "0798-0798(1)"
+   ]
+  },
+  {
+   "from": "fecc03",
+   "to": "sv04",
+   "changed": 12,
+   "buckets": {
+    "owner": 0,
+    "control": 6,
+    "stack": 6,
+    "other": 0
+   },
+   "runs": [
+    "0029-0029(1)",
+    "002C-002C(1)",
+    "002E-002E(1)",
+    "0030-0030(1)",
+    "0033-0033(1)",
+    "006E-006E(1)",
+    "077B-077B(1)",
+    "077E-077E(1)",
+    "0784-0784(1)",
+    "078E-078F(2)",
+    "0798-0798(1)"
+   ]
+  },
+  {
+   "from": "fecc04",
+   "to": "sv05",
+   "changed": 13,
+   "buckets": {
+    "owner": 0,
+    "control": 7,
+    "stack": 6,
+    "other": 0
+   },
+   "runs": [
+    "0003-0003(1)",
+    "0029-0029(1)",
+    "002C-002C(1)",
+    "002E-002E(1)",
+    "0030-0030(1)",
+    "0033-0033(1)",
+    "006E-006E(1)",
+    "077B-077B(1)",
+    "077E-077E(1)",
+    "0784-0784(1)",
+    "078E-078F(2)",
+    "0798-0798(1)"
+   ]
+  },
+  {
+   "from": "fecc05",
+   "to": "sv06",
+   "changed": 22,
+   "buckets": {
+    "owner": 0,
+    "control": 6,
+    "stack": 16,
+    "other": 0
+   },
+   "runs": [
+    "0029-0029(1)",
+    "002C-002C(1)",
+    "002E-002E(1)",
+    "0030-0030(1)",
+    "0033-0033(1)",
+    "006E-006E(1)",
+    "0777-077B(5)",
+    "077D-0784(8)",
+    "078E-078F(2)",
+    "0798-0798(1)"
+   ]
+  },
+  {
+   "from": "fecc06",
+   "to": "sv07",
+   "changed": 22,
+   "buckets": {
+    "owner": 0,
+    "control": 6,
+    "stack": 16,
+    "other": 0
+   },
+   "runs": [
+    "0029-0029(1)",
+    "002C-002C(1)",
+    "002E-002E(1)",
+    "0030-0030(1)",
+    "0033-0033(1)",
+    "006E-006E(1)",
+    "0777-077B(5)",
+    "077D-0784(8)",
+    "078E-078F(2)",
+    "0798-0798(1)"
+   ]
+  },
+  {
+   "from": "fecc07",
+   "to": "sv08",
+   "changed": 11,
+   "buckets": {
+    "owner": 0,
+    "control": 6,
+    "stack": 5,
+    "other": 0
+   },
+   "runs": [
+    "0029-0029(1)",
+    "002C-002C(1)",
+    "002E-002E(1)",
+    "0030-0030(1)",
+    "0033-0033(1)",
+    "006E-006E(1)",
+    "077B-077B(1)",
+    "077E-077E(1)",
+    "0784-0784(1)",
+    "078E-078F(2)"
+   ]
+  },
+  {
+   "from": "fecc08",
+   "to": "sv09",
+   "changed": 24,
+   "buckets": {
+    "owner": 0,
+    "control": 7,
+    "stack": 17,
+    "other": 0
+   },
+   "runs": [
+    "0029-0029(1)",
+    "002C-002C(1)",
+    "002E-0030(3)",
+    "0033-0033(1)",
+    "006E-006E(1)",
+    "0775-0779(5)",
+    "077B-077B(1)",
+    "077D-0784(8)",
+    "078E-078F(2)",
+    "0798-0798(1)"
+   ]
+  },
+  {
+   "from": "fecc09",
+   "to": "sv10",
+   "changed": 24,
+   "buckets": {
+    "owner": 0,
+    "control": 9,
+    "stack": 15,
+    "other": 0
+   },
+   "runs": [
+    "0023-0024(2)",
+    "0026-0026(1)",
+    "0029-0029(1)",
+    "002C-002C(1)",
+    "002E-002E(1)",
+    "0030-0030(1)",
+    "0033-0033(1)",
+    "006E-006E(1)",
+    "0776-077A(5)",
+    "077C-0783(8)",
+    "078E-078F(2)"
+   ]
+  },
+  {
+   "from": "fecc10",
+   "to": "sv11",
+   "changed": 22,
+   "buckets": {
+    "owner": 0,
+    "control": 6,
+    "stack": 16,
+    "other": 0
+   },
+   "runs": [
+    "0029-0029(1)",
+    "002C-002C(1)",
+    "002E-002E(1)",
+    "0030-0030(1)",
+    "0033-0033(1)",
+    "006E-006E(1)",
+    "0775-077A(6)",
+    "077C-077C(1)",
+    "077E-0784(7)",
+    "078E-078F(2)"
+   ]
+  },
+  {
+   "from": "fecc11",
+   "to": "sv12",
+   "changed": 12,
+   "buckets": {
+    "owner": 0,
+    "control": 6,
+    "stack": 6,
+    "other": 0
+   },
+   "runs": [
+    "0029-0029(1)",
+    "002C-002C(1)",
+    "002E-002E(1)",
+    "0030-0030(1)",
+    "0033-0033(1)",
+    "006E-006E(1)",
+    "077B-077B(1)",
+    "077E-077E(1)",
+    "0784-0784(1)",
+    "078E-078F(2)",
+    "0798-0798(1)"
+   ]
+  },
+  {
+   "from": "fecc12",
+   "to": "sv13",
+   "changed": 12,
+   "buckets": {
+    "owner": 0,
+    "control": 6,
+    "stack": 6,
+    "other": 0
+   },
+   "runs": [
+    "0029-0029(1)",
+    "002C-002C(1)",
+    "002E-002E(1)",
+    "0030-0030(1)",
+    "0033-0033(1)",
+    "006E-006E(1)",
+    "077B-077B(1)",
+    "077E-077E(1)",
+    "0784-0784(1)",
+    "078E-078F(2)",
+    "0799-0799(1)"
+   ]
+  },
+  {
+   "from": "fecc13",
+   "to": "sv14",
+   "changed": 22,
+   "buckets": {
+    "owner": 0,
+    "control": 6,
+    "stack": 16,
+    "other": 0
+   },
+   "runs": [
+    "0029-0029(1)",
+    "002C-002C(1)",
+    "002E-002E(1)",
+    "0030-0030(1)",
+    "0033-0033(1)",
+    "006E-006E(1)",
+    "0777-077B(5)",
+    "077D-0784(8)",
+    "078E-078F(2)",
+    "0798-0798(1)"
+   ]
+  },
+  {
+   "from": "fecc14",
+   "to": "sv15",
+   "changed": 22,
+   "buckets": {
+    "owner": 0,
+    "control": 6,
+    "stack": 16,
+    "other": 0
+   },
+   "runs": [
+    "0029-0029(1)",
+    "002C-002C(1)",
+    "002E-002E(1)",
+    "0030-0030(1)",
+    "0033-0033(1)",
+    "006E-006E(1)",
+    "0777-077B(5)",
+    "077D-0784(8)",
+    "078E-078F(2)",
+    "0798-0798(1)"
+   ]
+  },
+  {
+   "from": "fecc15",
+   "to": "sv16",
+   "changed": 11,
+   "buckets": {
+    "owner": 0,
+    "control": 6,
+    "stack": 5,
+    "other": 0
+   },
+   "runs": [
+    "0029-0029(1)",
+    "002C-002C(1)",
+    "002E-002E(1)",
+    "0030-0030(1)",
+    "0033-0033(1)",
+    "006E-006E(1)",
+    "077B-077B(1)",
+    "077E-077E(1)",
+    "0784-0784(1)",
+    "078E-078F(2)"
+   ]
+  },
+  {
+   "from": "fecc16",
+   "to": "sv17",
+   "changed": 23,
+   "buckets": {
+    "owner": 0,
+    "control": 6,
+    "stack": 17,
+    "other": 0
+   },
+   "runs": [
+    "0029-0029(1)",
+    "002C-002C(1)",
+    "002E-002E(1)",
+    "0030-0030(1)",
+    "0033-0033(1)",
+    "006E-006E(1)",
+    "0775-0779(5)",
+    "077B-077B(1)",
+    "077D-0784(8)",
+    "078E-078F(2)",
+    "0798-0798(1)"
+   ]
+  },
+  {
+   "from": "fecc17",
+   "to": "sv18",
+   "changed": 23,
+   "buckets": {
+    "owner": 0,
+    "control": 8,
+    "stack": 15,
+    "other": 0
+   },
+   "runs": [
+    "0024-0024(1)",
+    "0026-0026(1)",
+    "0029-0029(1)",
+    "002C-002C(1)",
+    "002E-002E(1)",
+    "0030-0030(1)",
+    "0033-0033(1)",
+    "006E-006E(1)",
+    "0776-077A(5)",
+    "077C-0783(8)",
+    "078E-078F(2)"
+   ]
+  },
+  {
+   "from": "fecc18",
+   "to": "sv19",
+   "changed": 23,
+   "buckets": {
+    "owner": 0,
+    "control": 6,
+    "stack": 17,
+    "other": 0
+   },
+   "runs": [
+    "0029-0029(1)",
+    "002C-002C(1)",
+    "002E-002E(1)",
+    "0030-0030(1)",
+    "0033-0033(1)",
+    "006E-006E(1)",
+    "0775-077A(6)",
+    "077C-077C(1)",
+    "077E-0784(7)",
+    "078E-078F(2)",
+    "0798-0798(1)"
+   ]
+  },
+  {
+   "from": "fecc19",
+   "to": "sv20",
+   "changed": 12,
+   "buckets": {
+    "owner": 0,
+    "control": 6,
+    "stack": 6,
+    "other": 0
+   },
+   "runs": [
+    "0029-0029(1)",
+    "002C-002C(1)",
+    "002E-002E(1)",
+    "0030-0030(1)",
+    "0033-0033(1)",
+    "006E-006E(1)",
+    "077B-077B(1)",
+    "077E-077E(1)",
+    "0784-0784(1)",
+    "078E-078F(2)",
+    "0798-0798(1)"
+   ]
+  },
+  {
+   "from": "fecc20",
+   "to": "sv21",
+   "changed": 12,
+   "buckets": {
+    "owner": 0,
+    "control": 6,
+    "stack": 6,
+    "other": 0
+   },
+   "runs": [
+    "0029-0029(1)",
+    "002C-002C(1)",
+    "002E-002E(1)",
+    "0030-0030(1)",
+    "0033-0033(1)",
+    "006E-006E(1)",
+    "077B-077B(1)",
+    "077E-077E(1)",
+    "0784-0784(1)",
+    "078E-078F(2)",
+    "0798-0798(1)"
+   ]
+  },
+  {
+   "from": "fecc21",
+   "to": "sv22",
+   "changed": 22,
+   "buckets": {
+    "owner": 0,
+    "control": 6,
+    "stack": 16,
+    "other": 0
+   },
+   "runs": [
+    "0029-0029(1)",
+    "002C-002C(1)",
+    "002E-002E(1)",
+    "0030-0030(1)",
+    "0033-0033(1)",
+    "006E-006E(1)",
+    "0777-077B(5)",
+    "077D-0784(8)",
+    "078E-078F(2)",
+    "0798-0798(1)"
+   ]
+  },
+  {
+   "from": "fecc22",
+   "to": "sv23",
+   "changed": 21,
+   "buckets": {
+    "owner": 0,
+    "control": 6,
+    "stack": 15,
+    "other": 0
+   },
+   "runs": [
+    "0029-0029(1)",
+    "002C-002C(1)",
+    "002E-002E(1)",
+    "0030-0030(1)",
+    "0033-0033(1)",
+    "006E-006E(1)",
+    "0777-077B(5)",
+    "077D-0784(8)",
+    "078E-078F(2)"
+   ]
+  },
+  {
+   "from": "fecc23",
+   "to": "sv24",
+   "changed": 12,
+   "buckets": {
+    "owner": 0,
+    "control": 6,
+    "stack": 6,
+    "other": 0
+   },
+   "runs": [
+    "0029-0029(1)",
+    "002C-002C(1)",
+    "002E-002E(1)",
+    "0030-0030(1)",
+    "0033-0033(1)",
+    "006E-006E(1)",
+    "077B-077B(1)",
+    "077E-077E(1)",
+    "0784-0784(1)",
+    "078E-078F(2)",
+    "0798-0798(1)"
+   ]
+  },
+  {
+   "from": "fecc24",
+   "to": "cancel",
+   "changed": 1,
+   "buckets": {
+    "owner": 0,
+    "control": 0,
+    "stack": 1,
+    "other": 0
+   },
+   "runs": [
+    "079F-079F(1)"
+   ]
+  },
+  {
+   "from": "cancel",
+   "to": "5A10",
+   "changed": 23,
+   "buckets": {
+    "owner": 9,
+    "control": 0,
+    "stack": 14,
+    "other": 0
+   },
+   "runs": [
+    "0047-0048(2)",
+    "004A-004A(1)",
+    "004C-004C(1)",
+    "01A0-01A1(2)",
+    "01AA-01AA(1)",
+    "0283-0283(1)",
+    "02A4-02A4(1)",
+    "0790-079D(14)"
+   ]
+  },
+  {
+   "from": "5A10",
+   "to": "5A1C",
+   "changed": 1,
+   "buckets": {
+    "owner": 1,
+    "control": 0,
+    "stack": 0,
+    "other": 0
+   },
+   "runs": [
+    "004D-004D(1)"
+   ]
+  }
+ ],
+ "queue_sv00_attribution": [
+  {
+   "start": "0029",
+   "end": "0029",
+   "class": "control",
+   "site": "0x2944 STX $28; w@28 0500->0600",
+   "evidence": "recovered scan source; separate 19-scan natural traces; not logged here"
+  },
+  {
+   "start": "002C",
+   "end": "002C",
+   "class": "control",
+   "site": "0xFEBE COM $2C",
+   "evidence": "recovered input-service source; separate 19-window natural traces; not logged here"
+  },
+  {
+   "start": "002E",
+   "end": "002E",
+   "class": "control",
+   "site": "0x2813 STX $2D; w@2D FE16->FE17",
+   "evidence": "recovered 280F..2851 source; 64 synthetic + 19 natural suffix traces; not logged here"
+  },
+  {
+   "start": "0030",
+   "end": "0030",
+   "class": "control",
+   "site": "0x2819 STX $2F; w@2F AFF6->AFF7",
+   "evidence": "same as 0x2813"
+  },
+  {
+   "start": "0033",
+   "end": "0033",
+   "class": "control",
+   "site": "0x282B INC $33",
+   "evidence": "same as 0x2813"
+  },
+  {
+   "start": "0047",
+   "end": "0048",
+   "class": "owner",
+   "site": "0x5C63 STX $47; 0000->01A0",
+   "evidence": "native sound queue source; captured 5C18 frame"
+  },
+  {
+   "start": "004A",
+   "end": "004A",
+   "class": "owner",
+   "site": "0x5C5D STX $49; head 01A0->01C5 (49 high unchanged)",
+   "evidence": "native sound queue source"
+  },
+  {
+   "start": "006E",
+   "end": "006E",
+   "class": "control",
+   "site": "0x27D2 INC $6E",
+   "evidence": "recovered input-service source; not logged here"
+  },
+  {
+   "start": "01A0",
+   "end": "01A5",
+   "class": "owner",
+   "site": "0x5C61 w@y, 0x5C4B w@(y+2), 0x5C69 w@(y+4); y=01A0",
+   "evidence": "native sound queue source"
+  },
+  {
+   "start": "01A8",
+   "end": "01A9",
+   "class": "owner",
+   "site": "0x5C59 w@(y+8)=59EB",
+   "evidence": "native sound queue source"
+  },
+  {
+   "start": "01AB",
+   "end": "01AC",
+   "class": "owner",
+   "site": "0x5C36 y+0B=attenuation, 0x5C38 y+0C=00",
+   "evidence": "native sound queue source"
+  },
+  {
+   "start": "01B2",
+   "end": "01B4",
+   "class": "owner",
+   "site": "0x5C3F y+12=00, 0x5C56 w@(y+13)=59EB",
+   "evidence": "native sound queue source"
+  },
+  {
+   "start": "0775",
+   "end": "0776",
+   "class": "stack",
+   "site": "0x4913 JSR 4917 -> saved return 4916 (48FD/4917)",
+   "evidence": "recovered callback source; value matches"
+  },
+  {
+   "start": "0777",
+   "end": "0778",
+   "class": "stack",
+   "site": "0xFEF0 JSR,X -> saved return FEF2 (timer3 dispatch 48FD)",
+   "evidence": "recovered dispatch source; value matches"
+  },
+  {
+   "start": "0779",
+   "end": "077C",
+   "class": "stack",
+   "site": "nested FE70 frame CC=C4 A=00 B=99 DP=00",
+   "evidence": "recovered IRQ frame; captured nested FE70"
+  },
+  {
+   "start": "077D",
+   "end": "0784",
+   "class": "stack",
+   "site": "nested frame X=0006 Y=0028 U=0672 PC=1A9A",
+   "evidence": "recovered IRQ frame; captured resume/PC"
+  },
+  {
+   "start": "0785",
+   "end": "078A",
+   "class": "stack",
+   "site": "FIRST UNKNOWN: 19C1 000B 0672; no unique recovered writer",
+   "evidence": "ambiguous snapshot residue"
+  },
+  {
+   "start": "078B",
+   "end": "078C",
+   "class": "stack",
+   "site": "FEC9 JSR 5CD0 -> saved return FECC",
+   "evidence": "recovered FEC9 source; captured stack word"
+  },
+  {
+   "start": "078D",
+   "end": "0798",
+   "class": "stack",
+   "site": "outer FE70 frame CC=C0 A=1C B=28 DP=00 X=80A6 Y=FC4F U=0672 PC=716B",
+   "evidence": "recovered IRQ frame; captured FE70/FF13"
+  },
+  {
+   "start": "0799",
+   "end": "079D",
+   "class": "stack",
+   "site": "foreground caller-stack residue",
+   "evidence": "not attributed; stopped"
+  },
+  {
+   "start": "079F",
+   "end": "079F",
+   "class": "stack",
+   "site": "foreground caller-stack residue",
+   "evidence": "not attributed; stopped"
+  }
+ ],
+ "first_unknown": {
+  "transition": "queue->sv00",
+  "address": "0785",
+  "from": "00",
+  "to": "19",
+  "why": "First byte after the fully recovered nested FE70 frame. The window 0785..078A (19C1 000B 0672) does not match one recovered active return chain for 27D2->438C->19B8->1A87 (expected 19BB/439E/4395/280C/FEC3), and capture36 logged no instruction or stack write there.",
+  "missing": "Instruction/stack-write trace for the outer FE70 handler between nested FF13 and FEC9: 27D2/438C/19B8/1A87/1A05/1A58 and 6B4D/58BB, including exact PSHS/JSR/pull order.",
+  "next_boundary": "One capture36-style inter-service gap with PC and stack-write observation (or a stack-write watchpoint) from FE70 through FEC9 before continuous ownership."
+ },
+ "limits": [
+  "Attribution stops at 0x0785; later transitions are computed but not site-attributed.",
+  "0x0029/2C/2E/30/33/6E sites are recovered source verified in separate natural traces, not logged in this capture36 gap; they are not capture36 trace proof.",
+  "No new capture, fixture, runtime, adapter, reseeding or autonomous-cadence claim."
+ ]
+}

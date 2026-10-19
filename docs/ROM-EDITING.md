@@ -194,6 +194,40 @@ powershell -NoProfile -ExecutionPolicy Bypass -File `
   -OriginalRom <original-a6ls.p1> -OutputRoot <fresh-private-root>
 ```
 
+### Larger replacement natural execution (one completed capture; pending review)
+
+One fresh-isolated natural MAME 0.281 run
+(`il-larger-replacement-natural-51`, boundary
+`natural-fresh-boot-larger-replacement-1012-observation`, attempt 1) reached the
+exact task50 larger-replacement image through the existing tracked physical
+coin/start replay. It observed all seventeen ordered map phases plus a separately
+contracted optional post-`75A9` successor, using only native debugger
+breakpoints and the stopped-state periodic driver. The live boundaries were:
+caller `00FC/Y=9F14/token=1010/U=066E/S=0798/top=0000`; trampoline entry
+`00F8/X=1012/Y=9F16` before `PSHS`; first prefetch
+`00FC/Y=1012/S=0796/w@S=9F16`; the seven body prefetches/handlers with the
+reviewed tokens and inline operands; the added literal `0001` at `1020` with
+`U=066C`, top `0001` and next cell `0000`; the following add with `U=066E`, top
+`0001`; final return prefetch `Y=1024/token=792F`; return handler
+`7931/Y=1026/control top=9F16`; actual `PULS Y` post-return
+`00FC/Y=9F16/S=0798/U=066E/top=0001/token=75A9`; and the optional successor
+`00FC/Y=9F18/top=0000/token=7B7D`. The whole call netted `U=0000`, `S=0000`.
+
+The callee exit `0001` is measured; the observed `75A9` normalized it to `0000`.
+The parent result and downstream gameplay are **not** claimed. `DP` was sampled
+directly from `cpu.state["DP"]` in every phase (`00`); the installed state entry
+exposed only `.value`, so the width is recorded as `unknown` with explicit
+`00FF` normalization rather than fabricated. Offline preflight passed **198
+checks, 0 failures**; one capture was made, MAME exited `0`, strict JSONL passed,
+the isolated ROM and raw event/Lua files were unchanged, and state/side-effect
+directories were empty. This is a worker result pending supervisor review, not
+self-acceptance, gameplay or hardware proof. See
+[larger replacement natural](recovery/IL-LARGER-REPLACEMENT-NATURAL.md),
+`evidence/mpu4/integrity/il-larger-replacement-natural.json`,
+`tools/Capture-IlLargerReplacementNatural.ps1`,
+`tools/lua/IlLargerReplacementNatural.lua` and
+`tests/worker/Test-IlLargerReplacementNatural.ps1`.
+
 ### Direct native primitive natural execution (one completed call; supervisor accepted with DP limitation)
 
 One fresh-isolated natural MAME 0.281 run (`il-native-primitive-natural-46`,

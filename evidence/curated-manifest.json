@@ -240,6 +240,11 @@
         "sha256":  "18068917304A2D22CA945ACD3942487FBF152F036BEBEA4C75A5140F73CED150"
     },
     {
+        "path":  "docs/recovery/IL-LARGER-REPLACEMENT-NATURAL.md",
+        "bytes":  11279,
+        "sha256":  "C21879E95C3FBDFB24CBF41C008CF0D44EB0D6F6E47BF0D88B0770BAE3F36E97"
+    },
+    {
         "path":  "docs/recovery/IL-LUA-VM-TRACE.md",
         "bytes":  6627,
         "sha256":  "AEA873D6A7DAD3DFCE0A51E2EF40FF0DE4267146361D1605C02B58035A46DAAC"
@@ -1213,6 +1218,11 @@
         "path":  "evidence/mpu4/integrity/il-larger-replacement-build.json",
         "bytes":  11624,
         "sha256":  "52509381F9E92562FB357D3D61E48B1CF477857D1A97A001078742A1821F3F27"
+    },
+    {
+        "path":  "evidence/mpu4/integrity/il-larger-replacement-natural.json",
+        "bytes":  100682,
+        "sha256":  "C3884C9132E9BA7E00FFAD431CA1604956954DD871730EDB149EF30E7B3AD8FC"
     },
     {
         "path":  "evidence/mpu4/integrity/il-lua-vm-trace.json",

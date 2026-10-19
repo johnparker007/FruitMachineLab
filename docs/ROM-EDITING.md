@@ -108,6 +108,29 @@ compilation only: no MAME run, natural new-word execution or hardware claim. See
 [IL composite build](recovery/IL-COMPOSITE-BUILD.md) and
 `evidence/mpu4/integrity/il-composite-build.json`.
 
+### Composite natural-execution attempts (blocked)
+
+Two bounded fresh-boot MAME 0.281 attempts have been made against the exact
+built image. The first used no input, reached its 180-second emulated budget and
+observed none of the 13 mapped phases. The second used the existing tracked
+physical coin/start replay (`evidence/mpu4/skill-cash/actions.csv` SHA256
+`4A051DA15264842697879EFF396B34A789F5D80623F9A2E749C244E6A80E721D`, with the
+existing `input.lua`). It naturally fetched the patched `9F14` caller with token
+`1010` and entered the `00F8` trampoline with `X=1012`, `Y=9F16`, saved cursor
+`9F16`, but stopped on an observer saved-cursor check before the five body
+phases. No third capture was made; the observer was corrected afterwards and
+that correction is recorded as a verification gap, not exercised by a new run.
+An offline task-38 repair then tightened the analyzer's MAME termination,
+event-order, full input-window, saved-cursor, run-local asset-hash and synthetic
+pre-PSHS checks; both raw attempts were reanalysed read-only. The full observed
+start-active window was `2221-2228`, with `2221-2224` only the required effective
+prefix. No complete composite call, `PULS` return, result or hardware claim
+follows. The observer/checker and negative controls are in
+`tools/Capture-IlCompositeNatural.ps1`, `tools/lua/IlCompositeNatural.lua` and
+`tools/Test-IlCompositeNatural.ps1`; see
+[composite natural attempts](recovery/IL-COMPOSITE-NATURAL.md) and
+`evidence/mpu4/integrity/il-composite-natural.json`.
+
 ### Installed MAME 0.281 Lua debugger and exact boundaries
 
 The earlier claim that MAME 0.281 had no Lua debugger was wrong: it checked the

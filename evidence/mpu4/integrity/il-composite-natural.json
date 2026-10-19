@@ -1,0 +1,471 @@
+{
+    "taskId":  "il-composite-replay-36",
+    "schemaVersion":  1,
+    "resultStatus":  "blocked_incomplete",
+    "evidenceClass":  "natural",
+    "classification":  "Natural fresh-boot MAME 0.281 observation of the exact compiled composite image using the existing tracked physical coin/start replay. Boundaries come only from native debugger breakpoints; the Lua periodic callback is the stopped-state driver. No save/load state, PC/register/RAM seed, debugger write or synthetic state injection.",
+    "boundaryHistory":  {
+                            "boundary":  "natural-composite-1010-call-from-9F14",
+                            "attempts":  2,
+                            "unsuccessfulAttempts":  2,
+                            "successfulAttempts":  0,
+                            "attempt1":  {
+                                             "taskId":  "il-composite-natural-35",
+                                             "resultStatus":  "blocked_not_reached",
+                                             "evidenceClass":  "natural",
+                                             "attemptClassification":  "no_input_attempt_history_not_renamed_or_evaded",
+                                             "inputPolicy":  "none",
+                                             "inputReplayUsed":  false,
+                                             "reason":  "emulated_budget",
+                                             "phaseCount":  0,
+                                             "expectedPhaseCount":  13,
+                                             "emulatedSeconds":  "180.000000000",
+                                             "runDirectory":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-composite-natural-35\\run-01",
+                                             "eventsSha256":  "912CD4442EB623B59A8786386D0D937D0343AF61C1EA758D6D6743AC16CF86F3",
+                                             "note":  "First natural composite-boundary attempt. One bounded no-input fresh boot observed none of the thirteen phases. Preserved unchanged as an unsuccessful attempt."
+                                         },
+                            "attempt2":  {
+                                             "taskId":  "il-composite-replay-36",
+                                             "resultStatus":  "blocked_incomplete",
+                                             "evidenceClass":  "natural",
+                                             "attemptClassification":  "revised_tracked_physical_input_replay_attempt",
+                                             "inputPolicy":  "tracked_physical_replay",
+                                             "inputReplayUsed":  true,
+                                             "reason":  "protocol_failure",
+                                             "phaseCount":  2,
+                                             "expectedPhaseCount":  13,
+                                             "failure":  {
+                                                             "event":  "protocol_failure",
+                                                             "code":  "phase_saved_cursor",
+                                                             "message":  "body-prefetch-0 saved cursor 9F16 is not FFFFFFFFFFFFFFFF",
+                                                             "observed":  "2",
+                                                             "expected":  "13"
+                                                         },
+                                             "runDirectory":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-composite-replay-36\\run-01",
+                                             "analysisRunDirectory":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-composite-evidence-repair-38\\reanalysis\\attempt-36-run-01",
+                                             "eventsSha256":  "4D545B1FB933A2585FB3B2233C1F429EF9B264BF1B2D7A380010341D4D0BC45D",
+                                             "call":  {
+                                                          "callerAddress":  "9F14",
+                                                          "callerReplacementToken":  "1010",
+                                                          "headerAddress":  "1010",
+                                                          "headerValue":  "00F8",
+                                                          "bodyStart":  "1012",
+                                                          "bodyEndExclusive":  "1020",
+                                                          "trampolinePc":  "00F8",
+                                                          "trampolineX":  "1012",
+                                                          "savedCursor":  "",
+                                                          "savedCursorAuthority":  "not observed",
+                                                          "headerSavedCursorMapEcho":  "9F16",
+                                                          "headerSavedCursorAuthoritative":  false,
+                                                          "postReturnY":  "",
+                                                          "postReturnToken":  "",
+                                                          "inputWord":  "0000",
+                                                          "sumWord":  "FF80",
+                                                          "resultWord":  "",
+                                                          "netU":  "",
+                                                          "netS":  "",
+                                                          "complete":  false,
+                                                          "returnObserved":  false
+                                                      },
+                                             "note":  "Second attempt reached the revised replay input and stopped on an observer protocol failure (phase_saved_cursor); no third capture was made."
+                                         },
+                            "note":  "The attempt-1 failure remains distinct and is not renamed to evade the two-attempt boundary. Attempt 2 is the single authorized revised tracked-physical-input replay capture."
+                        },
+    "originalRom":  {
+                        "path":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\general-14\\roms\\original.p1",
+                        "length":  65536,
+                        "sha1":  "402D1518BB78FDC489B06C2AABC771E5CE151847",
+                        "sha256":  "EBF580381AA6EB6FFB26E2ACD40F30AA34B0311F71C6564607C6F48A53BCA15C"
+                    },
+    "builtRom":  {
+                     "path":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-composite-immutability-34\\il-verifier-20261019-01\\composite\\built-repaired.p1",
+                     "length":  65536,
+                     "sha1":  "DC6381B9883AAFDE372D2C2AA14C817BAE839B21",
+                     "sha256":  "761F34BAAC06C6F8F5DA963CCADEB276FAE9196EE1C4D9060BC915A314E3903D"
+                 },
+    "sourceMap":  {
+                      "path":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-composite-immutability-34\\il-verifier-20261019-01\\composite\\composite-source-map.json",
+                      "sha256":  "9A560CA7818C7A8F56AC4E314BB5DF19E81F4EFABB23982CCC092CA648B5BCF8",
+                      "contract":  {
+                                       "mapSha256":  "9A560CA7818C7A8F56AC4E314BB5DF19E81F4EFABB23982CCC092CA648B5BCF8",
+                                       "builtSha256":  "761F34BAAC06C6F8F5DA963CCADEB276FAE9196EE1C4D9060BC915A314E3903D",
+                                       "nodeCount":  5,
+                                       "entryCount":  20,
+                                       "phaseCount":  13,
+                                       "changedOffsetCount":  21,
+                                       "integrityFields":  "E93F3C61B5"
+                                   }
+                  },
+    "buildReport":  {
+                        "path":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-composite-immutability-34\\il-verifier-20261019-01\\composite\\build-report.json",
+                        "sha256":  "08BA168885E0F92B1BA4ECBBE2CB1A345D823067E62F75C5679D6E9FB6B2781B"
+                    },
+    "lua":  {
+                "sourcePath":  "C:\\projects\\GitRepos\\FruitMachineLab\\tools\\lua\\IlCompositeNatural.lua",
+                "sourceSha256":  "444A9FA03413C7D4CB25065E93D38B33B9D44FA4BD45545646543359C8078285",
+                "capturedPath":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-composite-replay-36\\run-01\\IlCompositeNatural.lua",
+                "capturedSha256":  "444A9FA03413C7D4CB25065E93D38B33B9D44FA4BD45545646543359C8078285"
+            },
+    "mame":  {
+                 "executable":  "E:\\Arcade\\MAME0266\\mame281.exe",
+                 "sha256":  "0FCE5A88DF4F9D9B1FBF1405812C00848036E615993780978D967DA34204CB7A",
+                 "version":  "0.281 (mame0281)"
+             },
+    "frontend":  {
+                     "debugger":  "imgui",
+                     "video":  "bgfx",
+                     "bgfx_path":  "E:\\Arcade\\MAME0266\\bgfx",
+                     "focus_stealing":  false
+                 },
+    "inputProvenance":  {
+                            "policy":  "tracked_physical_replay",
+                            "used":  true,
+                            "classification":  "tracked_physical_input_replay_no_state_injection",
+                            "replay":  {
+                                           "path":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-composite-evidence-repair-38\\reanalysis\\attempt-36-run-01\\replay-actions.csv",
+                                           "length":  72943,
+                                           "sha256":  "4A051DA15264842697879EFF396B34A789F5D80623F9A2E749C244E6A80E721D",
+                                           "coinEvent":  {
+                                                             "firstFrame":  2100,
+                                                             "lastFrame":  2103,
+                                                             "port":  ":AUX2",
+                                                             "mask":  128,
+                                                             "reason":  "short_coin"
+                                                         },
+                                           "startEvent":  {
+                                                              "firstFrame":  2220,
+                                                              "lastFrame":  2232,
+                                                              "port":  ":BLACK2",
+                                                              "mask":  128,
+                                                              "reason":  "start_probe"
+                                                          }
+                                       },
+                            "inputLua":  {
+                                             "path":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-composite-evidence-repair-38\\reanalysis\\attempt-36-run-01\\input.lua",
+                                             "length":  5733,
+                                             "sha256":  "23099F8888AF8DB353253E0DF97638320DC59CA9A47371723A380E0C4EE85C94"
+                                         },
+                            "observed":  {
+                                             "levelsPath":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-composite-evidence-repair-38\\reanalysis\\attempt-36-run-01\\input-levels.csv",
+                                             "levelsSha256":  "B6350712F61CAEB4BEC8672A6B7D1390FD44829D23B8AE7C99D9B5B58D5B8AAB",
+                                             "sampleCount":  2228,
+                                             "firstFrame":  1,
+                                             "lastFrame":  2228,
+                                             "coinFrames":  [
+                                                                2100,
+                                                                2101,
+                                                                2102,
+                                                                2103
+                                                            ],
+                                             "coinWindow":  {
+                                                                "first":  2100,
+                                                                "last":  2103,
+                                                                "frames":  [
+                                                                               2100,
+                                                                               2101,
+                                                                               2102,
+                                                                               2103
+                                                                           ],
+                                                                "requiredFrames":  [
+                                                                                       2100,
+                                                                                       2101,
+                                                                                       2102,
+                                                                                       2103
+                                                                                   ]
+                                                            },
+                                             "coinStartTime":  "34.983333333",
+                                             "startFrames":  [
+                                                                 2221,
+                                                                 2222,
+                                                                 2223,
+                                                                 2224,
+                                                                 2225,
+                                                                 2226,
+                                                                 2227,
+                                                                 2228
+                                                             ],
+                                             "requiredStartFrames":  [
+                                                                         2221,
+                                                                         2222,
+                                                                         2223,
+                                                                         2224
+                                                                     ],
+                                             "startWindow":  {
+                                                                 "first":  2221,
+                                                                 "last":  2228,
+                                                                 "frames":  [
+                                                                                2221,
+                                                                                2222,
+                                                                                2223,
+                                                                                2224,
+                                                                                2225,
+                                                                                2226,
+                                                                                2227,
+                                                                                2228
+                                                                            ],
+                                                                 "requiredFrames":  [
+                                                                                        2221,
+                                                                                        2222,
+                                                                                        2223,
+                                                                                        2224
+                                                                                    ],
+                                                                 "fixtureProbeFirst":  2220,
+                                                                 "fixtureProbeLast":  2232
+                                                             },
+                                             "startStartTime":  "37.000000000",
+                                             "nextFixtureActionFrame":  2400,
+                                             "laterFixtureActionsUnused":  true
+                                         },
+                            "stateInjection":  false,
+                            "inputInjection":  false
+                        },
+    "runLocalAssets":  {
+                           "lua":  {
+                                       "path":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-composite-evidence-repair-38\\reanalysis\\attempt-36-run-01\\IlCompositeNatural.lua",
+                                       "length":  20756,
+                                       "sha256":  "444A9FA03413C7D4CB25065E93D38B33B9D44FA4BD45545646543359C8078285"
+                                   },
+                           "mapLua":  {
+                                          "path":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-composite-evidence-repair-38\\reanalysis\\attempt-36-run-01\\composite-map.lua",
+                                          "sha256":  "4BCDDBE63E6B6087A0FEF7B58A0CB6FD3EDE96CD6CC5508E9A23F4757423BBAA",
+                                          "canonicalSha256":  "4BCDDBE63E6B6087A0FEF7B58A0CB6FD3EDE96CD6CC5508E9A23F4757423BBAA"
+                                      },
+                           "configLua":  {
+                                             "path":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-composite-evidence-repair-38\\reanalysis\\attempt-36-run-01\\session-config.lua",
+                                             "sha256":  "8E30877658470CEE140DE3A4EFEA2A616B54898C6A725B4278BD4F4429811C34",
+                                             "canonicalSha256":  "8E30877658470CEE140DE3A4EFEA2A616B54898C6A725B4278BD4F4429811C34"
+                                         },
+                           "configJson":  {
+                                              "path":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-composite-evidence-repair-38\\reanalysis\\attempt-36-run-01\\session-config.json",
+                                              "sha256":  "3838C4CB1634285B89186A579A45E1CEEA91CF6825549040704F5192299D3CF0"
+                                          },
+                           "observer":  {
+                                            "path":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-composite-evidence-repair-38\\reanalysis\\attempt-36-run-01\\observer.lua",
+                                            "sha256":  "6E2C86580CBC3307DD66C143B31D895C3A2E7EEEC7446A2C4C3EEAD1D6AAEE28",
+                                            "canonicalText":  "dofile(\u0027input.lua\u0027)\ndofile(\u0027IlCompositeNatural.lua\u0027)\n"
+                                        },
+                           "metadataBinding":  "legacy_metadata_assets_absent_recomputed_from_run",
+                           "legacyMetadataAssetsAbsent":  true,
+                           "currentSourceLuaDiffers":  true
+                       },
+    "reanalysis":  {
+                       "classification":  "read_only_private_copy_reanalysis",
+                       "sourceRunDirectory":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-composite-replay-36\\run-01",
+                       "sourceEventsSha256":  "4D545B1FB933A2585FB3B2233C1F429EF9B264BF1B2D7A380010341D4D0BC45D",
+                       "analysisRunDirectory":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-composite-evidence-repair-38\\reanalysis\\attempt-36-run-01",
+                       "rawArtifactModified":  false,
+                       "luaExecuted":  false,
+                       "note":  "The original raw run was copied and reanalysed offline. No raw file was edited and no MAME or Lua process was started."
+                   },
+    "failure":  {
+                    "event":  "protocol_failure",
+                    "code":  "phase_saved_cursor",
+                    "message":  "body-prefetch-0 saved cursor 9F16 is not FFFFFFFFFFFFFFFF",
+                    "observed":  "2",
+                    "expected":  "13"
+                },
+    "verificationGap":  {
+                            "present":  true,
+                            "capturedLuaSha256":  "444A9FA03413C7D4CB25065E93D38B33B9D44FA4BD45545646543359C8078285",
+                            "currentLuaSha256":  "2A97FF58C2C6124C7D657D8387F61D58C55D328F39ED3FA71D2A740E9AF76C70",
+                            "luaChangedAfterCapture":  true,
+                            "capturedToolSha256":  "96F7B8E869F1D419892F3672EFB555060A2AEA0F37AC7DB8903B646EB755157C",
+                            "currentToolSha256":  "C02FB766DBBFBBC30311CE5F43E28F1511B2717B9D75D5BC5A946D92F79B7E5E",
+                            "toolChangedAfterCapture":  true,
+                            "completeEventPostFieldsPresent":  6,
+                            "completeEventPostFieldsUsed":  false,
+                            "failedCapturePostFieldsIgnored":  true,
+                            "luaExecutedForAnalysis":  false,
+                            "rerunPerformed":  false,
+                            "note":  "The raw capture was not rerun. Any observer/checker change after this capture is reported as a verification gap, not substituted for the captured bytes. Result/post-return fields are used only when the final observed phase is post-return-prefetch; historical failed-run fields are retained in the raw event but ignored."
+                        },
+    "run":  {
+                "directory":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-composite-evidence-repair-38\\reanalysis\\attempt-36-run-01",
+                "mameRecord":  {
+                                   "commandLine":  "m4addr -noreadconfig -rompath C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-composite-replay-36\\run-01\\roms;E:\\Arcade\\MAME0266\\roms -cfg_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-composite-replay-36\\run-01\\cfg -nvram_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-composite-replay-36\\run-01\\nvram -input_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-composite-replay-36\\run-01\\inp -snapshot_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-composite-replay-36\\run-01\\snap -comment_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-composite-replay-36\\run-01\\comments -state_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-composite-replay-36\\run-01\\state -diff_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-composite-replay-36\\run-01\\diff -debug -debugger imgui -debuglog -video bgfx -sound none -window -skip_gameinfo -nothrottle -seconds_to_run 180 -autoboot_delay 0 -autoboot_script C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-composite-replay-36\\run-01\\observer.lua -bgfx_path E:\\Arcade\\MAME0266\\bgfx",
+                                   "startUtc":  "2026-10-19T12:14:02.6250919Z",
+                                   "endUtc":  "2026-10-19T12:14:09.8029669Z",
+                                   "wallSeconds":  7.178,
+                                   "timeoutSeconds":  600,
+                                   "timedOut":  false,
+                                   "exitCode":  0,
+                                   "commandId":  "il-composite-replay-capture-36",
+                                   "description":  "One fresh-boot compiled-image MAME observation at native composite boundaries with the existing tracked physical coin/start replay"
+                               },
+                "exitCode":  0,
+                "timedOut":  false,
+                "strictJsonPass":  true,
+                "eventRecordCount":  5,
+                "eventsSha256":  "4D545B1FB933A2585FB3B2233C1F429EF9B264BF1B2D7A380010341D4D0BC45D",
+                "strictSummaryPath":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-composite-evidence-repair-38\\reanalysis\\attempt-36-run-01\\events-strict.json",
+                "strictSummarySha256":  "0EA7F3C8EA84408838FC17CE943BB08A213E3E17A3951E88552CE0619BFD097E",
+                "debugLogSha256":  "B6467A162D91810181A3EBC91C80032A9F333C82808D0CA4C806AC0137313822",
+                "consoleSha256":  "2EED96A721961B01721FE4C8338E43583E414422EAC833D461CE8B47AD91A495",
+                "readySha256":  "485B6B552D08C8193747D253189AAD0B880C44D7E5634F04567A04849456BF74",
+                "sessionCompleteSha256":  "4DA1A89923CD13662D0007C1935BEAED647D72B77D86EC335E04B491EA10FFB1",
+                "stateFiles":  0,
+                "inputPolicy":  "tracked_physical_replay",
+                "inputReplayUsed":  true,
+                "saveStateLoaded":  false,
+                "inputInjection":  false,
+                "stateInjection":  false,
+                "debuggerWrites":  false,
+                "startingNvram":  "absent",
+                "startingConfiguration":  "absent; -noreadconfig"
+            },
+    "session":  {
+                    "reason":  "protocol_failure",
+                    "failureCode":  "phase_saved_cursor",
+                    "completeClaim":  false,
+                    "timeoutRecords":  0,
+                    "terminalRecordCount":  1,
+                    "eventSequenceValidated":  true,
+                    "readyIsFirst":  true,
+                    "completeIsLast":  true,
+                    "phaseCount":  2,
+                    "expectedPhaseCount":  13,
+                    "completeEventPostFieldsPresent":  6,
+                    "completeEventPostFieldsUsed":  false
+                },
+    "blocker":  {
+                    "status":  "protocol_failure",
+                    "reason":  "protocol_failure",
+                    "observedPhaseCount":  2,
+                    "expectedPhaseCount":  13,
+                    "emulatedSeconds":  "37.076473837",
+                    "inputPolicy":  "tracked_physical_replay",
+                    "inputReplayUsed":  true,
+                    "failureCode":  "phase_saved_cursor",
+                    "priorTraceFirstCallEmulatedTime":  "37.076473837",
+                    "priorTraceFirstCallBasis":  "Prior trace documented first 9F14/9ED9 call at 37.076473837 s after tracked physical inputs; the curated prior trace did not store a scalar call time.",
+                    "priorTraceInputSchedule":  "Tracked replay coin pulse at fixture frames 2100-2103 and prior effective start frames 2221-2224.",
+                    "note":  "The single revised tracked-replay capture stopped on an observer protocol failure. No third capture was made; the raw capture and this failure are preserved."
+                },
+    "call":  {
+                 "callerAddress":  "9F14",
+                 "callerReplacementToken":  "1010",
+                 "headerAddress":  "1010",
+                 "headerValue":  "00F8",
+                 "bodyStart":  "1012",
+                 "bodyEndExclusive":  "1020",
+                 "trampolinePc":  "00F8",
+                 "trampolineX":  "1012",
+                 "savedCursor":  "",
+                 "savedCursorAuthority":  "not observed",
+                 "headerSavedCursorMapEcho":  "9F16",
+                 "headerSavedCursorAuthoritative":  false,
+                 "postReturnY":  "",
+                 "postReturnToken":  "",
+                 "inputWord":  "0000",
+                 "sumWord":  "FF80",
+                 "resultWord":  "",
+                 "netU":  "",
+                 "netS":  "",
+                 "complete":  false,
+                 "returnObserved":  false
+             },
+    "phases":  [
+                   {
+                       "phase":  "caller-dispatch",
+                       "pc":  "00FC",
+                       "x":  "0000",
+                       "y":  "9F14",
+                       "u":  "066E",
+                       "s":  "0798",
+                       "token":  "1010",
+                       "tokenAddress":  "9F14",
+                       "dataStack0":  "0000",
+                       "dataStack1":  "0000",
+                       "controlStack0":  "9F3F",
+                       "savedCursor":  "",
+                       "savedCursorAuthoritative":  false,
+                       "savedCursorSource":  "",
+                       "inlineOperandAddress":  "",
+                       "inlineOperandValue":  "",
+                       "handlerAddress":  "",
+                       "a":  "00",
+                       "b":  "00",
+                       "d":  "0000",
+                       "cc":  "C4",
+                       "emulatedTime":  "37.076457558"
+                   },
+                   {
+                       "phase":  "header-trampoline-entry",
+                       "pc":  "00F8",
+                       "x":  "1012",
+                       "y":  "9F16",
+                       "u":  "066E",
+                       "s":  "0798",
+                       "token":  "00F8",
+                       "tokenAddress":  "1010",
+                       "dataStack0":  "0000",
+                       "dataStack1":  "0000",
+                       "controlStack0":  "9F3F",
+                       "savedCursor":  "9F16",
+                       "savedCursorAuthoritative":  false,
+                       "savedCursorSource":  "legacy_map_echo_ignored",
+                       "inlineOperandAddress":  "",
+                       "inlineOperandValue":  "",
+                       "handlerAddress":  "",
+                       "a":  "00",
+                       "b":  "00",
+                       "d":  "0000",
+                       "cc":  "C0",
+                       "emulatedTime":  "37.076467442"
+                   }
+               ],
+    "priorTraceComparison":  {
+                                 "prior":  {
+                                               "path":  "C:\\projects\\GitRepos\\FruitMachineLab\\evidence\\mpu4\\integrity\\il-lua-vm-trace.json",
+                                               "sha256":  "39A1CB2FD46FA36D66C6C4B261483D298644A22FC2690BF95C4A9697265917D9",
+                                               "classification":  "prior_trace_comparison_not_new_control_run",
+                                               "inputWord":  "0000",
+                                               "result":  "0000",
+                                               "savedCursor":  "9F16",
+                                               "postReturnToken":  "75A9",
+                                               "postReturnS":  "0798",
+                                               "handlers":  "795D,7880,795D,7AB1,7931"
+                                           },
+                                 "observedInputWord":  "0000",
+                                 "observedResultWord":  "",
+                                 "observedSavedCursor":  "",
+                                 "observedSavedCursorSource":  "not observed",
+                                 "observedPostReturnToken":  "",
+                                 "inputMatches":  true,
+                                 "resultMatches":  false,
+                                 "savedCursorMatches":  false,
+                                 "postReturnTokenMatches":  false,
+                                 "note":  "Prior original trace is a comparison reference only; no new original control run was made. Saved cursor is compared only from a live body-prefetch-0 or return-handler controlStack0; the header map echo is not used."
+                             },
+    "limitations":  [
+                        "MAME success is not physical MPU4 hardware compatibility.",
+                        "Only the single composite call reached from the naturally observed 9F14 caller site is claimed.",
+                        "The broader purpose of the 9F12 caller remains unresolved.",
+                        "No paid-gate, full-game or hardware claim is made."
+                    ],
+    "generatedUtc":  "2026-10-19T12:45:43.0751606Z",
+    "reanalysisHistory":  {
+                              "classification":  "read_only_private_copy_reanalysis",
+                              "analysisTaskId":  "il-composite-evidence-repair-38",
+                              "attempt1":  {
+                                               "classification":  "read_only_private_copy_reanalysis",
+                                               "sourceRunDirectory":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-composite-natural-35\\run-01",
+                                               "sourceEventsSha256":  "912CD4442EB623B59A8786386D0D937D0343AF61C1EA758D6D6743AC16CF86F3",
+                                               "analysisRunDirectory":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-composite-evidence-repair-38\\reanalysis\\attempt-35-run-01",
+                                               "status":  "blocked_not_reached",
+                                               "phaseCount":  0,
+                                               "rawArtifactModified":  false,
+                                               "luaExecuted":  false
+                                           },
+                              "attempt2":  {
+                                               "classification":  "read_only_private_copy_reanalysis",
+                                               "sourceRunDirectory":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-composite-replay-36\\run-01",
+                                               "sourceEventsSha256":  "4D545B1FB933A2585FB3B2233C1F429EF9B264BF1B2D7A380010341D4D0BC45D",
+                                               "analysisRunDirectory":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-composite-evidence-repair-38\\reanalysis\\attempt-36-run-01",
+                                               "rawArtifactModified":  false,
+                                               "luaExecuted":  false,
+                                               "note":  "The original raw run was copied and reanalysed offline. No raw file was edited and no MAME or Lua process was started."
+                                           },
+                              "note":  "Both preserved raw attempts were copied and reanalysed offline with the repaired analyzer. The raw artifacts and their two-attempt failure history were not edited; no MAME or Lua process was started."
+                          }
+}

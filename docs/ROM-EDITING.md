@@ -44,10 +44,21 @@ and reserved** for `a6ls.p1` SHA1
 [IL extension range reservation](recovery/IL-EXTENSION-RANGE-PROPOSAL.md) and
 `evidence/mpu4/integrity/il-extension-range-proposal.json`.
 
-The reservation is **not allocated, written, compiled, linked, booted or
-hardware-validated**. No separate approval is required for a bounded
-allocator/linker in this range under the continuing mandate; implementation
-remains a separate task. The tracked static verifier is
+The reservation is **not written, compiled, linked, booted or
+hardware-validated**. No separate approval is required for bounded allocator or
+linker work in this range under the continuing mandate.
+
+A bounded deterministic allocator is now implemented in
+`src/FruitMachineLab.Il/ExtensionRangeAllocator.cs`. It validates the exact
+original identity, typed approval binding, guards, protected cells, expected `FF`
+contents and bank-0 same-offset bounds, then plans named byte-aligned allocations
+with immutable results, capacity reporting and failed-operation atomicity. It
+does not mutate or emit a ROM, resolve references, redirect the VM or run MAME.
+The whole 992-byte range and the `500+492` split are verified, along with
+capacity, identifier, identity, approval, bounds and overlap rejection. See
+[IL extension allocator](recovery/IL-EXTENSION-ALLOCATOR.md),
+`evidence/mpu4/integrity/il-extension-allocator.json` and the existing focused
+IL verifier. The tracked static range verifier remains
 `tools/Test-IlExtensionRangeProposal.ps1`; it needs only the clean checkout and
 an explicit original-ROM input.
 

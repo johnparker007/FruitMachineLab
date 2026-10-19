@@ -33,6 +33,13 @@ internal static class Program
                 Path.Combine(nineASixFourOutput, "verification-report.json"));
             Console.WriteLine("9A64 log: " +
                 Path.Combine(nineASixFourOutput, "verification.log"));
+
+            string allocatorOutput = Path.Combine(outputDirectory, "allocator");
+            ExtensionRangeAllocatorVerification.Run(romPath, repositoryRoot, allocatorOutput);
+            Console.WriteLine("Allocator report: " +
+                Path.Combine(allocatorOutput, "verification-report.json"));
+            Console.WriteLine("Allocator log: " +
+                Path.Combine(allocatorOutput, "verification.log"));
             return 0;
         }
         catch (Exception error)

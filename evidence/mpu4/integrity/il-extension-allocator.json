@@ -1,0 +1,156 @@
+{
+  "schemaVersion": 1,
+  "taskId": "il-extension-allocator-29",
+  "status": "passed-static-planning",
+  "classification": "Synthetic/static tooling evidence for deterministic allocation planning only. No ROM mutation, emission, linker, VM redirect, new word, native primitive, MAME execution or hardware validation.",
+  "generatedUtc": "2026-10-19T10:23:31Z",
+  "baseRevision": "fe4c44836a1d2d8301fbfa1d6d184a5aa144e6e1",
+  "originalRom": {
+    "set": "m4addr",
+    "revision": "Classic Adders & Ladders A6L 0.1 set 1",
+    "file": "a6ls.p1",
+    "length": 65536,
+    "sha1": "402d1518bb78fdc489b06c2aabc771e5ce151847",
+    "sha256": "ebf580381aa6eb6ffb26e2acd40f30aa34b0311f71c6564607c6f48a53bca15c",
+    "inputUnchanged": true
+  },
+  "approvalBinding": {
+    "cpuRange": "1010-13EF",
+    "cpuEndInclusive": "13EF",
+    "length": 992,
+    "fileRange": "4112-5103",
+    "leftGuard": "1000-100F",
+    "rightGuard": "13F0-13FF",
+    "protectedCells": "1000-1003",
+    "integrityStart": "1400",
+    "expectedFill": "FF",
+    "bank": 0,
+    "sameCpuFileOffset": true,
+    "approvalStatus": "approved-reserved-not-allocated",
+    "conversationalMetadataUsedByPlanner": false
+  },
+  "planner": {
+    "assembly": "FruitMachineLab.Il",
+    "publicEntryPoints": [
+      "ExtensionRangeAllocator.Create",
+      "ExtensionRangeAllocator.Plan"
+    ],
+    "alignmentBytes": 1,
+    "allocationOrder": "request order, first fit, contiguous from 1010",
+    "deterministic": true,
+    "immutableResults": true,
+    "failedOperationAtomic": true
+  },
+  "plans": {
+    "whole": {
+      "request": "whole=992",
+      "allocations": [
+        {
+          "id": "whole",
+          "cpuStart": "1010",
+          "cpuEnd": "13EF",
+          "fileStart": 4112,
+          "fileEnd": 5103,
+          "length": 992
+        }
+      ],
+      "remainingCapacity": 0
+    },
+    "split500Plus492": {
+      "requests": [
+        "first=500",
+        "second=492"
+      ],
+      "allocations": [
+        {
+          "id": "first",
+          "cpuStart": "1010",
+          "cpuEnd": "1203",
+          "fileStart": 4112,
+          "fileEnd": 4611,
+          "length": 500
+        },
+        {
+          "id": "second",
+          "cpuStart": "1204",
+          "cpuEnd": "13EF",
+          "fileStart": 4612,
+          "fileEnd": 5103,
+          "length": 492
+        }
+      ],
+      "contiguous": true,
+      "remainingCapacity": 0
+    }
+  },
+  "verification": {
+    "report": "artifacts/deepseek/il-extension-allocator-29/run-il-02/allocator/verification-report.json",
+    "reportSha256": "20d66e07cb8c5789802713964417c4bd29032b1b9c110481752f0dd5df32d77a",
+    "log": "artifacts/deepseek/il-extension-allocator-29/run-il-02/allocator/verification.log",
+    "logSha256": "215462161dee3c24b78205ceb7c1ca9f224655dca6d722fb15a0a3bdd8cdfb3e",
+    "groupsPassed": 15,
+    "groupsFailed": 0,
+    "negativeControls": 41,
+    "negativeControlsAllRejected": true,
+    "rejectionsCovered": [
+      "zero length",
+      "negative length",
+      "int maximum length",
+      "993 bytes",
+      "total 993",
+      "duplicate identifiers including case variants",
+      "blank or missing identifiers",
+      "length/SHA1/SHA256 identity mismatch",
+      "missing approval",
+      "unapproved binding",
+      "mismatched revision, range, guard, protected cell or integrity binding",
+      "mismatched file mapping",
+      "wrong expected fill",
+      "out-of-bounds range",
+      "synthetic non-FF range or guard tamper"
+    ]
+  },
+  "sourceFiles": [
+    {
+      "path": "src/FruitMachineLab.Il/ExtensionRangeAllocator.cs",
+      "sha256": "21c40c4e0498d6e073fe812280bc5f041f8387fdd627f2097158d9c78deb4b98"
+    },
+    {
+      "path": "tests/FruitMachineLab.IlVerification/ExtensionRangeAllocatorVerification.cs",
+      "sha256": "64d616843732ff78bec08c2dcc0588e6539c051dc2ae876ce17f34965c702406"
+    },
+    {
+      "path": "tests/FruitMachineLab.IlVerification/Program.cs",
+      "sha256": "df1d085d17ccaff6f8730aaac2f06e512f5eb85ba89eab83e20bad8fbeb2ddd6"
+    }
+  ],
+  "evidenceClasses": {
+    "syntheticStaticTooling": [
+      "All allocation plans and rejection controls are synthetic/static tooling evidence.",
+      "The expected-byte tamper controls use an internal test seam because strict original identity is checked first.",
+      "No natural ROM execution, boot, gameplay or hardware result is established."
+    ],
+    "notEstablished": [
+      "ROM allocation in a built image or firmware integrity regeneration",
+      "linker, fixups, VM entry/reference redirects or native trampolines",
+      "new composite VM words or new 6809 primitives",
+      "MAME execution of any planned allocation",
+      "physical hardware compatibility",
+      "complete no-use proof for the reserved range"
+    ]
+  },
+  "claims": {
+    "allocationPlanningImplemented": true,
+    "romMutated": false,
+    "romImageEmitted": false,
+    "patchEmitted": false,
+    "linkerImplemented": false,
+    "vmRedirected": false,
+    "newWordImplemented": false,
+    "nativePrimitiveImplemented": false,
+    "mameRun": false,
+    "naturalExecutionObserved": false,
+    "hardwareValidated": false
+  },
+  "nextSupportedStep": "Separately scheduled bounded linker/value emitter for the exact approved range, retaining identity, approval, bounds, guard, expected-byte, capacity, overlap and failed-operation atomicity checks."
+}

@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "taskId": "il-lamp-observer-supervisor-67",
+  "baseRevision": "d09c7ee8a75f3740d59a751f920fab92ec37eaf2",
+  "evidenceClass": "natural-fresh-boot-MAME-debugger-observed-call",
+  "status": "supervisor-reviewed-natural-call-and-return-no-visible-transition",
+  "capture": "artifacts/deepseek/il-lamp-observer-supervisor-67/natural-03",
+  "compiledRomSha256": "631F6C252A5DF359525553F7D14A4FC8CEF965C76BBECA759EAAA862A3FAD4DE",
+  "sourceMapSha256": "42F0C4BB886313F5B1A7F78991A2EFD09351CC1912DF7A58EA6E3BE7E8E84163",
+  "capturedLuaSha256": "A579A1124EE2B5F992BC2782C33634FDE6A3CBFFC85F370725400AA6FA4A9650",
+  "mameSha256": "0FCE5A88DF4F9D9B1FBF1405812C00848036E615993780978D967DA34204CB7A",
+  "counts": {
+    "phases": 43,
+    "observedBoundaries": 10,
+    "skippedBoundaries": 4,
+    "physicalStops": 52
+  },
+  "observed": {
+    "response0803": "00",
+    "column": "15",
+    "f1Entry": "00",
+    "f1Exit": "00",
+    "return": {
+      "pc": "00FC",
+      "y": "9F16",
+      "u": "066E",
+      "s": "0798",
+      "x": "7931",
+      "dataStack0": "0000",
+      "successorWord": "75A9"
+    },
+    "frameTargets": [
+      "010F",
+      "011F",
+      "012F",
+      "013F"
+    ],
+    "before": [
+      "3F",
+      "3F",
+      "3F",
+      "3F"
+    ],
+    "after": [
+      "3F",
+      "3F",
+      "3F",
+      "3F"
+    ],
+    "ccSaved": "C0",
+    "ccRestored": "C0"
+  },
+  "run": {
+    "commandLine": [
+      "m4addr -noreadconfig -rompath C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-lamp-observer-supervisor-67\\natural-03\\roms;E:\\Arcade\\MAME0266\\roms -cfg_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-lamp-observer-supervisor-67\\natural-03\\cfg -nvram_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-lamp-observer-supervisor-67\\natural-03\\nvram -input_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-lamp-observer-supervisor-67\\natural-03\\inp -snapshot_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-lamp-observer-supervisor-67\\natural-03\\snap -comment_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-lamp-observer-supervisor-67\\natural-03\\comments -state_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-lamp-observer-supervisor-67\\natural-03\\state -diff_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-lamp-observer-supervisor-67\\natural-03\\diff -debug -debugger imgui -debuglog -video bgfx -sound none -window -skip_gameinfo -nothrottle -seconds_to_run 180 -autoboot_delay 0 -autoboot_script C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-lamp-observer-supervisor-67\\natural-03\\observer.lua -bgfx_path E:\\Arcade\\MAME0266\\bgfx"
+    ],
+    "startUtc": "2026-10-19T22:25:17.2961408Z",
+    "endUtc": "2026-10-19T22:25:27.7723494Z",
+    "wallSeconds": 10.472,
+    "timeoutSeconds": 180,
+    "timedOut": false,
+    "exitCode": 0,
+    "commandId": "il-lamp-natural-tools-finish-65-run-01",
+    "description": "One fresh-boot lamp-natural MAME observation at native debugger boundaries with the tracked physical replay",
+    "launchCount": 1,
+    "retryAllowed": false
+  },
+  "limitations": [
+    "Target bits already on: OR writes observed but no visible transition demonstrated.",
+    "Only F1=00 branch observed naturally; other branches synthetic.",
+    "Debugger pauses may affect timing; no unobserved-run timing equivalence claimed.",
+    "No physical hardware validation or broad caller-safety claim.",
+    "Freshness is preparation inventory plus file creation timestamps; capture predates additional prelaunch inventory.",
+    "Runs 01/02 were diagnostic tooling failures. Raw run03 original wrapper failure retained; offline checker corrected without editing captured events."
+  ],
+  "evidenceHashes": {
+    "artifacts/deepseek/il-lamp-observer-supervisor-67/natural-03/events.jsonl": "04F7530332B6959C0E5E9FD6BCCE621A5890240A6BC56597A199F4EA9E33176D",
+    "artifacts/deepseek/il-lamp-observer-supervisor-67/natural-03/run-record.json": "8CDB2ED3CFE47E8297831A16271603FDE4A9F1F66D5FD35D4DFC06C5C9174302",
+    "artifacts/deepseek/il-lamp-observer-supervisor-67/natural-03/preflight.json": "27E80A9BD7D499780B7303E2874F746F088B6F77FF688EE70CB3D57BF42376FF",
+    "artifacts/deepseek/il-lamp-observer-supervisor-67/natural-03/session-metadata.json": "949697561CAD1CF93C754A73C0BAB97EF6FF272FF6F13925CE161CA1F0309AEE",
+    "artifacts/deepseek/il-lamp-observer-supervisor-67/natural-03/checker-reviewed.json": "9712A29CFDA6F56E2176FC2322B034934BD36F5291A97F777B81CBAB68B15BD1",
+    "artifacts/deepseek/il-lamp-observer-supervisor-67/targeted-results.json": "80696326931F5BFE3626A69E099518F8C45F93D7B820CE3280EB0CBF1C60CD50",
+    "artifacts/deepseek/il-lamp-observer-supervisor-67/offline-accepted.log": "09C25E1C2F315C7EEB86526076A1D8542C47B12059E870C0F7931CFB10DA8A13",
+    "tools/Capture-IlLampNatural.ps1": "26A7F9E0299D047D464B3A2DF8A05E8F1E3E0F2654C0C00F6E39288EBFB4833B",
+    "tools/lua/IlLampNatural.lua": "A579A1124EE2B5F992BC2782C33634FDE6A3CBFFC85F370725400AA6FA4A9650",
+    "tests/worker/Test-IlLampNatural.ps1": "09763886A5D2A469F6A961BA07078340EF4CB1C63F8158ACFD58CCA4E786553C"
+  },
+  "allocationBytes": 24,
+  "approvedRangeBytes": 992,
+  "remainingBytes": 968,
+  "verification": {
+    "selfTestChecks": 187,
+    "selfTestFailures": 0,
+    "negativeControls": 38,
+    "additionalTargetedIntegrationControls": 5,
+    "powershellParse": "passed",
+    "capturedLua": "parsed and executed by MAME; standalone parser absent"
+  }
+}

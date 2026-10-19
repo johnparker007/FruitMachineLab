@@ -240,6 +240,11 @@
         "sha256":  "A77DECA66770ACB9634893DE07AA0CDDB842173825F8A645F28B7DA710D8B43F"
     },
     {
+        "path":  "docs/recovery/IL-LAMP-PATTERN-OBSERVER.md",
+        "bytes":  22442,
+        "sha256":  "757AD2BD1034A930E2B9B93A0C5C335B5DF66732F8F5D4F884BC3715B57243E2"
+    },
+    {
         "path":  "docs/recovery/IL-LARGER-REPLACEMENT-BUILD.md",
         "bytes":  8383,
         "sha256":  "18068917304A2D22CA945ACD3942487FBF152F036BEBEA4C75A5140F73CED150"
@@ -1223,6 +1228,11 @@
         "path":  "evidence/mpu4/integrity/il-lamp-pattern-build.json",
         "bytes":  57375,
         "sha256":  "172703C2A61E5B7B312F48332BD8B144A264838E8DB7F0A2D975543699E71FFB"
+    },
+    {
+        "path":  "evidence/mpu4/integrity/il-lamp-pattern-natural.json",
+        "bytes":  5608,
+        "sha256":  "A3B8D92D8502D3477B80F829B099A2F51EF9D91BAA35658C64F69DD19E337088"
     },
     {
         "path":  "evidence/mpu4/integrity/il-larger-replacement-build.json",

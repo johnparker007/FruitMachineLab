@@ -155,8 +155,72 @@ function Get-ReplaySchedule {
     return [ordered]@{ coin = $coin; start = $start }
 }
 
-function Get-InputProvenance {
+function Get-RecordedStopTimes {
     param([string]$Run)
+    $eventsPath = Join-Path $Run 'events.jsonl'
+    if (!(Test-Path -LiteralPath $eventsPath -PathType Leaf)) { throw 'Recorded event log is missing for stop-time provenance' }
+    $phaseTimes = New-Object 'System.Collections.Generic.List[double]'
+    $terminalTime = $null
+    foreach ($line in Get-Content -LiteralPath $eventsPath) {
+        if ([string]::IsNullOrWhiteSpace($line)) { continue }
+        $record = $line | ConvertFrom-Json -ErrorAction Stop
+        $type = [string]$record.event
+        if ($type -ne 'phase' -and $type -ne 'session_complete') { continue }
+        $timeText = [string]$record.emulatedTime
+        if ([string]::IsNullOrWhiteSpace($timeText)) { throw "Recorded $type event has no emulatedTime" }
+        $time = [double]::Parse($timeText, [Globalization.CultureInfo]::InvariantCulture)
+        if ([double]::IsNaN($time) -or [double]::IsInfinity($time) -or $time -lt 0) { throw "Recorded $type emulatedTime is not a finite non-negative value: $timeText" }
+        if ($type -eq 'phase') {
+            if ($phaseTimes.Count -gt 0 -and $time -le $phaseTimes[$phaseTimes.Count - 1]) {
+                throw 'Recorded phase stop times are not strictly increasing'
+            }
+            $phaseTimes.Add($time)
+        }
+        else {
+            $terminalTime = $time
+        }
+    }
+    if ($phaseTimes.Count -eq 0 -and $null -eq $terminalTime) { throw 'No recorded phase or terminal stop time is available' }
+    $stopTimes = New-Object 'System.Collections.Generic.List[double]'
+    foreach ($time in $phaseTimes) { [void]$stopTimes.Add($time) }
+    if ($null -ne $terminalTime) {
+        if ($stopTimes.Count -eq 0) { [void]$stopTimes.Add([double]$terminalTime) }
+        elseif ([double]$terminalTime -gt ($stopTimes[$stopTimes.Count - 1] + 0.000001)) { [void]$stopTimes.Add([double]$terminalTime) }
+        elseif ([double]$terminalTime -lt ($stopTimes[$stopTimes.Count - 1] - 0.000001)) { throw 'Recorded session-complete time precedes the last recorded phase stop' }
+    }
+    return [ordered]@{
+        eventsPath = [IO.Path]::GetFullPath($eventsPath)
+        eventsSha256 = Get-HashValue $eventsPath 'SHA256'
+        phaseStopTimes = $phaseTimes.ToArray()
+        terminalStopTime = $terminalTime
+        stopTimes = $stopTimes.ToArray()
+    }
+}
+
+function Get-DebugStopEvidence {
+    param([string]$Run)
+    $path = Join-Path $Run 'debug.log'
+    if (!(Test-Path -LiteralPath $path -PathType Leaf)) {
+        return [ordered]@{
+            present = $false
+            debugLogPath = ''
+            debugLogSha256 = ''
+            stopLineCount = 0
+            compositeStopCount = 0
+        }
+    }
+    $stopLineCount = @(Get-Content -LiteralPath $path | Where-Object { $_ -match '^Stopped at breakpoint\b' }).Count
+    return [ordered]@{
+        present = $true
+        debugLogPath = [IO.Path]::GetFullPath($path)
+        debugLogSha256 = Get-HashValue $path 'SHA256'
+        stopLineCount = $stopLineCount
+        compositeStopCount = [Math]::Max(0, $stopLineCount - 1)
+    }
+}
+
+function Get-InputProvenance {
+    param([string]$Run,$ReplaySchedule)
     $levelsPath = Join-Path $Run 'input-levels.csv'
     if (!(Test-Path -LiteralPath $levelsPath -PathType Leaf)) { throw 'Tracked replay did not produce input-levels.csv' }
     $lines = @(Get-Content -LiteralPath $levelsPath)
@@ -165,15 +229,35 @@ function Get-InputProvenance {
     $rows = New-Object 'System.Collections.Generic.List[object]'
     foreach ($line in $lines[1..($lines.Count - 1)]) {
         if ($line -notmatch '^(\d+),([0-9.]+),([0-9A-Fa-f]{2}),([0-9A-Fa-f]{2}),(\d+)$') { throw "input-levels.csv row is malformed: $line" }
+        $rowTime = [double]::Parse($Matches[2], [Globalization.CultureInfo]::InvariantCulture)
+        if ([double]::IsNaN($rowTime) -or [double]::IsInfinity($rowTime) -or $rowTime -lt 0) { throw "input-levels.csv row has a non-finite time: $line" }
         $rows.Add([ordered]@{
             frame = [int]$Matches[1]
-            time = [double]$Matches[2]
+            time = $rowTime
             aux2 = [Convert]::ToInt32($Matches[3],16)
             black2 = [Convert]::ToInt32($Matches[4],16)
             coinOverride = [int]$Matches[5]
         })
     }
     if ($rows.Count -eq 0) { throw 'input-levels.csv has no parsed samples' }
+
+    for ($i = 1; $i -lt $rows.Count; $i++) {
+        if ($rows[$i].frame -le $rows[$i - 1].frame) { throw "input-levels.csv frame counter is not strictly increasing at $($rows[$i].frame)" }
+        if ($rows[$i].time -le $rows[$i - 1].time) { throw "input-levels.csv emulated time is not strictly increasing at frame $($rows[$i].frame)" }
+    }
+
+    $framePeriod = 1.0 / 60.0
+    $gridTolerance = $framePeriod / 8.0
+    $gridOrigin = $rows[0].time
+    foreach ($row in $rows) {
+        $derivedIndex = [int][Math]::Floor((($row.time - $gridOrigin) / $framePeriod) + 0.5)
+        $gridTime = $gridOrigin + ($derivedIndex * $framePeriod)
+        $gridError = $row.time - $gridTime
+        $row.derivedRealFrameIndex = $derivedIndex
+        $row.gridErrorSeconds = $gridError
+        $row.frameCounterMatchesDerived = ($row.frame -eq ($derivedIndex + 1))
+        $row.classification = if ([Math]::Abs($gridError) -le $gridTolerance) { 'real_60hz' } else { 'off_grid' }
+    }
 
     $coinRows = @($rows | Where-Object { $_.aux2 -ne 0 -or $_.coinOverride -ne 0 })
     if ($coinRows.Count -lt 4) { throw "input-levels.csv recorded only $($coinRows.Count) coin-active frames" }
@@ -185,39 +269,115 @@ function Get-InputProvenance {
     if (($coinFrames -join ',') -ne ($expectedCoinFrames -join ',')) {
         throw "Tracked replay coin activity is '$($coinFrames -join ',')', expected the complete 2100,2101,2102,2103 window"
     }
+    $coinOffGridRows = @($coinRows | Where-Object { $_.classification -ne 'real_60hz' })
+    if ($coinOffGridRows.Count -gt 0) {
+        throw "Coin-active frame $($coinOffGridRows[0].frame) is off the known 60 Hz grid and is not a start-window debug-stop callback"
+    }
+
     $startRows = @($rows | Where-Object { $_.black2 -ne 0 })
-    for ($i = 1; $i -lt $startRows.Count; $i++) {
-        if ($startRows[$i].frame -le $startRows[$i - 1].frame) { throw 'input-levels.csv start-active rows are not strictly ordered' }
-    }
-    $startFrames = @($startRows | ForEach-Object { $_.frame })
+    if ($startRows.Count -eq 0) { throw 'input-levels.csv has no start-active rows' }
+    $realStartRows = @($startRows | Where-Object { $_.classification -eq 'real_60hz' })
+    $offGridStartRows = @($startRows | Where-Object { $_.classification -ne 'real_60hz' })
     $requiredStartFrames = @(2221,2222,2223,2224)
-    if ($startFrames.Count -lt $requiredStartFrames.Count) {
-        throw "input-levels.csv recorded only $($startFrames.Count) start-active frames, expected at least 2221,2222,2223,2224"
+    if ($realStartRows.Count -lt $requiredStartFrames.Count) {
+        throw "input-levels.csv recorded only $($realStartRows.Count) 60 Hz start-active frames, expected at least 2221,2222,2223,2224"
     }
-    if ($startFrames[0] -ne $requiredStartFrames[0]) {
-        throw "The start-active window begins at $($startFrames[0]), expected the prior effective frame 2221"
+    $fixtureFirstFrame = [int]$ReplaySchedule.start.firstFrame
+    $fixtureLastExclusive = [int]$ReplaySchedule.start.lastFrame
+    $effectiveFirstFrame = $fixtureFirstFrame + 1
+    if ($realStartRows[0].frame -ne $effectiveFirstFrame) {
+        throw "The 60 Hz start-active window begins at $($realStartRows[0].frame), expected the prior effective frame $effectiveFirstFrame"
     }
     for ($i = 0; $i -lt $requiredStartFrames.Count; $i++) {
-        if ($startFrames[$i] -ne $requiredStartFrames[$i]) {
-            throw "The start-active window is '$($startFrames -join ',')', expected the complete required prefix 2221,2222,2223,2224"
+        if ($realStartRows[$i].frame -ne $requiredStartFrames[$i]) {
+            throw "The 60 Hz start-active window is '$((@($realStartRows | ForEach-Object { $_.frame })) -join ',')', expected the complete required prefix 2221,2222,2223,2224"
         }
     }
-    for ($i = 1; $i -lt $startFrames.Count; $i++) {
-        if ($startFrames[$i] -ne $startFrames[$i - 1] + 1) { throw "The start-active window is not contiguous: '$($startFrames -join ',')'" }
+    for ($i = 1; $i -lt $realStartRows.Count; $i++) {
+        if ($realStartRows[$i].frame -ne $realStartRows[$i - 1].frame + 1) {
+            throw "The 60 Hz start-active window is not contiguous: '$((@($realStartRows | ForEach-Object { $_.frame })) -join ',')'"
+        }
     }
-    if ($startFrames[$startFrames.Count - 1] -gt $startRows[0].frame + 11) {
-        throw "The start-active window ends at $($startFrames[$startFrames.Count - 1]), beyond the replay fixture's 2220-2232 start probe"
+    $lastRealStartFrame = $realStartRows[$realStartRows.Count - 1].frame
+    if ($lastRealStartFrame -ge $fixtureLastExclusive) {
+        throw "A 60 Hz start-active frame at $lastRealStartFrame is at or after the replay fixture's $fixtureFirstFrame-$fixtureLastExclusive start probe"
     }
+    $firstOffGridStartIndex = -1
+    for ($i = 0; $i -lt $startRows.Count; $i++) {
+        if ($startRows[$i].classification -ne 'real_60hz') { $firstOffGridStartIndex = $i; break }
+    }
+    if ($firstOffGridStartIndex -ge 0) {
+        for ($i = $firstOffGridStartIndex; $i -lt $startRows.Count; $i++) {
+            if ($startRows[$i].classification -eq 'real_60hz') {
+                throw "A 60 Hz start-active frame at $($startRows[$i].frame) appears after a debug-stop callback"
+            }
+        }
+    }
+
+    $recorded = Get-RecordedStopTimes $Run
+    $debugStops = Get-DebugStopEvidence $Run
+    $stopGaps = New-Object 'System.Collections.Generic.List[double]'
+    for ($i = 1; $i -lt $recorded.stopTimes.Count; $i++) { $stopGaps.Add([double]$recorded.stopTimes[$i] - [double]$recorded.stopTimes[$i - 1]) }
+    $minimumStopGap = if ($stopGaps.Count -gt 0) { ($stopGaps | Measure-Object -Minimum).Minimum } else { 0.000010 }
+    $stopMatchTolerance = [Math]::Min(0.000001, ([double]$minimumStopGap / 4.0))
+    if ($stopMatchTolerance -le 0) { $stopMatchTolerance = 0.0000001 }
+    if ($offGridStartRows.Count -gt 0) {
+        if (-not [bool]$debugStops.present) { throw 'Off-grid start-active rows require the recorded debugger stop log' }
+        if ($offGridStartRows.Count -ne [int]$debugStops.compositeStopCount) {
+            throw "Recorded $($debugStops.compositeStopCount) composite debugger stops but observed $($offGridStartRows.Count) off-grid start-active callbacks"
+        }
+        if ($offGridStartRows.Count -gt $recorded.stopTimes.Count) {
+            throw "Observed $($offGridStartRows.Count) off-grid start-active callbacks but only $($recorded.stopTimes.Count) recorded phase/session stop times"
+        }
+        for ($i = 0; $i -lt $offGridStartRows.Count; $i++) {
+            $row = $offGridStartRows[$i]
+            $expectedFrame = $lastRealStartFrame + 1 + $i
+            if ($row.frame -ne $expectedFrame) {
+                throw "Debug-stop callback row $($row.frame) is not contiguous with the 60 Hz start window (expected $expectedFrame)"
+            }
+            $recordedStopTime = [double]$recorded.stopTimes[$i]
+            $difference = [Math]::Abs([double]$row.time - $recordedStopTime)
+            if ($difference -gt $stopMatchTolerance) {
+                throw "Off-grid start-active row $($row.frame) at $('{0:F9}' -f $row.time) does not match recorded phase/session stop $('{0:F9}' -f $recordedStopTime)"
+            }
+            $row.classification = 'debug_stop_callback'
+            $row.recordedStopIndex = $i
+            $row.recordedStopTime = ('{0:F9}' -f $recordedStopTime)
+        }
+    }
+
+    $startFrames = @($startRows | ForEach-Object { $_.frame })
+    $realFrameStartFrames = @($realStartRows | ForEach-Object { $_.frame })
+    $debugStopStartFrames = @($offGridStartRows | ForEach-Object { $_.frame })
+    $startRowDetails = @($startRows | ForEach-Object {
+        [ordered]@{
+            frame = $_.frame
+            emulatedTime = ('{0:F9}' -f $_.time)
+            aux2 = Format-Hex8 $_.aux2
+            black2 = Format-Hex8 $_.black2
+            coinOverride = $_.coinOverride
+            classification = $_.classification
+            derivedRealFrameIndex = $_.derivedRealFrameIndex
+            gridErrorSeconds = ('{0:F9}' -f $_.gridErrorSeconds)
+            frameCounterMatchesDerived = $_.frameCounterMatchesDerived
+            recordedStopIndex = if ($_.classification -eq 'debug_stop_callback') { $_.recordedStopIndex } else { -1 }
+            recordedStopTime = if ($_.classification -eq 'debug_stop_callback') { $_.recordedStopTime } else { '' }
+        }
+    })
     $last = $rows[$rows.Count - 1]
     if ($last.frame -ge $script:NextFixtureActionFrame) {
         throw "The capture applied a fixture action at frame $($last.frame), at or after $($script:NextFixtureActionFrame); it should exit at the first complete call"
     }
+    $realStartRowsCount = $realStartRows.Count
+    $offGridStartRowsCount = $offGridStartRows.Count
     return [ordered]@{
         levelsPath = [IO.Path]::GetFullPath($levelsPath)
         levelsSha256 = Get-HashValue $levelsPath 'SHA256'
         sampleCount = $rows.Count
         firstFrame = $rows[0].frame
         lastFrame = $last.frame
+        minEmulatedTime = ('{0:F9}' -f $rows[0].time)
+        maxEmulatedTime = ('{0:F9}' -f $last.time)
         coinFrames = $coinFrames
         coinWindow = [ordered]@{
             first = $coinFrames[0]
@@ -227,18 +387,57 @@ function Get-InputProvenance {
         }
         coinStartTime = ('{0:F9}' -f $coinRows[0].time)
         startFrames = $startFrames
+        realFrameStartFrames = $realFrameStartFrames
+        debugStopStartFrames = $debugStopStartFrames
         requiredStartFrames = $requiredStartFrames
+        startRows = $startRowDetails
         startWindow = [ordered]@{
-            first = $startFrames[0]
+            first = $realFrameStartFrames[0]
             last = $startFrames[$startFrames.Count - 1]
+            lastRealFrame = $lastRealStartFrame
             frames = $startFrames
+            realFrames = $realFrameStartFrames
+            debugStopFrames = $debugStopStartFrames
             requiredFrames = $requiredStartFrames
-            fixtureProbeFirst = 2220
-            fixtureProbeLast = 2232
+            fixtureProbeFirst = $fixtureFirstFrame
+            fixtureProbeLastExclusive = $fixtureLastExclusive
+            firstEmulatedTime = ('{0:F9}' -f $realStartRows[0].time)
+            lastRealEmulatedTime = ('{0:F9}' -f $realStartRows[$realStartRows.Count - 1].time)
+            lastActiveEmulatedTime = ('{0:F9}' -f $startRows[$startRows.Count - 1].time)
+            minActiveEmulatedTime = ('{0:F9}' -f $startRows[0].time)
+            maxActiveEmulatedTime = ('{0:F9}' -f $startRows[$startRows.Count - 1].time)
         }
-        startStartTime = ('{0:F9}' -f $startRows[0].time)
+        startStartTime = ('{0:F9}' -f $realStartRows[0].time)
         nextFixtureActionFrame = $script:NextFixtureActionFrame
         laterFixtureActionsUnused = ($last.frame -lt $script:NextFixtureActionFrame)
+        sampleContract = [ordered]@{
+            source = 'input.lua emu.register_frame_done rows with native debugger-stop callbacks'
+            framePeriodSeconds = ('{0:F9}' -f $framePeriod)
+            gridOriginSeconds = ('{0:F9}' -f $gridOrigin)
+            gridToleranceSeconds = ('{0:F9}' -f $gridTolerance)
+            stopMatchToleranceSeconds = ('{0:F9}' -f $stopMatchTolerance)
+            classificationRule = 'A row is real_60hz when its emulated time is within one eighth of the known 60 Hz frame period of the derived grid. An off-grid start-active row is accepted only when it is contiguous with the real 60 Hz start rows, matches the ordered recorded phase/session stop time, and equals the recorded composite debugger stop count. Any other off-grid active row is rejected.'
+            totalRows = $rows.Count
+            frameCounterFirst = $rows[0].frame
+            frameCounterLast = $last.frame
+            minEmulatedTime = ('{0:F9}' -f $rows[0].time)
+            maxEmulatedTime = ('{0:F9}' -f $last.time)
+            realFrameRowCount = @($rows | Where-Object { $_.classification -eq 'real_60hz' }).Count
+            offGridRowCount = @($rows | Where-Object { $_.classification -ne 'real_60hz' }).Count
+            coinActiveRowCount = $coinRows.Count
+            startActiveRowCount = $startRows.Count
+            startRealFrameRowCount = $realStartRowsCount
+            startDebugStopCallbackCount = $offGridStartRowsCount
+        }
+        debugStopEvidence = [ordered]@{
+            debugLogPath = $debugStops.debugLogPath
+            debugLogSha256 = $debugStops.debugLogSha256
+            stopLineCount = $debugStops.stopLineCount
+            compositeStopCount = $debugStops.compositeStopCount
+            recordedPhaseStopTimes = @($recorded.phaseStopTimes | ForEach-Object { '{0:F9}' -f $_ })
+            recordedStopTimes = @($recorded.stopTimes | ForEach-Object { '{0:F9}' -f $_ })
+            recordedStopCount = $recorded.stopTimes.Count
+        }
     }
 }
 
@@ -692,7 +891,7 @@ function Get-CompositeAnalysis {
         if ([string]$metadata.input_replay.input_lua_sha256 -ine $script:InputLuaSha256) { throw 'Session metadata input Lua hash is not the prior tracked script' }
         if ([string]$metadata.input_replay.classification -ne 'tracked_physical_input_replay_no_state_injection') { throw 'Session metadata input replay classification is wrong' }
         $replaySchedule = Get-ReplaySchedule $replayPath
-        $levelProvenance = Get-InputProvenance $run
+        $levelProvenance = Get-InputProvenance $run $replaySchedule
         $inputProvenance = [ordered]@{
             policy = 'tracked_physical_replay'
             used = $true
@@ -1443,6 +1642,9 @@ function Invoke-Capture {
         inputReplayUsed = $analysis.inputProvenance.used
         coinFrames = $analysis.inputProvenance.observed.coinFrames
         startFrames = $analysis.inputProvenance.observed.startFrames
+        realFrameStartFrames = $analysis.inputProvenance.observed.realFrameStartFrames
+        debugStopStartFrames = $analysis.inputProvenance.observed.debugStopStartFrames
+        sampleContract = $analysis.inputProvenance.observed.sampleContract
         failureCode = $analysis.session.failureCode
         evidence = [IO.Path]::GetFullPath($EvidencePath)
         evidenceSha256 = Get-HashValue $EvidencePath 'SHA256'
@@ -1472,6 +1674,9 @@ function Invoke-Analyze {
         inputReplayUsed = $analysis.inputProvenance.used
         coinFrames = if ($analysis.inputProvenance.used) { $analysis.inputProvenance.observed.coinFrames } else { @() }
         startFrames = if ($analysis.inputProvenance.used) { $analysis.inputProvenance.observed.startFrames } else { @() }
+        realFrameStartFrames = if ($analysis.inputProvenance.used) { $analysis.inputProvenance.observed.realFrameStartFrames } else { @() }
+        debugStopStartFrames = if ($analysis.inputProvenance.used) { $analysis.inputProvenance.observed.debugStopStartFrames } else { @() }
+        sampleContract = if ($analysis.inputProvenance.used) { $analysis.inputProvenance.observed.sampleContract } else { $null }
         failureCode = $analysis.session.failureCode
         resultWord = $analysis.call.resultWord
         netU = $analysis.call.netU

@@ -15,6 +15,8 @@ $script:Replay = Join-Path $script:Root 'evidence/mpu4/skill-cash/actions.csv'
 $script:Doc = Join-Path $script:Root 'docs/recovery/IL-COMPOSITE-NATURAL.md'
 $script:ManifestTool = Join-Path $script:Root 'tools/Update-CuratedManifest.ps1'
 $script:JsonHelper = Join-Path $script:Root 'tests/worker/Test-IlEventJson.ps1'
+$script:AuthorizedRunSource = Join-Path $script:Root 'artifacts/deepseek/il-composite-input-time-41/reanalysis/attempt-40-run-01'
+$script:AuthorizedRawRun = Join-Path $script:Root 'artifacts/deepseek/il-composite-authorized-capture-40/run-01'
 $script:ReplaySha256 = '4a051da15264842697879eff396b34a789f5d80623f9a2e749c244e6a80e721d'
 $script:InputLuaSha256 = '23099f8888af8db353253e0df97638320dc59ca9a47371723a380e0c4ee85c94'
 $script:Checks = 0
@@ -177,6 +179,10 @@ function New-SyntheticFixture {
     $control0 = '9F3F'
     $control1 = 'AB44'
     $phases = @($map.Phases)
+    $syntheticStopTimes = New-Object 'System.Collections.Generic.List[double]'
+    for ($i = 0; $i -lt $phases.Count; $i++) {
+        $syntheticStopTimes.Add(37.076457558 + ($i * 0.00001))
+    }
     for ($i = 0; $i -lt $phases.Count; $i++) {
         $phase = $phases[$i]
         $name = [string]$phase.Phase
@@ -223,7 +229,7 @@ function New-SyntheticFixture {
             y=(Format-Hex16 ([int]$phase.Y))
             u=(Format-Hex16 $u)
             s=(Format-Hex16 $s)
-            emulatedTime=('{0:F9}' -f (37.1 + ($i * 0.01)))
+            emulatedTime=('{0:F9}' -f $syntheticStopTimes[$i])
             token=(Format-Hex16 $expectedToken)
             tokenAddress=(Format-Hex16 $tokenAddress)
             handlerAddress=$handlerAddress
@@ -260,7 +266,7 @@ function New-SyntheticFixture {
         callerU=(Format-Hex16 $u0)
         callerS=(Format-Hex16 $s0)
         lastPhase='post-return-prefetch'
-        emulatedTime='37.500000000'
+        emulatedTime=('{0:F9}' -f $syntheticStopTimes[$syntheticStopTimes.Count - 1])
         wallSeconds='1'
         inputPolicy=[string]$metadata.input_policy
         replaySha256=[string]$metadata.input_replay.sha256
@@ -273,6 +279,29 @@ function New-SyntheticFixture {
     })
     $eventsPath = Join-Path $Destination 'events.jsonl'
     Write-EventRecords $eventsPath $records
+    $invariant = [Globalization.CultureInfo]::InvariantCulture
+    $levelLines = New-Object 'System.Collections.Generic.List[string]'
+    $levelLines.Add('frame,t,aux2,black2,coin_override')
+    for ($frame = 1; $frame -le 2238; $frame++) {
+        $time = ($frame - 1) / 60.0
+        $aux2 = '00'
+        $black2 = '00'
+        $coin = '0'
+        if ($frame -eq 2100) { $coin = '1' }
+        if ($frame -eq 2101 -or $frame -eq 2102) { $aux2 = '80'; $coin = '1' }
+        if ($frame -eq 2103) { $aux2 = '80' }
+        if ($frame -ge 2221 -and $frame -le 2225) { $black2 = '80' }
+        if ($frame -ge 2226 -and $frame -le 2238) {
+            $black2 = '80'
+            $time = $syntheticStopTimes[$frame - 2226]
+        }
+        $levelLines.Add([string]::Format($invariant, '{0},{1:F9},{2},{3},{4}', $frame, $time, $aux2, $black2, $coin))
+    }
+    [IO.File]::WriteAllText((Join-Path $Destination 'input-levels.csv'), (($levelLines -join "`n") + "`n"), (New-Object System.Text.UTF8Encoding($false)))
+    $debugLines = New-Object 'System.Collections.Generic.List[string]'
+    $debugLines.Add('MAME debugger synthetic fixture')
+    for ($stop = 1; $stop -le 14; $stop++) { $debugLines.Add("Stopped at breakpoint $stop") }
+    [IO.File]::WriteAllText((Join-Path $Destination 'debug.log'), (($debugLines -join "`n") + "`n"), (New-Object System.Text.UTF8Encoding($false)))
     return $Destination
 }
 
@@ -280,10 +309,14 @@ $tempRoot = Join-Path $script:Root ('artifacts/deepseek/il-composite-evidence-re
 New-Item -ItemType Directory -Path $tempRoot -Force | Out-Null
 $rawRunSource = $RunDirectory
 $rawNoInputSource = $NoInputRunDirectory
+$authorizedRunSource = $script:AuthorizedRunSource
+$authorizedRawRun = $script:AuthorizedRawRun
 $RunDirectory = Join-Path $tempRoot 'attempt-36-raw-copy'
 $NoInputRunDirectory = Join-Path $tempRoot 'attempt-35-raw-copy'
+$AuthorizedRunDirectory = Join-Path $tempRoot 'attempt-40-private-copy'
 Copy-Item -LiteralPath $rawRunSource -Destination $RunDirectory -Recurse -ErrorAction Stop
 Copy-Item -LiteralPath $rawNoInputSource -Destination $NoInputRunDirectory -Recurse -ErrorAction Stop
+Copy-Item -LiteralPath $authorizedRunSource -Destination $AuthorizedRunDirectory -Recurse -ErrorAction Stop
 try {
     Assert-True (Test-Path -LiteralPath $script:Tool -PathType Leaf) 'capture/analyze/verify tool exists'
     Assert-True (Test-Path -LiteralPath $script:Lua -PathType Leaf) 'Lua observer exists'
@@ -294,6 +327,10 @@ try {
     Assert-True (Test-Path -LiteralPath $OriginalRom -PathType Leaf) 'strict original ROM exists'
     Assert-True (Test-Path -LiteralPath $RunDirectory -PathType Container) 'revised tracked-replay capture run exists'
     Assert-True (Test-Path -LiteralPath $NoInputRunDirectory -PathType Container) 'preserved no-input attempt exists'
+    Assert-True (Test-Path -LiteralPath $AuthorizedRunDirectory -PathType Container) 'authorized attempt-40 private copy exists'
+    Assert-True (Test-Path -LiteralPath (Join-Path $authorizedRawRun 'events.jsonl') -PathType Leaf) 'authorized attempt-40 raw event log exists'
+    Assert-Equal (Get-Sha256 (Join-Path $authorizedRawRun 'events.jsonl')) 'ea4fae8345ccbb25d6921628c0b8eb869b8c4fa60ecf0b44b25a2d2cf185c353' 'authorized attempt-40 raw events retain their hash'
+    Assert-Equal (Get-Sha256 (Join-Path $authorizedRawRun 'input-levels.csv')) 'd118902e7affb8b86d3c0b7fbcc92093205d228c91ffff08bb0beb6855ccf053' 'authorized attempt-40 input levels retain their hash'
     Assert-Equal (Get-Sha256 $script:Replay) $script:ReplaySha256 'tracked replay fixture has the prior provenance hash'
     Assert-Equal (Get-Sha256 $script:InputLua) $script:InputLuaSha256 'tracked input Lua has the prior provenance hash'
 
@@ -367,80 +404,205 @@ try {
     Assert-Equal $v.resultWord '' 'revised run does not claim an unobserved result word'
     Assert-Equal $v.netU '' 'revised run does not claim an unobserved U delta'
     Assert-Equal $v.netS '' 'revised run does not claim an unobserved S delta'
+    Assert-Equal (($v.realFrameStartFrames -join ',') -replace ' ','') '2221,2222,2223,2224,2225' 'revised run separates the five real 60 Hz start samples'
+    Assert-Equal (($v.debugStopStartFrames -join ',') -replace ' ','') '2226,2227,2228' 'revised run identifies debugger-stop callbacks after the real samples'
+
+    $authorized = Invoke-Tool @('-Mode','Verify','-RunDirectory',$AuthorizedRunDirectory,'-ReanalysisSourceRun',$authorizedRawRun)
+    Assert-Equal $authorized.exitCode 0 'authorized attempt-40 private copy verifies complete'
+    $a = $authorized.text | ConvertFrom-Json
+    Assert-Equal $a.status 'complete_natural_composite_call' 'authorized attempt-40 is accepted as a complete natural composite call'
+    Assert-Equal $a.complete $true 'authorized attempt-40 claims a complete call'
+    Assert-Equal $a.phases 13 'authorized attempt-40 observed all thirteen phases'
+    Assert-Equal $a.expectedPhases 13 'authorized attempt-40 retains the thirteen-phase contract'
+    Assert-Equal $a.eventRecordCount 15 'authorized attempt-40 has ready, thirteen phases and complete records'
+    Assert-Equal $a.strictJsonPass $true 'authorized attempt-40 events pass strict System.Text.Json parsing'
+    Assert-Equal $a.inputPolicy 'tracked_physical_replay' 'authorized attempt-40 records tracked physical replay'
+    Assert-Equal $a.inputReplayUsed $true 'authorized attempt-40 records replay use'
+    Assert-Equal (($a.coinFrames -join ',') -replace ' ','') '2100,2101,2102,2103' 'authorized attempt-40 observed the complete coin pulse'
+    Assert-Equal (($a.startFrames -join ',') -replace ' ','') '2221,2222,2223,2224,2225,2226,2227,2228,2229,2230,2231,2232,2233,2234,2235,2236,2237,2238' 'authorized attempt-40 records every start-active row'
+    Assert-Equal (($a.realFrameStartFrames -join ',') -replace ' ','') '2221,2222,2223,2224,2225' 'authorized attempt-40 derives five real 60 Hz start samples'
+    Assert-Equal (($a.debugStopStartFrames -join ',') -replace ' ','') '2226,2227,2228,2229,2230,2231,2232,2233,2234,2235,2236,2237,2238' 'authorized attempt-40 classifies thirteen debugger-stop callbacks'
+    Assert-Equal $a.failureCode '' 'authorized attempt-40 has no protocol failure'
+    Assert-Equal $a.resultWord '0000' 'authorized attempt-40 result word is 0000'
+    Assert-Equal $a.netU '0000' 'authorized attempt-40 net U is zero'
+    Assert-Equal $a.netS '0000' 'authorized attempt-40 net S is zero'
+    Assert-Equal $a.sampleContract.framePeriodSeconds '0.016666667' 'authorized attempt-40 derives the known 60 Hz frame period'
+    Assert-Equal $a.sampleContract.gridToleranceSeconds '0.002083333' 'authorized attempt-40 derives an eighth-frame grid tolerance'
+    Assert-Equal $a.sampleContract.startRealFrameRowCount 5 'authorized attempt-40 sample contract records five real start rows'
+    Assert-Equal $a.sampleContract.startDebugStopCallbackCount 13 'authorized attempt-40 sample contract records thirteen debugger callbacks'
+
+    $attempt40Observation = Read-JsonFile (Join-Path $AuthorizedRunDirectory 'observation.json')
+    Assert-Equal $attempt40Observation.call.complete $true 'authorized attempt-40 call is complete'
+    Assert-Equal $attempt40Observation.call.savedCursor '9F16' 'authorized attempt-40 derives the saved cursor live'
+    Assert-Equal $attempt40Observation.call.savedCursorAuthority 'return-handler live controlStack0' 'authorized attempt-40 saved cursor authority is the live return handler'
+    Assert-Equal $attempt40Observation.call.postReturnY '9F16' 'authorized attempt-40 post-return Y is 9F16'
+    Assert-Equal $attempt40Observation.call.postReturnToken '75A9' 'authorized attempt-40 post-return token is 75A9'
+    Assert-Equal $attempt40Observation.call.inputWord '0000' 'authorized attempt-40 input word is 0000'
+    Assert-Equal $attempt40Observation.call.resultWord '0000' 'authorized attempt-40 result word is 0000'
+    Assert-Equal $attempt40Observation.call.netU '0000' 'authorized attempt-40 net U is zero'
+    Assert-Equal $attempt40Observation.call.netS '0000' 'authorized attempt-40 net S is zero'
+    Assert-Equal $attempt40Observation.phases.Count 13 'authorized attempt-40 observation contains thirteen phases'
+    Assert-Equal $attempt40Observation.phases[0].phase 'caller-dispatch' 'authorized attempt-40 first phase is caller-dispatch'
+    Assert-Equal $attempt40Observation.phases[12].phase 'post-return-prefetch' 'authorized attempt-40 last phase is post-return-prefetch'
+    Assert-Equal $attempt40Observation.phases[2].controlStack0 '9F16' 'authorized attempt-40 body saved cursor is live 9F16'
+    Assert-Equal $attempt40Observation.phases[11].controlStack0 '9F16' 'authorized attempt-40 return saved cursor is live 9F16'
+    $attempt40Handlers = (@($attempt40Observation.phases | Where-Object { $_.handlerAddress -ne '' -and $_.pc -eq $_.handlerAddress } | ForEach-Object { $_.pc }) -join ',')
+    Assert-Equal $attempt40Handlers '795D,7880,795D,7AB1,7931' 'authorized attempt-40 handler sequence is exact'
+    Assert-Equal $attempt40Observation.inputProvenance.observed.startRows.Count 18 'authorized attempt-40 records all start-active rows'
+    Assert-Equal $attempt40Observation.inputProvenance.observed.startRows[0].frame 2221 'authorized attempt-40 first start row is frame 2221'
+    Assert-Equal $attempt40Observation.inputProvenance.observed.startRows[0].classification 'real_60hz' 'authorized attempt-40 frame 2221 is a real 60 Hz sample'
+    Assert-Equal $attempt40Observation.inputProvenance.observed.startRows[0].emulatedTime '37.000000000' 'authorized attempt-40 real start begins at 37.000000000 s'
+    Assert-Equal $attempt40Observation.inputProvenance.observed.startRows[4].frame 2225 'authorized attempt-40 last real start row is frame 2225'
+    Assert-Equal $attempt40Observation.inputProvenance.observed.startRows[4].classification 'real_60hz' 'authorized attempt-40 frame 2225 is a real 60 Hz sample'
+    Assert-Equal $attempt40Observation.inputProvenance.observed.startRows[4].emulatedTime '37.066666667' 'authorized attempt-40 real start ends at 37.066666667 s'
+    Assert-Equal $attempt40Observation.inputProvenance.observed.startRows[5].frame 2226 'authorized attempt-40 first debug callback row is 2226'
+    Assert-Equal $attempt40Observation.inputProvenance.observed.startRows[5].classification 'debug_stop_callback' 'authorized attempt-40 frame 2226 is a debugger-stop callback'
+    Assert-Equal $attempt40Observation.inputProvenance.observed.startRows[5].recordedStopIndex 0 'authorized attempt-40 frame 2226 matches the first recorded stop'
+    Assert-Equal $attempt40Observation.inputProvenance.observed.startRows[5].emulatedTime '37.076457558' 'authorized attempt-40 first debug callback time is 37.076457558 s'
+    Assert-Equal $attempt40Observation.inputProvenance.observed.startRows[17].frame 2238 'authorized attempt-40 last debug callback row is 2238'
+    Assert-Equal $attempt40Observation.inputProvenance.observed.startRows[17].classification 'debug_stop_callback' 'authorized attempt-40 frame 2238 is a debugger-stop callback'
+    Assert-Equal $attempt40Observation.inputProvenance.observed.startRows[17].recordedStopIndex 12 'authorized attempt-40 frame 2238 matches the thirteenth recorded stop'
+    Assert-Equal $attempt40Observation.inputProvenance.observed.startRows[17].emulatedTime '37.076576163' 'authorized attempt-40 last debug callback time is 37.076576163 s'
+    Assert-Equal $attempt40Observation.inputProvenance.observed.startWindow.first 2221 'authorized attempt-40 start window first real frame is 2221'
+    Assert-Equal $attempt40Observation.inputProvenance.observed.startWindow.last 2238 'authorized attempt-40 full active window ends at row 2238'
+    Assert-Equal $attempt40Observation.inputProvenance.observed.startWindow.lastRealFrame 2225 'authorized attempt-40 real start window ends at frame 2225'
+    Assert-Equal $attempt40Observation.inputProvenance.observed.startWindow.fixtureProbeLastExclusive 2232 'authorized attempt-40 fixture probe bound is 2232 exclusive'
+    Assert-Equal $attempt40Observation.inputProvenance.observed.sampleContract.totalRows 2238 'authorized attempt-40 sample contract records all 2238 raw rows'
+    Assert-Equal $attempt40Observation.inputProvenance.observed.sampleContract.minEmulatedTime '0.000002326' 'authorized attempt-40 minimum emulated time is recorded'
+    Assert-Equal $attempt40Observation.inputProvenance.observed.sampleContract.maxEmulatedTime '37.076576163' 'authorized attempt-40 maximum emulated time is recorded'
+    Assert-Equal $attempt40Observation.inputProvenance.observed.sampleContract.frameCounterFirst 1 'authorized attempt-40 first frame counter is 1'
+    Assert-Equal $attempt40Observation.inputProvenance.observed.sampleContract.frameCounterLast 2238 'authorized attempt-40 last frame counter is 2238'
+    Assert-Equal $attempt40Observation.inputProvenance.observed.debugStopEvidence.stopLineCount 14 'authorized attempt-40 debug log records fourteen stops'
+    Assert-Equal $attempt40Observation.inputProvenance.observed.debugStopEvidence.compositeStopCount 13 'authorized attempt-40 debug log records thirteen composite stops'
+    Assert-Equal $attempt40Observation.inputProvenance.observed.debugStopEvidence.recordedStopCount 13 'authorized attempt-40 has thirteen recorded phase stop times'
+    Assert-Equal $attempt40Observation.reanalysis.classification 'read_only_private_copy_reanalysis' 'authorized attempt-40 is a read-only private-copy reanalysis'
+    Assert-Equal $attempt40Observation.reanalysis.sourceEventsSha256 'EA4FAE8345CCBB25D6921628C0B8EB869B8C4FA60ECF0B44B25A2D2CF185C353' 'authorized attempt-40 binds the raw source event hash'
+    Assert-Equal $attempt40Observation.reanalysis.rawArtifactModified $false 'authorized attempt-40 raw artifact was not modified'
+    Assert-Equal $attempt40Observation.reanalysis.luaExecuted $false 'authorized attempt-40 analysis did not execute Lua'
+    Assert-Equal $attempt40Observation.verificationGap.luaChangedAfterCapture $false 'authorized attempt-40 captured observer Lua is unchanged'
+    Assert-Equal $attempt40Observation.verificationGap.toolChangedAfterCapture $true 'authorized attempt-40 records the post-capture analyzer change'
+    Assert-Equal $attempt40Observation.verificationGap.rerunPerformed $false 'authorized attempt-40 was not rerun'
+    Assert-Equal $attempt40Observation.run.eventsSha256 'EA4FAE8345CCBB25D6921628C0B8EB869B8C4FA60ECF0B44B25A2D2CF185C353' 'authorized attempt-40 run binds the raw event hash'
+    Assert-Equal $attempt40Observation.run.eventRecordCount 15 'authorized attempt-40 run records fifteen events'
+    Assert-Equal $attempt40Observation.run.stateFiles 0 'authorized attempt-40 records no state files'
+    Assert-Equal $attempt40Observation.priorTraceComparison.postReturnTokenMatches $true 'authorized attempt-40 post-return token matches the prior trace'
+    Assert-Equal $attempt40Observation.priorTraceComparison.savedCursorMatches $true 'authorized attempt-40 saved cursor matches the prior trace'
 
     $evidence = Read-JsonFile $EvidencePath
-    Assert-Equal $evidence.taskId 'il-composite-replay-36' 'evidence task id is current'
-    Assert-Equal $evidence.resultStatus 'blocked_incomplete' 'evidence records the incomplete revised attempt'
+    Assert-Equal $evidence.taskId 'il-composite-authorized-capture-40' 'evidence task id is the accepted authorized capture'
+    Assert-Equal $evidence.curationTaskId 'il-composite-input-time-41' 'evidence records the offline curation task'
+    Assert-Equal $evidence.resultStatus 'complete_natural_composite_call' 'evidence records the accepted complete natural composite call'
     Assert-Equal $evidence.evidenceClass 'natural' 'evidence is natural-run evidence, not a synthetic fixture'
     Assert-Equal $evidence.builtRom.sha256 '761F34BAAC06C6F8F5DA963CCADEB276FAE9196EE1C4D9060BC915A314E3903D' 'evidence binds the exact built image'
     Assert-Equal $evidence.sourceMap.sha256 '9A560CA7818C7A8F56AC4E314BB5DF19E81F4EFABB23982CCC092CA648B5BCF8' 'evidence binds the final compiled map'
     Assert-Equal $evidence.sourceMap.contract.changedOffsetCount 21 'evidence records the 21-byte diff'
     Assert-Equal $evidence.sourceMap.contract.integrityFields 'E93F3C61B5' 'evidence records the repaired fields'
     Assert-Equal $evidence.boundaryHistory.boundary 'natural-composite-1010-call-from-9F14' 'evidence keeps the same natural composite boundary'
-    Assert-Equal $evidence.boundaryHistory.attempts 2 'evidence records both attempt-1 and attempt-2'
-    Assert-Equal $evidence.boundaryHistory.unsuccessfulAttempts 2 'both attempts remain counted as unsuccessful'
-    Assert-Equal $evidence.boundaryHistory.successfulAttempts 0 'no successful natural composite call is claimed'
+    Assert-Equal $evidence.boundaryHistory.attempts 3 'evidence records all three attempts'
+    Assert-Equal $evidence.boundaryHistory.unsuccessfulAttempts 2 'both earlier attempts remain counted as unsuccessful'
+    Assert-Equal $evidence.boundaryHistory.successfulAttempts 1 'one natural composite call is accepted'
     Assert-Equal $evidence.boundaryHistory.attempt1.inputPolicy 'none' 'attempt 1 remains the no-input failure'
     Assert-Equal $evidence.boundaryHistory.attempt1.phaseCount 0 'attempt 1 still records zero phases'
     Assert-Equal $evidence.boundaryHistory.attempt1.eventsSha256 '912CD4442EB623B59A8786386D0D937D0343AF61C1EA758D6D6743AC16CF86F3' 'attempt 1 raw event hash is preserved'
-    Assert-Equal $evidence.boundaryHistory.attempt2.inputPolicy 'tracked_physical_replay' 'attempt 2 records physical replay'
-    Assert-Equal $evidence.boundaryHistory.attempt2.phaseCount 2 'attempt 2 records the two reached phases'
-    Assert-Equal $evidence.boundaryHistory.attempt2.failure.code 'phase_saved_cursor' 'attempt 2 records the concrete observer failure'
+    Assert-Equal $evidence.boundaryHistory.attempt2.inputPolicy 'tracked_physical_replay' 'attempt 2 remains the tracked-replay attempt'
+    Assert-Equal $evidence.boundaryHistory.attempt2.phaseCount 2 'attempt 2 still records the two reached phases'
+    Assert-Equal $evidence.boundaryHistory.attempt2.failure.code 'phase_saved_cursor' 'attempt 2 still records the concrete observer failure'
+    Assert-Equal $evidence.boundaryHistory.attempt2.eventsSha256 '4D545B1FB933A2585FB3B2233C1F429EF9B264BF1B2D7A380010341D4D0BC45D' 'attempt 2 raw event hash is preserved'
+    Assert-Equal $evidence.boundaryHistory.attempt3.resultStatus 'complete_natural_composite_call' 'attempt 3 records the accepted complete call'
+    Assert-Equal $evidence.boundaryHistory.attempt3.phaseCount 13 'attempt 3 records all thirteen phases'
+    Assert-Equal $evidence.boundaryHistory.attempt3.eventsSha256 'EA4FAE8345CCBB25D6921628C0B8EB869B8C4FA60ECF0B44B25A2D2CF185C353' 'attempt 3 binds the raw event hash'
+    Assert-Equal $evidence.boundaryHistory.attempt3.inputLevelsSha256 'D118902E7AFFB8B86D3C0B7FBCC92093205D228C91FFFF08BB0BEB6855CCF053' 'attempt 3 binds the raw input-levels hash'
+    Assert-Equal $evidence.boundaryHistory.attempt3.call.complete $true 'attempt 3 call is complete'
+    Assert-Equal $evidence.boundaryHistory.attempt3.call.resultWord '0000' 'attempt 3 result word is 0000'
     Assert-Equal $evidence.inputProvenance.used $true 'evidence records replay provenance use'
-    Assert-Equal $evidence.inputProvenance.replay.sha256 '4A051DA15264842697879EFF396B34A789F5D80623F9A2E749C244E6A80E721D' 'evidence binds the prior replay fixture hash'
-    Assert-Equal $evidence.inputProvenance.inputLua.sha256 '23099F8888AF8DB353253E0DF97638320DC59CA9A47371723A380E0C4EE85C94' 'evidence binds the prior input Lua hash'
+    Assert-Equal $evidence.inputProvenance.replay.sha256 '4A051DA15264842697879EFF396B34A789F5D80623F9A2E749C244E6A80E721D' 'evidence binds the tracked replay fixture hash'
+    Assert-Equal $evidence.inputProvenance.inputLua.sha256 '23099F8888AF8DB353253E0DF97638320DC59CA9A47371723A380E0C4EE85C94' 'evidence binds the tracked input Lua hash'
     Assert-Equal (($evidence.inputProvenance.observed.coinFrames -join ',') -replace ' ','') '2100,2101,2102,2103' 'evidence records observed coin frames'
-    Assert-Equal (($evidence.inputProvenance.observed.startFrames -join ',') -replace ' ','') '2221,2222,2223,2224,2225,2226,2227,2228' 'evidence records the full observed start-active window'
+    Assert-Equal (($evidence.inputProvenance.observed.startFrames -join ',') -replace ' ','') '2221,2222,2223,2224,2225,2226,2227,2228,2229,2230,2231,2232,2233,2234,2235,2236,2237,2238' 'evidence records every start-active row'
+    Assert-Equal (($evidence.inputProvenance.observed.realFrameStartFrames -join ',') -replace ' ','') '2221,2222,2223,2224,2225' 'evidence records the five real 60 Hz start samples'
+    Assert-Equal (($evidence.inputProvenance.observed.debugStopStartFrames -join ',') -replace ' ','') '2226,2227,2228,2229,2230,2231,2232,2233,2234,2235,2236,2237,2238' 'evidence records the thirteen debugger-stop callbacks'
     Assert-Equal (($evidence.inputProvenance.observed.requiredStartFrames -join ',') -replace ' ','') '2221,2222,2223,2224' 'evidence records the required effective start frames'
-    Assert-Equal $evidence.inputProvenance.observed.startWindow.last 2228 'evidence does not truncate the start window at frame 2224'
+    Assert-Equal $evidence.inputProvenance.observed.startWindow.last 2238 'evidence records the full observed start-active window'
+    Assert-Equal $evidence.inputProvenance.observed.startWindow.lastRealFrame 2225 'evidence distinguishes the last real start frame'
+    Assert-Equal $evidence.inputProvenance.observed.startWindow.fixtureProbeLastExclusive 2232 'evidence records the fixture start probe bound'
     Assert-Equal $evidence.inputProvenance.observed.laterFixtureActionsUnused $true 'evidence records that later fixture actions were unused'
+    Assert-Equal $evidence.inputProvenance.observed.sampleContract.framePeriodSeconds '0.016666667' 'evidence records the known 60 Hz period'
+    Assert-Equal $evidence.inputProvenance.observed.sampleContract.gridToleranceSeconds '0.002083333' 'evidence records the eighth-frame grid tolerance'
+    Assert-Equal $evidence.inputProvenance.observed.sampleContract.totalRows 2238 'evidence records the total raw sample-row count'
+    Assert-Equal $evidence.inputProvenance.observed.debugStopEvidence.stopLineCount 14 'evidence records fourteen debugger stop lines'
+    Assert-Equal $evidence.inputProvenance.observed.debugStopEvidence.compositeStopCount 13 'evidence records thirteen composite debugger stops'
     Assert-Equal $evidence.call.callerAddress '9F14' 'evidence binds the caller fetch'
     Assert-Equal $evidence.call.callerReplacementToken '1010' 'evidence binds token 1010'
     Assert-Equal $evidence.call.trampolinePc '00F8' 'evidence binds the trampoline PC'
     Assert-Equal $evidence.call.trampolineX '1012' 'evidence binds trampoline X'
-    Assert-Equal $evidence.call.savedCursor '' 'evidence does not claim an unobserved saved cursor'
-    Assert-Equal $evidence.call.savedCursorAuthority 'not observed' 'saved cursor authority is only a live body or return control stack'
-    Assert-Equal $evidence.call.headerSavedCursorMapEcho '9F16' 'header map echo is recorded separately'
-    Assert-Equal $evidence.call.headerSavedCursorAuthoritative $false 'header map echo is not authoritative'
-    Assert-Equal $evidence.call.complete $false 'evidence does not claim the composite call completed'
-    Assert-Equal $evidence.call.returnObserved $false 'evidence does not claim the actual PULS return'
-    Assert-Equal $evidence.call.postReturnToken '' 'evidence does not claim an unobserved post-return token'
-    Assert-Equal $evidence.call.resultWord '' 'evidence does not claim an unobserved result word'
-    Assert-Equal $evidence.phases.Count 2 'evidence records only the two observed phases'
+    Assert-Equal $evidence.call.savedCursor '9F16' 'evidence records the live saved cursor'
+    Assert-Equal $evidence.call.savedCursorAuthority 'return-handler live controlStack0' 'saved cursor authority is the live return handler'
+    Assert-Equal $evidence.call.complete $true 'evidence claims the composite call completed'
+    Assert-Equal $evidence.call.returnObserved $true 'evidence claims the actual PULS return'
+    Assert-Equal $evidence.call.postReturnY '9F16' 'evidence records post-return Y 9F16'
+    Assert-Equal $evidence.call.postReturnToken '75A9' 'evidence records post-return token 75A9'
+    Assert-Equal $evidence.call.inputWord '0000' 'evidence records input word 0000'
+    Assert-Equal $evidence.call.resultWord '0000' 'evidence records result word 0000'
+    Assert-Equal $evidence.call.netU '0000' 'evidence records net U 0000'
+    Assert-Equal $evidence.call.netS '0000' 'evidence records net S 0000'
+    Assert-Equal $evidence.phases.Count 13 'evidence records all thirteen phases'
     Assert-Equal $evidence.phases[0].phase 'caller-dispatch' 'first observed phase is the caller fetch'
     Assert-Equal $evidence.phases[0].token '1010' 'caller fetch token is 1010'
     Assert-Equal $evidence.phases[0].y '9F14' 'caller fetch Y is 9F14'
     Assert-Equal $evidence.phases[1].phase 'header-trampoline-entry' 'second observed phase is the trampoline entry'
     Assert-Equal $evidence.phases[1].x '1012' 'trampoline X is 1012'
     Assert-Equal $evidence.phases[1].y '9F16' 'trampoline Y is 9F16'
-    Assert-Equal $evidence.phases[1].savedCursor '9F16' 'legacy captured header map echo remains visible'
-    Assert-Equal $evidence.phases[1].savedCursorAuthoritative $false 'header map echo is not authoritative evidence'
-    Assert-Equal $evidence.phases[1].savedCursorSource 'legacy_map_echo_ignored' 'header saved cursor is labelled as an ignored legacy map echo'
-    Assert-Equal $evidence.failure.code 'phase_saved_cursor' 'evidence records the exact failure code'
-    Assert-Equal $evidence.verificationGap.present $true 'evidence reports the post-capture observer verification gap'
-    Assert-Equal $evidence.verificationGap.luaChangedAfterCapture $true 'evidence records that the observer changed after the capture'
-    Assert-Equal $evidence.verificationGap.failedCapturePostFieldsIgnored $true 'failed-run result fields are retained but ignored'
-    Assert-Equal $evidence.verificationGap.completeEventPostFieldsUsed $false 'failed-run result fields are not used as observations'
-    Assert-Equal $evidence.verificationGap.rerunPerformed $false 'evidence records that no blind rerun was performed'
+    Assert-Equal $evidence.phases[11].phase 'return-handler' 'twelfth observed phase is the return handler'
+    Assert-Equal $evidence.phases[11].controlStack0 '9F16' 'return handler live saved cursor is 9F16'
+    Assert-Equal $evidence.phases[12].phase 'post-return-prefetch' 'final observed phase is the post-return prefetch'
+    Assert-Equal $evidence.phases[12].token '75A9' 'post-return token is 75A9'
+    Assert-True ($null -eq $evidence.failure) 'accepted evidence has no failure record'
+    Assert-True ($null -eq $evidence.blocker) 'accepted evidence has no blocker record'
+    Assert-Equal $evidence.verificationGap.present $true 'evidence reports the post-capture analyzer verification gap'
+    Assert-Equal $evidence.verificationGap.luaChangedAfterCapture $false 'evidence records that the observer Lua was unchanged after capture'
+    Assert-Equal $evidence.verificationGap.observerLuaUnchanged $true 'evidence records the observer is identical to the current tracked Lua'
+    Assert-Equal $evidence.verificationGap.toolChangedAfterCapture $true 'evidence records that the analyzer changed after capture'
+    Assert-Equal $evidence.verificationGap.rerunPerformed $false 'evidence records that no MAME rerun was performed'
     Assert-Equal $evidence.run.inputPolicy 'tracked_physical_replay' 'evidence records the tracked input policy'
     Assert-Equal $evidence.run.inputReplayUsed $true 'evidence records replay use'
     Assert-Equal $evidence.run.saveStateLoaded $false 'evidence records no save-state load'
     Assert-Equal $evidence.run.inputInjection $false 'evidence records no state injection disguised as input injection'
     Assert-Equal $evidence.run.stateInjection $false 'evidence records no state injection'
     Assert-Equal $evidence.run.stateFiles 0 'evidence records no state files'
-    Assert-Equal $evidence.run.eventsSha256 (Get-Sha256 (Join-Path $RunDirectory 'events.jsonl')) 'evidence event hash matches the raw capture'
+    Assert-Equal $evidence.run.eventRecordCount 15 'evidence records fifteen strict raw events'
+    Assert-Equal $evidence.run.eventsSha256 'EA4FAE8345CCBB25D6921628C0B8EB869B8C4FA60ECF0B44B25A2D2CF185C353' 'evidence event hash matches the raw capture'
     Assert-Equal $evidence.priorTraceComparison.prior.sha256 '39A1CB2FD46FA36D66C6C4B261483D298644A22FC2690BF95C4A9697265917D9' 'evidence labels the prior original trace by hash'
     Assert-Equal $evidence.priorTraceComparison.prior.classification 'prior_trace_comparison_not_new_control_run' 'prior trace is not relabelled as a new control run'
     Assert-Equal $evidence.priorTraceComparison.prior.postReturnToken '75A9' 'prior trace post-return token is recorded for comparison'
-    Assert-Equal $evidence.priorTraceComparison.postReturnTokenMatches $false 'unobserved post-return token is not marked as matching'
-    Assert-Equal $evidence.priorTraceComparison.observedSavedCursor '' 'unobserved saved cursor is not taken from the header map echo'
-    Assert-Equal $evidence.priorTraceComparison.savedCursorMatches $false 'unobserved saved cursor is not marked as matching'
-    Assert-Equal $evidence.runLocalAssets.lua.sha256 '444A9FA03413C7D4CB25065E93D38B33B9D44FA4BD45545646543359C8078285' 'evidence rehashes the actual run-local observer'
+    Assert-Equal $evidence.priorTraceComparison.postReturnTokenMatches $true 'observed post-return token matches the prior trace'
+    Assert-Equal $evidence.priorTraceComparison.observedSavedCursor '9F16' 'observed saved cursor is taken from the live return handler'
+    Assert-Equal $evidence.priorTraceComparison.savedCursorMatches $true 'observed saved cursor matches the prior trace'
+    Assert-Equal $evidence.runLocalAssets.lua.sha256 '2A97FF58C2C6124C7D657D8387F61D58C55D328F39ED3FA71D2A740E9AF76C70' 'evidence rehashes the actual run-local observer'
     Assert-Equal $evidence.runLocalAssets.mapLua.sha256 $evidence.runLocalAssets.mapLua.canonicalSha256 'run-local map Lua matches the canonical source-map rendering'
     Assert-Equal $evidence.runLocalAssets.configLua.sha256 $evidence.runLocalAssets.configLua.canonicalSha256 'run-local config Lua matches the canonical config rendering'
-    Assert-Equal $evidence.runLocalAssets.metadataBinding 'legacy_metadata_assets_absent_recomputed_from_run' 'legacy capture metadata honestly records recomputed run-local hashes'
+    Assert-Equal $evidence.runLocalAssets.metadataBinding 'metadata_run_local_assets_match' 'capture metadata binds the actual run-local assets'
     Assert-Equal $evidence.reanalysis.classification 'read_only_private_copy_reanalysis' 'evidence records read-only private-copy reanalysis'
-    Assert-Equal $evidence.reanalysis.sourceEventsSha256 '4D545B1FB933A2585FB3B2233C1F429EF9B264BF1B2D7A380010341D4D0BC45D' 'evidence binds the source raw event hash'
+    Assert-Equal $evidence.reanalysis.sourceEventsSha256 'EA4FAE8345CCBB25D6921628C0B8EB869B8C4FA60ECF0B44B25A2D2CF185C353' 'evidence binds the source raw event hash'
+    Assert-Equal $evidence.reanalysis.rawArtifactModified $false 'evidence records that the raw artifact was not modified'
+    Assert-Equal $evidence.reanalysis.luaExecuted $false 'evidence records that no Lua was executed for analysis'
+    Assert-Equal $evidence.reanalysisHistory.attempt1.sourceEventsSha256 '912CD4442EB623B59A8786386D0D937D0343AF61C1EA758D6D6743AC16CF86F3' 'prior attempt-1 reanalysis hash is preserved'
+    Assert-Equal $evidence.reanalysisHistory.attempt2.sourceEventsSha256 '4D545B1FB933A2585FB3B2233C1F429EF9B264BF1B2D7A380010341D4D0BC45D' 'prior attempt-2 reanalysis hash is preserved'
+    Assert-Equal $evidence.reanalysisHistory.attempt3.status 'complete_natural_composite_call' 'attempt-3 reanalysis records the accepted call'
+    Assert-Equal $evidence.task40AuthorizedCapture.status 'complete_natural_composite_call' 'the preserved task-40 capture block records the accepted resolution'
+    Assert-Equal $evidence.task40AuthorizedCapture.acceptedComplete $true 'the preserved task-40 capture block is accepted after reanalysis'
+    Assert-Equal $evidence.task40AuthorizedCapture.analyzerRejection.failure 'The start-active window ends at 2238, beyond the replay fixture''s 2220-2232 start probe' 'the original analyzer rejection remains recorded verbatim'
+    Assert-Equal $evidence.task40AuthorizedCapture.analyzerRejectionResolvedBy 'il-composite-input-time-41' 'the original rejection records its offline resolution task'
+    Assert-Equal (($evidence.task40AuthorizedCapture.realFrameStartRows -join ',') -replace ' ','') '2221,2222,2223,2224,2225' 'the task-40 block records the real 60 Hz start rows'
+    Assert-Equal (($evidence.task40AuthorizedCapture.debugStopStartRows -join ',') -replace ' ','') '2226,2227,2228,2229,2230,2231,2232,2233,2234,2235,2236,2237,2238' 'the task-40 block records the debugger-stop rows'
+    Assert-Equal $evidence.task40AuthorizedCapture.stopPseudoRows 13 'the task-40 block records thirteen stop pseudo rows'
+    Assert-Equal $evidence.analyzerCorrection.classification 'offline_input_sampling_evidence_boundary_repair_no_mame_no_lua_execution' 'evidence records the offline sample-contract repair'
+    Assert-Equal $evidence.analyzerCorrection.mameLaunches 0 'the repair performed no MAME launch'
+    Assert-Equal $evidence.analyzerCorrection.luaExecutions 0 'the repair executed no Lua'
+    Assert-Equal $evidence.analyzerCorrection.startRows.Count 18 'the repair records all start-active row classifications'
+    Assert-Equal $evidence.analyzerCorrection.rawHashes.eventsSha256 'EA4FAE8345CCBB25D6921628C0B8EB869B8C4FA60ECF0B44B25A2D2CF185C353' 'the repair records the exact raw event hash'
+    Assert-Equal $evidence.analyzerCorrection.rawHashes.inputLevelsSha256 'D118902E7AFFB8B86D3C0B7FBCC92093205D228C91FFFF08BB0BEB6855CCF053' 'the repair records the exact raw input-levels hash'
+    Assert-Equal $evidence.analyzerCorrection.rawHashes.runLuaSha256 '2A97FF58C2C6124C7D657D8387F61D58C55D328F39ED3FA71D2A740E9AF76C70' 'the repair records the exact raw observer hash'
+    Assert-Equal $evidence.analyzerCorrection.rawHashes.runRomSha256 '761F34BAAC06C6F8F5DA963CCADEB276FAE9196EE1C4D9060BC915A314E3903D' 'the repair records the exact raw ROM hash'
 
     $fixture = New-SyntheticFixture -SourceRun $RunDirectory -Destination (Join-Path $tempRoot 'synthetic-complete')
     $fixtureVerify = Invoke-Tool @('-Mode','Verify','-RunDirectory',$fixture)
@@ -643,6 +805,26 @@ try {
     Append-InputLevel $lateStart 2350 '39.166666667' '00' '80' '0'
     $lateStartVerify = Invoke-Tool @('-Mode','Verify','-RunDirectory',$lateStart)
     Assert-True ($lateStartVerify.exitCode -ne 0) 'extra start activity after the start window is rejected'
+
+    $debugSpoof = New-RunCopy $fixture (Join-Path $tempRoot 'negative-debug-callback-spoof')
+    Append-InputLevel $debugSpoof 2239 '37.076580000' '00' '80' '0'
+    $debugSpoofVerify = Invoke-Tool @('-Mode','Verify','-RunDirectory',$debugSpoof)
+    Assert-True ($debugSpoofVerify.exitCode -ne 0) 'unsupported debug-callback spoof is rejected'
+
+    $duplicateTime = New-RunCopy $fixture (Join-Path $tempRoot 'negative-duplicate-sample-time')
+    Append-InputLevel $duplicateTime 2239 '37.076577558' '00' '80' '0'
+    $duplicateTimeVerify = Invoke-Tool @('-Mode','Verify','-RunDirectory',$duplicateTime)
+    Assert-True ($duplicateTimeVerify.exitCode -ne 0) 'duplicate sample time is rejected'
+
+    $nonMonotonicTime = New-RunCopy $fixture (Join-Path $tempRoot 'negative-nonmonotonic-sample-time')
+    Append-InputLevel $nonMonotonicTime 2239 '37.076500000' '00' '80' '0'
+    $nonMonotonicTimeVerify = Invoke-Tool @('-Mode','Verify','-RunDirectory',$nonMonotonicTime)
+    Assert-True ($nonMonotonicTimeVerify.exitCode -ne 0) 'non-monotonic sample time is rejected'
+
+    $malformedTime = New-RunCopy $fixture (Join-Path $tempRoot 'negative-malformed-sample-time')
+    [IO.File]::AppendAllText((Join-Path $malformedTime 'input-levels.csv'),"2239,bad,00,80,0`n",(New-Object System.Text.UTF8Encoding($false)))
+    $malformedTimeVerify = Invoke-Tool @('-Mode','Verify','-RunDirectory',$malformedTime)
+    Assert-True ($malformedTimeVerify.exitCode -ne 0) 'malformed sample time is rejected'
 
     $runLuaChanged = New-RunCopy $fixture (Join-Path $tempRoot 'negative-run-lua-changed')
     [IO.File]::AppendAllText((Join-Path $runLuaChanged 'IlCompositeNatural.lua'),"-- mutated run-local observer`n",(New-Object System.Text.UTF8Encoding($false)))

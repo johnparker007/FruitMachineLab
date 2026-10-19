@@ -108,7 +108,7 @@ compilation only: no MAME run, natural new-word execution or hardware claim. See
 [IL composite build](recovery/IL-COMPOSITE-BUILD.md) and
 `evidence/mpu4/integrity/il-composite-build.json`.
 
-### Native 6809 primitive contract (static, unexecuted)
+### Native 6809 primitive contract (static builder; natural proof below)
 
 The corrected task44 ABI is now statically built by an independent IL native
 primitive builder. It emits direct token cell `1010 = 1012`, handler
@@ -127,7 +127,8 @@ The separate `VmIlIntegrity.RepairNativePrimitive` wrapper leaves `Repair` and
 boundaries `1012/1014/1017/1019`, dispatcher rejoin `00FC` with `Y=9F16` and the
 static outer return context. The pointer cell is not a `00F8` header and the
 handler has no `PSHS`/`PULS`/`792F`. Semantics are `n -- (n+8000h) mod 10000h`
-with `U/S/Y` unchanged, `D` clobbered, and `H` neither defined nor asserted. The
+with `U`/`S` unchanged across the handler and `Y` preserved by the handler, `D`
+clobbered, and `H` neither defined nor asserted. The
 intentional changed behaviour predicts `0000 -> 8000`, then `FFFF` after `75A9`;
 this is not original `9ED9` preservation or a full-game proof.
 
@@ -142,6 +143,40 @@ dotnet build tools/FruitMachineLab.IlNativePrimitiveBuild/FruitMachineLab.IlNati
 dotnet run --project tools/FruitMachineLab.IlNativePrimitiveBuild --no-build -- `
   <original-a6ls.p1> <fresh-output-directory>
 ```
+
+### Direct native primitive natural execution (one completed call; supervisor accepted with DP limitation)
+
+One fresh-isolated natural MAME 0.281 run (`il-native-primitive-natural-46`,
+boundary `natural-fresh-boot-native-primitive-1012-observation`, attempt 1)
+reached the exact compiled image through the existing tracked physical
+coin/start replay. It observed all 12 ordered phases using only native debugger
+breakpoints and the stopped-state periodic driver. The run is a supervisor-review
+result, supervisor accepted with DP=0 classified as a deduction rather than a direct measurement. Actual live values were:
+caller `00FC/Y=9F14/token=1010/U=066E/S=0798/top=0000`; direct handler entry
+`1012/X=1012/Y=9F16` with `D=0000` and no `00F8`/`PSHS`/`PULS`; `D=0000` after
+`LDD`, `D=8000` after `ADDD` with the top still `0000`, and top `8000` after
+`STD`; post-handler `00FC/Y=9F16/token=75A9`; `75AB` entry and the `75B6`
+negative arm; post-`75A9` `00FC/Y=9F18/top=FFFF`; swap/drop
+`00FC/Y=9F1C/U=0670/S=0798/top=FFFF/token=792F`; outer return
+`7931/Y=9F1E` with control top `9F3F`; after `PULS Y`
+`00FC/Y=9F3F/U=0670/S=079A/top=FFFF/token=792F`. `U` and `S` were unchanged
+across the primitive; `Y` advanced from caller `9F14` to `9F16` during dispatch
+and then stayed `9F16` through the handler. The control top stayed `9F3F` (not
+`9F16`) and no new save frame was created. MAME exited `0`, the isolated ROM and
+tracked replay were unchanged, and the state directory was empty. `DP` was not
+sampled by the captured observer: `DP=0` is a **static deduction** from the exact
+`0EFC` direct `JMP` and the live post-handler `PC=00FC`, not a live measurement;
+direct `DP` observation remains unfulfilled for this capture. `H` was not
+defined, output or asserted; CC bytes are diagnostics only. This is an intentional
+`0000 -> 8000 -> FFFF` behaviour change, not original `9ED9` preservation,
+full-game, paid-window or physical-hardware proof. The audit re-verification
+passed **185 offline checks, 0 failures** and re-analysed a byte-preserving copy
+without rerunning MAME. The observer/checker and offline negative controls are
+in `tools/Capture-IlNativePrimitiveNatural.ps1`,
+`tools/lua/IlNativePrimitiveNatural.lua` and
+`tests/worker/Test-IlNativePrimitiveNatural.ps1`; see
+[direct native primitive natural](recovery/IL-NATIVE-PRIMITIVE-NATURAL.md) and
+`evidence/mpu4/integrity/il-native-primitive-natural.json`.
 
 ### Composite natural-execution attempts (one accepted call)
 

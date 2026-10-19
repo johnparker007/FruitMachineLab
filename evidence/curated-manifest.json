@@ -245,6 +245,11 @@
         "sha256":  "216E63EB591DA9F105399119336C9C829A139B9635624DAB07197A897F3247D2"
     },
     {
+        "path":  "docs/recovery/IL-NATIVE-PRIMITIVE-NATURAL.md",
+        "bytes":  11790,
+        "sha256":  "E81433CFB7CDE5848AD94CA250A071E9070E45E1F6210C2D2B1D5644CF37645B"
+    },
+    {
         "path":  "docs/recovery/IL-NATURAL-9ED9-COMPARISON.md",
         "bytes":  12252,
         "sha256":  "BB5D30055610BEE8746451DB20C7B8B6DF08834EC46B66A66F668A8B298EC89A"
@@ -1208,6 +1213,11 @@
         "path":  "evidence/mpu4/integrity/il-native-primitive-build.json",
         "bytes":  10148,
         "sha256":  "87160C236659735AB6E8579B4E4FD33D30CC9881F685F7A053169326FFDC73CC"
+    },
+    {
+        "path":  "evidence/mpu4/integrity/il-native-primitive-natural.json",
+        "bytes":  73102,
+        "sha256":  "C5CBB2C155E04F6E5116CD8860B2BB329B029BD36D048DB046478096DB7F195B"
     },
     {
         "path":  "evidence/mpu4/integrity/il-natural-9ed9-comparison.json",

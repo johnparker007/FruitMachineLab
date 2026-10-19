@@ -93,6 +93,21 @@ run was made. See [composite contract](recovery/IL-COMPOSITE-CONTRACT.md),
 `evidence/mpu4/integrity/il-composite-contract.json` and the read-only
 `tools/Test-IlCompositeContract.ps1`.
 
+That reviewed proposal is now statically built by the independent IL composite
+builder: header `1010` = `00F8`, body `1012-101F` copied byte-identically from
+`9ED9`, and the single same-size `9F14` `9ED7 -> 1010` caller replacement. The
+bounded composite integrity API regenerates only `FFD1-FFD5`; the realized diff
+is exactly 21 changes, fields `E93F3C61B5`, output SHA256
+`761F34BAAC06C6F8F5DA963CCADEB276FAE9196EE1C4D9060BC915A314E3903D`. A dedicated
+final-ROM-bound map records the new header/body, native handlers, caller and
+`9F16` return boundary. The map's node/entry/phase collections are read-only
+wrappers and the build's integrity report is defensively copied on access; the
+independent IL verifier attempts `IList<T>` mutation and rechecks map
+resolution, serialized map, retained report, fields and hashes. This is static
+compilation only: no MAME run, natural new-word execution or hardware claim. See
+[IL composite build](recovery/IL-COMPOSITE-BUILD.md) and
+`evidence/mpu4/integrity/il-composite-build.json`.
+
 ### Installed MAME 0.281 Lua debugger and exact boundaries
 
 The earlier claim that MAME 0.281 had no Lua debugger was wrong: it checked the

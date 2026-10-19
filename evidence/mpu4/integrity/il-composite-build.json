@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "taskId": "il-composite-build-33",
+  "ownershipRepairTaskId": "il-composite-immutability-34",
+  "baseRevision": "cb94a94f2b4d83dd2fbb8a9e69b5178ae705d003",
+  "status": "static-compiled-only-not-executed",
+  "classification": "Strict independent IL composite build for one reviewed proposal. The extension header/body and one same-size caller token were compiled in memory and the active integrity fields were regenerated. No ROM was booted, no MAME run was made and no hardware compatibility is claimed.",
+  "originalIdentity": {
+    "file": "a6ls.p1",
+    "length": 65536,
+    "sha1": "402d1518bb78fdc489b06c2aabc771e5ce151847",
+    "sha256": "ebf580381aa6eb6ffb26e2acd40f30aa34b0311f71c6564607c6f48a53bca15c"
+  },
+  "proposal": {
+    "id": "composite-copy-9ed9-at-1010",
+    "headerAddress": "1010",
+    "headerBytes": "00F8",
+    "bodyStart": "1012",
+    "bodyEndExclusive": "1020",
+    "bodyHex": "795BFF80787E795BFF807AAF792F",
+    "allocationStart": "1010",
+    "allocationEndInclusive": "101F",
+    "allocationLength": 16,
+    "callerTokenAddress": "9F14",
+    "callerExpectedToken": "9ED7",
+    "callerReplacementToken": "1010",
+    "callerWidthBytes": 2,
+    "callerSavedReturnCursor": "9F16",
+    "callerPostReturnToken": "75A9",
+    "originalHeader": "9ED7",
+    "originalBody": "9ED9",
+    "originalDefinitionPreserved": true,
+    "otherCallersPreserved": true
+  },
+  "extensionContract": {
+    "approvedRange": "1010-13EF",
+    "leftGuard": "1000-100F",
+    "rightGuard": "13F0-13FF",
+    "integrityRange": "1400-FFFF",
+    "unallocatedPreservedBytes": ["1014", "101A"]
+  },
+  "buildResult": {
+    "unrepairedImageSha1": "EEEC7CAB9899A476F010B423C38CF4A18C035903",
+    "unrepairedImageSha256": "4728A644884396A547CBE32364A10A3ADE96B740807F033E678B33249A691A26",
+    "unrepairedChangedOffsets": [
+      "1010", "1011", "1012", "1013", "1015", "1016", "1017", "1018",
+      "1019", "101B", "101C", "101D", "101E", "101F", "9F14", "9F15"
+    ],
+    "unrepairedChangedCount": 16,
+    "unrepairedComposition": "14 realized extension changes plus 2 caller-token bytes; 1014 and 101A remain FF",
+    "outputImageSha1": "DC6381B9883AAFDE372D2C2AA14C817BAE839B21",
+    "outputImageSha256": "761F34BAAC06C6F8F5DA963CCADEB276FAE9196EE1C4D9060BC915A314E3903D",
+    "changedOffsets": [
+      "1010", "1011", "1012", "1013", "1015", "1016", "1017", "1018",
+      "1019", "101B", "101C", "101D", "101E", "101F", "9F14", "9F15",
+      "FFD1", "FFD2", "FFD3", "FFD4", "FFD5"
+    ],
+    "changedCount": 21,
+    "preservedGuardsIntegrityAndOpaqueBytes": true
+  },
+  "integrity": {
+    "originalFieldsHex": "3E761E2605",
+    "repairedFieldsHex": "E93F3C61B5",
+    "fieldOffsets": ["FFD1", "FFD2", "FFD3", "FFD4", "FFD5"],
+    "algorithmOrder": "sum_xor (FFD1/FFD2) -> rotate_add (FFD3) -> rotate_sub_xor (FFD4/FFD5); each phase reads the fields written by the preceding phase",
+    "repairChangedOffsets": ["FFD1", "FFD2", "FFD3", "FFD4", "FFD5"],
+    "boundedApi": "VmIlIntegrity.RepairComposite(originalImage, unrepairedImage, VmIlCompositePatchSpec)",
+    "boundedInputs": "Exact 1010-101F 16-byte FF allocation with the reviewed 00F8 plus certified body, and the single 9F14 9ED7 -> 1010 two-byte caller replacement.",
+    "fixed9ED9ApiPreserved": "VmIlIntegrity.Repair and the fixed 9EDC edit regressions are unchanged.",
+    "uncheckedPatchingExposed": false
+  },
+  "sourceMap": {
+    "type": "CompositeWordSourceMap",
+    "buildId": "761F34BAAC06C6F8F5DA963CCADEB276FAE9196EE1C4D9060BC915A314E3903D",
+    "classification": "static_compiled_map_not_execution_proof",
+    "headerAddress": "1010",
+    "bodyRange": "1012-101F",
+    "callerTokenAddress": "9F14",
+    "callerSavedReturnCursor": "9F16",
+    "entryCount": 20,
+    "phaseCount": 13,
+    "phaseNames": [
+      "caller-dispatch",
+      "header-trampoline-entry",
+      "body-prefetch-0",
+      "handler-0",
+      "body-prefetch-1",
+      "handler-1",
+      "body-prefetch-2",
+      "handler-2",
+      "body-prefetch-3",
+      "handler-3",
+      "body-prefetch-4",
+      "return-handler",
+      "post-return-prefetch"
+    ],
+    "nativeHandlers": {
+      "795B": "795D",
+      "787E": "7880",
+      "7AAF": "7AB1",
+      "792F": "7931"
+    },
+    "originalSourceMapApisPreserved": true
+  },
+  "ownershipRepair": {
+    "taskId": "il-composite-immutability-34",
+    "defect": "CompositeWordSourceMap.Nodes, Entries and Phases returned copied arrays as IReadOnlyList, so callers could cast back to IList<T> or T[] and replace elements after build validation. CompositeWordBuildResult.IntegrityReport also exposed the mutable array-backed VmIlIntegrityReport fields and lists.",
+    "repair": "Source-map node/entry/phase arrays are cloned into ReadOnlyCollection<T> wrappers. The composite build snapshots its integrity report privately and returns a fresh defensive copy of the Fields list plus the UnrepairedChangedOffsets, RepairedChangedOffsets and RepairChangedOffsets arrays on every access.",
+    "mutationChecks": "The IL verifier casts source-map collections to IList<T>, attempts set/add/remove/clear, attempts array-cast exposure, mutates returned integrity report arrays and field list, then rechecks map resolution, serialized map, retained report, final output fields, hashes and changed count.",
+    "buildIdentityUnchanged": true,
+    "outputImageSha256Unchanged": "761F34BAAC06C6F8F5DA963CCADEB276FAE9196EE1C4D9060BC915A314E3903D",
+    "integrityFieldsUnchanged": "E93F3C61B5",
+    "changedCountUnchanged": 21
+  },
+  "verification": {
+    "headlessBuild": { "command": "dotnet build FruitMachineLab.Headless.sln --ignore-failed-sources", "exit": 0 },
+    "ilVerifier": {
+      "command": "dotnet run --project tests/FruitMachineLab.IlVerification --no-build -- <original> <fresh-output>",
+      "exit": 0,
+      "existingGroups": { "nineEdNine": 20, "nineASixFour": 9, "allocator": 15, "emitter": 14 },
+      "compositeGroups": 9,
+      "compositeMutationGroup": "Read-only map and integrity report reject external mutation",
+      "comparison": "Curated contract parsing plus independent diff, count, SHA1/SHA256 and ordered-checksum verification, with caller mutation attempts against the read-only map collections and defensively copied integrity report.",
+      "outputRoot": "artifacts/deepseek/il-composite-immutability-34/il-verifier-20261019-01"
+    },
+    "fullVerifier": {
+      "command": "dotnet run --project tests/FruitMachineLab.Verification --no-build -- .",
+      "exit": 0,
+      "groups": 417
+    },
+    "solutionBuild": { "command": "dotnet build FruitMachineLab.sln --ignore-failed-sources", "exit": 0 }
+  },
+  "privateArtifacts": {
+    "root": "artifacts/deepseek/il-composite-immutability-34/il-verifier-20261019-01/composite",
+    "repairedRom": "built-repaired.p1",
+    "unrepairedRom": "built-unrepaired.p1",
+    "sourceMap": "composite-source-map.json",
+    "buildReport": "build-report.json",
+    "trackedBinaries": false
+  },
+  "limitations": [
+    "The 1010 composite word and the 9F14 redirect are statically compiled only.",
+    "No natural reach of 1010, runtime handler observation, MAME boot or hardware test was performed in this slice.",
+    "The body is a byte-identical copy of the certified 9ED9 token sequence; no general dictionary/header decoding, relocation or banking is claimed.",
+    "The broader purpose of the 9F12 caller remains unresolved.",
+    "Integrity repair is algorithmically verified, not natural boot acceptance."
+  ],
+  "nextBoundary": "After review, run a natural fresh-boot MAME task with the imgui/BGFX paused debugger using the final-ROM-bound composite map. Observe the 1010 header/body, native handlers, return through 7931 and the saved cursor 9F16. No execution proof exists here."
+}

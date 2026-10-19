@@ -47,6 +47,13 @@ internal static class Program
                 Path.Combine(emitterOutput, "verification-report.json"));
             Console.WriteLine("Emitter log: " +
                 Path.Combine(emitterOutput, "verification.log"));
+
+            string compositeOutput = Path.Combine(outputDirectory, "composite");
+            CompositeWordVerification.Run(romPath, repositoryRoot, compositeOutput);
+            Console.WriteLine("Composite report: " +
+                Path.Combine(compositeOutput, "verification-report.json"));
+            Console.WriteLine("Composite log: " +
+                Path.Combine(compositeOutput, "verification.log"));
             return 0;
         }
         catch (Exception error)

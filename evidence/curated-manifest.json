@@ -190,6 +190,11 @@
         "sha256":  "98A9D2E3381A7EC751B4AACF3CB59ED66EA53E7A6E910C0E12AA6EB8E35B17DD"
     },
     {
+        "path":  "docs/recovery/IL-COMPOSITE-BUILD.md",
+        "bytes":  7545,
+        "sha256":  "018AE67FC0D7868841E694E4F0C599F06569115954FE5D89708341915E92CCB4"
+    },
+    {
         "path":  "docs/recovery/IL-COMPOSITE-CONTRACT.md",
         "bytes":  17592,
         "sha256":  "03CE4C66FB8EACD493502D3B9759D9331C54FC31D53FC641E94F5EDECECE38D8"
@@ -1128,6 +1133,11 @@
         "path":  "evidence/mpu4/integrity/il-build-debug-workflow.json",
         "bytes":  26601,
         "sha256":  "A7106A2C6636A25A4D3BF036A43F051436B17E83EDFBCFEED651D3C84098898A"
+    },
+    {
+        "path":  "evidence/mpu4/integrity/il-composite-build.json",
+        "bytes":  7749,
+        "sha256":  "4DB91AC49A801E0E2111D4501C68E7B73BD0E8B0FD19520F0B14ADA776E67D6C"
     },
     {
         "path":  "evidence/mpu4/integrity/il-composite-contract.json",

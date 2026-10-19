@@ -1,0 +1,230 @@
+{
+  "schemaVersion": 1,
+  "taskId": "il-larger-replacement-build-50",
+  "baseRevision": "d12ce8315690c6a4ac56427defce3bd45e6d1f9a",
+  "status": "static-compiled-only-not-executed-not-accepted",
+  "classification": "STATIC larger-replacement build, source map and CLI only. A corrected 22-byte extension allocation and one same-size caller token were compiled in memory and the active integrity fields were regenerated. No image was booted, no MAME run was made and no execution, gameplay or hardware compatibility is claimed. Supervisor review is pending.",
+  "contract": {
+    "taskId": "il-larger-contract-correction-49",
+    "status": "corrected static design accepted as prerequisite; task48 append-after-return remains rejected history"
+  },
+  "originalIdentity": {
+    "file": "a6ls.p1",
+    "length": 65536,
+    "sha1": "402D1518BB78FDC489B06C2AABC771E5CE151847",
+    "sha256": "EBF580381AA6EB6FFB26E2ACD40F30AA34B0311F71C6564607C6F48A53BCA15C"
+  },
+  "range": {
+    "approvedCpuStart": "1010",
+    "approvedCpuEnd": "13EF",
+    "leftGuard": "1000-100F",
+    "rightGuard": "13F0-13FF",
+    "protected": "1000-1003",
+    "integrityStart": "1400",
+    "allocationStart": "1010",
+    "allocationEndInclusive": "1025",
+    "allocationLength": 22,
+    "allocationOriginalContents": "22 bytes FF",
+    "unallocatedExtension": "1026-13EF"
+  },
+  "proposal": {
+    "id": "larger-replacement-9ed9-plus-one",
+    "headerAddress": "1010",
+    "headerHex": "00F8",
+    "bodyStart": "1012",
+    "bodyEndExclusive": "1026",
+    "bodyHex": "795BFF80787E795BFF807AAF795B0001787E792F",
+    "payloadHex": "00F8795BFF80787E795BFF807AAF795B0001787E792F",
+    "bodyLength": 20,
+    "payloadLength": 22,
+    "nodeCount": 7,
+    "inlineOperandCount": 3,
+    "inlineOperands": [
+      { "node": 0, "address": "1014", "value": "FF80" },
+      { "node": 2, "address": "101A", "value": "FF80" },
+      { "node": 4, "address": "1020", "value": "0001" }
+    ],
+    "finalReturn": { "address": "1024", "token": "792F", "handler": "7931", "bytesAfter": 0 },
+    "callerTokenAddress": "9F14",
+    "callerExpectedToken": "9ED7",
+    "callerReplacementToken": "1010",
+    "callerSuccessorAddress": "9F16",
+    "callerSuccessorToken": "75A9",
+    "parentTokenAddress": "9F3D",
+    "parentToken": "9F10",
+    "parentSuccessorAddress": "9F3F",
+    "parentSuccessorToken": "792F",
+    "originalDefinitionPreserved": "9ED7=00F8 and 9ED9 body 795BFF80787E795BFF807AAF792F",
+    "buildStartsFromOriginalNotPriorImages": true,
+    "coallocationWithCompositeOrNativeImages": false
+  },
+  "nodes": [
+    { "index": 0, "address": "1012", "token": "795B", "handler": "795D", "operandAddress": "1014", "operandValue": "FF80", "uDelta": -2, "depthAfter": 2 },
+    { "index": 1, "address": "1016", "token": "787E", "handler": "7880", "uDelta": 2, "depthAfter": 1 },
+    { "index": 2, "address": "1018", "token": "795B", "handler": "795D", "operandAddress": "101A", "operandValue": "FF80", "uDelta": -2, "depthAfter": 2 },
+    { "index": 3, "address": "101C", "token": "7AAF", "handler": "7AB1", "uDelta": 2, "depthAfter": 1 },
+    { "index": 4, "address": "101E", "token": "795B", "handler": "795D", "operandAddress": "1020", "operandValue": "0001", "uDelta": -2, "depthAfter": 2 },
+    { "index": 5, "address": "1022", "token": "787E", "handler": "7880", "uDelta": 2, "depthAfter": 1 },
+    { "index": 6, "address": "1024", "token": "792F", "handler": "7931", "uDelta": 0, "depthAfter": 1, "finalReturn": true }
+  ],
+  "reachability": {
+    "walk": "flat straight-line from body entry 1012 through all seven nodes in address order",
+    "nodeCount": 7,
+    "returnCount": 1,
+    "finalReturnAddress": "1024",
+    "bytesAfterReturn": 0,
+    "branchTokens": 0,
+    "allNodesReachable": true,
+    "task48NegativeControl": {
+      "payloadHex": "00F8795BFF80787E795BFF807AAF792F795B0001787E792F",
+      "decodedNodes": 8,
+      "earlyReturnAddress": "101E",
+      "unreachableAddresses": ["1020", "1024", "1026"],
+      "rejectedBy": "flat reachability rule, not a hash comparison"
+    }
+  },
+  "handlerEvidence": [
+    { "token": "795B", "handler": "795D", "handlerBytesHex": "ECA136060EFC", "effect": "push inline word; Y += 2; U -= 2" },
+    { "token": "787E", "handler": "7880", "handlerBytesHex": "3706E3C4EDC40EFC", "effect": "pop; 16-bit add with wrap; replace next; U += 2" },
+    { "token": "7AAF", "handler": "7AB1", "handlerBytesHex": "3706A8C4E841EDC40EFC", "effect": "pop; 16-bit XOR; replace next; U += 2" },
+    { "token": "792F", "handler": "7931", "handlerBytesHex": "35200EFC", "effect": "PULS Y; S += 2; no U change" },
+    { "token": "75A9", "handler": "75AB", "handlerBytesHex": "ECC42B07CC0000EDC40EFCCCFFFFEDC40EFC", "effect": "normalize non-negative to 0000, negative to FFFF in place; no U/S change" }
+  ],
+  "semantics": {
+    "classification": "static_prediction_not_execution",
+    "bodyUNet": 0,
+    "entryDepth": 1,
+    "exitDepth": 1,
+    "trampolineSDelta": -2,
+    "returnHandlerSDelta": 2,
+    "wholeCallSNet": 0,
+    "nestedCall": false,
+    "stackEffect": "input x; ((x + FF80h) mod 10000h) XOR FF80h; + 0001h at callee exit; 75A9 normalizes to 0000h when bit15 is clear, otherwise FFFFh",
+    "vectors": [
+      { "input": "0000", "copiedValue": "0000", "calleeExit": "0001", "afterSuccessor": "0000" },
+      { "input": "0001", "copiedValue": "0001", "calleeExit": "0002", "afterSuccessor": "0000" },
+      { "input": "7FFF", "copiedValue": "80FF", "calleeExit": "8100", "afterSuccessor": "FFFF" },
+      { "input": "8000", "copiedValue": "8000", "calleeExit": "8001", "afterSuccessor": "FFFF" },
+      { "input": "FFFF", "copiedValue": "00FF", "calleeExit": "0100", "afterSuccessor": "0000" }
+    ]
+  },
+  "buildResult": {
+    "unrepairedImageSha1": "5ACD11F897005A9C80C4931460847BC4E6414FA5",
+    "unrepairedImageSha256": "F8B0CAAEFF6EA6ACF9B11F9E9CEF39D2F9A4346EBC11C5FB8245D76D40E235B9",
+    "unrepairedChangedOffsets": [
+      "1010", "1011", "1012", "1013", "1015", "1016", "1017", "1018",
+      "1019", "101B", "101C", "101D", "101E", "101F", "1020", "1021",
+      "1022", "1023", "1024", "1025", "9F14", "9F15"
+    ],
+    "unrepairedChangedCount": 22,
+    "repairedImageSha1": "7D81C9828A8A8C882861151E84B676AE05D272BF",
+    "repairedImageSha256": "F693D70A73F1C12857CD64CA9DB9D68DE9BBC1888101ABC283FA2752C094B523",
+    "repairedChangedCount": 27,
+    "repairChangedOffsets": ["FFD1", "FFD2", "FFD3", "FFD4", "FFD5"],
+    "originalFieldsHex": "3E761E2605",
+    "repairedFieldsHex": "E93F3C61B5",
+    "repairedFieldsReverified": true,
+    "bytes1014And101ARemainFF": true,
+    "clusterCountsConsistent": true
+  },
+  "sourceMap": {
+    "fileName": "larger-replacement-source-map.json",
+    "sha256": "F638EAC9DD5D2F1E719ED00BA63C80C59079CE5EB2AA2148F7373E50F1E91F1F",
+    "buildId": "F693D70A73F1C12857CD64CA9DB9D68DE9BBC1888101ABC283FA2752C094B523",
+    "entryCount": 30,
+    "nodeCount": 7,
+    "inlineOperandCount": 3,
+    "phaseCount": 17,
+    "phaseClassification": "static_prediction_not_execution",
+    "phases": [
+      "caller-dispatch before 00FC: Y=9F14, token 9ED7 -> 1010",
+      "header-trampoline-entry at 00F8: X=1012, Y=9F16, saved cursor 9F16",
+      "body-prefetch-0..5 and handler-0..5 at 00FC/795D/7880/795D/7AB1/795D/7880",
+      "body-prefetch-6 at 00FC: Y=1024, token 792F",
+      "return-handler at 7931: Y=1026, saved cursor 9F16",
+      "post-return-prefetch at 00FC: Y=9F16, token 75A9"
+    ],
+    "parentContextMapped": ["9F3D", "9F3F"],
+    "resolverCoverage": ["header", "all body bytes", "inline operands", "caller token", "successor", "parent context", "final return"]
+  },
+  "preservation": {
+    "original9ED7HeaderAnd9ED9Body": true,
+    "otherCallerBytes": true,
+    "guards1000100F": true,
+    "guards13F013FF": true,
+    "protected10001003": true,
+    "unallocated102613EF": true,
+    "outerGate719B": true,
+    "dispatchTemplate7927792E": true,
+    "parentContext9F3B9F40": true,
+    "otherCallersOf9ED7": true,
+    "only1400FFFFChanges": ["9F14", "9F15", "FFD1", "FFD2", "FFD3", "FFD4", "FFD5"]
+  },
+  "cli": {
+    "project": "tools/FruitMachineLab.IlLargerReplacementBuild",
+    "arguments": "<original-a6ls.p1> <new-output-directory>",
+    "outputs": [
+      "larger-unrepaired.p1",
+      "larger-repaired.p1",
+      "larger-replacement-source-map.json",
+      "build-report.json"
+    ],
+    "createOnly": true,
+    "deterministicRepeat": true,
+    "staticOnly": true,
+    "executionClaimed": false,
+    "buildReportSha256": "216BF0CF945DB19A0BC702273532D8D8B7DDBB3761EEC3CC0CC40D6DA02C1CE1",
+    "tests/worker/Test-IlLargerReplacementBuild.ps1": {
+      "result": "pass",
+      "checks": 21,
+      "exit": 0
+    }
+  },
+  "verification": {
+    "ilVerifier": {
+      "result": "pass",
+      "existingGroupsPreserved": { "9ED9": 20, "9A64": 9, "allocator": 15, "emitter": 14, "composite": 9, "nativePrimitive": 9 },
+      "largerReplacementGroups": 11,
+      "exit": 0,
+      "report": "artifacts/deepseek/il-larger-replacement-build-50/il-verifier-05/larger-replacement/verification-report.json"
+    },
+    "fullVerifier": {
+      "result": "pass",
+      "groups": 417,
+      "unchangedFromBaseline": true,
+      "exit": 0,
+      "log": "artifacts/deepseek/il-larger-replacement-build-50/full-verifier-417-final.log"
+    },
+    "builds": {
+      "headless": "pass",
+      "windowsUi": "pass",
+      "standaloneCli": "pass"
+    }
+  },
+  "commands": [
+    { "command": "dotnet build FruitMachineLab.Headless.sln --ignore-failed-sources", "exit": 0 },
+    { "command": "dotnet run --project tests/FruitMachineLab.IlVerification --no-build -- <original-a6ls.p1> <fresh-output>", "exit": 0 },
+    { "command": "dotnet run --project tests/FruitMachineLab.Verification --no-build -- .", "exit": 0 },
+    { "command": "dotnet build FruitMachineLab.sln --ignore-failed-sources", "exit": 0 },
+    { "command": "dotnet build tools/FruitMachineLab.IlLargerReplacementBuild/FruitMachineLab.IlLargerReplacementBuild.csproj --ignore-failed-sources", "exit": 0 },
+    { "command": "powershell -NoProfile -ExecutionPolicy Bypass -File tests/worker/Test-IlLargerReplacementBuild.ps1 -OriginalRom <original-a6ls.p1> -OutputRoot <fresh-private-root>", "exit": 0 }
+  ],
+  "limitations": [
+    "The corrected body at 1012-1025 has not been naturally executed; the 0000 -> 0001 callee-exit result is a static prediction.",
+    "75A9 normalizes positive 0001 to 0000, so the parent result may remain 0000; no gameplay or parent-level change is claimed.",
+    "The broader purpose of caller 9F12 remains unresolved; only token-level dispatch and accepted reachability of 9F14 are relied upon.",
+    "No MAME run, capture, PC/Y/U/S observation, paid-window EE16/EE22, relocation, banking or hardware test was performed.",
+    "M3 call-step-over/out is independent; this flat body contains no nested call and does not by itself unblock step-over/out.",
+    "Supervisor review and a separately dispatched natural proof remain required."
+  ],
+  "provenance": {
+    "contract": "artifacts/deepseek/il-larger-contract-correction-49/contract.md",
+    "proposal": "artifacts/deepseek/il-larger-contract-correction-49/next-builder-proposal.md",
+    "builder": "src/FruitMachineLab.Il/LargerReplacementBuilder.cs",
+    "sourceMap": "src/FruitMachineLab.Il/LargerReplacementSourceMap.cs",
+    "integrityWrapper": "src/FruitMachineLab.Il/VmIlIntegrity.cs (additive RepairLargerReplacement only)",
+    "cli": "tools/FruitMachineLab.IlLargerReplacementBuild",
+    "verifier": "tests/FruitMachineLab.IlVerification/LargerReplacementVerification.cs",
+    "workerTest": "tests/worker/Test-IlLargerReplacementBuild.ps1"
+  }
+}

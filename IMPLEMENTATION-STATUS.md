@@ -2,10 +2,11 @@
 
 ## Current active status — 19 October 2026
 
-Status snapshot at `eacdf639453687bc836ddd30a20d2e6eb59f4ccf`; the last reviewed task is
-`il-native-primitive-audit-47`. The continuing supervised loop and native C#
-freeze remain in force. This section records actual bounded status; the dated
-entries below remain historical and retain their original qualifications.
+Status snapshot at `d12ce8315690c6a4ac56427defce3bd45e6d1f9a`; the latest
+bounded increment is `il-larger-replacement-build-50` and is pending supervisor
+review. The continuing supervised loop and native C# freeze remain in force.
+This section records actual bounded status; the dated entries below remain
+historical and retain their original qualifications.
 
 | Area | Recorded status |
 | --- | --- |
@@ -15,17 +16,19 @@ entries below remain historical and retain their original qualifications.
 | Build/debugger (M3) | A create-only build workflow and paused read-only sessions support inspect, flat IL-node stepping, mapped caller entry/step-into and post-return rearm for one `9ED9` caller and one `9A64` caller. Nested calls, call-step-over, arbitrary step-out, interrupts, free-run continue and writes are unsupported. |
 | Extension/composite (M4) | One static allocation was naturally executed: header `1010`, copied `9ED9` body `1012-101F`, single `9F14` `9ED7 -> 1010` redirect, ordered integrity repair, all thirteen phases observed. No general linker/relocation. |
 | Direct native primitive (M6) | One token/handler allocation was naturally executed: `1010 = 1012`, handler `1012-101A = ECC4C38000EDC40EFC`, single caller redirect, entry/result/outer return observed. `DP=0` is a static deduction from `0EFC` plus live `PC=00FC`, not a live DP sample. The `0000 -> 8000 -> FFFF` result is an intentional behaviour change, not preserved `9ED9`. |
-| Larger replacement/hooks (M5) | Open. No larger replacement, gameplay modification, native hook or two-simultaneous-modification proof exists. The task48 larger-body proposal is rejected because its retained early return makes the addition unreachable; a corrected static design is pending. |
+| Larger replacement/hooks (M5) | Open, with a corrected **static** build verified. Header `1010 = 00F8`, body `1012-1025 = 795BFF80787E795BFF807AAF795B0001787E792F`, seven nodes, three inline operands, one final `792F` at `1024`, and only `9F14` `9ED7 -> 1010`; 22 unrepaired and 27 final changes, fields `E93F3C61B5`. Task48 remains rejected by reachability at `1020/1024/1026`. The body has not executed; no gameplay modification, native hook or two-simultaneous-modification proof exists. |
 | Controlled writes (M7) / hardware (M8) | Open. The debugger is read-only and no physical MPU4 validation is recorded. |
 | General compiler/editor (M9) | Open. No general decoder, editor, relocation, banking or second platform is claimed. |
 
-Recorded verification: the last full verifier result is **417 groups**
-(`artifacts/deepseek/il-composite-immutability-34/full-verifier-34-02.log`);
-this documentation task did not rerun it. Focused accepted results are **813**,
-**253** and **74** debugger checks, the **185**-check native-primitive audit
-(retaining the original **156**-check suite) and the composite natural reanalysis.
-The **415-group** integrate59 result below is historical. No full-game, paid-window
-or physical-hardware proof is claimed.
+Recorded verification: the full verifier reran successfully at **417 groups**
+for the larger-replacement static task; the existing IL verifier groups
+20/9/15/14/9/9 were preserved and **11** focused larger-replacement groups were
+added. The worker CLI/static checker passed **21 checks**, and the headless,
+Windows UI and standalone CLI builds succeeded with zero warnings/errors. Earlier
+focused results are **813**, **253** and **74** debugger checks, the
+**185**-check native-primitive audit (retaining the original **156**-check suite)
+and the composite natural reanalysis. The **415-group** integrate59 result below
+is historical. No full-game, paid-window or physical-hardware proof is claimed.
 
 The observed natural award read was `75C0`, not edited `75BE`; changed-award
 consumption remains unproved. The later bounded natural `9ED9` original/changed
@@ -43,10 +46,10 @@ captures and reports. Historical resumption gates are retained in
 At that date, compiler foundations were bounded to checked 9A64/9ED9 definition
 emission, strict fixed-size patching, narrow 9ED9 image generation, synthetic
 original/changed 9ED9 MAME invocation and award-edit integrity repair/startup
-evidence. Later reviewed tasks added the bounded extension/composite and direct
-native primitive results recorded above. They still do not establish a general
-ROM decoder, general compiler/linker, broad new-word support, a write-capable
-debugger or hardware compatibility.
+evidence. Later reviewed tasks added the bounded extension/composite, direct
+native primitive and corrected static larger-replacement results recorded above.
+They still do not establish a general ROM decoder, general compiler/linker, broad
+new-word support, a write-capable debugger or hardware compatibility.
 
 The proof proposed at the pivot — decode one definition, edit an operand, repair
 integrity, execute naturally and resolve Lua observations to IL — has since been

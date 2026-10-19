@@ -144,6 +144,56 @@ dotnet run --project tools/FruitMachineLab.IlNativePrimitiveBuild --no-build -- 
   <original-a6ls.p1> <fresh-output-directory>
 ```
 
+### Larger replacement build (static, unexecuted)
+
+The corrected task49 larger-replacement contract is now statically built. It
+replaces the rejected task48 append-after-return idea: the body
+`1012-1025 = 795BFF80787E795BFF807AAF795B0001787E792F` is the certified
+`9ED9` prefix followed by push `0001`, add and **one final** `792F` at `1024`.
+The `1010-1025` allocation is exactly 22 original `FF` bytes, the header at
+`1010` is `00F8`, and only the same-size `9F14` caller token `9ED7 -> 1010` is
+redirected. The original `9ED7`/`9ED9` definition, its other callers, the
+`9F16` successor `75A9`, parent context, guards and unallocated `1026-13EF`
+remain byte-identical.
+
+The flat builder validates seven nodes, three inline operands at `1014`, `101A`
+and `1020`, exactly one final return, no branch and no byte after `1025`. Task48
+remains a negative control: its first return at `101E` makes `1020`, `1024` and
+`1026` unreachable, and the builder rejects it by reachability rather than by a
+hash comparison. Static stack/vector checks give body net `U=0`, entry/exit depth
+`1`, trampoline `S-2`, return handler `S+2`, no nested call, and the task49
+vectors `0000->0001->0000`, `0001->0002->0000`, `7FFF->8100->FFFF`,
+`8000->8001->FFFF`, `FFFF->0100->0000`.
+
+The additive `VmIlIntegrity.RepairLargerReplacement` wrapper changes only
+`FFD1-FFD5`; existing `Repair`, `RepairComposite` and
+`RepairNativePrimitive` are unchanged. The unrepaired diff is exactly 22 offsets
+(`1014`/`101A` remain `FF`), the final diff is exactly 27, fields are
+`E93F3C61B5`, and the repaired image is SHA1
+`7D81C9828A8A8C882861151E84B676AE05D272BF` / SHA256
+`F693D70A73F1C12857CD64CA9DB9D68DE9BBC1888101ABC283FA2752C094B523`. The
+final-image-bound map contains 30 per-byte entries, seven nodes, three inline
+operands and 17 phases, all labelled `static_prediction_not_execution`.
+
+This is static compilation only: no MAME run, natural body execution, gameplay
+or hardware claim. See [larger replacement build](recovery/IL-LARGER-REPLACEMENT-BUILD.md)
+and `evidence/mpu4/integrity/il-larger-replacement-build.json`. The standalone
+create-only CLI is:
+
+```powershell
+dotnet build tools/FruitMachineLab.IlLargerReplacementBuild/FruitMachineLab.IlLargerReplacementBuild.csproj --ignore-failed-sources
+dotnet run --project tools/FruitMachineLab.IlLargerReplacementBuild --no-build -- `
+  <original-a6ls.p1> <fresh-output-directory>
+```
+
+Private CLI/static controls:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File `
+  tests/worker/Test-IlLargerReplacementBuild.ps1 `
+  -OriginalRom <original-a6ls.p1> -OutputRoot <fresh-private-root>
+```
+
 ### Direct native primitive natural execution (one completed call; supervisor accepted with DP limitation)
 
 One fresh-isolated natural MAME 0.281 run (`il-native-primitive-natural-46`,

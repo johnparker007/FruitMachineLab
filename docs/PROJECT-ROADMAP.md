@@ -55,10 +55,11 @@ reference unless an explicitly declared modification changes it.
 ## Recorded status — 19 October 2026
 
 This is the active status of the replacement milestones, based on curated code and
-evidence at `main` `eacdf639453687bc836ddd30a20d2e6eb59f4ccf`. It does not
-declare a general compiler, a complete linker/debugger or hardware compatibility.
-The original milestone acceptance text below is retained; this section records
-what has actually been demonstrated and what remains open.
+evidence at `main` `d12ce8315690c6a4ac56427defce3bd45e6d1f9a`, with the
+`il-larger-replacement-build-50` static increment pending supervisor review. It
+does not declare a general compiler, a complete linker/debugger or hardware
+compatibility. The original milestone acceptance text below is retained; this
+section records what has actually been demonstrated and what remains open.
 
 | Stage | Recorded status | Primary evidence |
 | --- | --- | --- |
@@ -67,20 +68,20 @@ what has actually been demonstrated and what remains open.
 | M2 — First IL-to-MAME proof | Complete for the single checked `9ED9` `9EDB FF80 -> FF00` edit. Ordered integrity repair, natural fresh-boot execution of original and repaired images, and Lua PC/Y/U/S/stack observations resolved to the IL map were recorded. It is not a second edit, gameplay or paid-window proof. | `evidence/mpu4/integrity/il-natural-9ed9-comparison.json`, `il-lua-vm-trace.json`, `il-debug-caller-entry.json`; `docs/recovery/IL-LUA-VM-TRACE.md`. |
 | M3 — Basic build/run and debugger | Partial. One reproducible same-size build workflow, exact-ROM-bound maps, paused read-only inspection, flat IL-node stepping, mapped caller entry/step-into (one caller each for `9ED9` and `9A64`), branch coverage and post-return rearm are implemented. Nested/recursive calls, call-step-over, arbitrary step-out, interrupt-aware boundaries, free-run continue and writes remain unsupported. | `docs/recovery/IL-DEBUG-SESSION.md`, `IL-DEBUG-CALLER-ENTRY.md`, `IL-BUILD-DEBUG-WORKFLOW.md`; focused runs record **813**, **253** and **74** checks with 0 failures. |
 | M4 — Extension linker and new composite word | Complete for one static allocation and one natural call: header `1010`, copied `9ED9` body `1012-101F`, single `9F14` `9ED7 -> 1010` redirect and ordered `FFD1-FFD5` repair, naturally reached with all thirteen observed phases. Not a general linker, relocation or multi-word allocator. | `il-composite-build.json`, `il-composite-natural.json`; `docs/recovery/IL-COMPOSITE-BUILD.md`, `IL-COMPOSITE-NATURAL.md`. |
-| M5 — Growable definitions and hooks | Open. No larger replacement, gameplay modification, native hook or two-simultaneous-modification proof is recorded. The next bounded prerequisite slice is proposed below. | None beyond the M4 allocator/emitter and single composite build. |
+| M5 — Growable definitions and hooks | Open, with a **static** prerequisite now complete. The corrected task49 design is built and verified: header `1010 = 00F8`, body `1012-1025 = 795BFF80787E795BFF807AAF795B0001787E792F`, seven nodes, three inline operands, one final `792F` at `1024`, and only the `9F14` `9ED7 -> 1010` caller redirect. The rejected task48 append-after-return payload fails by reachability. The image is not naturally executed, and no gameplay modification, native hook or two-simultaneous-modification proof is recorded. | `evidence/mpu4/integrity/il-larger-replacement-build.json`; `docs/recovery/IL-LARGER-REPLACEMENT-BUILD.md`. |
 | M6 — New 6809 primitive | Complete for one direct native primitive only: token `1010 = 1012`, handler `1012-101A = ECC4C38000EDC40EFC`, single `9F14` redirect, natural entry/result/outer return, `U`/`S` unchanged across the handler and no new save frame. `DP=0` is a **static deduction** from the exact `0EFC` direct `JMP` and live post-handler `PC=00FC`, not a direct live measurement. The intentional result change `0000 -> 8000 -> FFFF` is not original `9ED9` preservation. No general primitive assembler or ABI coverage is claimed. | `il-native-primitive-build.json`, `il-native-primitive-natural.json`; audit **185 checks, 0 failures**; `docs/recovery/IL-NATIVE-PRIMITIVE-NATURAL.md`. |
 | M7 — Controlled live experiments | Open. The debugger is read-only; no paused RAM/register/CC write mode is implemented. | `IL-DEBUG-SESSION.md` limitations. |
 | M8 — Hardware compatibility | Open. No physical MPU4 validation is recorded. | None. |
 | M9 — Broader compiler/editor | Open. No general decoder, editor, relocation, banking or second platform is claimed. | None. |
 
-The last recorded full verifier result is **417 groups**, in
-`artifacts/deepseek/il-composite-immutability-34/full-verifier-34-02.log` and the
-task45/46 build notes. This reconciliation did not rerun the full suite. The
-**415-group** integrate59 result is historical. The latest focused IL/debugger
-counts are the accepted `813`, `253`, `74` debug checks, the `185`-check native
-primitive audit (which retains the original `156`-check suite and adds controls)
-and the composite natural reanalysis; they are focused evidence, not a full-suite
-rerun.
+The last recorded full verifier result remains **417 groups**. The larger
+replacement task reran it successfully with 417 groups and added **11** focused
+larger-replacement IL checks while preserving the existing 20/9/15/14/9/9 IL
+groups; the worker CLI/static checker passed **21 checks**. The earlier
+`il-composite-immutability-34` log and task45/46 build notes are retained. The
+**415-group** integrate59 result is historical. The accepted `813`, `253`, `74`
+debugger checks, the `185`-check native primitive audit and the composite natural
+reanalysis remain separate focused evidence, not a full-suite replacement.
 
 Natural award-image boot/controlled paid setup is recorded, but the observed
 table read was `75C0`, not the edited `75BE`. Do not report changed-award
@@ -95,10 +96,10 @@ Paths in this table are repository-relative.
 | Asset | Reuse and limits |
 | --- | --- |
 | evidence/mpu4/VM-SCRIPTS, docs/recovery/DEEP-ANALYSIS.txt and evidence/mpu4/maps | Addressed listings and interpreter/header/token evidence. Not a general dictionary decoder or complete reference inventory. |
-| src/FruitMachineLab.Il | Independent IL decoders/compilers for `9ED9` and `9A64`, ordered integrity repair, extension allocator/emitter, one static composite build and one direct native primitive build. Each capability is bounded to its checked definition/edit; it is not a general decoder, linker or assembler. |
+| src/FruitMachineLab.Il | Independent IL decoders/compilers for `9ED9` and `9A64`, ordered integrity repair, extension allocator/emitter, one static composite build, one direct native primitive build and one corrected static larger-replacement build. Each capability is bounded to its checked definition/edit; it is not a general decoder, linker or assembler. |
 | evidence/mpu4/definitions and evidence/mpu4/VM-SCRIPTS | Original spans, hashes, token listings and provenance for the checked definitions. Decoding is from identity-checked ROM bytes; listings remain oracles, not source. |
 | src/FruitMachineLab.Runtime/RomPatch.cs and tools/FruitMachineLab.RomPatch | Identity/expected-byte validation, fixed-size overlays, create-only output and hashes/diff. No allocator or general compiler. |
-| tools/FruitMachineLab.VmDefinitionImage, IlBuild and IlNativePrimitiveBuild | Narrow checked edit/build CLIs with safety tests. The native-primitive CLI emits the single reviewed token/handler and caller redirect; it is not a general assembler. |
+| tools/FruitMachineLab.VmDefinitionImage, IlBuild, IlNativePrimitiveBuild and IlLargerReplacementBuild | Narrow checked edit/build CLIs with safety tests. The native-primitive CLI emits the single reviewed token/handler and caller redirect; the larger-replacement CLI emits the corrected 22-byte allocation and caller redirect. Neither is a general assembler. |
 | tools/Verify-RomIntegrity.ps1, tools/Capture-RomIntegrityVariant.ps1 and integrity reports | Recovered ordered integrity algorithms. Natural startup repair is demonstrated for the shared-award edit and the checked `9ED9`/composite/native-primitive builds; arbitrary definition/extension repair remains unsupported. |
 | tools/Capture-VmDefinitionLiteralInvocation.ps1 and its curator | Ten independent original/modified `9ED9` synthetic seeded MAME cases. Natural original/changed `9ED9` execution is recorded separately. |
 | tools/Start-IlDebugSession.ps1, tools/Invoke-IlDebugCommand.ps1 and tools/lua/IlDebugSession.lua | Paused read-only session with exact ROM/map binding, inspect, flat node stepping, mapped caller entry/step-into and post-return rearm. No call-step-over/out, nesting, interrupts or writes. |
@@ -170,16 +171,25 @@ decode/emission, natural original/changed call and IL-resolved debugger evidence
 recorded above supersede them as the first proof. They do not authorize a broad
 implementation campaign.
 
-## Next bounded design review — larger replacement
+## Larger replacement — corrected static build
 
-M5 remains open. A larger replacement may reuse the checked literal/add/xor
-handlers and the naturally observed `9F14` caller within the approved extension
-range. The task48 candidate is rejected: it retains the original terminal
-`792F` before the appended literal/add, making the proposed addition unreachable.
-A separate static correction must establish the reachable node sequence, exact
-allocation, stack effect, source mapping and integrity scope before implementation.
-No larger replacement bytes, output or execution result are accepted here.
+M5 remains open. The task48 candidate is rejected history: it retained the
+original terminal `792F` before the appended literal/add, making the proposed
+addition unreachable. The corrected task49 design is now statically built and
+verified from the original ROM only. It allocates `1010-1025` (22 bytes), emits
+header `00F8` and body `795BFF80787E795BFF807AAF795B0001787E792F`, and
+redirects only `9F14` `9ED7 -> 1010`. Seven nodes, three inline operands and one
+final `792F` at `1024` are reachable in address order; task48 fails the same
+reachability rule at `1020/1024/1026`.
+
+The static image has 22 unrepaired changes and 27 final changes, fields
+`E93F3C61B5`, and SHA256
+`F693D70A73F1C12857CD64CA9DB9D68DE9BBC1888101ABC283FA2752C094B523`. The
+final-image-bound map records 17 static phases. This is a **static build and
+verification**, not natural execution or gameplay, and it is not accepted here.
 M3 call-step-over/out remains independently open; general nesting is not proved.
+A natural fresh-boot capture is a separate future dispatch after supervisor
+review.
 ## Debugger and validation contracts
 
 Inspect mode provides observations, breakpoints and stepping. Experiment mode

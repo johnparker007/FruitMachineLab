@@ -235,6 +235,11 @@
         "sha256":  "A4E010360D8A4672A6FDB12C39629B5A166A9D096F0E7F6A25F08B7B03B7173C"
     },
     {
+        "path":  "docs/recovery/IL-LARGER-REPLACEMENT-BUILD.md",
+        "bytes":  8383,
+        "sha256":  "18068917304A2D22CA945ACD3942487FBF152F036BEBEA4C75A5140F73CED150"
+    },
+    {
         "path":  "docs/recovery/IL-LUA-VM-TRACE.md",
         "bytes":  6627,
         "sha256":  "AEA873D6A7DAD3DFCE0A51E2EF40FF0DE4267146361D1605C02B58035A46DAAC"
@@ -1203,6 +1208,11 @@
         "path":  "evidence/mpu4/integrity/il-integrity-startup.json",
         "bytes":  29039,
         "sha256":  "4235F1164CC41A18E3D2FF5ACB889380FA588058DD6C8C87202AAF7D23B8E100"
+    },
+    {
+        "path":  "evidence/mpu4/integrity/il-larger-replacement-build.json",
+        "bytes":  11624,
+        "sha256":  "52509381F9E92562FB357D3D61E48B1CF477857D1A97A001078742A1821F3F27"
     },
     {
         "path":  "evidence/mpu4/integrity/il-lua-vm-trace.json",

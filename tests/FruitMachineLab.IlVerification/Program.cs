@@ -62,6 +62,15 @@ internal static class Program
                 Path.Combine(nativePrimitiveOutput, "verification-report.json"));
             Console.WriteLine("Native-primitive log: " +
                 Path.Combine(nativePrimitiveOutput, "verification.log"));
+
+            string largerReplacementOutput = Path.Combine(
+                outputDirectory, "larger-replacement");
+            LargerReplacementVerification.Run(
+                romPath, repositoryRoot, largerReplacementOutput);
+            Console.WriteLine("Larger-replacement report: " +
+                Path.Combine(largerReplacementOutput, "verification-report.json"));
+            Console.WriteLine("Larger-replacement log: " +
+                Path.Combine(largerReplacementOutput, "verification.log"));
             return 0;
         }
         catch (Exception error)

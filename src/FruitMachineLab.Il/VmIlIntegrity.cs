@@ -649,6 +649,267 @@ public static class VmIlIntegrity
             report);
     }
 
+    private const int LargerReplacementAllocationStart = 0x1010;
+    private const int LargerReplacementAllocationLength = 22;
+    private const int LargerReplacementCallerOffset = 0x9F14;
+    private const string LargerReplacementPayloadHex =
+        "00F8795BFF80787E795BFF807AAF795B0001787E792F";
+    private const string LargerReplacementExpectedCallerHex = "9ED7";
+    private const string LargerReplacementCallerHex = "1010";
+    private const string LargerReplacementRepairedFieldsHex = "E93F3C61B5";
+    private const string LargerReplacementRepairStatus =
+        "ALGORITHMICALLY REPAIRED the reviewed 22-byte larger-replacement allocation and " +
+        "single caller token, changing only the active fields FFD1-FFD5 in the recovered " +
+        "checker order. This is not natural boot acceptance, MAME execution evidence or " +
+        "hardware compatibility.";
+
+    public static VmIlIntegrityResult RepairLargerReplacement(
+        ReadOnlySpan<byte> originalImage,
+        ReadOnlySpan<byte> unrepairedImage,
+        VmIlLargerReplacementPatchSpec spec)
+    {
+        VmIlIntegrityOriginalVerification original = VerifyOriginal(originalImage);
+        if (spec is null)
+            throw new InvalidDataException("Larger-replacement patch specification is missing.");
+        if (unrepairedImage.Length != originalImage.Length)
+            throw new InvalidDataException(
+                $"Unrepaired image length {unrepairedImage.Length} differs from the original " +
+                $"{originalImage.Length}");
+
+        byte[] expectedAllocation = spec.ExpectedAllocationBytes?.ToArray() ??
+            throw new InvalidDataException(
+                "Larger-replacement expected allocation bytes are missing.");
+        byte[] replacementAllocation = spec.ReplacementAllocationBytes?.ToArray() ??
+            throw new InvalidDataException(
+                "Larger-replacement replacement allocation bytes are missing.");
+        byte[] expectedCaller = spec.ExpectedCallerBytes?.ToArray() ??
+            throw new InvalidDataException(
+                "Larger-replacement expected caller bytes are missing.");
+        byte[] replacementCaller = spec.ReplacementCallerBytes?.ToArray() ??
+            throw new InvalidDataException(
+                "Larger-replacement replacement caller bytes are missing.");
+
+        if (spec.AllocationStart != LargerReplacementAllocationStart ||
+            expectedAllocation.Length != LargerReplacementAllocationLength ||
+            replacementAllocation.Length != LargerReplacementAllocationLength)
+            throw new InvalidDataException(
+                "Larger-replacement repair is bounded to the exact 22-byte allocation at " +
+                "1010-1025.");
+        if (expectedAllocation.Any(value => value != 0xFF))
+            throw new InvalidDataException(
+                "Larger-replacement expected allocation bytes must be the original FF contents.");
+        if (!string.Equals(Convert.ToHexString(replacementAllocation),
+                LargerReplacementPayloadHex, StringComparison.Ordinal))
+            throw new InvalidDataException(
+                "Larger-replacement replacement allocation is not the reviewed corrected " +
+                "00F8 header plus 20-byte body.");
+        if (Overlaps(
+                LargerReplacementAllocationStart,
+                LargerReplacementAllocationStart + LargerReplacementAllocationLength - 1,
+                spec.CallerOffset, spec.CallerOffset + 1))
+            throw new InvalidDataException(
+                "Larger-replacement allocation and caller spans overlap.");
+        if (spec.CallerOffset != LargerReplacementCallerOffset ||
+            expectedCaller.Length != 2 || replacementCaller.Length != 2)
+            throw new InvalidDataException(
+                "Larger-replacement repair is bounded to the exact two-byte caller at 9F14.");
+        if (!string.Equals(Convert.ToHexString(expectedCaller),
+                LargerReplacementExpectedCallerHex, StringComparison.Ordinal) ||
+            !string.Equals(Convert.ToHexString(replacementCaller),
+                LargerReplacementCallerHex, StringComparison.Ordinal))
+            throw new InvalidDataException(
+                "Larger-replacement caller bytes are not the reviewed 9ED7 -> 1010 replacement.");
+        ReadOnlySpan<byte> originalAllocation =
+            originalImage.Slice(
+                LargerReplacementAllocationStart, LargerReplacementAllocationLength);
+        if (!originalAllocation.SequenceEqual(expectedAllocation))
+            throw new InvalidDataException(
+                "Original larger-replacement allocation at 1010-1025 does not match the " +
+                "expected FF bytes.");
+        ReadOnlySpan<byte> originalCaller =
+            originalImage.Slice(LargerReplacementCallerOffset, 2);
+        if (!originalCaller.SequenceEqual(expectedCaller))
+            throw new InvalidDataException(
+                "Original caller at 9F14 is not the expected 9ED7 token.");
+        ReadOnlySpan<byte> unrepairedAllocation =
+            unrepairedImage.Slice(
+                LargerReplacementAllocationStart, LargerReplacementAllocationLength);
+        if (!unrepairedAllocation.SequenceEqual(replacementAllocation))
+            throw new InvalidDataException(
+                "Unrepaired larger-replacement allocation does not contain the reviewed " +
+                "corrected payload.");
+        ReadOnlySpan<byte> unrepairedCaller =
+            unrepairedImage.Slice(LargerReplacementCallerOffset, 2);
+        if (!unrepairedCaller.SequenceEqual(replacementCaller))
+            throw new InvalidDataException(
+                "Unrepaired caller at 9F14 is not the reviewed 1010 token.");
+        if (!unrepairedImage.Slice(SumOffset, RotateSubXorBOffset - SumOffset + 1)
+                .SequenceEqual(originalImage.Slice(
+                    SumOffset, RotateSubXorBOffset - SumOffset + 1)))
+            throw new InvalidDataException(
+                "Unrepaired larger replacement pre-modified the active integrity fields " +
+                "FFD1-FFD5.");
+
+        var expectedChanges = new List<int>();
+        for (int index = 0; index < LargerReplacementAllocationLength; index++)
+        {
+            int offset = LargerReplacementAllocationStart + index;
+            if (originalImage[offset] != unrepairedImage[offset])
+                expectedChanges.Add(offset);
+        }
+        for (int index = 0; index < 2; index++)
+        {
+            int offset = LargerReplacementCallerOffset + index;
+            if (originalImage[offset] != unrepairedImage[offset])
+                expectedChanges.Add(offset);
+        }
+        expectedChanges.Sort();
+        int[] unrepairedChanged = ChangedOffsets(originalImage, unrepairedImage);
+        if (!unrepairedChanged.SequenceEqual(expectedChanges))
+            throw new InvalidDataException(
+                "Unrepaired larger-replacement diff contains unexpected changes outside the " +
+                "reviewed allocation and caller spans.");
+        if (unrepairedChanged.Length != 22)
+            throw new InvalidDataException(
+                $"Unrepaired larger-replacement diff has {unrepairedChanged.Length} changes; " +
+                "the reviewed contract requires 20 extension and 2 caller changes.");
+
+        EnsureProtectedBytes(originalImage, unrepairedImage);
+        EnsureLargerReplacementNeighborhood(originalImage, unrepairedImage);
+
+        string unrepairedStored = ReadFieldsHex(unrepairedImage);
+        if (!string.Equals(unrepairedStored, ExpectedOriginalFieldsHex, StringComparison.Ordinal))
+            throw new InvalidDataException(
+                $"Unrepaired larger-replacement fields are {unrepairedStored}; expected the " +
+                $"original {ExpectedOriginalFieldsHex}.");
+
+        byte[] repaired = unrepairedImage.ToArray();
+        (int sum, int xor) = SumXor(repaired);
+        repaired[SumOffset] = (byte)sum;
+        repaired[XorOffset] = (byte)xor;
+        int rotateAdd = RotateAdd(repaired);
+        repaired[RotateAddOffset] = (byte)rotateAdd;
+        (int rotateSubA, int rotateSubB) = RotateSubXor(repaired);
+        repaired[RotateSubXorAOffset] = (byte)rotateSubA;
+        repaired[RotateSubXorBOffset] = (byte)rotateSubB;
+
+        string repairedStored = ReadFieldsHex(repaired);
+        string expectedRepaired = FormatFields(
+            sum, xor, rotateAdd, rotateSubA, rotateSubB);
+        if (!string.Equals(repairedStored, expectedRepaired, StringComparison.Ordinal))
+            throw new InvalidDataException(
+                $"Repaired larger-replacement stored fields are {repairedStored}; ordered " +
+                $"computation produced {expectedRepaired}.");
+        if (!string.Equals(
+                repairedStored, LargerReplacementRepairedFieldsHex, StringComparison.Ordinal))
+            throw new InvalidDataException(
+                $"Repaired larger-replacement fields are {repairedStored}; the reviewed " +
+                $"contract requires {LargerReplacementRepairedFieldsHex}.");
+
+        (int checkSum, int checkXor) = SumXor(repaired);
+        int checkRotateAdd = RotateAdd(repaired);
+        (int checkRotateSubA, int checkRotateSubB) = RotateSubXor(repaired);
+        string checkFields = FormatFields(
+            checkSum, checkXor, checkRotateAdd, checkRotateSubA, checkRotateSubB);
+        if (!string.Equals(checkFields, repairedStored, StringComparison.Ordinal))
+            throw new InvalidDataException(
+                $"Repaired larger-replacement image does not verify: stored {repairedStored}, " +
+                $"computed {checkFields}.");
+        EnsureProtectedBytes(originalImage, repaired);
+        EnsureLargerReplacementNeighborhood(originalImage, repaired);
+
+        int[] fieldOffsets = Enumerable.Range(
+            SumOffset, RotateSubXorBOffset - SumOffset + 1).ToArray();
+        int[] repairChanged = ChangedOffsets(unrepairedImage, repaired);
+        if (!repairChanged.SequenceEqual(fieldOffsets))
+            throw new InvalidDataException(
+                "Larger-replacement repair changed bytes outside the active fields FFD1-FFD5.");
+        int[] repairedChanged = ChangedOffsets(originalImage, repaired);
+        int[] expectedRepairedDiff = expectedChanges.Concat(fieldOffsets).ToArray();
+        if (!repairedChanged.SequenceEqual(expectedRepairedDiff) ||
+            repairedChanged.Length != 27)
+            throw new InvalidDataException(
+                "Repaired larger-replacement diff is not exactly the reviewed 27 changed " +
+                "offsets.");
+
+        var fields = new[]
+        {
+            new VmIlIntegrityField(
+                "sum", SumOffset, unrepairedImage[SumOffset], repaired[SumOffset],
+                "computed first; excludes FFD1-FFD5 and reads no expected field"),
+            new VmIlIntegrityField(
+                "xor", XorOffset, unrepairedImage[XorOffset], repaired[XorOffset],
+                "computed with sum; excludes FFD1-FFD5 and reads no expected field"),
+            new VmIlIntegrityField(
+                "rotate_add", RotateAddOffset, unrepairedImage[RotateAddOffset],
+                repaired[RotateAddOffset],
+                "computed after sum/xor; excludes FFD3-FFD5 but reads FFD1-FFD2"),
+            new VmIlIntegrityField(
+                "rotate_sub_xor_a", RotateSubXorAOffset,
+                unrepairedImage[RotateSubXorAOffset],
+                repaired[RotateSubXorAOffset],
+                "computed last; excludes FFD4-FFD5 but reads FFD1-FFD3"),
+            new VmIlIntegrityField(
+                "rotate_sub_xor_b", RotateSubXorBOffset,
+                unrepairedImage[RotateSubXorBOffset],
+                repaired[RotateSubXorBOffset],
+                "computed with rotate_sub_xor A; excludes FFD4-FFD5 but reads FFD1-FFD3")
+        };
+
+        var report = new VmIlIntegrityReport(
+            original.RecordBase,
+            original.RangeStart,
+            original.RangeEnd,
+            original.ErrorCode,
+            original.Gate,
+            original.StoredFieldsHex,
+            original.ComputedFieldsHex,
+            unrepairedStored,
+            repairedStored,
+            checkFields,
+            fields,
+            unrepairedChanged,
+            repairedChanged,
+            repairChanged,
+            AlgorithmOrder,
+            LargerReplacementRepairStatus,
+            EvidenceSource);
+
+        return new VmIlIntegrityResult(
+            repaired,
+            Sha1(originalImage),
+            Sha256(originalImage),
+            Sha1(unrepairedImage),
+            Sha256(unrepairedImage),
+            Sha1(repaired),
+            Sha256(repaired),
+            report);
+    }
+
+    private static void EnsureLargerReplacementNeighborhood(
+        ReadOnlySpan<byte> originalImage, ReadOnlySpan<byte> candidate)
+    {
+        EnsureEqual(originalImage, candidate, 0x1000, 0x100F, "left guard");
+        EnsureEqual(originalImage, candidate, 0x1000, 0x1003, "protected cells");
+        EnsureEqual(originalImage, candidate, 0x13F0, 0x13FF, "right guard");
+        EnsureEqual(originalImage, candidate, 0x1400, 0x1407, "integrity neighbour");
+        EnsureEqual(originalImage, candidate, 0x9ED7, 0x9EE6,
+            "original 9ED7 header and 9ED9 body");
+        EnsureEqual(originalImage, candidate, 0x1026, 0x13EF,
+            "unallocated extension bytes");
+        EnsureEqual(originalImage, candidate, 0x719B, 0x719B, "outer gate");
+        EnsureEqual(originalImage, candidate, 0x7927, 0x792E,
+            "runtime dispatch template");
+        EnsureEqual(originalImage, candidate, 0x9F10, 0x9F13,
+            "caller definition header/body prefix");
+        EnsureEqual(originalImage, candidate, 0x9F16, 0x9F17,
+            "caller successor token");
+        EnsureEqual(originalImage, candidate, 0x9F18, 0x9F1D,
+            "caller bytes after the successor");
+        EnsureEqual(originalImage, candidate, 0x9F3B, 0x9F40,
+            "parent caller context");
+    }
+
     private static void EnsureNativePrimitiveNeighborhood(
         ReadOnlySpan<byte> originalImage, ReadOnlySpan<byte> candidate)
     {
@@ -966,6 +1227,14 @@ public sealed record VmIlCompositePatchSpec(
     byte[] ReplacementCallerBytes);
 
 public sealed record VmIlNativePrimitivePatchSpec(
+    int AllocationStart,
+    byte[] ExpectedAllocationBytes,
+    byte[] ReplacementAllocationBytes,
+    int CallerOffset,
+    byte[] ExpectedCallerBytes,
+    byte[] ReplacementCallerBytes);
+
+public sealed record VmIlLargerReplacementPatchSpec(
     int AllocationStart,
     byte[] ExpectedAllocationBytes,
     byte[] ReplacementAllocationBytes,

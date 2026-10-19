@@ -886,6 +886,278 @@ public static class VmIlIntegrity
             report);
     }
 
+    private const int LampPatternAllocationStart = 0x1010;
+    private const int LampPatternAllocationLength = 24;
+    private const int LampPatternCallerOffset = 0x9F14;
+    private const string LampPatternPayloadHex =
+        "00F8795BFF80787E795BFF807AAF79630079638F9C44792F";
+    private const string LampPatternExpectedCallerHex = "9ED7";
+    private const string LampPatternCallerHex = "1010";
+    private const string LampPatternRepairedFieldsHex = "E93F3C61B5";
+    private const string LampPatternRepairStatus =
+        "ALGORITHMICALLY REPAIRED the reviewed 24-byte lamp-pattern allocation and single " +
+        "caller token, changing only the active fields FFD1-FFD5 in the recovered checker " +
+        "order. This is not natural boot acceptance, MAME execution evidence or hardware " +
+        "compatibility.";
+
+    public static VmIlIntegrityResult RepairLampPattern(
+        ReadOnlySpan<byte> originalImage,
+        ReadOnlySpan<byte> unrepairedImage,
+        VmIlLampPatternPatchSpec spec)
+    {
+        VmIlIntegrityOriginalVerification original = VerifyOriginal(originalImage);
+        if (spec is null)
+            throw new InvalidDataException("Lamp-pattern patch specification is missing.");
+        if (unrepairedImage.Length != originalImage.Length)
+            throw new InvalidDataException(
+                $"Unrepaired image length {unrepairedImage.Length} differs from the original " +
+                $"{originalImage.Length}");
+
+        byte[] expectedAllocation = spec.ExpectedAllocationBytes?.ToArray() ??
+            throw new InvalidDataException(
+                "Lamp-pattern expected allocation bytes are missing.");
+        byte[] replacementAllocation = spec.ReplacementAllocationBytes?.ToArray() ??
+            throw new InvalidDataException(
+                "Lamp-pattern replacement allocation bytes are missing.");
+        byte[] expectedCaller = spec.ExpectedCallerBytes?.ToArray() ??
+            throw new InvalidDataException(
+                "Lamp-pattern expected caller bytes are missing.");
+        byte[] replacementCaller = spec.ReplacementCallerBytes?.ToArray() ??
+            throw new InvalidDataException(
+                "Lamp-pattern replacement caller bytes are missing.");
+
+        if (spec.AllocationStart != LampPatternAllocationStart ||
+            expectedAllocation.Length != LampPatternAllocationLength ||
+            replacementAllocation.Length != LampPatternAllocationLength)
+            throw new InvalidDataException(
+                "Lamp-pattern repair is bounded to the exact 24-byte allocation at " +
+                "1010-1027.");
+        if (expectedAllocation.Any(value => value != 0xFF))
+            throw new InvalidDataException(
+                "Lamp-pattern expected allocation bytes must be the original FF contents.");
+        if (!string.Equals(Convert.ToHexString(replacementAllocation),
+                LampPatternPayloadHex, StringComparison.Ordinal))
+            throw new InvalidDataException(
+                "Lamp-pattern replacement allocation is not the reviewed 00F8 header plus " +
+                "22-byte body.");
+        if (Overlaps(
+                LampPatternAllocationStart,
+                LampPatternAllocationStart + LampPatternAllocationLength - 1,
+                spec.CallerOffset, spec.CallerOffset + 1))
+            throw new InvalidDataException(
+                "Lamp-pattern allocation and caller spans overlap.");
+        if (spec.CallerOffset != LampPatternCallerOffset ||
+            expectedCaller.Length != 2 || replacementCaller.Length != 2)
+            throw new InvalidDataException(
+                "Lamp-pattern repair is bounded to the exact two-byte caller at 9F14.");
+        if (!string.Equals(Convert.ToHexString(expectedCaller),
+                LampPatternExpectedCallerHex, StringComparison.Ordinal) ||
+            !string.Equals(Convert.ToHexString(replacementCaller),
+                LampPatternCallerHex, StringComparison.Ordinal))
+            throw new InvalidDataException(
+                "Lamp-pattern caller bytes are not the reviewed 9ED7 -> 1010 replacement.");
+
+        ReadOnlySpan<byte> originalAllocation =
+            originalImage.Slice(LampPatternAllocationStart, LampPatternAllocationLength);
+        if (!originalAllocation.SequenceEqual(expectedAllocation))
+            throw new InvalidDataException(
+                "Original lamp-pattern allocation at 1010-1027 does not match the expected " +
+                "FF bytes.");
+        ReadOnlySpan<byte> originalCaller =
+            originalImage.Slice(LampPatternCallerOffset, 2);
+        if (!originalCaller.SequenceEqual(expectedCaller))
+            throw new InvalidDataException(
+                "Original caller at 9F14 is not the expected 9ED7 token.");
+        ReadOnlySpan<byte> unrepairedAllocation =
+            unrepairedImage.Slice(LampPatternAllocationStart, LampPatternAllocationLength);
+        if (!unrepairedAllocation.SequenceEqual(replacementAllocation))
+            throw new InvalidDataException(
+                "Unrepaired lamp-pattern allocation does not contain the reviewed payload.");
+        ReadOnlySpan<byte> unrepairedCaller =
+            unrepairedImage.Slice(LampPatternCallerOffset, 2);
+        if (!unrepairedCaller.SequenceEqual(replacementCaller))
+            throw new InvalidDataException(
+                "Unrepaired caller at 9F14 is not the reviewed 1010 token.");
+        if (!unrepairedImage.Slice(SumOffset, RotateSubXorBOffset - SumOffset + 1)
+                .SequenceEqual(originalImage.Slice(
+                    SumOffset, RotateSubXorBOffset - SumOffset + 1)))
+            throw new InvalidDataException(
+                "Unrepaired lamp-pattern word pre-modified the active integrity fields " +
+                "FFD1-FFD5.");
+
+        var expectedChanges = new List<int>();
+        for (int index = 0; index < LampPatternAllocationLength; index++)
+        {
+            int offset = LampPatternAllocationStart + index;
+            if (originalImage[offset] != unrepairedImage[offset])
+                expectedChanges.Add(offset);
+        }
+        for (int index = 0; index < 2; index++)
+        {
+            int offset = LampPatternCallerOffset + index;
+            if (originalImage[offset] != unrepairedImage[offset])
+                expectedChanges.Add(offset);
+        }
+        expectedChanges.Sort();
+        int[] unrepairedChanged = ChangedOffsets(originalImage, unrepairedImage);
+        if (!unrepairedChanged.SequenceEqual(expectedChanges))
+            throw new InvalidDataException(
+                "Unrepaired lamp-pattern diff contains unexpected changes outside the " +
+                "reviewed allocation and caller spans.");
+        if (unrepairedChanged.Length != 24)
+            throw new InvalidDataException(
+                $"Unrepaired lamp-pattern diff has {unrepairedChanged.Length} changes; " +
+                "the reviewed contract requires 22 extension and 2 caller changes.");
+
+        EnsureProtectedBytes(originalImage, unrepairedImage);
+        EnsureLampPatternNeighborhood(originalImage, unrepairedImage);
+
+        string unrepairedStored = ReadFieldsHex(unrepairedImage);
+        if (!string.Equals(unrepairedStored, ExpectedOriginalFieldsHex, StringComparison.Ordinal))
+            throw new InvalidDataException(
+                $"Unrepaired lamp-pattern fields are {unrepairedStored}; expected the " +
+                $"original {ExpectedOriginalFieldsHex}.");
+
+        byte[] repaired = unrepairedImage.ToArray();
+        (int sum, int xor) = SumXor(repaired);
+        repaired[SumOffset] = (byte)sum;
+        repaired[XorOffset] = (byte)xor;
+        int rotateAdd = RotateAdd(repaired);
+        repaired[RotateAddOffset] = (byte)rotateAdd;
+        (int rotateSubA, int rotateSubB) = RotateSubXor(repaired);
+        repaired[RotateSubXorAOffset] = (byte)rotateSubA;
+        repaired[RotateSubXorBOffset] = (byte)rotateSubB;
+
+        string repairedStored = ReadFieldsHex(repaired);
+        string expectedRepaired = FormatFields(
+            sum, xor, rotateAdd, rotateSubA, rotateSubB);
+        if (!string.Equals(repairedStored, expectedRepaired, StringComparison.Ordinal))
+            throw new InvalidDataException(
+                $"Repaired lamp-pattern stored fields are {repairedStored}; ordered " +
+                $"computation produced {expectedRepaired}.");
+        if (!string.Equals(
+                repairedStored, LampPatternRepairedFieldsHex, StringComparison.Ordinal))
+            throw new InvalidDataException(
+                $"Repaired lamp-pattern fields are {repairedStored}; the reviewed contract " +
+                $"requires {LampPatternRepairedFieldsHex}.");
+
+        (int checkSum, int checkXor) = SumXor(repaired);
+        int checkRotateAdd = RotateAdd(repaired);
+        (int checkRotateSubA, int checkRotateSubB) = RotateSubXor(repaired);
+        string checkFields = FormatFields(
+            checkSum, checkXor, checkRotateAdd, checkRotateSubA, checkRotateSubB);
+        if (!string.Equals(checkFields, repairedStored, StringComparison.Ordinal))
+            throw new InvalidDataException(
+                $"Repaired lamp-pattern image does not verify: stored {repairedStored}, " +
+                $"computed {checkFields}.");
+        EnsureProtectedBytes(originalImage, repaired);
+        EnsureLampPatternNeighborhood(originalImage, repaired);
+
+        int[] fieldOffsets = Enumerable.Range(
+            SumOffset, RotateSubXorBOffset - SumOffset + 1).ToArray();
+        int[] repairChanged = ChangedOffsets(unrepairedImage, repaired);
+        if (!repairChanged.SequenceEqual(fieldOffsets))
+            throw new InvalidDataException(
+                "Lamp-pattern repair changed bytes outside the active fields FFD1-FFD5.");
+        int[] repairedChanged = ChangedOffsets(originalImage, repaired);
+        int[] expectedRepairedDiff = expectedChanges.Concat(fieldOffsets).ToArray();
+        if (!repairedChanged.SequenceEqual(expectedRepairedDiff) ||
+            repairedChanged.Length != 29)
+            throw new InvalidDataException(
+                "Repaired lamp-pattern diff is not exactly the reviewed 29 changed offsets.");
+
+        var fields = new[]
+        {
+            new VmIlIntegrityField(
+                "sum", SumOffset, unrepairedImage[SumOffset], repaired[SumOffset],
+                "computed first; excludes FFD1-FFD5 and reads no expected field"),
+            new VmIlIntegrityField(
+                "xor", XorOffset, unrepairedImage[XorOffset], repaired[XorOffset],
+                "computed with sum; excludes FFD1-FFD5 and reads no expected field"),
+            new VmIlIntegrityField(
+                "rotate_add", RotateAddOffset, unrepairedImage[RotateAddOffset],
+                repaired[RotateAddOffset],
+                "computed after sum/xor; excludes FFD3-FFD5 but reads FFD1-FFD2"),
+            new VmIlIntegrityField(
+                "rotate_sub_xor_a", RotateSubXorAOffset,
+                unrepairedImage[RotateSubXorAOffset],
+                repaired[RotateSubXorAOffset],
+                "computed last; excludes FFD4-FFD5 but reads FFD1-FFD3"),
+            new VmIlIntegrityField(
+                "rotate_sub_xor_b", RotateSubXorBOffset,
+                unrepairedImage[RotateSubXorBOffset],
+                repaired[RotateSubXorBOffset],
+                "computed with rotate_sub_xor A; excludes FFD4-FFD5 but reads FFD1-FFD3")
+        };
+
+        var report = new VmIlIntegrityReport(
+            original.RecordBase,
+            original.RangeStart,
+            original.RangeEnd,
+            original.ErrorCode,
+            original.Gate,
+            original.StoredFieldsHex,
+            original.ComputedFieldsHex,
+            unrepairedStored,
+            repairedStored,
+            checkFields,
+            fields,
+            unrepairedChanged,
+            repairedChanged,
+            repairChanged,
+            AlgorithmOrder,
+            LampPatternRepairStatus,
+            EvidenceSource);
+
+        return new VmIlIntegrityResult(
+            repaired,
+            Sha1(originalImage),
+            Sha256(originalImage),
+            Sha1(unrepairedImage),
+            Sha256(unrepairedImage),
+            Sha1(repaired),
+            Sha256(repaired),
+            report);
+    }
+
+    private static void EnsureLampPatternNeighborhood(
+        ReadOnlySpan<byte> originalImage, ReadOnlySpan<byte> candidate)
+    {
+        EnsureEqual(originalImage, candidate, 0x1000, 0x100F, "left guard");
+        EnsureEqual(originalImage, candidate, 0x1000, 0x1003, "protected cells");
+        EnsureEqual(originalImage, candidate, 0x13F0, 0x13FF, "right guard");
+        EnsureEqual(originalImage, candidate, 0x1400, 0x1407, "integrity neighbour");
+        EnsureEqual(originalImage, candidate, 0x9ED7, 0x9EE6,
+            "original 9ED7 header and 9ED9 body");
+        EnsureEqual(originalImage, candidate, 0x1028, 0x13EF,
+            "unallocated extension bytes");
+        EnsureEqual(originalImage, candidate, 0x719B, 0x719B, "outer gate");
+        EnsureEqual(originalImage, candidate, 0x7927, 0x792E,
+            "runtime dispatch template");
+        EnsureEqual(originalImage, candidate, 0x7963, 0x796B,
+            "byte literal cell/handler");
+        EnsureEqual(originalImage, candidate, 0x796E, 0x7978,
+            "shared-body trampoline");
+        EnsureEqual(originalImage, candidate, 0x8050, 0x8053, "bridge cell");
+        EnsureEqual(originalImage, candidate, 0x7791, 0x77A3, "bridge entry");
+        EnsureEqual(originalImage, candidate, 0x777A, 0x778C,
+            "bridge continuation");
+        EnsureEqual(originalImage, candidate, 0x9B15, 0x9B25, "shared service");
+        EnsureEqual(originalImage, candidate, 0x9C44, 0x9C47,
+            "shared service cell");
+        EnsureEqual(originalImage, candidate, 0x49C5, 0x4A24,
+            "native lamp service");
+        EnsureEqual(originalImage, candidate, 0x72BF, 0x72EE, "lamp table");
+        EnsureEqual(originalImage, candidate, 0x9F10, 0x9F13,
+            "caller definition header/body prefix");
+        EnsureEqual(originalImage, candidate, 0x9F16, 0x9F17,
+            "caller successor token");
+        EnsureEqual(originalImage, candidate, 0x9F18, 0x9F1D,
+            "caller bytes after the successor");
+        EnsureEqual(originalImage, candidate, 0x9F3B, 0x9F40,
+            "parent caller context");
+    }
+
     private static void EnsureLargerReplacementNeighborhood(
         ReadOnlySpan<byte> originalImage, ReadOnlySpan<byte> candidate)
     {
@@ -1235,6 +1507,14 @@ public sealed record VmIlNativePrimitivePatchSpec(
     byte[] ReplacementCallerBytes);
 
 public sealed record VmIlLargerReplacementPatchSpec(
+    int AllocationStart,
+    byte[] ExpectedAllocationBytes,
+    byte[] ReplacementAllocationBytes,
+    int CallerOffset,
+    byte[] ExpectedCallerBytes,
+    byte[] ReplacementCallerBytes);
+
+public sealed record VmIlLampPatternPatchSpec(
     int AllocationStart,
     byte[] ExpectedAllocationBytes,
     byte[] ReplacementAllocationBytes,

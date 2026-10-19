@@ -1,0 +1,198 @@
+{
+  "schemaVersion": 1,
+  "taskId": "il-native-primitive-build-45",
+  "baseRevision": "2729559b806dc9c6796fb0434fea301aa858031d",
+  "status": "static-compiled-only-not-executed",
+  "classification": "STATIC native-primitive build only. A direct 6809 token/handler allocation and one same-size caller token were compiled in memory and the active integrity fields were regenerated. No image was booted, no MAME run was made and no execution, gameplay or hardware compatibility is claimed.",
+  "originalIdentity": {
+    "file": "a6ls.p1",
+    "length": 65536,
+    "sha1": "402d1518bb78fdc489b06c2aabc771e5ce151847",
+    "sha256": "ebf580381aa6eb6ffb26e2acd40f30aa34b0311f71c6564607c6f48a53bca15c"
+  },
+  "proposal": {
+    "id": "vm_bias_word_by_8000",
+    "contractTaskId": "il-native-abi-correction-44",
+    "tokenCellAddress": "1010",
+    "tokenValue": "1012",
+    "handlerStart": "1012",
+    "handlerEndInclusive": "101A",
+    "handlerEndExclusive": "101B",
+    "handlerHex": "ECC4C38000EDC40EFC",
+    "allocationStart": "1010",
+    "allocationEndInclusive": "101A",
+    "allocationLength": 11,
+    "allocationOriginalContents": "11 bytes FF",
+    "callerTokenAddress": "9F14",
+    "callerExpectedToken": "9ED7",
+    "callerReplacementToken": "1010",
+    "callerSuccessorAddress": "9F16",
+    "callerSuccessorToken": "75A9",
+    "originalDefinitionPreserved": "9ED7=00F8 and 9ED9 body 795BFF80787E795BFF807AAF792F",
+    "otherCallerBytesPreserved": true,
+    "buildStartsFromOriginalNotPreviousComposite": true
+  },
+  "dispatch": {
+    "streamAddressC": "9F14",
+    "tokenCellT": "1010",
+    "handlerAddressH": "1012",
+    "afterDispatchPc": "1012",
+    "afterDispatchX": "1012",
+    "afterDispatchY": "9F16",
+    "rejoinAddress": "00FC",
+    "rejoinY": "9F16",
+    "pointerCellIsCompositeHeader": false,
+    "outerReturnContext": {
+      "parentTokenAddress": "9F3D",
+      "parentToken": "9F10",
+      "parentSuccessorAddress": "9F3F",
+      "parentSuccessorToken": "792F",
+      "classification": "static_prediction_not_execution"
+    }
+  },
+  "handler": {
+    "instructions": [
+      { "address": "1012", "nextAddress": "1014", "bytes": "ECC4", "operation": "LDD ,U" },
+      { "address": "1014", "nextAddress": "1017", "bytes": "C38000", "operation": "ADDD #$8000" },
+      { "address": "1017", "nextAddress": "1019", "bytes": "EDC4", "operation": "STD ,U" },
+      { "address": "1019", "nextAddress": "101B", "bytes": "0EFC", "operation": "JMP $00FC" }
+    ],
+    "containsPshsPulsOr792F": false,
+    "endsWithJmp00FC": true
+  },
+  "semantics": {
+    "stackEffect": "n -- (n + 8000h) mod 10000h; one 16-bit in-place cell",
+    "dataStackPointerUnchanged": true,
+    "controlStackPointerUnchanged": true,
+    "cursorYUnchanged": true,
+    "dClobbered": true,
+    "hDefinedOutput": false,
+    "hContract": "H is not defined or asserted; it is preserved from the incoming state.",
+    "flagContract": "LDD defines N/Z, clears V, preserves H/C; ADDD defines N/Z/V/C and preserves H; STD defines N/Z, clears V, preserves H/C; JMP preserves all flags.",
+    "intentionalBehaviourChange": "Observed input 0000 predicts handler 8000, then FFFF after 75A9. This is not original 9ED9/9F12 preservation or a full-game proof.",
+    "classification": "static_prediction_not_execution"
+  },
+  "buildResult": {
+    "unrepairedImageSha1": "556A219993D27FA954ADBB741FB64868F1EB250B",
+    "unrepairedImageSha256": "26CDB03C3659337D1993F44167D7DD077AFDC78C3C030CABB73F94C977C6C8BF",
+    "unrepairedChangedOffsets": [
+      "1010", "1011", "1012", "1013", "1014", "1015", "1016", "1017", "1018",
+      "1019", "101A", "9F14", "9F15"
+    ],
+    "unrepairedChangedCount": 13,
+    "outputImageSha1": "22BF419CF68F243169F05193B0E1AAF708D07707",
+    "outputImageSha256": "67E9390B8CD5EB941E1928F5E38129DF265207536002B6304C2A3B413E9B3AA8",
+    "changedOffsets": [
+      "1010", "1011", "1012", "1013", "1014", "1015", "1016", "1017", "1018",
+      "1019", "101A", "9F14", "9F15", "FFD1", "FFD2", "FFD3", "FFD4", "FFD5"
+    ],
+    "changedCount": 18,
+    "guardsProtectedAndNeighbourPreserved": true,
+    "originalDefinitionAndOtherCallersPreserved": true
+  },
+  "integrity": {
+    "originalFieldsHex": "3E761E2605",
+    "repairedFieldsHex": "E93F3C61B5",
+    "fieldOffsets": ["FFD1", "FFD2", "FFD3", "FFD4", "FFD5"],
+    "algorithmOrder": "sum_xor (FFD1/FFD2) -> rotate_add (FFD3) -> rotate_sub_xor (FFD4/FFD5); each phase reads the fields written by the preceding phase",
+    "repairChangedOffsets": ["FFD1", "FFD2", "FFD3", "FFD4", "FFD5"],
+    "boundedApi": "VmIlIntegrity.RepairNativePrimitive(originalImage, unrepairedImage, VmIlNativePrimitivePatchSpec)",
+    "boundedInputs": "Exact 1010-101A 11-byte FF allocation with token 1012 plus the reviewed handler, and the single 9F14 9ED7 -> 1010 caller replacement.",
+    "existingRepairAndRepairCompositePreserved": true,
+    "uncheckedPatchingExposed": false
+  },
+  "sourceMap": {
+    "type": "NativePrimitiveSourceMap",
+    "buildId": "67E9390B8CD5EB941E1928F5E38129DF265207536002B6304C2A3B413E9B3AA8",
+    "classification": "static_native_primitive_map_bound_to_exact_output_sha256",
+    "pointerCellRole": "direct_native_handler_pointer_not_00f8_definition_header",
+    "tokenAddress": "1010",
+    "handlerRange": "1012-101A",
+    "instructionBoundaries": ["1012", "1014", "1017", "1019"],
+    "rejoinAddress": "00FC",
+    "callerTokenAddress": "9F14",
+    "callerSuccessorAddress": "9F16",
+    "callerSuccessorToken": "75A9",
+    "entryCount": 15,
+    "instructionCount": 4,
+    "phaseCount": 12,
+    "phaseClassification": "static_prediction_not_execution",
+    "outerReturnClassification": "static_prediction_not_execution",
+    "hValueAsserted": false
+  },
+  "implementation": {
+    "builder": "src/FruitMachineLab.Il/NativePrimitiveWordBuilder.cs",
+    "map": "src/FruitMachineLab.Il/NativePrimitiveSourceMap.cs",
+    "integrity": "src/FruitMachineLab.Il/VmIlIntegrity.cs (separate RepairNativePrimitive wrapper)",
+    "verification": "tests/FruitMachineLab.IlVerification/NativePrimitiveWordVerification.cs",
+    "cli": "tools/FruitMachineLab.IlNativePrimitiveBuild",
+    "allocatorAndEmitterReusedWithoutBroadening": true
+  },
+  "verification": {
+    "headlessBuild": { "command": "dotnet build FruitMachineLab.Headless.sln --ignore-failed-sources", "exit": 0 },
+    "ilVerifier": {
+      "command": "dotnet run --project tests/FruitMachineLab.IlVerification --no-build -- <original> <fresh-output>",
+      "exit": 0,
+      "existingGroups": { "nineEdNine": 20, "nineASixFour": 9, "allocator": 15, "emitter": 14, "composite": 9 },
+      "nativePrimitiveGroups": 9,
+      "nativePrimitiveGroupsList": [
+        "Builder compiles the reviewed direct token handler and caller",
+        "Independent diff is exactly the reviewed 18 offsets",
+        "Independent ordered checksum reproduces E93F3C61B5",
+        "Map models C/T/H direct entry boundaries and static return context",
+        "Public native repair rejects wrong identity caller payload range and changes",
+        "Identity and range guards reject length SHA1 SHA256 guards and last FF byte",
+        "Repeated builds are deterministic and input is unchanged",
+        "Owned buffers and integrity report aliases cannot alter retained build",
+        "Read-only map collections and nested contracts reject mutation"
+      ],
+      "outputRoot": "artifacts/deepseek/il-native-primitive-build-45/il-verifier-02"
+    },
+    "fullVerifier": {
+      "command": "dotnet run --project tests/FruitMachineLab.Verification --no-build -- .",
+      "exit": 0,
+      "groups": 417
+    },
+    "solutionBuild": { "command": "dotnet build FruitMachineLab.sln --ignore-failed-sources", "exit": 0 },
+    "cliBuild": {
+      "command": "dotnet build tools/FruitMachineLab.IlNativePrimitiveBuild/FruitMachineLab.IlNativePrimitiveBuild.csproj --ignore-failed-sources",
+      "exit": 0
+    },
+    "cliTest": {
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File artifacts/deepseek/il-native-primitive-build-45/cli-test.ps1 -OriginalRom <original>",
+      "exit": 0,
+      "positiveExit": 0,
+      "repeatExit": 0,
+      "wrongIdentityExit": 1,
+      "wrongLengthExit": 1,
+      "existingOutputExit": 1,
+      "outputIsFileExit": 1,
+      "missingArgsExit": 2,
+      "outputRoot": "artifacts/deepseek/il-native-primitive-build-45/cli-test-01",
+      "positiveRepairedSha256": "67E9390B8CD5EB941E1928F5E38129DF265207536002B6304C2A3B413E9B3AA8",
+      "deterministicRepeat": true,
+      "noOutputAfterRejectedBuilds": true,
+      "existingSentinelPreserved": true
+    }
+  },
+  "privateArtifacts": {
+    "root": "artifacts/deepseek/il-native-primitive-build-45",
+    "verifierRoot": "artifacts/deepseek/il-native-primitive-build-45/il-verifier-02/native-primitive",
+    "repairedRom": "built-repaired.p1",
+    "unrepairedRom": "built-unrepaired.p1",
+    "sourceMap": "native-primitive-source-map.json",
+    "buildReport": "build-report.json",
+    "cliPositive": "artifacts/deepseek/il-native-primitive-build-45/cli-test-01/positive",
+    "trackedBinaries": false
+  },
+  "limitations": [
+    "STATIC evidence only; direct native instruction execution at 1012 is unproved.",
+    "No MAME boot, capture, PC/Y/U/S observation, gameplay or hardware test was performed.",
+    "The 0000 -> 8000 -> FFFF path is an intentional behaviour change, not original 9ED9 preservation or a full-game proof.",
+    "The purpose and downstream consumers of 9F12/9F3B remain unresolved.",
+    "The extension range is approved for this exact ROM revision only and is not proved free on every bank-select path.",
+    "Integrity repair is algorithmically verified, not natural boot acceptance.",
+    "No general assembler, linker, dictionary, interpreter change, relocation or banking is included."
+  ],
+  "nextBoundary": "After review, run a separately dispatched natural fresh-boot MAME task with the tracked replay and no state injection. Observe caller 00FC/Y=9F14/token 1010, direct handler entry 1012/X=1012/Y=9F16, D=8000, top=8000, S=0798, post-handler 00FC/Y=9F16/token 75A9, then 75AB -> 75B6 and FFFF after 75A9. Do not assert H. No execution proof exists here."
+}

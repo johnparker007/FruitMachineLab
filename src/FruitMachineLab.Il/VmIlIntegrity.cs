@@ -415,6 +415,249 @@ public static class VmIlIntegrity
             report);
     }
 
+    private const int NativePrimitiveAllocationStart = 0x1010;
+    private const int NativePrimitiveAllocationLength = 11;
+    private const int NativePrimitiveCallerOffset = 0x9F14;
+    private const string NativePrimitiveReplacementPayloadHex =
+        "1012ECC4C38000EDC40EFC";
+    private const string NativePrimitiveExpectedCallerHex = "9ED7";
+    private const string NativePrimitiveReplacementCallerHex = "1010";
+    private const string NativePrimitiveRepairedFieldsHex = "E93F3C61B5";
+    private const string NativePrimitiveRepairStatus =
+        "ALGORITHMICALLY REPAIRED the reviewed native-primitive token/handler allocation and " +
+        "single caller token, changing only the active fields FFD1-FFD5 in the recovered " +
+        "checker order. This is not natural boot acceptance, MAME execution evidence or " +
+        "hardware compatibility.";
+
+    public static VmIlIntegrityResult RepairNativePrimitive(
+        ReadOnlySpan<byte> originalImage,
+        ReadOnlySpan<byte> unrepairedImage,
+        VmIlNativePrimitivePatchSpec spec)
+    {
+        VmIlIntegrityOriginalVerification original = VerifyOriginal(originalImage);
+        if (spec is null)
+            throw new InvalidDataException("Native-primitive patch specification is missing.");
+        if (unrepairedImage.Length != originalImage.Length)
+            throw new InvalidDataException(
+                $"Unrepaired image length {unrepairedImage.Length} differs from the original " +
+                $"{originalImage.Length}");
+
+        byte[] expectedAllocation = spec.ExpectedAllocationBytes?.ToArray() ??
+            throw new InvalidDataException(
+                "Native-primitive expected allocation bytes are missing.");
+        byte[] replacementAllocation = spec.ReplacementAllocationBytes?.ToArray() ??
+            throw new InvalidDataException(
+                "Native-primitive replacement allocation bytes are missing.");
+        byte[] expectedCaller = spec.ExpectedCallerBytes?.ToArray() ??
+            throw new InvalidDataException(
+                "Native-primitive expected caller bytes are missing.");
+        byte[] replacementCaller = spec.ReplacementCallerBytes?.ToArray() ??
+            throw new InvalidDataException(
+                "Native-primitive replacement caller bytes are missing.");
+
+        if (spec.AllocationStart != NativePrimitiveAllocationStart ||
+            expectedAllocation.Length != NativePrimitiveAllocationLength ||
+            replacementAllocation.Length != NativePrimitiveAllocationLength)
+            throw new InvalidDataException(
+                "Native-primitive repair is bounded to the exact 11-byte allocation at " +
+                "1010-101A.");
+        if (expectedAllocation.Any(value => value != 0xFF))
+            throw new InvalidDataException(
+                "Native-primitive expected allocation bytes must be the original FF contents.");
+        if (!string.Equals(Convert.ToHexString(replacementAllocation),
+                NativePrimitiveReplacementPayloadHex, StringComparison.Ordinal))
+            throw new InvalidDataException(
+                "Native-primitive replacement allocation is not the reviewed 1012 token plus " +
+                "LDD/ADDD/STD/JMP handler.");
+        if (spec.CallerOffset != NativePrimitiveCallerOffset ||
+            expectedCaller.Length != 2 || replacementCaller.Length != 2)
+            throw new InvalidDataException(
+                "Native-primitive repair is bounded to the exact two-byte caller at 9F14.");
+        if (!string.Equals(Convert.ToHexString(expectedCaller),
+                NativePrimitiveExpectedCallerHex, StringComparison.Ordinal) ||
+            !string.Equals(Convert.ToHexString(replacementCaller),
+                NativePrimitiveReplacementCallerHex, StringComparison.Ordinal))
+            throw new InvalidDataException(
+                "Native-primitive caller bytes are not the reviewed 9ED7 -> 1010 replacement.");
+        if (Overlaps(
+                NativePrimitiveAllocationStart,
+                NativePrimitiveAllocationStart + NativePrimitiveAllocationLength - 1,
+                NativePrimitiveCallerOffset, NativePrimitiveCallerOffset + 1))
+            throw new InvalidDataException(
+                "Native-primitive allocation and caller spans overlap.");
+
+        ReadOnlySpan<byte> originalAllocation =
+            originalImage.Slice(NativePrimitiveAllocationStart, NativePrimitiveAllocationLength);
+        if (!originalAllocation.SequenceEqual(expectedAllocation))
+            throw new InvalidDataException(
+                "Original native-primitive allocation at 1010-101A does not match the " +
+                "expected FF bytes.");
+        ReadOnlySpan<byte> originalCaller =
+            originalImage.Slice(NativePrimitiveCallerOffset, 2);
+        if (!originalCaller.SequenceEqual(expectedCaller))
+            throw new InvalidDataException(
+                "Original caller at 9F14 is not the expected 9ED7 token.");
+        ReadOnlySpan<byte> unrepairedAllocation =
+            unrepairedImage.Slice(NativePrimitiveAllocationStart, NativePrimitiveAllocationLength);
+        if (!unrepairedAllocation.SequenceEqual(replacementAllocation))
+            throw new InvalidDataException(
+                "Unrepaired native-primitive allocation does not contain the reviewed payload.");
+        ReadOnlySpan<byte> unrepairedCaller =
+            unrepairedImage.Slice(NativePrimitiveCallerOffset, 2);
+        if (!unrepairedCaller.SequenceEqual(replacementCaller))
+            throw new InvalidDataException(
+                "Unrepaired caller at 9F14 is not the reviewed 1010 token.");
+        if (!unrepairedImage.Slice(SumOffset, RotateSubXorBOffset - SumOffset + 1)
+                .SequenceEqual(originalImage.Slice(
+                    SumOffset, RotateSubXorBOffset - SumOffset + 1)))
+            throw new InvalidDataException(
+                "Unrepaired native primitive pre-modified the active integrity fields " +
+                "FFD1-FFD5.");
+
+        var expectedChanges = new List<int>();
+        for (int index = 0; index < NativePrimitiveAllocationLength; index++)
+        {
+            int offset = NativePrimitiveAllocationStart + index;
+            if (originalImage[offset] != unrepairedImage[offset])
+                expectedChanges.Add(offset);
+        }
+        for (int index = 0; index < 2; index++)
+        {
+            int offset = NativePrimitiveCallerOffset + index;
+            if (originalImage[offset] != unrepairedImage[offset])
+                expectedChanges.Add(offset);
+        }
+        expectedChanges.Sort();
+        int[] unrepairedChanged = ChangedOffsets(originalImage, unrepairedImage);
+        if (!unrepairedChanged.SequenceEqual(expectedChanges))
+            throw new InvalidDataException(
+                "Unrepaired native-primitive diff contains unexpected changes outside the " +
+                "reviewed allocation and caller spans.");
+        if (unrepairedChanged.Length != 13)
+            throw new InvalidDataException(
+                $"Unrepaired native-primitive diff has {unrepairedChanged.Length} changes; " +
+                "the reviewed proposal requires 11 allocation and 2 caller changes.");
+
+        EnsureProtectedBytes(originalImage, unrepairedImage);
+        EnsureNativePrimitiveNeighborhood(originalImage, unrepairedImage);
+
+        string unrepairedStored = ReadFieldsHex(unrepairedImage);
+        if (!string.Equals(unrepairedStored, ExpectedOriginalFieldsHex, StringComparison.Ordinal))
+            throw new InvalidDataException(
+                $"Unrepaired native-primitive fields are {unrepairedStored}; expected the " +
+                $"original {ExpectedOriginalFieldsHex}.");
+
+        byte[] repaired = unrepairedImage.ToArray();
+        (int sum, int xor) = SumXor(repaired);
+        repaired[SumOffset] = (byte)sum;
+        repaired[XorOffset] = (byte)xor;
+        int rotateAdd = RotateAdd(repaired);
+        repaired[RotateAddOffset] = (byte)rotateAdd;
+        (int rotateSubA, int rotateSubB) = RotateSubXor(repaired);
+        repaired[RotateSubXorAOffset] = (byte)rotateSubA;
+        repaired[RotateSubXorBOffset] = (byte)rotateSubB;
+
+        string repairedStored = ReadFieldsHex(repaired);
+        string expectedRepaired = FormatFields(
+            sum, xor, rotateAdd, rotateSubA, rotateSubB);
+        if (!string.Equals(repairedStored, expectedRepaired, StringComparison.Ordinal))
+            throw new InvalidDataException(
+                $"Repaired native-primitive stored fields are {repairedStored}; ordered " +
+                $"computation produced {expectedRepaired}.");
+        if (!string.Equals(
+                repairedStored, NativePrimitiveRepairedFieldsHex, StringComparison.Ordinal))
+            throw new InvalidDataException(
+                $"Repaired native-primitive fields are {repairedStored}; the reviewed contract " +
+                $"requires {NativePrimitiveRepairedFieldsHex}.");
+
+        (int checkSum, int checkXor) = SumXor(repaired);
+        int checkRotateAdd = RotateAdd(repaired);
+        (int checkRotateSubA, int checkRotateSubB) = RotateSubXor(repaired);
+        string checkFields = FormatFields(
+            checkSum, checkXor, checkRotateAdd, checkRotateSubA, checkRotateSubB);
+        if (!string.Equals(checkFields, repairedStored, StringComparison.Ordinal))
+            throw new InvalidDataException(
+                $"Repaired native-primitive image does not verify: stored {repairedStored}, " +
+                $"computed {checkFields}.");
+        EnsureProtectedBytes(originalImage, repaired);
+        EnsureNativePrimitiveNeighborhood(originalImage, repaired);
+
+        int[] fieldOffsets = Enumerable.Range(
+            SumOffset, RotateSubXorBOffset - SumOffset + 1).ToArray();
+        int[] repairChanged = ChangedOffsets(unrepairedImage, repaired);
+        if (!repairChanged.SequenceEqual(fieldOffsets))
+            throw new InvalidDataException(
+                "Native-primitive repair changed bytes outside the active fields FFD1-FFD5.");
+        int[] repairedChanged = ChangedOffsets(originalImage, repaired);
+        int[] expectedRepairedDiff = expectedChanges.Concat(fieldOffsets).ToArray();
+        if (!repairedChanged.SequenceEqual(expectedRepairedDiff) ||
+            repairedChanged.Length != 18)
+            throw new InvalidDataException(
+                "Repaired native-primitive diff is not exactly the reviewed 18 changed offsets.");
+
+        var fields = new[]
+        {
+            new VmIlIntegrityField(
+                "sum", SumOffset, unrepairedImage[SumOffset], repaired[SumOffset],
+                "computed first; excludes FFD1-FFD5 and reads no expected field"),
+            new VmIlIntegrityField(
+                "xor", XorOffset, unrepairedImage[XorOffset], repaired[XorOffset],
+                "computed with sum; excludes FFD1-FFD5 and reads no expected field"),
+            new VmIlIntegrityField(
+                "rotate_add", RotateAddOffset, unrepairedImage[RotateAddOffset],
+                repaired[RotateAddOffset],
+                "computed after sum/xor; excludes FFD3-FFD5 but reads FFD1-FFD2"),
+            new VmIlIntegrityField(
+                "rotate_sub_xor_a", RotateSubXorAOffset,
+                unrepairedImage[RotateSubXorAOffset],
+                repaired[RotateSubXorAOffset],
+                "computed last; excludes FFD4-FFD5 but reads FFD1-FFD3"),
+            new VmIlIntegrityField(
+                "rotate_sub_xor_b", RotateSubXorBOffset,
+                unrepairedImage[RotateSubXorBOffset],
+                repaired[RotateSubXorBOffset],
+                "computed with rotate_sub_xor A; excludes FFD4-FFD5 but reads FFD1-FFD3")
+        };
+
+        var report = new VmIlIntegrityReport(
+            original.RecordBase,
+            original.RangeStart,
+            original.RangeEnd,
+            original.ErrorCode,
+            original.Gate,
+            original.StoredFieldsHex,
+            original.ComputedFieldsHex,
+            unrepairedStored,
+            repairedStored,
+            checkFields,
+            fields,
+            unrepairedChanged,
+            repairedChanged,
+            repairChanged,
+            AlgorithmOrder,
+            NativePrimitiveRepairStatus,
+            EvidenceSource);
+
+        return new VmIlIntegrityResult(
+            repaired,
+            Sha1(originalImage),
+            Sha256(originalImage),
+            Sha1(unrepairedImage),
+            Sha256(unrepairedImage),
+            Sha1(repaired),
+            Sha256(repaired),
+            report);
+    }
+
+    private static void EnsureNativePrimitiveNeighborhood(
+        ReadOnlySpan<byte> originalImage, ReadOnlySpan<byte> candidate)
+    {
+        EnsureEqual(originalImage, candidate, 0x1000, 0x100F, "left guard");
+        EnsureEqual(originalImage, candidate, 0x1000, 0x1003, "protected cells");
+        EnsureEqual(originalImage, candidate, 0x13F0, 0x13FF, "right guard");
+        EnsureEqual(originalImage, candidate, 0x1400, 0x1407, "integrity neighbour");
+    }
+
     internal static VmIlIntegrityComputedFields ComputeForTests(
         ReadOnlySpan<byte> image, bool orderedWrites)
     {
@@ -715,6 +958,14 @@ public sealed record VmIlIntegrityComputedFields(
     int Sum, int Xor, int RotateAdd, int RotateSubXorA, int RotateSubXorB);
 
 public sealed record VmIlCompositePatchSpec(
+    int AllocationStart,
+    byte[] ExpectedAllocationBytes,
+    byte[] ReplacementAllocationBytes,
+    int CallerOffset,
+    byte[] ExpectedCallerBytes,
+    byte[] ReplacementCallerBytes);
+
+public sealed record VmIlNativePrimitivePatchSpec(
     int AllocationStart,
     byte[] ExpectedAllocationBytes,
     byte[] ReplacementAllocationBytes,

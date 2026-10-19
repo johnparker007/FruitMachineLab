@@ -54,6 +54,14 @@ internal static class Program
                 Path.Combine(compositeOutput, "verification-report.json"));
             Console.WriteLine("Composite log: " +
                 Path.Combine(compositeOutput, "verification.log"));
+
+            string nativePrimitiveOutput = Path.Combine(outputDirectory, "native-primitive");
+            NativePrimitiveWordVerification.Run(
+                romPath, repositoryRoot, nativePrimitiveOutput);
+            Console.WriteLine("Native-primitive report: " +
+                Path.Combine(nativePrimitiveOutput, "verification-report.json"));
+            Console.WriteLine("Native-primitive log: " +
+                Path.Combine(nativePrimitiveOutput, "verification.log"));
             return 0;
         }
         catch (Exception error)

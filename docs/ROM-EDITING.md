@@ -108,6 +108,41 @@ compilation only: no MAME run, natural new-word execution or hardware claim. See
 [IL composite build](recovery/IL-COMPOSITE-BUILD.md) and
 `evidence/mpu4/integrity/il-composite-build.json`.
 
+### Native 6809 primitive contract (static, unexecuted)
+
+The corrected task44 ABI is now statically built by an independent IL native
+primitive builder. It emits direct token cell `1010 = 1012`, handler
+`1012-101A = ECC4C38000EDC40EFC` (`LDD ,U`; `ADDD #$8000`; `STD ,U`;
+`JMP $00FC`) and only the same-size `9F14` caller `9ED7 -> 1010`. The full
+11-byte allocation `1010-101A` is checked as original `FF`. The build starts from
+the original ROM, not the earlier composite image, and preserves original
+`9ED7`/`9ED9`, other caller bytes, guards, protected cells and the `1400`
+neighbour. The realized diff is exactly 18 offsets (`1010-101A`, `9F14-9F15`,
+`FFD1-FFD5`), fields are `E93F3C61B5`, and output SHA256 is
+`67E9390B8CD5EB941E1928F5E38129DF265207536002B6304C2A3B413E9B3AA8`.
+
+The separate `VmIlIntegrity.RepairNativePrimitive` wrapper leaves `Repair` and
+`RepairComposite` unchanged. A dedicated final-ROM-bound map models `C=9F14`,
+`T=w@C=1010`, `H=w@T=1012`, after-dispatch `PC=H`, `X=T+2`, `Y=C+2`, handler
+boundaries `1012/1014/1017/1019`, dispatcher rejoin `00FC` with `Y=9F16` and the
+static outer return context. The pointer cell is not a `00F8` header and the
+handler has no `PSHS`/`PULS`/`792F`. Semantics are `n -- (n+8000h) mod 10000h`
+with `U/S/Y` unchanged, `D` clobbered, and `H` neither defined nor asserted. The
+intentional changed behaviour predicts `0000 -> 8000`, then `FFFF` after `75A9`;
+this is not original `9ED9` preservation or a full-game proof.
+
+This is static compilation only: no MAME run, direct native execution at `1012`,
+natural boot, gameplay or hardware claim. See
+[IL native primitive build](recovery/IL-NATIVE-PRIMITIVE-BUILD.md) and
+`evidence/mpu4/integrity/il-native-primitive-build.json`. The standalone
+create-only CLI is:
+
+```powershell
+dotnet build tools/FruitMachineLab.IlNativePrimitiveBuild/FruitMachineLab.IlNativePrimitiveBuild.csproj --ignore-failed-sources
+dotnet run --project tools/FruitMachineLab.IlNativePrimitiveBuild --no-build -- `
+  <original-a6ls.p1> <fresh-output-directory>
+```
+
 ### Composite natural-execution attempts (one accepted call)
 
 Three bounded fresh-boot MAME 0.281 attempts were made against the exact built

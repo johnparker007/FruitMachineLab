@@ -1,6 +1,28 @@
 # Current handoff
 
-## Active mandate — 18 October 2026 IL / MAME pivot
+## Current authority and direction — updated 19 October 2026
+
+Follow repository [AGENTS.md](../AGENTS.md) and
+[PROJECT-ROADMAP.md](PROJECT-ROADMAP.md) for current instructions. John's
+18 October continuing-loop authorization supersedes the pivot-only restrictions
+in the historical entry below: review bounded worker results, commit and
+normally push reviewed passing increments to the existing remote main between
+worker runs, then continue. Successful batches are review points, not stops.
+Release/deployment, installation/configuration, access and history-rewrite
+approval boundaries remain unchanged. Native C# gameplay execution stays frozen.
+
+The long-term product is new-game authoring through the original MPU4 VM and
+proved ROM services. After the current M5 growable-definition work, prioritize
+verified slices toward the minimal 6×8 Breakout/Arkanoid-style lamp-grid demo
+within the approved 992-byte range. See the roadmap for staged acceptance,
+allocation limits and separate physical-hardware validation.
+
+The dated technical counts, open-proof statements and no-dispatch/no-commit
+wording below describe their historical snapshots; they are not current policy
+or current implementation status. Consult the roadmap, ROM editing evidence
+and current supervisor checkpoint for later results and active work.
+
+## Historical pivot handoff — 18 October 2026 (superseded restrictions)
 
 Read [PROJECT-ROADMAP.md](PROJECT-ROADMAP.md), [ROM-EDITING.md](ROM-EDITING.md)
 and repository AGENTS.md first. The new objective is editable lossless original-VM

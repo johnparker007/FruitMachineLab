@@ -17,6 +17,50 @@ The objective is an extensible source-level editing, compilation and live-debugg
 environment for original MPU4 ROMs. MAME runs the original interpreter, CPU and
 machine services; original MPU4 hardware is the final compatibility target.
 
+## Long-term objective — author entirely new MPU4 games
+
+The ultimate product is a readable source-level development environment for
+writing entirely new MPU4 games, compiling them into original MPU4 VM code,
+and running them in MAME and eventually on physical MPU4 hardware.
+
+Reuse the existing ROM's recovered VM words and native services wherever
+practical: lamps, cabinet inputs, Alpha display, sound, timing and the original
+firmware's execution and scheduling services. Introduce new native 6809
+primitives only where existing ROM services cannot provide the required
+behaviour and the necessary contracts have been proved. This does not resume
+any frozen native C# execution, scheduling or peripheral simulation work.
+
+The first target demonstration is a minimal Breakout/Arkanoid-style game or
+demo using the machine's 6×8 upper-glass lamp grid. Build it in verified slices:
+
+1. A newly authored VM definition draws a verified, changing lamp-grid pattern.
+2. Two cabinet buttons move a paddle.
+3. Existing timing services drive ball movement and collision detection.
+4. Add destructible bricks, lives and scoring as space permits.
+5. Add Alpha messages and sound effects through proved original ROM services.
+
+Keep the demo within the approved `1010-13EF` reservation for this exact ROM
+revision: **992 bytes**, preserving guards `1000-100F` and `13F0-13FF`.
+Report the total allocation for every new header, code and data item, reuse ROM
+words, and reject overflow or overlap. A complete game with every feature is
+not yet proved to fit; simplify the demo to fit before considering more space.
+A different extension range still requires John's confirmation per ROM revision.
+
+After the current growable-definition milestone (M5), prioritize small working
+vertical slices toward this demonstration. Add only the IL/compiler features
+each slice demonstrates it needs, rather than seeking complete ROM coverage
+first. The intended authoring model may include named functions, constants,
+variables, conditionals, loops, memory access and high-level service calls.
+Event callbacks are optional language conveniences, not an assumed original-ROM
+capability; any implementation must respect original scheduling and VM contracts.
+
+This is a long-term acceptance target, not permission to bypass the compiler,
+linker, integrity or debugger milestones, weaken verification, or invent helper
+semantics. Give every slice explicit acceptance checks, preferably natural
+fresh-boot MAME execution. Seeded invocation, save states and debugger writes do
+not establish natural compiled-ROM behaviour. Physical MPU4 compatibility
+remains a separate final hardware-validation requirement.
+
 ## Architecture
 
 Original ROM -> lossless recovered IL -> edits/new words -> original image plus

@@ -31,6 +31,27 @@ do not limit this later authorization. Native execution remains frozen.
 Read docs/PROJECT-ROADMAP.md for the active plan and docs/ROM-EDITING.md for
 existing tools/evidence. The former autonomous C# roadmap is superseded.
 
+### Long-term game-authoring objective
+
+The ultimate product is a compiler and development environment for authoring
+entirely new MPU4 games. Follow the long-term objective in
+[docs/PROJECT-ROADMAP.md](docs/PROJECT-ROADMAP.md): the first target is a minimal
+interactive Breakout/Arkanoid-style demo on the 6×8 lamp grid, using cabinet
+buttons and proved original timing, lamp, Alpha and sound services.
+
+After the current growable-definition work, favor verified incremental slices
+that enable new game authoring. Reuse recovered ROM services before new native
+implementations. Keep the demo's new headers, code and data within the approved
+992-byte `1010-13EF` range for this ROM revision, report its size, and simplify
+the demo if needed; do not assume every game feature will fit.
+
+Preserve the lossless IL/compiler/linker/MAME architecture and hardware target.
+This objective does not authorize skipped milestones, changed allocation
+boundaries, weaker verification, invented service semantics, or resumption of
+the frozen C# executor, scheduling or peripheral simulation.
+
+### Architecture priorities
+
 - Recover the original threaded VM into a lossless, editable intermediate language
   (IL), retaining addresses, original bytes, tokens, operands, references and provenance.
 - Compile unchanged supported definitions byte-identically; preserve opaque regions

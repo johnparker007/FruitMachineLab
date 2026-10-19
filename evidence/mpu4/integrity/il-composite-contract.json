@@ -1,0 +1,413 @@
+{
+  "schemaVersion": 1,
+  "taskId": "il-composite-contract-31",
+  "baseRevision": "7d4e4e7301c3179ad4da926a14a75d8dadc28dfd",
+  "status": "static-contract-only-not-implemented-not-executed",
+  "classification": "Read-only byte-checked contract, prior natural-trace comparison and one bounded proposal. No ROM image was written, no linker or emitter was changed, and the proposed new word was not executed in MAME or on hardware.",
+  "originalIdentity": {
+    "file": "a6ls.p1",
+    "length": 65536,
+    "sha1": "402d1518bb78fdc489b06c2aabc771e5ce151847",
+    "sha256": "ebf580381aa6eb6ffb26e2acd40f30aa34b0311f71c6564607c6f48a53bca15c"
+  },
+  "extensionReservation": {
+    "cpuStart": "1010",
+    "cpuEnd": "13EF",
+    "length": 992,
+    "fileStart": 4112,
+    "fileEnd": 5103,
+    "expectedFill": "FF",
+    "rangeSha1": "eee7e8ec3670c1fb218bb9839c01277394e00c09",
+    "rangeSha256": "1a7a6a16a718aaf4221baa1f787612dd995aaa5b083cfb9409023ac6c0985c16",
+    "mapping": "bank 0; CPU 1000-FFFF uses the same file offsets for this 64 KiB image",
+    "leftGuard": { "start": "1000", "end": "100F", "expectedHex": "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF" },
+    "protectedCells": { "start": "1000", "end": "1003", "expectedHex": "FFFFFFFF" },
+    "rightGuard": { "start": "13F0", "end": "13FF", "expectedHex": "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF" },
+    "integrityStart": "1400",
+    "integrityStartHex": "343631A9145D8E01",
+    "proposalPath": "evidence/mpu4/integrity/il-extension-range-proposal.json"
+  },
+  "dispatchContract": {
+    "runtimeRamNote": "00F8 and 00FC are RAM addresses, not ROM file offsets. 76C7 copies the eight-byte ROM template at 7927-792E to RAM F8-FF.",
+    "templateRomAddress": "7927",
+    "templateRomEndInclusive": "792E",
+    "templateRomBytes": "34203184AEA16E91",
+    "copier": [
+      { "address": "76C9", "bytes": "8E00F8", "text": "LDX #$00F8" },
+      { "address": "76CC", "bytes": "108E7927", "text": "LDY #$7927" },
+      { "address": "76D0", "bytes": "ECA1", "text": "LDD ,Y++" },
+      { "address": "76D2", "bytes": "ED81", "text": "STD ,X++" },
+      { "address": "76D4", "bytes": "8C0100", "text": "CMPX #$0100" },
+      { "address": "76D7", "bytes": "26F7", "text": "BNE $76D0" }
+    ],
+    "instructions": [
+      { "romAddress": "7927", "runtimeAddress": "00F8", "bytes": "3420", "text": "PSHS Y" },
+      { "romAddress": "7929", "runtimeAddress": "00FA", "bytes": "3184", "text": "LEAY ,X" },
+      { "romAddress": "792B", "runtimeAddress": "00FC", "bytes": "AEA1", "text": "LDX ,Y++" },
+      { "romAddress": "792D", "runtimeAddress": "00FE", "bytes": "6E91", "text": "JMP [,X++]" }
+    ],
+    "fetchSemantics": "At PC=00FC, X=w@Y (the token/header address), Y=Yold+2. At PC=00FE, PC=w@X, X=Xold+2. A primitive token's header cell contains token+2; a definition token's header cell contains 00F8.",
+    "classification": "static_deduction_from_original_bytes_and_prior_trace"
+  },
+  "primitiveTokens": [
+    {
+      "token": "795B",
+      "headerAddress": "795B",
+      "headerBytes": "795D",
+      "handlerAddress": "795D",
+      "handlerBytes": "ECA136060EFC",
+      "text": "LDD ,Y++; PSHU A,B; JMP $00FC",
+      "stackEffect": { "uDelta": -2, "sDelta": 0, "yAdvance": 4 },
+      "classification": "static_deduction_from_original_bytes_and_prior_trace"
+    },
+    {
+      "token": "787E",
+      "headerAddress": "787E",
+      "headerBytes": "7880",
+      "handlerAddress": "7880",
+      "handlerBytes": "3706E3C4EDC40EFC",
+      "text": "PULU A,B; ADDD ,U; STD ,U; JMP $00FC",
+      "stackEffect": { "uDelta": 2, "sDelta": 0, "yAdvance": 2 },
+      "classification": "static_deduction_from_original_bytes_and_prior_trace"
+    },
+    {
+      "token": "7AAF",
+      "headerAddress": "7AAF",
+      "headerBytes": "7AB1",
+      "handlerAddress": "7AB1",
+      "handlerBytes": "3706A8C4E841EDC40EFC",
+      "text": "PULU A,B; EORA ,U; EORB 1,U; STD ,U; JMP $00FC",
+      "stackEffect": { "uDelta": 2, "sDelta": 0, "yAdvance": 2 },
+      "classification": "static_deduction_from_original_bytes_and_prior_trace"
+    },
+    {
+      "token": "792F",
+      "headerAddress": "792F",
+      "headerBytes": "7931",
+      "handlerAddress": "7931",
+      "handlerBytes": "35200EFC",
+      "text": "PULS Y; JMP $00FC",
+      "stackEffect": { "uDelta": 0, "sDelta": 2, "yAdvance": null, "yRestoresSavedCursor": true },
+      "classification": "static_deduction_from_original_bytes_and_prior_trace"
+    }
+  ],
+  "originalDefinition9ed9": {
+    "headerAddress": "9ED7",
+    "headerBytes": "00F8",
+    "bodyStart": "9ED9",
+    "bodyEndExclusive": "9EE7",
+    "bodyHex": "795BFF80787E795BFF807AAF792F",
+    "nodes": [
+      { "address": "9ED9", "token": "795B", "operandHex": "FF80", "next": "9EDD" },
+      { "address": "9EDD", "token": "787E", "next": "9EDF" },
+      { "address": "9EDF", "token": "795B", "operandHex": "FF80", "next": "9EE3" },
+      { "address": "9EE3", "token": "7AAF", "next": "9EE5" },
+      { "address": "9EE5", "token": "792F", "next": "9EE7" }
+    ],
+    "listingPath": "evidence/mpu4/VM-SCRIPTS/9ED9.txt"
+  },
+  "naturalCaller": {
+    "callerDefinitionHeader": "9F10",
+    "callerDefinitionHeaderBytes": "00F8",
+    "callerBodyStart": "9F12",
+    "callerBodyEndExclusive": "9F1E",
+    "callerBodyHex": "77F69ED775A97B7D7B3D792F",
+    "callerTokenAddress": "9F14",
+    "callerOriginalToken": "9ED7",
+    "callerNextTokenAddress": "9F16",
+    "callerNextToken": "75A9",
+    "parentBodyStart": "9F3B",
+    "parentBodyHex": "817D9F10792F",
+    "parentTokenAddress": "9F3D",
+    "parentToken": "9F10",
+    "parentSuccessorTokenAddress": "9F3F",
+    "parentSuccessorToken": "792F",
+    "listings": [
+      "evidence/mpu4/VM-SCRIPTS/9F12.txt",
+      "evidence/mpu4/VM-SCRIPTS/9F3B.txt"
+    ],
+    "traceFacts": {
+      "tracePath": "evidence/mpu4/integrity/il-lua-vm-trace.json",
+      "traceTask": "il-lua-api-09",
+      "evidenceKind": "curated_prior_trace_summary_not_raw_mame_logs",
+      "originalSha256": "ebf580381aa6eb6ffb26e2acd40f30aa34b0311f71c6564607c6f48a53bca15c",
+      "firstPrefetch": { "y": "9ED9", "token": "795B", "u": "066E", "s": "0796", "top": "0000" },
+      "returnHandler": { "pc": "7931", "savedCursor": "9F16", "u": "066E", "s": "0796", "top": "0000" },
+      "postReturnPrefetch": { "y": "9F16", "token": "75A9", "u": "066E", "s": "0798", "wAtS": "9F3F" },
+      "result": "0000",
+      "classification": "prior_trace_natural_early_call"
+    },
+    "classification": "prior_trace_for_reachability; static_deduction_for_caller_bytes"
+  },
+  "proposal": {
+    "id": "composite-copy-9ed9-at-1010",
+    "description": "A new definition token at extension header 1010 whose body is a byte-identical copy of the accepted 9ED9 body. One naturally observed caller token 9ED7 at 9F14 is replaced by 1010. The original 9ED7 header and 9ED9 body remain unchanged for all other callers.",
+    "headerAddress": "1010",
+    "headerBytes": "00F8",
+    "bodyStart": "1012",
+    "bodyEndExclusive": "1020",
+    "bodyHex": "795BFF80787E795BFF807AAF792F",
+    "allocationStart": "1010",
+    "allocationEndInclusive": "101F",
+    "allocationLength": 16,
+    "tokenReplacement": {
+      "address": "9F14",
+      "expectedOriginalBytes": "9ED7",
+      "replacementBytes": "1010",
+      "widthBytes": 2,
+      "sameSize": true
+    },
+    "stackEffect": {
+      "callSiteUNet": 0,
+      "callSiteSNet": 0,
+      "tokenBodyUNet": 0,
+      "entryTrampolineSDelta": -2,
+      "returnHandlerSDelta": 2,
+      "callerSuccessor": "9F16",
+      "postReturnToken": "75A9",
+      "input": "one 16-bit cell at U",
+      "output": "one 16-bit cell at the same U",
+      "classification": "static_deduction_from_certified_handlers"
+    },
+    "executionStatus": "static_prediction_not_executed",
+    "naturalExecutionObserved": false,
+    "phaseClassificationNote": "Every row below is a static prediction derived from the exact original bytes, the proposed byte-identical body and the prior-trace input state. No row is newly observed. The original 9ED9 phase facts remain prior_trace in naturalCaller.traceFacts.",
+    "phases": [
+      {
+        "phase": "caller-dispatch",
+        "classification": "static_prediction",
+        "pc": "00FC",
+        "y": "9F14",
+        "token": "9ED7->1010",
+        "u": "066E",
+        "s": "0798",
+        "top": "0000",
+        "second": "0000",
+        "boundary": "Pre-fetch at 00FC; LDX ,Y++ has not executed.",
+        "predictedNext": "LDX ,Y++ -> Y=9F16, X=1010; JMP [,X++] -> PC=00F8, X=1012."
+      },
+      {
+        "phase": "header-trampoline-entry",
+        "classification": "static_prediction",
+        "pc": "00F8",
+        "x": "1012",
+        "y": "9F16",
+        "token": "00F8 pointer",
+        "u": "066E",
+        "s": "0798",
+        "top": "0000",
+        "second": "0000",
+        "savedAfterPush": "9F16",
+        "boundary": "After JMP [,X++] at 00FE and before PSHS Y at 00F8; Y already advanced by LDX ,Y++.",
+        "predictedNext": "PSHS Y saves 9F16 and S=0796; LEAY ,X sets Y=1012; PC=00FC."
+      },
+      {
+        "phase": "body-prefetch-0",
+        "classification": "static_prediction",
+        "pc": "00FC",
+        "x": "1012",
+        "y": "1012",
+        "token": "795B",
+        "u": "066E",
+        "s": "0796",
+        "top": "0000",
+        "second": "0000",
+        "boundary": "Pre-fetch at 00FC after PSHS/LEAY; first body token at 1012.",
+        "predictedNext": "LDX ,Y++ -> Y=1014, X=795B; handler 795D."
+      },
+      {
+        "phase": "handler-0",
+        "classification": "static_prediction",
+        "pc": "795D",
+        "x": "795D",
+        "y": "1014",
+        "token": "795B",
+        "inlineOperand": "FF80",
+        "u": "066E",
+        "s": "0796",
+        "top": "0000",
+        "second": "0000",
+        "boundary": "Handler entry before LDD ,Y++; inline operand at 1014-1015.",
+        "predictedNext": "LDD ,Y++ -> Y=1016; PSHU -> U=066C, top=FF80; JMP 00FC."
+      },
+      {
+        "phase": "body-prefetch-1",
+        "classification": "static_prediction",
+        "pc": "00FC",
+        "x": "795D",
+        "y": "1016",
+        "token": "787E",
+        "u": "066C",
+        "s": "0796",
+        "top": "FF80",
+        "second": "0000",
+        "boundary": "Pre-fetch at 00FC after handler 795D pushed FF80.",
+        "predictedNext": "LDX ,Y++ -> Y=1018, X=787E; handler 7880."
+      },
+      {
+        "phase": "handler-1",
+        "classification": "static_prediction",
+        "pc": "7880",
+        "x": "7880",
+        "y": "1018",
+        "token": "787E",
+        "u": "066C",
+        "s": "0796",
+        "top": "FF80",
+        "second": "0000",
+        "boundary": "Handler entry before PULU A,B; no inline operand.",
+        "predictedNext": "PULU -> U=066E; ADDD ,U/STD ,U -> top=FF80; JMP 00FC."
+      },
+      {
+        "phase": "body-prefetch-2",
+        "classification": "static_prediction",
+        "pc": "00FC",
+        "x": "7880",
+        "y": "1018",
+        "token": "795B",
+        "u": "066E",
+        "s": "0796",
+        "top": "FF80",
+        "second": "0000",
+        "boundary": "Pre-fetch at 00FC after handler 7880; Y was not advanced by that handler.",
+        "predictedNext": "LDX ,Y++ -> Y=101A, X=795B; handler 795D."
+      },
+      {
+        "phase": "handler-2",
+        "classification": "static_prediction",
+        "pc": "795D",
+        "x": "795D",
+        "y": "101A",
+        "token": "795B",
+        "inlineOperand": "FF80",
+        "u": "066E",
+        "s": "0796",
+        "top": "FF80",
+        "second": "0000",
+        "boundary": "Handler entry before LDD ,Y++; inline operand at 101A-101B.",
+        "predictedNext": "LDD ,Y++ -> Y=101C; PSHU -> U=066C, top=FF80; JMP 00FC."
+      },
+      {
+        "phase": "body-prefetch-3",
+        "classification": "static_prediction",
+        "pc": "00FC",
+        "x": "795D",
+        "y": "101C",
+        "token": "7AAF",
+        "u": "066C",
+        "s": "0796",
+        "top": "FF80",
+        "second": "FF80",
+        "boundary": "Pre-fetch at 00FC after handler 795D pushed a second FF80.",
+        "predictedNext": "LDX ,Y++ -> Y=101E, X=7AAF; handler 7AB1."
+      },
+      {
+        "phase": "handler-3",
+        "classification": "static_prediction",
+        "pc": "7AB1",
+        "x": "7AB1",
+        "y": "101E",
+        "token": "7AAF",
+        "u": "066C",
+        "s": "0796",
+        "top": "FF80",
+        "second": "FF80",
+        "boundary": "Handler entry before PULU A,B; no inline operand.",
+        "predictedNext": "PULU -> U=066E; XOR into ,U -> top=0000; JMP 00FC."
+      },
+      {
+        "phase": "body-prefetch-4",
+        "classification": "static_prediction",
+        "pc": "00FC",
+        "x": "7AB1",
+        "y": "101E",
+        "token": "792F",
+        "u": "066E",
+        "s": "0796",
+        "top": "0000",
+        "second": "0000",
+        "boundary": "Pre-fetch at 00FC after handler 7AB1.",
+        "predictedNext": "LDX ,Y++ -> Y=1020, X=792F; handler 7931."
+      },
+      {
+        "phase": "return-handler",
+        "classification": "static_prediction",
+        "pc": "7931",
+        "x": "7931",
+        "y": "1020",
+        "token": "792F",
+        "u": "066E",
+        "s": "0796",
+        "top": "0000",
+        "second": "0000",
+        "savedCursor": "9F16",
+        "boundary": "Handler entry before PULS Y; Y points just past the final body token.",
+        "predictedNext": "PULS Y -> Y=9F16, S=0798; JMP 00FC."
+      },
+      {
+        "phase": "post-return-prefetch",
+        "classification": "static_prediction",
+        "pc": "00FC",
+        "x": "7931",
+        "y": "9F16",
+        "token": "75A9",
+        "u": "066E",
+        "s": "0798",
+        "top": "0000",
+        "second": "0000",
+        "boundary": "Pre-fetch at 00FC after PULS Y restored the caller cursor.",
+        "predictedNext": "Next caller token in the stream is 7B7D at 9F18, subject to 75A9 branch behaviour; not part of this call boundary."
+      }
+    ],
+    "classification": "hypothesis_for_future_natural_execution; byte-contract_is_static_deduction; phase_rows_are_static_predictions"
+  },
+  "integrity": {
+    "rangeStart": "1400",
+    "rangeEnd": "FFFF",
+    "originalFieldsHex": "3E761E2605",
+    "proposedFieldsHex": "E93F3C61B5",
+    "fieldOffsets": ["FFD1", "FFD2", "FFD3", "FFD4", "FFD5"],
+    "algorithmOrder": "sum_xor (FFD1/FFD2) -> rotate_add (FFD3) -> rotate_sub_xor (FFD4/FFD5); each phase reads the fields written by the preceding phase",
+    "coverage": "The extension allocation 1010-101F is below 1400 and outside the active firmware integrity range. The callsite token at 9F14-9F15 is inside 1400-FFFF, so regenerating the active fields is required."
+  },
+  "proposedImageDiff": {
+    "extensionAllocation": "1010-101F",
+    "extensionRealizedChangedOffsets": ["1010", "1011", "1012", "1013", "1015", "1016", "1017", "1018", "1019", "101B", "101C", "101D", "101E", "101F"],
+    "extensionUnchangedAllocationOffsets": ["1014", "101A"],
+    "callsiteChangedOffsets": ["9F14", "9F15"],
+    "integrityChangedOffsets": ["FFD1", "FFD2", "FFD3", "FFD4", "FFD5"],
+    "totalChangedCount": 21,
+    "proposedImageSha1": "dc6381b9883aafde372d2c2aa14c817bae839b21",
+    "proposedImageSha256": "761f34baac06c6f8f5da963ccadeb276fae9196ee1c4d9060bc915a314e3903d",
+    "imageWritten": false
+  },
+  "evidenceClasses": {
+    "prior_trace": [
+      "The early 9ED9 call at caller successor 9F16 is already observed naturally: first prefetch Y=9ED9, U=066E, S=0796, top=0000; return handler saved cursor 9F16; post-return prefetch Y=9F16, token 75A9, U=066E, S=0798, w@S=9F3F; result 0000. Source is the curated summary evidence/mpu4/integrity/il-lua-vm-trace.json, not raw MAME logs.",
+      "The 9F12 and 9F3B token sequences are marked observed in their VM listings."
+    ],
+    "static_deduction": [
+      "Original ROM bytes establish the 7927-792E template, the 76C7 copy, header cells, handler bodies, 9ED9 body, 9F12 caller body and 9F3B parent body.",
+      "All four tokens used by the proposed body have existing header cells and native handlers; none depends on its own body address.",
+      "The byte-identical body has net U effect 0. The 00F8 entry pushes Y and 792F restores it, so the whole call has net S effect 0.",
+      "The proposed diff, ordered integrity fields and proposed image hashes are computed read-only from the original image."
+    ],
+    "hypothesis": [
+      "The new word will execute naturally under MAME and preserve the original early-call behavior because its body is byte-identical to an already naturally executed definition and uses the same runtime trampoline and handlers.",
+      "Physical MPU4 compatibility remains unproved."
+    ],
+    "not_established": [
+      "No new word was executed.",
+      "No patched image was written, booted or run in MAME.",
+      "No hardware test was performed.",
+      "The broader purpose of 9F12 remains unresolved; the proposal relies only on token-level equivalence.",
+      "No general dictionary/header format, linker, relocation or bank-switching support is claimed."
+    ]
+  },
+  "unknowns": [
+    "Natural execution of the proposed 1010 word has not been observed.",
+    "The current Emitter/Integrity APIs are narrower than this proposal: the emitter accepts named payloads but the integrity helper still hard-codes the 9EDC diff.",
+    "Whether every possible bank-select path avoids 1010-13EF is outside this contract; the reservation is bank-0 only.",
+    "Physical MPU4 behavior and any loader warning remain unverified."
+  ]
+}

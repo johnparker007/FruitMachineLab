@@ -74,6 +74,25 @@ redirect, linker, MAME run or integrity-field change is included. See
 [IL extension emitter](recovery/IL-EXTENSION-EMITTER.md) and
 `evidence/mpu4/integrity/il-extension-emitter.json`.
 
+### Composite-word contract (static, unexecuted)
+
+A bounded read-only contract now traces the original `00FC` dispatch, the RAM
+`00F8` trampoline copied from `7927-792E`, the `795D`/`7880`/`7AB1`/`7931`
+handlers, the `9ED9` definition and the naturally observed `9F14` caller. It
+proposes one new definition header at `1010` (`00F8`) with a byte-identical
+`9ED9` body at `1012-101F`, reached by replacing only the same-size caller token
+`9ED7` at `9F14` with `1010`. The computed 21-byte diff is the 16-byte extension
+allocation (14 realized bytes), the 2-byte callsite and the ordered
+`FFD1-FFD5` integrity fields; proposed image SHA256 is
+`761f34baac06c6f8f5da963ccadeb276fae9196ee1c4d9060bc915a314e3903d`. A
+read-only symbolic phase validator now derives PC/`X`/`Y`/`U`/`S`/top from the
+original bytes: the `00FC` `LDX ,Y++` advances `Y` from `9F14` to `9F16` before
+the `00F8` trampoline saves it, so `9F16` (not `9F14`) is the saved cursor. This
+is a contract, not new-word execution: no image was written and no MAME/hardware
+run was made. See [composite contract](recovery/IL-COMPOSITE-CONTRACT.md),
+`evidence/mpu4/integrity/il-composite-contract.json` and the read-only
+`tools/Test-IlCompositeContract.ps1`.
+
 ### Installed MAME 0.281 Lua debugger and exact boundaries
 
 The earlier claim that MAME 0.281 had no Lua debugger was wrong: it checked the

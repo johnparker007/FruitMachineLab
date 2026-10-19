@@ -190,6 +190,11 @@
         "sha256":  "98A9D2E3381A7EC751B4AACF3CB59ED66EA53E7A6E910C0E12AA6EB8E35B17DD"
     },
     {
+        "path":  "docs/recovery/IL-COMPOSITE-CONTRACT.md",
+        "bytes":  17592,
+        "sha256":  "03CE4C66FB8EACD493502D3B9759D9331C54FC31D53FC641E94F5EDECECE38D8"
+    },
+    {
         "path":  "docs/recovery/IL-DEBUG-SESSION.md",
         "bytes":  18980,
         "sha256":  "F2DAB38F6CF239913D5734E8E547FE5C115BD1E84AEBC24DD1B094A4E35B021F"
@@ -1123,6 +1128,11 @@
         "path":  "evidence/mpu4/integrity/il-build-debug-workflow.json",
         "bytes":  26601,
         "sha256":  "A7106A2C6636A25A4D3BF036A43F051436B17E83EDFBCFEED651D3C84098898A"
+    },
+    {
+        "path":  "evidence/mpu4/integrity/il-composite-contract.json",
+        "bytes":  17497,
+        "sha256":  "BCDE1B1A89E147C29DE8FB18BB58D35A3230056F9108B179F1D6A2BB60F528A1"
     },
     {
         "path":  "evidence/mpu4/integrity/il-debug-delivery.json",

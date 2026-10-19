@@ -52,6 +52,42 @@ Preserve 16-bit wraparound, signed operations, FFFF/0000 flags, VM stack/frame
 contracts and original timing/randomness. Existing firmware behaviour stays the
 reference unless an explicitly declared modification changes it.
 
+## Recorded status — 19 October 2026
+
+This is the active status of the replacement milestones, based on curated code and
+evidence at `main` `eacdf639453687bc836ddd30a20d2e6eb59f4ccf`. It does not
+declare a general compiler, a complete linker/debugger or hardware compatibility.
+The original milestone acceptance text below is retained; this section records
+what has actually been demonstrated and what remains open.
+
+| Stage | Recorded status | Primary evidence |
+| --- | --- | --- |
+| M0 — Focused implementation proposal | Complete for the original first slice. Later bounded proposals remain separate review items. | This document's dated history and `docs/ROM-EDITING.md`. |
+| M1 — Lossless supported decoding | Complete only for the checked `9ED9` and `9A64` definitions. Both are decoded from identity-checked ROM bytes and re-encoded byte-identically; unsupported tokens fail. Not a general decoder. | `NineEdNineDecoder`, `NineASixFourDecoder`, `VmIlCompiler.CompileIdentity`, `evidence/mpu4/integrity/il-9a64-decode.json`. |
+| M2 — First IL-to-MAME proof | Complete for the single checked `9ED9` `9EDB FF80 -> FF00` edit. Ordered integrity repair, natural fresh-boot execution of original and repaired images, and Lua PC/Y/U/S/stack observations resolved to the IL map were recorded. It is not a second edit, gameplay or paid-window proof. | `evidence/mpu4/integrity/il-natural-9ed9-comparison.json`, `il-lua-vm-trace.json`, `il-debug-caller-entry.json`; `docs/recovery/IL-LUA-VM-TRACE.md`. |
+| M3 — Basic build/run and debugger | Partial. One reproducible same-size build workflow, exact-ROM-bound maps, paused read-only inspection, flat IL-node stepping, mapped caller entry/step-into (one caller each for `9ED9` and `9A64`), branch coverage and post-return rearm are implemented. Nested/recursive calls, call-step-over, arbitrary step-out, interrupt-aware boundaries, free-run continue and writes remain unsupported. | `docs/recovery/IL-DEBUG-SESSION.md`, `IL-DEBUG-CALLER-ENTRY.md`, `IL-BUILD-DEBUG-WORKFLOW.md`; focused runs record **813**, **253** and **74** checks with 0 failures. |
+| M4 — Extension linker and new composite word | Complete for one static allocation and one natural call: header `1010`, copied `9ED9` body `1012-101F`, single `9F14` `9ED7 -> 1010` redirect and ordered `FFD1-FFD5` repair, naturally reached with all thirteen observed phases. Not a general linker, relocation or multi-word allocator. | `il-composite-build.json`, `il-composite-natural.json`; `docs/recovery/IL-COMPOSITE-BUILD.md`, `IL-COMPOSITE-NATURAL.md`. |
+| M5 — Growable definitions and hooks | Open. No larger replacement, gameplay modification, native hook or two-simultaneous-modification proof is recorded. The next bounded prerequisite slice is proposed below. | None beyond the M4 allocator/emitter and single composite build. |
+| M6 — New 6809 primitive | Complete for one direct native primitive only: token `1010 = 1012`, handler `1012-101A = ECC4C38000EDC40EFC`, single `9F14` redirect, natural entry/result/outer return, `U`/`S` unchanged across the handler and no new save frame. `DP=0` is a **static deduction** from the exact `0EFC` direct `JMP` and live post-handler `PC=00FC`, not a direct live measurement. The intentional result change `0000 -> 8000 -> FFFF` is not original `9ED9` preservation. No general primitive assembler or ABI coverage is claimed. | `il-native-primitive-build.json`, `il-native-primitive-natural.json`; audit **185 checks, 0 failures**; `docs/recovery/IL-NATIVE-PRIMITIVE-NATURAL.md`. |
+| M7 — Controlled live experiments | Open. The debugger is read-only; no paused RAM/register/CC write mode is implemented. | `IL-DEBUG-SESSION.md` limitations. |
+| M8 — Hardware compatibility | Open. No physical MPU4 validation is recorded. | None. |
+| M9 — Broader compiler/editor | Open. No general decoder, editor, relocation, banking or second platform is claimed. | None. |
+
+The last recorded full verifier result is **417 groups**, in
+`artifacts/deepseek/il-composite-immutability-34/full-verifier-34-02.log` and the
+task45/46 build notes. This reconciliation did not rerun the full suite. The
+**415-group** integrate59 result is historical. The latest focused IL/debugger
+counts are the accepted `813`, `253`, `74` debug checks, the `185`-check native
+primitive audit (which retains the original `156`-check suite and adds controls)
+and the composite natural reanalysis; they are focused evidence, not a full-suite
+rerun.
+
+Natural award-image boot/controlled paid setup is recorded, but the observed
+table read was `75C0`, not the edited `75BE`. Do not report changed-award
+consumption as proved. Separately, the bounded natural `9ED9` original/changed
+call, the single allocated composite call and the single direct native primitive
+call are recorded; none is a full-game, paid-window or hardware claim.
+
 ## Reusable assets and current gaps
 
 Paths in this table are repository-relative.
@@ -59,28 +95,31 @@ Paths in this table are repository-relative.
 | Asset | Reuse and limits |
 | --- | --- |
 | evidence/mpu4/VM-SCRIPTS, docs/recovery/DEEP-ANALYSIS.txt and evidence/mpu4/maps | Addressed listings and interpreter/header/token evidence. Not a general dictionary decoder or complete reference inventory. |
-| src/FruitMachineLab.Runtime/Mpu4VmDefinition.cs | Strict definition plans, encoding and selected decoded operations; checked 9A64 branches and 9ED9 word literals. Extend decoding from original bytes rather than equating JSON loading with ROM decoding. |
-| evidence/mpu4/definitions | Original spans, hashes and provenance for those two checked definitions. Exact-byte emission is already demonstrated for these bounded plans. |
+| src/FruitMachineLab.Il | Independent IL decoders/compilers for `9ED9` and `9A64`, ordered integrity repair, extension allocator/emitter, one static composite build and one direct native primitive build. Each capability is bounded to its checked definition/edit; it is not a general decoder, linker or assembler. |
+| evidence/mpu4/definitions and evidence/mpu4/VM-SCRIPTS | Original spans, hashes, token listings and provenance for the checked definitions. Decoding is from identity-checked ROM bytes; listings remain oracles, not source. |
 | src/FruitMachineLab.Runtime/RomPatch.cs and tools/FruitMachineLab.RomPatch | Identity/expected-byte validation, fixed-size overlays, create-only output and hashes/diff. No allocator or general compiler. |
-| tools/FruitMachineLab.VmDefinitionImage | Narrow fixed 9ED9 literal edit and identity emitter, with CLI safety tests. No general editing or integrity repair. |
-| tools/Verify-RomIntegrity.ps1, tools/Capture-RomIntegrityVariant.ps1 and integrity maps/reports | Recover original ordered integrity algorithms. Natural startup repair demonstrated for the shared-award edit; general repair for definition/extension edits remains to validate. |
-| tools/Capture-VmDefinitionLiteralInvocation.ps1 and its curator | Ten independent original/modified 9ED9 MAME cases, but synthetic seeded invocation, not natural gameplay or repaired boot. |
-| Existing MAME capture scripts and Lua under evidence/mpu4/skill-cash | Reuse isolation, register/RAM observations and provenance conventions. A persistent live-debugger protocol and IL stepping/source maps are missing. |
+| tools/FruitMachineLab.VmDefinitionImage, IlBuild and IlNativePrimitiveBuild | Narrow checked edit/build CLIs with safety tests. The native-primitive CLI emits the single reviewed token/handler and caller redirect; it is not a general assembler. |
+| tools/Verify-RomIntegrity.ps1, tools/Capture-RomIntegrityVariant.ps1 and integrity reports | Recovered ordered integrity algorithms. Natural startup repair is demonstrated for the shared-award edit and the checked `9ED9`/composite/native-primitive builds; arbitrary definition/extension repair remains unsupported. |
+| tools/Capture-VmDefinitionLiteralInvocation.ps1 and its curator | Ten independent original/modified `9ED9` synthetic seeded MAME cases. Natural original/changed `9ED9` execution is recorded separately. |
+| tools/Start-IlDebugSession.ps1, tools/Invoke-IlDebugCommand.ps1 and tools/lua/IlDebugSession.lua | Paused read-only session with exact ROM/map binding, inspect, flat node stepping, mapped caller entry/step-into and post-return rearm. No call-step-over/out, nesting, interrupts or writes. |
+| Composite/native natural capture scripts and observers | One accepted natural composite call and one accepted natural direct-native-primitive call, each from the checked `9F14` caller with the tracked replay. Single-capture evidence; no general capture engine. |
 | Native runtime, WPF viewer and verification fixtures | Preserve regression/research assets. No requirement to remove their captured adapters or connect new IL to their executor. |
 
-The documented last full headless baseline is 415 groups at the integrate59
-checkpoint. This pivot records existing evidence; it does not claim a new test
-run or completed compiler/debugger work. See [implementation status](../IMPLEMENTATION-STATUS.md),
+The last recorded full verifier result is **417 groups**; the **415-group**
+integrate59 result is historical. See [implementation status](../IMPLEMENTATION-STATUS.md),
 [ROM editing](ROM-EDITING.md) and the dated [source audit](ENGINEERING-AUDIT.md).
 
 Natural award-image boot/controlled paid setup is recorded, but the observed
-table read was 75C0, not the edited 75BE. Do not report changed-award consumption
-as proved. Similarly, synthetic 9ED9 results do not close natural execution.
+table read was `75C0`, not the edited `75BE`. Do not report changed-award
+consumption as proved. The bounded natural `9ED9` original/changed call, single
+composite call and single native primitive call are recorded separately; none is
+a full-game or paid-window proof.
 
 ## Replacement milestones
 
-The following are planned acceptance stages, with reused partial evidence noted
-above. M0 is the documentation proposal; implementation stages remain open.
+The following table retains the original planned acceptance text. Actual bounded
+progress and the still-open scope are recorded in the status table above; this
+section is not a claim that every acceptance condition is met.
 
 | Stage | Priority and acceptance |
 | --- | --- |
@@ -99,9 +138,11 @@ New callable functions include original words, new composite words made from
 supported VM words, and new native 6809 primitives. Prefer extending the
 dictionary using existing dispatch. Exact header formats, address constraints,
 entry/return conventions and stack effects must be established before emission.
-No new-word or primitive support is claimed today.
+Bounded support is now recorded for one copied composite word and one direct
+native primitive. A general composite/new-word assembler, arbitrary headers,
+relocation and broad ABI coverage are not claimed.
 
-## Minimum next implementation slice for review
+## Historical first-slice proposal (18 October 2026)
 
 1. Select the smallest definition with an evidenced natural caller and an
    observable operand effect. Evaluate 9ED9 first because exact emission and
@@ -124,9 +165,21 @@ No new-word or primitive support is claimed today.
 6. Report the first mismatch or missing evidence. Do not expand to allocation,
    a polished editor, general relocation or native-runtime recovery to bypass it.
 
-These are proposed implementation tasks, not dispatched work. This documentation
-update does not run MAME, change schedules or start a broad implementation campaign.
+These steps are retained as the historical first-slice plan. The bounded `9ED9`
+decode/emission, natural original/changed call and IL-resolved debugger evidence
+recorded above supersede them as the first proof. They do not authorize a broad
+implementation campaign.
 
+## Next bounded design review — larger replacement
+
+M5 remains open. A larger replacement may reuse the checked literal/add/xor
+handlers and the naturally observed `9F14` caller within the approved extension
+range. The task48 candidate is rejected: it retains the original terminal
+`792F` before the appended literal/add, making the proposed addition unreachable.
+A separate static correction must establish the reachable node sequence, exact
+allocation, stack effect, source mapping and integrity scope before implementation.
+No larger replacement bytes, output or execution result are accepted here.
+M3 call-step-over/out remains independently open; general nesting is not proved.
 ## Debugger and validation contracts
 
 Inspect mode provides observations, breakpoints and stepping. Experiment mode
@@ -161,17 +214,20 @@ The previous roadmap and exact resumption gates are retained in
 handoffs, recovery plans and task files are historical. Only explicit new
 authorization from John may resume native execution, after evidence/state review.
 
-Do not dispatch workers, unpause callbacks or alter durable operational checkpoints
-as part of this documentation change. Future authorized tasks must name allowed
-files, original evidence, measurable acceptance and unsupported boundaries.
-Review actual diffs and independent checks; retain zero automatic retries and
-the two-unsuccessful-attempt stopping rule. Historical commit/push permission
-does not grant permission in this task.
+The continuing supervised loop authorized on 18 October remains current: reviewed,
+passing increments may be committed and normally pushed to the existing remote
+main between worker runs, and successful batches are review points rather than a
+stop condition. This reconciliation task itself made no git mutation. Native
+execution stays frozen; releases, deployments, repository-access changes and
+history rewrites still require John's explicit authorization. Future tasks must
+still name allowed files, original evidence, measurable acceptance and
+unsupported boundaries. Review actual diffs and independent checks; retain zero
+automatic retries and the two-unsuccessful-attempt stopping rule.
 
-No installations/configuration changes without John's approval. No commit,
-push, publication or access changes unless requested. Preserve ROMs, MAME
-settings, Ghidra projects and unrelated configuration. Keep binaries, credentials
-and bulky traces untracked; cloud work must use curated repository evidence.
+No installations/configuration changes without John's approval. Preserve ROMs,
+MAME settings, Ghidra projects and unrelated configuration. Keep binaries,
+credentials and bulky traces untracked; cloud work must use curated repository
+evidence.
 
 Headless build/verification commands remain in [README](../README.md).
 Run relevant checks for implementation changes and preserve existing regressions.

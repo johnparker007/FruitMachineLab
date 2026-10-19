@@ -1,34 +1,61 @@
 # Implementation and evidence boundaries
 
-## Strategic pivot — 18 October 2026
+## Current active status — 19 October 2026
 
-The active [roadmap](docs/PROJECT-ROADMAP.md) now targets lossless original-VM
-IL, ROM compilation and MAME Lua live debugging, with original hardware as the
-final target. Autonomous native C# gameplay execution is frozen indefinitely,
-potentially permanently. Do not resume sound ownership, IRQ integration,
-causal scheduling, capture-free games or C# hardware simulation from old
-next-step instructions below. Preserve the code, tests, captures and reports.
-Historical resumption gates are retained in
+Status snapshot at `eacdf639453687bc836ddd30a20d2e6eb59f4ccf`; the last reviewed task is
+`il-native-primitive-audit-47`. The continuing supervised loop and native C#
+freeze remain in force. This section records actual bounded status; the dated
+entries below remain historical and retain their original qualifications.
+
+| Area | Recorded status |
+| --- | --- |
+| IL decoding/compilation | Byte-identical independent round-trip is demonstrated for the checked `9ED9` and `9A64` definitions only. Unsupported tokens and forged plans fail. |
+| Same-size edit and integrity | The single checked `9ED9` `9EDB FF80 -> FF00` edit compiles to exact bytes and the reordered `FFD1-FFD5` repair is independently checked. Arbitrary edits/definitions remain unsupported. |
+| Natural first proof (M2) | Original and repaired images were naturally executed through the first `9ED9` call with Lua PC/Y/U/S/stack observations resolved to the IL map. This is one call, not gameplay or a paid window. |
+| Build/debugger (M3) | A create-only build workflow and paused read-only sessions support inspect, flat IL-node stepping, mapped caller entry/step-into and post-return rearm for one `9ED9` caller and one `9A64` caller. Nested calls, call-step-over, arbitrary step-out, interrupts, free-run continue and writes are unsupported. |
+| Extension/composite (M4) | One static allocation was naturally executed: header `1010`, copied `9ED9` body `1012-101F`, single `9F14` `9ED7 -> 1010` redirect, ordered integrity repair, all thirteen phases observed. No general linker/relocation. |
+| Direct native primitive (M6) | One token/handler allocation was naturally executed: `1010 = 1012`, handler `1012-101A = ECC4C38000EDC40EFC`, single caller redirect, entry/result/outer return observed. `DP=0` is a static deduction from `0EFC` plus live `PC=00FC`, not a live DP sample. The `0000 -> 8000 -> FFFF` result is an intentional behaviour change, not preserved `9ED9`. |
+| Larger replacement/hooks (M5) | Open. No larger replacement, gameplay modification, native hook or two-simultaneous-modification proof exists. The task48 larger-body proposal is rejected because its retained early return makes the addition unreachable; a corrected static design is pending. |
+| Controlled writes (M7) / hardware (M8) | Open. The debugger is read-only and no physical MPU4 validation is recorded. |
+| General compiler/editor (M9) | Open. No general decoder, editor, relocation, banking or second platform is claimed. |
+
+Recorded verification: the last full verifier result is **417 groups**
+(`artifacts/deepseek/il-composite-immutability-34/full-verifier-34-02.log`);
+this documentation task did not rerun it. Focused accepted results are **813**,
+**253** and **74** debugger checks, the **185**-check native-primitive audit
+(retaining the original **156**-check suite) and the composite natural reanalysis.
+The **415-group** integrate59 result below is historical. No full-game, paid-window
+or physical-hardware proof is claimed.
+
+The observed natural award read was `75C0`, not edited `75BE`; changed-award
+consumption remains unproved. The later bounded natural `9ED9` original/changed
+call, composite call and native primitive call do not close that gap.
+
+## Strategic pivot — 18 October 2026 (historical decision)
+
+At the pivot the active [roadmap](docs/PROJECT-ROADMAP.md) re-targeted work to
+lossless original-VM IL, ROM compilation and MAME Lua live debugging, with
+original hardware as the final target. Autonomous native C# gameplay execution
+was frozen indefinitely, potentially permanently. Preserve the code, tests,
+captures and reports. Historical resumption gates are retained in
 [the former roadmap](docs/history/PRE-IL-MAME-ROADMAP.md).
 
-Existing compiler foundations are bounded: checked 9A64/9ED9 definition emission,
-strict fixed-size patching, narrow 9ED9 image generation, synthetic original/
-changed 9ED9 MAME invocation and award-edit integrity repair/startup evidence.
-These do not establish a general ROM decoder, compiler, extension linker, new
-VM words, native primitive emission, live IL debugger or hardware compatibility.
-The observed natural award read was 75C0 rather than edited 75BE; natural
-execution of the changed 9ED9 definition is also still open.
+At that date, compiler foundations were bounded to checked 9A64/9ED9 definition
+emission, strict fixed-size patching, narrow 9ED9 image generation, synthetic
+original/changed 9ED9 MAME invocation and award-edit integrity repair/startup
+evidence. Later reviewed tasks added the bounded extension/composite and direct
+native primitive results recorded above. They still do not establish a general
+ROM decoder, general compiler/linker, broad new-word support, a write-capable
+debugger or hardware compatibility.
 
-Next proposed proof: decode one known definition from ROM, round-trip it exactly,
-edit an operand, repair integrity, execute naturally in MAME and map Lua-observed
-PC/Y/U/S, registers and stacks to IL. The IL/compiler/debugger must work without
-the C# executor. Logged paused debugger writes are a planned experimental mode;
-they are not evidence of a persistent compiled modification.
+The proof proposed at the pivot — decode one definition, edit an operand, repair
+integrity, execute naturally and resolve Lua observations to IL — has since been
+demonstrated only for the bounded cases in the status table. Logged paused
+debugger writes remain a planned experimental mode; they are not evidence of a
+persistent compiled modification.
 
-This is a documentation-only mandate change, with no worker/schedule restart or
-implementation campaign. The 415-group result below is an existing recorded
-checkpoint, not a rerun for this update. All dated entries below retain their
-original technical qualifications and are historical for priority/authorization.
+The pivot text itself was documentation-only. The 415-group result below is a
+recorded historical checkpoint, not a rerun for this update.
 
 ## Preserved implementation history
 

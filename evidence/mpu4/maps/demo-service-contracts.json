@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "status": "supervisor-reviewed-static-prerequisites-only",
+  "romSha1": "402d1518bb78fdc489b06c2aabc771e5ce151847",
+  "sourceTask": "il-demo-service-contract-repair-69",
+  "classification": "Original-byte spans and selected static contracts; no new natural MAME capture, editable decoding or compiler support.",
+  "buttonCandidates": [
+    {
+      "token": "83FC",
+      "wrapperHex": "772112",
+      "selector": "12",
+      "maskAddress": "71F2",
+      "maskHex": "00000080",
+      "sampleRam": "0003",
+      "meaning": "Start sampled level; single-bit result0000/FFFF; no edge/debounce contract"
+    },
+    {
+      "token": "8393",
+      "wrapperHex": "77211C",
+      "selector": "1C",
+      "maskAddress": "721A",
+      "maskHex": "00000001",
+      "sampleRam": "0003",
+      "meaning": "Collect/Take sampled level; single-bit result0000/FFFF; no edge/debounce contract"
+    }
+  ],
+  "nativeInputHelper": {
+    "entry": "7721",
+    "conditionHelper": "67EC",
+    "sharedEpilogue": "7780",
+    "entryRequirement": "DP00 for F1/NEXT;080C extended absolute",
+    "netStack": "U minus2 result; S balanced, including transient JSR and PSHS/PULS",
+    "sideEffects": "F1 nonzero: set bit0 before test, clear bit0 after, mirror extended080C; F1zero skips writes"
+  },
+  "timingSpans": [
+    {
+      "header": "99AD",
+      "start": "99AF",
+      "endInclusive": "99CB",
+      "length": 29,
+      "hex": "82F2790D7CCD7D5282F2790D787E7A8D7ABB84DA7AA379A6EE7B43792F",
+      "inlineBranchOperand": "99C7=EE, target99B5",
+      "interpretation": "IRQ-tick busy-wait/abort candidate; caller netU remains uncertified"
+    },
+    {
+      "header": "9A40",
+      "start": "9A42",
+      "endInclusive": "9A4D",
+      "length": 12,
+      "hex": "82F2790D7A3184DA7AA3792F",
+      "interpretation": "signed002D-positive OR abort test candidate"
+    },
+    {
+      "header": "9A4E",
+      "start": "9A50",
+      "endInclusive": "9A59",
+      "length": 10,
+      "hex": "795BC56882F27874792F",
+      "interpretation": "companion002D seedC568; not a bounded N-tick delay"
+    }
+  ],
+  "verification": {
+    "pinnedSpans": 15,
+    "completeTokenWalks": 3,
+    "branchOperand": "passed",
+    "malformedTokenWalksRejected": 2,
+    "limit": "Short-buffer span negative controls in private audit are non-diagnostic; supervisor independently checks full spans and actual malformed token walks."
+  },
+  "references": [
+    "evidence/mpu4/VM-SCRIPTS/99AF.txt",
+    "evidence/mpu4/VM-SCRIPTS/9A42.txt",
+    "evidence/mpu4/VM-SCRIPTS/9A50.txt",
+    "evidence/mpu4/native/7721.json",
+    "evidence/mpu4/native/67ec.json",
+    "evidence/mpu4/maps/input-condition-tables.json",
+    "docs/recovery/NUDGE-INPUT-PASS.md"
+  ],
+  "privateEvidenceHashes": {
+    "artifacts/deepseek/il-demo-service-contract-repair-69/report.md": "16F536A8CB552C6D18F989233B849509975DFF0BC4D7C40D40FA5D829444571E",
+    "artifacts/deepseek/il-demo-service-contract-repair-69/contracts.json": "AC1EE8F5E42927F016BDDD6BF0AC9B04BDCC5C6055A9182DD9069A74C28EB9B3",
+    "artifacts/deepseek/il-demo-service-contract-repair-69/audit.py": "5E0E26AADD6631EC73C68D6F00D16E7953D52757CC98F9A47B00A500BC45F0B9",
+    "artifacts/deepseek/il-demo-service-contract-repair-69/audit-results.json": "E27144F99A30CCEF496A7BA1D3442B57D146D24B7D0F761F290C309AB8C3AB81",
+    "artifacts/deepseek/il-demo-service-contract-repair-69/supervisor-review.md": "17A8497C4DD73E00AE18332677DDC1D744715321DEA0ABFA3BDF9342A76D356D"
+  },
+  "remainingGates": [
+    "No fresh exact-token button press/release proof",
+    "No natural demo wait/stack/timing proof",
+    "No current general IL emission for these candidates",
+    "No visible changing-pattern demo proof",
+    "No hardware compatibility validation"
+  ]
+}

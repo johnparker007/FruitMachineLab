@@ -1355,6 +1355,11 @@
         "sha256":  "16AF710ACA94329100DDA7A678C64B66C800C7206C6B1FC41548F023BEE3A338"
     },
     {
+        "path":  "evidence/mpu4/maps/demo-service-contracts.json",
+        "bytes":  3746,
+        "sha256":  "03DC82C13DB5D9051D1844B50210BE84E6311328B7B15780ACE37EB58CADE1EB"
+    },
+    {
         "path":  "evidence/mpu4/maps/dice-hardware-source.json",
         "bytes":  917,
         "sha256":  "84C05BC11A387177E34126A0741709D1744E34AAB890715CB3EC6DD3B396822E"

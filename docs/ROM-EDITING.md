@@ -62,6 +62,18 @@ IL verifier. The tracked static range verifier remains
 `tools/Test-IlExtensionRangeProposal.ps1`; it needs only the clean checkout and
 an explicit original-ROM input.
 
+A bounded checked in-memory payload emitter now reuses that allocator in
+`src/FruitMachineLab.Il/ExtensionRangeEmitter.cs`. It derives allocations from
+copied named payloads, validates the exact original/approved descriptor and `FF`
+allocation spans, writes only those spans into a new owned image, preserves all
+outside bytes including guards, unallocated `FF` and `1400-FFFF` integrity
+coverage, and returns immutable output-bound allocation/diff/hash evidence.
+Empty requests and all-`FF` payloads are explicit identity policies. Emitted test
+payloads are synthetic unexecuted data; no composite word, header, reference
+redirect, linker, MAME run or integrity-field change is included. See
+[IL extension emitter](recovery/IL-EXTENSION-EMITTER.md) and
+`evidence/mpu4/integrity/il-extension-emitter.json`.
+
 ### Installed MAME 0.281 Lua debugger and exact boundaries
 
 The earlier claim that MAME 0.281 had no Lua debugger was wrong: it checked the

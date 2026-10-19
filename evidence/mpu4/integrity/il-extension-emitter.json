@@ -1,0 +1,131 @@
+{
+  "TaskId": "il-extension-emitter-30",
+  "SchemaVersion": 1,
+  "Status": "passed",
+  "Classification": "Checked deterministic in-memory extension payload emission inside the human-approved 1010-13EF bank-0 range for a6ls.p1, preserving guards, unallocated FF, all bytes outside allocations and 1400-FFFF integrity coverage.",
+  "EvidenceClass": "Synthetic/static tooling evidence from the actual public emitter API plus explicitly classified synthetic payload and tamper controls. Not natural ROM behaviour and not certified VM instructions.",
+  "ApprovedCpuRange": "1010-13EF",
+  "ApprovedFileRange": "4112-5103",
+  "ApprovedLength": 992,
+  "Guards": "left 1000-100F; right 13F0-13FF",
+  "ProtectedCells": "1000-1003",
+  "IntegrityStart": 5120,
+  "OriginalIdentity": {
+    "Length": 65536,
+    "Sha1": "402D1518BB78FDC489B06C2AABC771E5CE151847",
+    "Sha256": "EBF580381AA6EB6FFB26E2ACD40F30AA34B0311F71C6564607C6F48A53BCA15C"
+  },
+  "Scenarios": [
+    {
+      "Name": "whole-992",
+      "Allocations": [
+        {
+          "Id": "whole",
+          "CpuStart": 4112,
+          "CpuEnd": 5103,
+          "FileStart": 4112,
+          "FileEnd": 5103,
+          "Length": 992,
+          "Sha1": "86F409B68E064EF116ECA34158585EA627392F89",
+          "Sha256": "2FFD7D0F2FCC438057E3FF2DDCABE668C0858D4136AE3CBC95A415A6BAAAED16"
+        }
+      ],
+      "ChangedCount": 988,
+      "OutputSha1": "5180308AD7F30F861505D6626ABD84A020EBD4C3",
+      "OutputSha256": "45DD81C808881FA1BBF4BFF22256EC9702498FD8EF329182C8A5F37A257C1313"
+    },
+    {
+      "Name": "split-500-492",
+      "Allocations": [
+        {
+          "Id": "first",
+          "CpuStart": 4112,
+          "CpuEnd": 4611,
+          "FileStart": 4112,
+          "FileEnd": 4611,
+          "Length": 500,
+          "Sha1": "F121D59347C7DA95272AE81476EC83C35B034E76",
+          "Sha256": "8490DDE087B3324E78AC244A9AF31301CF8D2E539D19E96DA14ED388EE9BA7C8"
+        },
+        {
+          "Id": "second",
+          "CpuStart": 4612,
+          "CpuEnd": 5103,
+          "FileStart": 4612,
+          "FileEnd": 5103,
+          "Length": 492,
+          "Sha1": "8A3A700A1FCC3172EF63578DA4C4D6A25D10D1B7",
+          "Sha256": "64C7AFCE01149C3043BBF27907B70DE1E6F2B32C10588FF30891484EB571BC01"
+        }
+      ],
+      "ChangedCount": 988,
+      "OutputSha1": "8365959524355BF29B0FF5C8236EDA4B258E8EB3",
+      "OutputSha256": "C8B5AB2DDDBD86141531EF1ABB3273AD8A8F51427FD01595CB804B239AA163AA"
+    },
+    {
+      "Name": "partial-100-200",
+      "Allocations": [
+        {
+          "Id": "part-one",
+          "CpuStart": 4112,
+          "CpuEnd": 4211,
+          "FileStart": 4112,
+          "FileEnd": 4211,
+          "Length": 100,
+          "Sha1": "098ED8B02F138164E64DD38E2611BF4909406D1B",
+          "Sha256": "565EFB7E57447323C3A7A4B14D2EF7D3C39CBB2D98CEA8485D90694BF8504571"
+        },
+        {
+          "Id": "part-two",
+          "CpuStart": 4212,
+          "CpuEnd": 4411,
+          "FileStart": 4212,
+          "FileEnd": 4411,
+          "Length": 200,
+          "Sha1": "72741CA5316B5C2D5CCB0844840DA54ED88B8A83",
+          "Sha256": "F9F1D47DC122C8737B157A9C4858B86CD2B2AD17E47DF6DCA05D5346A05E3BCE"
+        }
+      ],
+      "ChangedCount": 300,
+      "OutputSha1": "B09460CE5241BE63BF86737A147A712F83C808DF",
+      "OutputSha256": "5C307DF37157FADF2FF19338600A8BDE1FE4623B8B549E6869A0862459025D9B"
+    }
+  ],
+  "EmptyAndUnchangedPolicy": {
+    "EmptyRequestProducesIdentityOutput": true,
+    "FfOnlyPayloadProducesIdentityOutput": true
+  },
+  "Integrity": {
+    "CoveredRange": "1400-FFFF",
+    "OriginalFieldsHex": "3E761E2605",
+    "OutputFieldsHex": "3E761E2605",
+    "CoveredBytesUnchanged": true,
+    "FieldsUnchanged": true
+  },
+  "NegativeControls": 29,
+  "CheckNames": [
+    "Approved descriptor binds the exact revision range guards and integrity start",
+    "One 992-byte payload fills the exact range and changes only its allocations",
+    "500 plus 492 payloads allocate exact contiguous boundaries deterministically",
+    "Partial payloads preserve guards unallocated FF and all other bytes",
+    "Empty request and all-FF payload explicitly produce identity output",
+    "Integrity coverage 1400-FFFF and active fields remain unchanged",
+    "Caller ROM and payload buffers cannot mutate an emission",
+    "Emission plan payload and diff views are read-only",
+    "Wrong original length and SHA1 identity are rejected before output",
+    "Unsupported or mismatched approved descriptors are rejected",
+    "Empty oversized duplicate blank and null payloads are rejected",
+    "Mismatched caller-supplied plans and payloads are rejected",
+    "Payload lengths and hashes bind the emitted allocation evidence",
+    "Input ROM hash is unchanged after all emitter checks"
+  ],
+  "Limitations": [
+    "Emitted payload bytes are synthetic unexecuted test data, not certified VM instructions or a new composite word, header or native primitive.",
+    "The approved range is a human reservation, not proof that the bytes are unused; padding appearance alone is not evidence.",
+    "No reference redirection, VM entry redirect, linker, fixup, general relocation, bank switching or arbitrary out-of-range patch is supported.",
+    "Existing firmware integrity verification is used only to prove that the covered 1400-FFFF bytes and active FFD1-FFD5 fields are byte-identical. No integrity field is regenerated or invented for this outside-coverage emission.",
+    "No MAME boot, gameplay, natural execution, new-word execution or physical hardware compatibility is claimed.",
+    "The result is synthetic/static tooling evidence only."
+  ],
+  "RemainingChainBoundary": "Next supported step is a separately scheduled bounded composite-word ABI and linker/reference investigation for this exact range. It must retain identity, approval, expected-byte, capacity, overlap, preservation and atomicity checks, and establish header/entry/return/stack contracts before any redirect."
+}

@@ -40,6 +40,13 @@ internal static class Program
                 Path.Combine(allocatorOutput, "verification-report.json"));
             Console.WriteLine("Allocator log: " +
                 Path.Combine(allocatorOutput, "verification.log"));
+
+            string emitterOutput = Path.Combine(outputDirectory, "emitter");
+            ExtensionRangeEmitterVerification.Run(romPath, repositoryRoot, emitterOutput);
+            Console.WriteLine("Emitter report: " +
+                Path.Combine(emitterOutput, "verification-report.json"));
+            Console.WriteLine("Emitter log: " +
+                Path.Combine(emitterOutput, "verification.log"));
             return 0;
         }
         catch (Exception error)

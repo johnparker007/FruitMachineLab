@@ -1,8 +1,9 @@
 [CmdletBinding()]
 param(
     [Parameter(Mandatory=$true)][string]$SessionDirectory,
-    [Parameter(Mandatory=$true)][ValidateSet('pause-at-mapped-node','inspect','step-one-IL-node','resume-to-supported-boundary','stop')][string]$Command,
+    [Parameter(Mandatory=$true)][ValidateSet('pause-at-mapped-node','pause-at-caller-token','inspect','step-one-IL-node','step-into-mapped-call','resume-to-supported-boundary','stop')][string]$Command,
     [ValidateRange(0,5)][int]$Node = -1,
+    [int]$Caller = -1,
     [ValidateRange(1,600)][int]$TimeoutSeconds = 120
 )
 $ErrorActionPreference = 'Stop'
@@ -31,8 +32,15 @@ if ($null -eq $process) { throw "Session process $($launch.process_id) is not ru
 
 if ($Command -eq 'pause-at-mapped-node') {
     if ($Node -lt 0) { throw 'pause-at-mapped-node requires a mapped -Node index 0..5' }
+    if ($Caller -ge 0) { throw 'pause-at-mapped-node does not accept -Caller' }
+} elseif ($Command -eq 'pause-at-caller-token') {
+    if ($Caller -lt 0) { throw 'pause-at-caller-token requires an explicit -Caller index 0' }
+    if ($Caller -ne 0) { throw '-Caller is out of range; only explicit caller 0 is mapped' }
+    if ($Node -ge 0) { throw 'pause-at-caller-token does not accept -Node' }
 } elseif ($Node -ge 0) {
     throw "$Command does not accept -Node"
+} elseif ($Caller -ge 0) {
+    throw "$Command does not accept -Caller"
 }
 
 # Serialize sequence allocation and request publication. The lock is held until
@@ -59,6 +67,7 @@ try {
     $requestPath = Join-Path $commandsDir ('request-{0:D6}.req' -f $sequence)
     if (Test-Path -LiteralPath $requestPath) { throw "Request file already exists: $requestPath" }
     $nodeText = if ($Command -eq 'pause-at-mapped-node') { [string]$Node } else { '' }
+    $callerText = if ($Command -eq 'pause-at-caller-token') { [string]$Caller } else { '' }
     $lines = @(
         ('protocol=' + $script:DcProtocol),
         ('session=' + $config.sessionId),
@@ -66,7 +75,8 @@ try {
         ('requestId=' + $requestId),
         ('nonce=' + $nonce),
         ('command=' + $Command),
-        ('node=' + $nodeText)
+        ('node=' + $nodeText),
+        ('caller=' + $callerText)
     )
     $temp = Join-Path $commandsDir ('.tmp-' + $requestId)
     [IO.File]::WriteAllText($temp, (($lines -join "`n") + "`n"), (New-Object System.Text.UTF8Encoding($false)))
@@ -128,6 +138,16 @@ switch ($Command) {
         if ($response['nodeIndex'] -ne [string]$Node) { throw 'Pause response node does not match the request' }
         if ($response['execState'] -ne 'stop') { throw 'Pause response does not report stopped execution' }
     }
+    'pause-at-caller-token' {
+        if ($response['kind'] -ne 'paused-at-caller') { throw "Unexpected response kind: $($response['kind'])" }
+        if ($response['proof'] -ne 'boundary_reached') { throw 'Caller pause response lacks a boundary proof' }
+        if ($response['boundaryPhase'] -ne 'caller-prefetch') { throw 'Caller pause response is not at a caller-token prefetch boundary' }
+        if ($response['callerIndex'] -ne [string]$Caller) { throw 'Caller pause response caller does not match the request' }
+        if ($response['pc'] -ne '00FC') { throw 'Caller pause response PC is not the dispatcher prefetch' }
+        if ([string]::IsNullOrWhiteSpace($response['callerTokenAddress'])) { throw 'Caller pause response lacks the caller token address' }
+        if ([string]::IsNullOrWhiteSpace($response['callerToken'])) { throw 'Caller pause response lacks the caller token' }
+        if ($response['execState'] -ne 'stop') { throw 'Caller pause response does not report stopped execution' }
+    }
     'inspect' {
         if ($response['kind'] -ne 'inspection') { throw "Unexpected response kind: $($response['kind'])" }
         if ($response['proof'] -ne 'stopped_read_only') { throw 'Inspect response lacks a read-only proof' }
@@ -135,6 +155,22 @@ switch ($Command) {
         if (!$response.ContainsKey('timeBefore') -or !$response.ContainsKey('timeAfter')) { throw 'Inspect response lacks emulated-time readings' }
         if ([double]$response['timeBefore'] -ne [double]$response['timeAfter']) { throw 'Inspect response reports emulated-time advance' }
         if ($response['execState'] -ne 'stop') { throw 'Inspect response does not report stopped execution' }
+    }
+    'step-into-mapped-call' {
+        if ($response['kind'] -ne 'call-entered') { throw "Unexpected response kind: $($response['kind'])" }
+        if ($response['proof'] -ne 'boundary_reached') { throw 'Call entry response lacks a boundary proof' }
+        if (!$response.ContainsKey('steps') -or [int]$response['steps'] -ne 4) { throw 'Call entry response does not report the exact four-instruction entry chain' }
+        if (!$response.ContainsKey('transitionCount') -or [int]$response['transitionCount'] -ne 4) { throw 'Call entry response does not report four entry transitions' }
+        if (!$response.ContainsKey('transition.3')) { throw 'Call entry response lacks the final entry transition' }
+        if ($response['toBoundaryPhase'] -ne 'prefetch') { throw 'Call entry response did not stop at the callee prefetch' }
+        if ($response['toNodeIndex'] -ne '0') { throw 'Call entry response did not enter mapped node zero' }
+        if ($response['pc'] -ne '00FC') { throw 'Call entry response PC is not the callee prefetch' }
+        if ($response['x'] -ne $response['y']) { throw 'Call entry response did not converge X and Y on the callee body start' }
+        if ($response['x'] -ne $response['calleeBodyStart']) { throw 'Call entry response X/Y is not the callee body start' }
+        if ($response['entryDeltaS'] -ne '0002') { throw 'Call entry response does not report the two-byte control-stack save' }
+        if ($response['entryU'] -ne $response['entryUAtBoundary']) { throw 'Call entry response data stack differs from the caller boundary' }
+        if ($response['execState'] -ne 'stop') { throw 'Call entry response does not report stopped execution' }
+        if ([double]$response['timeAfter'] -le [double]$response['timeBefore']) { throw 'Call entry response does not report emulated-time advance' }
     }
     { $_ -eq 'step-one-IL-node' -or $_ -eq 'resume-to-supported-boundary' } {
         $expectedKind = if ($Command -eq 'step-one-IL-node') { 'node-stepped' } else { 'resumed-to-boundary' }

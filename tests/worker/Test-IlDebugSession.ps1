@@ -120,9 +120,10 @@ function Invoke-EventJsonHelper([string[]]$Arguments) {
     }
     finally { $ErrorActionPreference = $previous }
 }
-function Invoke-CliCommand([string]$SessionDirectory,[string]$Command,[int]$Node = -1,[int]$TimeoutSeconds = 60) {
+function Invoke-CliCommand([string]$SessionDirectory,[string]$Command,[int]$Node = -1,[int]$TimeoutSeconds = 60,[int]$Caller = -1) {
     $arguments = @('-NoProfile','-File',(Join-Path $repo 'tools/Invoke-IlDebugCommand.ps1'),'-SessionDirectory',$SessionDirectory,'-Command',$Command,'-TimeoutSeconds',[string]$TimeoutSeconds)
     if ($Node -ge 0) { $arguments += @('-Node',[string]$Node) }
+    if ($Caller -ge 0) { $arguments += @('-Caller',[string]$Caller) }
     $child = Invoke-ChildPowerShell $arguments
     $text = $child.text
     $exitCode = $child.exit_code
@@ -189,23 +190,29 @@ function Stop-OwnedProcess([int]$ProcessId) {
 }
 
 function Assert-SessionCommands($SessionDirectory,[string]$Variant,[string]$ExpectedOperand,[string]$ExpectedResult) {
-    $pause = Invoke-CliCommand $SessionDirectory 'pause-at-mapped-node' 0 90
-    Assert-Equal $pause.exit_code 0 "$Variant pause command exits zero"
-    if ($null -eq $pause.response) { Write-Fail "$Variant pause has no response"; return $null }
+    $pause = Invoke-CliCommand $SessionDirectory 'pause-at-caller-token' -1 90 0
+    Assert-Equal $pause.exit_code 0 "$Variant caller pause command exits zero"
+    if ($null -eq $pause.response) { Write-Fail "$Variant caller pause has no response"; return $null }
     $p = $pause.response
-    Assert-Equal $p['status'] 'ok' "$Variant pause status"
-    Assert-Equal $p['kind'] 'paused-at-node' "$Variant pause kind"
-    Assert-Equal $p['proof'] 'boundary_reached' "$Variant pause proof"
-    Assert-Equal $p['boundaryPhase'] 'prefetch' "$Variant pause boundary phase"
-    Assert-Equal $p['nodeIndex'] '0' "$Variant pause node index"
-    Assert-Equal $p['pc'] '00FC' "$Variant pause PC"
-    Assert-Equal $p['y'] '9ED9' "$Variant pause Y"
-    Assert-Equal $p['token'] '795B' "$Variant pause token"
-    Assert-Equal $p['ilOperand'] $ExpectedOperand "$Variant first IL operand"
-    Assert-Equal $p['u'] '066E' "$Variant entry U"
-    Assert-Equal $p['s'] '0796' "$Variant entry S"
-    Assert-Equal $p['execState'] 'stop' "$Variant pause reports stopped"
-    Assert-True ([double]$p['emulatedTime'] -gt 0) "$Variant pause has positive emulated time"
+    Assert-Equal $p['status'] 'ok' "$Variant caller pause status"
+    Assert-Equal $p['kind'] 'paused-at-caller' "$Variant caller pause kind"
+    Assert-Equal $p['proof'] 'boundary_reached' "$Variant caller pause proof"
+    Assert-Equal $p['boundaryPhase'] 'caller-prefetch' "$Variant caller pause boundary phase"
+    Assert-Equal $p['callerIndex'] '0' "$Variant caller pause index"
+    Assert-Equal $p['callerTokenAddress'] '9F14' "$Variant caller token address"
+    Assert-Equal $p['callerToken'] '9ED7' "$Variant caller token"
+    Assert-Equal $p['calleeHeaderAddress'] '9ED7' "$Variant callee header address"
+    Assert-Equal $p['calleeHeaderValue'] '00F8' "$Variant callee header value"
+    Assert-Equal $p['calleeBodyStart'] '9ED9' "$Variant callee body start"
+    Assert-Equal $p['calleeBodyEndExclusive'] '9EE7' "$Variant callee body end"
+    Assert-Equal $p['callerSuccessor'] '9F16' "$Variant caller successor"
+    Assert-Equal $p['postReturnToken'] '75A9' "$Variant caller post-return token"
+    Assert-Equal $p['pc'] '00FC' "$Variant caller pause PC"
+    Assert-Equal $p['y'] '9F14' "$Variant caller pause Y"
+    Assert-Equal $p['u'] '066E' "$Variant caller entry U"
+    Assert-Equal $p['s'] '0798' "$Variant caller entry S"
+    Assert-Equal $p['execState'] 'stop' "$Variant caller pause reports stopped"
+    Assert-True ([double]$p['emulatedTime'] -gt 0) "$Variant caller pause has positive emulated time"
 
     $inspectA = Invoke-CliCommand $SessionDirectory 'inspect' -1 30
     $inspectB = Invoke-CliCommand $SessionDirectory 'inspect' -1 30
@@ -215,6 +222,7 @@ function Assert-SessionCommands($SessionDirectory,[string]$Variant,[string]$Expe
         $a = $inspectA.response; $b = $inspectB.response
         Assert-Equal $a['status'] 'ok' "$Variant first inspect status"
         Assert-Equal $a['proof'] 'stopped_read_only' "$Variant first inspect proof"
+        Assert-Equal $a['boundaryPhase'] 'caller-prefetch' "$Variant caller inspect boundary"
         Assert-Equal $a['stateUnchanged'] 'yes' "$Variant first inspect state unchanged"
         Assert-Equal $b['stateUnchanged'] 'yes' "$Variant second inspect state unchanged"
         foreach ($key in @('pc','x','y','u','s','emulatedTime','dataStack0','controlStack0')) {
@@ -222,6 +230,68 @@ function Assert-SessionCommands($SessionDirectory,[string]$Variant,[string]$Expe
         }
         Assert-Equal $a['pc'] $p['pc'] "$Variant inspect keeps pause PC"
         Assert-Equal $a['y'] $p['y'] "$Variant inspect keeps pause Y"
+        Assert-Equal $a['callerToken'] $p['callerToken'] "$Variant inspect keeps caller token"
+    }
+
+    $entry = Invoke-CliCommand $SessionDirectory 'step-into-mapped-call' -1 30
+    Assert-Equal $entry.exit_code 0 "$Variant step-into exits zero"
+    if ($null -eq $entry.response) { Write-Fail "$Variant step-into has no response"; return $null }
+    $e = $entry.response
+    Assert-Equal $e['status'] 'ok' "$Variant step-into status"
+    Assert-Equal $e['kind'] 'call-entered' "$Variant step-into kind"
+    Assert-Equal $e['proof'] 'boundary_reached' "$Variant step-into proof"
+    Assert-Equal $e['steps'] '4' "$Variant step-into exact four native steps"
+    Assert-Equal $e['transitionCount'] '4' "$Variant step-into four transitions"
+    Assert-Equal $e['toBoundaryPhase'] 'prefetch' "$Variant step-into target phase"
+    Assert-Equal $e['toNodeIndex'] '0' "$Variant step-into target node"
+    Assert-Equal $e['pc'] '00FC' "$Variant step-into PC"
+    Assert-Equal $e['x'] '9ED9' "$Variant step-into X"
+    Assert-Equal $e['y'] '9ED9' "$Variant step-into Y"
+    Assert-Equal $e['token'] '795B' "$Variant step-into first token"
+    Assert-Equal $e['ilOperand'] $ExpectedOperand "$Variant step-into first IL operand"
+    Assert-Equal $e['savedCursor'] '9F16' "$Variant step-into saved cursor"
+    Assert-Equal $e['entrySPre'] '0798' "$Variant step-into pre-entry S"
+    Assert-Equal $e['entryS'] '0796' "$Variant step-into entry S"
+    Assert-Equal $e['entryDeltaS'] '0002' "$Variant step-into S delta"
+    Assert-Equal $e['entryX'] '9ED9' "$Variant step-into entry X"
+    Assert-Equal $e['entryY'] '9ED9' "$Variant step-into entry Y"
+    Assert-Equal $e['entryU'] '066E' "$Variant step-into entry U"
+    Assert-Equal $e['entryUAtBoundary'] '066E' "$Variant step-into U unchanged"
+    Assert-Equal $e['u'] $p['u'] "$Variant step-into keeps U"
+    Assert-True ([int]$e['entrySPre'] -gt [int]$e['entryS']) "$Variant caller S is above entry S"
+    Assert-True ([double]$e['timeAfter'] -gt [double]$e['timeBefore']) "$Variant step-into advanced emulated time"
+    Assert-Equal $e['execState'] 'stop' "$Variant step-into reports stopped"
+    $et = @(Get-Transitions $e)
+    Assert-Equal $et.Count 4 "$Variant step-into transition count"
+    if ($et.Count -eq 4) {
+        Assert-Equal $et[0]['type'] 'ldx-y-increment' "$Variant entry transition 0 type"
+        Assert-Equal $et[0]['pc'] '00FE' "$Variant entry transition 0 PC"
+        Assert-Equal $et[0]['y'] '9F16' "$Variant entry transition 0 Y"
+        Assert-Equal $et[0]['x'] '9ED7' "$Variant entry transition 0 X"
+        Assert-Equal $et[0]['s'] '0798' "$Variant entry transition 0 S"
+        Assert-Equal $et[1]['type'] 'jmp-indirect' "$Variant entry transition 1 type"
+        Assert-Equal $et[1]['pc'] '00F8' "$Variant entry transition 1 PC"
+        Assert-Equal $et[1]['x'] '9ED9' "$Variant entry transition 1 X"
+        Assert-Equal $et[2]['type'] 'pshs-y' "$Variant entry transition 2 type"
+        Assert-Equal $et[2]['pc'] '00FA' "$Variant entry transition 2 S"
+        Assert-Equal $et[2]['s'] '0796' "$Variant entry transition 2 S"
+        Assert-Equal $et[2]['savedCursor'] '9F16' "$Variant entry transition 2 saved cursor"
+        Assert-Equal $et[3]['type'] 'leay-x' "$Variant entry transition 3 type"
+        Assert-Equal $et[3]['pc'] '00FC' "$Variant entry transition 3 PC"
+        Assert-Equal $et[3]['y'] '9ED9' "$Variant entry transition 3 Y"
+        Assert-Equal $et[3]['x'] '9ED9' "$Variant entry transition 3 X"
+    }
+
+    $bodyStepInto = Invoke-CliCommand $SessionDirectory 'step-into-mapped-call' -1 30
+    Assert-Equal $bodyStepInto.exit_code 1 "$Variant step-into from body is rejected"
+    if ($null -ne $bodyStepInto.response) {
+        Assert-Equal $bodyStepInto.response['status'] 'error' "$Variant body step-into status"
+        Assert-Equal $bodyStepInto.response['errorCode'] 'not_caller_boundary' "$Variant body step-into error"
+    }
+    $bodyCallerPause = Invoke-CliCommand $SessionDirectory 'pause-at-caller-token' -1 30 0
+    Assert-Equal $bodyCallerPause.exit_code 1 "$Variant caller pause from body is rejected"
+    if ($null -ne $bodyCallerPause.response) {
+        Assert-Equal $bodyCallerPause.response['errorCode'] 'wrong_phase' "$Variant body caller pause error"
     }
 
     $resume = Invoke-CliCommand $SessionDirectory 'resume-to-supported-boundary' -1 30
@@ -294,6 +364,13 @@ function Assert-SessionCommands($SessionDirectory,[string]$Variant,[string]$Expe
         }
     }
 
+    $postStepInto = Invoke-CliCommand $SessionDirectory 'step-into-mapped-call' -1 30
+    Assert-Equal $postStepInto.exit_code 1 "$Variant step-into from post-return is rejected"
+    if ($null -ne $postStepInto.response) {
+        Assert-Equal $postStepInto.response['status'] 'error' "$Variant post-return step-into status"
+        Assert-Equal $postStepInto.response['errorCode'] 'not_caller_boundary' "$Variant post-return step-into error"
+    }
+
     $noSuccessor = Invoke-CliCommand $SessionDirectory 'resume-to-supported-boundary' -1 30
     Assert-Equal $noSuccessor.exit_code 1 "$Variant post-return resume is rejected"
     if ($null -ne $noSuccessor.response) {
@@ -308,7 +385,7 @@ function Assert-SessionCommands($SessionDirectory,[string]$Variant,[string]$Expe
         Assert-Equal $stop.response['kind'] 'stopped' "$Variant stop kind"
         Assert-Equal $stop.response['proof'] 'exit_scheduled' "$Variant stop proof"
     }
-    return [ordered]@{ pause = $pause; inspectA = $inspectA; inspectB = $inspectB; resume = $resume; steps = $steps; noSuccessor = $noSuccessor; stop = $stop }
+    return [ordered]@{ pause = $pause; inspectA = $inspectA; inspectB = $inspectB; entry = $entry; bodyStepInto = $bodyStepInto; bodyCallerPause = $bodyCallerPause; resume = $resume; steps = $steps; postStepInto = $postStepInto; noSuccessor = $noSuccessor; stop = $stop }
 }
 
 function Invoke-NaturalSession([string]$Variant,[string]$RunDirectory) {
@@ -418,7 +495,7 @@ function New-ResponseRecords([string]$RunDirectory) {
             proof = $r['proof']
             response_sha256 = Get-Sha256 $path.FullName
         }
-        foreach ($key in @('errorCode','fromNodeIndex','toNodeIndex','fromBoundaryPhase','toBoundaryPhase','steps','transitionCount','ilNode','ilOperand','resultExpected','resultObserved','savedCursor','returnS','postReturnS','callerCursor','postReturnToken','pc','x','y','u','s','emulatedTime','timeBefore','timeAfter','stateUnchanged')) {
+        foreach ($key in @('errorCode','fromNodeIndex','toNodeIndex','fromBoundaryPhase','toBoundaryPhase','steps','transitionCount','ilNode','ilOperand','resultExpected','resultObserved','savedCursor','returnS','postReturnS','callerCursor','postReturnToken','callerIndex','callerTokenAddress','callerToken','calleeHeaderAddress','calleeHeaderValue','calleeBodyStart','calleeBodyEndExclusive','callerSuccessor','entrySPre','entryS','entryDeltaS','entryX','entryY','entryU','entryUAtBoundary','boundaryPhase','pc','x','y','u','s','emulatedTime','timeBefore','timeAfter','stateUnchanged')) {
             if ($r.ContainsKey($key) -and ![string]::IsNullOrWhiteSpace([string]$r[$key])) { $record[$key] = $r[$key] }
         }
         $transitions = @(Get-Transitions $r)
@@ -528,12 +605,13 @@ function Assert-StrictEventSession([string]$Label,$ParseSummary,[string]$Expecte
     }
     $accepted = @($records | Where-Object { $_.event -eq 'command_accepted' })
     $responses = @($records | Where-Object { $_.event -eq 'command_response' })
-    Assert-Equal $accepted.Count 11 "$Label accepted command count"
-    Assert-Equal $responses.Count 11 "$Label command response count"
-    Assert-Equal ([int]$ParseSummary.eventCounts.command_accepted) 11 "$Label accepted event count"
-    Assert-Equal ([int]$ParseSummary.eventCounts.command_response) 11 "$Label response event count"
+    Assert-Equal $accepted.Count 15 "$Label accepted command count"
+    Assert-Equal $responses.Count 15 "$Label command response count"
+    Assert-Equal ([int]$ParseSummary.eventCounts.command_accepted) 15 "$Label accepted event count"
+    Assert-Equal ([int]$ParseSummary.eventCounts.command_response) 15 "$Label response event count"
+    $expectedErrors = @{ 5 = 'not_caller_boundary'; 6 = 'wrong_phase'; 13 = 'not_caller_boundary'; 14 = 'no_successor' }
     $sequence = 1
-    foreach ($command in @('pause-at-mapped-node','inspect','inspect','resume-to-supported-boundary','step-one-IL-node','step-one-IL-node','step-one-IL-node','step-one-IL-node','step-one-IL-node','resume-to-supported-boundary','stop')) {
+    foreach ($command in @('pause-at-caller-token','inspect','inspect','step-into-mapped-call','step-into-mapped-call','pause-at-caller-token','resume-to-supported-boundary','step-one-IL-node','step-one-IL-node','step-one-IL-node','step-one-IL-node','step-one-IL-node','step-into-mapped-call','resume-to-supported-boundary','stop')) {
         $acceptedForSequence = @($accepted | Where-Object { [int]$_.sequence -eq $sequence })
         $responseForSequence = @($responses | Where-Object { [int]$_.sequence -eq $sequence })
         Assert-Equal $acceptedForSequence.Count 1 "$Label sequence $sequence accepted once"
@@ -542,9 +620,9 @@ function Assert-StrictEventSession([string]$Label,$ParseSummary,[string]$Expecte
             Assert-Equal $acceptedForSequence[0].command $command "$Label sequence $sequence command"
             Assert-Equal $responseForSequence[0].command $command "$Label sequence $sequence response command"
             Assert-Equal $responseForSequence[0].requestId $acceptedForSequence[0].requestId "$Label sequence $sequence request binding"
-            if ($command -eq 'resume-to-supported-boundary' -and $sequence -eq 10) {
-                Assert-Equal $responseForSequence[0].status 'error' "$Label no-successor response status"
-                Assert-Equal $responseForSequence[0].errorCode 'no_successor' "$Label no-successor response code"
+            if ($expectedErrors.ContainsKey($sequence)) {
+                Assert-Equal $responseForSequence[0].status 'error' "$Label sequence $sequence response status"
+                Assert-Equal $responseForSequence[0].errorCode $expectedErrors[$sequence] "$Label sequence $sequence response code"
             }
             else {
                 Assert-Equal $responseForSequence[0].status 'ok' "$Label sequence $sequence response status"
@@ -553,9 +631,11 @@ function Assert-StrictEventSession([string]$Label,$ParseSummary,[string]$Expecte
         }
         $sequence++
     }
-    $pauseHits = @($records | Where-Object { $_.event -eq 'pause_hit' })
-    Assert-Equal $pauseHits.Count 1 "$Label pause hit count"
-    if ($pauseHits.Count -eq 1) { Assert-Equal $pauseHits[0].node 0 "$Label pause hit node" }
+    $callerPauseHits = @($records | Where-Object { $_.event -eq 'caller_pause_hit' })
+    Assert-Equal $callerPauseHits.Count 1 "$Label caller pause hit count"
+    if ($callerPauseHits.Count -eq 1) { Assert-Equal $callerPauseHits[0].caller 0 "$Label caller pause hit index" }
+    Assert-Equal @($records | Where-Object { $_.event -eq 'call_enter_complete' }).Count 1 "$Label call entry completion count"
+    Assert-Equal @($records | Where-Object { $_.event -eq 'call_enter_failure' }).Count 0 "$Label has no call entry failure"
     $resumes = @($records | Where-Object { $_.event -eq 'resume_complete' })
     Assert-Equal $resumes.Count 1 "$Label resume completion count"
     if ($resumes.Count -eq 1) { Assert-Equal $resumes[0].toPhase 'handler' "$Label resume completion phase" }
@@ -602,6 +682,81 @@ function Assert-StrictNegativeEvents($ParseSummary) {
     Assert-Equal @($records | Where-Object { $_.event -eq 'session_stopped' }).Count 1 'negative session stop event'
 }
 
+function Invoke-CallerNegativeSession([string]$RunDirectory) {
+    $launch = Start-DebugSession 'Original' $RunDirectory
+    $processId = [int]$launch.process_id
+    $records = New-Object 'System.Collections.Generic.List[object]'
+    try {
+        $checks = @(
+            @{ Seq=1; Command='step-into-mapped-call'; Extra=@(); Expected='wrong_phase'; Name='step-into before pause' },
+            @{ Seq=2; Command='pause-at-caller-token'; Extra=@('caller=1'); Expected='caller'; Name='caller index out of range' },
+            @{ Seq=3; Command='pause-at-caller-token'; Extra=@(); Expected='caller_required'; Name='missing caller index' }
+        )
+        foreach ($check in $checks) {
+            $response = New-DirectRequest $RunDirectory $check.Seq $check.Command $check.Extra
+            $passed = ($response['status'] -eq 'error' -and $response['errorCode'] -eq $check.Expected)
+            Assert-True $passed "caller negative $($check.Name) rejects with $($check.Expected)"
+            $records.Add([ordered]@{ name=$check.Name; sequence=$check.Seq; command=$check.Command; expected=$check.Expected; actual=$response['errorCode']; pass=$passed })
+        }
+        $pause = New-DirectRequest $RunDirectory 4 'pause-at-caller-token' @('caller=0')
+        Assert-Equal $pause['status'] 'ok' 'caller negative explicit caller zero pause succeeds'
+        Assert-Equal $pause['kind'] 'paused-at-caller' 'caller negative pause kind'
+        Assert-Equal $pause['callerIndex'] '0' 'caller negative pause index'
+        $records.Add([ordered]@{ name='explicit caller zero'; sequence=4; command='pause-at-caller-token'; expected='paused-at-caller'; actual=$pause['kind']; pass=($pause['kind'] -eq 'paused-at-caller') })
+        $inspect = New-DirectRequest $RunDirectory 5 'inspect' @()
+        Assert-Equal $inspect['status'] 'ok' 'caller negative inspect succeeds'
+        Assert-Equal $inspect['stateUnchanged'] 'yes' 'caller negative inspect is read-only'
+        $stop = New-DirectRequest $RunDirectory 6 'stop' @()
+        Assert-Equal $stop['status'] 'ok' 'caller negative stop succeeds'
+        $exited = Wait-OwnedExit $processId 30
+        Assert-True $exited 'caller negative MAME process exits after stop'
+        $exitCodePath = Join-Path $RunDirectory 'mame-exit-code.txt'
+        if (Test-Path -LiteralPath $exitCodePath -PathType Leaf) {
+            Assert-Equal ([IO.File]::ReadAllText($exitCodePath).Trim()) '0' 'caller negative MAME exit code is zero'
+        } else { Write-Fail 'caller negative MAME exit code file is missing' }
+        Assert-Equal @(Get-ChildItem -LiteralPath (Join-Path $RunDirectory 'state') -Recurse -File -ErrorAction SilentlyContinue).Count 0 'caller negative state directory is empty'
+        Assert-Equal (Get-Sha256 (Join-Path $RunDirectory 'roms/m4addr/a6ls.p1')) $OriginalSha256 'caller negative isolated ROM is unchanged'
+        return [ordered]@{ launch=$launch; run_directory=$RunDirectory; records=$records.ToArray() }
+    }
+    finally { Stop-OwnedProcess $processId }
+}
+
+function Assert-TamperedCallerMap([string]$SessionDirectory) {
+    $mapPath = Join-Path $SessionDirectory 'session-map.lua'
+    $text = [IO.File]::ReadAllText($mapPath)
+    $tampered = $text.Replace('callerToken = 0x9ED7','callerToken = 0x9ED8')
+    if ($tampered -eq $text) { throw 'Could not locate the caller record for the tamper control' }
+    [IO.File]::WriteAllText($mapPath,$tampered,(New-Object System.Text.UTF8Encoding($false)))
+    Remove-Item -LiteralPath (Join-Path $SessionDirectory 'ready.txt') -Force -ErrorAction SilentlyContinue
+    Remove-Item -LiteralPath (Join-Path $SessionDirectory 'mame-exit-code.txt') -Force -ErrorAction SilentlyContinue
+    $process = Start-Process -FilePath (Join-Path $env:SystemRoot 'System32\cmd.exe') -ArgumentList '/c','launch.cmd' -WorkingDirectory $SessionDirectory -PassThru -WindowStyle Hidden
+    $exited = $process.WaitForExit(90000)
+    if (!$exited) { & "$env:SystemRoot\System32\taskkill.exe" /PID $process.Id /T /F 2>&1 | Out-Null }
+    $readyPath = Join-Path $SessionDirectory 'ready.txt'
+    $passed = $false
+    $ready = @{}
+    if ($exited -and (Test-Path -LiteralPath $readyPath -PathType Leaf)) {
+        foreach ($line in @(Get-Content -LiteralPath $readyPath)) {
+            if ($line -match '^([a-zA-Z0-9]+)=(.*)$') { $ready[$Matches[1]] = $Matches[2] }
+        }
+        $passed = ($ready['map'] -eq 'fail' -and $ready['error'] -eq 'map_caller_token')
+    }
+    $eventsText = if (Test-Path -LiteralPath (Join-Path $SessionDirectory 'events.jsonl')) { [IO.File]::ReadAllText((Join-Path $SessionDirectory 'events.jsonl')) } else { '' }
+    $eventObserved = $eventsText.Contains('"code":"map_caller_token"')
+    Assert-True $exited 'tampered caller map process exits'
+    Assert-True $passed 'tampered caller map is rejected before ready with map_caller_token'
+    Assert-True $eventObserved 'tampered caller map logs the map_caller_token startup failure'
+    return [ordered]@{
+        name = 'tampered map caller'
+        map_path = $mapPath
+        map_sha256 = Get-Sha256 $mapPath
+        ready = $ready
+        rejected = $passed
+        startup_failure_logged = $eventObserved
+        exit_code = if (Test-Path -LiteralPath (Join-Path $SessionDirectory 'mame-exit-code.txt')) { [IO.File]::ReadAllText((Join-Path $SessionDirectory 'mame-exit-code.txt')).Trim() } else { '' }
+    }
+}
+
 $originalSummary = $null
 $changedSummary = $null
 $negativeSummary = $null
@@ -645,15 +800,21 @@ if (!$SkipNatural) {
     $changedNatural = Invoke-NaturalSession 'Changed' $changedRun
     $originalSummary = New-SessionSummary $originalRun 'Original'
     $changedSummary = New-SessionSummary $changedRun 'Changed'
-    Assert-Equal $originalSummary.responses.Count 11 'original session has eleven responses'
-    Assert-Equal $changedSummary.responses.Count 11 'changed session has eleven responses'
-    $originalPause = @($originalSummary.responses | Where-Object { $_.command -eq 'pause-at-mapped-node' })[0]
-    $changedPause = @($changedSummary.responses | Where-Object { $_.command -eq 'pause-at-mapped-node' })[0]
-    Assert-Equal $originalPause.ilOperand 'FF80' 'original map operand FF80'
-    Assert-Equal $changedPause.ilOperand 'FF00' 'changed map operand FF00'
-    Assert-Equal $originalPause.u $changedPause.u 'original/changed entry U match'
-    Assert-Equal $originalPause.s $changedPause.s 'original/changed entry S match'
-    Assert-Equal $originalPause.token $changedPause.token 'original/changed first token match'
+    Assert-Equal $originalSummary.responses.Count 15 'original session has fifteen responses'
+    Assert-Equal $changedSummary.responses.Count 15 'changed session has fifteen responses'
+    $originalPause = @($originalSummary.responses | Where-Object { $_.command -eq 'pause-at-caller-token' })[0]
+    $changedPause = @($changedSummary.responses | Where-Object { $_.command -eq 'pause-at-caller-token' })[0]
+    $originalEntry = @($originalSummary.responses | Where-Object { $_.command -eq 'step-into-mapped-call' -and $_.status -eq 'ok' })[0]
+    $changedEntry = @($changedSummary.responses | Where-Object { $_.command -eq 'step-into-mapped-call' -and $_.status -eq 'ok' })[0]
+    Assert-Equal $originalEntry.ilOperand 'FF80' 'original map operand FF80'
+    Assert-Equal $changedEntry.ilOperand 'FF00' 'changed map operand FF00'
+    Assert-Equal $originalEntry.u $changedEntry.u 'original/changed entry U match'
+    Assert-Equal $originalEntry.s $changedEntry.s 'original/changed entry S match'
+    Assert-Equal $originalEntry.savedCursor $changedEntry.savedCursor 'original/changed saved cursor match'
+    Assert-Equal $originalEntry.token $changedEntry.token 'original/changed first token match'
+    Assert-Equal $originalPause.callerToken $changedPause.callerToken 'original/changed caller token match'
+    Assert-Equal $originalPause.s '0798' 'original caller prefetch S'
+    Assert-Equal $changedPause.s '0798' 'changed caller prefetch S'
     $originalNode4 = @($originalSummary.responses | Where-Object { $_.toNodeIndex -eq '4' -and $_.toBoundaryPhase -eq 'prefetch' })[0]
     $changedNode4 = @($changedSummary.responses | Where-Object { $_.toNodeIndex -eq '4' -and $_.toBoundaryPhase -eq 'prefetch' })[0]
     $originalPost = @($originalSummary.responses | Where-Object { $_.toBoundaryPhase -eq 'post-return' })[0]
@@ -664,15 +825,42 @@ if (!$SkipNatural) {
 
     $negativeRun = Join-Path $RunRoot 'negative-protocol'
     $negativeSummary = Invoke-NegativeSession $negativeRun
+    $callerNegativeRun = Join-Path $RunRoot 'negative-caller-entry'
+    $callerNegativeSummary = Invoke-CallerNegativeSession $callerNegativeRun
+    $tamperedCaller = Assert-TamperedCallerMap $callerNegativeRun
+
+    $originalMapJson = Get-Content -LiteralPath (Join-Path $originalRun 'variant-map.json') -Raw | ConvertFrom-Json
+    $changedMapJson = Get-Content -LiteralPath (Join-Path $changedRun 'variant-map.json') -Raw | ConvertFrom-Json
+    foreach ($mapRecord in @(@{label='original'; map=$originalMapJson},@{label='changed'; map=$changedMapJson})) {
+        $callers = @($mapRecord.map.callers)
+        Assert-Equal $callers.Count 1 "$($mapRecord.label) variant map has one explicit caller record"
+        if ($callers.Count -eq 1) {
+            Assert-Equal $callers[0].callerTokenAddress '9F14' "$($mapRecord.label) caller token address"
+            Assert-Equal $callers[0].callerToken '9ED7' "$($mapRecord.label) caller token"
+            Assert-Equal $callers[0].calleeHeaderAddress '9ED7' "$($mapRecord.label) caller callee header"
+            Assert-Equal $callers[0].headerValue '00F8' "$($mapRecord.label) caller header value"
+            Assert-Equal $callers[0].calleeBodyStart '9ED9' "$($mapRecord.label) caller body start"
+            Assert-Equal $callers[0].callerSuccessor '9F16' "$($mapRecord.label) caller successor"
+            Assert-Equal $callers[0].postReturnToken '75A9' "$($mapRecord.label) caller continuation token"
+        }
+    }
 
     Assert-True (-not [string]::IsNullOrWhiteSpace($script:PwshPath)) 'pwsh with System.Text.Json is available for strict event checks'
 
     $originalEvents = Invoke-ParseEventFile 'original' (Join-Path $originalRun 'events.jsonl') (Join-Path $RunRoot 'events-original.json')
     $changedEvents = Invoke-ParseEventFile 'changed' (Join-Path $changedRun 'events.jsonl') (Join-Path $RunRoot 'events-changed.json')
     $negativeEvents = Invoke-ParseEventFile 'negative' (Join-Path $negativeRun 'events.jsonl') (Join-Path $RunRoot 'events-negative.json')
+    $callerNegativeEvents = Invoke-ParseEventFile 'caller-negative' (Join-Path $callerNegativeRun 'events.jsonl') (Join-Path $RunRoot 'events-caller-negative.json')
     Assert-StrictEventSession 'original' $originalEvents 'Original' '0000' $originalSummary.session_id
     Assert-StrictEventSession 'changed' $changedEvents 'Changed' '0080' $changedSummary.session_id
     Assert-StrictNegativeEvents $negativeEvents
+    Assert-True ($null -ne $callerNegativeEvents) 'caller negative strict JSONL summary is present'
+    if ($null -ne $callerNegativeEvents) {
+        Assert-True ([bool]$callerNegativeEvents.pass) 'caller negative strict JSONL parse passes'
+        $callerNegRecords = @($callerNegativeEvents.records)
+        Assert-Equal @($callerNegRecords | Where-Object { $_.event -eq 'caller_pause_hit' }).Count 1 'caller negative session pauses at the caller token once'
+        Assert-Equal @($callerNegRecords | Where-Object { $_.event -eq 'startup_failure' -and $_.code -eq 'map_caller_token' }).Count 1 'caller negative tampered relaunch records one map_caller_token failure'
+    }
 
     $negativeControlOutput = Join-Path $RunRoot 'strict-json-negative-controls.json'
     $negativeControlChild = Invoke-EventJsonHelper @('-NoProfile','-File',$EventJsonHelper,'-Mode','Negative','-OutputPath',$negativeControlOutput,'-LegacyEventsPath',$LegacyStep10Events)
@@ -750,11 +938,11 @@ if (!$SkipNatural) {
 if ($script:Failures -eq 0 -and !$SkipNatural) {
     $evidence = [ordered]@{
         schema_version = 1
-        task = 'il-debug-log-11'
+        task = 'il-debug-caller-entry-42'
         generated_utc = [DateTime]::UtcNow.ToString('o')
-        classification = 'Read-only MAME 0.281 paused Lua debugger session using native single-instruction stepping and map-derived IL boundary resolution. Event logs are strict JSONL with complete string escaping. No CPU/register/RAM/ROM writes, no save-state loading and no state seeding. The imgui OSD debugger under the BGFX renderer is used only as the stopped host; its polling wait loop keeps the Lua periodic command/step driver active, and the periodic callback is not itself an instruction boundary.'
-        result_status = 'complete_bounded_paused_il_debug_session_with_strict_event_json'
-        target = 'first natural 9ED9 call reached from a fresh isolated boot with the tracked physical-input replay'
+        classification = 'Read-only MAME 0.281 paused Lua debugger caller-entry boundary and explicit step-into across the original 9ED9 call, using native single-instruction stepping and map-derived IL boundary resolution. Event logs are strict JSONL with complete string escaping. No CPU/register/RAM/ROM writes, no save-state loading and no state seeding.'
+        result_status = 'complete_caller_entry_and_step_into_original_9ed9'
+        target = 'first natural 9ED9 caller token 9F14 and four-instruction entry to body 9ED9'
         protocol = 'il-debug-session-v1'
         mame = [ordered]@{
             executable = [IO.Path]::GetFullPath($MameExecutable)
@@ -778,18 +966,33 @@ if ($script:Failures -eq 0 -and !$SkipNatural) {
             original = $originalSummary
             changed = $changedSummary
             comparison = [ordered]@{
-                same_entry_u = ($originalPause.u -eq $changedPause.u)
-                same_entry_s = ($originalPause.s -eq $changedPause.s)
-                same_node_tokens = ($originalPause.token -eq $changedPause.token)
-                original_operand = $originalPause.ilOperand
-                changed_operand = $changedPause.ilOperand
+                same_entry_u = ($originalEntry.u -eq $changedEntry.u)
+                same_entry_s = ($originalEntry.s -eq $changedEntry.s)
+                same_saved_cursor = ($originalEntry.savedCursor -eq $changedEntry.savedCursor)
+                same_node_tokens = ($originalEntry.token -eq $changedEntry.token)
+                same_caller_token = ($originalPause.callerToken -eq $changedPause.callerToken)
+                original_operand = $originalEntry.ilOperand
+                changed_operand = $changedEntry.ilOperand
                 original_result = $originalNode4.resultObserved
                 changed_result = $changedNode4.resultObserved
                 original_caller_cursor = $originalPost.callerCursor
                 changed_caller_cursor = $changedPost.callerCursor
             }
         }
-        negative_tests = $negativeSummary.records
+        caller_entry = [ordered]@{
+            original = [ordered]@{ pause = $originalPause; entry = $originalEntry }
+            changed = [ordered]@{ pause = $changedPause; entry = $changedEntry }
+            transition_types = @('ldx-y-increment','jmp-indirect','pshs-y','leay-x')
+            saved_cursor = $originalEntry.savedCursor
+            entry_delta_s = $originalEntry.entryDeltaS
+            caller_successor = $originalPause.callerSuccessor
+            post_return_token = $originalPause.postReturnToken
+        }
+        negative_tests = @($negativeSummary.records) + @($callerNegativeSummary.records) + @($tamperedCaller)
+        caller_negative = [ordered]@{
+            session = $callerNegativeSummary
+            tampered_map = $tamperedCaller
+        }
         strict_event_json = $eventJsonEvidence
         launcher_negatives = $launcherNegatives.ToArray()
         provenance = [ordered]@{
@@ -806,6 +1009,10 @@ if ($script:Failures -eq 0 -and !$SkipNatural) {
             strict_command_vocabulary = $true
             inspect_no_cycle_or_state_advance = $true
             five_node_step_transitions = $true
+            caller_token_boundary = ($originalPause.kind -eq 'paused-at-caller' -and $originalPause.callerTokenAddress -eq '9F14')
+            explicit_step_into_four_instruction_chain = ($originalEntry.steps -eq '4' -and $originalEntry.entryDeltaS -eq '0002' -and $originalEntry.savedCursor -eq '9F16')
+            caller_entry_unchanged_data_stack = ($originalEntry.entryU -eq $originalPause.u -and $changedEntry.entryU -eq $changedPause.u)
+            tampered_caller_map_rejected = [bool]$tamperedCaller.rejected
             actual_caller_continuation = $true
             original_result_0000 = ($originalPost.resultObserved -eq '0000')
             changed_result_0080 = ($changedPost.resultObserved -eq '0080')
@@ -819,7 +1026,8 @@ if ($script:Failures -eq 0 -and !$SkipNatural) {
         limitations = @(
             'The imgui debugger requires the BGFX renderer and creates a rendering window; it is the stopped host because the Windows debugger wait can stop entering the Lua periodic callback for tens of seconds.',
             'The Lua periodic callback is a command driver, not an instruction callback; exact boundaries come from native step/breakpoint state.',
-            'Only the fixed 9ED9 definition map and its five nodes are supported.',
+            'Only the fixed 9ED9 definition map, its five nodes and the single explicit caller record 9F14 are supported.',
+            'Step-into is limited to the caller-token boundary and the exact four-instruction entry chain; there is no nested call stack, call-step-over, arbitrary step-out or interrupt boundary.',
             'The demonstrated call is the first natural 9ED9 call with the tracked replay, not the later EE16/EE22 paid window.',
             'No arbitrary memory reads, register writes, state injection, save-state loads or extension allocation are supported.',
             'Physical MPU4 hardware compatibility remains separate and unproved.',

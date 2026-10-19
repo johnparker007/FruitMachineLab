@@ -116,9 +116,10 @@ function Invoke-EventJsonHelper([string[]]$Arguments) {
     }
     finally { $ErrorActionPreference = $previous }
 }
-function Invoke-CliCommand([string]$SessionDirectory,[string]$Command,[int]$Node = -1,[int]$TimeoutSeconds = 90) {
+function Invoke-CliCommand([string]$SessionDirectory,[string]$Command,[int]$Node = -1,[int]$TimeoutSeconds = 90,[int]$Caller = -1) {
     $arguments = @('-NoProfile','-File',$CliTool,'-SessionDirectory',$SessionDirectory,'-Command',$Command,'-TimeoutSeconds',[string]$TimeoutSeconds)
     if ($Node -ge 0) { $arguments += @('-Node',[string]$Node) }
+    if ($Caller -ge 0) { $arguments += @('-Caller',[string]$Caller) }
     $child = Invoke-ChildPowerShell $arguments
     $text = $child.text
     $exitCode = $child.exit_code
@@ -190,22 +191,27 @@ function Get-HandlerSequence($Responses) {
     return $list.ToArray()
 }
 function Invoke-OneCall([string]$SessionDirectory,[string]$Label,[byte[]]$Rom) {
-    $pause = Invoke-CliCommand $SessionDirectory 'pause-at-mapped-node' 0 120
-    Assert-Equal $pause.exit_code 0 "$Label pause command exits zero"
-    if ($null -eq $pause.response) { throw "$Label pause has no response" }
+    $pause = Invoke-CliCommand $SessionDirectory 'pause-at-caller-token' -1 120 0
+    Assert-Equal $pause.exit_code 0 "$Label caller pause command exits zero"
+    if ($null -eq $pause.response) { throw "$Label caller pause has no response" }
     $p = $pause.response
-    Assert-Equal $p['status'] 'ok' "$Label pause status"
-    Assert-Equal $p['kind'] 'paused-at-node' "$Label pause kind"
-    Assert-Equal $p['boundaryPhase'] 'prefetch' "$Label pause boundary phase"
-    Assert-Equal $p['nodeIndex'] '0' "$Label pause node index"
-    Assert-Equal $p['pc'] '00FC' "$Label pause PC"
-    Assert-Equal $p['y'] '9A64' "$Label pause Y is the 9A64 body start"
-    Assert-Equal $p['token'] '7B6D' "$Label pause token"
-    Assert-Equal $p['handlerPc'] '7B6F' "$Label pause handler PC"
-    Assert-Equal $p['ilOperand'] '' "$Label non-branch node has no word literal operand"
-    Assert-Match $p['u'] '^[0-9A-F]{4}$' "$Label pause U is hex"
-    Assert-Match $p['s'] '^[0-9A-F]{4}$' "$Label pause S is hex"
-    Assert-Equal $p['execState'] 'stop' "$Label pause reports stopped"
+    Assert-Equal $p['status'] 'ok' "$Label caller pause status"
+    Assert-Equal $p['kind'] 'paused-at-caller' "$Label caller pause kind"
+    Assert-Equal $p['boundaryPhase'] 'caller-prefetch' "$Label caller pause boundary phase"
+    Assert-Equal $p['callerIndex'] '0' "$Label caller pause index"
+    Assert-Equal $p['pc'] '00FC' "$Label caller pause PC"
+    Assert-Equal $p['y'] 'EF9C' "$Label caller pause Y is the caller token address"
+    Assert-Equal $p['callerTokenAddress'] 'EF9C' "$Label caller token address"
+    Assert-Equal $p['callerToken'] '9A62' "$Label caller token"
+    Assert-Equal $p['calleeHeaderAddress'] '9A62' "$Label callee header address"
+    Assert-Equal $p['calleeHeaderValue'] '00F8' "$Label callee header value"
+    Assert-Equal $p['calleeBodyStart'] '9A64' "$Label callee body start"
+    Assert-Equal $p['calleeBodyEndExclusive'] '9A72' "$Label callee body end"
+    Assert-Equal $p['callerSuccessor'] 'EF9E' "$Label caller successor"
+    Assert-Equal $p['postReturnToken'] '80C4' "$Label caller post-return token"
+    Assert-Equal $p['u'] '066C' "$Label caller pause U"
+    Assert-Equal $p['s'] '07AC' "$Label caller pause S"
+    Assert-Equal $p['execState'] 'stop' "$Label caller pause reports stopped"
 
     $inspectA = Invoke-CliCommand $SessionDirectory 'inspect' -1 30
     $inspectB = Invoke-CliCommand $SessionDirectory 'inspect' -1 30
@@ -214,10 +220,55 @@ function Invoke-OneCall([string]$SessionDirectory,[string]$Label,[byte[]]$Rom) {
     if ($null -ne $inspectA.response -and $null -ne $inspectB.response) {
         $a = $inspectA.response; $b = $inspectB.response
         Assert-Equal $a['proof'] 'stopped_read_only' "$Label inspect proof"
+        Assert-Equal $a['boundaryPhase'] 'caller-prefetch' "$Label caller inspect boundary"
         Assert-Equal $a['stateUnchanged'] 'yes' "$Label first inspect unchanged"
         Assert-Equal $b['stateUnchanged'] 'yes' "$Label second inspect unchanged"
-        foreach ($key in @('pc','x','y','u','s','emulatedTime')) { Assert-Equal $a[$key] $b[$key] "$Label repeated inspect keeps $key" }
+        foreach ($key in @('pc','x','y','u','s','emulatedTime','callerToken')) { Assert-Equal $a[$key] $b[$key] "$Label repeated inspect keeps $key" }
         Assert-Equal $a['emulatedTime'] $p['emulatedTime'] "$Label inspect does not advance emulated time"
+    }
+
+    $entry = Invoke-CliCommand $SessionDirectory 'step-into-mapped-call' -1 30
+    Assert-Equal $entry.exit_code 0 "$Label step-into exits zero"
+    if ($null -eq $entry.response) { throw "$Label step-into has no response" }
+    $e = $entry.response
+    Assert-Equal $e['status'] 'ok' "$Label step-into status"
+    Assert-Equal $e['kind'] 'call-entered' "$Label step-into kind"
+    Assert-Equal $e['steps'] '4' "$Label step-into exact four native steps"
+    Assert-Equal $e['transitionCount'] '4' "$Label step-into four transitions"
+    Assert-Equal $e['toBoundaryPhase'] 'prefetch' "$Label step-into target phase"
+    Assert-Equal $e['toNodeIndex'] '0' "$Label step-into target node"
+    Assert-Equal $e['pc'] '00FC' "$Label step-into PC"
+    Assert-Equal $e['x'] '9A64' "$Label step-into X"
+    Assert-Equal $e['y'] '9A64' "$Label step-into Y"
+    Assert-Equal $e['token'] '7B6D' "$Label step-into first token"
+    Assert-Equal $e['handlerPc'] '7B6F' "$Label step-into first handler"
+    Assert-Equal $e['ilOperand'] '' "$Label non-branch callee node has no word literal operand"
+    Assert-Equal $e['savedCursor'] 'EF9E' "$Label step-into saved cursor"
+    Assert-Equal $e['entrySPre'] '07AC' "$Label step-into pre-entry S"
+    Assert-Equal $e['entryS'] '07AA' "$Label step-into entry S"
+    Assert-Equal $e['entryDeltaS'] '0002' "$Label step-into S delta"
+    Assert-Equal $e['entryU'] '066C' "$Label step-into entry U"
+    Assert-Equal $e['entryUAtBoundary'] '066C' "$Label step-into U unchanged"
+    Assert-Equal $e['u'] $p['u'] "$Label step-into keeps U"
+    Assert-Equal $e['execState'] 'stop' "$Label step-into reports stopped"
+    $et = @(Get-Transitions $e)
+    Assert-Equal $et.Count 4 "$Label step-into transition count"
+    if ($et.Count -eq 4) {
+        Assert-Equal $et[0]['type'] 'ldx-y-increment' "$Label entry transition 0 type"
+        Assert-Equal $et[0]['pc'] '00FE' "$Label entry transition 0 PC"
+        Assert-Equal $et[0]['y'] 'EF9E' "$Label entry transition 0 Y"
+        Assert-Equal $et[0]['x'] '9A62' "$Label entry transition 0 X"
+        Assert-Equal $et[1]['type'] 'jmp-indirect' "$Label entry transition 1 type"
+        Assert-Equal $et[1]['pc'] '00F8' "$Label entry transition 1 PC"
+        Assert-Equal $et[1]['x'] '9A64' "$Label entry transition 1 X"
+        Assert-Equal $et[2]['type'] 'pshs-y' "$Label entry transition 2 type"
+        Assert-Equal $et[2]['pc'] '00FA' "$Label entry transition 2 PC"
+        Assert-Equal $et[2]['s'] '07AA' "$Label entry transition 2 S"
+        Assert-Equal $et[2]['savedCursor'] 'EF9E' "$Label entry transition 2 saved cursor"
+        Assert-Equal $et[3]['type'] 'leay-x' "$Label entry transition 3 type"
+        Assert-Equal $et[3]['pc'] '00FC' "$Label entry transition 3 PC"
+        Assert-Equal $et[3]['y'] '9A64' "$Label entry transition 3 Y"
+        Assert-Equal $et[3]['x'] '9A64' "$Label entry transition 3 X"
     }
 
     $resume = Invoke-CliCommand $SessionDirectory 'resume-to-supported-boundary' -1 30
@@ -233,7 +284,7 @@ function Invoke-OneCall([string]$SessionDirectory,[string]$Label,[byte[]]$Rom) {
 
     $stepResponses = New-Object 'System.Collections.Generic.List[object]'
     $commands = New-Object 'System.Collections.Generic.List[object]'
-    $commands.Add($pause.response); $commands.Add($inspectA.response); $commands.Add($inspectB.response); $commands.Add($resume.response)
+    $commands.Add($pause.response); $commands.Add($inspectA.response); $commands.Add($inspectB.response); $commands.Add($entry.response); $commands.Add($resume.response)
 
     $step0 = Invoke-CliCommand $SessionDirectory 'step-one-IL-node' -1 30
     Assert-Equal $step0.exit_code 0 "$Label step to node 1 exits zero"
@@ -339,6 +390,7 @@ function Invoke-OneCall([string]$SessionDirectory,[string]$Label,[byte[]]$Rom) {
         nodeSequence = (($nodeSequence.ToArray()) -join ',')
         handlerSequence = $handlerText
         pause = $p
+        entry = $e
         postReturn = $post
         stepCount = $stepResponses.Count
         commands = $commands.ToArray()
@@ -562,7 +614,11 @@ try {
         $steps = @($records | Where-Object { $_.event -eq 'node_step_complete' })
         $resumes = @($records | Where-Object { $_.event -eq 'resume_complete' })
         $pauseHits = @($records | Where-Object { $_.event -eq 'pause_hit' })
-        Assert-Equal $pauseHits.Count 2 'session A pauses at the first call and the rearmed next call'
+        $callerPauseHits = @($records | Where-Object { $_.event -eq 'caller_pause_hit' })
+        Assert-Equal $callerPauseHits.Count 1 'session A pauses once at the caller token'
+        Assert-Equal $pauseHits.Count 1 'session A rearm pauses at the next mapped body node'
+        Assert-Equal @($records | Where-Object { $_.event -eq 'call_enter_complete' }).Count 1 'session A records one four-instruction call entry'
+        Assert-Equal @($records | Where-Object { $_.event -eq 'call_enter_failure' }).Count 0 'session A has no call entry failure'
         Assert-Equal $resumes.Count 1 'session A resumes once'
         $branchRecords = @($steps | Where-Object { $_.fromNode -eq 1 })
         Assert-Equal $branchRecords.Count 1 'session A records one 7982 branch step'
@@ -687,7 +743,7 @@ try {
                 $record = [ordered]@{
                     session = $sessionInfo.label; sequence = [int]$r['sequence']; requestId = $r['requestId']; command = $r['command']; status = $r['status']; kind = $r['kind']; proof = $r['proof']; sha256 = Get-Sha256 $path.FullName
                 }
-                foreach ($key in @('fromNodeIndex','toNodeIndex','fromBoundaryPhase','toBoundaryPhase','steps','branchNodeIndex','branchCondition','branchPath','branchConditionCell','branchOperandAddress','branchOperandByte','branchTargetAddress','branchObservedNextY','branchUAdvance','savedCursor','returnS','postReturnS','callerCursor','postReturnToken','nodeIndex','y','token','handlerPc','pc','x','u','s','emulatedTime','timeBefore','timeAfter','stateUnchanged')) {
+                foreach ($key in @('fromNodeIndex','toNodeIndex','fromBoundaryPhase','toBoundaryPhase','steps','branchNodeIndex','branchCondition','branchPath','branchConditionCell','branchOperandAddress','branchOperandByte','branchTargetAddress','branchObservedNextY','branchUAdvance','savedCursor','returnS','postReturnS','callerCursor','postReturnToken','callerIndex','callerTokenAddress','callerToken','calleeHeaderAddress','calleeHeaderValue','calleeBodyStart','calleeBodyEndExclusive','callerSuccessor','entrySPre','entryS','entryDeltaS','entryX','entryY','entryU','entryUAtBoundary','boundaryPhase','nodeIndex','y','token','handlerPc','pc','x','u','s','emulatedTime','timeBefore','timeAfter','stateUnchanged')) {
                     if ($r.ContainsKey($key) -and ![string]::IsNullOrWhiteSpace([string]$r[$key])) { $record[$key] = $r[$key] }
                 }
                 $responseRecords.Add($record)
@@ -697,10 +753,10 @@ try {
             schemaVersion = 1
             taskId = 'il-9a64-session-16'
             generatedUtc = [DateTime]::UtcNow.ToString('o')
-            resultStatus = 'complete_bounded_9a64_paused_session_nonzero_7982_and_natural_zero_target'
+            resultStatus = 'complete_bounded_9a64_caller_entry_nonzero_7982_and_natural_zero_target'
             definition = '9A64'
             protocol = 'il-debug-session-v1'
-            classification = 'Read-only MAME 0.281 paused Lua debugger sessions over the independent 9A64 identity source map. Two fresh natural original-image runs with the tracked physical-input replay: one steps the first nonzero 7982 branch and verifies post-return rearm; one pauses at the zero-only mapped target 9A6E and steps the clear and return path. No state, register, RAM or ROM writes; no save-state load; no speculative input.'
+            classification = 'Read-only MAME 0.281 paused Lua debugger sessions over the independent 9A64 identity source map. Two fresh natural original-image runs with the tracked physical-input replay: one pauses at the explicit EF9C caller token, performs the exact four-instruction step-into to 9A64, steps the first nonzero 7982 branch and verifies post-return rearm; one pauses at the zero-only mapped target 9A6E and steps the clear and return path. No state, register, RAM or ROM writes; no save-state load; no speculative input.'
             source = [ordered]@{
                 startTool = 'tools/Start-IlDebugSession.ps1'
                 commandTool = 'tools/Invoke-IlDebugCommand.ps1'
@@ -745,7 +801,7 @@ try {
                     mameExitCode = [int]$exitCodeText.Trim()
                     stateDirectoryFiles = @(Get-ChildItem -LiteralPath (Join-Path $naturalRun 'state') -Recurse -File -ErrorAction SilentlyContinue).Count
                     sessionTimeout = Test-Path -LiteralPath (Join-Path $naturalRun 'session-timeout.txt')
-                    observed = 'First natural call: 7982 nonzero branch step, 7979 unconditional branch, node 5 return and actual post-return. Then a post-return rearm reached a later natural call and was inspected without claiming its branch path.'
+                    observed = 'First natural call: caller-token prefetch EF9C, explicit four-instruction entry to 9A64, 7982 nonzero branch step, 7979 unconditional branch, node 5 return and actual post-return. Then a post-return rearm reached a later natural call and was inspected without claiming its branch path.'
                     rearmTransition = 'pause-at-mapped-node from an observed post-return boundary arms the next natural mapped-node prefetch; no other post-return command was added.'
                 },
                 [ordered]@{
@@ -783,6 +839,17 @@ try {
                 unconditionalTarget = '9A70'
                 conditionalUAdvance = '0002'
                 unconditionalUAdvance = '0000'
+                callerEntryObserved = $true
+                callerTokenAddress = $first.pause.callerTokenAddress
+                callerToken = $first.pause.callerToken
+                calleeBodyStart = $first.pause.calleeBodyStart
+                callerSuccessor = $first.pause.callerSuccessor
+                postReturnToken = $first.pause.postReturnToken
+                callerEntrySteps = $first.entry.steps
+                callerEntryDeltaS = $first.entry.entryDeltaS
+                callerEntrySavedCursor = $first.entry.savedCursor
+                callerEntryTransitionTypes = @('ldx-y-increment','jmp-indirect','pshs-y','leay-x')
+                callerEntryUUnchanged = ($first.entry.entryU -eq $first.pause.u)
             }
             strictEventJson = [ordered]@{
                 natural = [ordered]@{ path=(Join-Path $naturalRun 'events.jsonl'); sha256=(Get-Sha256 (Join-Path $naturalRun 'events.jsonl')); nonblank=[int]$naturalEvents.nonblank; recordCount=[int]$naturalEvents.recordCount; failures=@($naturalEvents.failures).Count; eventCounts=$naturalEvents.eventCounts }
@@ -792,7 +859,7 @@ try {
             negativeControls = [ordered]@{ launcher=$launcherNegatives.ToArray(); protocol=$protocolNegatives.ToArray() }
             commands = @(
                 [ordered]@{ id='maponly-9a64'; description='Generate the identity 9A64 map/build through the accepted IL API'; exitCode=$mapChild.exit_code; sourceMapSha256=$mapInfo.sourceMapSha256; buildReportSha256=$mapInfo.buildReportSha256 },
-                [ordered]@{ id='natural-9a64-session'; description='Fresh natural 9A64 paused session: first nonzero 7982 step and post-return rearm'; exitCode=[int]$exitCodeText.Trim(); wallSeconds=$sessionWallSeconds; emulatedSeconds=120 },
+                [ordered]@{ id='natural-9a64-session'; description='Fresh natural 9A64 caller-entry session: EF9C caller pause, four-instruction step-into, nonzero 7982 step, post-return and rearm'; exitCode=[int]$exitCodeText.Trim(); wallSeconds=$sessionWallSeconds; emulatedSeconds=120 },
                 [ordered]@{ id='zero-target-9a64-session'; description='Fresh natural 9A64 paused session at the zero-only target 9A6E'; exitCode=[int]$zeroExitCodeText.Trim(); wallSeconds=$zeroWallSeconds; emulatedSeconds=120 }
             )
             limitations = @(
@@ -800,6 +867,7 @@ try {
                 'Only original-image 9A64 sessions are accepted; 9A64 edits, operand replacement and modified images are rejected.',
                 'The nonzero 7982 step observed condition cell FFFF and followed the fall-through to 9A69. The zero path was observed naturally from the zero-only target 9A6E; the 7982 zero-condition cell was not itself single-stepped in this increment.',
                 'The rearm command is pause-at-mapped-node from an observed post-return boundary; no call-step-over, arbitrary continuation or state injection is provided.',
+                'Step-into covers only the explicit EF9C caller token and the exact four-instruction entry chain; there is no nested call stack, call-step-over, arbitrary step-out or interrupt boundary.',
                 'No memory OR/clear effect is claimed; only observed native boundaries, branch operands/targets, U/S state and the post-return continuation are reported.',
                 'No extension allocation, new word, native primitive, native C# executor or physical hardware compatibility is claimed.',
                 'The EE16/EE22 paid-window comparison remains unchanged and was not retried.'

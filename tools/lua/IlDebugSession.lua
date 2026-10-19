@@ -170,6 +170,33 @@ for _, node in ipairs(map.nodes) do
     end
 end
 
+local callerByIndex = {}
+local callerByAddress = {}
+local function validateCaller(caller, expectedIndex)
+    if type(caller) ~= "table" then startupFailure("map_caller", "caller record is malformed") end
+    for _, name in ipairs({ "index", "callerTokenAddress", "callerToken", "calleeHeaderAddress", "headerValue",
+        "calleeBodyStart", "calleeBodyEndExclusive", "callerSuccessor", "postReturnToken" }) do
+        if type(caller[name]) ~= "number" then startupFailure("map_caller", "caller field is missing or not numeric: " .. name) end
+    end
+    if caller.index ~= expectedIndex then startupFailure("map_caller_index", "caller index is not the expected explicit position") end
+    if caller.headerValue ~= 0x00F8 then startupFailure("map_caller_header", "caller header value is not 00F8") end
+    if caller.calleeHeaderAddress + 2 ~= caller.calleeBodyStart then startupFailure("map_caller_body", "callee header+2 is not the body start") end
+    if caller.callerTokenAddress + 2 ~= caller.callerSuccessor then startupFailure("map_caller_successor", "caller token+2 is not the successor") end
+    if caller.calleeBodyStart ~= map.bodyStart or caller.calleeBodyEndExclusive ~= map.bodyEndExclusive then
+        startupFailure("map_caller_span", "caller callee span differs from the mapped body")
+    end
+    if readw(caller.callerTokenAddress) ~= caller.callerToken then startupFailure("map_caller_token", "live caller token differs from the caller record") end
+    if readw(caller.calleeHeaderAddress) ~= caller.headerValue then startupFailure("map_caller_header_live", "live callee header differs from the caller record") end
+    if readw(caller.callerSuccessor) ~= caller.postReturnToken then startupFailure("map_caller_continuation", "live caller successor token differs from the caller record") end
+    if readw(caller.calleeBodyStart) ~= nodeByIndex[0].token then startupFailure("map_caller_body_token", "live callee first token differs from the mapped first node") end
+    if callerByIndex[caller.index] then startupFailure("map_caller_duplicate", "duplicate caller index") end
+    if callerByAddress[caller.callerTokenAddress] then startupFailure("map_caller_address", "duplicate caller token address") end
+    callerByIndex[caller.index] = caller
+    callerByAddress[caller.callerTokenAddress] = caller
+end
+if type(map.callers) ~= "table" or #map.callers < 1 then startupFailure("map_callers", "map does not contain explicit caller records") end
+for index, caller in ipairs(map.callers) do validateCaller(caller, index - 1) end
+
 local okLfs, lfs = pcall(require, "lfs")
 if not okLfs then startupFailure("no_lfs", "lfs directory enumeration is unavailable") end
 local okDir, dirIter, dirObject = pcall(lfs.dir, "commands")
@@ -230,6 +257,13 @@ end
 
 local function resolveBoundary(state)
     if state.pc == 0x00FC then
+        local caller = callerByAddress[state.y]
+        if caller then
+            local token = readw(state.y)
+            if token ~= caller.callerToken then return nil, "caller_token_mismatch" end
+            if readw(caller.callerSuccessor) ~= caller.postReturnToken then return nil, "caller_successor_mismatch" end
+            return { phase = "caller-prefetch", caller = caller, token = token }
+        end
         local node = nodeByAddress[state.y]
         if node then
             local token = readw(state.y)
@@ -279,8 +313,27 @@ local function resolveBoundary(state)
     return nil, "unsupported_location"
 end
 
+local function callerFields(caller, target)
+    target[#target + 1] = "callerIndex=" .. tostring(caller.index)
+    target[#target + 1] = "callerTokenAddress=" .. hex16(caller.callerTokenAddress)
+    target[#target + 1] = "callerToken=" .. hex16(caller.callerToken)
+    target[#target + 1] = "calleeHeaderAddress=" .. hex16(caller.calleeHeaderAddress)
+    target[#target + 1] = "calleeHeaderValue=" .. hex16(caller.headerValue)
+    target[#target + 1] = "calleeBodyStart=" .. hex16(caller.calleeBodyStart)
+    target[#target + 1] = "calleeBodyEndExclusive=" .. hex16(caller.calleeBodyEndExclusive)
+    target[#target + 1] = "callerSuccessor=" .. hex16(caller.callerSuccessor)
+    target[#target + 1] = "postReturnToken=" .. hex16(caller.postReturnToken)
+    target[#target + 1] = "calleeNodeIndex=0"
+    target[#target + 1] = "calleeFirstToken=" .. hex16(nodeByIndex[0].token)
+end
+
 local function boundaryFields(boundary, target)
     if not boundary then return end
+    if boundary.phase == "caller-prefetch" then
+        target[#target + 1] = "boundaryPhase=caller-prefetch"
+        callerFields(boundary.caller, target)
+        return
+    end
     local node = boundary.node
     target[#target + 1] = "boundaryPhase=" .. boundary.phase
     target[#target + 1] = "nodeIndex=" .. tostring(node.index)
@@ -386,7 +439,7 @@ local function parseRequest(path, filenameSeq)
     if data:find("\r", 1, true) then return nil, "carriage_return", "request file contains a carriage return" end
     local allowed = {
         protocol = true, session = true, sequence = true, requestId = true,
-        nonce = true, command = true, node = true
+        nonce = true, command = true, node = true, caller = true
     }
     local req = { path = path }
     for line in data:gmatch("[^\n]+") do
@@ -414,8 +467,10 @@ local function parseRequest(path, filenameSeq)
     if not req.nonce:match("^[0-9a-f]+$") then return nil, "nonce_format", "nonce is not lowercase hex" end
     local commands = {
         ["pause-at-mapped-node"] = true,
+        ["pause-at-caller-token"] = true,
         ["inspect"] = true,
         ["step-one-IL-node"] = true,
+        ["step-into-mapped-call"] = true,
         ["resume-to-supported-boundary"] = true,
         ["stop"] = true
     }
@@ -427,6 +482,15 @@ local function parseRequest(path, filenameSeq)
         if not nodeIndex or nodeIndex < 0 or nodeIndex > lastNodeIndex then return nil, "node", "node index is out of range" end
         req.node = nodeIndex
     end
+    if req.caller == nil then req.caller = "" end
+    if req.caller ~= "" then
+        if not req.caller:match("^%d+$") then return nil, "caller", "caller is not a decimal index" end
+        local callerIndex = tonumber(req.caller)
+        if not callerIndex or not callerByIndex[callerIndex] then return nil, "caller", "caller index is out of range" end
+        req.caller = callerIndex
+    end
+    if req.node ~= "" and req.command ~= "pause-at-mapped-node" then return nil, "node_not_allowed", "node is only valid for pause-at-mapped-node" end
+    if req.caller ~= "" and req.command ~= "pause-at-caller-token" then return nil, "caller_not_allowed", "caller is only valid for pause-at-caller-token" end
     return req
 end
 
@@ -700,12 +764,189 @@ local function processStep(state)
     cpu.debug:step(1)
 end
 
+local ENTRY_STEPS = {
+    { pc = 0x00FE, name = "ldx-y-increment" },
+    { pc = 0x00F8, name = "jmp-indirect" },
+    { pc = 0x00FA, name = "pshs-y" },
+    { pc = 0x00FC, name = "leay-x" }
+}
+
+local function failEntry(req, code, message, state)
+    local entry = session.entry
+    session.entry = nil
+    session.phase = "error"
+    session.current = nil
+    local fields = { "errorCode=" .. code, "message=" .. tostring(message):gsub("[\r\n]", " ") }
+    if entry then
+        fields[#fields + 1] = "callerIndex=" .. tostring(entry.caller.index)
+        fields[#fields + 1] = "steps=" .. tostring(entry.count)
+        fields[#fields + 1] = "timeBefore=" .. string.format("%.9f", entry.fromState.time)
+    end
+    stateFields(state, "", fields)
+    logEvent("call_enter_failure", { sequence = req.sequence, requestId = req.requestId, code = code })
+    writeResponse(req, "error", "error", "none", fields)
+end
+
+local function completeEntry(state)
+    local entry = session.entry
+    local boundary = session.current
+    local caller = entry.caller
+    local fields = {}
+    fields[#fields + 1] = "fromBoundaryPhase=caller-prefetch"
+    fields[#fields + 1] = "toBoundaryPhase=prefetch"
+    fields[#fields + 1] = "toNodeIndex=0"
+    fields[#fields + 1] = "steps=" .. tostring(entry.count)
+    fields[#fields + 1] = "transitionCount=" .. tostring(#entry.transitions)
+    for index, transition in ipairs(entry.transitions) do
+        fields[#fields + 1] = string.format("transition.%d=%s", index - 1, transition)
+    end
+    callerFields(caller, fields)
+    boundaryFields(boundary, fields)
+    stateFields(state, "", fields)
+    fields[#fields + 1] = "entrySPre=" .. hex16(entry.callerS)
+    fields[#fields + 1] = "entryS=" .. hex16(state.s)
+    fields[#fields + 1] = "entryDeltaS=" .. hex16((entry.callerS - state.s) & 0xFFFF)
+    fields[#fields + 1] = "entryX=" .. hex16(state.x)
+    fields[#fields + 1] = "entryY=" .. hex16(state.y)
+    fields[#fields + 1] = "entryU=" .. hex16(state.u)
+    fields[#fields + 1] = "entryUAtBoundary=" .. hex16(entry.callerU)
+    fields[#fields + 1] = "savedCursor=" .. hex16(caller.callerSuccessor)
+    fields[#fields + 1] = "timeBefore=" .. string.format("%.9f", entry.fromState.time)
+    fields[#fields + 1] = "timeAfter=" .. string.format("%.9f", state.time)
+    session.entry = nil
+    session.phase = "paused"
+    writeResponse(entry.request, "ok", "call-entered", "boundary_reached", fields)
+    logEvent("call_enter_complete", {
+        sequence = entry.request.sequence,
+        requestId = entry.request.requestId,
+        callerIndex = caller.index,
+        steps = entry.count,
+        pc = hex16(state.pc),
+        x = hex16(state.x),
+        y = hex16(state.y),
+        u = hex16(state.u),
+        s = hex16(state.s),
+        savedCursor = hex16(caller.callerSuccessor),
+        entryDeltaS = hex16((entry.callerS - state.s) & 0xFFFF)
+    })
+end
+
+local function processEntry(state)
+    local entry = session.entry
+    local req = entry.request
+    if state.exec ~= "stop" then return end
+    entry.count = entry.count + 1
+    local expected = ENTRY_STEPS[entry.count]
+    if not expected then
+        failEntry(req, "entry_step_budget", "call entry exceeded the exact four-instruction chain", state)
+        return
+    end
+    if state.pc ~= expected.pc then
+        failEntry(req, "unexpected_entry_stop",
+            string.format("entry step %d stopped at PC %s, expected %s", entry.count, hex16(state.pc), hex16(expected.pc)), state)
+        return
+    end
+    local caller = entry.caller
+    local entryS = (entry.callerS - 2) & 0xFFFF
+    local expectedS = entry.count <= 2 and entry.callerS or entryS
+    if state.s ~= expectedS then
+        failEntry(req, "entry_s_mismatch", "control stack does not match the entry chain", state)
+        return
+    end
+    if state.u ~= entry.callerU then
+        failEntry(req, "entry_u_mismatch", "data stack changed during the call entry", state)
+        return
+    end
+    if entry.count == 1 then
+        if state.y ~= caller.callerSuccessor then
+            failEntry(req, "entry_y_mismatch", "Y is not the caller successor after LDX ,Y++", state)
+            return
+        end
+        if state.x ~= caller.callerToken then
+            failEntry(req, "entry_x_mismatch", "X is not the caller token after LDX ,Y++", state)
+            return
+        end
+    elseif entry.count == 2 then
+        if state.y ~= caller.callerSuccessor then
+            failEntry(req, "entry_y_mismatch", "Y is not the caller successor at the JMP target", state)
+            return
+        end
+        if state.x ~= caller.calleeBodyStart then
+            failEntry(req, "entry_x_mismatch", "X is not the callee body start at the JMP target", state)
+            return
+        end
+    elseif entry.count == 3 then
+        if state.x ~= caller.calleeBodyStart or state.y ~= caller.callerSuccessor then
+            failEntry(req, "entry_register_mismatch", "X/Y differ from the PSHS Y entry state", state)
+            return
+        end
+        if readw(state.s) ~= caller.callerSuccessor then
+            failEntry(req, "entry_saved_cursor_mismatch", "w@S is not the caller successor after PSHS Y", state)
+            return
+        end
+    else
+        if state.x ~= caller.calleeBodyStart or state.y ~= caller.calleeBodyStart then
+            failEntry(req, "entry_register_mismatch", "X/Y are not the callee body start at the first prefetch", state)
+            return
+        end
+        if readw(state.s) ~= caller.callerSuccessor then
+            failEntry(req, "entry_saved_cursor_mismatch", "w@S is not the caller successor at the first prefetch", state)
+            return
+        end
+        local node = nodeByIndex[0]
+        local liveToken = readw(caller.calleeBodyStart)
+        if liveToken ~= node.token then
+            failEntry(req, "entry_token_mismatch", "live callee first token differs from the mapped node", state)
+            return
+        end
+        local transition = string.format("type=%s;pc=%s;y=%s;x=%s;u=%s;s=%s;callerIndex=%d;savedCursor=%s",
+            expected.name, hex16(state.pc), hex16(state.y), hex16(state.x), hex16(state.u), hex16(state.s),
+            caller.index, hex16(caller.callerSuccessor))
+        entry.transitions[#entry.transitions + 1] = transition
+        session.current = { phase = "prefetch", node = node, token = liveToken }
+        completeEntry(state)
+        return
+    end
+    local transition = string.format("type=%s;pc=%s;y=%s;x=%s;u=%s;s=%s;callerIndex=%d",
+        expected.name, hex16(state.pc), hex16(state.y), hex16(state.x), hex16(state.u), hex16(state.s), caller.index)
+    if entry.count >= 3 then
+        transition = transition .. ";savedCursor=" .. hex16(readw(state.s))
+    end
+    entry.transitions[#entry.transitions + 1] = transition
+    logEvent("native_step", {
+        sequence = req.sequence,
+        step = entry.count,
+        phase = "entry",
+        pc = hex16(state.pc),
+        y = hex16(state.y),
+        x = hex16(state.x),
+        u = hex16(state.u),
+        s = hex16(state.s),
+        time = string.format("%.9f", state.time)
+    })
+    cpu.debug:step(1)
+end
+
 local function handlePauseStop(state)
     local pause = session.pause
     session.pause = nil
     pcall(function() cpu.debug:bpclear(pause.breakpoint) end)
     local boundary, reason = resolveBoundary(state)
-    if boundary and boundary.phase == "prefetch" and boundary.node.index == pause.node.index and
+    if pause.caller then
+        if boundary and boundary.phase == "caller-prefetch" and boundary.caller.index == pause.caller.index and
+            state.pc == 0x00FC and state.y == pause.caller.callerTokenAddress and
+            readw(pause.caller.callerTokenAddress) == pause.caller.callerToken then
+            session.current = boundary
+            session.postReturnContext = nil
+            session.phase = "paused"
+            local fields = {}
+            boundaryFields(boundary, fields)
+            stateFields(state, "", fields)
+            logEvent("caller_pause_hit", { sequence = pause.request.sequence, requestId = pause.request.requestId, caller = pause.caller.index })
+            writeResponse(pause.request, "ok", "paused-at-caller", "boundary_reached", fields)
+            return
+        end
+    elseif boundary and boundary.phase == "prefetch" and boundary.node.index == pause.node.index and
         state.pc == 0x00FC and state.y == pause.node.address then
         session.current = boundary
         session.postReturnContext = nil
@@ -754,6 +995,39 @@ local function commandPause(req)
     session.pause = { request = req, node = node, breakpoint = breakpoint }
     session.phase = "running"
     logEvent("pause_armed", { sequence = req.sequence, requestId = req.requestId, node = req.node, breakpoint = breakpoint })
+    cpu.debug:go()
+end
+
+local function commandPauseAtCaller(req)
+    local rearm = session.phase == "paused" and session.current and session.current.phase == "post-return"
+    if session.phase ~= "initial" and not rearm then
+        errorResponse(req, "wrong_phase", "pause-at-caller-token is only valid from the initial stopped state or after a post-return boundary")
+        return
+    end
+    if type(req.caller) ~= "number" then
+        errorResponse(req, "caller_required", "pause-at-caller-token requires an explicit caller index")
+        return
+    end
+    local caller = callerByIndex[req.caller]
+    if not caller then errorResponse(req, "caller", "caller is not mapped"); return end
+    if rearm then
+        local current, reason = resolveBoundary(snapshot())
+        if not current or current.phase ~= "post-return" then
+            errorResponse(req, "unsupported_boundary", tostring(reason or "post-return boundary is no longer current"))
+            return
+        end
+        session.current = nil
+        session.postReturnContext = nil
+        session.inspectionCount = 0
+    end
+    clearBreakpoints()
+    local okBp, breakpoint = pcall(function()
+        return cpu.debug:bpset(0x00FC, string.format("y==0x%04x", caller.callerTokenAddress), "")
+    end)
+    if not okBp then errorResponse(req, "breakpoint", tostring(breakpoint)); return end
+    session.pause = { request = req, caller = caller, breakpoint = breakpoint }
+    session.phase = "running"
+    logEvent("caller_pause_armed", { sequence = req.sequence, requestId = req.requestId, caller = req.caller, breakpoint = breakpoint })
     cpu.debug:go()
 end
 
@@ -851,6 +1125,59 @@ local function beginHandlerSuccessor(req, kind, boundary)
     beginStep(req, kind, "prefetch", nextNode.index)
 end
 
+local function commandStepInto(req)
+    if session.phase ~= "paused" then
+        errorResponse(req, "wrong_phase", "step-into-mapped-call requires a paused caller boundary")
+        return
+    end
+    local boundary = session.current
+    if not boundary then errorResponse(req, "no_current_boundary", "no supported boundary is current"); return end
+    if boundary.phase ~= "caller-prefetch" then
+        errorResponse(req, "not_caller_boundary", "step-into-mapped-call requires the current caller-token prefetch boundary")
+        return
+    end
+    local caller = boundary.caller
+    local state = snapshot()
+    if state.exec ~= "stop" then
+        errorResponse(req, "not_stopped", "step-into-mapped-call requires stopped execution")
+        return
+    end
+    if state.pc ~= 0x00FC or state.y ~= caller.callerTokenAddress then
+        errorResponse(req, "caller_boundary_mismatch", "caller-token boundary registers do not match the caller record")
+        return
+    end
+    if readw(caller.callerTokenAddress) ~= caller.callerToken then
+        errorResponse(req, "caller_token_mismatch", "live caller token differs from the caller record")
+        return
+    end
+    if readw(caller.callerSuccessor) ~= caller.postReturnToken then
+        errorResponse(req, "caller_successor_mismatch", "live caller successor token differs from the caller record")
+        return
+    end
+    session.entry = {
+        request = req,
+        caller = caller,
+        from = boundary,
+        fromState = state,
+        callerS = state.s,
+        callerU = state.u,
+        count = 0,
+        transitions = {}
+    }
+    session.phase = "entering"
+    logEvent("call_enter_start", {
+        sequence = req.sequence,
+        requestId = req.requestId,
+        callerIndex = caller.index,
+        pc = hex16(state.pc),
+        y = hex16(state.y),
+        x = hex16(state.x),
+        u = hex16(state.u),
+        s = hex16(state.s)
+    })
+    cpu.debug:step(1)
+end
+
 local function commandStep(req)
     if session.phase ~= "paused" then
         errorResponse(req, "wrong_phase", "step-one-IL-node requires a paused supported boundary")
@@ -858,6 +1185,10 @@ local function commandStep(req)
     end
     local boundary = session.current
     if not boundary then errorResponse(req, "no_current_boundary", "no supported boundary is current"); return end
+    if boundary.phase == "caller-prefetch" then
+        errorResponse(req, "step_into_required", "a caller-token prefetch requires step-into-mapped-call")
+        return
+    end
     if boundary.phase == "post-return" then
         errorResponse(req, "no_successor", "the caller continuation has no further mapped node")
         return
@@ -912,8 +1243,10 @@ local function dispatch(req)
     session.lastRequestId = req.requestId
     logEvent("command_accepted", { sequence = req.sequence, requestId = req.requestId, command = req.command, node = req.node or "" })
     if req.command == "pause-at-mapped-node" then commandPause(req)
+    elseif req.command == "pause-at-caller-token" then commandPauseAtCaller(req)
     elseif req.command == "inspect" then commandInspect(req)
     elseif req.command == "step-one-IL-node" then commandStep(req)
+    elseif req.command == "step-into-mapped-call" then commandStepInto(req)
     elseif req.command == "resume-to-supported-boundary" then commandResume(req)
     elseif req.command == "stop" then commandStop(req)
     else errorResponse(req, "unknown_command", "command is not supported") end
@@ -933,7 +1266,8 @@ local function processOneRequest()
         local req, code, message = parseRequest(path, candidate.seq)
         if req then
             if req.command == "stop" or req.command == "inspect" or req.command == "step-one-IL-node" or
-                req.command == "resume-to-supported-boundary" or req.command == "pause-at-mapped-node" then
+                req.command == "resume-to-supported-boundary" or req.command == "pause-at-mapped-node" or
+                req.command == "pause-at-caller-token" or req.command == "step-into-mapped-call" then
                 if session.phase == "stepping" then return end
                 dispatch(req)
                 return
@@ -981,6 +1315,7 @@ local function writeReady(execState)
     ready:write("exec=" .. tostring(execState) .. "\n")
     ready:write("lfs=ok\n")
     ready:write("nodes=" .. tostring(#map.nodes) .. "\n")
+    ready:write("callers=" .. tostring(#map.callers) .. "\n")
     if map.expectedResult then ready:write("expectedResult=" .. hex16(map.expectedResult) .. "\n") else ready:write("expectedResult=\n") end
     ready:write("hold=" .. hex16(session.resetPc) .. "\n")
     ready:close()
@@ -1026,6 +1361,10 @@ emu.register_periodic(function()
     end
     if session.phase == "stepping" then
         processStep(state)
+        return
+    end
+    if session.phase == "entering" then
+        processEntry(state)
         return
     end
     if session.phase == "initial" or session.phase == "paused" or session.phase == "error" then

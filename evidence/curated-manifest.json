@@ -205,6 +205,11 @@
         "sha256":  "3D3E9BE460F25460F25626412599C646EF48733860523F03F438E3C613D365D5"
     },
     {
+        "path":  "docs/recovery/IL-DEBUG-CALLER-ENTRY.md",
+        "bytes":  6273,
+        "sha256":  "018D78C50B08549515DAE916FCC748961F540D090621AE3E383CF6A2C963DEF2"
+    },
+    {
         "path":  "docs/recovery/IL-DEBUG-SESSION.md",
         "bytes":  18980,
         "sha256":  "F2DAB38F6CF239913D5734E8E547FE5C115BD1E84AEBC24DD1B094A4E35B021F"
@@ -1153,6 +1158,11 @@
         "path":  "evidence/mpu4/integrity/il-composite-natural.json",
         "bytes":  151178,
         "sha256":  "8AD7C4CDD15AB9546EC98DD4CCA06A49334FDB9D1A6190760458AB1041E01DBD"
+    },
+    {
+        "path":  "evidence/mpu4/integrity/il-debug-caller-entry.json",
+        "bytes":  33812,
+        "sha256":  "E2D06496DB0E1D593046A69463DB91770A7801A8CEE46DCEB27FEF4DB12AE541"
     },
     {
         "path":  "evidence/mpu4/integrity/il-debug-delivery.json",

@@ -24,6 +24,32 @@ $script:DsRepairedSha256 = '577f76bd36dfca04dfb01b5f5d0be93e16572f8617c7ca906397
 $script:DsReplaySha256 = '4a051da15264842697879eff396b34a789f5d80623f9a2e749c244e6a80e721d'
 $script:DsMameSha256 = '0fce5a88df4f9d9b1fbf1405812c00848036e615993780978d967da34204cb7a'
 $script:DsExpectedChangedOffsets = @(0x9EDC,0xFFD1,0xFFD2,0xFFD3,0xFFD4,0xFFD5)
+$script:DsNineEdNineCallers = @(
+    [ordered]@{
+        index = 0
+        callerTokenAddress = 0x9F14
+        callerToken = 0x9ED7
+        calleeHeaderAddress = 0x9ED7
+        headerValue = 0x00F8
+        calleeBodyStart = 0x9ED9
+        calleeBodyEndExclusive = 0x9EE7
+        callerSuccessor = 0x9F16
+        postReturnToken = 0x75A9
+    }
+)
+$script:DsNineASixFourCallers = @(
+    [ordered]@{
+        index = 0
+        callerTokenAddress = 0xEF9C
+        callerToken = 0x9A62
+        calleeHeaderAddress = 0x9A62
+        headerValue = 0x00F8
+        calleeBodyStart = 0x9A64
+        calleeBodyEndExclusive = 0x9A72
+        callerSuccessor = 0xEF9E
+        postReturnToken = 0x80C4
+    }
+)
 $script:DsProtocol = 'il-debug-session-v1'
 $script:DsRoot = Split-Path $PSScriptRoot -Parent
 if ([string]::IsNullOrWhiteSpace($SourceMapPath)) { $SourceMapPath = Join-Path $script:DsRoot 'artifacts/deepseek/il-boot-04/build-01/source-map.json' }
@@ -56,6 +82,51 @@ function ConvertTo-DsInt {
 function Format-DsHex16 {
     param([int]$Value)
     return ('{0:X4}' -f ($Value -band 0xFFFF))
+}
+
+function Add-DsCallers {
+    param($Builder,[object[]]$Callers)
+    [void]$Builder.AppendLine('  callers = {')
+    foreach ($caller in @($Callers)) {
+        [void]$Builder.AppendLine(('    {{ index = {0}, callerTokenAddress = 0x{1}, callerToken = 0x{2}, calleeHeaderAddress = 0x{3}, headerValue = 0x{4}, calleeBodyStart = 0x{5}, calleeBodyEndExclusive = 0x{6}, callerSuccessor = 0x{7}, postReturnToken = 0x{8} }},' -f `
+            $caller.index,(Format-DsHex16 $caller.callerTokenAddress),(Format-DsHex16 $caller.callerToken),(Format-DsHex16 $caller.calleeHeaderAddress),(Format-DsHex16 $caller.headerValue),(Format-DsHex16 $caller.calleeBodyStart),(Format-DsHex16 $caller.calleeBodyEndExclusive),(Format-DsHex16 $caller.callerSuccessor),(Format-DsHex16 $caller.postReturnToken)))
+    }
+    [void]$Builder.AppendLine('  },')
+}
+
+function ConvertTo-DsCallersHex {
+    param([object[]]$Callers)
+    return @($Callers | ForEach-Object {
+        [ordered]@{
+            index = [int]$_.index
+            callerTokenAddress = Format-DsHex16 $_.callerTokenAddress
+            callerToken = Format-DsHex16 $_.callerToken
+            calleeHeaderAddress = Format-DsHex16 $_.calleeHeaderAddress
+            headerValue = Format-DsHex16 $_.headerValue
+            calleeBodyStart = Format-DsHex16 $_.calleeBodyStart
+            calleeBodyEndExclusive = Format-DsHex16 $_.calleeBodyEndExclusive
+            callerSuccessor = Format-DsHex16 $_.callerSuccessor
+            postReturnToken = Format-DsHex16 $_.postReturnToken
+        }
+    })
+}
+
+function Assert-DsCallerRecord {
+    param([byte[]]$Bytes,[string]$Definition,[object[]]$Callers,[string]$BodyStart,[string]$BodyEndExclusive,[int]$FirstToken)
+    $records = @($Callers)
+    if ($records.Count -ne 1) { throw "$Definition caller binding must contain exactly one explicit caller record" }
+    $caller = $records[0]
+    if ([int]$caller.index -ne 0) { throw "$Definition caller index is not zero" }
+    if ([int]$caller.headerValue -ne 0x00F8) { throw "$Definition caller header value is not 00F8" }
+    if (([int]$caller.calleeHeaderAddress + 2) -ne [int]$caller.calleeBodyStart) { throw "$Definition caller callee header+2 is not the body start" }
+    if (([int]$caller.callerTokenAddress + 2) -ne [int]$caller.callerSuccessor) { throw "$Definition caller token+2 is not the successor" }
+    if ([int]$caller.calleeBodyStart -ne (ConvertTo-DsInt $BodyStart) -or [int]$caller.calleeBodyEndExclusive -ne (ConvertTo-DsInt $BodyEndExclusive)) {
+        throw "$Definition caller callee span differs from the mapped body"
+    }
+    if ((Get-DsA64Word $Bytes ([int]$caller.callerTokenAddress)) -ne [int]$caller.callerToken) { throw "$Definition live caller token differs from the caller record" }
+    if ((Get-DsA64Word $Bytes ([int]$caller.calleeHeaderAddress)) -ne [int]$caller.headerValue) { throw "$Definition live callee header differs from the caller record" }
+    if ((Get-DsA64Word $Bytes ([int]$caller.callerSuccessor)) -ne [int]$caller.postReturnToken) { throw "$Definition live caller successor token differs from the caller record" }
+    if ((Get-DsA64Word $Bytes ([int]$caller.calleeBodyStart)) -ne $FirstToken) { throw "$Definition live callee first token differs from the caller record" }
 }
 
 function Get-DsOffsets {
@@ -342,6 +413,7 @@ function Write-DsMap {
         [void]$sb.AppendLine(('    {{ address = 0x{0}, nodeIndex = {1}, token = 0x{2}, operation = "{3}", imageByte = 0x{4} }},' -f $entry.address,$entry.nodeIndex,$entry.token,$entry.operation,$entry.imageByte))
     }
     [void]$sb.AppendLine('  },')
+    Add-DsCallers $sb @($VariantMap.callers)
     [void]$sb.AppendLine('}')
     [IO.File]::WriteAllText($Path,$sb.ToString(),(New-Object System.Text.UTF8Encoding($false)))
     return [ordered]@{
@@ -396,6 +468,7 @@ function Write-DsA64Map {
         [void]$sb.AppendLine(('    {{ address = 0x{0}, nodeIndex = {1}, token = 0x{2}, operation = "{3}", imageByte = 0x{4} }},' -f $entry.address,$entry.nodeIndex,$entry.token,$entry.operation,$entry.imageByte))
     }
     [void]$sb.AppendLine('  },')
+    Add-DsCallers $sb @($SessionMap.callers)
     [void]$sb.AppendLine('}')
     [IO.File]::WriteAllText($Path,$sb.ToString(),(New-Object System.Text.UTF8Encoding($false)))
 }
@@ -541,6 +614,7 @@ function Invoke-DsNineA64Session {
     $map = Get-Content -LiteralPath $SourceMapPath -Raw | ConvertFrom-Json
     $build = Get-Content -LiteralPath $BuildReportPath -Raw | ConvertFrom-Json
     Assert-DsA64MapDocument $map $build $originalBytes $script:DsOriginalSha1 $script:DsOriginalSha256
+    Assert-DsCallerRecord $originalBytes '9A64' $script:DsNineASixFourCallers '9A64' '9A72' 0x7B6D
     $sessionNodes = New-Object 'System.Collections.Generic.List[object]'
     foreach ($node in @($map.nodes)) {
         $bytes = New-Object 'System.Collections.Generic.List[int]'
@@ -606,6 +680,7 @@ function Invoke-DsNineA64Session {
         nodes = $sessionNodes.ToArray()
         entries = $sessionEntries.ToArray()
         branches = $sessionBranches.ToArray()
+        callers = @($script:DsNineASixFourCallers)
     }
     $config = [ordered]@{
         schemaVersion = 1
@@ -653,6 +728,7 @@ function Invoke-DsNineA64Session {
         entries = $sessionEntries.ToArray()
         nodes = $sessionNodes.ToArray()
         branches = $sessionBranches.ToArray()
+        callers = @(ConvertTo-DsCallersHex $script:DsNineASixFourCallers)
     }) 12
     Write-DsJson (Join-Path $run 'session-metadata.json') ([ordered]@{
         sessionId = $sessionId
@@ -675,6 +751,7 @@ function Invoke-DsNineA64Session {
         body_start = '9A64'
         body_end_exclusive = '9A72'
         return_node_index = 5
+        callers = @(ConvertTo-DsCallersHex $script:DsNineASixFourCallers)
         changed_offsets_hex = ''
         starting_nvram = 'absent'
         starting_configuration = 'absent; -noreadconfig'
@@ -769,6 +846,7 @@ function Invoke-DsNineA64Session {
     if ($ready['exec'] -ne 'stop') { throw "Session did not start stopped (exec=$($ready['exec']))" }
     if ($ready['lfs'] -ne 'ok') { throw 'Lua lfs directory enumeration is unavailable' }
     if ($ready['nodes'] -ne '6') { throw "Ready file reports $($ready['nodes']) nodes, expected 6" }
+    if ($ready['callers'] -ne '1') { throw "Ready file reports $($ready['callers']) callers, expected 1" }
     Write-DsJson (Join-Path $run 'session-launch.json') ([ordered]@{
         sessionId = $sessionId
         definition = '9A64'
@@ -830,6 +908,7 @@ $repairedBytes = [IO.File]::ReadAllBytes($RepairedRom)
 $variantBytes = [IO.File]::ReadAllBytes($variantPath)
 $actualChanged = Get-DsOffsets $script:DsOriginalBytes $repairedBytes
 if (($actualChanged -join ',') -ne ($script:DsExpectedChangedOffsets -join ',')) { throw 'Original/repaired diff is not the accepted six-byte edit' }
+Assert-DsCallerRecord $variantBytes '9ED9' $script:DsNineEdNineCallers '9ED9' '9EE7' 0x795B
 
 $sourceMap = Get-Content -LiteralPath $SourceMapPath -Raw | ConvertFrom-Json
 $buildReport = Get-Content -LiteralPath $BuildReportPath -Raw | ConvertFrom-Json
@@ -845,6 +924,7 @@ $variantMap = [ordered]@{
     bodyStart = '9ED9'
     bodyEndExclusive = '9EE7'
     entries = @($variantEntries)
+    callers = @($script:DsNineEdNineCallers)
 }
 $handlerByOperation = $planInfo.byOperation
 $handlerByIndex = @{}
@@ -899,6 +979,7 @@ Write-DsJson (Join-Path $run 'variant-map.json') ([ordered]@{
     bodyEndExclusive = '9EE7'
     entries = @($variantEntries)
     nodes = @($nodes)
+    callers = @(ConvertTo-DsCallersHex $script:DsNineEdNineCallers)
 }) 12
 Write-DsJson (Join-Path $run 'session-metadata.json') ([ordered]@{
     sessionId = $sessionId
@@ -924,6 +1005,7 @@ Write-DsJson (Join-Path $run 'session-metadata.json') ([ordered]@{
     expected_second_literal = $mapInfo.secondLiteral
     expected_result = $mapInfo.expectedResult
     handler_by_index = [ordered]@{ '0'=$mapInfo.handlerByIndex[0]; '1'=$mapInfo.handlerByIndex[1]; '2'=$mapInfo.handlerByIndex[2]; '3'=$mapInfo.handlerByIndex[3]; '4'=$mapInfo.handlerByIndex[4] }
+    callers = @(ConvertTo-DsCallersHex $script:DsNineEdNineCallers)
     changed_offsets_hex = (($actualChanged | Sort-Object | ForEach-Object { '{0:X4}' -f $_ }) -join ',')
     starting_nvram = 'absent'
     starting_configuration = 'absent; -noreadconfig'
@@ -1021,6 +1103,7 @@ if ($ready['variant'] -ne $Variant) { throw 'Ready file variant mismatch' }
 if ($ready['map'] -ne 'ok') { throw 'Lua map validation did not pass' }
 if ($ready['exec'] -ne 'stop') { throw "Session did not start stopped (exec=$($ready['exec']))" }
 if ($ready['lfs'] -ne 'ok') { throw 'Lua lfs directory enumeration is unavailable' }
+if ($ready['callers'] -ne '1') { throw "Ready file reports $($ready['callers']) callers, expected 1" }
 Write-DsJson (Join-Path $run 'session-launch.json') ([ordered]@{
     sessionId = $sessionId
     variant = $Variant

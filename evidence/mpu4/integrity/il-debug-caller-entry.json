@@ -1,0 +1,429 @@
+{
+    "schemaVersion":  1,
+    "taskId":  "il-debug-caller-entry-42",
+    "generatedUtc":  "2026-10-19T14:04:02.8186701Z",
+    "classification":  "Read-only MAME 0.281 caller-token pause and explicit four-instruction step-into for the two validated original IL definitions, with fresh natural original/changed 9ED9 and original 9A64 sessions. No PC/register/RAM/ROM seeding, debugger writes or save-state loads.",
+    "resultStatus":  "complete_caller_entry_and_step_into_original_9ed9_and_9a64",
+    "protocol":  "il-debug-session-v1",
+    "callerRecords":  {
+                          "9ED9":  {
+                                       "callerTokenAddress":  "9F14",
+                                       "callerToken":  "9ED7",
+                                       "calleeHeaderAddress":  "9ED7",
+                                       "headerValue":  "00F8",
+                                       "calleeBodyStart":  "9ED9",
+                                       "calleeBodyEndExclusive":  "9EE7",
+                                       "callerSuccessor":  "9F16",
+                                       "postReturnToken":  "75A9"
+                                   },
+                          "9A64":  {
+                                       "callerTokenAddress":  "EF9C",
+                                       "callerToken":  "9A62",
+                                       "calleeHeaderAddress":  "9A62",
+                                       "headerValue":  "00F8",
+                                       "calleeBodyStart":  "9A64",
+                                       "calleeBodyEndExclusive":  "9A72",
+                                       "callerSuccessor":  "EF9E",
+                                       "postReturnToken":  "80C4"
+                                   }
+                      },
+    "entryChain":  [
+                       "LDX ,Y++ (PC 00FC -\u003e 00FE; X=caller token, Y=caller successor)",
+                       "JMP [,X++] (PC 00FE -\u003e 00F8; X=callee body start)",
+                       "PSHS Y (PC 00F8 -\u003e 00FA; S-=2, w@S=caller successor)",
+                       "LEAY ,X (PC 00FA -\u003e 00FC; Y=X=callee body start)"
+                   ],
+    "sessions":  {
+                     "9ED9":  {
+                                  "original":  {
+                                                   "sessionId":  "53112031-2cde-4aa6-995a-28fee7a1e751",
+                                                   "runDirectory":  "artifacts/deepseek/il-debug-caller-entry-42/raw-9ed9/run-20261019-145912/natural-original",
+                                                   "mameExitCode":  0,
+                                                   "resultObserved":  "0000",
+                                                   "caller":  {
+                                                                  "pc":  "00FC",
+                                                                  "y":  "9F14",
+                                                                  "u":  "066E",
+                                                                  "s":  "0798",
+                                                                  "callerTokenAddress":  "9F14",
+                                                                  "callerToken":  "9ED7",
+                                                                  "callerSuccessor":  "9F16",
+                                                                  "postReturnToken":  "75A9"
+                                                              },
+                                                   "entry":  {
+                                                                 "steps":  "4",
+                                                                 "pc":  "00FC",
+                                                                 "x":  "9ED9",
+                                                                 "y":  "9ED9",
+                                                                 "token":  null,
+                                                                 "ilOperand":  "FF80",
+                                                                 "savedCursor":  "9F16",
+                                                                 "entrySPre":  "0798",
+                                                                 "entryS":  "0796",
+                                                                 "entryDeltaS":  "0002",
+                                                                 "entryU":  "066E",
+                                                                 "entryUAtBoundary":  "066E",
+                                                                 "transitionTypes":  [
+                                                                                         "ldx-y-increment",
+                                                                                         "jmp-indirect",
+                                                                                         "pshs-y",
+                                                                                         "leay-x"
+                                                                                     ]
+                                                             },
+                                                   "postReturn":  {
+                                                                      "savedCursor":  "9F16",
+                                                                      "returnS":  "0796",
+                                                                      "postReturnS":  "0798",
+                                                                      "callerCursor":  "9F16",
+                                                                      "postReturnToken":  "75A9",
+                                                                      "resultObserved":  "0000",
+                                                                      "emulatedTime":  "37.076576163"
+                                                                  },
+                                                   "rawHashes":  {
+                                                                     "session_config":  "afed8538b926090632174e92e4ab3b3f1d2510d698fe58e2b8b263fcde7de120",
+                                                                     "session_map":  "06e8a2f9786759c06826e188b5668da404de9f7cf6100b1c15fdee8a1e42816f",
+                                                                     "session_metadata":  "1b62c08c0ddafdc4bd728bf00b85cd7675412fc3968715b4f0063a4d904c2d32",
+                                                                     "session_launch":  "11a35dc888016f1807fa65741ff0c1b77b960f4977e4eb8e7c26b7564b884363",
+                                                                     "variant_map":  "868310f2a9ada60d70a00be7816fb27e6ae8b69eafad4882ab6a8431c2f7af71",
+                                                                     "events":  "d863e87abd976d3acefbc651755dd0e286631e52d54d409d2ea2a754bb672f21",
+                                                                     "console":  "6799d9ccc84eaa325face0d3b694b2f2ac51b1e89a46e42ca71438389dafb944",
+                                                                     "console_error":  "5e83008e669770943cccfdde836cc7811ec690ec1812142518fc42f559388b12",
+                                                                     "run_rom":  "ebf580381aa6eb6ffb26e2acd40f30aa34b0311f71c6564607c6f48a53bca15c"
+                                                                 }
+                                               },
+                                  "changed":  {
+                                                  "sessionId":  "3db2a2e6-68d1-48de-a040-d293c8788851",
+                                                  "runDirectory":  "artifacts/deepseek/il-debug-caller-entry-42/raw-9ed9/run-20261019-145912/natural-changed",
+                                                  "mameExitCode":  0,
+                                                  "resultObserved":  "0080",
+                                                  "caller":  {
+                                                                 "pc":  "00FC",
+                                                                 "y":  "9F14",
+                                                                 "u":  "066E",
+                                                                 "s":  "0798",
+                                                                 "callerTokenAddress":  "9F14",
+                                                                 "callerToken":  "9ED7",
+                                                                 "callerSuccessor":  "9F16",
+                                                                 "postReturnToken":  "75A9"
+                                                             },
+                                                  "entry":  {
+                                                                "steps":  "4",
+                                                                "pc":  "00FC",
+                                                                "x":  "9ED9",
+                                                                "y":  "9ED9",
+                                                                "token":  null,
+                                                                "ilOperand":  "FF00",
+                                                                "savedCursor":  "9F16",
+                                                                "entrySPre":  "0798",
+                                                                "entryS":  "0796",
+                                                                "entryDeltaS":  "0002",
+                                                                "entryU":  "066E",
+                                                                "entryUAtBoundary":  "066E"
+                                                            },
+                                                  "postReturn":  {
+                                                                     "savedCursor":  "9F16",
+                                                                     "returnS":  "0796",
+                                                                     "postReturnS":  "0798",
+                                                                     "callerCursor":  "9F16",
+                                                                     "postReturnToken":  "75A9",
+                                                                     "resultObserved":  "0080",
+                                                                     "emulatedTime":  "37.076576163"
+                                                                 },
+                                                  "rawHashes":  {
+                                                                    "session_config":  "10488a0ea8e37a7b1b9185d5cb2af40e05e9e3c2d4bc3e861d939b1e899059fb",
+                                                                    "session_map":  "8e5ab8a9675657c865edb7d1e03cba5357bf795b7497dec8ea8f04accdf2fd55",
+                                                                    "session_metadata":  "176322c6788eb75da5aa1b8a47b742a43ab7c30d57d8e46e47ee6560725a4850",
+                                                                    "session_launch":  "8e4e40ee5e9d30ecaa6606dbb611ee3a7074d0bab7042b7ff398f1b3e94e41a3",
+                                                                    "variant_map":  "9f58eee3811abe4f8c80ab2bd7c07f9b1c9dc2cecb24106e250a1b2a5d763591",
+                                                                    "events":  "a4a2d119af138f3eecd36808c293a3011e3fe54b05dc9792e056b580589aca00",
+                                                                    "console":  "1d8dfd1f689320159f45e3e3534822dc095b8802ace55fe82b608a3774628af9",
+                                                                    "console_error":  "63c6784914c4f0c1f93ad7cf86a0099acc75e96ddb5cfc00e53d01a69c34f691",
+                                                                    "run_rom":  "577f76bd36dfca04dfb01b5f5d0be93e16572f8617c7ca906397c98df36e5107"
+                                                                }
+                                              }
+                              },
+                     "9A64":  {
+                                  "nonzero":  {
+                                                  "sessionId":  "e7ea67f4-7632-44f2-a428-4fb3b5264ed8",
+                                                  "runDirectory":  "artifacts/deepseek/il-debug-caller-entry-42/raw-9a64/run-20261019-150032/natural-9a64",
+                                                  "mameExitCode":  0,
+                                                  "branchPath":  "nonzero",
+                                                  "nodeSequence":  "0,1,2,3,5",
+                                                  "handlerSequence":  "7B6F,7984,7667,797B,7931",
+                                                  "caller":  {
+                                                                 "pc":  "00FC",
+                                                                 "y":  "EF9C",
+                                                                 "u":  "066C",
+                                                                 "s":  "07AC",
+                                                                 "callerTokenAddress":  "EF9C",
+                                                                 "callerToken":  "9A62",
+                                                                 "callerSuccessor":  "EF9E",
+                                                                 "postReturnToken":  "80C4"
+                                                             },
+                                                  "entry":  {
+                                                                "steps":  "4",
+                                                                "pc":  "00FC",
+                                                                "x":  "9A64",
+                                                                "y":  "9A64",
+                                                                "token":  "7B6D",
+                                                                "savedCursor":  "EF9E",
+                                                                "entrySPre":  "07AC",
+                                                                "entryS":  "07AA",
+                                                                "entryDeltaS":  "0002",
+                                                                "entryU":  "066C",
+                                                                "entryUAtBoundary":  "066C"
+                                                            },
+                                                  "postReturn":  {
+                                                                     "savedCursor":  "EF9E",
+                                                                     "returnS":  "07AA",
+                                                                     "postReturnS":  "07AC",
+                                                                     "callerCursor":  "EF9E",
+                                                                     "postReturnToken":  "80C4"
+                                                                 }
+                                              },
+                                  "zeroTarget":  {
+                                                     "sessionId":  "6328c061-8875-40ec-9de1-b8befd320392",
+                                                     "runDirectory":  "artifacts/deepseek/il-debug-caller-entry-42/raw-9a64/run-20261019-150032/zero-path-9a64",
+                                                     "mameExitCode":  0,
+                                                     "nodeSequence":  "4,5",
+                                                     "handlerSequence":  "7673,7931"
+                                                 }
+                              }
+                 },
+    "negativeControls":  {
+                             "callerSessionNegatives":  [
+                                                            {
+                                                                "name":  "step-into before pause",
+                                                                "sequence":  1,
+                                                                "command":  "step-into-mapped-call",
+                                                                "expected":  "wrong_phase",
+                                                                "actual":  "wrong_phase",
+                                                                "pass":  true
+                                                            },
+                                                            {
+                                                                "name":  "caller index out of range",
+                                                                "sequence":  2,
+                                                                "command":  "pause-at-caller-token",
+                                                                "expected":  "caller",
+                                                                "actual":  "caller",
+                                                                "pass":  true
+                                                            },
+                                                            {
+                                                                "name":  "missing caller index",
+                                                                "sequence":  3,
+                                                                "command":  "pause-at-caller-token",
+                                                                "expected":  "caller_required",
+                                                                "actual":  "caller_required",
+                                                                "pass":  true
+                                                            },
+                                                            {
+                                                                "name":  "explicit caller zero",
+                                                                "sequence":  4,
+                                                                "command":  "pause-at-caller-token",
+                                                                "expected":  "paused-at-caller",
+                                                                "actual":  "paused-at-caller",
+                                                                "pass":  true
+                                                            }
+                                                        ],
+                             "tamperedMapCaller":  {
+                                                       "name":  "tampered map caller",
+                                                       "map_path":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-debug-caller-entry-42\\raw-9ed9\\run-20261019-145912\\negative-caller-entry\\session-map.lua",
+                                                       "map_sha256":  "8035a6865e270af5bd57a446ed113132d3dc243832a61382fa01805958abac36",
+                                                       "ready":  {
+                                                                     "message":  "live caller token differs from the caller record",
+                                                                     "exec":  "stop",
+                                                                     "variant":  "",
+                                                                     "lfs":  "unknown",
+                                                                     "error":  "map_caller_token",
+                                                                     "map":  "fail",
+                                                                     "session":  "07c18df0-cbec-43a6-ab34-e84fdb51c9cc",
+                                                                     "protocol":  "il-debug-session-v1"
+                                                                 },
+                                                       "rejected":  true,
+                                                       "startup_failure_logged":  true,
+                                                       "exit_code":  "3"
+                                                   },
+                             "phaseNegatives":  [
+                                                    "step-into from body -\u003e not_caller_boundary",
+                                                    "step-into from post-return -\u003e not_caller_boundary",
+                                                    "pause-at-caller from body -\u003e wrong_phase"
+                                                ],
+                             "protocolNegatives":  [
+                                                       "unknown_command",
+                                                       "unknown_field",
+                                                       "wrong_phase",
+                                                       "stale_sequence",
+                                                       "out_of_order",
+                                                       "missing_field",
+                                                       "carriage_return",
+                                                       "response collision",
+                                                       "false acknowledgment"
+                                                   ]
+                         },
+    "checks":  {
+                   "ilDebugSessionChecks":  813,
+                   "ilNineA64Checks":  253,
+                   "deliveryChecks":  74,
+                   "strictJsonPass":  true,
+                   "deliveryPass":  true,
+                   "failures":  0
+               },
+    "mame":  {
+                 "executable":  "E:\\Arcade\\MAME0266\\mame281.exe",
+                 "version":  "0.281 (mame0281)",
+                 "sha256":  "0fce5a88df4f9d9b1fbf1405812c00848036e615993780978d967da34204cb7a"
+             },
+    "inputs":  {
+                   "replaySha256":  "4a051da15264842697879eff396b34a789f5d80623f9a2e749c244e6a80e721d",
+                   "inputLuaSha256":  "23099f8888af8db353253e0df97638320dc59ca9a47371723a380e0c4ee85c94",
+                   "originalRomSha256":  "ebf580381aa6eb6ffb26e2acd40f30aa34b0311f71c6564607c6f48a53bca15c",
+                   "repairedRomSha256":  "577f76bd36dfca04dfb01b5f5d0be93e16572f8617c7ca906397c98df36e5107",
+                   "sourceMapSha256":  "0c39a6d0d1beac32ca0f64bfec5ce848b2297be41180d0234d2bfdf491df21a9",
+                   "buildReportSha256":  "ae7e0fb2c0121e0b4e62d38e82511841644fcdf922b2d9e54de79b3d7e57f61a"
+               },
+    "sourceHashes":  {
+                         "startIlDebugSession":  "b1cba9260df1dbf84e6fc947ac7d7c7484f6902a33653dd63628b9028602d0de",
+                         "invokeIlDebugCommand":  "77e1ee95d3a79c7452359b44965450f852d689f9c7f9df92ca5ceaba853e89ff",
+                         "ilDebugSessionLua":  "f65d66e676b2d33644f6ca9af10438a1a079ae43614d7c8ab41ec53c95248764",
+                         "testIlDebugSession":  "e3ba45e51b150ffa5385b4e661a0810e0905a7c8e3a514639ad8dda27b375da6",
+                         "testIlNineA64":  "d2b48214f81c0708714238e78cea833ea8b3dff38fc1edb6b65fd96239703c3f"
+                     },
+    "rawEvidence":  [
+                        {
+                            "path":  "artifacts/deepseek/il-debug-caller-entry-42/raw-9ed9/run-20261019-145912/natural-original/events.jsonl",
+                            "bytes":  10677,
+                            "sha256":  "d863e87abd976d3acefbc651755dd0e286631e52d54d409d2ea2a754bb672f21"
+                        },
+                        {
+                            "path":  "artifacts/deepseek/il-debug-caller-entry-42/raw-9ed9/run-20261019-145912/natural-original/session-map.lua",
+                            "bytes":  3031,
+                            "sha256":  "06e8a2f9786759c06826e188b5668da404de9f7cf6100b1c15fdee8a1e42816f"
+                        },
+                        {
+                            "path":  "artifacts/deepseek/il-debug-caller-entry-42/raw-9ed9/run-20261019-145912/natural-original/session-config.json",
+                            "bytes":  1040,
+                            "sha256":  "afed8538b926090632174e92e4ab3b3f1d2510d698fe58e2b8b263fcde7de120"
+                        },
+                        {
+                            "path":  "artifacts/deepseek/il-debug-caller-entry-42/raw-9ed9/run-20261019-145912/natural-original/session-launch.json",
+                            "bytes":  2715,
+                            "sha256":  "11a35dc888016f1807fa65741ff0c1b77b960f4977e4eb8e7c26b7564b884363"
+                        },
+                        {
+                            "path":  "artifacts/deepseek/il-debug-caller-entry-42/raw-9ed9/run-20261019-145912/natural-original/session-metadata.json",
+                            "bytes":  4195,
+                            "sha256":  "1b62c08c0ddafdc4bd728bf00b85cd7675412fc3968715b4f0063a4d904c2d32"
+                        },
+                        {
+                            "path":  "artifacts/deepseek/il-debug-caller-entry-42/raw-9ed9/run-20261019-145912/natural-original/console.txt",
+                            "bytes":  37,
+                            "sha256":  "6799d9ccc84eaa325face0d3b694b2f2ac51b1e89a46e42ca71438389dafb944"
+                        },
+                        {
+                            "path":  "artifacts/deepseek/il-debug-caller-entry-42/raw-9ed9/run-20261019-145912/natural-changed/events.jsonl",
+                            "bytes":  10676,
+                            "sha256":  "a4a2d119af138f3eecd36808c293a3011e3fe54b05dc9792e056b580589aca00"
+                        },
+                        {
+                            "path":  "artifacts/deepseek/il-debug-caller-entry-42/raw-9ed9/run-20261019-145912/natural-changed/session-map.lua",
+                            "bytes":  3030,
+                            "sha256":  "8e5ab8a9675657c865edb7d1e03cba5357bf795b7497dec8ea8f04accdf2fd55"
+                        },
+                        {
+                            "path":  "artifacts/deepseek/il-debug-caller-entry-42/raw-9ed9/run-20261019-145912/natural-changed/session-config.json",
+                            "bytes":  1039,
+                            "sha256":  "10488a0ea8e37a7b1b9185d5cb2af40e05e9e3c2d4bc3e861d939b1e899059fb"
+                        },
+                        {
+                            "path":  "artifacts/deepseek/il-debug-caller-entry-42/raw-9ed9/run-20261019-145912/natural-changed/session-launch.json",
+                            "bytes":  2703,
+                            "sha256":  "8e4e40ee5e9d30ecaa6606dbb611ee3a7074d0bab7042b7ff398f1b3e94e41a3"
+                        },
+                        {
+                            "path":  "artifacts/deepseek/il-debug-caller-entry-42/raw-9ed9/run-20261019-145912/natural-changed/session-metadata.json",
+                            "bytes":  4197,
+                            "sha256":  "176322c6788eb75da5aa1b8a47b742a43ab7c30d57d8e46e47ee6560725a4850"
+                        },
+                        {
+                            "path":  "artifacts/deepseek/il-debug-caller-entry-42/raw-9ed9/run-20261019-145912/natural-changed/console.txt",
+                            "bytes":  37,
+                            "sha256":  "1d8dfd1f689320159f45e3e3534822dc095b8802ace55fe82b608a3774628af9"
+                        },
+                        {
+                            "path":  "artifacts/deepseek/il-debug-caller-entry-42/raw-9ed9/run-20261019-145912/negative-caller-entry/events.jsonl",
+                            "bytes":  2129,
+                            "sha256":  "a3fa0cd9c0e1fae921265d124400b0994f589aa9cd9ff1831c2332b3b8fe7ceb"
+                        },
+                        {
+                            "path":  "artifacts/deepseek/il-debug-caller-entry-42/raw-9ed9/run-20261019-145912/negative-caller-entry/session-map.lua",
+                            "bytes":  3031,
+                            "sha256":  "8035a6865e270af5bd57a446ed113132d3dc243832a61382fa01805958abac36"
+                        },
+                        {
+                            "path":  "artifacts/deepseek/il-debug-caller-entry-42/raw-9ed9/run-20261019-145912/negative-caller-entry/ready.txt",
+                            "bytes":  202,
+                            "sha256":  "6dc7561a2ed2ad5ec762610da8fd82920d73400df1e4eb7fcb5298c7ff0b25fa"
+                        },
+                        {
+                            "path":  "artifacts/deepseek/il-debug-caller-entry-42/raw-9a64/run-20261019-150032/natural-9a64/events.jsonl",
+                            "bytes":  52556,
+                            "sha256":  "5f18861e756e172fce700d07b75901d9d1dfe860a55e4ec21971605bdaeee5dc"
+                        },
+                        {
+                            "path":  "artifacts/deepseek/il-debug-caller-entry-42/raw-9a64/run-20261019-150032/natural-9a64/session-map.lua",
+                            "bytes":  3958,
+                            "sha256":  "4f29a8fa65120bf375aed229fbbcff49f3a18c0b6db2896b456f1a83473bb097"
+                        },
+                        {
+                            "path":  "artifacts/deepseek/il-debug-caller-entry-42/raw-9a64/run-20261019-150032/zero-path-9a64/events.jsonl",
+                            "bytes":  4901,
+                            "sha256":  "8dd52cde6a930000b59171d9cabc57fab09389dd48907c420e91b7c764403344"
+                        },
+                        {
+                            "path":  "artifacts/deepseek/il-debug-caller-entry-42/raw-9a64/run-20261019-150032/protocol-negatives/events.jsonl",
+                            "bytes":  1725,
+                            "sha256":  "53601c1e43aeb2535aab8ede101deaa1806dae997c9362aac9a525e5f8ea12bb"
+                        },
+                        {
+                            "path":  "artifacts/deepseek/il-debug-caller-entry-42/raw-delivery/run-20261019-150201/delivery-9ed9-original/events.jsonl",
+                            "bytes":  1943,
+                            "sha256":  "8e4e5609fc69a5881b105a94efa3aaa6ef55e15d69cb1916c84300fc10fa8b2d"
+                        },
+                        {
+                            "path":  "artifacts/deepseek/il-debug-caller-entry-42/il-debug-delivery-42.json",
+                            "bytes":  24625,
+                            "sha256":  "501c33bb7c2177cc47b72df00d510e30a73c1a4b4bc46817b75c4acbe73860dc"
+                        },
+                        {
+                            "path":  "artifacts/deepseek/il-debug-caller-entry-42/il-9a64-caller-debug-session.json",
+                            "bytes":  130790,
+                            "sha256":  "35dc70f866b498d8e0289b807e396167c6f90cb8fdbe287f349a4125e0d392ef"
+                        },
+                        {
+                            "path":  "artifacts/deepseek/il-debug-caller-entry-42/il-debug-caller-entry-test-output.json",
+                            "bytes":  161403,
+                            "sha256":  "3b9fd38c2f180040e130de2457779c215e606e437fb09790081895d628b1d02a"
+                        }
+                    ],
+    "verification":  {
+                         "commands":  [
+                                          "powershell -NoProfile -File tests/worker/Test-IlDebugSession.ps1 -Force -OutputPath evidence/mpu4/integrity/il-debug-caller-entry.json",
+                                          "powershell -NoProfile -File tests/worker/Test-IlNineA64DebugSession.ps1 -Force -OutputPath artifacts/deepseek/il-debug-caller-entry-42/il-9a64-caller-debug-session.json",
+                                          "pwsh -NoProfile -File tests/worker/Test-IlEventJson.ps1 -Mode Negative",
+                                          "powershell -NoProfile -File tests/worker/Test-IlDebugCommandDelivery.ps1 -Force -OutputPath artifacts/deepseek/il-debug-caller-entry-42/il-debug-delivery-42.json",
+                                          "PowerShell Parser on launcher, CLI and both verifiers"
+                                      ],
+                         "logs":  [
+                                      "artifacts/deepseek/il-debug-caller-entry-42/test-9ed9-20261019-145912.log",
+                                      "artifacts/deepseek/il-debug-caller-entry-42/test-9a64-20261019-150032.log",
+                                      "artifacts/deepseek/il-debug-caller-entry-42/test-event-json-negative-20261019-150154.log",
+                                      "artifacts/deepseek/il-debug-caller-entry-42/test-delivery-20261019-150201.log"
+                                  ]
+                     },
+    "limitations":  [
+                        "Only the two explicit caller records 9F14/9ED7/9ED9/9F16 and EF9C/9A62/9A64/EF9E are supported.",
+                        "No arbitrary nested call stack, step-over-call, general step-out, interrupt boundary, free-run continue, writes or save states.",
+                        "Physical MPU4 hardware compatibility is not claimed.",
+                        "Composite 1010 execution and extension allocation remain untouched by this increment."
+                    ]
+}

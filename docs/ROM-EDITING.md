@@ -176,14 +176,32 @@ file-based command protocol. It never writes CPU registers, RAM, ROM, save
 states or the VM stack. Exact boundaries are native; the Lua periodic callback is
 only the command/step driver and is not an instruction boundary.
 
-The command vocabulary is `pause-at-mapped-node`, `inspect`,
-`step-one-IL-node`, `resume-to-supported-boundary` and `stop`. Requests are
-strict `key=value` files with a session ID, monotonic sequence, request ID and
-nonce. Unknown commands, write fields, arbitrary addresses/lengths, injected
-state, wrong phases, stale/out-of-order requests, response collisions and forged
+The command vocabulary is `pause-at-mapped-node`, `pause-at-caller-token`,
+`inspect`, `step-one-IL-node`, `step-into-mapped-call`,
+`resume-to-supported-boundary` and `stop`. Requests are strict `key=value`
+files with a session ID, monotonic sequence, request ID and nonce. Unknown
+commands, write fields, arbitrary addresses/lengths, injected state, wrong
+phases, stale/out-of-order requests, response collisions and forged
 acknowledgments are rejected. Inspect returns only PC/X/Y/U/S, bounded data- and
 control-stack words, emulated time and map-resolved IL operands. Repeated
 inspections do not advance state.
+
+The generated session map now carries exactly one explicit caller record for
+the selected definition. For 9ED9 it binds `9F14 -> 9ED7 -> 9ED9` with successor
+`9F16` and continuation token `75A9`; for 9A64 it binds
+`EF9C -> 9A62 -> 9A64` with successor `EF9E` and token `80C4`. The launcher and
+the Lua session validate the caller word, `00F8` header, header/body and
+caller/successor arithmetic, and live continuation token against the exact
+image. `pause-at-caller-token -Caller 0` stops before `LDX ,Y++` at `PC=00FC`
+with `boundaryPhase=caller-prefetch`. `step-into-mapped-call` then executes
+exactly `LDX ,Y++`, `JMP [,X++]`, `PSHS Y` and `LEAY ,X`, stops at the callee
+first prefetch and proves `savedCursor=callerTokenAddress+2`, `S=callerS-2`,
+`entryDeltaS=0002`, `X=Y=calleeBodyStart` and an unchanged data stack. Any
+unexpected PC/X/Y/S, saved cursor, token, interrupt diversion or unmapped
+caller fails closed. Nested calls, call-step-over, arbitrary step-out,
+interrupt boundaries and writes remain unsupported. See
+[caller entry](recovery/IL-DEBUG-CALLER-ENTRY.md) and
+`evidence/mpu4/integrity/il-debug-caller-entry.json`.
 
 Event records are strict JSONL. The serializer escapes quotes, backslashes,
 CR/LF/tab and every other U+0000..U+001F control byte as `\u00xx`; it never
@@ -235,21 +253,28 @@ powershell -NoProfile -File tools/Invoke-IlDebugCommand.ps1 `
   -SessionDirectory <fresh-run> -Command inspect
 # Then resume-to-supported-boundary, five step-one-IL-node commands and stop.
 
-powershell -NoProfile -File tests/worker/Test-IlDebugSession.ps1 -Force
+powershell -NoProfile -File tests/worker/Test-IlDebugSession.ps1 -Force `
+  -OutputPath evidence/mpu4/integrity/il-debug-caller-entry.json
 ```
 
 The `9ED9` verifier runs fresh original and repaired sessions plus the negative
 controls, parses every event record strictly, runs the serializer escaping probe,
-and regenerates `evidence/mpu4/integrity/il-debug-session.json`. Raw runs stay
-under `artifacts/deepseek/il-debug-log-11/`. The `9A64` verifier
+and regenerates its evidence output. The caller-entry increment uses
+`-OutputPath evidence/mpu4/integrity/il-debug-caller-entry.json` and records
+**813 checks, 0 failures**. Raw runs for that increment stay under
+`artifacts/deepseek/il-debug-caller-entry-42/`. The `9A64` verifier
 `tests/worker/Test-IlNineA64DebugSession.ps1` generates the identity map with
 MapOnly, runs the two natural sessions described above and a synthetic protocol
-session, and regenerates `evidence/mpu4/integrity/il-9a64-debug-session.json`;
-raw runs stay under `artifacts/deepseek/il-9a64-session-16/`. The delivery
-regression `tests/worker/Test-IlDebugCommandDelivery.ps1` starts one strict
-9ED9 original session, idles 55 s, then bounds inspect, pause, inspect, a forged
-response collision and stop delivery at 3 s each; it writes
-`evidence/mpu4/integrity/il-debug-delivery.json`.
+session, and regenerates its evidence output. The caller-entry increment runs
+it with `-OutputPath artifacts/deepseek/il-debug-caller-entry-42/il-9a64-caller-debug-session.json`
+and records **253 checks, 0 failures**; raw runs stay under
+`artifacts/deepseek/il-debug-caller-entry-42/`. The delivery regression
+`tests/worker/Test-IlDebugCommandDelivery.ps1` starts one strict 9ED9 original
+session, idles 55 s, then bounds inspect, pause, inspect, a forged response
+collision and stop delivery at 3 s each; it writes its evidence output and
+recorded **74 checks, 0 failures** in this increment. The preserved defaults
+and the earlier `il-9a64-session-16` / `il-debug-delivery.json` evidence remain
+unchanged.
 
 ## Bounded build and paused-debug entry point
 

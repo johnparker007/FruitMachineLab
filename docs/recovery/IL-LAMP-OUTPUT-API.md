@@ -10,7 +10,7 @@ the initial `-1` values is unknown.
 
 | Item | Value |
 | --- | --- |
-| Base revision | `3b16916547fac804a383670d6f36a2a3dfd63637` |
+| Base revision | `3b16916547fac804a383670d6f36a2d3dfd63637` |
 | Supervisor acceptance | `artifacts/deepseek/il-lamp-output-api-window-86/supervisor-validation.json` |
 | Run | `artifacts/deepseek/il-lamp-output-api-probe-85/runs/supervisor-window-01` |
 | ROM | `m4addr/a6ls.p1`, 65536 bytes, SHA1 `402D1518BB78FDC489B06C2AABC771E5CE151847`, SHA256 `EBF580381AA6EB6FFB26E2ACD40F30AA34B0311F71C6564607C6F48A53BCA15C` |

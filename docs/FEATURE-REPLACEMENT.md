@@ -50,3 +50,41 @@ This establishes limited natural MAME behaviour, not physical hardware validatio
 Next: extend this reachable feature hook into a short repeating board animation,
 then switch between two patterns using cabinet input. Reuse original firmware
 services and continue patch/run/debug within one experiment.
+
+## Animation and input selection
+
+Later experiments 102/103 demonstrate three alternating top/bottom-row cycles
+at feature collection, followed by clearing the rows and continuing Snake Bite.
+Transitions occur at approximately `543.850`, `544.050`, `544.283`, `544.483`,
+`544.683`, `544.900`, with cleanup at `545.100` emulated seconds. This version
+uses 768 bytes; ROM SHA256 is
+`BD13FE4D2E1459D9744AC512EFB2599B2CA6FDB93ECEDBB4F0FD1E60FFDB1177`.
+
+The runnable builder `tools/Build-SnakeBiteAnimation.ps1` produces a subsequent
+version that samples Start once and selects one of two two-row animations:
+
+```powershell
+./tools/Build-SnakeBiteAnimation.ps1 -OriginalRom <original-a6ls.p1> -OutputDirectory <new-private-directory>
+```
+
+Default output SHA256:
+`9717C6623DFD96C8500E255CFE2D305CC10C6477C628AA0EE4E3A5216B7C23C3`.
+It uses 755 bytes (`1010–1302`), leaving 237 bytes. It retains the same three
+table redirects, exact original identity, allocation guards and integrity repair.
+The supervisor rebuilt the tracked source and matched the naturally tested ROM.
+
+The input test is original VM word `83FC`; the experimental pressed replay adds
+a `:BLACK2` mask `128` pulse at frames `32620–32634`. Pressed and unpressed runs
+show distinct custom lamp patterns. The original-ROM pressed baseline does not
+show those patterns and has the same sampled-input hash as the patched pressed
+run: `433CC15F8FF24B58466A7060E209C8B305C1785A1ED96D4CB2ECADB3A131BACE`.
+All four input-selection captures exit zero. The pressed entry/return capture
+observes `Y=1012`, then original `D003` with `U=0672/S=079A`, then `E243` with
+`U=0672/S=079E`. Raw observations and launch records remain private under
+`artifacts/deepseek/feature-animation-continuation-103/`.
+
+This is entry-time pattern selection, not live switching. Dwell uses bounded VM
+countdown loops, not a certified IRQ tick or hardware timing service. Both versions
+continue into the original feature rather than replacing its game outcome.
+Next: a compact repeating animation that rechecks input while running and exits
+cleanly after a bounded interval or an explicit exit action.

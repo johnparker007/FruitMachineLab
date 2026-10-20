@@ -124,3 +124,36 @@ Countdown dwell is still an experimental VM execution delay. This is a bounded
 interactive lamp demo followed by the original feature, not yet a new game.
 Next: a small button-controlled paddle on the lamp grid, then ball movement and
 collision behaviour as space permits.
+
+## Two-button paddle
+
+Experiment 105 adds a one-lamp paddle on the six-wide bottom row. Hold 1/Nudge 1
+(`83B1`, `:BLACK2` mask `02`) moves left; Hold 2/Nudge 2 (`83B4`, mask `04`)
+moves right. These controls were checked against sampled inputs and the MAME
+field inventory. Held input repeats movement, with the position clamped to `0–5`.
+Both buttons are processed left then right within an iteration.
+
+`tools/Build-SnakeBitePaddle.ps1` builds the demo with the same original/output
+parameters. Defaults: 18 iterations, delay count 1000, initial position 2.
+The supervisor rebuild matches tested ROM SHA256
+`69214B88A3B96BBFD3A70AEEA1319A87B14F79D8390AAAD705A2EC6ACDF32A68`.
+It uses **193 bytes** (`1010–10D0`), leaving **799**. There are 204 changed bytes
+including the six table redirect bytes and five integrity bytes. The position
+and loop counter stay on the VM data stack and are dropped before `D003`; no new
+RAM scratch allocation is used.
+
+Natural MAME output shows positions `2 → 1 → 0`, held at the left edge, then
+`0 → 1 → 2 → 3 → 4 → 5`, held at the right edge. A repeat run agrees; no-press
+control holds position 2. The original-ROM pulse control shows its own feature
+ramp rather than the paddle, with the same sampled-input SHA256 as the patched
+pulse runs: `675CC2A59A6AE5BD013BBEC983AED900ED290209412948A5762F39D467BF4FA9`.
+All five comparison/context runs exit zero.
+
+Entry/return capture observes `1012` at `543.824470930`, original `D003` at
+`551.130261046`, both `U=0672/S=079A`, then `E243` at `555.337567442`,
+`U=0672/S=079E`. The original feature's subsequent award/accounting outcome was
+not compared byte-for-byte. Private evidence is under
+`artifacts/deepseek/feature-paddle-experiment-105/`. The supervisor inspected the
+input/clamp/loop source, events, output preview, exits and input hashes, and
+rebuilt the published source. There is no ball yet. Next: moving ball and paddle
+collision within a bounded feature demo.

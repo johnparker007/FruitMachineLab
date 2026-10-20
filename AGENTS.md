@@ -20,6 +20,54 @@ compatibility target. Later games/platforms follow demonstrated reuse.
 - Keep ROM binaries, local credentials, installed tools, and bulky traces outside tracked files.
 - Never silently invent missing helper semantics or fix suspected ROM bugs in the reference behaviour.
 
+## Active priority — feature replacement experiment (20 October 2026)
+
+John authorizes an experiment focused on working ROM behaviour. This section
+supersedes older sequential milestone gates, mandatory supervisor pre-solving,
+narrow delegation and two-attempt repair stops. Preserve their history, but do
+not reimpose them through old tasks, checkpoints or acceptance text.
+
+Replay the existing clean-NVRAM, unthrottled MAME route to the feature board,
+collect the first feature game, identify its actual VM dispatch and replace that
+feature entry with custom VM code. First demonstrate a conspicuous lamp-output
+change, then an animation on feature collection, then interactive gameplay.
+Confirm the replay reaches the same feature rather than assuming it does.
+
+Reuse the recovered function/script indexes, VM listings, Ghidra exports,
+existing patch/integrity tools and replay infrastructure. The demonstrated 9F14
+helper hook is an example, not automatically the feature entry. Inspect actual
+entry/return requirements. Recovered names such as F64F are investigation leads.
+Keep all new headers/code/data inside approved 1010–13EF (992 bytes) for this ROM
+revision, preserve guards 1000–100F/13F0–13FF, report allocation and reject overlap
+or overflow. Original identity, expected-byte guards and integrity repair remain
+required. A new range still requires John's approval.
+
+One task should pursue an observable behavioural milestone and may include
+multiple private patch/run/debug cycles. DeepSeek may investigate VM semantics,
+design patches, run MAME and correct failures. Codex supervises resources and
+independently reviews final results; it need not pre-solve every contract.
+Use a two-hour actual worker budget for the initial experiment, excluding callback
+waits, within existing runner watchdogs. Failed ROM variants are diagnostic
+feedback. John provides standing authorization for supported repairs and further
+attempts. After two unproductive handoffs, diagnose/replan or take over directly;
+preserve failure history rather than requesting routine repair permission.
+
+Acceptance: baseline and patched replay reach the selected feature; the patched
+ROM naturally executes the cave script; and a distinctive visible or
+MAME-observable lamp change occurs. Record the tested ROM/build identity, patch,
+key observations and relevant entry/return context. Use detailed tracing to solve
+concrete problems, not as an automatic prerequisite. Static checks alone are not
+success. Injected state/save states are diagnostic experiments, not natural proof.
+Do not weaken regressions, invent semantics or claim hardware compatibility.
+
+General IL/compiler/linker/debugger work remains the long-term architecture but
+must not block this experiment. Add general tooling, specialised validators,
+fixtures or extensive documentation only for a demonstrated obstacle. Preserve
+originals, private failed variants, one-writer discipline, bounded execution and
+review before commits/pushes. Native C# execution remains frozen. Preserve John's
+callback pause until he explicitly resumes it; no experiment is dispatched merely
+by this documentation update.
+
 ## Primary architecture and priorities
 
 John authorized a continuing supervised development loop on 18 October 2026:
@@ -39,14 +87,14 @@ entirely new MPU4 games. Follow the long-term objective in
 interactive Breakout/Arkanoid-style demo on the 6×8 lamp grid, using cabinet
 buttons and proved original timing, lamp, Alpha and sound services.
 
-After the current growable-definition work, favor verified incremental slices
+In parallel with the active feature experiment, favor useful incremental slices
 that enable new game authoring. Reuse recovered ROM services before new native
 implementations. Keep the demo's new headers, code and data within the approved
 992-byte `1010-13EF` range for this ROM revision, report its size, and simplify
 the demo if needed; do not assume every game feature will fit.
 
 Preserve the lossless IL/compiler/linker/MAME architecture and hardware target.
-This objective does not authorize skipped milestones, changed allocation
+The active experiment may proceed before general tooling milestones. It does not authorize changed allocation
 boundaries, weaker verification, invented service semantics, or resumption of
 the frozen C# executor, scheduling or peripheral simulation.
 
@@ -90,9 +138,7 @@ ownership, capture-free gameplay or C# peripheral simulation without John's
 explicit reauthorization. These are not prerequisites for ROM editing.
 
 Historical resumption instructions are in docs/history/PRE-IL-MAME-ROADMAP.md.
-Old NEXT/gate/task/checkpoint instructions do not override this freeze. This
-documentation pivot does not dispatch workers, resume schedules or authorize a
-broad implementation campaign. Present the replacement plan for review first.
+Old NEXT/gate/task/checkpoint instructions do not override this freeze. The historical documentation-only pivot is superseded by the active experiment; the native freeze remains.
 
 ## First executable proof and verification
 

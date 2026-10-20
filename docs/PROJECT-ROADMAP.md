@@ -1,5 +1,44 @@
 # Project roadmap — lossless IL, ROM compiler and MAME debugger
 
+## Active priority — feature replacement experiment (20 October 2026)
+
+John authorizes an experiment focused on observable ROM behaviour. This section
+overrides older sequential compiler/debugger gates, mandatory supervisor
+pre-solving, narrow delegation and two-attempt repair stops in historical text.
+
+Use the existing clean-NVRAM, unthrottled MAME replay to reach the feature board
+and collect the first feature game. Confirm the actual feature and VM dispatch,
+then replace that feature entry with custom VM code in approved `1010–13EF`.
+First demonstrate a conspicuous lamp-output change, then animation on feature
+collection, then interactive gameplay. The existing `9F14` helper hook is an
+example, not automatically the correct feature entry.
+
+Reuse Ghidra-derived indexes, VM listings, recovered services and existing
+patch/integrity/replay tools. A coherent experiment may contain multiple private
+ROM edits, MAME runs and debugging cycles. DeepSeek may investigate semantics,
+design and iterate; Codex supervises resources and reviews final results without
+pre-solving every contract. Budget the initial experiment at two hours of actual
+worker execution, excluding callback waits, within the runner watchdogs.
+
+Failed private variants are diagnostic feedback. John gives standing authorization
+for further supported repairs. After two unproductive handoffs, diagnose/replan
+or take over directly; preserve history without demanding routine permission.
+
+Success requires baseline and patched replay reaching the selected feature,
+natural execution of the cave script, and a distinctive visible or MAME-observable
+lamp change. Keep the patch, exact tested ROM/build identity, relevant return/stack
+context and a short record of observations. Bring detailed tracing in for concrete
+problems. Static checks alone are not success; injected state is not natural proof.
+
+General compiler/linker/debugger milestones below track the long-term product;
+they do not gate this experiment. New general tooling, specialised validators,
+fixtures or extensive documentation require a demonstrated blocker. Preserve
+original ROMs, expected-byte checks, integrity repair, the 992-byte allocation
+limit and guards `1000–100F`/`13F0–13FF`, regression expectations, one writer,
+resource limits and independent review before Git publication. Native C# execution
+remains frozen and hardware compatibility remains separate. Preserve John's
+callback pause until explicitly resumed; this update does not dispatch work.
+
 Operational authorization updated 18 October 2026: John authorized a continuing
 supervised DeepSeek development loop, with reviewed passing increments committed
 and normally pushed to the existing remote main between worker runs. Continue
@@ -61,7 +100,7 @@ words, and reject overflow or overlap. A complete game with every feature is
 not yet proved to fit; simplify the demo to fit before considering more space.
 A different extension range still requires John's confirmation per ROM revision.
 
-After the current growable-definition milestone (M5), prioritize small working
+The active experiment proceeds before completion of M5. Prioritize working
 vertical slices toward this demonstration. Add only the IL/compiler features
 each slice demonstrates it needs, rather than seeking complete ROM coverage
 first. The intended authoring model may include named functions, constants,
@@ -69,9 +108,10 @@ variables, conditionals, loops, memory access and high-level service calls.
 Event callbacks are optional language conveniences, not an assumed original-ROM
 capability; any implementation must respect original scheduling and VM contracts.
 
-This is a long-term acceptance target, not permission to bypass the compiler,
-linker, integrity or debugger milestones, weaken verification, or invent helper
-semantics. Give every slice explicit acceptance checks, preferably natural
+The following historical acceptance text does not gate the active experiment.
+For later general tooling, retain the compiler, linker, integrity and debugger
+milestones without weakening verification or inventing helper semantics.
+Give every slice explicit acceptance checks, preferably natural
 fresh-boot MAME execution. Seeded invocation, save states and debugger writes do
 not establish natural compiled-ROM behaviour. Physical MPU4 compatibility
 remains a separate final hardware-validation requirement.
@@ -175,7 +215,7 @@ consumption as proved. The bounded natural `9ED9` original/changed call, single
 composite call and single native primitive call are recorded separately; none is
 a full-game or paid-window proof.
 
-## Replacement milestones
+## Replacement milestones — long-term tracking, not experiment prerequisites
 
 The following table retains the original planned acceptance text. Actual bounded
 progress and the still-open scope are recorded in the status table above; this

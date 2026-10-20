@@ -157,3 +157,42 @@ not compared byte-for-byte. Private evidence is under
 input/clamp/loop source, events, output preview, exits and input hashes, and
 rebuilt the published source. There is no ball yet. Next: moving ball and paddle
 collision within a bounded feature demo.
+
+## Ball, wall bounces and paddle collision
+
+Experiment 106 adds a diagonal ball with left/right/top reflection and a
+one-lamp paddle collision. With no input, its first bottom contact hits the
+paddle and reflects upward; its second contact misses. Holding the right control
+moves the paddle away and causes a miss at the first contact instead. A miss
+flashes the bottom row, clears it, then continues the original feature.
+
+`tools/Build-SnakeBiteBall.ps1` builds the tested default version: 40 maximum
+iterations, delay count 600, paddle column 2, ball `(row=1,column=2)` initially
+moving down/right. The supervisor rebuild matches the tested SHA256
+`28C6436AC9F5FBF2386F08CE762F18D2B603BA41DBF82FE85E03268147161479`.
+It uses 720 bytes (`1010–12DF`), leaving 272. The 731-byte diff comprises that
+cave, the same redirects and integrity fields. Counter and packed position/
+direction state use two VM stack cells; no new RAM scratch is allocated.
+
+Natural MAME outputs show the ball at `(4,5) → (5,4)` around `544.35–544.60`
+(right-wall reflection), `(6,3) → (6,2) → (5,1)` around `544.867–545.367`
+(paddle hit), and `(0,4) → (1,5)` around `546.633–546.867` (top reflection).
+The no-input miss occurs around `548.383`; with sampled right input the first
+contact misses around `545.117`. A repeated no-input run has identical frame
+CSV SHA256 `2D935B09E8224E9FDB81E3D36FC46C8DB2E71AF19C2E5C54AABF1EDFD3A25ED0`.
+The original no-input control has the same sampled inputs but no ball trajectory.
+All five comparison/context runs exit zero.
+
+Read-only context capture reaches cave `1012` at `543.824470930`, original
+`D003` at `548.736989535`, both `U=0672/S=079A`, then `E243` at
+`552.670212209`, `U=0672/S=079E`. Private evidence and failed fixture diagnostics
+remain under `artifacts/deepseek/feature-ball-experiment-106/`. The supervisor
+inspected collision/loop/exit source, raw entry/return events, output sequences,
+exits and hashes, and rebuilt the source.
+
+Known limitation: the unobserved maximum-iteration exit clears the paddle row
+but can leave the last ball lit. The default observed runs exit through the
+clean miss path; other exit paths are not accepted as fully cleaned up. Fix and
+exercise this path before extending the game. Countdown dwell, continued original
+feature outcomes and lack of physical hardware validation retain earlier limits.
+There are no bricks, score, lives, Alpha or sound changes yet.

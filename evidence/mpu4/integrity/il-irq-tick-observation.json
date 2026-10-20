@@ -1,0 +1,258 @@
+{
+  "schemaVersion": 1,
+  "taskId": "il-irq-tick-evidence-94",
+  "status": "curated-supervisor-accepted-limited-original-rom-counter-observation",
+  "classification": "Mechanical curation of one supervisor-reviewed original-ROM MAME run; four debugger-observed native IRQ counter store pairs. Not natural-timing, rate, VM-mapping, compiled-ROM or hardware proof.",
+  "naturalProof": false,
+  "baseRevision": "bbec17ece643bf37676994383a708cfee173c5d9",
+  "acceptedBy": {
+    "path": "artifacts/deepseek/il-irq-tick-observer-93/supervisor-validation.json",
+    "sha256": "8F5A1707F11669CF3E14625903C3F8188415C83234534F86EED382533A29DAC4",
+    "pass": true,
+    "scope": "four original-ROM observed counter stores only; no wrap/rate/delay/compiledword/hardware proof"
+  },
+  "supervisorReview": {
+    "path": "artifacts/deepseek/il-irq-tick-observer-93/supervisor-review.md",
+    "sha256": "5A882416678BCEA28C71D286DD1E00D86C6DD784C8CB7DA60503F800BBF11E4C",
+    "limitedAcceptedProofScope": true
+  },
+  "proofScope": {
+    "originalRomCounterStoreObserved": true,
+    "supervisorLimitedAcceptance": true,
+    "rawNaturalProof": false,
+    "uninterruptedExecution": false,
+    "frequencyOrRate": false,
+    "delayOrTimingPrimitive": false,
+    "wrapObserved": false,
+    "vmMapping": false,
+    "compiledRomOrIl": false,
+    "timingWordBehavior": false,
+    "physicalHardware": false
+  },
+  "rom": {
+    "set": "m4addr",
+    "file": "a6ls.p1",
+    "bytes": 65536,
+    "sha1": "402D1518BB78FDC489B06C2AABC771E5CE151847",
+    "sha256": "EBF580381AA6EB6FFB26E2ACD40F30AA34B0311F71C6564607C6F48A53BCA15C",
+    "sourcePath": "artifacts/deepseek/il-natural-06/runs/original-01/roms/m4addr/a6ls.p1",
+    "runPath": "artifacts/deepseek/il-irq-tick-observer-93/runs/prepare-positive-02/roms/m4addr/a6ls.p1",
+    "runCopyMatchesSource": true
+  },
+  "mame": {
+    "version": "0.281",
+    "path": "E:\\Arcade\\MAME0266\\mame281.exe",
+    "sha256": "0FCE5A88DF4F9D9B1FBF1405812C00848036E615993780978D967DA34204CB7A"
+  },
+  "observer": {
+    "sourcePath": "artifacts/deepseek/il-irq-tick-observer-93/IlIrqTickObserver.lua",
+    "runPath": "artifacts/deepseek/il-irq-tick-observer-93/runs/prepare-positive-02/observer.lua",
+    "bytes": 22686,
+    "sha256": "CAD0AA09532D531BEC60579305E6EB57281F4BAC6CA7325483B0B7EBC9A83B66",
+    "protocol": "il-irq-tick-observer-v1",
+    "callback": "emu.register_periodic",
+    "prePc": "2813",
+    "postPc": "2815",
+    "counterRamAddress": "002D",
+    "counterWordEncoding": "16-bit big-endian; 002D high, 002E low",
+    "readOnlyDebugControlOnly": true,
+    "debuggerControlUsed": ["bpset", "bpclear", "go"],
+    "registerWrites": false,
+    "forcedIrqRegisters": false,
+    "inputProviderLoaded": false,
+    "saveStateUsed": false,
+    "activeIoReads": false,
+    "ccRecordedNotForced": true
+  },
+  "prepared": {
+    "argumentsSha256": "D134FE837935ED862C976F8AC7227E85765CD3799B51D3D7DD8AC7D6C28D4B64",
+    "launchPlanSha256": "143F07D3212DA450100A7DFEC7F08392B53A05D38C96FDA80F02BEA859111876",
+    "prelaunchInventorySha256": "9F72CF258ADD44D1404FF0A38AA1B2231BDB7027D0C516BA693010DA277B8435",
+    "prepareReportSha256": "042C45D371E4E9A725C038C4F6B01839302F9FFC797FBD3D63D30DFF4CEC8F75",
+    "prepareOnlySha256": "6B4CA42F7845943F446FB79DD7566DE3D0D669D80AA3DB232706FF47B854B154",
+    "allPreparedHashesUnchanged": true
+  },
+  "childEnvironment": {
+    "removed": ["MPU4_REPLAY", "MPU4_POLICY"],
+    "inputProviderLoaded": false,
+    "inputLuaCopied": false,
+    "replayCopied": false,
+    "policyLoaded": false
+  },
+  "run": {
+    "runId": "prepare-positive-02",
+    "runPath": "artifacts/deepseek/il-irq-tick-observer-93/runs/prepare-positive-02",
+    "startUtc": "2026-10-20T15:45:47.0546106Z",
+    "endUtc": "2026-10-20T15:45:49.6598824Z",
+    "exitCode": 0,
+    "launchCount": 1,
+    "retryAllowed": false,
+    "emulatedCapSeconds": 2,
+    "wallTimeoutSeconds": 60,
+    "wallSecondsRaw": "1",
+    "emulatedTimeRaw": "0.335301744",
+    "debugger": true,
+    "debuggerBackend": "imgui",
+    "debugLog": true,
+    "video": "bgfx",
+    "sound": "none",
+    "isolation": {
+      "prelaunchFreshDirectoryCounts": {
+        "cfg": 0, "nvram": 0, "inp": 0, "snap": 0, "comments": 0, "state": 0, "diff": 0
+      },
+      "postRunDirectoryCounts": {
+        "cfg": 2, "nvram": 1, "inp": 0, "snap": 0, "comments": 0, "state": 0, "diff": 0
+      },
+      "generatedPersistenceWithinRun": [
+        {
+          "path": "artifacts/deepseek/il-irq-tick-observer-93/runs/prepare-positive-02/cfg/default.cfg",
+          "bytes": 499,
+          "sha256": "CE6F92D4260CFA730A9CDA509E6B19E58813B279F1D85A3408CCCB2ABB49F236"
+        },
+        {
+          "path": "artifacts/deepseek/il-irq-tick-observer-93/runs/prepare-positive-02/cfg/m4addr.cfg",
+          "bytes": 606,
+          "sha256": "7DE16FE1DCF8D383D1DB01C78A45352D8D3DA334F3621EED44F5D52028DC2CC8"
+        },
+        {
+          "path": "artifacts/deepseek/il-irq-tick-observer-93/runs/prepare-positive-02/nvram/m4addr/nvram",
+          "bytes": 2048,
+          "sha256": "65D8979CFB74D29237BCD3AEF039790C3C6C464FBED33F07D5E690D69626C3D2"
+        }
+      ]
+    }
+  },
+  "romSpan": {
+    "address": "280F",
+    "length": 6,
+    "hex": "9E2D30019F2D",
+    "sourceRomMatch": true,
+    "isolatedRunRomMatch": true,
+    "liveEventMatch": true,
+    "wholeRomRuntimeHashVerified": false
+  },
+  "pairs": [
+    {
+      "index": 1,
+      "prePc": "2813", "postPc": "2815",
+      "preTime": "0.328772093", "postTime": "0.328775000",
+      "deltaEmulatedSeconds": "0.000002907",
+      "counterBefore": "0000", "counterAfter": "0001",
+      "counterBeforeBytesBigEndian": "0000", "counterAfterBytesBigEndian": "0001",
+      "preX": "0001", "postX": "0001",
+      "preY": "0E02", "postY": "0E02",
+      "preU": "0672", "postU": "0672",
+      "preS": "07B4", "postS": "07B4",
+      "preCC": "C0", "postCC": "C0",
+      "preDP": "00", "postDP": "00", "preDpRaw": "0", "postDpRaw": "0",
+      "preA": "01", "preB": "00", "preD": "0100",
+      "postA": "01", "postB": "00", "postD": "0100",
+      "romSpanHex": "9E2D30019F2D"
+    },
+    {
+      "index": 2,
+      "prePc": "2813", "postPc": "2815",
+      "preTime": "0.330768605", "postTime": "0.330771512",
+      "deltaEmulatedSeconds": "0.000002907",
+      "counterBefore": "0001", "counterAfter": "0002",
+      "counterBeforeBytesBigEndian": "0001", "counterAfterBytesBigEndian": "0002",
+      "preX": "0002", "postX": "0002",
+      "preY": "0E02", "postY": "0E02",
+      "preU": "0672", "postU": "0672",
+      "preS": "07B4", "postS": "07B4",
+      "preCC": "C0", "postCC": "C0",
+      "preDP": "00", "postDP": "00", "preDpRaw": "0", "postDpRaw": "0",
+      "preA": "02", "preB": "00", "preD": "0200",
+      "postA": "02", "postB": "00", "postD": "0200",
+      "romSpanHex": "9E2D30019F2D"
+    },
+    {
+      "index": 3,
+      "prePc": "2813", "postPc": "2815",
+      "preTime": "0.332773837", "postTime": "0.332776744",
+      "deltaEmulatedSeconds": "0.000002907",
+      "counterBefore": "0002", "counterAfter": "0003",
+      "counterBeforeBytesBigEndian": "0002", "counterAfterBytesBigEndian": "0003",
+      "preX": "0003", "postX": "0003",
+      "preY": "0E02", "postY": "0E02",
+      "preU": "0672", "postU": "0672",
+      "preS": "07B4", "postS": "07B4",
+      "preCC": "C0", "postCC": "C0",
+      "preDP": "00", "postDP": "00", "preDpRaw": "0", "postDpRaw": "0",
+      "preA": "03", "preB": "00", "preD": "0300",
+      "postA": "03", "postB": "00", "postD": "0300",
+      "romSpanHex": "9E2D30019F2D"
+    },
+    {
+      "index": 4,
+      "prePc": "2813", "postPc": "2815",
+      "preTime": "0.335298837", "postTime": "0.335301744",
+      "deltaEmulatedSeconds": "0.000002907",
+      "counterBefore": "0003", "counterAfter": "0004",
+      "counterBeforeBytesBigEndian": "0003", "counterAfterBytesBigEndian": "0004",
+      "preX": "0004", "postX": "0004",
+      "preY": "0019", "postY": "0019",
+      "preU": "0672", "postU": "0672",
+      "preS": "07B4", "postS": "07B4",
+      "preCC": "C0", "postCC": "C0",
+      "preDP": "00", "postDP": "00", "preDpRaw": "0", "postDpRaw": "0",
+      "preA": "00", "preB": "80", "preD": "0080",
+      "postA": "00", "postB": "80", "postD": "0080",
+      "romSpanHex": "9E2D30019F2D"
+    }
+  ],
+  "betweenPairs": {
+    "preToPreEmulatedSeconds": [
+      { "fromPair": 1, "toPair": 2, "value": "0.001996512" },
+      { "fromPair": 2, "toPair": 3, "value": "0.002005232" },
+      { "fromPair": 3, "toPair": 4, "value": "0.002525000" }
+    ],
+    "yBefore": "0E02",
+    "yAfter": "0019",
+    "yChangeBetweenPairPostAndPairPre": [3, 4],
+    "yChangeCause": "unknown; no VM or native source attributed"
+  },
+  "checks": {
+    "independentChecker": "artifacts/deepseek/il-irq-tick-evidence-94/Validate-Raw.ps1",
+    "checksPassed": 79,
+    "checksTotal": 79,
+    "preAndPostCounts": 4,
+    "acceptedPairCount": 4,
+    "pcSequence": "2813 -> 2815 in every pair",
+    "dpNormalizedZero": true,
+    "xEqualsBeforePlusOneMasked16": true,
+    "postRamEqualsPreX": true,
+    "registerPreservationWithinPair": ["X", "Y", "U", "S", "DP"],
+    "ccRawConstant": "C0 pre and post; recorded, not forced, not a preservation requirement",
+    "counterSequence": ["0000", "0001", "0002", "0003", "0004"],
+    "romSpanLiveMatch": true,
+    "nativePcIsNotVmCursor": true
+  },
+  "limitations": [
+    "naturalProof=false is retained raw; debugger stops may affect timing and do not prove uninterrupted natural execution.",
+    "The four post-pre intervals are all 0.000002907 s, but this is not a 500 Hz, frequency, rate, delay or timing-primitive claim.",
+    "The three pre-to-pre intervals differ (0.001996512, 0.002005232, 0.002525000 s); timing varies and these are raw emulated-timestamp differences only.",
+    "X=(before+1)&FFFF is static 16-bit arithmetic; no wraparound was observed.",
+    "Y changes from 0E02 to 0019 between pair 3 post and pair 4 pre; the cause and VM source are unknown.",
+    "Native PC 2813/2815 is not the VM cursor Y; vmMapping remains unknown.",
+    "No compiled ROM, IL, timing word or new VM behavior is proved; the 99AD wait/abort/stack contract remains uncertified.",
+    "Whole-ROM runtime hash verification is false; run identity depends on preparation hashes and the live six-byte span.",
+    "One run only; no retry. Superseded prepare-positive-01 and all raw 93 artifacts were preserved.",
+    "Physical hardware compatibility remains separate and untested."
+  ],
+  "rawSources": {
+    "artifacts/deepseek/il-irq-tick-observer-93/runs/prepare-positive-02/events.jsonl": "9E7408B61DEA47F9CD529161C7E2A649D6E04C97000F8B5F68EE11F33EC770EA",
+    "artifacts/deepseek/il-irq-tick-observer-93/runs/prepare-positive-02/irq-tick-result.json": "6F2A36D62FA284CE525669918DB8B11EC54F5E318F2DED673F86FAA1BF664078",
+    "artifacts/deepseek/il-irq-tick-observer-93/runs/prepare-positive-02/irq-tick-result.txt": "87BE2EEA180F7EE9AA5CF25F8536321EDAA1EA41F7C0CA6065CB6F26926BFF0A",
+    "artifacts/deepseek/il-irq-tick-observer-93/runs/prepare-positive-02/supervisor-run.json": "463FA0C8231D51E3DB9F489910B656F4175528B1AFADDB23A348C4049E23BCEB",
+    "artifacts/deepseek/il-irq-tick-observer-93/runs/prepare-positive-02/supervisor-prelaunch.json": "C69F3B560D7E2A4259190D5CC1F94E8B9F2B9BE0E19A53A360796FC6A4B0597E",
+    "artifacts/deepseek/il-irq-tick-observer-93/runs/prepare-positive-02/observer.lua": "CAD0AA09532D531BEC60579305E6EB57281F4BAC6CA7325483B0B7EBC9A83B66",
+    "artifacts/deepseek/il-irq-tick-observer-93/runs/prepare-positive-02/arguments.json": "D134FE837935ED862C976F8AC7227E85765CD3799B51D3D7DD8AC7D6C28D4B64",
+    "artifacts/deepseek/il-irq-tick-observer-93/runs/prepare-positive-02/launch-plan.json": "143F07D3212DA450100A7DFEC7F08392B53A05D38C96FDA80F02BEA859111876",
+    "artifacts/deepseek/il-irq-tick-observer-93/runs/prepare-positive-02/prelaunch-inventory.json": "9F72CF258ADD44D1404FF0A38AA1B2231BDB7027D0C516BA693010DA277B8435",
+    "artifacts/deepseek/il-irq-tick-observer-93/runs/prepare-positive-02/roms/m4addr/a6ls.p1": "EBF580381AA6EB6FFB26E2ACD40F30AA34B0311F71C6564607C6F48A53BCA15C",
+    "artifacts/deepseek/il-irq-tick-observer-93/runs/prepare-positive-02/console.txt": "7EB70257593DA06F682A3DDDA54A9D260D4FC514F645237F5CA74B08F8DA61A6",
+    "artifacts/deepseek/il-irq-tick-observer-93/runs/prepare-positive-02/console.err.txt": "2CAD2FB78669A1375527850283B7610AB6A115D70C7DAF041A88D8F5C1C8664D",
+    "artifacts/deepseek/il-irq-tick-observer-93/runs/prepare-positive-02/debug.log": "CD4302F8A57D59E878D9C0DB781725336726870CBC3DA8C83622D87C0195736F"
+  }
+}

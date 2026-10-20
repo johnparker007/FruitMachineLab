@@ -108,6 +108,8 @@ public sealed class LampPatternSourceMap
     private readonly ReadOnlyCollection<LampPatternNode> _nodes;
     private readonly ReadOnlyCollection<LampPatternStaticPhase> _phases;
     private readonly ReadOnlyCollection<LampPatternServiceBoundary> _boundaries;
+    private readonly LampPatternVariant _variant;
+    private readonly string _classification;
 
     private LampPatternSourceMap(
         string originalRomSha1,
@@ -122,7 +124,8 @@ public sealed class LampPatternSourceMap
         LampPatternCallerBinding caller,
         LampPatternSemanticContract semantics,
         LampPatternStaticContract staticContract,
-        LampPatternProvenance provenance)
+        LampPatternProvenance provenance,
+        LampPatternVariant variant)
     {
         OriginalRomSha1 = originalRomSha1;
         OriginalRomSha256 = originalRomSha256;
@@ -139,6 +142,8 @@ public sealed class LampPatternSourceMap
         Semantics = semantics;
         StaticContract = staticContract;
         Provenance = provenance;
+        _variant = variant ?? throw new ArgumentNullException(nameof(variant));
+        _classification = variant.Classification;
     }
 
     public string OriginalRomSha1 { get; }
@@ -180,7 +185,7 @@ public sealed class LampPatternSourceMap
 
     public LampPatternProvenance Provenance { get; }
 
-    public string Classification => BuildClassification;
+    public string Classification => _classification;
 
     public LampPatternMapEntry Resolve(ushort address)
     {
@@ -246,7 +251,7 @@ public sealed class LampPatternSourceMap
         if (!outputImage.Slice(
                 LampPatternWordBuilder.BodyStart,
                 LampPatternWordBuilder.BodyEndExclusive - LampPatternWordBuilder.BodyStart)
-                .SequenceEqual(Convert.FromHexString(LampPatternWordBuilder.BodyHex)))
+                .SequenceEqual(Convert.FromHexString(_variant.BodyHex)))
             throw new InvalidDataException(
                 "Lamp-pattern source-map body at 1012-1027 differs from the reviewed body");
         if (!outputImage.Slice(
@@ -353,7 +358,22 @@ public sealed class LampPatternSourceMap
         ReadOnlySpan<byte> outputImage,
         LampPatternNode[] nodes,
         LampPatternStaticContract staticContract,
-        LampPatternProvenance provenance)
+        LampPatternProvenance provenance) =>
+        CreateForBuild(
+            originalRom,
+            outputImage,
+            nodes,
+            staticContract,
+            provenance,
+            LampPatternWordBuilder.VariantEightF);
+
+    internal static LampPatternSourceMap CreateForBuild(
+        ReadOnlySpan<byte> originalRom,
+        ReadOnlySpan<byte> outputImage,
+        LampPatternNode[] nodes,
+        LampPatternStaticContract staticContract,
+        LampPatternProvenance provenance,
+        LampPatternVariant variant)
     {
         VmIlDefinition originalDefinition =
             LampPatternWordBuilder.ValidateOriginalSource(originalRom);
@@ -365,7 +385,7 @@ public sealed class LampPatternSourceMap
             throw new InvalidDataException(
                 "Lamp-pattern source map requires the eight reviewed body nodes");
 
-        ValidateSource(originalRom, outputImage, nodes);
+        ValidateSource(originalRom, outputImage, nodes, variant);
 
         var entries = new List<LampPatternMapEntry>(64);
         entries.Add(new LampPatternMapEntry(
@@ -597,7 +617,7 @@ public sealed class LampPatternSourceMap
             staticContract.ServiceClobbers,
             LampPatternSourceMap.PhaseClassification);
 
-        var phases = BuildPhases(nodes, staticContract, originalRom);
+        var phases = BuildPhases(nodes, staticContract, originalRom, variant);
 
         var map = new LampPatternSourceMap(
             Sha1(originalRom),
@@ -612,7 +632,8 @@ public sealed class LampPatternSourceMap
             caller,
             semantics,
             staticContract,
-            provenance);
+            provenance,
+            variant);
         map.ValidateImage(outputImage);
         return map;
     }
@@ -620,7 +641,8 @@ public sealed class LampPatternSourceMap
     private static void ValidateSource(
         ReadOnlySpan<byte> originalRom,
         ReadOnlySpan<byte> outputImage,
-        LampPatternNode[] nodes)
+        LampPatternNode[] nodes,
+        LampPatternVariant variant)
     {
         if (!outputImage.Slice(
                 LampPatternWordBuilder.HeaderAddress, 2)
@@ -633,7 +655,7 @@ public sealed class LampPatternSourceMap
                 LampPatternWordBuilder.BodyEndExclusive -
                 LampPatternWordBuilder.BodyStart)
                 .SequenceEqual(Convert.FromHexString(
-                    LampPatternWordBuilder.BodyHex)))
+                    variant.BodyHex)))
             throw new InvalidDataException(
                 "Lamp-pattern source-map requires the reviewed body at 1012-1027");
         if (!outputImage.Slice(
@@ -792,7 +814,8 @@ public sealed class LampPatternSourceMap
     private static LampPatternStaticPhase[] BuildPhases(
         LampPatternNode[] nodes,
         LampPatternStaticContract contract,
-        ReadOnlySpan<byte> originalRom)
+        ReadOnlySpan<byte> originalRom,
+        LampPatternVariant variant)
     {
         var phases = new List<LampPatternStaticPhase>(44);
 
@@ -930,7 +953,7 @@ public sealed class LampPatternSourceMap
         };
         for (int index = 0; index < sharedAfterNames.Length; index++)
         {
-            ushort afterX = SharedLeafExitX(sharedBodyToken, sharedBodyHandler);
+            ushort afterX = SharedLeafExitX(sharedBodyToken, sharedBodyHandler, variant);
             sharedBodyCursor = checked((ushort)(sharedBodyCursor + 2));
             ushort nextToken = ReadWord(originalRom, sharedBodyCursor);
             ushort nextHandler = ReadWord(originalRom, nextToken);
@@ -985,14 +1008,15 @@ public sealed class LampPatternSourceMap
             "75A9 at 9F16; X remains 7931.");
 
         LampPatternStaticPhase[] result = phases.ToArray();
-        ValidatePhases(result, nodes, contract, originalRom);
+        ValidatePhases(result, nodes, contract, originalRom, variant);
         return result;
     }
 
     // ROT and SWAP execute LDX 2,U. In this exact word their second cell is
     // the byte-literal pattern; NEXT does not restore the dispatch pointer.
-    private static ushort SharedLeafExitX(ushort token, ushort handler) =>
-        token is 0x7B6D or 0x7B7D ? LampPatternWordBuilder.PatternOperand : handler;
+    private static ushort SharedLeafExitX(
+        ushort token, ushort handler, LampPatternVariant variant) =>
+        token is 0x7B6D or 0x7B7D ? variant.PatternOperand : handler;
 
     private static int ContractU(LampPatternStaticContract contract, string phase) =>
         contract.StackSteps.Single(item =>
@@ -1006,7 +1030,20 @@ public sealed class LampPatternSourceMap
         IReadOnlyList<LampPatternStaticPhase> phases,
         IReadOnlyList<LampPatternNode> nodes,
         LampPatternStaticContract contract,
-        ReadOnlySpan<byte> originalRom)
+        ReadOnlySpan<byte> originalRom) =>
+        ValidatePhases(
+            phases,
+            nodes,
+            contract,
+            originalRom,
+            LampPatternWordBuilder.VariantEightF);
+
+    internal static void ValidatePhases(
+        IReadOnlyList<LampPatternStaticPhase> phases,
+        IReadOnlyList<LampPatternNode> nodes,
+        LampPatternStaticContract contract,
+        ReadOnlySpan<byte> originalRom,
+        LampPatternVariant variant)
     {
         if (phases is null || phases.Count != contract.StackSteps.Count)
             throw new InvalidDataException(
@@ -1116,7 +1153,7 @@ public sealed class LampPatternSourceMap
         };
         foreach (string afterName in sharedAfterNames)
         {
-            ushort afterX = SharedLeafExitX(sharedToken, sharedHandler);
+            ushort afterX = SharedLeafExitX(sharedToken, sharedHandler, variant);
             sharedCursor = checked((ushort)(sharedCursor + 2));
             ushort nextToken = ReadWord(originalRom, sharedCursor);
             sharedHandler = ReadWord(originalRom, nextToken);

@@ -1,0 +1,143 @@
+{
+  "taskId": "il-lamp-clear-build-71",
+  "baseRevision": "95aadbe63c18a134d8af2577038c94f57c11afe3",
+  "status": "supervisor-reviewed-static-only",
+  "clearPayloadHex": "00F8795BFF80787E795BFF807AAF7963007963809C44792F",
+  "original": {
+    "length": 65536,
+    "sha1": "402D1518BB78FDC489B06C2AABC771E5CE151847",
+    "sha256": "EBF580381AA6EB6FFB26E2ACD40F30AA34B0311F71C6564607C6F48A53BCA15C"
+  },
+  "clearOutput": {
+    "unrepairedSha1": "BD7572208D18EAA98B8E49C5FC1FEC4BBDF9C351",
+    "unrepairedSha256": "0CDA847916A051B09C187C54AD028F79A65A554CC592E0CF0580A0291A76AAEE",
+    "repairedSha1": "F2083249845955D91945E589807C22E730D78FC3",
+    "repairedSha256": "347D475E20C194F374DF85A04894BC68D89E05043CA89C5B031316868240EB88",
+    "unrepairedChangedCount": 24,
+    "finalChangedCount": 29,
+    "repairChangedOffsets": [
+      "FFD1",
+      "FFD2",
+      "FFD3",
+      "FFD4",
+      "FFD5"
+    ],
+    "originalFieldsHex": "3E761E2605",
+    "repairedFieldsHex": "E93F3C61B5",
+    "allocationLength": 24,
+    "remainingApprovedBytes": 968,
+    "mapSha256": "1845ED2A98B8347B8618D7E9A6E7AFD68B3CF14532C20268AAE273DD782E83B1",
+    "buildReportSha256": "7AB2A92DF65F77E822FD92F30D8B966E96CA3C762873201F438FFAFD2011416D"
+  },
+  "old8FPreserved": {
+    "unrepairedSha1": "FED6058A6BF8D2627068BAC01D77EE0D279B5E46",
+    "unrepairedSha256": "3D94F6E2908D9C57C2C20EEDE897A0A19D4C74BA88464053554C0558C25ADDE3",
+    "repairedSha1": "9F060102692BB31E03F992E95E38F4F59BEE1129",
+    "repairedSha256": "631F6C252A5DF359525553F7D14A4FC8CEF965C76BBECA759EAAA862A3FAD4DE",
+    "repairedFieldsHex": "E93F3C61B5",
+    "mapSha256": "42F0C4BB886313F5B1A7F78991A2EFD09351CC1912DF7A58EA6E3BE7E8E84163",
+    "buildReportSha256": "F085192074032C35F212B96F8F480720AAC49BDEBC56C0B2C8D54FA11C9CF97F"
+  },
+  "commands": [
+    {
+      "id": "headless-build",
+      "command": "dotnet build FruitMachineLab.Headless.sln --ignore-failed-sources",
+      "exit": 0,
+      "notes": "0 warnings, 0 errors"
+    },
+    {
+      "id": "clear-cli-build",
+      "command": "dotnet build tools/FruitMachineLab.IlLampClearPatternBuild/FruitMachineLab.IlLampClearPatternBuild.csproj --ignore-failed-sources",
+      "exit": 0,
+      "notes": "0 warnings, 0 errors"
+    },
+    {
+      "id": "clear-cli-positive",
+      "command": "dotnet run --project tools/FruitMachineLab.IlLampClearPatternBuild --no-build -- <original> <fresh>",
+      "exit": 0
+    },
+    {
+      "id": "il-verifier",
+      "command": "dotnet run --project tests/FruitMachineLab.IlVerification --no-build -- <original> <fresh>",
+      "exit": 0,
+      "notes": "clear group 21/21; 8F group 26/26"
+    },
+    {
+      "id": "worker-checker",
+      "command": "powershell -File tests/worker/Test-IlLampClearPatternBuild.ps1 ...",
+      "exit": 0,
+      "notes": "33/33 checks"
+    },
+    {
+      "id": "old-worker-checker",
+      "command": "powershell -File tests/worker/Test-IlLampPatternBuild.ps1 ...",
+      "exit": 0,
+      "notes": "24/24 checks"
+    },
+    {
+      "id": "full-verifier",
+      "command": "dotnet run --project tests/FruitMachineLab.Verification --no-build -- .",
+      "exit": 0,
+      "notes": "417 verification groups"
+    },
+    {
+      "id": "ui-build",
+      "command": "dotnet build FruitMachineLab.sln --ignore-failed-sources",
+      "exit": 0,
+      "notes": "0 warnings, 0 errors"
+    },
+    {
+      "id": "legacy-prepare-only",
+      "command": "powershell -File tools/Capture-IlLampNatural.ps1 -Mode PrepareOnly ... with the clear image",
+      "exit": 1,
+      "notes": "frozen 8F identity gate rejected the clear image; no run directory or MAME launch"
+    }
+  ],
+  "focusedReports": {
+    "workerChecker": "artifacts/deepseek/il-lamp-clear-build-71/worker-01/checker-report.json",
+    "clearIlReport": "artifacts/deepseek/il-lamp-clear-build-71/worker-01/il-verifier/lamp-clear-pattern/verification-report.json",
+    "old8FIlReport": "artifacts/deepseek/il-lamp-clear-build-71/worker-01/il-verifier/lamp-pattern/verification-report.json",
+    "fullVerifierLog": "artifacts/deepseek/il-lamp-clear-build-71/runs/full-verifier.log",
+    "result": "artifacts/deepseek/il-lamp-clear-build-71/result.md"
+  },
+  "sourceSha256": {
+    "src/FruitMachineLab.Il/LampPatternWordBuilder.cs": "3A4A4A924944D09C68E3CF84EA1BC5824272A2524DF5C2C4C65EA7FD174D8821",
+    "src/FruitMachineLab.Il/LampPatternWordSourceMap.cs": "835A19CD90A481AFF5ABFD39285261728DE024FEE138E0530DFAC404B29BBBB3",
+    "src/FruitMachineLab.Il/VmIlIntegrity.cs": "1019D231CF9D20ACAEDD1A5AEBBEFD4477BEA6760A8A432A988905032F58F430",
+    "tests/FruitMachineLab.IlVerification/Program.cs": "B386E017FA77EC5264FCD879C1724480A5872FC3A19E656A7EBBE8B1298087E3",
+    "tests/FruitMachineLab.IlVerification/LampClearPatternVerification.cs": "7E0B496835DB227A0D791D73659299893BA0ADDAAD530132D0D77BB0FDC806B5",
+    "tools/FruitMachineLab.IlLampClearPatternBuild/Program.cs": "C291A53CAFCBA65B5F8F5EFC9B092B4986C6D74899374304AFDB2B30E1C2C568",
+    "tools/FruitMachineLab.IlLampClearPatternBuild/FruitMachineLab.IlLampClearPatternBuild.csproj": "23FFD5E793B2963B7538D4086B4DAF958E744DE9DCE8E2E6559F78B1AFED0F7E",
+    "tests/worker/Test-IlLampClearPatternBuild.ps1": "3992D23F26E0E7832106F861B139A36251F4CE166F92A7E1D4C55B0D9A84E858",
+    "docs/recovery/IL-LAMP-CLEAR-BUILD.md": "A89CC2F96DF89651BFFA2DEA2108A241EE95163EFA3160846C1D3EBD5BFA0A1F"
+  },
+  "boundaries": {
+    "staticOnly": true,
+    "mameRun": false,
+    "naturalExecution": false,
+    "debuggerWrites": false,
+    "inputPlayback": false,
+    "physicalLampClaim": false,
+    "futureResponseAssumed": false,
+    "M5Complete": false,
+    "legacyGateWeakened": false
+  },
+  "supervisorReview": {
+    "directCorrection": "Replace self-comparison with native (before|mask)-mask vs independent before&~mask, all256beforebytes.",
+    "finalVerification": [
+      "supervisor-build.log exit0",
+      "supervisor-il.log exit0 clear21/21 old26/26 and earlier IL groups",
+      "supervisor-cli-build.log exit0",
+      "supervisor-worker.log exit0 checker33/33"
+    ],
+    "reusedVerification": "417fullgroups and UI/headless builds apply; final additional change only strengthens equivalent static algebra validator and its verifier.",
+    "noNaturalCapture": true
+  },
+  "finalEvidenceHashes": {
+    "artifacts/deepseek/il-lamp-clear-build-71/supervisor-worker-final/checker-report.json": "5AD340A519808DA82903DB15E0055DC31384E5684F6ECCF685364DCE89B42630",
+    "artifacts/deepseek/il-lamp-clear-build-71/supervisor-il.log": "4D2C252D406BFBCB23C6FC832F2FABE8CC995655FD727773119EBEA0F78899A6",
+    "artifacts/deepseek/il-lamp-clear-build-71/supervisor-build.log": "50842FEAA992D8E1ECE02FF9128B5CE3F0DF21061B18B46AADE60AC22332F9FE",
+    "artifacts/deepseek/il-lamp-clear-build-71/supervisor-cli-build.log": "4F096C7AE39730C9DACB31F23C8DA15B041C3C45BE91E0EC13A1DE32C6C06184",
+    "artifacts/deepseek/il-lamp-clear-build-71/supervisor-worker.log": "E959DAAEFCB123E7E0B14351CC98D282DD802119873431CE4D033F1D305F86C7"
+  }
+}

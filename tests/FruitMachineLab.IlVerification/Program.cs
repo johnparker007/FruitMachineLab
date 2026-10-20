@@ -85,6 +85,15 @@ internal static class Program
                 Path.Combine(lampPatternOutput, "verification-report.json"));
             Console.WriteLine("Lamp-pattern log: " +
                 Path.Combine(lampPatternOutput, "verification.log"));
+
+            string lampClearOutput = Path.Combine(
+                outputDirectory, "lamp-clear-pattern");
+            LampClearPatternVerification.Run(
+                romPath, repositoryRoot, lampClearOutput);
+            Console.WriteLine("Lamp-clear report: " +
+                Path.Combine(lampClearOutput, "verification-report.json"));
+            Console.WriteLine("Lamp-clear log: " +
+                Path.Combine(lampClearOutput, "verification.log"));
             return 0;
         }
         catch (Exception error)

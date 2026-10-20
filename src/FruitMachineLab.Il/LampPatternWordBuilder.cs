@@ -150,6 +150,21 @@ public sealed record LampPatternProvenance(
     string ParentListingPath,
     string Classification);
 
+internal sealed record LampPatternVariant(
+    string ProposalId,
+    string ContractTaskId,
+    string BodyHex,
+    string PayloadHex,
+    byte PatternOperand,
+    string StatusText,
+    string Classification,
+    string? ExpectedUnrepairedSha1,
+    string? ExpectedUnrepairedSha256,
+    string? ExpectedOutputSha1,
+    string? ExpectedOutputSha256,
+    string? ExpectedRepairedFieldsHex,
+    bool IsClear);
+
 public sealed record LampPatternByteChange(int Offset, byte Before, byte After);
 
 public sealed class LampPatternBuildResult
@@ -163,6 +178,7 @@ public sealed class LampPatternBuildResult
     private readonly ReadOnlyCollection<LampPatternByteChange> _byteChanges;
     private readonly ReadOnlyCollection<LampPatternNode> _nodes;
     private readonly VmIlIntegrityReport _integrityReport;
+    private readonly string _status;
 
     internal LampPatternBuildResult(
         byte[] outputImage,
@@ -182,7 +198,8 @@ public sealed class LampPatternBuildResult
         LampPatternByteChange[] byteChanges,
         VmIlIntegrityReport integrityReport,
         LampPatternSourceMap sourceMap,
-        LampPatternProvenance provenance)
+        LampPatternProvenance provenance,
+        string status)
     {
         _outputImage = (byte[])outputImage.Clone();
         _unrepairedImage = (byte[])unrepairedImage.Clone();
@@ -203,6 +220,7 @@ public sealed class LampPatternBuildResult
         _integrityReport = CopyIntegrityReport(integrityReport);
         SourceMap = sourceMap;
         Provenance = provenance;
+        _status = status ?? throw new ArgumentNullException(nameof(status));
     }
 
     public ReadOnlySpan<byte> OutputImage => _outputImage;
@@ -253,7 +271,7 @@ public sealed class LampPatternBuildResult
 
     public int RemainingApprovedBytes => LampPatternWordBuilder.RemainingApprovedBytes;
 
-    public string Status => LampPatternWordBuilder.StatusText;
+    public string Status => _status;
 
     private static VmIlIntegrityReport CopyIntegrityReport(VmIlIntegrityReport report) =>
         report with
@@ -404,6 +422,87 @@ public static class LampPatternWordBuilder
         "its 0801/0802/0803 access, pushes and pulls U/S frames, saves and restores Y, and " +
         "changes A/CC net; 49C5 preserves A/B/X only within its own prologue/epilogue. No " +
         "whole-RAM-unchanged, safe-caller, natural-boot, execution or hardware claim is made.";
+
+    public const byte ClearPatternOperand = 0x80;
+    public const string ClearBodyHex =
+        "795BFF80787E795BFF807AAF7963007963809C44792F";
+    public const string ClearPayloadHex = HeaderHex + ClearBodyHex;
+    public const string ClearProposalId = "lamp-clear-pattern-24-byte-word";
+    public const string ClearContractTaskId = "il-lamp-clear-build-71";
+    public const string ClearBuildClassification =
+        "static_lamp_clear_pattern_map_bound_to_exact_output_sha256";
+    public const string ClearProvenanceClassification =
+        "static_compiled_lamp_clear_pattern_word; original_rom_bytes; " +
+        "accepted_original_service; clear_algebra_256_before_values; static_prediction_only";
+    public const string ClearStatusText =
+        "STATIC COMPILED LAMP-CLEAR-PATTERN WORD ONLY: the reviewed 24-byte allocation at " +
+        "1010-1027 carries 00F8, the preserved 9ED9 prefix, inline index 00 and pattern 80, " +
+        "the shared 9C44 original lamp service and one final 792F return. Only 1023 differs " +
+        "from the reviewed 8F payload and only 9F14-9F15 redirects the original caller. The " +
+        "ordered FFD1-FFD5 integrity fields were repaired without assuming which field " +
+        "values change. Pattern 80 selects the clear branch for mask 01 in each of the four " +
+        "frame banks; the target column is derived from the characteriser response actually " +
+        "read at 0803 and is not assumed for a future run. No natural execution, future " +
+        "response, whole-RAM-unchanged, visible-lamp-output, gameplay or hardware claim is " +
+        "made.";
+    public const byte ObservedCharacteriserResponse = 0x00;
+    public const byte ObservedLogicalId = 0x78;
+    public const int ObservedResponseColumn = 15;
+    public const string ResponseColumnFormula = "((response0803 XOR 78) & 78) >> 3";
+    public const string ClearPatternSemanticsText =
+        "Pattern 80 has low nibble 0. For every possible pre-existing frame byte the original " +
+        "49C5 service clears mask 01 in each of the four banks (after = before & ~01) and " +
+        "leaves every other bit unchanged. The upper nibble is not consumed by the four LSRA " +
+        "operations in this exact path and is not generalized. The target bank offset is " +
+        "0100 + k*0x10 + column, where column comes from the actual response read at 0803.";
+    public const string ClearExpectedUnrepairedSha1 =
+        "BD7572208D18EAA98B8E49C5FC1FEC4BBDF9C351";
+    public const string ClearExpectedUnrepairedSha256 =
+        "0CDA847916A051B09C187C54AD028F79A65A554CC592E0CF0580A0291A76AAEE";
+    public const string ClearExpectedOutputSha1 =
+        "F2083249845955D91945E589807C22E730D78FC3";
+    public const string ClearExpectedOutputSha256 =
+        "347D475E20C194F374DF85A04894BC68D89E05043CA89C5B031316868240EB88";
+    public const string ClearExpectedRepairedFieldsHex = "E93F3C61B5";
+    private static readonly ushort[] ClearObservedFrameAddressStorage =
+    {
+        0x010F, 0x011F, 0x012F, 0x013F
+    };
+    private static readonly ReadOnlyCollection<ushort> ClearObservedFrameAddressView =
+        Array.AsReadOnly((ushort[])ClearObservedFrameAddressStorage.Clone());
+    public static ReadOnlyCollection<ushort> ClearObservedFrameAddresses =>
+        ClearObservedFrameAddressView;
+
+    internal static readonly LampPatternVariant VariantEightF = new(
+        ProposalId,
+        ContractTaskId,
+        BodyHex,
+        PayloadHex,
+        PatternOperand,
+        StatusText,
+        LampPatternSourceMap.BuildClassification,
+        ExpectedUnrepairedSha1,
+        ExpectedUnrepairedSha256,
+        ExpectedOutputSha1,
+        ExpectedOutputSha256,
+        ExpectedRepairedFieldsHex,
+        false);
+
+    internal static readonly LampPatternVariant VariantClear = new(
+        ClearProposalId,
+        ClearContractTaskId,
+        ClearBodyHex,
+        ClearPayloadHex,
+        ClearPatternOperand,
+        ClearStatusText,
+        ClearBuildClassification,
+        ClearExpectedUnrepairedSha1,
+        ClearExpectedUnrepairedSha256,
+        ClearExpectedOutputSha1,
+        ClearExpectedOutputSha256,
+        ClearExpectedRepairedFieldsHex,
+        true);
+
     public const string StaticPhaseClassification = "static_prediction_not_execution";
     public const string StackClassification = "static_relative_stack_model_not_capture";
     public const string ResultPreservationText =
@@ -682,7 +781,240 @@ public static class LampPatternWordBuilder
             changes,
             integrity.Report,
             map,
-            provenance);
+            provenance,
+            StatusText);
+    }
+
+    public static LampPatternBuildResult BuildClearPattern(ReadOnlySpan<byte> originalRom)
+    {
+        LampPatternVariant variant = VariantClear;
+        VmIlDefinition originalDefinition = ValidateOriginalSource(originalRom);
+        ValidateServiceContract(originalRom);
+        LampPatternBridgeEvent[] bridgeEvents = DecodeBridgeChronology(originalRom);
+
+        byte[] payload = Convert.FromHexString(variant.PayloadHex);
+        ValidateComposedPayload(payload, variant);
+        LampPatternNode[] nodes = AnalyzeBody(
+            payload.AsSpan(2), BodyStart, BodyEndExclusive);
+        ValidateNodes(originalRom, payload, nodes, variant.PatternOperand);
+        LampPatternStaticContract staticContract = BuildStaticContract(nodes, bridgeEvents);
+        ValidateStaticContract(staticContract);
+        ValidateSharedCallResolution(originalRom);
+
+        var descriptor = ExtensionRangeDescriptor.Approved;
+        ExtensionRangeAllocator allocator =
+            ExtensionRangeAllocator.Create(originalRom, descriptor);
+        ExtensionRangePlan plan = allocator.Plan(new[]
+        {
+            new ExtensionAllocationRequest(variant.ProposalId, AllocationLength)
+        });
+        ExtensionRangeAllocation allocation = plan.Allocations.Single();
+        if (allocation.CpuStart != AllocationStart ||
+            allocation.CpuEnd != AllocationEndInclusive ||
+            allocation.FileStart != AllocationStart ||
+            allocation.FileEnd != AllocationEndInclusive ||
+            allocation.Length != AllocationLength)
+            throw new InvalidDataException(
+                "Allocator did not place the lamp-clear word at 1010-1027");
+
+        for (int offset = AllocationStart; offset <= AllocationEndInclusive; offset++)
+        {
+            if (originalRom[offset] != 0xFF)
+                throw new InvalidDataException(
+                    $"Reviewed lamp-clear allocation byte at {offset:X4} is " +
+                    $"{originalRom[offset]:X2}; expected FF");
+        }
+
+        var payloadRecord = new ExtensionPayload(variant.ProposalId, payload);
+        ExtensionRangeEmission emission = ExtensionRangeEmitter.Emit(
+            originalRom, descriptor, plan, new[] { payloadRecord });
+
+        if (!emission.IntegrityCoveredBytesUnchanged ||
+            !emission.IntegrityFieldsUnchanged)
+            throw new InvalidDataException(
+                "Lamp-clear extension emission unexpectedly changed integrity-covered bytes " +
+                "or fields");
+        if (!emission.OutputImage.Slice(AllocationStart, AllocationLength)
+                .SequenceEqual(payload))
+            throw new InvalidDataException(
+                "Emitted extension allocation does not contain the lamp-clear payload");
+        int[] expectedPayloadChanges = DerivePayloadChangeOffsets(originalRom, payload);
+        if (!emission.ChangedOffsets.SequenceEqual(expectedPayloadChanges))
+            throw new InvalidDataException(
+                "Extension emission did not realize exactly the literal lamp-clear payload " +
+                "changes");
+        if (!emission.OutputImage.Slice(IntegrityStart, 0x10000 - IntegrityStart)
+                .SequenceEqual(originalRom.Slice(
+                    IntegrityStart, 0x10000 - IntegrityStart)))
+            throw new InvalidDataException(
+                "Unrepaired lamp-clear emission changed integrity-covered 1400-FFFF bytes");
+
+        byte[] unrepaired = emission.CopyOutputImage();
+        ValidateCallerBeforePatch(originalRom, unrepaired);
+        if (!unrepaired.AsSpan(CallerTokenAddress, 2)
+                .SequenceEqual(new byte[] { 0x9E, 0xD7 }))
+            throw new InvalidDataException("Original caller token at 9F14 is not 9ED7");
+        unrepaired[CallerTokenAddress] = 0x10;
+        unrepaired[CallerTokenAddress + 1] = 0x10;
+
+        var expectedChanges = new List<int>(expectedPayloadChanges);
+        for (int index = 0; index < 2; index++)
+        {
+            int offset = CallerTokenAddress + index;
+            byte replacement = index == 0 ? (byte)0x10 : (byte)0x10;
+            if (originalRom[offset] != replacement)
+                expectedChanges.Add(offset);
+        }
+        expectedChanges.Sort();
+        int[] unrepairedDiff = ChangedOffsets(originalRom, unrepaired);
+        if (!unrepairedDiff.SequenceEqual(expectedChanges))
+            throw new InvalidDataException(
+                "Unrepaired lamp-clear diff is not exactly the literal payload plus the two " +
+                "caller-token bytes");
+        if (payload[0x1014 - AllocationStart] != 0xFF ||
+            payload[0x101A - AllocationStart] != 0xFF ||
+            unrepaired[0x1014] != 0xFF || unrepaired[0x101A] != 0xFF)
+            throw new InvalidDataException(
+                "Lamp-clear payload/unrepaired word changed the original FF bytes at 1014/101A");
+
+        var patch = new VmIlLampPatternPatchSpec(
+            AllocationStart,
+            Enumerable.Repeat((byte)0xFF, AllocationLength).ToArray(),
+            payload,
+            CallerTokenAddress,
+            new byte[] { 0x9E, 0xD7 },
+            new byte[] { 0x10, 0x10 });
+        VmIlIntegrityResult integrity =
+            VmIlIntegrity.RepairLampClearPattern(originalRom, unrepaired, patch);
+
+        string outputSha1 = Sha1(integrity.RepairedImage);
+        string outputSha256 = Sha256(integrity.RepairedImage);
+        string unrepairedSha1 = Sha1(unrepaired);
+        string unrepairedSha256 = Sha256(unrepaired);
+        if (variant.ExpectedUnrepairedSha1 is not null &&
+            !string.Equals(unrepairedSha1, variant.ExpectedUnrepairedSha1,
+                StringComparison.OrdinalIgnoreCase))
+            throw new InvalidDataException(
+                $"Lamp-clear unrepaired SHA1 {unrepairedSha1} differs from the recorded " +
+                $"{variant.ExpectedUnrepairedSha1}");
+        if (variant.ExpectedUnrepairedSha256 is not null &&
+            !string.Equals(unrepairedSha256, variant.ExpectedUnrepairedSha256,
+                StringComparison.OrdinalIgnoreCase))
+            throw new InvalidDataException(
+                $"Lamp-clear unrepaired SHA256 {unrepairedSha256} differs from the recorded " +
+                $"{variant.ExpectedUnrepairedSha256}");
+        if (variant.ExpectedOutputSha1 is not null &&
+            !string.Equals(outputSha1, variant.ExpectedOutputSha1,
+                StringComparison.OrdinalIgnoreCase))
+            throw new InvalidDataException(
+                $"Lamp-clear output SHA1 {outputSha1} differs from the recorded " +
+                $"{variant.ExpectedOutputSha1}");
+        if (variant.ExpectedOutputSha256 is not null &&
+            !string.Equals(outputSha256, variant.ExpectedOutputSha256,
+                StringComparison.OrdinalIgnoreCase))
+            throw new InvalidDataException(
+                $"Lamp-clear output SHA256 {outputSha256} differs from the recorded " +
+                $"{variant.ExpectedOutputSha256}");
+        if (variant.ExpectedRepairedFieldsHex is not null &&
+            !string.Equals(
+                integrity.Report.RepairedStoredFieldsHex,
+                variant.ExpectedRepairedFieldsHex,
+                StringComparison.Ordinal))
+            throw new InvalidDataException(
+                $"Lamp-clear integrity fields are " +
+                $"{integrity.Report.RepairedStoredFieldsHex}; the recorded value is " +
+                $"{variant.ExpectedRepairedFieldsHex}");
+
+        int[] repairChanged = integrity.Report.RepairChangedOffsets;
+        if (repairChanged.Any(offset =>
+                offset < VmIlIntegrity.SumOffset ||
+                offset > VmIlIntegrity.RotateSubXorBOffset))
+            throw new InvalidDataException(
+                "Lamp-clear repair changed a byte outside the permitted FFD1-FFD5 field " +
+                "locations");
+        int[] expectedFinal = expectedChanges
+            .Concat(repairChanged)
+            .OrderBy(offset => offset)
+            .ToArray();
+        int[] finalDiff = ChangedOffsets(originalRom, integrity.RepairedImage);
+        if (!finalDiff.SequenceEqual(expectedFinal))
+            throw new InvalidDataException(
+                "Final lamp-clear diff is not exactly the literal patch plus the independently " +
+                "repaired field changes");
+        if (!integrity.Report.UnrepairedChangedOffsets.SequenceEqual(expectedChanges) ||
+            !integrity.Report.RepairedChangedOffsets.SequenceEqual(finalDiff))
+            throw new InvalidDataException(
+                "Lamp-clear integrity report diff does not match the derived patch/repair set");
+        if (repairChanged.Any(offset =>
+                !Enumerable.Range(VmIlIntegrity.SumOffset, 5).Contains(offset)))
+            throw new InvalidDataException(
+                "Lamp-clear repair field location is outside FFD1-FFD5");
+
+        ValidatePreservedOutput(originalRom, integrity.RepairedImage);
+        ValidateClearPatternEffect(originalRom);
+
+        var changes = new LampPatternByteChange[finalDiff.Length];
+        for (int index = 0; index < finalDiff.Length; index++)
+        {
+            int offset = finalDiff[index];
+            changes[index] = new LampPatternByteChange(
+                offset, originalRom[offset], integrity.RepairedImage[offset]);
+        }
+
+        var provenance = new LampPatternProvenance(
+            variant.ProposalId,
+            variant.ContractTaskId,
+            originalDefinition.Provenance.ListingPath,
+            originalDefinition.Provenance.ListingSha256,
+            OriginalBodyHex,
+            "evidence/mpu4/VM-SCRIPTS/9F12.txt",
+            "evidence/mpu4/VM-SCRIPTS/9F3B.txt",
+            ClearProvenanceClassification);
+
+        LampPatternSourceMap map = LampPatternSourceMap.CreateForBuild(
+            originalRom,
+            integrity.RepairedImage,
+            nodes,
+            staticContract,
+            provenance,
+            variant);
+
+        return new LampPatternBuildResult(
+            integrity.RepairedImage,
+            unrepaired,
+            payload,
+            Sha1(originalRom),
+            Sha256(originalRom),
+            unrepairedSha1,
+            unrepairedSha256,
+            outputSha1,
+            outputSha256,
+            nodes,
+            staticContract,
+            unrepairedDiff,
+            finalDiff,
+            integrity.Report.RepairChangedOffsets.ToArray(),
+            changes,
+            integrity.Report,
+            map,
+            provenance,
+            ClearStatusText);
+    }
+
+    private static int[] DerivePayloadChangeOffsets(
+        ReadOnlySpan<byte> original, ReadOnlySpan<byte> payload)
+    {
+        if (payload.Length != AllocationLength)
+            throw new InvalidDataException(
+                "Lamp-clear payload length differs from the reviewed allocation");
+        var offsets = new List<int>();
+        for (int index = 0; index < payload.Length; index++)
+        {
+            int offset = AllocationStart + index;
+            if (original[offset] != payload[index])
+                offsets.Add(offset);
+        }
+        return offsets.ToArray();
     }
 
     internal static VmIlDefinition ValidateOriginalSource(ReadOnlySpan<byte> rom)
@@ -1019,7 +1351,11 @@ public static class LampPatternWordBuilder
                 $"{address + expected.Length - 1:X4} differ from the reviewed order");
     }
 
-    internal static void ValidateComposedPayload(ReadOnlySpan<byte> payload)
+    internal static void ValidateComposedPayload(ReadOnlySpan<byte> payload) =>
+        ValidateComposedPayload(payload, VariantEightF);
+
+    internal static void ValidateComposedPayload(
+        ReadOnlySpan<byte> payload, LampPatternVariant variant)
     {
         if (payload.Length != AllocationLength)
             throw new InvalidDataException(
@@ -1028,13 +1364,20 @@ public static class LampPatternWordBuilder
         if (!payload.Slice(0, 2).SequenceEqual(Convert.FromHexString(HeaderHex)))
             throw new InvalidDataException(
                 "Lamp-pattern header is not the reviewed 00F8 value");
-        if (!payload.Slice(2).SequenceEqual(Convert.FromHexString(BodyHex)))
+        if (!payload.Slice(2).SequenceEqual(Convert.FromHexString(variant.BodyHex)))
             throw new InvalidDataException(
-                "Lamp-pattern body is not the reviewed 22-byte body");
+                $"Lamp-pattern body is not the reviewed {variant.BodyHex.Length / 2}-byte body");
         if (!payload.Slice(2, OriginalPrefixHex.Length / 2)
                 .SequenceEqual(Convert.FromHexString(OriginalPrefixHex)))
             throw new InvalidDataException(
                 "Lamp-pattern body does not preserve the original 9ED9 12-byte prefix");
+        if (payload[IndexOperandAddress - AllocationStart] != IndexOperand)
+            throw new InvalidDataException(
+                "Lamp-pattern inline index operand is not the reviewed 00 byte");
+        if (payload[PatternOperandAddress - AllocationStart] != variant.PatternOperand)
+            throw new InvalidDataException(
+                $"Lamp-pattern inline pattern operand is not the reviewed " +
+                $"{variant.PatternOperand:X2} byte");
     }
 
     internal static LampPatternNode[] AnalyzeBody(
@@ -1238,7 +1581,14 @@ public static class LampPatternWordBuilder
     }
 
     internal static void ValidateNodes(
-        ReadOnlySpan<byte> rom, ReadOnlySpan<byte> payload, LampPatternNode[] nodes)
+        ReadOnlySpan<byte> rom, ReadOnlySpan<byte> payload, LampPatternNode[] nodes) =>
+        ValidateNodes(rom, payload, nodes, PatternOperand);
+
+    internal static void ValidateNodes(
+        ReadOnlySpan<byte> rom,
+        ReadOnlySpan<byte> payload,
+        LampPatternNode[] nodes,
+        byte expectedPattern)
     {
         if (nodes.Length != NodeCount)
             throw new InvalidDataException(
@@ -1258,7 +1608,7 @@ public static class LampPatternWordBuilder
         };
         ushort?[] expectedOperandValues =
         {
-            0xFF80, null, 0xFF80, null, 0x0000, 0x008F, null, null
+            0xFF80, null, 0xFF80, null, 0x0000, expectedPattern, null, null
         };
         LampPatternOperandKind[] expectedKinds =
         {
@@ -1592,6 +1942,70 @@ public static class LampPatternWordBuilder
         if ((PatternOperand & 0x0F) != 0x0F)
             throw new InvalidDataException(
                 "Lamp-pattern byte literal does not set all four low-nibble frame bits");
+    }
+
+    internal static void ValidateClearPatternEffect(ReadOnlySpan<byte> rom)
+    {
+        if (GridIndex < 0 || GridIndex >= TableLength)
+            throw new InvalidDataException(
+                $"Lamp-clear grid index {GridIndex} is outside the 48-cell table");
+        byte logicalId = rom[TableAddress + GridIndex];
+        if (logicalId != ObservedLogicalId)
+            throw new InvalidDataException(
+                $"Lamp-clear logical ID is {logicalId:X2}; expected the reviewed " +
+                $"{ObservedLogicalId:X2}");
+        int bit = logicalId & 7;
+        byte mask = (byte)(1 << bit);
+        if (mask != PredictedMask)
+            throw new InvalidDataException(
+                $"Lamp-clear mask for index {GridIndex} is {mask:X2}; expected " +
+                $"{PredictedMask:X2}");
+
+        int derivedColumn =
+            ((ObservedCharacteriserResponse ^ logicalId) & 0x78) >> 3;
+        if (derivedColumn != ObservedResponseColumn)
+            throw new InvalidDataException(
+                $"Lamp-clear observed response {ObservedCharacteriserResponse:X2} derives " +
+                $"column {derivedColumn}; expected {ObservedResponseColumn}");
+        for (int bank = 0; bank < 4; bank++)
+        {
+            int address = 0x0100 + bank * 0x10 + derivedColumn;
+            if (address != ClearObservedFrameAddresses[bank])
+                throw new InvalidDataException(
+                    $"Lamp-clear observed-response frame bank {bank} address is " +
+                    $"{address:X4}; expected {ClearObservedFrameAddresses[bank]:X4}");
+        }
+        if (ClearObservedFrameAddresses.Count != 4)
+            throw new InvalidDataException(
+                "Lamp-clear observed frame address list must contain four banks");
+
+        if ((ClearPatternOperand & 0x0F) != 0x00)
+            throw new InvalidDataException(
+                "Lamp-clear byte literal does not select the clear branch in all four banks");
+        for (int before = 0; before <= 0xFF; before++)
+        {
+            for (int bank = 0; bank < 4; bank++)
+            {
+                // Native bank sequence: ORB mask; LSRA clears carry for pattern80;
+                // SUBB mask. Compare that operation with the independent bit contract.
+                int after = ((before | mask) - mask) & 0xFF;
+                int unchanged = before & ~mask;
+                if ((after & ~mask) != unchanged)
+                    throw new InvalidDataException(
+                        "Lamp-clear oracle changed a bit outside the mask");
+                if ((before & mask) != 0)
+                {
+                    if (after != (before ^ mask))
+                        throw new InvalidDataException(
+                            "Lamp-clear oracle did not clear a set mask bit");
+                }
+                else if (after != before)
+                {
+                    throw new InvalidDataException(
+                        "Lamp-clear oracle changed a clear mask bit or another bit");
+                }
+            }
+        }
     }
 
     internal static void ValidatePreservedOutput(

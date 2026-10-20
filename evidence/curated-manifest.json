@@ -235,6 +235,11 @@
         "sha256":  "A4E010360D8A4672A6FDB12C39629B5A166A9D096F0E7F6A25F08B7B03B7173C"
     },
     {
+        "path":  "docs/recovery/IL-LAMP-CLEAR-BUILD.md",
+        "bytes":  9654,
+        "sha256":  "A89CC2F96DF89651BFFA2DEA2108A241EE95163EFA3160846C1D3EBD5BFA0A1F"
+    },
+    {
         "path":  "docs/recovery/IL-LAMP-PATTERN-BUILD.md",
         "bytes":  17028,
         "sha256":  "A77DECA66770ACB9634893DE07AA0CDDB842173825F8A645F28B7DA710D8B43F"
@@ -1223,6 +1228,11 @@
         "path":  "evidence/mpu4/integrity/il-integrity-startup.json",
         "bytes":  29039,
         "sha256":  "4235F1164CC41A18E3D2FF5ACB889380FA588058DD6C8C87202AAF7D23B8E100"
+    },
+    {
+        "path":  "evidence/mpu4/integrity/il-lamp-clear-build.json",
+        "bytes":  6972,
+        "sha256":  "41C29DD298E6217CBFDC3FD7BDE55296F87231A20BD6978B0523CB423E8C0B5C"
     },
     {
         "path":  "evidence/mpu4/integrity/il-lamp-pattern-build.json",

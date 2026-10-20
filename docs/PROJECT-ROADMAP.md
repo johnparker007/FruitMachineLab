@@ -39,6 +39,12 @@ demo using the machine's 6×8 upper-glass lamp grid. Build it in verified slices
 4. Add destructible bricks, lives and scoring as space permits.
 5. Add Alpha messages and sound effects through proved original ROM services.
 
+The 20 October task-74 capture proves a narrower first slice: a compiled
+24-byte word naturally clears four original lamp-frame RAM bits (`3F -> 3E`)
+and returns through the original VM with balanced stacks. Displayed lamp output
+and an interactive changing-pattern demo remain unverified. See
+[natural clear evidence](recovery/IL-LAMP-CLEAR-NATURAL.md).
+
 Keep the demo within the approved `1010-13EF` reservation for this exact ROM
 revision: **992 bytes**, preserving guards `1000-100F` and `13F0-13FF`.
 Report the total allocation for every new header, code and data item, reuse ROM

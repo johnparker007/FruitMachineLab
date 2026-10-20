@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "taskId": "il-lamp-clear-natural-74",
+  "status": "supervisor-reviewed-natural-frame-ram-transition",
+  "classification": "Natural fresh-boot compiled-ROM call, VM/native instruction-boundary observation; not physical lamp output or general caller safety.",
+  "baseRevision": "ab7fe613b63af411d22c85f7f6d8f271b5f4ba76",
+  "romSha256": "347D475E20C194F374DF85A04894BC68D89E05043CA89C5B031316868240EB88",
+  "sourceMapSha256": "1845ED2A98B8347B8618D7E9A6E7AFD68B3CF14532C20268AAE273DD782E83B1",
+  "counts": {
+    "phases": 43,
+    "observedBoundaries": 10,
+    "conditionalSkips": 4,
+    "physicalStops": 52
+  },
+  "run": {
+    "commandLine": [
+      "m4addr -noreadconfig -rompath C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-lamp-clear-natural-74\\natural-01\\roms;E:\\Arcade\\MAME0266\\roms -cfg_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-lamp-clear-natural-74\\natural-01\\cfg -nvram_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-lamp-clear-natural-74\\natural-01\\nvram -input_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-lamp-clear-natural-74\\natural-01\\inp -snapshot_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-lamp-clear-natural-74\\natural-01\\snap -comment_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-lamp-clear-natural-74\\natural-01\\comments -state_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-lamp-clear-natural-74\\natural-01\\state -diff_directory C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-lamp-clear-natural-74\\natural-01\\diff -debug -debugger imgui -debuglog -video bgfx -sound none -window -skip_gameinfo -nothrottle -seconds_to_run 180 -autoboot_delay 0 -autoboot_script C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-lamp-clear-natural-74\\natural-01\\observer.lua -bgfx_path E:\\Arcade\\MAME0266\\bgfx"
+    ],
+    "startUtc": "2026-10-20T11:19:02.2757086Z",
+    "endUtc": "2026-10-20T11:19:09.9252768Z",
+    "wallSeconds": 7.646,
+    "timeoutSeconds": 180,
+    "timedOut": false,
+    "exitCode": 0,
+    "commandId": "il-lamp-clear-natural-57f6be4b-60ca-4f77-8118-1cbfcada7f40",
+    "description": "One fresh-boot lamp-clear-natural MAME observation at native debugger boundaries with the tracked physical replay",
+    "launchCount": 1,
+    "retryAllowed": false
+  },
+  "observed": {
+    "response0803": "00",
+    "column": 15,
+    "pattern": "80",
+    "logicalId": "78",
+    "mask": "01",
+    "f1Entry": "00",
+    "f1Exit": "00",
+    "ccSaved49D0": "C0",
+    "ccRestored49E2": "C0",
+    "return": {
+      "pc": "00FC",
+      "y": "9F16",
+      "u": "066E",
+      "s": "0798",
+      "dataStack0": "0000",
+      "successorWord": "75A9"
+    },
+    "frameTargets": [
+      "010F",
+      "011F",
+      "012F",
+      "013F"
+    ],
+    "before": [
+      "3F",
+      "3F",
+      "3F",
+      "3F"
+    ],
+    "after": [
+      "3E",
+      "3E",
+      "3E",
+      "3E"
+    ],
+    "actualClearTransitions": 4,
+    "nonTargetFrameDeltaCount": 0
+  },
+  "allocation": {
+    "bytes": 24,
+    "approved": 992,
+    "remaining": 968
+  },
+  "limitations": [
+    "Frame RAM transition is not photographed/rendered physical lamp output.",
+    "Only measured F1zero path and response00 proved naturally.",
+    "Debugger stops may affect timing; no unobserved-run timing equivalence claimed.",
+    "No interactive paddle/ball gameplay or two simultaneous modifications proved.",
+    "Physical hardware validation remains separate."
+  ],
+  "privateEvidenceHashes": {
+    "artifacts/deepseek/il-lamp-clear-natural-74/natural-01/events.jsonl": "A40712DA63DF6D1A292C2A4BB1687498AAB60441F91D0DEE37DF1285C60D220E",
+    "artifacts/deepseek/il-lamp-clear-natural-74/natural-01/run-record.json": "DC6FC689EECE34610E765459276E1D996BCD6DFE466DC0030BD4EB7240558D27",
+    "artifacts/deepseek/il-lamp-clear-natural-74/natural-01/preflight.json": "057E63563C11D3D408E93EF5B61D2C7038AC8BADC2A992E091ADC0870928612B",
+    "artifacts/deepseek/il-lamp-clear-natural-74/natural-01/prelaunch-freshness.json": "701D6E97E10A89D31C6E594FA6A0B4828AE57F4B56E4A06C2AF9A1B99B16A0D5",
+    "artifacts/deepseek/il-lamp-clear-natural-74/natural-01/session-metadata.json": "F6C21806092FD51BCFEB4AB3E61413A63A4ACDB49CFA47645C317203C4353C9C",
+    "artifacts/deepseek/il-lamp-clear-natural-74/natural-01/post-run-hashes.json": "6D74E52A3A41C2BA05F84AC5F83F3CDE29721881C174C5D2A8D288CA61E41762",
+    "artifacts/deepseek/il-lamp-clear-natural-74/natural-01/checker-result.json": "38D9D519D24FA65D40CA421850466DFE1E53538D3AA7BD39568FBF4F15D07D83",
+    "artifacts/deepseek/il-lamp-clear-natural-74/natural-01/input-levels.csv": "A525F321EA97E1A5AD0D4A735DD570DD0D65522C148A1E635C58390651A9D15D",
+    "artifacts/deepseek/il-lamp-clear-natural-74/natural-01/IlLampClearNatural.lua": "9E7DEF2E0146E9E4EE6E1AB0C8E9B22AD5F375228B0A2968B2CF36996E669058",
+    "artifacts/deepseek/il-lamp-clear-natural-74/natural-01/lamp-clear-natural-map.lua": "8FB4DB23E57AAD4088C69EA7D542E665C50102C63ED3421BECC6D61119B7B60F"
+  }
+}

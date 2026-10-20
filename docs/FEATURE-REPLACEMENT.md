@@ -196,3 +196,40 @@ clean miss path; other exit paths are not accepted as fully cleaned up. Fix and
 exercise this path before extending the game. Countdown dwell, continued original
 feature outcomes and lack of physical hardware validation retain earlier limits.
 There are no bricks, score, lives, Alpha or sound changes yet.
+
+## First destructible brick and corrected cleanup
+
+Experiments 107/108 add two bricks and demonstrate one natural hit/removal:
+row 2 changes from `110000` to `100000`, with the ball reflecting upward.
+The other brick remains lit while the ball moves away. A right-input run still
+moves the paddle after the hit. The later miss clears the custom grid and
+continues into the original feature. Both-brick destruction, a later crossing
+of a cleared brick and the all-clear flash have **not** been demonstrated.
+
+Build this candidate with `tools/Build-SnakeBiteBricks.ps1 -OriginalRom <original>
+-OutputDirectory <new-directory> -InitialBallX 0 -EnableBricks -BrickRow 2`.
+The supervisor rebuild matches tested SHA256
+`BC16A232714ABCF011A8604AB4251196C617FD90A151E9B34D1B3AEF965C10FC`.
+It uses 985 bytes (`1010–13E8`), leaving 7; the exact diff has 996 bytes including
+redirects/integrity. Guards are preserved. Original identity checks still apply.
+
+Natural capture observes `1012` at `543.824470930`, `D003` at `546.477213372`,
+both `U=0672/S=079A`, then `E243` at `551.208171511`, `U=0672/S=079E`, with
+the custom grid cleared. A frame-only repeat and right-input run exit zero and
+show the brick change. The supervisor inspected the intact-brick bit test,
+removal/reflection code, actual entry/return events, run exits and ROM hashes.
+
+The same builder also fixes the ball iteration-limit cleanup by clearing each
+drawn ball after its dwell. With bricks disabled and two iterations, natural
+captures of ROM SHA256
+`840BC3BB449F25D811623AB5FFCD6A005DFC193076675164AC87EEBB63AEB614`
+show the grid cleared around frame 32661 and `D003` at `544.332533139` with
+entry `U/S` restored. Lamp output can lag the RAM clear until the next scanner
+update. Five cited brick/cleanup runs exit zero. Earlier replay-divergent and
+timed-out diagnostics are preserved and excluded from success claims.
+
+Private evidence: `artifacts/deepseek/feature-bricks-natural-continuation-108/`.
+The remaining work is a simple demonstrated win/lose loop and a convenient
+hands-on launch path; optimize or simplify within 992 bytes rather than assuming
+more space. These remain emulator observations, with experimental countdown
+timing and original-feature continuation rather than hardware certification.

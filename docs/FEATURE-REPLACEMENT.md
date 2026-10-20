@@ -88,3 +88,39 @@ countdown loops, not a certified IRQ tick or hardware timing service. Both versi
 continue into the original feature rather than replacing its game outcome.
 Next: a compact repeating animation that rechecks input while running and exits
 cleanly after a bounded interval or an explicit exit action.
+
+## Live pattern switching
+
+Experiment 104 implements 18 iterations of a live input loop, about 7.75 emulated
+seconds in the observed run. Holding Start selects the middle-row animation;
+releasing it selects the outer-row animation at the next poll. Four press/release
+pairs during the animation change the output in both directions. Observed response
+is 7–24 frames, up to about 0.40 seconds. This is held-button selection, not an
+edge-triggered toggle.
+
+Build with `tools/Build-SnakeBiteLivePatterns.ps1`, using the same `-OriginalRom`
+and `-OutputDirectory` parameters. Defaults are `-Iterations 18 -DelayCount 1000`.
+The independently rebuilt ROM matches the tested SHA256
+`FDEA7FF34E2D20E2DEC9FD6454A0384A1CEB374B9B3AB2820C77D275E49254FA`.
+It uses 873 bytes (`1010–1378`), leaving 119. The full diff is 884 bytes,
+including the same six redirect bytes and five integrity bytes; guards remain
+unchanged. The counted loop retains its counter until exit, then drops it,
+clears the custom rows and branches to `D003`.
+
+The pulse and original-ROM pulse runs have identical sampled-input SHA256
+`0AC62B6108AF3CB6A439FBDE42EC77D61785557E17981D56E4906B55E06403CD`.
+Only the patched ROM displays the custom middle/outer pattern choices. The
+same patched ROM without pulses displays only the unpressed pattern. All four
+comparison/context captures exit zero. Read-only entry/return capture observes
+`1012` at `543.824470930`, `D003` at `551.574493604`, both `U=0672/S=079A`,
+then `E243` at `556.307687790`, `U=0672/S=079E`. No game-state injection or
+save-state seeding is used. Private captures and diagnostic variants remain in
+`artifacts/deepseek/feature-live-pattern-experiment-104/`.
+
+The supervisor inspected the loop/input branch, entry/return events, transitions,
+actual run exits and sampled-input hashes, and rebuilt the published source.
+One descriptive loop-metadata sentence was corrected without changing ROM bytes.
+Countdown dwell is still an experimental VM execution delay. This is a bounded
+interactive lamp demo followed by the original feature, not yet a new game.
+Next: a small button-controlled paddle on the lamp grid, then ball movement and
+collision behaviour as space permits.

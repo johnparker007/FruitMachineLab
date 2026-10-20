@@ -255,6 +255,11 @@
         "sha256":  "8A95102C227853CCB9A91E1148C7CBE9703F372BBE60000A6CA7A0A31A19F3A1"
     },
     {
+        "path":  "docs/recovery/IL-LAMP-OUTPUT-NATURAL.md",
+        "bytes":  8849,
+        "sha256":  "0C2622EAE9C224FAB0169CEAD1C41480FD28EDF03F968807D87491A46EAD854E"
+    },
+    {
         "path":  "docs/recovery/IL-LAMP-OUTPUT-SEQUENCE.md",
         "bytes":  4944,
         "sha256":  "4BC89F7AB481082DCA577E4FF54570D9A1240C58C3BEF97264E756C7659C14AB"
@@ -1263,6 +1268,11 @@
         "path":  "evidence/mpu4/integrity/il-lamp-output-api.json",
         "bytes":  10816,
         "sha256":  "901F32697DE779694BA3F5AAFA0456AB546AE4387C7B9E989D0FCC1376ECF024"
+    },
+    {
+        "path":  "evidence/mpu4/integrity/il-lamp-output-natural.json",
+        "bytes":  105144,
+        "sha256":  "940FE92EFDAA4FF703A1BF895542D103A8494A0A44ECF0DDCC6DD861D5774ABF"
     },
     {
         "path":  "evidence/mpu4/integrity/il-lamp-pattern-build.json",

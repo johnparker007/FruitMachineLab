@@ -45,6 +45,15 @@ and returns through the original VM with balanced stacks. Displayed lamp output
 and an interactive changing-pattern demo remain unverified. See
 [natural clear evidence](recovery/IL-LAMP-CLEAR-NATURAL.md).
 
+The later 20 October output capture also proves that this compiled clear word
+changes MAME output-manager `lamp120` from 1 to 0 at the next matching original
+scanner write (`2987 -> 298A`). The four frame-bank bytes feed one lamp output;
+they do not establish four distinct lamps. Exact replay provenance, all 43 VM
+phases and the immediate IRQ write context were reviewed separately from the
+offline diagnostic checker. Rendered output, a repeating grid pattern,
+interactive gameplay and physical hardware remain open. See
+[natural output evidence](recovery/IL-LAMP-OUTPUT-NATURAL.md).
+
 Keep the demo within the approved `1010-13EF` reservation for this exact ROM
 revision: **992 bytes**, preserving guards `1000-100F` and `13F0-13FF`.
 Report the total allocation for every new header, code and data item, reuse ROM

@@ -1,0 +1,1430 @@
+{
+    "schemaVersion":  1,
+    "taskId":  "il-lamp-output-transition-evidence-91",
+    "status":  "curated-for-supervisor-review",
+    "classification":  "Mechanical curation of the supervisor-reviewed limited trace-backed natural fresh-boot compiled-ROM MAME frame-RAM/output transition; not rendered or physical lamp output, hardware, gameplay or M5 completion.",
+    "baseRevision":  "be6404e92b1782bd8fc98c3c3db20dbe4098890a",
+    "sourceRun":  {
+                      "taskId":  "il-lamp-output-observer-direct-88",
+                      "runDirectory":  "artifacts/deepseek/il-lamp-output-observer-direct-88/prepare-02",
+                      "sessionId":  "42eaa2d4-a8b1-4635-9f78-3d0c073cf32f",
+                      "runRecordPath":  "artifacts/deepseek/il-lamp-output-observer-direct-88/prepare-02/supervisor-run.json",
+                      "runRecordSha256":  "BDA342EBD82B67D9660DD9E1C260EF189946D18F0DBB0FCCA6DA12617B5FB45B",
+                      "pid":  5396,
+                      "scope":  "corrected-replay diagnostic pending review",
+                      "startUtc":  "2026-10-20T15:05:39.6676417Z",
+                      "endUtc":  "2026-10-20T15:05:46.9515447Z",
+                      "wallSeconds":  "7.283903",
+                      "exitCode":  0,
+                      "naturalProofFlag":  false,
+                      "acceptedCaptureRunCount":  1,
+                      "retryAllowed":  false,
+                      "freshDirectoriesBefore":  {
+                                                     "cfg":  0,
+                                                     "nvram":  0,
+                                                     "inp":  0,
+                                                     "snap":  0,
+                                                     "comments":  0,
+                                                     "state":  0,
+                                                     "diff":  0
+                                                 }
+                  },
+    "environment":  {
+                        "recordedBeforeLaunch":  true,
+                        "source":  "artifacts/deepseek/il-lamp-output-observer-direct-88/prepare-02/supervisor-prelaunch.json",
+                        "sourceSha256":  "7004286A4B88E8F83732AD2444209605565E464DF3F3128D13050960967A70A6",
+                        "MPU4_REPLAY":  "C:\\projects\\GitRepos\\FruitMachineLab\\artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\replay-actions.csv",
+                        "MPU4_REPLAY_relative":  "artifacts/deepseek/il-lamp-output-observer-direct-88/prepare-02/replay-actions.csv",
+                        "MPU4_POLICY":  "7"
+                    },
+    "identity":  {
+                     "originalRom":  {
+                                         "path":  "artifacts\\deepseek\\il-natural-06\\runs\\original-01\\roms\\m4addr\\a6ls.p1",
+                                         "length":  65536,
+                                         "sha256":  "EBF580381AA6EB6FFB26E2ACD40F30AA34B0311F71C6564607C6F48A53BCA15C",
+                                         "sha1":  "402D1518BB78FDC489B06C2AABC771E5CE151847"
+                                     },
+                     "compiledRom":  {
+                                         "path":  "artifacts\\deepseek\\il-lamp-clear-build-71\\supervisor-worker-final\\positive-01\\lamp-clear-repaired.p1",
+                                         "length":  65536,
+                                         "sha256":  "347D475E20C194F374DF85A04894BC68D89E05043CA89C5B031316868240EB88",
+                                         "sha1":  "F2083249845955D91945E589807C22E730D78FC3"
+                                     },
+                     "sourceMap":  {
+                                       "path":  "artifacts\\deepseek\\il-lamp-clear-build-71\\supervisor-worker-final\\positive-01\\lamp-clear-pattern-source-map.json",
+                                       "length":  65893,
+                                       "sha256":  "1845ED2A98B8347B8618D7E9A6E7AFD68B3CF14532C20268AAE273DD782E83B1"
+                                   },
+                     "buildReport":  {
+                                         "path":  "artifacts\\deepseek\\il-lamp-clear-build-71\\supervisor-worker-final\\positive-01\\build-report.json",
+                                         "length":  34385,
+                                         "sha256":  "7AB2A92DF65F77E822FD92F30D8B966E96CA3C762873201F438FFAFD2011416D"
+                                     },
+                     "checkerReport":  {
+                                           "path":  "artifacts\\deepseek\\il-lamp-clear-build-71\\supervisor-worker-final\\checker-report.json",
+                                           "length":  10860,
+                                           "sha256":  "5AD340A519808DA82903DB15E0055DC31384E5684F6ECCF685364DCE89B42630"
+                                       },
+                     "luaSource":  {
+                                       "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\IlLampOutputNatural.lua",
+                                       "length":  64299,
+                                       "sha256":  "0FAEDC8B85F34DA60390C99F75C416BC870361FF790BC6AAEB5EE1133F382F8A"
+                                   },
+                     "luaCaptured":  {
+                                         "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\IlLampClearNatural.lua",
+                                         "length":  64299,
+                                         "sha256":  "0FAEDC8B85F34DA60390C99F75C416BC870361FF790BC6AAEB5EE1133F382F8A"
+                                     },
+                     "mapLua":  {
+                                    "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\lamp-clear-natural-map.lua",
+                                    "length":  48281,
+                                    "sha256":  "12541E51C73A65CB1C198FD96DF87E43A0E820413A65152F5E39DF8CF0C92006"
+                                },
+                     "configLua":  {
+                                       "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\session-config.lua",
+                                       "length":  989,
+                                       "sha256":  "A17256E006CCE334C47FC52FE73435B1F4325C3D4507BF47FADE377C2A10BCF3"
+                                   },
+                     "mame":  {
+                                  "path":  "E:\\Arcade\\MAME0266\\mame281.exe",
+                                  "length":  373377024,
+                                  "sha256":  "0FCE5A88DF4F9D9B1FBF1405812C00848036E615993780978D967DA34204CB7A"
+                              },
+                     "mameProductVersion":  "0.281",
+                     "inputLua":  {
+                                      "path":  "evidence\\mpu4\\skill-cash\\input.lua",
+                                      "length":  5733,
+                                      "sha256":  "23099F8888AF8DB353253E0DF97638320DC59CA9A47371723A380E0C4EE85C94"
+                                  },
+                     "replay":  {
+                                    "path":  "evidence\\mpu4\\skill-cash\\actions.csv",
+                                    "length":  72943,
+                                    "sha256":  "4A051DA15264842697879EFF396B34A789F5D80623F9A2E749C244E6A80E721D"
+                                },
+                     "replayCopy":  {
+                                        "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\replay-actions.csv",
+                                        "length":  72943,
+                                        "sha256":  "4A051DA15264842697879EFF396B34A789F5D80623F9A2E749C244E6A80E721D"
+                                    },
+                     "arguments":  {
+                                       "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\arguments.template.json",
+                                       "length":  1700,
+                                       "sha256":  "93B35F3A0C15380AE981A09387D2D98FF5AD0D5CC903101C44DAD62C55D8DF23"
+                                   },
+                     "prelaunch":  {
+                                       "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\supervisor-prelaunch.json",
+                                       "length":  3719,
+                                       "sha256":  "7004286A4B88E8F83732AD2444209605565E464DF3F3128D13050960967A70A6"
+                                   },
+                     "preflight":  {
+                                       "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\preflight.json",
+                                       "length":  21116,
+                                       "sha256":  "C0C8508B4952DA862AAB7F4A0825ACBB6380806C0EB8C33D15882E243BD5A213"
+                                   },
+                     "sessionMetadata":  {
+                                             "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\session-metadata.json",
+                                             "length":  12481,
+                                             "sha256":  "B8D1BC9421023FA38800376DB3E992537599F8610ADBE8AADC3E62A5281D2C82"
+                                         },
+                     "plan":  {
+                                  "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\lamp-clear-natural-plan.json",
+                                  "length":  103172,
+                                  "sha256":  "4C36B649885FC9E8631CD2C00F20889393CF685C90683AC4D9F7EAB2070CD491"
+                              },
+                     "inputLevels":  {
+                                         "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\input-levels.csv",
+                                         "length":  59915,
+                                         "sha256":  "01C5EE6D9AABDAC5C97DCDF3B15A9235ECE348415EF3D532B8A033554D2DCF01"
+                                     },
+                     "featureState":  {
+                                          "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\feature-state.csv",
+                                          "length":  128377,
+                                          "sha256":  "54188D6240808D4699F239985234C4F783C43C59B036FECBCA64355420267EA4"
+                                      },
+                     "stateCsv":  {
+                                      "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\state.csv",
+                                      "length":  149382,
+                                      "sha256":  "822251F4F1D1CA8512889E51360DF877A4245624FFA01C4C21B197476FFFD8AA"
+                                  },
+                     "actionsCsv":  {
+                                        "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\actions.csv",
+                                        "length":  64,
+                                        "sha256":  "2C26AB8D21E8B657725CC1809B2867CCB05B9E41B6B0C3568F9D97947041CBA0"
+                                    },
+                     "prepareResult":  {
+                                           "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02-result.json",
+                                           "length":  1571,
+                                           "sha256":  "1CC112DA0483A6C54FD08A2A617863B2EABFF69EBB7008BF7FEE8457AB5E3578"
+                                       },
+                     "events":  {
+                                    "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\events.jsonl",
+                                    "length":  105889,
+                                    "sha256":  "99191EDA70F615BA9E2B044E6CA4E4642743ED11F9AD66FBF5964E346E80F949"
+                                },
+                     "normalized":  {
+                                        "path":  "artifacts\\deepseek\\il-lamp-output-replay-direct-90\\actual-adapter-02\\normalized.jsonl",
+                                        "length":  1130,
+                                        "sha256":  "4A657C2994864C81B85DA0CC00B184994460B3B30389D7E5C03A306AEA6DA8A2"
+                                    }
+                 },
+    "counts":  {
+                   "plannedPhases":  43,
+                   "plannedStages":  56,
+                   "plannedBoundaries":  14,
+                   "observedPhases":  43,
+                   "originalPhysicalStops":  52,
+                   "outputPhysicalStops":  4,
+                   "totalPhysicalStops":  56,
+                   "nativeBoundaries":  10,
+                   "conditionalSkips":  4,
+                   "boundaryRecords":  14
+               },
+    "countChecks":  {
+                        "phasesMatchPlan":  true,
+                        "stagesMatchPlan":  true,
+                        "boundariesMatchPlan":  true,
+                        "originalPlusOutputStops":  true
+                    },
+    "outputObservations":  [
+                               {
+                                   "role":  "baseline",
+                                   "rawLine":  4,
+                                   "rawEvent":  "output_observation",
+                                   "rawLineSha256":  "72D13E668CD2F6F6F23D7E927538682125D3D7E0292B00464D02FC23A1430CA5",
+                                   "time":  "37.076457558",
+                                   "pc":  "00FC",
+                                   "y":  "9F14",
+                                   "u":  "066E",
+                                   "s":  "0798",
+                                   "x":  "0000",
+                                   "b":  "00",
+                                   "cc":  "C4",
+                                   "dp":  "00",
+                                   "outputId":  12483,
+                                   "name":  "lamp120",
+                                   "get":  1,
+                                   "indexed":  1,
+                                   "missingId":  0
+                               },
+                               {
+                                   "role":  "clear-return",
+                                   "rawLine":  112,
+                                   "rawEvent":  "output_observation",
+                                   "rawLineSha256":  "60381A8CD0E556360CEFDCDA1E1AF99BE61C73196348BCBF89BC6B416B051204",
+                                   "time":  "37.076941860",
+                                   "pc":  "00FC",
+                                   "y":  "9F16",
+                                   "u":  "066E",
+                                   "s":  "0798",
+                                   "x":  "7931",
+                                   "b":  "80",
+                                   "cc":  "C0",
+                                   "dp":  "00",
+                                   "outputId":  12483,
+                                   "name":  "lamp120",
+                                   "get":  1,
+                                   "indexed":  1,
+                                   "missingId":  0
+                               },
+                               {
+                                   "role":  "write-pre",
+                                   "rawLine":  119,
+                                   "rawEvent":  "output_observation",
+                                   "rawLineSha256":  "0E4A48B600C802DA47D5B1A8BAE3FB8B2B7A8BDF2824A7B1CA724D0E5CB4DD9D",
+                                   "time":  "37.079347674",
+                                   "pc":  "2987",
+                                   "y":  "1462",
+                                   "u":  "0672",
+                                   "s":  "0776",
+                                   "x":  "0007",
+                                   "b":  "3E",
+                                   "cc":  "C0",
+                                   "dp":  "00",
+                                   "outputId":  12483,
+                                   "name":  "lamp120",
+                                   "get":  1,
+                                   "indexed":  1,
+                                   "missingId":  0
+                               },
+                               {
+                                   "role":  "write-post",
+                                   "rawLine":  122,
+                                   "rawEvent":  "output_observation",
+                                   "rawLineSha256":  "13003893117FF8C9A574FB85F3103CA6F079964213074099C422DEACAA861662",
+                                   "time":  "37.079350581",
+                                   "pc":  "298A",
+                                   "y":  "1462",
+                                   "u":  "0672",
+                                   "s":  "0776",
+                                   "x":  "0007",
+                                   "b":  "3E",
+                                   "cc":  "C0",
+                                   "dp":  "00",
+                                   "outputId":  12483,
+                                   "name":  "lamp120",
+                                   "get":  0,
+                                   "indexed":  0,
+                                   "missingId":  0
+                               }
+                           ],
+    "frameTransition":  {
+                            "rawLine":  113,
+                            "rawLineSha256":  "BBCC6F9AFBEB3D428ABCF62A2595B376E2B8ACE37A5CF3EF09D9690C12498EE7",
+                            "frameBank":  "0100..013F",
+                            "changedByteCount":  4,
+                            "changed":  [
+                                            {
+                                                "indexZeroBased":  15,
+                                                "address":  "010F",
+                                                "before":  "3F",
+                                                "after":  "3E"
+                                            },
+                                            {
+                                                "indexZeroBased":  31,
+                                                "address":  "011F",
+                                                "before":  "3F",
+                                                "after":  "3E"
+                                            },
+                                            {
+                                                "indexZeroBased":  47,
+                                                "address":  "012F",
+                                                "before":  "3F",
+                                                "after":  "3E"
+                                            },
+                                            {
+                                                "indexZeroBased":  63,
+                                                "address":  "013F",
+                                                "before":  "3F",
+                                                "after":  "3E"
+                                            }
+                                        ],
+                            "nonTargetFrameDeltaCount":  60,
+                            "note":  "The full before/after arrays are bound by the raw line hash; exactly the four listed bytes differ, each 3F -\u003e 3E."
+                        },
+    "scan":  {
+                 "entries":  [
+                                 {
+                                     "scanCount":  1,
+                                     "time":  "37.077259302",
+                                     "mux":  5,
+                                     "frame":  0,
+                                     "inhibit":  0
+                                 },
+                                 {
+                                     "scanCount":  2,
+                                     "time":  "37.079256977",
+                                     "mux":  6,
+                                     "frame":  0,
+                                     "inhibit":  0
+                                 }
+                             ],
+                 "pre":  {
+                             "time":  null,
+                             "timeSource":  "not present in the output_scan_pre raw event",
+                             "frame":  0,
+                             "mux":  7,
+                             "sample":  0,
+                             "x":  "0007",
+                             "b":  "3E",
+                             "selected":  "3E"
+                         },
+                 "post":  {
+                              "time":  null,
+                              "timeSource":  "not present in the output_scan_post raw event",
+                              "frame":  0,
+                              "mux":  7,
+                              "sample":  0,
+                              "selected":  "3E"
+                          },
+                 "selectedRam":  {
+                                     "address":  "010F",
+                                     "value":  "3E",
+                                     "valueSource":  "output_scan_pre.selected (raw)",
+                                     "addressDerivation":  "0x0108 + x(0007) from the observer scan read path; the raw frame-write boundary target 010F also records the same address."
+                                 }
+             },
+    "cpuContextCaveat":  "At output stops 55/56 the native/IRQ-context PC=2987/298A, Y=1462, U=0672, S=0776 are recorded as observed and are not asserted equal to the 9F14/9F16 caller VM values (PC=00FC, Y=9F14 or 9F16, U=066E, S=0798).",
+    "timing":  {
+                   "source":  "subtraction of raw emulatedTime strings; no rounded supervisor values copied",
+                   "baselineToClearReturnSeconds":  "0.000484302",
+                   "clearReturnToStop53Seconds":  "0.000317442",
+                   "stop53ToStop54Seconds":  "0.001997675",
+                   "stop54ToWritePreSeconds":  "0.000090697",
+                   "writePreToWritePostSeconds":  "0.000002907",
+                   "writePreToWritePostMicroseconds":  "2.907",
+                   "clearReturnToWritePreSeconds":  "0.002405814",
+                   "clearReturnToWritePostSeconds":  "0.002408721",
+                   "note":  "The first target write (write-pre) is 0.002405814 s after clear-return; the write-post row is 0.002408721 s after clear-return; the immediate write pair spans 0.000002907 s (2.907 microseconds)."
+               },
+    "input":  {
+                  "sourceInputLevels":  "artifacts/deepseek/il-lamp-output-observer-direct-88/prepare-02/input-levels.csv",
+                  "sourceInputLevelsSha256":  "01C5EE6D9AABDAC5C97DCDF3B15A9235ECE348415EF3D532B8A033554D2DCF01",
+                  "sourceReplay":  "artifacts/deepseek/il-lamp-output-observer-direct-88/prepare-02/replay-actions.csv",
+                  "sourceReplaySha256":  "4A051DA15264842697879EFF396B34A789F5D80623F9A2E749C244E6A80E721D",
+                  "inputRows":  2281,
+                  "firstFrame":  1,
+                  "lastFrame":  2281,
+                  "request":  {
+                                  "rawReplayRow":  "2100,2103,:AUX2,128,short_coin",
+                                  "port":  ":AUX2",
+                                  "mask":  128,
+                                  "firstFrame":  2100,
+                                  "lastFrame":  2103,
+                                  "reason":  "short_coin",
+                                  "policy":  "Pinned input.lua uses frame>=first and frame<last; override flag is 1 on frames 2100-2102 and 0 on frame 2103; policy7 is separately recorded child configuration"
+                              },
+                  "sampled":  [
+                                  {
+                                      "frame":  2100,
+                                      "t":  "34.983333333",
+                                      "aux2":  "00",
+                                      "black2":  "00",
+                                      "coinOverride":  1
+                                  },
+                                  {
+                                      "frame":  2101,
+                                      "t":  "35.000000000",
+                                      "aux2":  "80",
+                                      "black2":  "00",
+                                      "coinOverride":  1
+                                  },
+                                  {
+                                      "frame":  2102,
+                                      "t":  "35.016666667",
+                                      "aux2":  "80",
+                                      "black2":  "00",
+                                      "coinOverride":  1
+                                  },
+                                  {
+                                      "frame":  2103,
+                                      "t":  "35.033333333",
+                                      "aux2":  "80",
+                                      "black2":  "00",
+                                      "coinOverride":  0
+                                  }
+                              ],
+                  "sampledVsRequest":  "Request intervals and sampled port bytes are distinct. The AUX2 request is 2100..2103; sampled AUX2 is 00 on frame 2100 and 80 on frames 2101-2103, while the override flag drops to 0 on frame 2103. No conflated request/sample claim is made.",
+                  "startRequest":  {
+                                       "rawReplayRow":  "2220,2232,:BLACK2,128,start_probe",
+                                       "port":  ":BLACK2",
+                                       "mask":  128,
+                                       "firstFrame":  2220,
+                                       "lastFrame":  2232,
+                                       "reason":  "start_probe",
+                                       "sampledBlack80Rows":  61,
+                                       "realRows":  5,
+                                       "realFrames":  [
+                                                          "2221",
+                                                          "2222",
+                                                          "2223",
+                                                          "2224",
+                                                          "2225"
+                                                      ],
+                                       "pausedRows":  56,
+                                       "pausedFrameRange":  "2226-2281",
+                                       "pausedRowsMatchStopTimestamps":  true,
+                                       "note":  "The 56 pause-time rows are additional sampled rows at the physical-stop timestamps, not additional real 60 Hz frames; no future pulse beyond the observed rows is claimed."
+                                   },
+                  "bindings":  [
+                                   {
+                                       "stopId":  1,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2226,
+                                       "stopTime":  "37.076457558",
+                                       "inputTime":  "37.076457558",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  2,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2227,
+                                       "stopTime":  "37.076467442",
+                                       "inputTime":  "37.076467442",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  3,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2228,
+                                       "stopTime":  "37.076473837",
+                                       "inputTime":  "37.076473837",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  4,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2229,
+                                       "stopTime":  "37.076483721",
+                                       "inputTime":  "37.076483721",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  5,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2230,
+                                       "stopTime":  "37.076494186",
+                                       "inputTime":  "37.076494186",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  6,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2231,
+                                       "stopTime":  "37.076504070",
+                                       "inputTime":  "37.076504070",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  7,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2232,
+                                       "stopTime":  "37.076516279",
+                                       "inputTime":  "37.076516279",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  8,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2233,
+                                       "stopTime":  "37.076526163",
+                                       "inputTime":  "37.076526163",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  9,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2234,
+                                       "stopTime":  "37.076536628",
+                                       "inputTime":  "37.076536628",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  10,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2235,
+                                       "stopTime":  "37.076546512",
+                                       "inputTime":  "37.076546512",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  11,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2236,
+                                       "stopTime":  "37.076560465",
+                                       "inputTime":  "37.076560465",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  12,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2237,
+                                       "stopTime":  "37.076570349",
+                                       "inputTime":  "37.076570349",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  13,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2238,
+                                       "stopTime":  "37.076580814",
+                                       "inputTime":  "37.076580814",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  14,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2239,
+                                       "stopTime":  "37.076590698",
+                                       "inputTime":  "37.076590698",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  15,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2240,
+                                       "stopTime":  "37.076601163",
+                                       "inputTime":  "37.076601163",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  16,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2241,
+                                       "stopTime":  "37.076611046",
+                                       "inputTime":  "37.076611046",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  17,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2242,
+                                       "stopTime":  "37.076615698",
+                                       "inputTime":  "37.076615698",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  18,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2243,
+                                       "stopTime":  "37.076619767",
+                                       "inputTime":  "37.076619767",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  19,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2244,
+                                       "stopTime":  "37.076630233",
+                                       "inputTime":  "37.076630233",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  20,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2245,
+                                       "stopTime":  "37.076649419",
+                                       "inputTime":  "37.076649419",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  21,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2246,
+                                       "stopTime":  "37.076680814",
+                                       "inputTime":  "37.076680814",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  22,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2247,
+                                       "stopTime":  "37.076702907",
+                                       "inputTime":  "37.076702907",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  23,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2248,
+                                       "stopTime":  "37.076722674",
+                                       "inputTime":  "37.076722674",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  24,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2249,
+                                       "stopTime":  "37.076747093",
+                                       "inputTime":  "37.076747093",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  25,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2250,
+                                       "stopTime":  "37.076756977",
+                                       "inputTime":  "37.076756977",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  26,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2251,
+                                       "stopTime":  "37.076761046",
+                                       "inputTime":  "37.076761046",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  27,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2252,
+                                       "stopTime":  "37.076765116",
+                                       "inputTime":  "37.076765116",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  28,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2253,
+                                       "stopTime":  "37.076768023",
+                                       "inputTime":  "37.076768023",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  29,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2254,
+                                       "stopTime":  "37.076770930",
+                                       "inputTime":  "37.076770930",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  30,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2255,
+                                       "stopTime":  "37.076776744",
+                                       "inputTime":  "37.076776744",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  31,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2256,
+                                       "stopTime":  "37.076782558",
+                                       "inputTime":  "37.076782558",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  32,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2257,
+                                       "stopTime":  "37.076787791",
+                                       "inputTime":  "37.076787791",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  33,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2258,
+                                       "stopTime":  "37.076797093",
+                                       "inputTime":  "37.076797093",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  34,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2259,
+                                       "stopTime":  "37.076800581",
+                                       "inputTime":  "37.076800581",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  35,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2260,
+                                       "stopTime":  "37.076810465",
+                                       "inputTime":  "37.076810465",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  36,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2261,
+                                       "stopTime":  "37.076812209",
+                                       "inputTime":  "37.076812209",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  37,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2262,
+                                       "stopTime":  "37.076815116",
+                                       "inputTime":  "37.076815116",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  38,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2263,
+                                       "stopTime":  "37.076818023",
+                                       "inputTime":  "37.076818023",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  39,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2264,
+                                       "stopTime":  "37.076820930",
+                                       "inputTime":  "37.076820930",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  40,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2265,
+                                       "stopTime":  "37.076824419",
+                                       "inputTime":  "37.076824419",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  41,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2266,
+                                       "stopTime":  "37.076848256",
+                                       "inputTime":  "37.076848256",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  42,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2267,
+                                       "stopTime":  "37.076861046",
+                                       "inputTime":  "37.076861046",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  43,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2268,
+                                       "stopTime":  "37.076874419",
+                                       "inputTime":  "37.076874419",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  44,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2269,
+                                       "stopTime":  "37.076887791",
+                                       "inputTime":  "37.076887791",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  45,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2270,
+                                       "stopTime":  "37.076894186",
+                                       "inputTime":  "37.076894186",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  46,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2271,
+                                       "stopTime":  "37.076900581",
+                                       "inputTime":  "37.076900581",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  47,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2272,
+                                       "stopTime":  "37.076904651",
+                                       "inputTime":  "37.076904651",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  48,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2273,
+                                       "stopTime":  "37.076910465",
+                                       "inputTime":  "37.076910465",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  49,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2274,
+                                       "stopTime":  "37.076920349",
+                                       "inputTime":  "37.076920349",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  50,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2275,
+                                       "stopTime":  "37.076926163",
+                                       "inputTime":  "37.076926163",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  51,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2276,
+                                       "stopTime":  "37.076936046",
+                                       "inputTime":  "37.076936046",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  52,
+                                       "kind":  "physical_stop",
+                                       "inputFrame":  2277,
+                                       "stopTime":  "37.076941860",
+                                       "inputTime":  "37.076941860",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  53,
+                                       "kind":  "output_physical_stop",
+                                       "inputFrame":  2278,
+                                       "stopTime":  "37.077259302",
+                                       "inputTime":  "37.077259302",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  54,
+                                       "kind":  "output_physical_stop",
+                                       "inputFrame":  2279,
+                                       "stopTime":  "37.079256977",
+                                       "inputTime":  "37.079256977",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  55,
+                                       "kind":  "output_physical_stop",
+                                       "inputFrame":  2280,
+                                       "stopTime":  "37.079347674",
+                                       "inputTime":  "37.079347674",
+                                       "deltaSeconds":  "0.000000000"
+                                   },
+                                   {
+                                       "stopId":  56,
+                                       "kind":  "output_physical_stop",
+                                       "inputFrame":  2281,
+                                       "stopTime":  "37.079350581",
+                                       "inputTime":  "37.079350581",
+                                       "deltaSeconds":  "0.000000000"
+                                   }
+                               ],
+                  "bindingCount":  56,
+                  "allStopsBoundWithinOneNanosecond":  true,
+                  "maximumBindingDeltaSeconds":  "0.000000000",
+                  "futurePulseClaimed":  false
+              },
+    "standaloneToolResults":  {
+                                  "untouched":  true,
+                                  "adapterResultPath":  "artifacts/deepseek/il-lamp-output-replay-direct-90/actual-adapter-02/result.json",
+                                  "adapterResultSha256":  "6846ABA19F9B85A28623D94CCFAAF84FE9127D11B5D0647DCA792D67109F655B",
+                                  "adapterNaturalProof":  false,
+                                  "checkerResultPath":  "artifacts/deepseek/il-lamp-output-replay-direct-90/actual-adapter-02/checker-result.json",
+                                  "checkerResultSha256":  "4546042F5B6D4FA29F460F1D6210191A829427E53264846E2EF2FD2DF053F68E",
+                                  "checkerNaturalProof":  false,
+                                  "checkerValidationPassed":  true,
+                                  "checkerClassification":  "valid_diagnostic_unverified_provenance",
+                                  "explanation":  "The standalone raw adapter and offline sequence checker always emit naturalProof=false by schema and were not edited. Their false flags describe their own diagnostic scope; they do not negate the separate supervisor provenance review."
+                              },
+    "supervisorAcceptedProofScope":  {
+                                         "curationOnly":  true,
+                                         "status":  "supervisor-reviewed scope retained unchanged by this curation",
+                                         "acceptedBy":  "supervisor90 provenance review",
+                                         "reviewPath":  "artifacts/deepseek/il-lamp-output-replay-direct-90/supervisor-review.md",
+                                         "reviewSha256":  "E521951D163D207E60C3CA29700B232895ED7A290B9D3BDAB0115DE57EB4CF81",
+                                         "validationPath":  "artifacts/deepseek/il-lamp-output-replay-direct-90/supervisor-validation.json",
+                                         "validationSha256":  "A91642B0B60941545AF5AEFA3C10DE2F050B053280B1FA571CDB511D52958F20",
+                                         "scope":  "Limited trace-backed natural fresh-boot compiled-ROM MAME output/frame-RAM transition observed at the existing 9F14 caller.",
+                                         "evidenceBasis":  [
+                                                               "One corrected prepare-02 execution recorded MAME exit 0 with explicit prelaunch child environment MPU4_REPLAY=prepare-02/replay-actions.csv and MPU4_POLICY=7.",
+                                                               "43 mapped phases, 52 original physical stops, 4 output-window physical stops, 10 native boundary records and 4 conditional skips were observed.",
+                                                               "Four frame-bank bytes changed from 3F to 3E at 010F, 011F, 012F and 013F with no other frame-bank byte delta.",
+                                                               "The output window preserved mux=7, frame=0, sample=0 and selected RAM value 3E across the immediate write pair; the write pair is bound to output id 12483, name lamp120.",
+                                                               "All 56 physical stops bind to exactly one input CSV row within 0 ns (maximum absolute delta 0.000000000 s)."
+                                                           ],
+                                         "notClaimed":  [
+                                                            "rendered or photographed physical lamp output",
+                                                            "physical hardware compatibility or MAME-vs-hardware equivalence",
+                                                            "a complete game, interactive gameplay or M5 completion",
+                                                            "new scheduler, timing or button semantics",
+                                                            "a future or last-future pulse beyond the observed replay rows",
+                                                            "general caller safety or full characteriser-response behaviour",
+                                                            "the prepare-01 run as an accepted capture"
+                                                        ]
+                                     },
+    "diagnosticRunNotAccepted":  {
+                                     "classification":  "diagnostic-only, not accepted capture",
+                                     "runDirectory":  "artifacts/deepseek/il-lamp-output-observer-direct-88/prepare-01",
+                                     "reason":  "The prepare-01 prelaunch record has no explicit childEnvironment MPU4_REPLAY/MPU4_POLICY entry; it is preserved as diagnostic evidence only.",
+                                     "prelaunchPath":  "artifacts/deepseek/il-lamp-output-observer-direct-88/prepare-01/supervisor-prelaunch.json",
+                                     "prelaunchSha256":  "2E88E7CFDEA9B704D0ADEAD13747FAEA9D4C9ECE01E4328718F4389F4CAF96F1",
+                                     "runPath":  "artifacts/deepseek/il-lamp-output-observer-direct-88/prepare-01/supervisor-run.json",
+                                     "runSha256":  "9B25A4B226BF3015CE4B3AE39E51BB40CB094DBA429EB3AFB673D2050C9D3285",
+                                     "runExitCode":  0,
+                                     "naturalProof":  false
+                                 },
+    "generatedPersistence":  {
+                                 "isolatedRunDirectory":  "artifacts/deepseek/il-lamp-output-observer-direct-88/prepare-02",
+                                 "directories":  {
+                                                     "cfg":  {
+                                                                 "fileCount":  2,
+                                                                 "files":  [
+                                                                               {
+                                                                                   "relative":  "cfg\\default.cfg",
+                                                                                   "length":  499,
+                                                                                   "sha256":  "CE6F92D4260CFA730A9CDA509E6B19E58813B279F1D85A3408CCCB2ABB49F236"
+                                                                               },
+                                                                               {
+                                                                                   "relative":  "cfg\\m4addr.cfg",
+                                                                                   "length":  606,
+                                                                                   "sha256":  "7DE16FE1DCF8D383D1DB01C78A45352D8D3DA334F3621EED44F5D52028DC2CC8"
+                                                                               }
+                                                                           ]
+                                                             },
+                                                     "nvram":  {
+                                                                   "fileCount":  1,
+                                                                   "files":  [
+                                                                                 {
+                                                                                     "relative":  "nvram\\m4addr\\nvram",
+                                                                                     "length":  2048,
+                                                                                     "sha256":  "B70AD0886E35719530269421A9375CB4A7770F66801D855DE17DCE7F9455165E"
+                                                                                 }
+                                                                             ]
+                                                               },
+                                                     "inp":  {
+                                                                 "fileCount":  0,
+                                                                 "files":  [
+
+                                                                           ]
+                                                             },
+                                                     "snap":  {
+                                                                  "fileCount":  0,
+                                                                  "files":  [
+
+                                                                            ]
+                                                              },
+                                                     "comments":  {
+                                                                      "fileCount":  0,
+                                                                      "files":  [
+
+                                                                                ]
+                                                                  },
+                                                     "state":  {
+                                                                   "fileCount":  0,
+                                                                   "files":  [
+
+                                                                             ]
+                                                               },
+                                                     "diff":  {
+                                                                  "fileCount":  0,
+                                                                  "files":  [
+
+                                                                            ]
+                                                              }
+                                                 },
+                                 "emptyDirectories":  [
+                                                          "inp",
+                                                          "snap",
+                                                          "comments",
+                                                          "state",
+                                                          "diff"
+                                                      ],
+                                 "note":  "Generated cfg and nvram persistence inside the isolated prepare-02 run after the accepted execution; prepared ROM/assets and the five empty isolated directories are not persistence outputs."
+                             },
+    "preparedIdentityVerification":  {
+                                         "prelaunchHashCount":  16,
+                                         "mismatchCount":  0,
+                                         "allMatch":  true,
+                                         "postRunPreparedIdentities":  [
+                                                                           {
+                                                                               "name":  "session-metadata.json",
+                                                                               "path":  "artifacts/deepseek/il-lamp-output-observer-direct-88/prepare-02/session-metadata.json",
+                                                                               "prelaunchSha256":  "B8D1BC9421023FA38800376DB3E992537599F8610ADBE8AADC3E62A5281D2C82",
+                                                                               "postRunSha256":  "B8D1BC9421023FA38800376DB3E992537599F8610ADBE8AADC3E62A5281D2C82",
+                                                                               "match":  true
+                                                                           },
+                                                                           {
+                                                                               "name":  "session-config.json",
+                                                                               "path":  "artifacts/deepseek/il-lamp-output-observer-direct-88/prepare-02/session-config.json",
+                                                                               "prelaunchSha256":  "FCB75E6D427362931F3BAD6C5DE8F6F57C6E17F1CB8EE40331CC6AB61AE30519",
+                                                                               "postRunSha256":  "FCB75E6D427362931F3BAD6C5DE8F6F57C6E17F1CB8EE40331CC6AB61AE30519",
+                                                                               "match":  true
+                                                                           },
+                                                                           {
+                                                                               "name":  "session-config.lua",
+                                                                               "path":  "artifacts/deepseek/il-lamp-output-observer-direct-88/prepare-02/session-config.lua",
+                                                                               "prelaunchSha256":  "A17256E006CCE334C47FC52FE73435B1F4325C3D4507BF47FADE377C2A10BCF3",
+                                                                               "postRunSha256":  "A17256E006CCE334C47FC52FE73435B1F4325C3D4507BF47FADE377C2A10BCF3",
+                                                                               "match":  true
+                                                                           },
+                                                                           {
+                                                                               "name":  "prepare-only.txt",
+                                                                               "path":  "artifacts/deepseek/il-lamp-output-observer-direct-88/prepare-02/prepare-only.txt",
+                                                                               "prelaunchSha256":  "A3A22A308AF1D94FECBE3124B2C48F1D02D52DFEDEA229B025CBEE73F594819D",
+                                                                               "postRunSha256":  "A3A22A308AF1D94FECBE3124B2C48F1D02D52DFEDEA229B025CBEE73F594819D",
+                                                                               "match":  true
+                                                                           },
+                                                                           {
+                                                                               "name":  "IlLampClearNatural.lua",
+                                                                               "path":  "artifacts/deepseek/il-lamp-output-observer-direct-88/prepare-02/IlLampClearNatural.lua",
+                                                                               "prelaunchSha256":  "0FAEDC8B85F34DA60390C99F75C416BC870361FF790BC6AAEB5EE1133F382F8A",
+                                                                               "postRunSha256":  "0FAEDC8B85F34DA60390C99F75C416BC870361FF790BC6AAEB5EE1133F382F8A",
+                                                                               "match":  true
+                                                                           },
+                                                                           {
+                                                                               "name":  "observer.lua",
+                                                                               "path":  "artifacts/deepseek/il-lamp-output-observer-direct-88/prepare-02/observer.lua",
+                                                                               "prelaunchSha256":  "A7A7D7EAA400C826C1486077E490B6EDB9A550EFD1289ACA3475C8F721BB79C4",
+                                                                               "postRunSha256":  "A7A7D7EAA400C826C1486077E490B6EDB9A550EFD1289ACA3475C8F721BB79C4",
+                                                                               "match":  true
+                                                                           },
+                                                                           {
+                                                                               "name":  "lamp-clear-natural-plan.json",
+                                                                               "path":  "artifacts/deepseek/il-lamp-output-observer-direct-88/prepare-02/lamp-clear-natural-plan.json",
+                                                                               "prelaunchSha256":  "4C36B649885FC9E8631CD2C00F20889393CF685C90683AC4D9F7EAB2070CD491",
+                                                                               "postRunSha256":  "4C36B649885FC9E8631CD2C00F20889393CF685C90683AC4D9F7EAB2070CD491",
+                                                                               "match":  true
+                                                                           },
+                                                                           {
+                                                                               "name":  "build-report.json",
+                                                                               "path":  "artifacts/deepseek/il-lamp-output-observer-direct-88/prepare-02/build-report.json",
+                                                                               "prelaunchSha256":  "7AB2A92DF65F77E822FD92F30D8B966E96CA3C762873201F438FFAFD2011416D",
+                                                                               "postRunSha256":  "7AB2A92DF65F77E822FD92F30D8B966E96CA3C762873201F438FFAFD2011416D",
+                                                                               "match":  true
+                                                                           },
+                                                                           {
+                                                                               "name":  "replay-actions.csv",
+                                                                               "path":  "artifacts/deepseek/il-lamp-output-observer-direct-88/prepare-02/replay-actions.csv",
+                                                                               "prelaunchSha256":  "4A051DA15264842697879EFF396B34A789F5D80623F9A2E749C244E6A80E721D",
+                                                                               "postRunSha256":  "4A051DA15264842697879EFF396B34A789F5D80623F9A2E749C244E6A80E721D",
+                                                                               "match":  true
+                                                                           },
+                                                                           {
+                                                                               "name":  "lamp-clear-natural-map.lua",
+                                                                               "path":  "artifacts/deepseek/il-lamp-output-observer-direct-88/prepare-02/lamp-clear-natural-map.lua",
+                                                                               "prelaunchSha256":  "12541E51C73A65CB1C198FD96DF87E43A0E820413A65152F5E39DF8CF0C92006",
+                                                                               "postRunSha256":  "12541E51C73A65CB1C198FD96DF87E43A0E820413A65152F5E39DF8CF0C92006",
+                                                                               "match":  true
+                                                                           },
+                                                                           {
+                                                                               "name":  "arguments.template.json",
+                                                                               "path":  "artifacts/deepseek/il-lamp-output-observer-direct-88/prepare-02/arguments.template.json",
+                                                                               "prelaunchSha256":  "93B35F3A0C15380AE981A09387D2D98FF5AD0D5CC903101C44DAD62C55D8DF23",
+                                                                               "postRunSha256":  "93B35F3A0C15380AE981A09387D2D98FF5AD0D5CC903101C44DAD62C55D8DF23",
+                                                                               "match":  true
+                                                                           },
+                                                                           {
+                                                                               "name":  "input.lua",
+                                                                               "path":  "artifacts/deepseek/il-lamp-output-observer-direct-88/prepare-02/input.lua",
+                                                                               "prelaunchSha256":  "23099F8888AF8DB353253E0DF97638320DC59CA9A47371723A380E0C4EE85C94",
+                                                                               "postRunSha256":  "23099F8888AF8DB353253E0DF97638320DC59CA9A47371723A380E0C4EE85C94",
+                                                                               "match":  true
+                                                                           },
+                                                                           {
+                                                                               "name":  "lamp-clear-pattern-source-map.json",
+                                                                               "path":  "artifacts/deepseek/il-lamp-output-observer-direct-88/prepare-02/lamp-clear-pattern-source-map.json",
+                                                                               "prelaunchSha256":  "1845ED2A98B8347B8618D7E9A6E7AFD68B3CF14532C20268AAE273DD782E83B1",
+                                                                               "postRunSha256":  "1845ED2A98B8347B8618D7E9A6E7AFD68B3CF14532C20268AAE273DD782E83B1",
+                                                                               "match":  true
+                                                                           },
+                                                                           {
+                                                                               "name":  "preflight.json",
+                                                                               "path":  "artifacts/deepseek/il-lamp-output-observer-direct-88/prepare-02/preflight.json",
+                                                                               "prelaunchSha256":  "C0C8508B4952DA862AAB7F4A0825ACBB6380806C0EB8C33D15882E243BD5A213",
+                                                                               "postRunSha256":  "C0C8508B4952DA862AAB7F4A0825ACBB6380806C0EB8C33D15882E243BD5A213",
+                                                                               "match":  true
+                                                                           },
+                                                                           {
+                                                                               "name":  "checker-report.json",
+                                                                               "path":  "artifacts/deepseek/il-lamp-output-observer-direct-88/prepare-02/checker-report.json",
+                                                                               "prelaunchSha256":  "5AD340A519808DA82903DB15E0055DC31384E5684F6ECCF685364DCE89B42630",
+                                                                               "postRunSha256":  "5AD340A519808DA82903DB15E0055DC31384E5684F6ECCF685364DCE89B42630",
+                                                                               "match":  true
+                                                                           },
+                                                                           {
+                                                                               "name":  "roms\\m4addr\\a6ls.p1",
+                                                                               "path":  "artifacts/deepseek/il-lamp-output-observer-direct-88/prepare-02/roms/m4addr/a6ls.p1",
+                                                                               "prelaunchSha256":  "347D475E20C194F374DF85A04894BC68D89E05043CA89C5B031316868240EB88",
+                                                                               "postRunSha256":  "347D475E20C194F374DF85A04894BC68D89E05043CA89C5B031316868240EB88",
+                                                                               "match":  true
+                                                                           }
+                                                                       ],
+                                         "note":  "Post-run hashes of the 16 prelaunch-listed prepared files were recomputed and match the prelaunch values."
+                                     },
+    "rawSourceIdentities":  {
+                                "originalRom":  {
+                                                    "path":  "artifacts\\deepseek\\il-natural-06\\runs\\original-01\\roms\\m4addr\\a6ls.p1",
+                                                    "length":  65536,
+                                                    "sha256":  "EBF580381AA6EB6FFB26E2ACD40F30AA34B0311F71C6564607C6F48A53BCA15C",
+                                                    "sha1":  "402D1518BB78FDC489B06C2AABC771E5CE151847"
+                                                },
+                                "compiledRom":  {
+                                                    "path":  "artifacts\\deepseek\\il-lamp-clear-build-71\\supervisor-worker-final\\positive-01\\lamp-clear-repaired.p1",
+                                                    "length":  65536,
+                                                    "sha256":  "347D475E20C194F374DF85A04894BC68D89E05043CA89C5B031316868240EB88",
+                                                    "sha1":  "F2083249845955D91945E589807C22E730D78FC3"
+                                                },
+                                "sourceMap":  {
+                                                  "path":  "artifacts\\deepseek\\il-lamp-clear-build-71\\supervisor-worker-final\\positive-01\\lamp-clear-pattern-source-map.json",
+                                                  "length":  65893,
+                                                  "sha256":  "1845ED2A98B8347B8618D7E9A6E7AFD68B3CF14532C20268AAE273DD782E83B1"
+                                              },
+                                "buildReport":  {
+                                                    "path":  "artifacts\\deepseek\\il-lamp-clear-build-71\\supervisor-worker-final\\positive-01\\build-report.json",
+                                                    "length":  34385,
+                                                    "sha256":  "7AB2A92DF65F77E822FD92F30D8B966E96CA3C762873201F438FFAFD2011416D"
+                                                },
+                                "checkerReport":  {
+                                                      "path":  "artifacts\\deepseek\\il-lamp-clear-build-71\\supervisor-worker-final\\checker-report.json",
+                                                      "length":  10860,
+                                                      "sha256":  "5AD340A519808DA82903DB15E0055DC31384E5684F6ECCF685364DCE89B42630"
+                                                  },
+                                "luaSource":  {
+                                                  "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\IlLampOutputNatural.lua",
+                                                  "length":  64299,
+                                                  "sha256":  "0FAEDC8B85F34DA60390C99F75C416BC870361FF790BC6AAEB5EE1133F382F8A"
+                                              },
+                                "prepareTool":  {
+                                                    "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\Prepare-OutputObserver.ps1",
+                                                    "length":  91174,
+                                                    "sha256":  "4599EB43887C72BFBBA4A2C65866B57CE11589C45C6850B5EFBC27975AD1119F"
+                                                },
+                                "mame":  {
+                                             "path":  "E:\\Arcade\\MAME0266\\mame281.exe",
+                                             "length":  373377024,
+                                             "sha256":  "0FCE5A88DF4F9D9B1FBF1405812C00848036E615993780978D967DA34204CB7A"
+                                         },
+                                "inputLua":  {
+                                                 "path":  "evidence\\mpu4\\skill-cash\\input.lua",
+                                                 "length":  5733,
+                                                 "sha256":  "23099F8888AF8DB353253E0DF97638320DC59CA9A47371723A380E0C4EE85C94"
+                                             },
+                                "replay":  {
+                                               "path":  "evidence\\mpu4\\skill-cash\\actions.csv",
+                                               "length":  72943,
+                                               "sha256":  "4A051DA15264842697879EFF396B34A789F5D80623F9A2E749C244E6A80E721D"
+                                           },
+                                "replayCopy":  {
+                                                   "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\replay-actions.csv",
+                                                   "length":  72943,
+                                                   "sha256":  "4A051DA15264842697879EFF396B34A789F5D80623F9A2E749C244E6A80E721D"
+                                               },
+                                "inputLuaCopy":  {
+                                                     "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\input.lua",
+                                                     "length":  5733,
+                                                     "sha256":  "23099F8888AF8DB353253E0DF97638320DC59CA9A47371723A380E0C4EE85C94"
+                                                 },
+                                "arguments":  {
+                                                  "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\arguments.template.json",
+                                                  "length":  1700,
+                                                  "sha256":  "93B35F3A0C15380AE981A09387D2D98FF5AD0D5CC903101C44DAD62C55D8DF23"
+                                              },
+                                "prelaunch":  {
+                                                  "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\supervisor-prelaunch.json",
+                                                  "length":  3719,
+                                                  "sha256":  "7004286A4B88E8F83732AD2444209605565E464DF3F3128D13050960967A70A6"
+                                              },
+                                "runRecord":  {
+                                                  "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\supervisor-run.json",
+                                                  "length":  215,
+                                                  "sha256":  "BDA342EBD82B67D9660DD9E1C260EF189946D18F0DBB0FCCA6DA12617B5FB45B"
+                                              },
+                                "events":  {
+                                               "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\events.jsonl",
+                                               "length":  105889,
+                                               "sha256":  "99191EDA70F615BA9E2B044E6CA4E4642743ED11F9AD66FBF5964E346E80F949"
+                                           },
+                                "inputLevels":  {
+                                                    "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\input-levels.csv",
+                                                    "length":  59915,
+                                                    "sha256":  "01C5EE6D9AABDAC5C97DCDF3B15A9235ECE348415EF3D532B8A033554D2DCF01"
+                                                },
+                                "featureState":  {
+                                                     "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\feature-state.csv",
+                                                     "length":  128377,
+                                                     "sha256":  "54188D6240808D4699F239985234C4F783C43C59B036FECBCA64355420267EA4"
+                                                 },
+                                "stateCsv":  {
+                                                 "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\state.csv",
+                                                 "length":  149382,
+                                                 "sha256":  "822251F4F1D1CA8512889E51360DF877A4245624FFA01C4C21B197476FFFD8AA"
+                                             },
+                                "actionsCsv":  {
+                                                   "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\actions.csv",
+                                                   "length":  64,
+                                                   "sha256":  "2C26AB8D21E8B657725CC1809B2867CCB05B9E41B6B0C3568F9D97947041CBA0"
+                                               },
+                                "lastSessionComplete":  {
+                                                            "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\session-complete.txt",
+                                                            "length":  187,
+                                                            "sha256":  "4ADFCD9F3B5DFAA56AAADD2E7901A565EEDE7D5B773B772828B05F1F67977B94"
+                                                        },
+                                "prepareOnly":  {
+                                                    "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\prepare-only.txt",
+                                                    "length":  79,
+                                                    "sha256":  "A3A22A308AF1D94FECBE3124B2C48F1D02D52DFEDEA229B025CBEE73F594819D"
+                                                },
+                                "ready":  {
+                                              "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\ready.txt",
+                                              "length":  319,
+                                              "sha256":  "0EB82E44A2338A48284368054A8A7305D05D22E192ED56A8F2935983B23F59CE"
+                                          },
+                                "debugLog":  {
+                                                 "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\debug.log",
+                                                 "length":  1538,
+                                                 "sha256":  "1F020D3A08990CF68138526940F068DF700CC9FBD230B5D74F96D3F83747819F"
+                                             },
+                                "console":  {
+                                                "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\console.txt",
+                                                "length":  39,
+                                                "sha256":  "1B61E63018E2F12A12829A684A6E44E251826AC86D774DBD4794D6F6EF83151C"
+                                            },
+                                "consoleErr":  {
+                                                   "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\console.err.txt",
+                                                   "length":  683,
+                                                   "sha256":  "7ED244D39853F7CED990700AEE3703F8B6C8735C4EC1D2B117FEAC3225841E43"
+                                               },
+                                "preflight":  {
+                                                  "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\preflight.json",
+                                                  "length":  21116,
+                                                  "sha256":  "C0C8508B4952DA862AAB7F4A0825ACBB6380806C0EB8C33D15882E243BD5A213"
+                                              },
+                                "metadata":  {
+                                                 "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\session-metadata.json",
+                                                 "length":  12481,
+                                                 "sha256":  "B8D1BC9421023FA38800376DB3E992537599F8610ADBE8AADC3E62A5281D2C82"
+                                             },
+                                "plan":  {
+                                             "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\lamp-clear-natural-plan.json",
+                                             "length":  103172,
+                                             "sha256":  "4C36B649885FC9E8631CD2C00F20889393CF685C90683AC4D9F7EAB2070CD491"
+                                         },
+                                "mapLua":  {
+                                               "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\lamp-clear-natural-map.lua",
+                                               "length":  48281,
+                                               "sha256":  "12541E51C73A65CB1C198FD96DF87E43A0E820413A65152F5E39DF8CF0C92006"
+                                           },
+                                "observer":  {
+                                                 "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\observer.lua",
+                                                 "length":  53,
+                                                 "sha256":  "A7A7D7EAA400C826C1486077E490B6EDB9A550EFD1289ACA3475C8F721BB79C4"
+                                             },
+                                "luaCopy":  {
+                                                "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\IlLampClearNatural.lua",
+                                                "length":  64299,
+                                                "sha256":  "0FAEDC8B85F34DA60390C99F75C416BC870361FF790BC6AAEB5EE1133F382F8A"
+                                            },
+                                "configLua":  {
+                                                  "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\session-config.lua",
+                                                  "length":  989,
+                                                  "sha256":  "A17256E006CCE334C47FC52FE73435B1F4325C3D4507BF47FADE377C2A10BCF3"
+                                              },
+                                "configJson":  {
+                                                   "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\session-config.json",
+                                                   "length":  1035,
+                                                   "sha256":  "FCB75E6D427362931F3BAD6C5DE8F6F57C6E17F1CB8EE40331CC6AB61AE30519"
+                                               },
+                                "cfgDefault":  {
+                                                   "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\cfg\\default.cfg",
+                                                   "length":  499,
+                                                   "sha256":  "CE6F92D4260CFA730A9CDA509E6B19E58813B279F1D85A3408CCCB2ABB49F236"
+                                               },
+                                "cfgMachine":  {
+                                                   "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\cfg\\m4addr.cfg",
+                                                   "length":  606,
+                                                   "sha256":  "7DE16FE1DCF8D383D1DB01C78A45352D8D3DA334F3621EED44F5D52028DC2CC8"
+                                               },
+                                "nvram":  {
+                                              "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02\\nvram\\m4addr\\nvram",
+                                              "length":  2048,
+                                              "sha256":  "B70AD0886E35719530269421A9375CB4A7770F66801D855DE17DCE7F9455165E"
+                                          },
+                                "normalized":  {
+                                                   "path":  "artifacts\\deepseek\\il-lamp-output-replay-direct-90\\actual-adapter-02\\normalized.jsonl",
+                                                   "length":  1130,
+                                                   "sha256":  "4A657C2994864C81B85DA0CC00B184994460B3B30389D7E5C03A306AEA6DA8A2"
+                                               },
+                                "adapterResult":  {
+                                                      "path":  "artifacts\\deepseek\\il-lamp-output-replay-direct-90\\actual-adapter-02\\result.json",
+                                                      "length":  46079,
+                                                      "sha256":  "6846ABA19F9B85A28623D94CCFAAF84FE9127D11B5D0647DCA792D67109F655B"
+                                                  },
+                                "adapterRun":  {
+                                                   "path":  "artifacts\\deepseek\\il-lamp-output-replay-direct-90\\actual-adapter-02\\run.json",
+                                                   "length":  845,
+                                                   "sha256":  "0E012CCCF6D2788F25B54594110E4BD0CF59F65C90E6F600AEB197FC77A59885"
+                                               },
+                                "checkerResult":  {
+                                                      "path":  "artifacts\\deepseek\\il-lamp-output-replay-direct-90\\actual-adapter-02\\checker-result.json",
+                                                      "length":  1112,
+                                                      "sha256":  "4546042F5B6D4FA29F460F1D6210191A829427E53264846E2EF2FD2DF053F68E"
+                                                  },
+                                "prepare02Result":  {
+                                                        "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-02-result.json",
+                                                        "length":  1571,
+                                                        "sha256":  "1CC112DA0483A6C54FD08A2A617863B2EABFF69EBB7008BF7FEE8457AB5E3578"
+                                                    },
+                                "prepare01Run":  {
+                                                     "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-01\\supervisor-run.json",
+                                                     "length":  199,
+                                                     "sha256":  "9B25A4B226BF3015CE4B3AE39E51BB40CB094DBA429EB3AFB673D2050C9D3285"
+                                                 },
+                                "prepare01Prelaunch":  {
+                                                           "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-01\\supervisor-prelaunch.json",
+                                                           "length":  3513,
+                                                           "sha256":  "2E88E7CFDEA9B704D0ADEAD13747FAEA9D4C9ECE01E4328718F4389F4CAF96F1"
+                                                       },
+                                "prepare01Result":  {
+                                                        "path":  "artifacts\\deepseek\\il-lamp-output-observer-direct-88\\prepare-01-result.json",
+                                                        "length":  1571,
+                                                        "sha256":  "E24B1DF5EF9B8E752CA8B4FC35F3C1AA62A24869B3CFEE35EF639EEA7E7393F5"
+                                                    },
+                                "supervisorReview":  {
+                                                         "path":  "artifacts/deepseek/il-lamp-output-replay-direct-90/supervisor-review.md",
+                                                         "length":  1933,
+                                                         "sha256":  "E521951D163D207E60C3CA29700B232895ED7A290B9D3BDAB0115DE57EB4CF81"
+                                                     },
+                                "supervisorValidation":  {
+                                                             "path":  "artifacts/deepseek/il-lamp-output-replay-direct-90/supervisor-validation.json",
+                                                             "length":  1500,
+                                                             "sha256":  "A91642B0B60941545AF5AEFA3C10DE2F050B053280B1FA571CDB511D52958F20"
+                                                         }
+                            },
+    "supervisorInputs":  {
+                             "reviewPath":  "artifacts/deepseek/il-lamp-output-replay-direct-90/supervisor-review.md",
+                             "reviewSha256":  "E521951D163D207E60C3CA29700B232895ED7A290B9D3BDAB0115DE57EB4CF81",
+                             "validationPath":  "artifacts/deepseek/il-lamp-output-replay-direct-90/supervisor-validation.json",
+                             "validationSha256":  "A91642B0B60941545AF5AEFA3C10DE2F050B053280B1FA571CDB511D52958F20",
+                             "adapterResultPath":  "artifacts/deepseek/il-lamp-output-replay-direct-90/actual-adapter-02/result.json",
+                             "adapterResultSha256":  "6846ABA19F9B85A28623D94CCFAAF84FE9127D11B5D0647DCA792D67109F655B",
+                             "checkerResultPath":  "artifacts/deepseek/il-lamp-output-replay-direct-90/actual-adapter-02/checker-result.json",
+                             "checkerResultSha256":  "4546042F5B6D4FA29F460F1D6210191A829427E53264846E2EF2FD2DF053F68E"
+                         },
+    "limitations":  [
+                        "This is a frame-RAM/output transition, not photographed or rendered physical lamp output.",
+                        "Only the measured response-00, column-15, F1-zero path is naturally observed; future 0803 responses and optional non-zero F1 paths remain separate.",
+                        "Debugger stops may affect timing; no unobserved-run timing equivalence is claimed.",
+                        "No interactive gameplay, new scheduler/button semantics, general caller safety or M5 completion is claimed.",
+                        "No physical hardware compatibility is claimed.",
+                        "The prepare-01 run is diagnostic only because its prelaunch record lacks explicit replay environment values; it is not the accepted capture.",
+                        "The selected RAM address 010F is derived from the observer read path and the raw x value; the raw scan row directly records selected=3E and x=0007.",
+                        "No last or future input pulse beyond the observed CSV rows is claimed.",
+                        "The standalone adapter/checker naturalProof=false flags remain untouched and are explained separately from the supervisor accepted scope."
+                    ],
+    "unknownFields":  [
+                          {
+                              "field":  "scan.pre.time",
+                              "status":  "not present in raw source",
+                              "handling":  "recorded as null with timeSource; adjacent physical-stop times are separate records"
+                          },
+                          {
+                              "field":  "scan.post.time",
+                              "status":  "not present in raw source",
+                              "handling":  "recorded as null with timeSource; adjacent physical-stop times are separate records"
+                          },
+                          {
+                              "field":  "scan.selectedRam.address",
+                              "status":  "derived",
+                              "handling":  "derived from 0x0108 + raw x(0007) observer read path; value 3E is raw"
+                          }
+                      ],
+    "notInRawOrNotClaimed":  [
+                                 "physical lamp output",
+                                 "rendered or photographed frame",
+                                 "hardware compatibility",
+                                 "future 0803 response",
+                                 "future replay pulse or last future pulse",
+                                 "complete game or M5 completion"
+                             ],
+    "verification":  {
+                         "pass":  true,
+                         "validatedUtc":  "2026-10-20T15:14:08.1178617Z",
+                         "jsonParsed":  true,
+                         "schemaFieldsPresent":  true,
+                         "countsChecked":  true,
+                         "outputObservationTableRows":  4,
+                         "outputObservationTableCheckedAgainstRawLines":  [
+                                                                              4,
+                                                                              112,
+                                                                              119,
+                                                                              122
+                                                                          ],
+                         "timingRowsChecked":  7,
+                         "bindingCount":  56,
+                         "preparedHashCount":  16,
+                         "preparedHashMismatches":  0,
+                         "runIdentityChecked":  true,
+                         "rawSourceHashesChecked":  15,
+                         "documentRequiredStringsChecked":  13,
+                         "validationArtifactPath":  "artifacts/deepseek/il-lamp-output-transition-evidence-91/validation.json",
+                         "validationArtifactSha256":  "ED9C854936676350D71BE950EC720FB3CAF669D8447263EF911EA50CACC3F46E",
+                         "documentPath":  "docs/recovery/IL-LAMP-OUTPUT-NATURAL.md",
+                         "documentSha256":  "D5A22D48BDBEA0EB3AC47A6A4872D8308785637627130F0CBD680EE0FD3CF528"
+                     }
+}

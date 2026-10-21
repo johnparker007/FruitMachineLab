@@ -15,6 +15,15 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 
+# .NET file APIs use the process directory, which Windows PowerShell may leave
+# different from Get-Location. Resolve caller paths before passing them to .NET.
+$OriginalRom = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($OriginalRom)
+$RunDirectory = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($RunDirectory)
+$MameExecutable = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($MameExecutable)
+$SupportRomPath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($SupportRomPath)
+$BgfxPath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($BgfxPath)
+if ($FixturePath) { $FixturePath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($FixturePath) }
+
 $ExpectedOriginalSha256 = 'EBF580381AA6EB6FFB26E2ACD40F30AA34B0311F71C6564607C6F48A53BCA15C'
 $ExpectedOriginalLength = 65536
 $KnownEntryFrame = 32630

@@ -8,7 +8,7 @@ There are no additional rounds, lives, score, Alpha or payout additions.
 From the repository root, launch your playtest with a new run directory:
 
 ```powershell
-pwsh -NoProfile -File .\tools\SixBrickDemo\Run-SixBrick.ps1 `
+& .\tools\SixBrickDemo\Run-SixBrick.ps1 `
   -OriginalRom .\artifacts\deepseek\il-natural-06\runs\original-01\roms\m4addr\a6ls.p1 `
   -RunDirectory .\artifacts\six-brick-playtest-01 -Mode Manual
 ```

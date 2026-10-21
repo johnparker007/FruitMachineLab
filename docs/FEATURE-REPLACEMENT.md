@@ -233,3 +233,43 @@ The remaining work is a simple demonstrated win/lose loop and a convenient
 hands-on launch path; optimize or simplify within 992 bytes rather than assuming
 more space. These remain emulator observations, with experimental countdown
 timing and original-feature continuation rather than hardware certification.
+
+## Tiny win/loss game (21 October)
+
+`tools/Build-SnakeBitePlayable.ps1` builds a one-brick game with a two-lamp
+paddle. Default parameters produce ROM SHA256
+`7124269C34881B2C8CCAA577DC2EDF28957EED3E69BC2052C5D789172D3653CF`.
+The supervisor rebuilt it and matched the three naturally tested Win/Loss/Control
+images. Allocation is 982 bytes (`1010–13E5`), leaving 10. There are 989 actual
+changed bytes because four cave bytes coincide with original `FF` padding;
+redirects, guards and ordered integrity repair retain the previous protections.
+
+Hold 2/Nudge 2 moves the paddle right, catches the descending ball, and sends it
+upward into the single brick. Removing that brick immediately flashes the two
+top corners (`100001`) for a win. Hold 1/Nudge 1 or no movement misses the ball
+and flashes the bottom row (`111111`) for a loss. These outcomes come from ball
+collision, not a direct input-to-win branch. Both paths clear the custom grid,
+drop their stack state and continue the original Snake Bite body.
+
+The paddle uses left endpoint `p=0..4`, drawing exactly `p,p+1`. Collision tests
+arithmetic difference `ball-p` for membership in `{0,1}`. A targeted evaluator of
+the emitted collision prefix passes all 30 column/endpoint pairs. A formerly
+wrong case also produces a natural hit in a diagnostic ROM. This repairs the
+unpublished experiment-109 XOR shortcut and its invalid left-edge draw.
+
+Fresh default runs all exit zero on their first attempt. Win: cave entry at
+`543.824470930`, win flash `546.150`, original `D003` at `546.488774418`,
+return `E243` at `551.224103488`. Loss: flash `545.116666667`, `D003` at
+`545.478731977`, `E243` at `549.941728488`. Context is `U=0672/S=079A` at
+entry and `D003`, `U=0672/S=079E` at return. The no-input control loses with a
+centred paddle. Short-iteration cleanup and held input at both edges are also
+observed. Private results and raw captures remain under
+`artifacts/deepseek/feature-playable-repair-110/`.
+
+The private `Run-PlayableDemo.ps1` there provides automated `-Mode Win`, `Loss`
+and `Control` launches from a supplied original ROM. It defaults to one attempt;
+additional attempts require an explicit diagnostic reason. This launcher has
+not yet been promoted as a standalone repository package. Hands-on input handover
+and real-time viewing are still unverified. This is one brick without scoring,
+lives, Alpha or sound, followed by the original feature; countdown and hardware
+limitations remain. Next: a convenient launch package and manual play.

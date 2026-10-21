@@ -297,3 +297,51 @@ for Hold 1 (left) and Space for Hold 2 (right); inspect MAME's Input (This Machi
 menu if needed. The package does not change installed settings or bindings.
 Manual handover does not extend the ROM game's short duration or add a restart.
 All previous ROM/gameplay and hardware limitations still apply.
+
+## Six-brick playtest candidate, 21 October
+
+`tools/SixBrickDemo/Run-SixBrick.ps1 -Mode Manual` provides John's final requested
+scope: one continuous game, six destructible top-row bricks, real ball and paddle
+collisions, and a short outcome delay before leaving the feature on either a
+bottom miss or all six cleared. See `tools/SixBrickDemo/README.md` for launch
+instructions. The earlier accepted demo remains available unchanged.
+
+The repaired ROM SHA256 is
+`C0F40BF86311773824BF8A6DDA21EA8DE0C7E1169DAE1142DDF97641EC190F9E`;
+888 bytes occupy `1010–1387`, leaving 104 of the approved 992 bytes free.
+Original identity and expected bytes are checked; both guards are preserved.
+Only the cave, the three feature dispatch cells and integrity fields differ.
+
+Natural fresh-boot MAME replay reaches Snake Bite at frame 32630, time
+543.824470930, and the cave at Y=1012, U/S=0672/079A. In the supervisor's packaged
+all-clear run the observed mask progresses `003F,003B,001B,0019,0009,0001`, then
+the ROM reaches win at Y=12E6 with mask zero, frame 34065. Six initial lamps,
+ball reflections, brick removal and the outcome flash are observed. Completion
+runs at D086 and returns at E243, U/S=0672/079E, C9=0; original gameplay at D003
+is not entered. Automatic verification supplies Hold button inputs based on lamp
+outputs; it does not inject game state.
+
+The corrected miss run reaches loss at frame 32713 with mask 003F, then returns
+at frame 32768 with the same balanced stacks and C9=0. The corrected manual run
+releases all nine overrides successfully and takes the same unassisted miss
+path. All three supervisor runs exit MAME with code 0. Neither saved word changes
+between entry and return in these runs. Manual handover verifies the API only;
+John's keyboard playtest is still required.
+
+Supervisor review corrected an exit defect in the private worker candidate:
+D08E–D098 restores two saved words to 02FE/0300, so zero placeholders were unsafe.
+The final candidate saves both original words at entry in the same order as
+D030–D036, retains them beneath the game cells, and lets the original tail
+restore them. This correction preserves the 888-byte size. The observed route
+has both words zero, so preservation of nonzero values is a static stack/byte
+deduction, not a tested nonzero-state claim. No award or payout additions were
+made. Earlier private variants remain preserved, including the incorrect rotate
+and win-mask tests corrected during task 116.
+
+Raw local evidence is under
+`artifacts/deepseek/feature-six-brick-final-continuation-116/runs/`, including
+`supervisor-preserved-allclear` and `supervisor-preserved-miss`. Each run records
+the exact build, MAME identity, inputs, lamp outputs, stack observations and exit.
+Human keyboard play and original MPU4 hardware remain unverified. Development
+stops for John's playtest; Alpha, prize lamps, score/lives/sound and payout
+features are outside this candidate.

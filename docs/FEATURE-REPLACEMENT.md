@@ -273,3 +273,27 @@ not yet been promoted as a standalone repository package. Hands-on input handove
 and real-time viewing are still unverified. This is one brick without scoring,
 lives, Alpha or sound, followed by the original feature; countdown and hardware
 limitations remain. Next: a convenient launch package and manual play.
+
+## Launch and view the demo
+
+The repository package `tools/SnakeBiteDemo/` builds the accepted ROM from a
+supplied original, creates isolated persistence and replays the route quickly.
+At 538 emulated seconds it enables normal-speed throttle, before the feature:
+
+```powershell
+./tools/SnakeBiteDemo/Run-SnakeBiteDemo.ps1 -OriginalRom <original-a6ls.p1> -Mode Win -RunDirectory <new-private-directory>
+```
+
+Use `Loss` or `Control` for the other automated outcomes. Installed MAME/support
+ROM/bgfx paths can be supplied as parameters; see the package README. The
+launcher defaults to one attempt and records actual exit/outcome/identity and
+timing. Its private development runs measured the viewing segment at about
+1.002 emulated seconds per wall second, versus roughly 15x during replay.
+
+`-Manual` releases all nine owned input overrides at cave entry and stops the
+replay provider from writing them again. Runtime logs verify this API handover;
+human keyboard play remains unverified. Observed default bindings are Left Alt
+for Hold 1 (left) and Space for Hold 2 (right); inspect MAME's Input (This Machine)
+menu if needed. The package does not change installed settings or bindings.
+Manual handover does not extend the ROM game's short duration or add a restart.
+All previous ROM/gameplay and hardware limitations still apply.
